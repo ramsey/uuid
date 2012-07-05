@@ -360,6 +360,7 @@ final class Uuid
      *
      * @param string $name A string that specifies a UUID
      * @return Uuid
+     * @throws \InvalidArgumentException If the $name isn't a valid UUID
      */
     public static function fromString($name)
     {
