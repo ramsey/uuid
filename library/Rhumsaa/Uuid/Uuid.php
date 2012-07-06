@@ -411,7 +411,9 @@ final class Uuid
         // Create a 60-bit time value as a count of 100-nanosecond intervals
         // since 00:00:00.00, 15 October 1582
         $timeOfDay = gettimeofday();
-        $uuidTime = ($timeOfDay['sec'] * 10000000) + ($timeOfDay['usec'] * 10) + 0x01b21dd213814000;
+        $uuidTime = ($timeOfDay['sec'] * 10000000)
+            + ($timeOfDay['usec'] * 10)
+            + 0x01b21dd213814000;
 
         // Get the time parts for putting together most significant bits
         $timeLow = $uuidTime & 0xffffffff;
