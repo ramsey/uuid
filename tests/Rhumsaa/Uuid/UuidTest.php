@@ -11,6 +11,17 @@ class UuidTest extends \PHPUnit_Framework_TestCase
     {
         $uuid = Uuid::fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
         $this->assertInstanceOf('\Rhumsaa\Uuid\Uuid', $uuid);
+        $this->assertEquals('ff6f8cb0-c57d-11e1-9b21-0800200c9a66', $uuid->toString());
+    }
+
+    /**
+     * @covers Rhumsaa\Uuid\Uuid::fromString
+     */
+    public function testFromStringWithCurlyBraces()
+    {
+        $uuid = Uuid::fromString('{ff6f8cb0-c57d-11e1-9b21-0800200c9a66}');
+        $this->assertInstanceOf('\Rhumsaa\Uuid\Uuid', $uuid);
+        $this->assertEquals('ff6f8cb0-c57d-11e1-9b21-0800200c9a66', $uuid->toString());
     }
 
     /**
@@ -21,6 +32,16 @@ class UuidTest extends \PHPUnit_Framework_TestCase
     public function testFromStringWithInvalidUuidString()
     {
         $uuid = Uuid::fromString('ff6f8cb0-c57d-11e1-9b21');
+    }
+
+    /**
+     * @covers Rhumsaa\Uuid\Uuid::fromString
+     */
+    public function testFromStringWithUrn()
+    {
+        $uuid = Uuid::fromString('urn:uuid:ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
+        $this->assertInstanceOf('\Rhumsaa\Uuid\Uuid', $uuid);
+        $this->assertEquals('ff6f8cb0-c57d-11e1-9b21-0800200c9a66', $uuid->toString());
     }
 
     /**

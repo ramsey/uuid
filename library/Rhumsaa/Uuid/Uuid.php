@@ -374,6 +374,7 @@ final class Uuid
      */
     public static function fromString($name)
     {
+        $name = str_replace(array('urn:', 'uuid:', '{', '}'), '', $name);
         $components = explode('-', $name);
 
         if (count($components) != 5) {
