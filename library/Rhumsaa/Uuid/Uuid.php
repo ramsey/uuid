@@ -186,6 +186,24 @@ final class Uuid
     }
 
     /**
+     * Returns an array of the fields of this UUID, with keys named according
+     * to the RFC 4122 names for the fields.
+     *
+     * @return array
+     */
+    public function getFields()
+    {
+        return array(
+            'time_low' => $this->getTimeLow(),
+            'time_mid' => $this->getTimeMid(),
+            'time_hi_and_version' => $this->getTimeHiAndVersion(),
+            'clock_seq_hi_and_reserved' => $this->getClockSeqHiAndReserved(),
+            'clock_seq_low' => $this->getClockSeqLow(),
+            'node' => $this->getNode(),
+        );
+    }
+
+    /**
      * Returns the least significant 64 bits of this UUID's 128 bit value
      *
      * @return int

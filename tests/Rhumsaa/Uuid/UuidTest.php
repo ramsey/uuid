@@ -100,6 +100,20 @@ class UuidTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers Rhumsaa\Uuid\Uuid::getFields
+     */
+    public function testGetFields()
+    {
+        $uuid = Uuid::fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
+        $this->assertArrayHasKey('time_low', $uuid->getFields());
+        $this->assertArrayHasKey('time_mid', $uuid->getFields());
+        $this->assertArrayHasKey('time_hi_and_version', $uuid->getFields());
+        $this->assertArrayHasKey('clock_seq_hi_and_reserved', $uuid->getFields());
+        $this->assertArrayHasKey('clock_seq_low', $uuid->getFields());
+        $this->assertArrayHasKey('node', $uuid->getFields());
+    }
+
+    /**
      * @covers Rhumsaa\Uuid\Uuid::getLeastSignificantBits
      */
     public function testGetLeastSignificantBits()
