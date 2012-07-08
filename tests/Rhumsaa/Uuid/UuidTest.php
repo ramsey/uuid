@@ -159,6 +159,15 @@ class UuidTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers Rhumsaa\Uuid\Uuid::getUrn
+     */
+    public function testGetUrn()
+    {
+        $uuid = Uuid::fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
+        $this->assertEquals('urn:uuid:ff6f8cb0-c57d-11e1-9b21-0800200c9a66', $uuid->getUrn());
+    }
+
+    /**
      * @covers Rhumsaa\Uuid\Uuid::getVariant
      */
     public function testGetVariantForReservedNcs()

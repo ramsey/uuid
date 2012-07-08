@@ -293,6 +293,16 @@ final class Uuid
     }
 
     /**
+     * Returns the string representation of the UUID as a URN.
+     *
+     * @return string
+     */
+    public function getUrn()
+    {
+        return 'urn:uuid:' . $this->toString();
+    }
+
+    /**
      * Returns the variant number associated with this UUID.
      *
      * The variant number describes the layout of the UUID. The variant
