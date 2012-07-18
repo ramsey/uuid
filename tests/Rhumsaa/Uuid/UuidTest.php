@@ -321,7 +321,6 @@ class UuidTest extends \PHPUnit_Framework_TestCase
     /**
      * @covers Rhumsaa\Uuid\Uuid::toString
      * @covers Rhumsaa\Uuid\Uuid::__toString
-     * @covers Rhumsaa\Uuid\Uuid::digits
      */
     public function testToString()
     {

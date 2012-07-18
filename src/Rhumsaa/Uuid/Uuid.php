@@ -375,11 +375,20 @@ final class Uuid
      */
     public function toString()
     {
-        return ($this->digits($this->getMostSignificantBits() >> 32, 8) . '-' .
-            $this->digits($this->getMostSignificantBits() >> 16, 4) . '-' .
-            $this->digits($this->getMostSignificantBits(), 4) . '-' .
-            $this->digits($this->getLeastSignificantBits() >> 48, 4) . '-' .
-            $this->digits($this->getLeastSignificantBits(), 12));
+        $hex = sprintf(
+            '%016x%016x',
+            $this->getMostSignificantBits(),
+            $this->getLeastSignificantBits()
+        );
+
+        return sprintf(
+            '%s-%s-%s-%s-%s',
+            substr($hex, 0, 8),
+            substr($hex, 8, 4),
+            substr($hex, 12, 4),
+            substr($hex, 16, 4),
+            substr($hex, 20)
+        );
     }
 
     /**
@@ -520,19 +529,6 @@ final class Uuid
      */
     protected static function createUuidFromName(Uuid $ns, $name, $hashMethod = 'sha1')
     {
-    }
-
-    /**
-     * Returns $value represented by the specified number of hex $digits.
-     *
-     * @param int $value The value to process (in integer form)
-     * @param int $digits The number of hex digits to return
-     * @return string
-     */
-    protected function digits($value, $digits)
-    {
-        $hi = (1 << ($digits * 4));
-        return substr(dechex($hi | ($value & ($hi - 1))), 1);
     }
 
     /**
