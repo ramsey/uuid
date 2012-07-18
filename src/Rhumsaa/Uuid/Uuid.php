@@ -77,13 +77,13 @@ final class Uuid
      * The least significant 64 bits of this UUID's 128 bit value
      * @var int
      */
-    protected $leastSignificantBits = 0;
+    protected $lsb = 0;
 
     /**
      * The most significant 64 bits of this UUID's 128 bit value
      * @var int
      */
-    protected $mostSignificantBits = 0;
+    protected $msb = 0;
 
     /**
      * Creates a universally unique identifier (UUID) from the most significant
@@ -92,13 +92,13 @@ final class Uuid
      * Protected to prevent direct instantiation. Use static methods to create
      * UUIDs.
      *
-     * @param int $mostSignificantBits The most significant 64 bits of this UUID's 128 bit value
-     * @param int $leastSignificantBits The least significant 64 bits of this UUID's 128 bit value
+     * @param int $msb The most significant 64 bits of this UUID's 128 bit value
+     * @param int $lsb The least significant 64 bits of this UUID's 128 bit value
      */
-    protected function __construct($mostSignificantBits, $leastSignificantBits)
+    protected function __construct($msb, $lsb)
     {
-        $this->mostSignificantBits = $mostSignificantBits;
-        $this->leastSignificantBits = $leastSignificantBits;
+        $this->msb = $msb;
+        $this->lsb = $lsb;
     }
 
     /**
@@ -210,7 +210,7 @@ final class Uuid
      */
     public function getLeastSignificantBits()
     {
-        return $this->leastSignificantBits;
+        return $this->lsb;
     }
 
     /**
@@ -220,7 +220,7 @@ final class Uuid
      */
     public function getMostSignificantBits()
     {
-        return $this->mostSignificantBits;
+        return $this->msb;
     }
 
     /**
