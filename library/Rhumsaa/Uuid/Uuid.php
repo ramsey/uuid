@@ -470,10 +470,17 @@ final class Uuid
      * Generate a UUID based on the MD5 hash of a namespace identifier (which
      * is a UUID) and a name (which is a string).
      *
+     * @param Uuid|string $ns The UUID namespace in which to create the named UUID
+     * @param string $name The name to create a UUID for
      * @return Uuid
      */
     public static function uuid3($ns, $name)
     {
+        if (!($ns instanceof Uuid)) {
+            $ns = self::fromString($ns);
+        }
+
+        return self::createUuidFromName($ns, $name, 'md5');
     }
 
     /**
@@ -489,9 +496,29 @@ final class Uuid
      * Generate a UUID based on the SHA-1 hash of a namespace identifier (which
      * is a UUID) and a name (which is a string).
      *
+     * @param Uuid|string $ns The UUID namespace in which to create the named UUID
+     * @param string $name The name to create a UUID for
      * @return Uuid
      */
     public static function uuid5($ns, $name)
+    {
+        if (!($ns instanceof Uuid)) {
+            $ns = self::fromString($ns);
+        }
+
+        return self::createUuidFromName($ns, $name, 'sha1');
+    }
+
+    /**
+     * Returns a version 3 or 5 UUID based on the hash (md5 or sha1) of a
+     * namespace identifier (which is a UUID) and a name (which is a string)
+     *
+     * @param Uuid $ns The UUID namespace in which to create the named UUID
+     * @param string $name The name to create a UUID for
+     * @param string $hashMethod Either "md5" or "sha1"; defaults to "sha1"
+     * @return Uuid
+     */
+    protected static function createUuidFromName(Uuid $ns, $name, $hashMethod = 'sha1')
     {
     }
 
