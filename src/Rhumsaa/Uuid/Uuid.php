@@ -438,7 +438,7 @@ final class Uuid
     public static function uuid1($node = null, $clockSeq = null)
     {
         if ($node === null) {
-            $node = self::getMacAddress();
+            $node = self::getNodeFromSystem();
         }
 
         if ($clockSeq === null) {
@@ -453,20 +453,19 @@ final class Uuid
             + ($timeOfDay['usec'] * 10)
             + 0x01b21dd213814000;
 
-        // Get the time parts for putting together most significant bits
         $timeLow = $uuidTime & 0xffffffff;
         $timeMid = ($uuidTime >> 32) & 0xffff;
         $timeHi = ($uuidTime >> 48) & 0x0fff;
+        $clockSeqHi = ($clockSeq >> 8) & 0x3f;
+        $clockSeqLow = $clockSeq & 0xff;
+        $clockSeq = ($clockSeqHi << 8) | $clockSeqLow;
 
-        // Put together most significant bits
         $msb = ($timeLow << 32) | ($timeMid << 16) | $timeHi;
+        $lsb = ($clockSeq << 48) | $node;
 
         // Set the version number to 1
         $msb &= ~(0xf000);
         $msb |= 1 << 12;
-
-        // Put together least significant bits
-        $lsb = ($clockSeq << 48) | $node;
 
         // Set the variant to RFC 4122
         $lsb &= ~(0xc000 << 48);
@@ -489,7 +488,7 @@ final class Uuid
             $ns = self::fromString($ns);
         }
 
-        return self::createUuidFromName($ns, $name, 'md5');
+        return self::uuidFromName($ns, $name, 'md5');
     }
 
     /**
@@ -515,7 +514,7 @@ final class Uuid
             $ns = self::fromString($ns);
         }
 
-        return self::createUuidFromName($ns, $name, 'sha1');
+        return self::uuidFromName($ns, $name, 'sha1');
     }
 
     /**
@@ -527,7 +526,7 @@ final class Uuid
      * @param string $hashMethod Either "md5" or "sha1"; defaults to "sha1"
      * @return Uuid
      */
-    protected static function createUuidFromName(Uuid $ns, $name, $hashMethod = 'sha1')
+    protected static function uuidFromName(Uuid $ns, $name, $hashMethod = 'sha1')
     {
     }
 
@@ -543,7 +542,7 @@ final class Uuid
      * @todo Needs evaluation and possibly modification to ensure this works
      *       well across multiple platforms.
      */
-    protected static function getMacAddress()
+    protected static function getNodeFromSystem()
     {
         // If we're on Windows, use ipconfig; otherwise use ifconfig
         if (strtoupper(substr(php_uname('a'), 0, 3)) == 'WIN') {
@@ -552,24 +551,19 @@ final class Uuid
             $ifconfig = `ifconfig`;
         }
 
-        $mac = null;
+        $node = null;
         $pattern = '/[^:]([0-9A-Fa-f]{2}([:-])[0-9A-Fa-f]{2}(\2[0-9A-Fa-f]{2}){4})[^:]/';
         $matches = array();
 
         // Search the ifconfig output for all MAC addresses and return
         // the first one found
         if (preg_match_all($pattern, $ifconfig, $matches, PREG_PATTERN_ORDER)) {
-            $mac = $matches[1][0];
-            $mac = str_replace(':', '', $mac);
-            $mac = str_replace('-', '', $mac);
-            $mac = hexdec($mac);
+            $node = $matches[1][0];
+            $node = str_replace(':', '', $node);
+            $node = str_replace('-', '', $node);
+            $node = hexdec($node);
         }
 
-        // If we couldn't find a MAC address, generate a random 48-bit number
-        // with its eighth bit set to 1.
-        if ($mac === null) {
-        }
-
-        return $mac;
+        return $node;
     }
 }
