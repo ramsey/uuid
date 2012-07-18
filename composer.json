@@ -19,6 +19,6 @@
         "php": ">=5.3.3"
     },
     "autoload": {
-        "psr-0": {"Rhumsaa\\Uuid": "library/"}
+        "psr-0": {"Rhumsaa\\Uuid": "src/"}
     }
 }
