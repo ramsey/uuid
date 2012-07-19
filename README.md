@@ -10,9 +10,9 @@ Much inspiration for this library came from the [Java][javauuid] and
 
 ## Requirements
 
-Rhumsaa\Uuid works on 64-bit builds of PHP 5.3.3+.
+*Rhumsaa\Uuid works on **64-bit builds** of PHP 5.3.3+.*
 
-Since, this library deals with large integers, so you will need to run it on a
+This library deals with large integers, so you will need to run it on a
 64-bit system with a 64-bit compiled version of PHP.
 
 **Warning:** The [Windows binaries located on PHP.net][phpwin] are 32-bit
