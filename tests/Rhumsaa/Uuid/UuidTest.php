@@ -484,6 +484,50 @@ class UuidTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(2, $uuid->getVariant());
         $this->assertEquals(5, $uuid->getVersion());
     }
+
+    /**
+     * @covers Rhumsaa\Uuid\Uuid::compareTo
+     */
+    public function testCompareTo()
+    {
+        // $uuid1 and $uuid2 are identical
+        $uuid1 = Uuid::fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
+        $uuid2 = Uuid::fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
+
+        // The next three UUIDs are used for comparing msb and lsb in
+        // the compareTo() method
+
+        // msb are greater than $uuid4, lsb are greater than $uuid5
+        $uuid3 = Uuid::fromString('44cca71e-d13d-11e1-a959-c8bcc8a476f4');
+
+        // msb are less than in $uuid3, lsb are equal to those in $uuid3
+        $uuid4 = Uuid::fromString('44cca71e-d13d-11e2-a959-c8bcc8a476f4');
+
+        // msb are equal to those in $uuid3, lsb are less than in $uuid3
+        $uuid5 = Uuid::fromString('44cca71e-d13d-11e1-a959-c8bcc8a476f3');
+
+        $this->assertEquals(0, $uuid1->compareTo($uuid2));
+        $this->assertEquals(0, $uuid2->compareTo($uuid1));
+        $this->assertEquals(-1, $uuid3->compareTo($uuid4));
+        $this->assertEquals(1, $uuid4->compareTo($uuid3));
+        $this->assertEquals(-1, $uuid5->compareTo($uuid3));
+        $this->assertEquals(1, $uuid3->compareto($uuid5));
+    }
+
+    /**
+     * @covers Rhumsaa\Uuid\Uuid::equals
+     */
+    public function testEquals()
+    {
+        $uuid1 = Uuid::uuid5(Uuid::NAMESPACE_DNS, 'python.org');
+        $uuid2 = Uuid::uuid5(Uuid::NAMESPACE_DNS, 'python.org');
+        $uuid3 = Uuid::uuid5(Uuid::NAMESPACE_DNS, 'php.net');
+
+        $this->assertTrue($uuid1->equals($uuid2));
+        $this->assertFalse($uuid1->equals($uuid3));
+        $this->assertFalse($uuid1->equals(null));
+        $this->assertFalse($uuid1->equals(new \stdClass()));
+    }
 }
 
 /**

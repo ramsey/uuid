@@ -113,12 +113,53 @@ final class Uuid
         return $this->toString();
     }
 
+    /**
+     * Compares this UUID with the specified UUID.
+     *
+     * The first of two UUIDs is greater than the second if the most
+     * significant field in which the UUIDs differ is greater for the first
+     * UUID.
+     *
+     * @param Uuid $uuid UUID to which this UUID is to be compared
+     * @return int -1, 0 or 1 as this UUID is less than, equal to, or greater than $uuid
+     */
     public function compareTo(Uuid $uuid)
     {
+        $comparison = null;
+
+        if ($this->getMostSignificantBits() < $uuid->getMostSignificantBits()) {
+            $comparison = -1;
+        } elseif ($this->getMostSignificantBits() > $uuid->getMostSignificantBits()) {
+            $comparison = 1;
+        } elseif ($this->getLeastSignificantBits() < $uuid->getLeastSignificantBits()) {
+            $comparison = -1;
+        } elseif ($this->getLeastSignificantBits() > $uuid->getLeastSignificantBits()) {
+            $comparison = 1;
+        } else {
+            $comparison = 0;
+        }
+
+        return $comparison;
     }
 
-    public function equals(Uuid $uuid)
+    /**
+     * Compares this object to the specified object.
+     *
+     * The result is true if and only if the argument is not null, is a UUID
+     * object, has the same variant, and contains the same value, bit for bit,
+     * as this UUID.
+     *
+     * @param object $obj
+     * @returns bool
+     */
+    public function equals($obj)
     {
+        if (!($obj instanceof Uuid)) {
+            return false;
+        }
+
+        return ($this->getMostSignificantBits() == $obj->getMostSignificantBits()
+            && $this->getLeastSignificantBits() == $obj->getLeastSignificantBits());
     }
 
     /**
