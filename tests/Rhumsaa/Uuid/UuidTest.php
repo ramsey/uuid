@@ -45,6 +45,15 @@ class UuidTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers Rhumsaa\Uuid\Uuid::getBytes
+     */
+    public function testGetBytes()
+    {
+        $uuid = Uuid::fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
+        $this->assertEquals(16, strlen($uuid->getBytes()));
+    }
+
+    /**
      * @covers Rhumsaa\Uuid\Uuid::getClockSeqHiAndReserved
      */
     public function testGetClockSeqHiAndReserved()
@@ -290,7 +299,8 @@ class UuidTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetVersionForVersion2()
     {
-        $this->markTestIncomplete('This test is not implemented yet');
+        $uuid = Uuid::fromString('6fa459ea-ee8a-2ca4-894e-db77e160355e');
+        $this->assertEquals(2, $uuid->getVersion());
     }
 
     /**
@@ -396,6 +406,84 @@ class UuidTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(2, $uuid->getVariant());
         $this->assertEquals(1, $uuid->getVersion());
     }
+
+    /**
+     * The "python.org" UUID is a known entity, so we're testing that this
+     * library generates a matching UUID for the same name.
+     * @see http://docs.python.org/library/uuid.html
+     *
+     * @covers Rhumsaa\Uuid\Uuid::uuid3
+     * @covers Rhumsaa\Uuid\Uuid::uuidFromHashedName
+     */
+    public function testUuid3WithNamespaceAsUuidObject()
+    {
+        $nsUuid = Uuid::fromString(Uuid::NAMESPACE_DNS);
+        $uuid = Uuid::uuid3($nsUuid, 'python.org');
+        $this->assertEquals('6fa459ea-ee8a-3ca4-894e-db77e160355e', $uuid->toString());
+        $this->assertEquals(2, $uuid->getVariant());
+        $this->assertEquals(3, $uuid->getVersion());
+    }
+
+    /**
+     * The "python.org" UUID is a known entity, so we're testing that this
+     * library generates a matching UUID for the same name.
+     * @see http://docs.python.org/library/uuid.html
+     *
+     * @covers Rhumsaa\Uuid\Uuid::uuid3
+     * @covers Rhumsaa\Uuid\Uuid::uuidFromHashedName
+     */
+    public function testUuid3WithNamespaceAsUuidString()
+    {
+        $uuid = Uuid::uuid3(Uuid::NAMESPACE_DNS, 'python.org');
+        $this->assertEquals('6fa459ea-ee8a-3ca4-894e-db77e160355e', $uuid->toString());
+        $this->assertEquals(2, $uuid->getVariant());
+        $this->assertEquals(3, $uuid->getVersion());
+    }
+
+    /**
+     * @covers Rhumsaa\Uuid\Uuid::uuid4
+     * @covers Rhumsaa\Uuid\Uuid::uuidFromHashedName
+     */
+    public function testUuid4()
+    {
+        $uuid = Uuid::uuid4();
+        $this->assertInstanceOf('Rhumsaa\Uuid\Uuid', $uuid);
+        $this->assertEquals(2, $uuid->getVariant());
+        $this->assertEquals(4, $uuid->getVersion());
+    }
+
+    /**
+     * The "python.org" UUID is a known entity, so we're testing that this
+     * library generates a matching UUID for the same name.
+     * @see http://docs.python.org/library/uuid.html
+     *
+     * @covers Rhumsaa\Uuid\Uuid::uuid5
+     * @covers Rhumsaa\Uuid\Uuid::uuidFromHashedName
+     */
+    public function testUuid5WithNamespaceAsUuidObject()
+    {
+        $nsUuid = Uuid::fromString(Uuid::NAMESPACE_DNS);
+        $uuid = Uuid::uuid5($nsUuid, 'python.org');
+        $this->assertEquals('886313e1-3b8a-5372-9b90-0c9aee199e5d', $uuid->toString());
+        $this->assertEquals(2, $uuid->getVariant());
+        $this->assertEquals(5, $uuid->getVersion());
+    }
+
+    /**
+     * The "python.org" UUID is a known entity, so we're testing that this
+     * library generates a matching UUID for the same name.
+     * @see http://docs.python.org/library/uuid.html
+     *
+     * @covers Rhumsaa\Uuid\Uuid::uuid5
+     * @covers Rhumsaa\Uuid\Uuid::uuidFromHashedName
+     */
+    public function testUuid5WithNamespaceAsUuidString()
+    {
+        $uuid = Uuid::uuid5(Uuid::NAMESPACE_DNS, 'python.org');
+        $this->assertEquals('886313e1-3b8a-5372-9b90-0c9aee199e5d', $uuid->toString());
+        $this->assertEquals(2, $uuid->getVariant());
+        $this->assertEquals(5, $uuid->getVersion());
+    }
 }
 
 /**
@@ -426,4 +514,5 @@ function php_uname($v)
 
     return $ret;
 }
+
 

@@ -122,6 +122,25 @@ final class Uuid
     }
 
     /**
+     * Returns the UUID as a 16-byte string (containing the six integer fields
+     * in big-endian byte order)
+     *
+     * @return string
+     */
+    public function getBytes()
+    {
+        $bytes = '';
+        foreach (range(0, 63, 8) as $shift) {
+            $bytes = chr(($this->getLeastSignificantBits() >> $shift) & 0xff) . $bytes;
+        }
+        foreach (range(64, 127, 8) as $shift) {
+            $bytes = chr(($this->getMostSignificantBits() >> $shift) & 0xff) . $bytes;
+        }
+
+        return $bytes;
+    }
+
+    /**
      * Returns the high field of the clock sequence multiplexed with the variant
      * (bits 65-72 of the UUID).
      *
@@ -496,7 +515,9 @@ final class Uuid
             $ns = self::fromString($ns);
         }
 
-        return self::uuidFromName($ns, $name, 'md5');
+        $hash = md5($ns->getBytes() . $name);
+
+        return self::uuidFromHashedName($hash, 3);
     }
 
     /**
@@ -506,6 +527,17 @@ final class Uuid
      */
     public static function uuid4()
     {
+        // Generate a random 16-byte binary string
+        $bytes = '';
+        foreach (range(1, 16) as $i) {
+            $bytes = chr(mt_rand(0, 256)) . $bytes;
+        }
+
+        // When converting the bytes to hex, it turns into a 32-character
+        // hexadecimal string that looks a lot like an MD5 hash, so at this
+        // point, we can just pass it to uuidFromHashedName.
+        $hex = bin2hex($bytes);
+        return self::uuidFromHashedName($hex, 4);
     }
 
     /**
@@ -522,20 +554,40 @@ final class Uuid
             $ns = self::fromString($ns);
         }
 
-        return self::uuidFromName($ns, $name, 'sha1');
+        $hash = sha1($ns->getBytes() . $name);
+
+        return self::uuidFromHashedName($hash, 5);
     }
 
     /**
      * Returns a version 3 or 5 UUID based on the hash (md5 or sha1) of a
      * namespace identifier (which is a UUID) and a name (which is a string)
      *
-     * @param Uuid $ns The UUID namespace in which to create the named UUID
-     * @param string $name The name to create a UUID for
-     * @param string $hashMethod Either "md5" or "sha1"; defaults to "sha1"
+     * @param string $hash
      * @return Uuid
      */
-    protected static function uuidFromName(Uuid $ns, $name, $hashMethod = 'sha1')
+    protected static function uuidFromHashedName($hash, $version)
     {
+        $timeLow = hexdec(substr($hash, 0, 8)) & 0xffffffff;
+        $timeMid = hexdec(substr($hash, 8, 4)) & 0xffff;
+        $timeHi = hexdec(substr($hash, 12, 4)) & 0x0fff;
+        $clockSeqHi = hexdec(substr($hash, 16, 2)) & 0x3f;
+        $clockSeqLow = hexdec(substr($hash, 18, 2)) & 0xff;
+        $clockSeq = ($clockSeqHi << 8) | $clockSeqLow;
+        $node = hexdec(substr($hash, 20, 12));
+
+        $msb = ($timeLow << 32) | ($timeMid << 16) | $timeHi;
+        $lsb = ($clockSeq << 48) | $node;
+
+        // Set the version number
+        $msb &= ~(0xf000);
+        $msb |= $version << 12;
+
+        // Set the variant to RFC 4122
+        $lsb &= ~(0xc000 << 48);
+        $lsb |= 0x8000 << 48;
+
+        return new self($msb, $lsb);
     }
 
     /**
