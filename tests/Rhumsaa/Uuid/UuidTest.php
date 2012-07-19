@@ -89,6 +89,7 @@ class UuidTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers Rhumsaa\Uuid\Uuid::getDateTime
+     * @covers Rhumsaa\Uuid\UnsupportedOperationException
      * @expectedException Rhumsaa\Uuid\UnsupportedOperationException
      * @expectedExceptionMessage Not a time-based UUID
      */
@@ -183,6 +184,7 @@ class UuidTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers Rhumsaa\Uuid\Uuid::getTimestamp
+     * @covers Rhumsaa\Uuid\UnsupportedOperationException
      * @expectedException Rhumsaa\Uuid\UnsupportedOperationException
      * @expectedExceptionMessage Not a time-based UUID
      */
@@ -336,7 +338,28 @@ class UuidTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * covers Rhumsaa\Uuid\Uuid::uuid1
+     * This calls php_uname() in getNodeFromSystem. The first time it is
+     * called, it returns "WIN." Each additional times, it returns the
+     * normal system php_uname().
+     *
+     * See the bottom of this test file to see where we are overriding
+     * php_uname() for the purpose of this test.
+     *
+     * @covers Rhumsaa\Uuid\Uuid::uuid1
+     * @covers Rhumsaa\Uuid\Uuid::getNodeFromSystem
+     */
+    public function testUuid1CoverageForWindows()
+    {
+        $uuid = Uuid::uuid1();
+        $this->assertInstanceOf('\Rhumsaa\Uuid\Uuid', $uuid);
+        $this->assertInstanceOf('\DateTime', $uuid->getDateTime());
+        $this->assertEquals(2, $uuid->getVariant());
+        $this->assertEquals(1, $uuid->getVersion());
+    }
+
+    /**
+     * @covers Rhumsaa\Uuid\Uuid::uuid1
+     * @covers Rhumsaa\Uuid\Uuid::getNodeFromSystem
      */
     public function testUuid1()
     {
@@ -348,7 +371,7 @@ class UuidTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * covers Rhumsaa\Uuid\Uuid::uuid1
+     * @covers Rhumsaa\Uuid\Uuid::uuid1
      */
     public function testUuid1WithNodeAndClockSequence()
     {
@@ -361,5 +384,46 @@ class UuidTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(8796630719078, $uuid->getNode());
         $this->assertEquals('9669-0800200c9a66', substr($uuid->toString(), 19));
     }
+
+    /**
+     * @covers Rhumsaa\Uuid\Uuid::uuid1
+     */
+    public function testUuid1WithRandomNode()
+    {
+        $uuid = Uuid::uuid1(null, null, true);
+        $this->assertInstanceOf('\Rhumsaa\Uuid\Uuid', $uuid);
+        $this->assertInstanceOf('\DateTime', $uuid->getDateTime());
+        $this->assertEquals(2, $uuid->getVariant());
+        $this->assertEquals(1, $uuid->getVersion());
+    }
+}
+
+/**
+ * Overriding the default php_uname() for the purpose of this test so we can
+ * have full code coverage on all the lines.
+ *
+ * This should ensure that we have full code coverage whether the tests are run
+ * on Windows or a *NIX environment. This does not mean that the code has been
+ * tested for both environments if it is only tested in one environment, so
+ * the tests must still be run in both environments to ensure they pass.
+ */
+function php_uname($v)
+{
+    static $run = 0;
+
+    if ($run == 0 && strtoupper(substr(\php_uname('a'), 0, 3)) != 'WIN') {
+        // If this is the first run and the SUT is not Windows, return "Windows"
+        $ret = 'Windows';
+    } elseif ($run == 0 && strtoupper(substr(\php_uname('a'), 0, 3)) == 'WIN') {
+        // If this is the first run and the SUT is Windows, return "Darwin"
+        $ret = 'Darwin';
+    } else {
+        // If this isn't the first run, then use the system php_uname()
+        $ret = \php_uname($v);
+    }
+
+    $run++;
+
+    return $ret;
 }
 

@@ -433,12 +433,20 @@ final class Uuid
      * @param int $clockSeq A 14-bit number used to help avoid duplicates that
      *                      could arise when the clock is set backwards in time
      *                      or if the node ID changes.
+     * @param bool $useRandomNode For testing purposes only; to force method to
+     *                            generate a random node.
      * @return Uuid
      */
-    public static function uuid1($node = null, $clockSeq = null)
+    public static function uuid1($node = null, $clockSeq = null, $useRandomNode = false)
     {
-        if ($node === null) {
+        if ($node === null && !$useRandomNode) {
             $node = self::getNodeFromSystem();
+        }
+
+        // if $node is still null (couldn't get from system), randomly generate
+        // a node value, according to RFC 4122, Section 4.5
+        if ($node === null) {
+            $node = mt_rand(0, 1 << 48) | 0x010000000000;
         }
 
         if ($clockSeq === null) {
@@ -546,9 +554,9 @@ final class Uuid
     {
         // If we're on Windows, use ipconfig; otherwise use ifconfig
         if (strtoupper(substr(php_uname('a'), 0, 3)) == 'WIN') {
-            $ifconfig = `ipconfig /all`;
+            $ifconfig = `ipconfig /all 2>&1`;
         } else {
-            $ifconfig = `ifconfig`;
+            $ifconfig = `ifconfig 2>&1`;
         }
 
         $node = null;
