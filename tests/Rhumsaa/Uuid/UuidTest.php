@@ -3,6 +3,16 @@ namespace Rhumsaa\Uuid;
 
 class UuidTest extends \PHPUnit_Framework_TestCase
 {
+    protected function setUp()
+    {
+        // Skip these tests if run on a 32-bit build of PHP
+        if (PHP_INT_SIZE == 4) {
+            $this->markTestSkipped(
+                'Running tests on a 32-bit build of PHP; 64-bit build required.'
+            );
+        }
+    }
+
     /**
      * @covers Rhumsaa\Uuid\Uuid::fromString
      * @covers Rhumsaa\Uuid\Uuid::__construct

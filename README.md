@@ -8,6 +8,18 @@ A PHP 5.3+ library for generating and working with [RFC 4122][rfc4122] version
 Much inspiration for this library came from the [Java][javauuid] and
 [Python][pyuuid] UUID libraries.
 
+## Requirements
+
+Rhumsaa\Uuid works on 64-bit builds of PHP 5.3.3+.
+
+Since, this library deals with large integers, so you will need to run it on a
+64-bit system with a 64-bit compiled version of PHP.
+
+**Warning:** The [Windows binaries located on PHP.net][phpwin] are 32-bit
+versions of PHP. Even if you run them on a 64-bit version of Windows, this
+library will not work. You will need to compile PHP on Windows yourself to
+build a 64-bit version.
+
 ## Examples
 
 ```php
@@ -51,4 +63,5 @@ and install the latest version of the Uuid library into your project:
 [rfc4122]: http://tools.ietf.org/html/rfc4122
 [javauuid]: http://docs.oracle.com/javase/6/docs/api/java/util/UUID.html
 [pyuuid]: http://docs.python.org/library/uuid.html
+[phpwin]: http://windows.php.net/download/
 [packagist]: http://packagist.org/
