@@ -7,7 +7,7 @@
     </testsuites>
     <filter>
         <whitelist>
-            <directory suffix=".php">./library</directory>
+            <directory suffix=".php">./src</directory>
         </whitelist>
     </filter>
     <logging>
