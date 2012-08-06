@@ -28,58 +28,58 @@ class UuidType extends Type
     /**
      * @var string
      */
-	const NAME = 'uuid';
+    const NAME = 'uuid';
 
-	/**
-	 * @param array $fieldDeclaration
-	 * @param Doctrine\DBAL\Platforms\AbstractPlatform $platform
-	 */
-	public function getSqlDeclaration(array $fieldDeclaration, AbstractPlatform $platform)
-	{
-		return $platform->getVarcharTypeDeclarationSQL($fieldDeclaration);
-	}
+    /**
+     * @param array                                    $fieldDeclaration
+     * @param Doctrine\DBAL\Platforms\AbstractPlatform $platform
+     */
+    public function getSqlDeclaration(array $fieldDeclaration, AbstractPlatform $platform)
+    {
+        return $platform->getVarcharTypeDeclarationSQL($fieldDeclaration);
+    }
 
-	/**
-	 * @param string|null $value
-	 * @param Doctrine\DBAL\Platforms\AbstractPlatform $platform
-	 */
-	public function convertToPHPValue($value, AbstractPlatform $platform)
-	{
-		if(null === $value) {
-			return null;
-		}
+    /**
+     * @param string|null                              $value
+     * @param Doctrine\DBAL\Platforms\AbstractPlatform $platform
+     */
+    public function convertToPHPValue($value, AbstractPlatform $platform)
+    {
+        if (null === $value) {
+            return null;
+        }
 
-		try {
-    		$uuid = Uuid::fromString($value);
-		} catch (InvalidArgumentException $e) {
-    		throw ConversionException::conversionFailed($value, self::NAME);
-		}
+        try {
+            $uuid = Uuid::fromString($value);
+        } catch (InvalidArgumentException $e) {
+            throw ConversionException::conversionFailed($value, self::NAME);
+        }
 
-		return $uuid;
-	}
+        return $uuid;
+    }
 
-	/**
-	 * @param Uuid\Uuid|null $value
-	 * @param Doctrine\DBAL\Platforms\AbstractPlatform $platform
-	 */
-	public function convertToDatabaseValue($value, AbstractPlatform $platform)
-	{
-		if(empty($value)) {
-			return null;
-		}
+    /**
+     * @param Uuid\Uuid|null                           $value
+     * @param Doctrine\DBAL\Platforms\AbstractPlatform $platform
+     */
+    public function convertToDatabaseValue($value, AbstractPlatform $platform)
+    {
+        if (empty($value)) {
+            return null;
+        }
 
-		if($value instanceof Uuid) {
-			return (string) $value;
-		}
+        if ($value instanceof Uuid) {
+            return (string) $value;
+        }
 
-		throw ConversionException::conversionFailed($value, self::NAME);
-	}
+        throw ConversionException::conversionFailed($value, self::NAME);
+    }
 
-	/**
-	 * @return string
-	 */
-	public function getName()
-	{
-		return self::NAME;
-	}
+    /**
+     * @return string
+     */
+    public function getName()
+    {
+        return self::NAME;
+    }
 }
