@@ -21,6 +21,9 @@
     "require-dev": {
         "doctrine/dbal": ">=2.3"
     },
+    "suggest": {
+        "doctrine/dbal": "Allow the use of a UUID as doctrine field type."
+    },
     "autoload": {
         "psr-0": {"Rhumsaa\\Uuid": "src/"}
     },
