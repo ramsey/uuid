@@ -23,5 +23,6 @@
     },
     "autoload": {
         "psr-0": {"Rhumsaa\\Uuid": "src/"}
-    }
+    },
+    "minimum-stability": "dev"
 }
