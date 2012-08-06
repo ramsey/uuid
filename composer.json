@@ -19,7 +19,7 @@
         "php": ">=5.3.3"
     },
     "require-dev": {
-        "doctrine/dbal": ">=2"
+        "doctrine/dbal": ">=2.3"
     },
     "autoload": {
         "psr-0": {"Rhumsaa\\Uuid": "src/"}
