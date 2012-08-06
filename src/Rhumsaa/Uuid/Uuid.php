@@ -127,8 +127,8 @@ final class Uuid
      * significant field in which the UUIDs differ is greater for the first
      * UUID.
      *
-     * @param Uuid $uuid UUID to which this UUID is to be compared
-     * @return int -1, 0 or 1 as this UUID is less than, equal to, or greater than $uuid
+     * @param  Uuid $uuid UUID to which this UUID is to be compared
+     * @return int  -1, 0 or 1 as this UUID is less than, equal to, or greater than $uuid
      */
     public function compareTo(Uuid $uuid)
     {
@@ -249,6 +249,7 @@ final class Uuid
         }
 
         $unixTime = ($this->getTimestamp() - 0x01b21dd213814000) / 1e7;
+
         return new \DateTime('@' . number_format($unixTime, 0, '', ''));
     }
 
@@ -462,7 +463,7 @@ final class Uuid
      * Creates a UUID from the string standard representation as described
      * in the toString() method.
      *
-     * @param string $name A string that specifies a UUID
+     * @param  string                    $name A string that specifies a UUID
      * @return Uuid
      * @throws \InvalidArgumentException If the $name isn't a valid UUID
      */
@@ -496,7 +497,7 @@ final class Uuid
      * address. If $clockSeq is given, it is used as the sequence number;
      * otherwise a random 14-bit sequence number is chosen.
      *
-     * @param int $node A 48-bit number representing the hardware address.
+     * @param int $node     A 48-bit number representing the hardware address.
      * @param int $clockSeq A 14-bit number used to help avoid duplicates that
      *                      could arise when the clock is set backwards in time
      *                      or if the node ID changes.
@@ -553,8 +554,8 @@ final class Uuid
      * Generate a UUID based on the MD5 hash of a namespace identifier (which
      * is a UUID) and a name (which is a string).
      *
-     * @param Uuid|string $ns The UUID namespace in which to create the named UUID
-     * @param string $name The name to create a UUID for
+     * @param  Uuid|string $ns   The UUID namespace in which to create the named UUID
+     * @param  string      $name The name to create a UUID for
      * @return Uuid
      */
     public static function uuid3($ns, $name)
@@ -585,6 +586,7 @@ final class Uuid
         // hexadecimal string that looks a lot like an MD5 hash, so at this
         // point, we can just pass it to uuidFromHashedName.
         $hex = bin2hex($bytes);
+
         return self::uuidFromHashedName($hex, 4);
     }
 
@@ -592,8 +594,8 @@ final class Uuid
      * Generate a UUID based on the SHA-1 hash of a namespace identifier (which
      * is a UUID) and a name (which is a string).
      *
-     * @param Uuid|string $ns The UUID namespace in which to create the named UUID
-     * @param string $name The name to create a UUID for
+     * @param  Uuid|string $ns   The UUID namespace in which to create the named UUID
+     * @param  string      $name The name to create a UUID for
      * @return Uuid
      */
     public static function uuid5($ns, $name)
@@ -611,7 +613,7 @@ final class Uuid
      * Returns a version 3 or 5 UUID based on the hash (md5 or sha1) of a
      * namespace identifier (which is a UUID) and a name (which is a string)
      *
-     * @param string $hash
+     * @param  string $hash
      * @return Uuid
      */
     protected static function uuidFromHashedName($hash, $version)
