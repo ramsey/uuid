@@ -9,5 +9,6 @@ if (!file_exists(dirname(__DIR__) . DIRECTORY_SEPARATOR . 'composer.lock')) {
 }
 
 // Include the Composer autoloader
-include realpath(dirname(__FILE__) . '/../vendor/autoload.php');
+$loader = include realpath(dirname(__FILE__) . '/../vendor/autoload.php');
 
+$loader->add("Doctrine\Tests\DBAL", __DIR__."/../vendor/doctrine/dbal/tests");

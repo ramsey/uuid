@@ -3,6 +3,16 @@ namespace Rhumsaa\Uuid;
 
 class UuidTest extends \PHPUnit_Framework_TestCase
 {
+    protected function setUp()
+    {
+        // Skip these tests if run on a 32-bit build of PHP
+        if (PHP_INT_SIZE == 4) {
+            $this->markTestSkipped(
+                'Running tests on a 32-bit build of PHP; 64-bit build required.'
+            );
+        }
+    }
+
     /**
      * @covers Rhumsaa\Uuid\Uuid::fromString
      * @covers Rhumsaa\Uuid\Uuid::__construct
@@ -497,10 +507,10 @@ class UuidTest extends \PHPUnit_Framework_TestCase
         // The next three UUIDs are used for comparing msb and lsb in
         // the compareTo() method
 
-        // msb are greater than $uuid4, lsb are greater than $uuid5
+        // msb are less than $uuid4, lsb are greater than $uuid5
         $uuid3 = Uuid::fromString('44cca71e-d13d-11e1-a959-c8bcc8a476f4');
 
-        // msb are less than in $uuid3, lsb are equal to those in $uuid3
+        // msb are greater than $uuid3, lsb are equal to those in $uuid3
         $uuid4 = Uuid::fromString('44cca71e-d13d-11e2-a959-c8bcc8a476f4');
 
         // msb are equal to those in $uuid3, lsb are less than in $uuid3

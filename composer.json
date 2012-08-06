@@ -1,6 +1,6 @@
 {
     "name": "rhumsaa/uuid",
-    "description": "A PHP 5.3+ library for generating RFC 4122 version 1, 3, 4, and 5 universally unique identifiers (UUID).",
+    "description": "A PHP 5.3+ library for generating RFC 4122 version 1, 3, 4, and 5 universally unique identifiers (UUID). Requires a 64-bit build of PHP.",
     "type": "library",
     "keywords": ["uuid", "identifier", "guid"],
     "homepage": "https://github.com/ramsey/uuid",
@@ -18,7 +18,14 @@
     "require": {
         "php": ">=5.3.3"
     },
+    "require-dev": {
+        "doctrine/dbal": ">=2.3"
+    },
+    "suggest": {
+        "doctrine/dbal": "Allow the use of a UUID as doctrine field type."
+    },
     "autoload": {
         "psr-0": {"Rhumsaa\\Uuid": "src/"}
-    }
+    },
+    "minimum-stability": "dev"
 }

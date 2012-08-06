@@ -8,4 +8,4 @@ before_script:
   - curl -s http://getcomposer.org/installer | php -- --quiet
   - php composer.phar install
 
-script: phpunit -c phpunit.dist.xml
+script: phpunit -c phpunit.xml.dist
