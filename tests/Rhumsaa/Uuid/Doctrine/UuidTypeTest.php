@@ -28,6 +28,9 @@ class UuidTypeTest extends PHPUnit_Framework_TestCase
         $this->type = Type::getType('uuid');
     }
 
+    /**
+     * @covers Rhumsaa\Uuid\Doctrine\UuidType::convertToDatabaseValue
+     */
     public function testUuidConvertsToDatabaseValue()
     {
         $uuid = Uuid::fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
@@ -38,6 +41,9 @@ class UuidTypeTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($expected, $actual);
     }
 
+    /**
+     * @covers Rhumsaa\Uuid\Doctrine\UuidType::convertToPHPValue
+     */
     public function testUuidConvertsToPHPValue()
     {
         $uuid = $this->type->convertToPHPValue('ff6f8cb0-c57d-11e1-9b21-0800200c9a66', $this->platform);
@@ -45,12 +51,18 @@ class UuidTypeTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('ff6f8cb0-c57d-11e1-9b21-0800200c9a66', $uuid->toString());
     }
 
+    /**
+     * @covers Rhumsaa\Uuid\Doctrine\UuidType::convertToPHPValue
+     */
     public function testInvalidUuidConversion()
     {
         $this->setExpectedException('Doctrine\DBAL\Types\ConversionException');
         $this->type->convertToPHPValue('abcdefg', $this->platform);
     }
 
+    /**
+     * @covers Rhumsaa\Uuid\Doctrine\UuidType::convertToPHPValue
+     */
     public function testNullConversion()
     {
         $this->assertNull($this->type->convertToPHPValue(null, $this->platform));
