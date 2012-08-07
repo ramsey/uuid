@@ -54,7 +54,7 @@ class UuidTypeTest extends PHPUnit_Framework_TestCase
     /**
      * @covers Rhumsaa\Uuid\Doctrine\UuidType::convertToPHPValue
      */
-    public function testInvalidUuidConversion()
+    public function testInvalidUuidConversionForPHPValue()
     {
         $this->setExpectedException('Doctrine\DBAL\Types\ConversionException');
         $this->type->convertToPHPValue('abcdefg', $this->platform);
@@ -63,7 +63,7 @@ class UuidTypeTest extends PHPUnit_Framework_TestCase
     /**
      * @covers Rhumsaa\Uuid\Doctrine\UuidType::convertToPHPValue
      */
-    public function testNullConversion()
+    public function testNullConversionForPHPValue()
     {
         $this->assertNull($this->type->convertToPHPValue(null, $this->platform));
     }
