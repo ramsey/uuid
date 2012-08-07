@@ -36,7 +36,7 @@ class UuidType extends Type
      */
     public function getSqlDeclaration(array $fieldDeclaration, AbstractPlatform $platform)
     {
-        return $platform->getGuidTypeDeclartionSQL($fieldDeclaration);
+        return $platform->getGuidTypeDeclarationSQL($fieldDeclaration);
     }
 
     /**

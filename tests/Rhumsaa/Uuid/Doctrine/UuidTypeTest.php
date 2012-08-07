@@ -92,4 +92,12 @@ class UuidTypeTest extends PHPUnit_Framework_TestCase
     {
         $this->assertEquals('uuid', $this->type->getName());
     }
+
+    /**
+     * @covers Rhumsaa\Uuid\Doctrine\UuidType::getSqlDeclaration
+     */
+    public function testGetGuidTypeDeclarationSQL()
+    {
+        $this->assertEquals('DUMMYVARCHAR()', $this->type->getSqlDeclaration(array('length' => 36), $this->platform));
+    }
 }
