@@ -42,6 +42,23 @@ class UuidTypeTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers Rhumsaa\Uuid\Doctrine\UuidType::convertToDatabaseValue
+     */
+    public function testInvalidUuidConversionForDatabaseValue()
+    {
+        $this->setExpectedException('Doctrine\DBAL\Types\ConversionException');
+        $this->type->convertToDatabaseValue('abcdefg', $this->platform);
+    }
+
+    /**
+     * @covers Rhumsaa\Uuid\Doctrine\UuidType::convertToDatabaseValue
+     */
+    public function testNullConversionForDatabaseValue()
+    {
+        $this->assertNull($this->type->convertToDatabaseValue(null, $this->platform));
+    }
+
+    /**
      * @covers Rhumsaa\Uuid\Doctrine\UuidType::convertToPHPValue
      */
     public function testUuidConvertsToPHPValue()
