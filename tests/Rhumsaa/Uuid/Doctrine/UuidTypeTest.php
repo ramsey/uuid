@@ -84,4 +84,12 @@ class UuidTypeTest extends PHPUnit_Framework_TestCase
     {
         $this->assertNull($this->type->convertToPHPValue(null, $this->platform));
     }
+
+    /**
+     * @covers Rhumsaa\Uuid\Doctrine\UuidType::getName
+     */
+    public function testGetName()
+    {
+        $this->assertEquals('uuid', $this->type->getName());
+    }
 }
