@@ -86,7 +86,7 @@ Example:
 
     $uuid1 = Uuid::fromString('44cca71e-d13d-11e1-a959-c8bcc8a476f4');
     $uuid2 = Uuid::fromString('44cca71e-d13d-11e2-a959-c8bcc8a476f4');
-    switch ($uuid1->$compareTo($uuid2)) {
+    switch ($uuid1->compareTo($uuid2)) {
         case -1:
             echo "$uuid1 is less than $uuid2";
             break;
