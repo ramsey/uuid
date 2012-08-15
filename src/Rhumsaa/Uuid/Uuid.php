@@ -157,7 +157,7 @@ final class Uuid
      * as this UUID.
      *
      * @param object $obj
-     * @returns bool
+     * @return bool
      */
     public function equals($obj)
     {
