@@ -17,7 +17,7 @@ namespace Rhumsaa\Uuid;
  * @see http://tools.ietf.org/html/rfc4122
  * @see http://en.wikipedia.org/wiki/Universally_unique_identifier
  */
-final class Uuid
+class Uuid
 {
     /**
      * When this namespace is specified, the name string is a fully-qualified domain name.
