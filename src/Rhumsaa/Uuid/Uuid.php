@@ -200,6 +200,17 @@ class Uuid
     }
 
     /**
+     * Returns the high field of the clock sequence multiplexed with the variant
+     * (bits 65-72 of the UUID).
+     *
+     * @return string
+     */
+    public function getClockSeqHiAndReservedHex()
+    {
+        return sprintf('%02x', $this->getClockSeqHiAndReserved());
+    }
+
+    /**
      * Returns the low field of the clock sequence (bits 73-80 of the UUID).
      *
      * @return int
@@ -207,6 +218,16 @@ class Uuid
     public function getClockSeqLow()
     {
         return ($this->getLeastSignificantBits() >> 48) & 0xff;
+    }
+
+    /**
+     * Returns the low field of the clock sequence (bits 73-80 of the UUID).
+     *
+     * @return string
+     */
+    public function getClockSeqLowHex()
+    {
+        return sprintf('%02x', $this->getClockSeqLow());
     }
 
     /**
@@ -229,6 +250,16 @@ class Uuid
     {
         return (($this->getClockSeqHiAndReserved() & 0x3f) << 8)
             | $this->getClockSeqLow();
+    }
+
+    /**
+     * Returns the clock sequence value associated with this UUID.
+     *
+     * @return string
+     */
+    public function getClockSequenceHex()
+    {
+        return sprintf('%04x', $this->getClockSequence());
     }
 
     /**
@@ -267,6 +298,24 @@ class Uuid
             'clock_seq_hi_and_reserved' => $this->getClockSeqHiAndReserved(),
             'clock_seq_low' => $this->getClockSeqLow(),
             'node' => $this->getNode(),
+        );
+    }
+
+    /**
+     * Returns an array of the fields of this UUID, with keys named according
+     * to the RFC 4122 names for the fields.
+     *
+     * @return array
+     */
+    public function getFieldsHex()
+    {
+        return array(
+            'time_low' => $this->getTimeLowHex(),
+            'time_mid' => $this->getTimeMidHex(),
+            'time_hi_and_version' => $this->getTimeHiAndVersionHex(),
+            'clock_seq_hi_and_reserved' => $this->getClockSeqHiAndReservedHex(),
+            'clock_seq_low' => $this->getClockSeqLowHex(),
+            'node' => $this->getNodeHex(),
         );
     }
 
@@ -320,6 +369,16 @@ class Uuid
     }
 
     /**
+     * Returns the node value associated with this UUID
+     *
+     * @return string
+     */
+    public function getNodeHex()
+    {
+        return sprintf('%012x', $this->getNode());
+    }
+
+    /**
      * Returns the high field of the timestamp multiplexed with the version
      * number (bits 49-64 of the UUID).
      *
@@ -328,6 +387,17 @@ class Uuid
     public function getTimeHiAndVersion()
     {
         return $this->getMostSignificantBits() & 0xffff;
+    }
+
+    /**
+     * Returns the high field of the timestamp multiplexed with the version
+     * number (bits 49-64 of the UUID).
+     *
+     * @return string
+     */
+    public function getTimeHiAndVersionHex()
+    {
+        return sprintf('%04x', $this->getTimeHiAndVersion());
     }
 
     /**
@@ -341,6 +411,16 @@ class Uuid
     }
 
     /**
+     * Returns the low field of the timestamp (the first 32 bits of the UUID).
+     *
+     * @return string
+     */
+    public function getTimeLowHex()
+    {
+        return sprintf('%08x', $this->getTimeLow());
+    }
+
+    /**
      * Returns the middle field of the timestamp (bits 33-48 of the UUID).
      *
      * @return int
@@ -348,6 +428,16 @@ class Uuid
     public function getTimeMid()
     {
         return ($this->getMostSignificantBits() >> 16) & 0xffff;
+    }
+
+    /**
+     * Returns the middle field of the timestamp (bits 33-48 of the UUID).
+     *
+     * @return string
+     */
+    public function getTimeMidHex()
+    {
+        return sprintf('%04x', $this->getTimeMid());
     }
 
     /**
@@ -375,6 +465,21 @@ class Uuid
         return ($this->getTimeHiAndVersion() & 0x0fff) << 48
             | ($this->getTimeMid() & 0xffff) << 32
             | $this->getTimeLow();
+    }
+
+    /**
+     * The timestamp value associated with this UUID
+     *
+     * @return string
+     * @throws UnsupportedOperationException If this UUID is not a version 1 UUID
+     */
+    public function getTimestampHex()
+    {
+        if ($this->getVersion() != 1) {
+            throw new UnsupportedOperationException('Not a time-based UUID');
+        }
+
+        return sprintf('%015x', $this->getTimestamp());
     }
 
     /**

@@ -73,6 +73,15 @@ class UuidTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers Rhumsaa\Uuid\Uuid::getClockSeqHiAndReservedHex
+     */
+    public function testGetClockSeqHiAndReservedHex()
+    {
+        $uuid = Uuid::fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
+        $this->assertEquals('9b', $uuid->getClockSeqHiAndReservedHex());
+    }
+
+    /**
      * @covers Rhumsaa\Uuid\Uuid::getClockSeqLow
      */
     public function testGetClockSeqLow()
@@ -82,12 +91,30 @@ class UuidTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers Rhumsaa\Uuid\Uuid::getClockSeqLowHex
+     */
+    public function testGetClockSeqLowHex()
+    {
+        $uuid = Uuid::fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
+        $this->assertEquals('21', $uuid->getClockSeqLowHex());
+    }
+
+    /**
      * @covers Rhumsaa\Uuid\Uuid::getClockSequence
      */
     public function testGetClockSequence()
     {
         $uuid = Uuid::fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
         $this->assertEquals(6945, $uuid->getClockSequence());
+    }
+
+    /**
+     * @covers Rhumsaa\Uuid\Uuid::getClockSequenceHex
+     */
+    public function testGetClockSequenceHex()
+    {
+        $uuid = Uuid::fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
+        $this->assertEquals('1b21', $uuid->getClockSequenceHex());
     }
 
     /**
@@ -124,13 +151,37 @@ class UuidTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetFields()
     {
+        $fields = array(
+            'time_low' => 4285500592,
+            'time_mid' => 50557,
+            'time_hi_and_version' => 4577,
+            'clock_seq_hi_and_reserved' => 155,
+            'clock_seq_low' => 33,
+            'node' => 8796630719078,
+        );
+
         $uuid = Uuid::fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
-        $this->assertArrayHasKey('time_low', $uuid->getFields());
-        $this->assertArrayHasKey('time_mid', $uuid->getFields());
-        $this->assertArrayHasKey('time_hi_and_version', $uuid->getFields());
-        $this->assertArrayHasKey('clock_seq_hi_and_reserved', $uuid->getFields());
-        $this->assertArrayHasKey('clock_seq_low', $uuid->getFields());
-        $this->assertArrayHasKey('node', $uuid->getFields());
+
+        $this->assertEquals($fields, $uuid->getFields());
+    }
+
+    /**
+     * @covers Rhumsaa\Uuid\Uuid::getFieldsHex
+     */
+    public function testGetFieldsHex()
+    {
+        $fields = array(
+            'time_low' => 'ff6f8cb0',
+            'time_mid' => 'c57d',
+            'time_hi_and_version' => '11e1',
+            'clock_seq_hi_and_reserved' => '9b',
+            'clock_seq_low' => '21',
+            'node' => '0800200c9a66',
+        );
+
+        $uuid = Uuid::fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
+
+        $this->assertEquals($fields, $uuid->getFieldsHex());
     }
 
     /**
@@ -161,12 +212,30 @@ class UuidTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers Rhumsaa\Uuid\Uuid::getNodeHex
+     */
+    public function testGetNodeHex()
+    {
+        $uuid = Uuid::fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
+        $this->assertEquals('0800200c9a66', $uuid->getNodeHex());
+    }
+
+    /**
      * @covers Rhumsaa\Uuid\Uuid::getTimeHiAndVersion
      */
     public function testGetTimeHiAndVersion()
     {
         $uuid = Uuid::fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
         $this->assertEquals(4577, $uuid->getTimeHiAndVersion());
+    }
+
+    /**
+     * @covers Rhumsaa\Uuid\Uuid::getTimeHiAndVersionHex
+     */
+    public function testGetTimeHiAndVersionHex()
+    {
+        $uuid = Uuid::fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
+        $this->assertEquals('11e1', $uuid->getTimeHiAndVersionHex());
     }
 
     /**
@@ -179,12 +248,30 @@ class UuidTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers Rhumsaa\Uuid\Uuid::getTimeLowHex
+     */
+    public function testGetTimeLowHex()
+    {
+        $uuid = Uuid::fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
+        $this->assertEquals('ff6f8cb0', $uuid->getTimeLowHex());
+    }
+
+    /**
      * @covers Rhumsaa\Uuid\Uuid::getTimeMid
      */
     public function testGetTimeMid()
     {
         $uuid = Uuid::fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
         $this->assertEquals(50557, $uuid->getTimeMid());
+    }
+
+    /**
+     * @covers Rhumsaa\Uuid\Uuid::getTimeMidHex
+     */
+    public function testGetTimeMidHex()
+    {
+        $uuid = Uuid::fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
+        $this->assertEquals('c57d', $uuid->getTimeMidHex());
     }
 
     /**
@@ -202,6 +289,20 @@ class UuidTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers Rhumsaa\Uuid\Uuid::getTimestampHex
+     */
+    public function testGetTimestampHex()
+    {
+        // Check for a recent date
+        $uuid = Uuid::fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
+        $this->assertEquals('1e1c57dff6f8cb0', $uuid->getTimestampHex());
+
+        // Check for an old date
+        $uuid = Uuid::fromString('0901e600-0154-1000-9b21-0800200c9a66');
+        $this->assertEquals('00001540901e600', $uuid->getTimestampHex());
+    }
+
+    /**
      * @covers Rhumsaa\Uuid\Uuid::getTimestamp
      * @covers Rhumsaa\Uuid\UnsupportedOperationException
      * @expectedException Rhumsaa\Uuid\UnsupportedOperationException
@@ -212,6 +313,19 @@ class UuidTest extends \PHPUnit_Framework_TestCase
         // Using a version 4 UUID to test
         $uuid = Uuid::fromString('bf17b594-41f2-474f-bf70-4c90220f75de');
         $ts = $uuid->getTimestamp();
+    }
+
+    /**
+     * @covers Rhumsaa\Uuid\Uuid::getTimestampHex
+     * @covers Rhumsaa\Uuid\UnsupportedOperationException
+     * @expectedException Rhumsaa\Uuid\UnsupportedOperationException
+     * @expectedExceptionMessage Not a time-based UUID
+     */
+    public function testGetTimestampHexFromNonVersion1Uuid()
+    {
+        // Using a version 4 UUID to test
+        $uuid = Uuid::fromString('bf17b594-41f2-474f-bf70-4c90220f75de');
+        $ts = $uuid->getTimestampHex();
     }
 
     /**
