@@ -195,12 +195,30 @@ class UuidTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers Rhumsaa\Uuid\Uuid::getLeastSignificantBitsHex
+     */
+    public function testGetLeastSignificantBitsHex()
+    {
+        $uuid = Uuid::fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
+        $this->assertEquals('9b210800200c9a66', $uuid->getLeastSignificantBitsHex());
+    }
+
+    /**
      * @covers Rhumsaa\Uuid\Uuid::getMostSignificantBits
      */
     public function testGetMostSignificantBits()
     {
         $uuid = Uuid::fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
         $this->assertEquals(-40659180767604255, $uuid->getMostSignificantBits());
+    }
+
+    /**
+     * @covers Rhumsaa\Uuid\Uuid::getMostSignificantBitsHex
+     */
+    public function testGetMostSignificantBitsHex()
+    {
+        $uuid = Uuid::fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
+        $this->assertEquals('ff6f8cb0c57d11e1', $uuid->getMostSignificantBitsHex());
     }
 
     /**

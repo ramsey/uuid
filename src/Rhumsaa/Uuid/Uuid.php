@@ -330,6 +330,16 @@ class Uuid
     }
 
     /**
+     * Returns the least significant 64 bits of this UUID's 128 bit value
+     *
+     * @return int
+     */
+    public function getLeastSignificantBitsHex()
+    {
+        return sprintf('%016x', $this->lsb);
+    }
+
+    /**
      * Returns the most significant 64 bits of this UUID's 128 bit value
      *
      * @return int
@@ -337,6 +347,16 @@ class Uuid
     public function getMostSignificantBits()
     {
         return $this->msb;
+    }
+
+    /**
+     * Returns the most significant 64 bits of this UUID's 128 bit value
+     *
+     * @return string
+     */
+    public function getMostSignificantBitsHex()
+    {
+        return sprintf('%016x', $this->msb);
     }
 
     /**
