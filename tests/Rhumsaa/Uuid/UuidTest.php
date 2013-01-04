@@ -61,6 +61,7 @@ class UuidTest extends \PHPUnit_Framework_TestCase
     {
         $uuid = Uuid::fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
         $this->assertEquals(16, strlen($uuid->getBytes()));
+        $this->assertEquals('/2+MsMV9EeGbIQgAIAyaZg==', base64_encode($uuid->getBytes()));
     }
 
     /**
