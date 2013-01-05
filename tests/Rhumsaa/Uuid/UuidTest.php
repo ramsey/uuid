@@ -255,7 +255,19 @@ class UuidTest extends TestCase
     public function testGetLeastSignificantBits()
     {
         $uuid = Uuid::fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
-        $this->assertEquals(-7268519526968550810, $uuid->getLeastSignificantBits());
+        $this->assertInstanceOf('Moontoast\Math\BigNumber', $uuid->getLeastSignificantBits());
+        $this->assertEquals('11178224546741000806', $uuid->getLeastSignificantBits()->getValue());
+    }
+
+    /**
+     * @covers Rhumsaa\Uuid\Uuid::getLeastSignificantBits
+     * @expectedException BadMethodCallException
+     */
+    public function testGetLeastSignificantBitsException()
+    {
+        Uuid::$forceNoBigNumber = true;
+        $uuid = Uuid::fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
+        $bn = $uuid->getLeastSignificantBits();
     }
 
     /**
@@ -273,7 +285,19 @@ class UuidTest extends TestCase
     public function testGetMostSignificantBits()
     {
         $uuid = Uuid::fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
-        $this->assertEquals(-40659180767604255, $uuid->getMostSignificantBits());
+        $this->assertInstanceOf('Moontoast\Math\BigNumber', $uuid->getMostSignificantBits());
+        $this->assertEquals('18406084892941947361', $uuid->getMostSignificantBits()->getValue());
+    }
+
+    /**
+     * @covers Rhumsaa\Uuid\Uuid::getMostSignificantBits
+     * @expectedException BadMethodCallException
+     */
+    public function testGetMostSignificantBitsException()
+    {
+        Uuid::$forceNoBigNumber = true;
+        $uuid = Uuid::fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
+        $bn = $uuid->getMostSignificantBits();
     }
 
     /**

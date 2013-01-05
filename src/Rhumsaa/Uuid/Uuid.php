@@ -372,17 +372,26 @@ class Uuid
     /**
      * Returns the least significant 64 bits of this UUID's 128 bit value
      *
-     * @return int
+     * @return \Moontoast\Math\BigNumber
+     * @throws \BadMethodCallException if Moontoast\Math\BigNumber is not present
      */
     public function getLeastSignificantBits()
     {
-        return hexdec($this->getLeastSignificantBitsHex());
+        if (!self::hasBigNumber()) {
+            throw new \BadMethodCallException(
+                'Cannot call ' . __METHOD__ . ' without support for large '
+                . 'integers, since least significant bits is an unsigned '
+                . '64-bit integer; Moontoast\Math\BigNumber is required'
+            );
+        }
+
+        return new \Moontoast\Math\BigNumber($this->getLeastSignificantBitsHex(), null, 16);
     }
 
     /**
      * Returns the least significant 64 bits of this UUID's 128 bit value
      *
-     * @return int
+     * @return string
      */
     public function getLeastSignificantBitsHex()
     {
@@ -397,11 +406,20 @@ class Uuid
     /**
      * Returns the most significant 64 bits of this UUID's 128 bit value
      *
-     * @return int
+     * @return \Moontoast\Math\BigNumber
+     * @throws \BadMethodCallException if Moontoast\Math\BigNumber is not present
      */
     public function getMostSignificantBits()
     {
-        return hexdec($this->getMostSignificantBitsHex());
+        if (!self::hasBigNumber()) {
+            throw new \BadMethodCallException(
+                'Cannot call ' . __METHOD__ . ' without support for large '
+                . 'integers, since most significant bits is an unsigned '
+                . '64-bit integer; Moontoast\Math\BigNumber is required'
+            );
+        }
+
+        return new \Moontoast\Math\BigNumber($this->getMostSignificantBitsHex(), null, 16);
     }
 
     /**
