@@ -89,6 +89,13 @@ class Uuid
     public static $forceNoBigNumber = false;
 
     /**
+     * Sets time of day to a static, known value (for testing)
+     *
+     * @var array
+     */
+    public static $timeOfDayTest;
+
+    /**
      * System override to ignore generating node from hardware (for testing)
      *
      * @var bool
@@ -290,6 +297,7 @@ class Uuid
      *
      * @return \DateTime
      * @throws UnsupportedOperationException If this UUID is not a version 1 UUID
+     * @throws \BadMethodCallException if called on a 32-bit system and Moontoast\Math\BigNumber is not present
      */
     public function getDateTime()
     {
@@ -297,8 +305,31 @@ class Uuid
             throw new UnsupportedOperationException('Not a time-based UUID');
         }
 
-        $unixTime = ($this->getTimestamp() - 0x01b21dd213814000) / 1e7;
-        return new \DateTime('@' . number_format($unixTime, 0, '', ''));
+
+        if (self::is64BitSystem()) {
+
+            $unixTime = ($this->getTimestamp() - 0x01b21dd213814000) / 1e7;
+            $unixTime = number_format($unixTime, 0, '', '');
+
+        } elseif (self::hasBigNumber()) {
+
+            $ts = new \Moontoast\Math\BigNumber($this->getTimestampHex(), null, 16);
+            $ts->subtract('122192928000000000');
+            $ts->divide('10000000.0', 20);
+            $ts->round();
+            $unixTime = $ts->getValue();
+
+        } else {
+
+            throw new \BadMethodCallException(
+                'When calling ' . __METHOD__ . ' on a 32-bit system, '
+                . 'Moontoast\Math\BigNumber must be present in order '
+                . 'to extract DateTime from version 1 UUIDs'
+            );
+
+        }
+
+        return new \DateTime("@{$unixTime}");
     }
 
     /**
@@ -538,9 +569,7 @@ class Uuid
             );
         }
 
-        return ($this->getTimeHiAndVersion() & 0x0fff) << 48
-            | ($this->getTimeMid() & 0xffff) << 32
-            | $this->getTimeLow();
+        return hexdec($this->getTimestampHex());
     }
 
     /**
@@ -550,7 +579,12 @@ class Uuid
      */
     public function getTimestampHex()
     {
-        return sprintf('%015x', $this->getTimestamp());
+        return sprintf(
+            '%03x%04s%08s',
+            ($this->getTimeHiAndVersion() & 0x0fff),
+            $this->fields['time_mid'],
+            $this->fields['time_low']
+        );
     }
 
     /**
@@ -698,13 +732,15 @@ class Uuid
 
         // Create a 60-bit time value as a count of 100-nanosecond intervals
         // since 00:00:00.00, 15 October 1582
-        $timeOfDay = gettimeofday();
-        $uuidTime = ($timeOfDay['sec'] * 10000000)
-            + ($timeOfDay['usec'] * 10)
-            + 0x01b21dd213814000;
+        if (self::$timeOfDayTest === null) {
+            $timeOfDay = gettimeofday();
+        } else {
+            $timeOfDay = self::$timeOfDayTest;
+        }
+        $uuidTime = self::calculateUuidTime($timeOfDay['sec'], $timeOfDay['usec']);
 
         // Set the version number to 1
-        $timeHi = ($uuidTime >> 48) & 0x0fff;
+        $timeHi = hexdec($uuidTime['hi']) & 0x0fff;
         $timeHi &= ~(0xf000);
         $timeHi |= 1 << 12;
 
@@ -714,8 +750,8 @@ class Uuid
         $clockSeqHi |= 0x80;
 
         $fields = array(
-            'time_low' => sprintf('%08x', $uuidTime & 0xffffffff),
-            'time_mid' => sprintf('%04x', ($uuidTime >> 32) & 0xffff),
+            'time_low' => $uuidTime['low'],
+            'time_mid' => $uuidTime['mid'],
             'time_hi_and_version' => sprintf('%04x', $timeHi),
             'clock_seq_hi_and_reserved' => sprintf('%02x', $clockSeqHi),
             'clock_seq_low' => sprintf('%02x', $clockSeq & 0xff),
@@ -781,6 +817,58 @@ class Uuid
         $hash = sha1($ns->getBytes() . $name);
 
         return self::uuidFromHashedName($hash, 5);
+    }
+
+    /**
+     * Calculates the UUID time fields from a UNIX timestamp
+     *
+     * UUID time is a 60-bit time value as a count of 100-nanosecond intervals
+     * since 00:00:00.00, 15 October 1582.
+     *
+     * @return array
+     * @throws \BadMethodCallException if called on a 32-bit system and Moontoast\Math\BigNumber is not present
+     */
+    protected static function calculateUuidTime($sec, $usec)
+    {
+        if (self::is64BitSystem()) {
+
+            $uuidTime = ($sec * 10000000) + ($usec * 10) + 0x01b21dd213814000;
+
+            return array(
+                'low' => sprintf('%08x', $uuidTime & 0xffffffff),
+                'mid' => sprintf('%04x', ($uuidTime >> 32) & 0xffff),
+                'hi' => sprintf('%04x', ($uuidTime >> 48) & 0x0fff),
+            );
+        }
+
+        if (self::hasBigNumber()) {
+
+            $uuidTime = new \Moontoast\Math\BigNumber('0');
+
+            $sec = new \Moontoast\Math\BigNumber($sec);
+            $sec->multiply('10000000');
+
+            $usec = new \Moontoast\Math\BigNumber($usec);
+            $usec->multiply('10');
+
+            $uuidTime->add($sec)
+                ->add($usec)
+                ->add('122192928000000000');
+
+            $uuidTimeHex = sprintf('%016s', $uuidTime->convertToBase(16));
+
+            return array(
+                'low' => substr($uuidTimeHex, 8),
+                'mid' => substr($uuidTimeHex, 4, 4),
+                'hi' => substr($uuidTimeHex, 0, 4),
+            );
+        }
+
+        throw new \BadMethodCallException(
+            'When calling ' . __METHOD__ . ' on a 32-bit system, '
+            . 'Moontoast\Math\BigNumber must be present in order '
+            . 'to generate version 1 UUIDs'
+        );
     }
 
     /**
