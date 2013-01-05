@@ -108,13 +108,6 @@ class Uuid
      */
     protected function __construct(array $fields)
     {
-        if (PHP_INT_SIZE == 4) {
-            throw new \OverflowException(
-                'Attempting to create a UUID on a 32-bit build of PHP. This '
-                . 'library requires a 64-bit build of PHP.'
-            );
-        }
-
         $this->fields = $fields;
     }
 
