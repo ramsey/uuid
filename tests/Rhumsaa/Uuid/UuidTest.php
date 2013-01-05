@@ -1,7 +1,9 @@
 <?php
 namespace Rhumsaa\Uuid;
 
-class UuidTest extends \PHPUnit_Framework_TestCase
+require 'TestCase.php';
+
+class UuidTest extends TestCase
 {
     protected function setUp()
     {
@@ -154,6 +156,8 @@ class UuidTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetFields()
     {
+        $this->skip64BitTest();
+
         $fields = array(
             'time_low' => 4285500592,
             'time_mid' => 50557,
@@ -228,6 +232,8 @@ class UuidTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetNode()
     {
+        $this->skip64BitTest();
+
         $uuid = Uuid::fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
         $this->assertEquals(8796630719078, $uuid->getNode());
     }
@@ -264,6 +270,8 @@ class UuidTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetTimeLow()
     {
+        $this->skip64BitTest();
+
         $uuid = Uuid::fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
         $this->assertEquals(4285500592, $uuid->getTimeLow());
     }
@@ -300,6 +308,8 @@ class UuidTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetTimestamp()
     {
+        $this->skip64BitTest();
+
         // Check for a recent date
         $uuid = Uuid::fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
         $this->assertEquals(135606608744910000, $uuid->getTimestamp());
@@ -530,6 +540,8 @@ class UuidTest extends \PHPUnit_Framework_TestCase
      */
     public function testUuid1WithNodeAndClockSequence()
     {
+        $this->skip64BitTest();
+
         $uuid = Uuid::uuid1(0x0800200c9a66, 0x1669);
         $this->assertInstanceOf('\Rhumsaa\Uuid\Uuid', $uuid);
         $this->assertInstanceOf('\DateTime', $uuid->getDateTime());
