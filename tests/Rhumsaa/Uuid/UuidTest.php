@@ -1,9 +1,7 @@
 <?php
 namespace Rhumsaa\Uuid;
 
-require 'TestCase.php';
-
-class UuidTest extends TestCase
+class UuidTest extends \PHPUnit_Framework_TestCase
 {
     protected function setUp()
     {
@@ -11,6 +9,18 @@ class UuidTest extends TestCase
         Uuid::$force32Bit = false;
         Uuid::$forceNoBigNumber = false;
         Uuid::$ignoreSystemNode = false;
+    }
+
+    /**
+     * If the system is 32-bit, this will mark a test as skipped
+     */
+    protected function skip64BitTest()
+    {
+        if (PHP_INT_SIZE == 4) {
+            $this->markTestSkipped(
+                'Skipping test that can run only on a 64-bit build of PHP.'
+            );
+        }
     }
 
     /**
