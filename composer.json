@@ -23,10 +23,12 @@
         "php": ">=5.3.3"
     },
     "require-dev": {
-        "doctrine/dbal": ">=2.3"
+        "doctrine/dbal": ">=2.3",
+        "moontoast/math": "dev-master"
     },
     "suggest": {
-        "doctrine/dbal": "Allow the use of a UUID as doctrine field type."
+        "doctrine/dbal": "Allow the use of a UUID as doctrine field type.",
+        "moontoast/math": "Provides support for large integers on 32-bit platforms."
     },
     "autoload": {
         "psr-0": {"Rhumsaa\\Uuid": "src/"}

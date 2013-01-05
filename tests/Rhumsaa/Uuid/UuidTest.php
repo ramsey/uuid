@@ -7,13 +7,8 @@ class UuidTest extends TestCase
 {
     protected function setUp()
     {
-        // Skip these tests if run on a 32-bit build of PHP
-        if (PHP_INT_SIZE == 4) {
-            $this->markTestSkipped(
-                'Running tests on a 32-bit build of PHP; 64-bit build required.'
-            );
-        }
-
+        Uuid::$force32Bit = false;
+        Uuid::$forceNoBigNumber = false;
         Uuid::$ignoreSystemNode = false;
     }
 
@@ -701,6 +696,46 @@ class UuidTest extends TestCase
         $this->assertFalse($uuid1->equals($uuid3));
         $this->assertFalse($uuid1->equals(null));
         $this->assertFalse($uuid1->equals(new \stdClass()));
+    }
+
+    /**
+     * @covers Rhumsaa\Uuid\Uuid::hasBigNumber
+     */
+    public function testHasBigNumber()
+    {
+        $hasBigNumber = new \ReflectionMethod(
+            'Rhumsaa\Uuid\Uuid', 'hasBigNumber'
+        );
+        $hasBigNumber->setAccessible(true);
+
+        $uuid = Uuid::fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
+
+        $this->assertTrue($hasBigNumber->invoke($uuid));
+
+        Uuid::$forceNoBigNumber = true;
+        $this->assertFalse($hasBigNumber->invoke($uuid));
+    }
+
+    /**
+     * @covers Rhumsaa\Uuid\Uuid::is64BitSystem
+     */
+    public function testIs64BitSystem()
+    {
+        $is64BitSystem = new \ReflectionMethod(
+            'Rhumsaa\Uuid\Uuid', 'is64BitSystem'
+        );
+        $is64BitSystem->setAccessible(true);
+
+        $uuid = Uuid::fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
+
+        if (PHP_INT_SIZE == 8) {
+            $this->assertTrue($is64BitSystem->invoke($uuid));
+        } else {
+            $this->assertFalse($is64BitSystem->invoke($uuid));
+        }
+
+        Uuid::$force32Bit = true;
+        $this->assertFalse($is64BitSystem->invoke($uuid));
     }
 }
 

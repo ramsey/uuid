@@ -74,6 +74,21 @@ class Uuid
     const RESERVED_FUTURE = 7;
 
     /**
+     * 64-bit system override; if true, treat the system as 32-bit (for testing)
+     *
+     * @var bool
+     */
+    public static $force32Bit = false;
+
+    /**
+     * Moontoast\Math\BigNumber override; if true, treat as if BigNumber is
+     * not available (for testing)
+     *
+     * @var bool
+     */
+    public static $forceNoBigNumber = false;
+
+    /**
      * System override to ignore generating node from hardware (for testing)
      *
      * @var bool
@@ -759,6 +774,26 @@ class Uuid
         }
 
         return $node;
+    }
+
+    /**
+     * Returns true if the system has Moontoast\Math\BigNumber
+     *
+     * @return bool
+     */
+    protected static function hasBigNumber()
+    {
+        return (class_exists('Moontoast\Math\BigNumber') && !self::$forceNoBigNumber);
+    }
+
+    /**
+     * Returns true if the system is 64-bit, false otherwise
+     *
+     * @return bool
+     */
+    protected static function is64BitSystem()
+    {
+        return (PHP_INT_SIZE == 8 && !self::$force32Bit);
     }
 
     /**
