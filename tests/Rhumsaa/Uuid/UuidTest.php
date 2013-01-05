@@ -11,6 +11,8 @@ class UuidTest extends \PHPUnit_Framework_TestCase
                 'Running tests on a 32-bit build of PHP; 64-bit build required.'
             );
         }
+
+        Uuid::$ignoreSystemNode = false;
     }
 
     /**
@@ -543,7 +545,9 @@ class UuidTest extends \PHPUnit_Framework_TestCase
      */
     public function testUuid1WithRandomNode()
     {
-        $uuid = Uuid::uuid1(null, null, true);
+        Uuid::$ignoreSystemNode = true;
+
+        $uuid = Uuid::uuid1();
         $this->assertInstanceOf('\Rhumsaa\Uuid\Uuid', $uuid);
         $this->assertInstanceOf('\DateTime', $uuid->getDateTime());
         $this->assertEquals(2, $uuid->getVariant());

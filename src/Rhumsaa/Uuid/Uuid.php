@@ -74,6 +74,13 @@ class Uuid
     const RESERVED_FUTURE = 7;
 
     /**
+     * System override to ignore generating node from hardware (for testing)
+     *
+     * @var bool
+     */
+    public static $ignoreSystemNode = false;
+
+    /**
      * The fields that make up this UUID
      *
      * This is initialized to the nil value.
@@ -618,13 +625,11 @@ class Uuid
      * @param int $clockSeq A 14-bit number used to help avoid duplicates that
      *                      could arise when the clock is set backwards in time
      *                      or if the node ID changes.
-     * @param bool $useRandomNode For testing purposes only; to force method to
-     *                            generate a random node.
      * @return Uuid
      */
-    public static function uuid1($node = null, $clockSeq = null, $useRandomNode = false)
+    public static function uuid1($node = null, $clockSeq = null)
     {
-        if ($node === null && !$useRandomNode) {
+        if ($node === null && !self::$ignoreSystemNode) {
             $node = self::getNodeFromSystem();
         }
 
