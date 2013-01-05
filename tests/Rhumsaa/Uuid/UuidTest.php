@@ -555,6 +555,21 @@ class UuidTest extends TestCase
     /**
      * @covers Rhumsaa\Uuid\Uuid::uuid1
      */
+    public function testUuid1WithNodeAndClockSequence32Bit()
+    {
+        $uuid = Uuid::uuid1(0x7fffffff, 0x1669);
+        $this->assertInstanceOf('\Rhumsaa\Uuid\Uuid', $uuid);
+        $this->assertInstanceOf('\DateTime', $uuid->getDateTime());
+        $this->assertEquals(2, $uuid->getVariant());
+        $this->assertEquals(1, $uuid->getVersion());
+        $this->assertEquals(5737, $uuid->getClockSequence());
+        $this->assertEquals(2147483647, $uuid->getNode());
+        $this->assertEquals('9669-00007fffffff', substr($uuid->toString(), 19));
+    }
+
+    /**
+     * @covers Rhumsaa\Uuid\Uuid::uuid1
+     */
     public function testUuid1WithRandomNode()
     {
         Uuid::$ignoreSystemNode = true;
