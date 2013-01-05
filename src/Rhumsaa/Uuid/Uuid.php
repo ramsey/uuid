@@ -732,37 +732,6 @@ class Uuid
     }
 
     /**
-     * Returns a version 3 or 5 UUID based on the hash (md5 or sha1) of a
-     * namespace identifier (which is a UUID) and a name (which is a string)
-     *
-     * @param string $hash
-     * @return Uuid
-     */
-    protected static function uuidFromHashedName($hash, $version)
-    {
-        // Set the version number
-        $timeHi = hexdec(substr($hash, 12, 4)) & 0x0fff;
-        $timeHi &= ~(0xf000);
-        $timeHi |= $version << 12;
-
-        // Set the variant to RFC 4122
-        $clockSeqHi = hexdec(substr($hash, 16, 2)) & 0x3f;
-        $clockSeqHi &= ~(0xc0);
-        $clockSeqHi |= 0x80;
-
-        $fields = array(
-            'time_low' => substr($hash, 0, 8),
-            'time_mid' => substr($hash, 8, 4),
-            'time_hi_and_version' => sprintf('%04x', $timeHi),
-            'clock_seq_hi_and_reserved' => sprintf('%02x', $clockSeqHi),
-            'clock_seq_low' => substr($hash, 18, 2),
-            'node' => substr($hash, 20, 12),
-        );
-
-        return new self($fields);
-    }
-
-    /**
      * Get the hardware address as a 48-bit positive integer. If all attempts to
      * obtain the hardware address fail, we choose a random 48-bit number with
      * its eighth bit set to 1 as recommended in RFC 4122. "Hardware address"
@@ -797,5 +766,36 @@ class Uuid
         }
 
         return $node;
+    }
+
+    /**
+     * Returns a version 3 or 5 UUID based on the hash (md5 or sha1) of a
+     * namespace identifier (which is a UUID) and a name (which is a string)
+     *
+     * @param string $hash
+     * @return Uuid
+     */
+    protected static function uuidFromHashedName($hash, $version)
+    {
+        // Set the version number
+        $timeHi = hexdec(substr($hash, 12, 4)) & 0x0fff;
+        $timeHi &= ~(0xf000);
+        $timeHi |= $version << 12;
+
+        // Set the variant to RFC 4122
+        $clockSeqHi = hexdec(substr($hash, 16, 2)) & 0x3f;
+        $clockSeqHi &= ~(0xc0);
+        $clockSeqHi |= 0x80;
+
+        $fields = array(
+            'time_low' => substr($hash, 0, 8),
+            'time_mid' => substr($hash, 8, 4),
+            'time_hi_and_version' => sprintf('%04x', $timeHi),
+            'clock_seq_hi_and_reserved' => sprintf('%02x', $clockSeqHi),
+            'clock_seq_low' => substr($hash, 18, 2),
+            'node' => substr($hash, 20, 12),
+        );
+
+        return new self($fields);
     }
 }
