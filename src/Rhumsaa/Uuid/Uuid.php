@@ -306,9 +306,17 @@ class Uuid
      * to the RFC 4122 names for the fields.
      *
      * @return array
+     * @throws \BadMethodCallException if called on a 32-bit system
      */
     public function getFields()
     {
+        if (!self::is64BitSystem()) {
+            throw new \BadMethodCallException(
+                'Cannot call ' . __METHOD__ . ' on a 32-bit system, since some '
+                . 'values overflow the system max integer value'
+            );
+        }
+
         return array(
             'time_low' => $this->getTimeLow(),
             'time_mid' => $this->getTimeMid(),
@@ -403,9 +411,18 @@ class Uuid
      *
      * @return int
      * @see http://tools.ietf.org/html/rfc4122#section-4.1.6
+     * @throws \BadMethodCallException if called on a 32-bit system
      */
     public function getNode()
     {
+        if (!self::is64BitSystem()) {
+            throw new \BadMethodCallException(
+                'Cannot call ' . __METHOD__ . ' on a 32-bit system, since node '
+                . 'is an unsigned 48-bit integer and can overflow the system '
+                . 'max integer value'
+            );
+        }
+
         return hexdec($this->getNodeHex());
     }
 
@@ -445,9 +462,18 @@ class Uuid
      * Returns the low field of the timestamp (the first 32 bits of the UUID).
      *
      * @return int
+     * @throws \BadMethodCallException if called on a 32-bit system
      */
     public function getTimeLow()
     {
+        if (!self::is64BitSystem()) {
+            throw new \BadMethodCallException(
+                'Cannot call ' . __METHOD__ . ' on a 32-bit system, since time_low '
+                . 'is an unsigned 32-bit integer and can overflow the system '
+                . 'max integer value'
+            );
+        }
+
         return hexdec($this->getTimeLowHex());
     }
 
@@ -495,12 +521,21 @@ class Uuid
      *
      * @return int
      * @throws UnsupportedOperationException If this UUID is not a version 1 UUID
+     * @throws \BadMethodCallException if called on a 32-bit system
      * @see http://tools.ietf.org/html/rfc4122#section-4.1.4
      */
     public function getTimestamp()
     {
         if ($this->getVersion() != 1) {
             throw new UnsupportedOperationException('Not a time-based UUID');
+        }
+
+        if (!self::is64BitSystem()) {
+            throw new \BadMethodCallException(
+                'Cannot call ' . __METHOD__ . ' on a 32-bit system, since timestamp '
+                . 'is an unsigned 60-bit integer and can overflow the system '
+                . 'max integer value'
+            );
         }
 
         return ($this->getTimeHiAndVersion() & 0x0fff) << 48
@@ -512,14 +547,9 @@ class Uuid
      * The timestamp value associated with this UUID
      *
      * @return string
-     * @throws UnsupportedOperationException If this UUID is not a version 1 UUID
      */
     public function getTimestampHex()
     {
-        if ($this->getVersion() != 1) {
-            throw new UnsupportedOperationException('Not a time-based UUID');
-        }
-
         return sprintf('%015x', $this->getTimestamp());
     }
 

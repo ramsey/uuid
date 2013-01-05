@@ -168,6 +168,17 @@ class UuidTest extends TestCase
     }
 
     /**
+     * @covers Rhumsaa\Uuid\Uuid::getFields
+     * @expectedException BadMethodCallException
+     */
+    public function testGetFields32Bit()
+    {
+        Uuid::$force32Bit = true;
+        $uuid = Uuid::fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
+        $fields = $uuid->getFields();
+    }
+
+    /**
      * @covers Rhumsaa\Uuid\Uuid::getFieldsHex
      */
     public function testGetFieldsHex()
@@ -234,6 +245,17 @@ class UuidTest extends TestCase
     }
 
     /**
+     * @covers Rhumsaa\Uuid\Uuid::getNode
+     * @expectedException BadMethodCallException
+     */
+    public function testGetNode32Bit()
+    {
+        Uuid::$force32Bit = true;
+        $uuid = Uuid::fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
+        $node = $uuid->getNode();
+    }
+
+    /**
      * @covers Rhumsaa\Uuid\Uuid::getNodeHex
      */
     public function testGetNodeHex()
@@ -269,6 +291,17 @@ class UuidTest extends TestCase
 
         $uuid = Uuid::fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
         $this->assertEquals(4285500592, $uuid->getTimeLow());
+    }
+
+    /**
+     * @covers Rhumsaa\Uuid\Uuid::getTimeLow
+     * @expectedException BadMethodCallException
+     */
+    public function testGetTimeLow32Bit()
+    {
+        Uuid::$force32Bit = true;
+        $uuid = Uuid::fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
+        $timeLow = $uuid->getTimeLow();
     }
 
     /**
@@ -342,16 +375,14 @@ class UuidTest extends TestCase
     }
 
     /**
-     * @covers Rhumsaa\Uuid\Uuid::getTimestampHex
-     * @covers Rhumsaa\Uuid\UnsupportedOperationException
-     * @expectedException Rhumsaa\Uuid\UnsupportedOperationException
-     * @expectedExceptionMessage Not a time-based UUID
+     * @covers Rhumsaa\Uuid\Uuid::getTimestamp
+     * @expectedException BadMethodCallException
      */
-    public function testGetTimestampHexFromNonVersion1Uuid()
+    public function testGetTimestamp32Bit()
     {
-        // Using a version 4 UUID to test
-        $uuid = Uuid::fromString('bf17b594-41f2-474f-bf70-4c90220f75de');
-        $ts = $uuid->getTimestampHex();
+        Uuid::$force32Bit = true;
+        $uuid = Uuid::fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
+        $ts = $uuid->getTimestamp();
     }
 
     /**
