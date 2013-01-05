@@ -74,16 +74,21 @@ class Uuid
     const RESERVED_FUTURE = 7;
 
     /**
-     * The least significant 64 bits of this UUID's 128 bit value
-     * @var int
+     * The fields that make up this UUID
+     *
+     * This is initialized to the nil value.
+     *
+     * @var array
+     * @see Rhumsaa\Uuid\Uuid::getFields
      */
-    protected $lsb = 0;
-
-    /**
-     * The most significant 64 bits of this UUID's 128 bit value
-     * @var int
-     */
-    protected $msb = 0;
+    protected $fields = array(
+        'time_low' => '00000000',
+        'time_mid' => '0000',
+        'time_hi_and_version' => '0000',
+        'clock_seq_hi_and_reserved' => '00',
+        'clock_seq_low' => '00',
+        'node' => '000000000000',
+    );
 
     /**
      * Creates a universally unique identifier (UUID) from the most significant
@@ -92,10 +97,9 @@ class Uuid
      * Protected to prevent direct instantiation. Use static methods to create
      * UUIDs.
      *
-     * @param int $msb The most significant 64 bits of this UUID's 128 bit value
-     * @param int $lsb The least significant 64 bits of this UUID's 128 bit value
+     * @param array $fields
      */
-    protected function __construct($msb, $lsb)
+    protected function __construct(array $fields)
     {
         if (PHP_INT_SIZE == 4) {
             throw new \OverflowException(
@@ -104,8 +108,7 @@ class Uuid
             );
         }
 
-        $this->msb = $msb;
-        $this->lsb = $lsb;
+        $this->fields = $fields;
     }
 
     /**
@@ -134,13 +137,13 @@ class Uuid
     {
         $comparison = null;
 
-        if ($this->getMostSignificantBits() < $uuid->getMostSignificantBits()) {
+        if ($this->getMostSignificantBitsHex() < $uuid->getMostSignificantBitsHex()) {
             $comparison = -1;
-        } elseif ($this->getMostSignificantBits() > $uuid->getMostSignificantBits()) {
+        } elseif ($this->getMostSignificantBitsHex() > $uuid->getMostSignificantBitsHex()) {
             $comparison = 1;
-        } elseif ($this->getLeastSignificantBits() < $uuid->getLeastSignificantBits()) {
+        } elseif ($this->getLeastSignificantBitsHex() < $uuid->getLeastSignificantBitsHex()) {
             $comparison = -1;
-        } elseif ($this->getLeastSignificantBits() > $uuid->getLeastSignificantBits()) {
+        } elseif ($this->getLeastSignificantBitsHex() > $uuid->getLeastSignificantBitsHex()) {
             $comparison = 1;
         } else {
             $comparison = 0;
@@ -165,8 +168,7 @@ class Uuid
             return false;
         }
 
-        return ($this->getMostSignificantBits() == $obj->getMostSignificantBits()
-            && $this->getLeastSignificantBits() == $obj->getLeastSignificantBits());
+        return ($this->compareTo($obj) == 0);
     }
 
     /**
@@ -178,11 +180,12 @@ class Uuid
     public function getBytes()
     {
         $bytes = '';
-        foreach (range(0, 63, 8) as $shift) {
-            $bytes = chr(($this->getLeastSignificantBits() >> $shift) & 0xff) . $bytes;
-        }
-        foreach (range(64, 127, 8) as $shift) {
-            $bytes = chr(($this->getMostSignificantBits() >> $shift) & 0xff) . $bytes;
+
+        $hex = $this->toString();
+        $hex = str_replace('-', '', $hex);
+
+        foreach (range(-2, -32, 2) as $step) {
+            $bytes = chr(hexdec(substr($hex, $step, 2))) . $bytes;
         }
 
         return $bytes;
@@ -196,7 +199,7 @@ class Uuid
      */
     public function getClockSeqHiAndReserved()
     {
-        return ($this->getLeastSignificantBits() >> 56) & 0xff;
+        return hexdec($this->getClockSeqHiAndReservedHex());
     }
 
     /**
@@ -207,7 +210,7 @@ class Uuid
      */
     public function getClockSeqHiAndReservedHex()
     {
-        return sprintf('%02x', $this->getClockSeqHiAndReserved());
+        return $this->fields['clock_seq_hi_and_reserved'];
     }
 
     /**
@@ -217,7 +220,7 @@ class Uuid
      */
     public function getClockSeqLow()
     {
-        return ($this->getLeastSignificantBits() >> 48) & 0xff;
+        return hexdec($this->getClockSeqLowHex());
     }
 
     /**
@@ -227,7 +230,7 @@ class Uuid
      */
     public function getClockSeqLowHex()
     {
-        return sprintf('%02x', $this->getClockSeqLow());
+        return $this->fields['clock_seq_low'];
     }
 
     /**
@@ -309,14 +312,7 @@ class Uuid
      */
     public function getFieldsHex()
     {
-        return array(
-            'time_low' => $this->getTimeLowHex(),
-            'time_mid' => $this->getTimeMidHex(),
-            'time_hi_and_version' => $this->getTimeHiAndVersionHex(),
-            'clock_seq_hi_and_reserved' => $this->getClockSeqHiAndReservedHex(),
-            'clock_seq_low' => $this->getClockSeqLowHex(),
-            'node' => $this->getNodeHex(),
-        );
+        return $this->fields;
     }
 
     /**
@@ -326,7 +322,7 @@ class Uuid
      */
     public function getLeastSignificantBits()
     {
-        return $this->lsb;
+        return hexdec($this->getLeastSignificantBitsHex());
     }
 
     /**
@@ -336,7 +332,12 @@ class Uuid
      */
     public function getLeastSignificantBitsHex()
     {
-        return sprintf('%016x', $this->lsb);
+        return sprintf(
+            '%02s%02s%012s',
+            $this->fields['clock_seq_hi_and_reserved'],
+            $this->fields['clock_seq_low'],
+            $this->fields['node']
+        );
     }
 
     /**
@@ -346,7 +347,7 @@ class Uuid
      */
     public function getMostSignificantBits()
     {
-        return $this->msb;
+        return hexdec($this->getMostSignificantBitsHex());
     }
 
     /**
@@ -356,7 +357,12 @@ class Uuid
      */
     public function getMostSignificantBitsHex()
     {
-        return sprintf('%016x', $this->msb);
+        return sprintf(
+            '%08s%04s%04s',
+            $this->fields['time_low'],
+            $this->fields['time_mid'],
+            $this->fields['time_hi_and_version']
+        );
     }
 
     /**
@@ -385,7 +391,7 @@ class Uuid
      */
     public function getNode()
     {
-        return $this->getLeastSignificantBits() & 0x0000ffffffffffff;
+        return hexdec($this->getNodeHex());
     }
 
     /**
@@ -395,7 +401,7 @@ class Uuid
      */
     public function getNodeHex()
     {
-        return sprintf('%012x', $this->getNode());
+        return $this->fields['node'];
     }
 
     /**
@@ -406,7 +412,7 @@ class Uuid
      */
     public function getTimeHiAndVersion()
     {
-        return $this->getMostSignificantBits() & 0xffff;
+        return hexdec($this->getTimeHiAndVersionHex());
     }
 
     /**
@@ -417,7 +423,7 @@ class Uuid
      */
     public function getTimeHiAndVersionHex()
     {
-        return sprintf('%04x', $this->getTimeHiAndVersion());
+        return $this->fields['time_hi_and_version'];
     }
 
     /**
@@ -427,7 +433,7 @@ class Uuid
      */
     public function getTimeLow()
     {
-        return ($this->getMostSignificantBits() >> 32) & 0xffffffff;
+        return hexdec($this->getTimeLowHex());
     }
 
     /**
@@ -437,7 +443,7 @@ class Uuid
      */
     public function getTimeLowHex()
     {
-        return sprintf('%08x', $this->getTimeLow());
+        return $this->fields['time_low'];
     }
 
     /**
@@ -447,7 +453,7 @@ class Uuid
      */
     public function getTimeMid()
     {
-        return ($this->getMostSignificantBits() >> 16) & 0xffff;
+        return hexdec($this->getTimeMidHex());
     }
 
     /**
@@ -457,7 +463,7 @@ class Uuid
      */
     public function getTimeMidHex()
     {
-        return sprintf('%04x', $this->getTimeMid());
+        return $this->fields['time_mid'];
     }
 
     /**
@@ -528,11 +534,11 @@ class Uuid
      */
     public function getVariant()
     {
-        if (0 === ($this->getLeastSignificantBits() & (0x8000 << 48))) {
+        if (0 === ($this->getClockSeqHiAndReserved() & 0x80)) {
             $variant = self::RESERVED_NCS;
-        } elseif (0 === ($this->getLeastSignificantBits() & (0x4000 << 48))) {
+        } elseif (0 === ($this->getClockSeqHiAndReserved() & 0x40)) {
             $variant = self::RFC_4122;
-        } elseif (0 === ($this->getLeastSignificantBits() & (0x2000 << 48))) {
+        } elseif (0 === ($this->getClockSeqHiAndReserved() & 0x20)) {
             $variant = self::RESERVED_MICROSOFT;
         } else {
             $variant = self::RESERVED_FUTURE;
@@ -557,7 +563,7 @@ class Uuid
      */
     public function getVersion()
     {
-        return (($this->getMostSignificantBits() >> 12) & 0x0f);
+        return (($this->getTimeHiAndVersion() >> 12) & 0x0f);
     }
 
     /**
@@ -567,19 +573,9 @@ class Uuid
      */
     public function toString()
     {
-        $hex = sprintf(
-            '%016x%016x',
-            $this->getMostSignificantBits(),
-            $this->getLeastSignificantBits()
-        );
-
-        return sprintf(
-            '%s-%s-%s-%s-%s',
-            substr($hex, 0, 8),
-            substr($hex, 8, 4),
-            substr($hex, 12, 4),
-            substr($hex, 16, 4),
-            substr($hex, 20)
+        return vsprintf(
+            '%08s-%04s-%04s-%02s%02s-%012s',
+            $this->fields
         );
     }
 
@@ -600,19 +596,16 @@ class Uuid
             throw new \InvalidArgumentException('Invalid UUID string: ' . $name);
         }
 
-        // Put together most significant bits
-        $msb = hexdec($components[0]);
-        $msb <<= 16;
-        $msb |= hexdec($components[1]);
-        $msb <<= 16;
-        $msb |= hexdec($components[2]);
+        $fields = array(
+            'time_low' => sprintf('%08s', $components[0]),
+            'time_mid' => sprintf('%04s', $components[1]),
+            'time_hi_and_version' => sprintf('%04s', $components[2]),
+            'clock_seq_hi_and_reserved' => sprintf('%02s', substr($components[3], 0, 2)),
+            'clock_seq_low' => sprintf('%02s', substr($components[3], 2)),
+            'node' => sprintf('%012s', $components[4]),
+        );
 
-        // Put together least significant bits
-        $lsb = hexdec($components[3]);
-        $lsb <<= 48;
-        $lsb |= hexdec($components[4]);
-
-        return new self($msb, $lsb);
+        return new self($fields);
     }
 
     /**
@@ -653,25 +646,26 @@ class Uuid
             + ($timeOfDay['usec'] * 10)
             + 0x01b21dd213814000;
 
-        $timeLow = $uuidTime & 0xffffffff;
-        $timeMid = ($uuidTime >> 32) & 0xffff;
-        $timeHi = ($uuidTime >> 48) & 0x0fff;
-        $clockSeqHi = ($clockSeq >> 8) & 0x3f;
-        $clockSeqLow = $clockSeq & 0xff;
-        $clockSeq = ($clockSeqHi << 8) | $clockSeqLow;
-
-        $msb = ($timeLow << 32) | ($timeMid << 16) | $timeHi;
-        $lsb = ($clockSeq << 48) | $node;
-
         // Set the version number to 1
-        $msb &= ~(0xf000);
-        $msb |= 1 << 12;
+        $timeHi = ($uuidTime >> 48) & 0x0fff;
+        $timeHi &= ~(0xf000);
+        $timeHi |= 1 << 12;
 
         // Set the variant to RFC 4122
-        $lsb &= ~(0xc000 << 48);
-        $lsb |= 0x8000 << 48;
+        $clockSeqHi = ($clockSeq >> 8) & 0x3f;
+        $clockSeqHi &= ~(0xc0);
+        $clockSeqHi |= 0x80;
 
-        return new self($msb, $lsb);
+        $fields = array(
+            'time_low' => sprintf('%08x', $uuidTime & 0xffffffff),
+            'time_mid' => sprintf('%04x', ($uuidTime >> 32) & 0xffff),
+            'time_hi_and_version' => sprintf('%04x', $timeHi),
+            'clock_seq_hi_and_reserved' => sprintf('%02x', $clockSeqHi),
+            'clock_seq_low' => sprintf('%02x', $clockSeq & 0xff),
+            'node' => sprintf('%012x', $node),
+        );
+
+        return new self($fields);
     }
 
     /**
@@ -741,26 +735,26 @@ class Uuid
      */
     protected static function uuidFromHashedName($hash, $version)
     {
-        $timeLow = hexdec(substr($hash, 0, 8)) & 0xffffffff;
-        $timeMid = hexdec(substr($hash, 8, 4)) & 0xffff;
-        $timeHi = hexdec(substr($hash, 12, 4)) & 0x0fff;
-        $clockSeqHi = hexdec(substr($hash, 16, 2)) & 0x3f;
-        $clockSeqLow = hexdec(substr($hash, 18, 2)) & 0xff;
-        $clockSeq = ($clockSeqHi << 8) | $clockSeqLow;
-        $node = hexdec(substr($hash, 20, 12));
-
-        $msb = ($timeLow << 32) | ($timeMid << 16) | $timeHi;
-        $lsb = ($clockSeq << 48) | $node;
-
         // Set the version number
-        $msb &= ~(0xf000);
-        $msb |= $version << 12;
+        $timeHi = hexdec(substr($hash, 12, 4)) & 0x0fff;
+        $timeHi &= ~(0xf000);
+        $timeHi |= $version << 12;
 
         // Set the variant to RFC 4122
-        $lsb &= ~(0xc000 << 48);
-        $lsb |= 0x8000 << 48;
+        $clockSeqHi = hexdec(substr($hash, 16, 2)) & 0x3f;
+        $clockSeqHi &= ~(0xc0);
+        $clockSeqHi |= 0x80;
 
-        return new self($msb, $lsb);
+        $fields = array(
+            'time_low' => substr($hash, 0, 8),
+            'time_mid' => substr($hash, 8, 4),
+            'time_hi_and_version' => sprintf('%04x', $timeHi),
+            'clock_seq_hi_and_reserved' => sprintf('%02x', $clockSeqHi),
+            'clock_seq_low' => substr($hash, 18, 2),
+            'node' => substr($hash, 20, 12),
+        );
+
+        return new self($fields);
     }
 
     /**
