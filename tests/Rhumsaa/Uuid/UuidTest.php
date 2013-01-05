@@ -581,6 +581,21 @@ class UuidTest extends TestCase
     /**
      * @covers Rhumsaa\Uuid\Uuid::uuid1
      */
+    public function testUuid1WithHexadecimalNode()
+    {
+        $uuid = Uuid::uuid1('7160355e');
+
+        $this->assertInstanceOf('\Rhumsaa\Uuid\Uuid', $uuid);
+        $this->assertInstanceOf('\DateTime', $uuid->getDateTime());
+        $this->assertEquals(2, $uuid->getVariant());
+        $this->assertEquals(1, $uuid->getVersion());
+        $this->assertEquals('00007160355e', $uuid->getNodeHex());
+        $this->assertEquals(1902130526, $uuid->getNode());
+    }
+
+    /**
+     * @covers Rhumsaa\Uuid\Uuid::uuid1
+     */
     public function testUuid1WithNodeAndClockSequence32Bit()
     {
         $uuid = Uuid::uuid1(0x7fffffff, 0x1669);
@@ -591,6 +606,36 @@ class UuidTest extends TestCase
         $this->assertEquals(5737, $uuid->getClockSequence());
         $this->assertEquals(2147483647, $uuid->getNode());
         $this->assertEquals('9669-00007fffffff', substr($uuid->toString(), 19));
+    }
+
+    /**
+     * @covers Rhumsaa\Uuid\Uuid::uuid1
+     * @expectedException InvalidArgumentException
+     * @expectedExceptionMessage Invalid node value
+     */
+    public function testUuid1WithOutOfBoundsNode()
+    {
+        $uuid = Uuid::uuid1(9223372036854775808);
+    }
+
+    /**
+     * @covers Rhumsaa\Uuid\Uuid::uuid1
+     * @expectedException InvalidArgumentException
+     * @expectedExceptionMessage Invalid node value
+     */
+    public function testUuid1WithNonHexadecimalNode()
+    {
+        $uuid = Uuid::uuid1('db77e160355g');
+    }
+
+    /**
+     * @covers Rhumsaa\Uuid\Uuid::uuid1
+     * @expectedException InvalidArgumentException
+     * @expectedExceptionMessage Invalid node value
+     */
+    public function testUuid1WithNon48bitNumber()
+    {
+        $uuid = Uuid::uuid1('db77e160355ef');
     }
 
     /**

@@ -659,11 +659,14 @@ class Uuid
      * address. If $clockSeq is given, it is used as the sequence number;
      * otherwise a random 14-bit sequence number is chosen.
      *
-     * @param int $node A 48-bit number representing the hardware address.
+     * @param int|string $node A 48-bit number representing the hardware
+     *                         address. This number may be represented as
+     *                         an integer or a hexadecimal string.
      * @param int $clockSeq A 14-bit number used to help avoid duplicates that
      *                      could arise when the clock is set backwards in time
      *                      or if the node ID changes.
      * @return Uuid
+     * @throws \InvalidArgumentException if the $node is invalid
      */
     public static function uuid1($node = null, $clockSeq = null)
     {
@@ -674,7 +677,18 @@ class Uuid
         // if $node is still null (couldn't get from system), randomly generate
         // a node value, according to RFC 4122, Section 4.5
         if ($node === null) {
-            $node = mt_rand(0, 1 << 48) | 0x010000000000;
+            $node = sprintf('%06x%06x', mt_rand(0, 1 << 24), mt_rand(0, 1 << 24));
+        }
+
+        // Convert the node to hex, if it is still an integer
+        if (is_int($node)) {
+            $node = sprintf('%012x', $node);
+        }
+
+        if (ctype_xdigit($node) && strlen($node) <= 12) {
+            $node = sprintf('%012s', $node);
+        } else {
+            throw new \InvalidArgumentException('Invalid node value');
         }
 
         if ($clockSeq === null) {
@@ -705,7 +719,7 @@ class Uuid
             'time_hi_and_version' => sprintf('%04x', $timeHi),
             'clock_seq_hi_and_reserved' => sprintf('%02x', $clockSeqHi),
             'clock_seq_low' => sprintf('%02x', $clockSeq & 0xff),
-            'node' => sprintf('%012x', $node),
+            'node' => $node,
         );
 
         return new self($fields);
@@ -800,7 +814,6 @@ class Uuid
             $node = $matches[1][0];
             $node = str_replace(':', '', $node);
             $node = str_replace('-', '', $node);
-            $node = hexdec($node);
         }
 
         return $node;
