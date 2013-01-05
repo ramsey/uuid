@@ -28,7 +28,7 @@
     },
     "suggest": {
         "doctrine/dbal": "Allow the use of a UUID as doctrine field type.",
-        "moontoast/math": "Provides support for large integers on 32-bit platforms."
+        "moontoast/math": "Provides support for large integers."
     },
     "autoload": {
         "psr-0": {"Rhumsaa\\Uuid": "src/"}
