@@ -678,7 +678,10 @@ class UuidTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(2, $uuid->getVariant());
         $this->assertEquals(1, $uuid->getVersion());
         $this->assertEquals('00007160355e', $uuid->getNodeHex());
-        $this->assertEquals(1902130526, $uuid->getNode());
+
+        if (PHP_INT_SIZE == 8) {
+            $this->assertEquals(1902130526, $uuid->getNode());
+        }
     }
 
     /**
@@ -692,8 +695,12 @@ class UuidTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(2, $uuid->getVariant());
         $this->assertEquals(1, $uuid->getVersion());
         $this->assertEquals(5737, $uuid->getClockSequence());
-        $this->assertEquals(2147483647, $uuid->getNode());
+        $this->assertEquals('00007fffffff', $uuid->getNodeHex());
         $this->assertEquals('9669-00007fffffff', substr($uuid->toString(), 19));
+
+        if (PHP_INT_SIZE == 8) {
+            $this->assertEquals(2147483647, $uuid->getNode());
+        }
     }
 
     /**
