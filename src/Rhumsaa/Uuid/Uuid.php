@@ -313,9 +313,11 @@ class Uuid
 
         } elseif (self::hasBigNumber()) {
 
-            $ts = new \Moontoast\Math\BigNumber($this->getTimestampHex(), null, 16);
+            $time = \Moontoast\Math\BigNumber::baseConvert($this->getTimestampHex(), 16, 10);
+
+            $ts = new \Moontoast\Math\BigNumber($time, 20);
             $ts->subtract('122192928000000000');
-            $ts->divide('10000000.0', 20);
+            $ts->divide('10000000.0');
             $ts->round();
             $unixTime = $ts->getValue();
 
@@ -385,7 +387,13 @@ class Uuid
             );
         }
 
-        return new \Moontoast\Math\BigNumber($this->getLeastSignificantBitsHex(), null, 16);
+        $number = \Moontoast\Math\BigNumber::baseConvert(
+            $this->getLeastSignificantBitsHex(),
+            16,
+            10
+        );
+
+        return new \Moontoast\Math\BigNumber($number);
     }
 
     /**
@@ -419,7 +427,13 @@ class Uuid
             );
         }
 
-        return new \Moontoast\Math\BigNumber($this->getMostSignificantBitsHex(), null, 16);
+        $number = \Moontoast\Math\BigNumber::baseConvert(
+            $this->getMostSignificantBitsHex(),
+            16,
+            10
+        );
+
+        return new \Moontoast\Math\BigNumber($number);
     }
 
     /**
