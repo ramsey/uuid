@@ -24,7 +24,7 @@
     },
     "require-dev": {
         "doctrine/dbal": ">=2.3",
-        "moontoast/math": "dev-master"
+        "moontoast/math": "1.0.0"
     },
     "suggest": {
         "doctrine/dbal": "Allow the use of a UUID as doctrine field type.",
