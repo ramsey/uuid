@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<phpdoc>
+    <title>Rhumsaa\Uuid</title>
+    <parser>
+        <target>build/phpdoc</target>
+    </parser>
+    <transformer>
+        <target>docs</target>
+    </transformer>
+    <transformations>
+        <template name="responsive" />
+    </transformations>
+    <files>
+        <directory>./src</directory>
+    </files>
+</phpdoc>
