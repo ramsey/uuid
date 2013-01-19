@@ -117,8 +117,8 @@ class UuidBcTag1_1_2Test extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers Rhumsaa\Uuid\Uuid::getDateTime
-     * @covers Rhumsaa\Uuid\UnsupportedOperationException
-     * @expectedException Rhumsaa\Uuid\UnsupportedOperationException
+     * @covers Rhumsaa\Uuid\Exception\UnsupportedOperationException
+     * @expectedException Rhumsaa\Uuid\Exception\UnsupportedOperationException
      * @expectedExceptionMessage Not a time-based UUID
      */
     public function testGetDateTimeFromNonVersion1Uuid()
@@ -220,8 +220,8 @@ class UuidBcTag1_1_2Test extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers Rhumsaa\Uuid\Uuid::getTimestamp
-     * @covers Rhumsaa\Uuid\UnsupportedOperationException
-     * @expectedException Rhumsaa\Uuid\UnsupportedOperationException
+     * @covers Rhumsaa\Uuid\Exception\UnsupportedOperationException
+     * @expectedException Rhumsaa\Uuid\Exception\UnsupportedOperationException
      * @expectedExceptionMessage Not a time-based UUID
      */
     public function testGetTimestampFromNonVersion1Uuid()

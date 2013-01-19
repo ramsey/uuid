@@ -296,13 +296,13 @@ class Uuid
      * this method throws UnsupportedOperationException.
      *
      * @return \DateTime
-     * @throws UnsupportedOperationException If this UUID is not a version 1 UUID
+     * @throws Exception\UnsupportedOperationException If this UUID is not a version 1 UUID
      * @throws \BadMethodCallException if called on a 32-bit system and Moontoast\Math\BigNumber is not present
      */
     public function getDateTime()
     {
         if ($this->getVersion() != 1) {
-            throw new UnsupportedOperationException('Not a time-based UUID');
+            throw new Exception\UnsupportedOperationException('Not a time-based UUID');
         }
 
 
@@ -583,14 +583,14 @@ class Uuid
      * this method throws UnsupportedOperationException.
      *
      * @return int
-     * @throws UnsupportedOperationException If this UUID is not a version 1 UUID
+     * @throws Exception\UnsupportedOperationException If this UUID is not a version 1 UUID
      * @throws \BadMethodCallException if called on a 32-bit system
      * @see http://tools.ietf.org/html/rfc4122#section-4.1.4
      */
     public function getTimestamp()
     {
         if ($this->getVersion() != 1) {
-            throw new UnsupportedOperationException('Not a time-based UUID');
+            throw new Exception\UnsupportedOperationException('Not a time-based UUID');
         }
 
         if (!self::is64BitSystem()) {
