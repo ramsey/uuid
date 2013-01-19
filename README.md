@@ -8,6 +8,8 @@ A PHP 5.3+ library for generating and working with [RFC 4122][rfc4122] version
 Much inspiration for this library came from the [Java][javauuid] and
 [Python][pyuuid] UUID libraries.
 
+Please see `docs/` for generated API documentation.
+
 ## Requirements
 
 Some methods in this library have requirements due to integer size restrictions
