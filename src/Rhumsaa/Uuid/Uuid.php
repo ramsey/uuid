@@ -12,91 +12,101 @@
 namespace Rhumsaa\Uuid;
 
 /**
- * Represents a universally unique identifier (UUID)
+ * Represents a universally unique identifier (UUID), according to RFC 4122
  *
- * @see http://tools.ietf.org/html/rfc4122
- * @see http://en.wikipedia.org/wiki/Universally_unique_identifier
+ * This class provides immutable UUID objects (the Uuid class) and the static
+ * methods `uuid1()`, `uuid3()`, `uuid4()`, and `uuid5()` for generating version
+ * 1, 3, 4, and 5 UUIDs as specified in RFC 4122.
+ *
+ * If all you want is a unique ID, you should probably call `uuid1()` or `uuid4()`.
+ * Note that `uuid1()` may compromise privacy since it creates a UUID containing
+ * the computer’s network address. `uuid4()` creates a random UUID.
+ *
+ * @link http://tools.ietf.org/html/rfc4122
+ * @link http://en.wikipedia.org/wiki/Universally_unique_identifier
+ * @link http://docs.python.org/3/library/uuid.html
+ * @link http://docs.oracle.com/javase/6/docs/api/java/util/UUID.html
  */
-class Uuid
+final class Uuid
 {
     /**
      * When this namespace is specified, the name string is a fully-qualified domain name.
-     * @see http://tools.ietf.org/html/rfc4122#appendix-C
+     * @link http://tools.ietf.org/html/rfc4122#appendix-C
      */
     const NAMESPACE_DNS = '6ba7b810-9dad-11d1-80b4-00c04fd430c8';
 
     /**
      * When this namespace is specified, the name string is a URL.
-     * @see http://tools.ietf.org/html/rfc4122#appendix-C
+     * @link http://tools.ietf.org/html/rfc4122#appendix-C
      */
     const NAMESPACE_URL = '6ba7b811-9dad-11d1-80b4-00c04fd430c8';
 
     /**
      * When this namespace is specified, the name string is an ISO OID.
-     * @see http://tools.ietf.org/html/rfc4122#appendix-C
+     * @link http://tools.ietf.org/html/rfc4122#appendix-C
      */
     const NAMESPACE_OID = '6ba7b812-9dad-11d1-80b4-00c04fd430c8';
 
     /**
      * When this namespace is specified, the name string is an X.500 DN in DER or a text output format.
-     * @see http://tools.ietf.org/html/rfc4122#appendix-C
+     * @link http://tools.ietf.org/html/rfc4122#appendix-C
      */
     const NAMESPACE_X500 = '6ba7b814-9dad-11d1-80b4-00c04fd430c8';
 
     /**
      * The nil UUID is special form of UUID that is specified to have all 128 bits set to zero.
-     * @see http://tools.ietf.org/html/rfc4122#section-4.1.7
+     * @link http://tools.ietf.org/html/rfc4122#section-4.1.7
      */
     const NIL = '00000000-0000-0000-0000-000000000000';
 
     /**
      * Reserved for NCS compatibility.
-     * @see http://tools.ietf.org/html/rfc4122#section-4.1.1
+     * @link http://tools.ietf.org/html/rfc4122#section-4.1.1
      */
     const RESERVED_NCS = 0;
 
     /**
      * Specifies the UUID layout given in RFC 4122.
-     * @see http://tools.ietf.org/html/rfc4122#section-4.1.1
+     * @link http://tools.ietf.org/html/rfc4122#section-4.1.1
      */
     const RFC_4122 = 2;
 
     /**
      * Reserved for Microsoft compatibility.
-     * @see http://tools.ietf.org/html/rfc4122#section-4.1.1
+     * @link http://tools.ietf.org/html/rfc4122#section-4.1.1
      */
     const RESERVED_MICROSOFT = 6;
 
     /**
      * Reserved for future definition.
-     * @see http://tools.ietf.org/html/rfc4122#section-4.1.1
+     * @link http://tools.ietf.org/html/rfc4122#section-4.1.1
      */
     const RESERVED_FUTURE = 7;
 
     /**
-     * 64-bit system override; if true, treat the system as 32-bit (for testing)
+     * For testing, 64-bit system override; if true, treat the system as 32-bit
      *
      * @var bool
      */
     public static $force32Bit = false;
 
     /**
-     * Moontoast\Math\BigNumber override; if true, treat as if BigNumber is
-     * not available (for testing)
+     * For testing, Moontoast\Math\BigNumber override; if true, treat as if
+     * BigNumber is not available
      *
      * @var bool
      */
     public static $forceNoBigNumber = false;
 
     /**
-     * Sets time of day to a static, known value (for testing)
+     * For testing, sets time of day to a static, known value
      *
      * @var array
      */
     public static $timeOfDayTest;
 
     /**
-     * System override to ignore generating node from hardware (for testing)
+     * For testing, system override to ignore generating node from hardware
      *
      * @var bool
      */
@@ -108,7 +118,7 @@ class Uuid
      * This is initialized to the nil value.
      *
      * @var array
-     * @see Rhumsaa\Uuid\Uuid::getFields
+     * @see Uuid::getFields
      */
     protected $fields = array(
         'time_low' => '00000000',
@@ -138,7 +148,7 @@ class Uuid
      * string context
      *
      * @return string
-     * @see http://www.php.net/manual/en/language.oop5.magic.php#object.tostring
+     * @link http://www.php.net/manual/en/language.oop5.magic.php#object.tostring
      */
     public function __toString()
     {
@@ -182,7 +192,7 @@ class Uuid
      * as this UUID.
      *
      * @param object $obj
-     * @return bool
+     * @return bool True if $obj is equal to this UUID
      */
     public function equals($obj)
     {
@@ -217,7 +227,7 @@ class Uuid
      * Returns the high field of the clock sequence multiplexed with the variant
      * (bits 65-72 of the UUID).
      *
-     * @return int
+     * @return int Unsigned 8-bit integer value of clock_seq_hi_and_reserved
      */
     public function getClockSeqHiAndReserved()
     {
@@ -228,7 +238,7 @@ class Uuid
      * Returns the high field of the clock sequence multiplexed with the variant
      * (bits 65-72 of the UUID).
      *
-     * @return string
+     * @return string Hexadecimal value of clock_seq_hi_and_reserved
      */
     public function getClockSeqHiAndReservedHex()
     {
@@ -238,7 +248,7 @@ class Uuid
     /**
      * Returns the low field of the clock sequence (bits 73-80 of the UUID).
      *
-     * @return int
+     * @return int Unsigned 8-bit integer value of clock_seq_low
      */
     public function getClockSeqLow()
     {
@@ -248,7 +258,7 @@ class Uuid
     /**
      * Returns the low field of the clock sequence (bits 73-80 of the UUID).
      *
-     * @return string
+     * @return string Hexadecimal value of clock_seq_low
      */
     public function getClockSeqLowHex()
     {
@@ -268,8 +278,8 @@ class Uuid
      * For UUID version 4, clock sequence is a randomly or pseudo-randomly
      * generated 14-bit value as described in RFC 4122, Section 4.4.
      *
-     * @return int
-     * @see http://tools.ietf.org/html/rfc4122#section-4.1.5
+     * @return int Unsigned 14-bit integer value of clock sequence
+     * @link http://tools.ietf.org/html/rfc4122#section-4.1.5
      */
     public function getClockSequence()
     {
@@ -280,7 +290,7 @@ class Uuid
     /**
      * Returns the clock sequence value associated with this UUID.
      *
-     * @return string
+     * @return string Hexadecimal value of clock sequence
      */
     public function getClockSequenceHex()
     {
@@ -295,7 +305,7 @@ class Uuid
      * has version type 1. If this UUID is not a time-based UUID then
      * this method throws UnsupportedOperationException.
      *
-     * @return \DateTime
+     * @return \DateTime A PHP DateTime representation of the date
      * @throws Exception\UnsupportedOperationException If this UUID is not a version 1 UUID
      * @throws Exception\UnsatisfiedDependencyException if called on a 32-bit system and Moontoast\Math\BigNumber is not present
      */
@@ -338,8 +348,20 @@ class Uuid
      * Returns an array of the fields of this UUID, with keys named according
      * to the RFC 4122 names for the fields.
      *
-     * @return array
+     * * **time_low**: The low field of the timestamp, an unsigned 32-bit integer
+     * * **time_mid**: The middle field of the timestamp, an unsigned 16-bit integer
+     * * **time_hi_and_version**: The high field of the timestamp multiplexed with
+     *   the version number, an unsigned 16-bit integer
+     * * **clock_seq_hi_and_reserved**: The high field of the clock sequence
+     *   multiplexed with the variant, an unsigned 8-bit integer
+     * * **clock_seq_low**: The low field of the clock sequence, an unsigned
+     *   8-bit integer
+     * * **node**: The spatially unique node identifier, an unsigned 48-bit
+     *   integer
+     *
+     * @return array The UUID fields represented as integer values
      * @throws Exception\UnsatisfiedDependencyException if called on a 32-bit system
+     * @link http://tools.ietf.org/html/rfc4122#section-4.1.2
      */
     public function getFields()
     {
@@ -364,7 +386,18 @@ class Uuid
      * Returns an array of the fields of this UUID, with keys named according
      * to the RFC 4122 names for the fields.
      *
-     * @return array
+     * * **time_low**: The low field of the timestamp, an unsigned 32-bit integer
+     * * **time_mid**: The middle field of the timestamp, an unsigned 16-bit integer
+     * * **time_hi_and_version**: The high field of the timestamp multiplexed with
+     *   the version number, an unsigned 16-bit integer
+     * * **clock_seq_hi_and_reserved**: The high field of the clock sequence
+     *   multiplexed with the variant, an unsigned 8-bit integer
+     * * **clock_seq_low**: The low field of the clock sequence, an unsigned
+     *   8-bit integer
+     * * **node**: The spatially unique node identifier, an unsigned 48-bit
+     *   integer
+     *
+     * @return array The UUID fields represented as hexadecimal values
      */
     public function getFieldsHex()
     {
@@ -374,7 +407,7 @@ class Uuid
     /**
      * Returns the least significant 64 bits of this UUID's 128 bit value
      *
-     * @return \Moontoast\Math\BigNumber
+     * @return \Moontoast\Math\BigNumber BigNumber representation of the unsigned 64-bit integer value
      * @throws Exception\UnsatisfiedDependencyException if Moontoast\Math\BigNumber is not present
      */
     public function getLeastSignificantBits()
@@ -399,7 +432,7 @@ class Uuid
     /**
      * Returns the least significant 64 bits of this UUID's 128 bit value
      *
-     * @return string
+     * @return string Hexadecimal value of least significant bits
      */
     public function getLeastSignificantBitsHex()
     {
@@ -414,7 +447,7 @@ class Uuid
     /**
      * Returns the most significant 64 bits of this UUID's 128 bit value
      *
-     * @return \Moontoast\Math\BigNumber
+     * @return \Moontoast\Math\BigNumber BigNumber representation of the unsigned 64-bit integer value
      * @throws Exception\UnsatisfiedDependencyException if Moontoast\Math\BigNumber is not present
      */
     public function getMostSignificantBits()
@@ -439,7 +472,7 @@ class Uuid
     /**
      * Returns the most significant 64 bits of this UUID's 128 bit value
      *
-     * @return string
+     * @return string Hexadecimal value of most significant bits
      */
     public function getMostSignificantBitsHex()
     {
@@ -472,8 +505,8 @@ class Uuid
      * For UUID version 4, the node field is a randomly or pseudo-randomly
      * generated 48-bit value as described in RFC 4122, Section 4.4.
      *
-     * @return int
-     * @see http://tools.ietf.org/html/rfc4122#section-4.1.6
+     * @return int Unsigned 48-bit integer value of node
+     * @link http://tools.ietf.org/html/rfc4122#section-4.1.6
      * @throws Exception\UnsatisfiedDependencyException if called on a 32-bit system
      */
     public function getNode()
@@ -492,7 +525,26 @@ class Uuid
     /**
      * Returns the node value associated with this UUID
      *
-     * @return string
+     * For UUID version 1, the node field consists of an IEEE 802 MAC
+     * address, usually the host address. For systems with multiple IEEE
+     * 802 addresses, any available one can be used. The lowest addressed
+     * octet (octet number 10) contains the global/local bit and the
+     * unicast/multicast bit, and is the first octet of the address
+     * transmitted on an 802.3 LAN.
+     *
+     * For systems with no IEEE address, a randomly or pseudo-randomly
+     * generated value may be used; see RFC 4122, Section 4.5. The
+     * multicast bit must be set in such addresses, in order that they
+     * will never conflict with addresses obtained from network cards.
+     *
+     * For UUID version 3 or 5, the node field is a 48-bit value constructed
+     * from a name as described in RFC 4122, Section 4.3.
+     *
+     * For UUID version 4, the node field is a randomly or pseudo-randomly
+     * generated 48-bit value as described in RFC 4122, Section 4.4.
+     *
+     * @return string Hexadecimal value of node
+     * @link http://tools.ietf.org/html/rfc4122#section-4.1.6
      */
     public function getNodeHex()
     {
@@ -503,7 +555,7 @@ class Uuid
      * Returns the high field of the timestamp multiplexed with the version
      * number (bits 49-64 of the UUID).
      *
-     * @return int
+     * @return int Unsigned 16-bit integer value of time_hi_and_version
      */
     public function getTimeHiAndVersion()
     {
@@ -514,7 +566,7 @@ class Uuid
      * Returns the high field of the timestamp multiplexed with the version
      * number (bits 49-64 of the UUID).
      *
-     * @return string
+     * @return string Hexadecimal value of time_hi_and_version
      */
     public function getTimeHiAndVersionHex()
     {
@@ -524,7 +576,7 @@ class Uuid
     /**
      * Returns the low field of the timestamp (the first 32 bits of the UUID).
      *
-     * @return int
+     * @return int Unsigned 32-bit integer value of time_low
      * @throws Exception\UnsatisfiedDependencyException if called on a 32-bit system
      */
     public function getTimeLow()
@@ -543,7 +595,7 @@ class Uuid
     /**
      * Returns the low field of the timestamp (the first 32 bits of the UUID).
      *
-     * @return string
+     * @return string Hexadecimal value of time_low
      */
     public function getTimeLowHex()
     {
@@ -553,7 +605,7 @@ class Uuid
     /**
      * Returns the middle field of the timestamp (bits 33-48 of the UUID).
      *
-     * @return int
+     * @return int Unsigned 16-bit integer value of time_mid
      */
     public function getTimeMid()
     {
@@ -563,7 +615,7 @@ class Uuid
     /**
      * Returns the middle field of the timestamp (bits 33-48 of the UUID).
      *
-     * @return string
+     * @return string Hexadecimal value of time_mid
      */
     public function getTimeMidHex()
     {
@@ -582,10 +634,10 @@ class Uuid
      * has version type 1. If this UUID is not a time-based UUID then
      * this method throws UnsupportedOperationException.
      *
-     * @return int
+     * @return int Unsigned 60-bit integer value of the timestamp
      * @throws Exception\UnsupportedOperationException If this UUID is not a version 1 UUID
      * @throws Exception\UnsatisfiedDependencyException if called on a 32-bit system
-     * @see http://tools.ietf.org/html/rfc4122#section-4.1.4
+     * @link http://tools.ietf.org/html/rfc4122#section-4.1.4
      */
     public function getTimestamp()
     {
@@ -607,8 +659,18 @@ class Uuid
     /**
      * The timestamp value associated with this UUID
      *
-     * @return string
+     * The 60 bit timestamp value is constructed from the time_low,
+     * time_mid, and time_hi fields of this UUID. The resulting
+     * timestamp is measured in 100-nanosecond units since midnight,
+     * October 15, 1582 UTC.
+     *
+     * The timestamp value is only meaningful in a time-based UUID, which
+     * has version type 1. If this UUID is not a time-based UUID then
+     * this method throws UnsupportedOperationException.
+     *
+     * @return string Hexadecimal value of the timestamp
      * @throws Exception\UnsupportedOperationException If this UUID is not a version 1 UUID
+     * @link http://tools.ietf.org/html/rfc4122#section-4.1.4
      */
     public function getTimestampHex()
     {
@@ -628,6 +690,7 @@ class Uuid
      * Returns the string representation of the UUID as a URN.
      *
      * @return string
+     * @link http://en.wikipedia.org/wiki/Uniform_Resource_Name
      */
     public function getUrn()
     {
@@ -641,12 +704,12 @@ class Uuid
      * number has the following meaning:
      *
      * * 0 - Reserved for NCS backward compatibility
-     * * 2 - The RFC 4122 variant (used by this class
+     * * 2 - The RFC 4122 variant (used by this class)
      * * 6 - Reserved, Microsoft Corporation backward compatibility
      * * 7 - Reserved for future definition
      *
      * @return int
-     * @see http://tools.ietf.org/html/rfc4122#section-4.1.1
+     * @link http://tools.ietf.org/html/rfc4122#section-4.1.1
      */
     public function getVariant()
     {
@@ -676,6 +739,7 @@ class Uuid
      * * 5 - Name-based UUID hashed with SHA-1
      *
      * @return int
+     * @link http://tools.ietf.org/html/rfc4122#section-4.1.3
      */
     public function getVersion()
     {
@@ -725,7 +789,7 @@ class Uuid
     }
 
     /**
-     * Generate a UUID from a host ID, sequence number, and the current time.
+     * Generate a version 1 UUID from a host ID, sequence number, and the current time.
      * If $node is not given, getMacAddress() is used to obtain the hardware
      * address. If $clockSeq is given, it is used as the sequence number;
      * otherwise a random 14-bit sequence number is chosen.
@@ -799,7 +863,7 @@ class Uuid
     }
 
     /**
-     * Generate a UUID based on the MD5 hash of a namespace identifier (which
+     * Generate a version 3 UUID based on the MD5 hash of a namespace identifier (which
      * is a UUID) and a name (which is a string).
      *
      * @param Uuid|string $ns The UUID namespace in which to create the named UUID
@@ -818,7 +882,7 @@ class Uuid
     }
 
     /**
-     * Generate a random UUID.
+     * Generate a version 4 (random) UUID.
      *
      * @return Uuid
      */
@@ -838,7 +902,7 @@ class Uuid
     }
 
     /**
-     * Generate a UUID based on the SHA-1 hash of a namespace identifier (which
+     * Generate a version 5 UUID based on the SHA-1 hash of a namespace identifier (which
      * is a UUID) and a name (which is a string).
      *
      * @param Uuid|string $ns The UUID namespace in which to create the named UUID
@@ -862,6 +926,8 @@ class Uuid
      * UUID time is a 60-bit time value as a count of 100-nanosecond intervals
      * since 00:00:00.00, 15 October 1582.
      *
+     * @param int $sec Seconds since the Unix Epoch
+     * @param int $usec Microseconds
      * @return array
      * @throws Exception\UnsatisfiedDependencyException if called on a 32-bit system and Moontoast\Math\BigNumber is not present
      */
@@ -968,7 +1034,8 @@ class Uuid
      * Returns a version 3 or 5 UUID based on the hash (md5 or sha1) of a
      * namespace identifier (which is a UUID) and a name (which is a string)
      *
-     * @param string $hash
+     * @param string $hash The hash to use when creating the UUID
+     * @param int $version The UUID version to be generated
      * @return Uuid
      */
     protected static function uuidFromHashedName($hash, $version)
