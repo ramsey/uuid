@@ -608,9 +608,14 @@ class Uuid
      * The timestamp value associated with this UUID
      *
      * @return string
+     * @throws Exception\UnsupportedOperationException If this UUID is not a version 1 UUID
      */
     public function getTimestampHex()
     {
+        if ($this->getVersion() != 1) {
+            throw new Exception\UnsupportedOperationException('Not a time-based UUID');
+        }
+
         return sprintf(
             '%03x%04s%08s',
             ($this->getTimeHiAndVersion() & 0x0fff),

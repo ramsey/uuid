@@ -463,6 +463,19 @@ class UuidTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers Rhumsaa\Uuid\Uuid::getTimestampHex
+     * @covers Rhumsaa\Uuid\Exception\UnsupportedOperationException
+     * @expectedException Rhumsaa\Uuid\Exception\UnsupportedOperationException
+     * @expectedExceptionMessage Not a time-based UUID
+     */
+    public function testGetTimestampHexFromNonVersion1Uuid()
+    {
+        // Using a version 4 UUID to test
+        $uuid = Uuid::fromString('bf17b594-41f2-474f-bf70-4c90220f75de');
+        $ts = $uuid->getTimestampHex();
+    }
+
+    /**
      * @covers Rhumsaa\Uuid\Uuid::getTimestamp
      * @expectedException Rhumsaa\Uuid\Exception\UnsatisfiedDependencyException
      */
