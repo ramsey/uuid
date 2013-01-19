@@ -297,7 +297,7 @@ class Uuid
      *
      * @return \DateTime
      * @throws Exception\UnsupportedOperationException If this UUID is not a version 1 UUID
-     * @throws \BadMethodCallException if called on a 32-bit system and Moontoast\Math\BigNumber is not present
+     * @throws Exception\UnsatisfiedDependencyException if called on a 32-bit system and Moontoast\Math\BigNumber is not present
      */
     public function getDateTime()
     {
@@ -323,7 +323,7 @@ class Uuid
 
         } else {
 
-            throw new \BadMethodCallException(
+            throw new Exception\UnsatisfiedDependencyException(
                 'When calling ' . __METHOD__ . ' on a 32-bit system, '
                 . 'Moontoast\Math\BigNumber must be present in order '
                 . 'to extract DateTime from version 1 UUIDs'
@@ -339,12 +339,12 @@ class Uuid
      * to the RFC 4122 names for the fields.
      *
      * @return array
-     * @throws \BadMethodCallException if called on a 32-bit system
+     * @throws Exception\UnsatisfiedDependencyException if called on a 32-bit system
      */
     public function getFields()
     {
         if (!self::is64BitSystem()) {
-            throw new \BadMethodCallException(
+            throw new Exception\UnsatisfiedDependencyException(
                 'Cannot call ' . __METHOD__ . ' on a 32-bit system, since some '
                 . 'values overflow the system max integer value'
             );
@@ -375,12 +375,12 @@ class Uuid
      * Returns the least significant 64 bits of this UUID's 128 bit value
      *
      * @return \Moontoast\Math\BigNumber
-     * @throws \BadMethodCallException if Moontoast\Math\BigNumber is not present
+     * @throws Exception\UnsatisfiedDependencyException if Moontoast\Math\BigNumber is not present
      */
     public function getLeastSignificantBits()
     {
         if (!self::hasBigNumber()) {
-            throw new \BadMethodCallException(
+            throw new Exception\UnsatisfiedDependencyException(
                 'Cannot call ' . __METHOD__ . ' without support for large '
                 . 'integers, since least significant bits is an unsigned '
                 . '64-bit integer; Moontoast\Math\BigNumber is required'
@@ -415,12 +415,12 @@ class Uuid
      * Returns the most significant 64 bits of this UUID's 128 bit value
      *
      * @return \Moontoast\Math\BigNumber
-     * @throws \BadMethodCallException if Moontoast\Math\BigNumber is not present
+     * @throws Exception\UnsatisfiedDependencyException if Moontoast\Math\BigNumber is not present
      */
     public function getMostSignificantBits()
     {
         if (!self::hasBigNumber()) {
-            throw new \BadMethodCallException(
+            throw new Exception\UnsatisfiedDependencyException(
                 'Cannot call ' . __METHOD__ . ' without support for large '
                 . 'integers, since most significant bits is an unsigned '
                 . '64-bit integer; Moontoast\Math\BigNumber is required'
@@ -474,12 +474,12 @@ class Uuid
      *
      * @return int
      * @see http://tools.ietf.org/html/rfc4122#section-4.1.6
-     * @throws \BadMethodCallException if called on a 32-bit system
+     * @throws Exception\UnsatisfiedDependencyException if called on a 32-bit system
      */
     public function getNode()
     {
         if (!self::is64BitSystem()) {
-            throw new \BadMethodCallException(
+            throw new Exception\UnsatisfiedDependencyException(
                 'Cannot call ' . __METHOD__ . ' on a 32-bit system, since node '
                 . 'is an unsigned 48-bit integer and can overflow the system '
                 . 'max integer value'
@@ -525,12 +525,12 @@ class Uuid
      * Returns the low field of the timestamp (the first 32 bits of the UUID).
      *
      * @return int
-     * @throws \BadMethodCallException if called on a 32-bit system
+     * @throws Exception\UnsatisfiedDependencyException if called on a 32-bit system
      */
     public function getTimeLow()
     {
         if (!self::is64BitSystem()) {
-            throw new \BadMethodCallException(
+            throw new Exception\UnsatisfiedDependencyException(
                 'Cannot call ' . __METHOD__ . ' on a 32-bit system, since time_low '
                 . 'is an unsigned 32-bit integer and can overflow the system '
                 . 'max integer value'
@@ -584,7 +584,7 @@ class Uuid
      *
      * @return int
      * @throws Exception\UnsupportedOperationException If this UUID is not a version 1 UUID
-     * @throws \BadMethodCallException if called on a 32-bit system
+     * @throws Exception\UnsatisfiedDependencyException if called on a 32-bit system
      * @see http://tools.ietf.org/html/rfc4122#section-4.1.4
      */
     public function getTimestamp()
@@ -594,7 +594,7 @@ class Uuid
         }
 
         if (!self::is64BitSystem()) {
-            throw new \BadMethodCallException(
+            throw new Exception\UnsatisfiedDependencyException(
                 'Cannot call ' . __METHOD__ . ' on a 32-bit system, since timestamp '
                 . 'is an unsigned 60-bit integer and can overflow the system '
                 . 'max integer value'
@@ -858,7 +858,7 @@ class Uuid
      * since 00:00:00.00, 15 October 1582.
      *
      * @return array
-     * @throws \BadMethodCallException if called on a 32-bit system and Moontoast\Math\BigNumber is not present
+     * @throws Exception\UnsatisfiedDependencyException if called on a 32-bit system and Moontoast\Math\BigNumber is not present
      */
     protected static function calculateUuidTime($sec, $usec)
     {
@@ -896,7 +896,7 @@ class Uuid
             );
         }
 
-        throw new \BadMethodCallException(
+        throw new Exception\UnsatisfiedDependencyException(
             'When calling ' . __METHOD__ . ' on a 32-bit system, '
             . 'Moontoast\Math\BigNumber must be present in order '
             . 'to generate version 1 UUIDs'

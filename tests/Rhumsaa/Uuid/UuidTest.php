@@ -186,7 +186,7 @@ class UuidTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers Rhumsaa\Uuid\Uuid::getDateTime
-     * @expectedException BadMethodCallException
+     * @expectedException Rhumsaa\Uuid\Exception\UnsatisfiedDependencyException
      */
     public function testGetDateTimeThrownException()
     {
@@ -233,7 +233,7 @@ class UuidTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers Rhumsaa\Uuid\Uuid::getFields
-     * @expectedException BadMethodCallException
+     * @expectedException Rhumsaa\Uuid\Exception\UnsatisfiedDependencyException
      */
     public function testGetFields32Bit()
     {
@@ -273,7 +273,7 @@ class UuidTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers Rhumsaa\Uuid\Uuid::getLeastSignificantBits
-     * @expectedException BadMethodCallException
+     * @expectedException Rhumsaa\Uuid\Exception\UnsatisfiedDependencyException
      */
     public function testGetLeastSignificantBitsException()
     {
@@ -303,7 +303,7 @@ class UuidTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers Rhumsaa\Uuid\Uuid::getMostSignificantBits
-     * @expectedException BadMethodCallException
+     * @expectedException Rhumsaa\Uuid\Exception\UnsatisfiedDependencyException
      */
     public function testGetMostSignificantBitsException()
     {
@@ -334,7 +334,7 @@ class UuidTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers Rhumsaa\Uuid\Uuid::getNode
-     * @expectedException BadMethodCallException
+     * @expectedException Rhumsaa\Uuid\Exception\UnsatisfiedDependencyException
      */
     public function testGetNode32Bit()
     {
@@ -383,7 +383,7 @@ class UuidTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers Rhumsaa\Uuid\Uuid::getTimeLow
-     * @expectedException BadMethodCallException
+     * @expectedException Rhumsaa\Uuid\Exception\UnsatisfiedDependencyException
      */
     public function testGetTimeLow32Bit()
     {
@@ -464,7 +464,7 @@ class UuidTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers Rhumsaa\Uuid\Uuid::getTimestamp
-     * @expectedException BadMethodCallException
+     * @expectedException Rhumsaa\Uuid\Exception\UnsatisfiedDependencyException
      */
     public function testGetTimestamp32Bit()
     {
@@ -1164,7 +1164,7 @@ class UuidTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers Rhumsaa\Uuid\Uuid::calculateUuidTime
-     * @expectedException BadMethodCallException
+     * @expectedException Rhumsaa\Uuid\Exception\UnsatisfiedDependencyException
      */
     public function testCalculateUuidTimeThrownException()
     {
