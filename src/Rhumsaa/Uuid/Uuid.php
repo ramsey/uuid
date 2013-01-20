@@ -369,6 +369,7 @@ final class Uuid
             throw new Exception\UnsatisfiedDependencyException(
                 'Cannot call ' . __METHOD__ . ' on a 32-bit system, since some '
                 . 'values overflow the system max integer value'
+                . '; consider calling getFieldsHex instead'
             );
         }
 
@@ -417,6 +418,7 @@ final class Uuid
                 'Cannot call ' . __METHOD__ . ' without support for large '
                 . 'integers, since least significant bits is an unsigned '
                 . '64-bit integer; Moontoast\Math\BigNumber is required'
+                . '; consider calling getLeastSignificantBitsHex instead'
             );
         }
 
@@ -457,6 +459,7 @@ final class Uuid
                 'Cannot call ' . __METHOD__ . ' without support for large '
                 . 'integers, since most significant bits is an unsigned '
                 . '64-bit integer; Moontoast\Math\BigNumber is required'
+                . '; consider calling getMostSignificantBitsHex instead'
             );
         }
 
@@ -516,6 +519,7 @@ final class Uuid
                 'Cannot call ' . __METHOD__ . ' on a 32-bit system, since node '
                 . 'is an unsigned 48-bit integer and can overflow the system '
                 . 'max integer value'
+                . '; consider calling getNodeHex instead'
             );
         }
 
@@ -586,6 +590,7 @@ final class Uuid
                 'Cannot call ' . __METHOD__ . ' on a 32-bit system, since time_low '
                 . 'is an unsigned 32-bit integer and can overflow the system '
                 . 'max integer value'
+                . '; consider calling getTimeLowHex instead'
             );
         }
 
@@ -650,6 +655,7 @@ final class Uuid
                 'Cannot call ' . __METHOD__ . ' on a 32-bit system, since timestamp '
                 . 'is an unsigned 60-bit integer and can overflow the system '
                 . 'max integer value'
+                . '; consider calling getTimestampHex instead'
             );
         }
 
