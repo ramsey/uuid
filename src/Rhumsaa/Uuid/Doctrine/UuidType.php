@@ -5,7 +5,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @copyright Copyright (c) 2012 Ben Ramsey <http://benramsey.com>
+ * @copyright Copyright (c) 2013 Ben Ramsey <http://benramsey.com>
  * @license http://opensource.org/licenses/MIT MIT
  */
 
@@ -31,17 +31,21 @@ class UuidType extends Type
     const NAME = 'uuid';
 
     /**
-     * @param array                                    $fieldDeclaration
-     * @param Doctrine\DBAL\Platforms\AbstractPlatform $platform
+     * {@inheritdoc}
+     *
+     * @param array                                     $fieldDeclaration
+     * @param \Doctrine\DBAL\Platforms\AbstractPlatform $platform
      */
-    public function getSqlDeclaration(array $fieldDeclaration, AbstractPlatform $platform)
+    public function getSQLDeclaration(array $fieldDeclaration, AbstractPlatform $platform)
     {
         return $platform->getGuidTypeDeclarationSQL($fieldDeclaration);
     }
 
     /**
-     * @param string|null                              $value
-     * @param Doctrine\DBAL\Platforms\AbstractPlatform $platform
+     * {@inheritdoc}
+     *
+     * @param string|null                               $value
+     * @param \Doctrine\DBAL\Platforms\AbstractPlatform $platform
      */
     public function convertToPHPValue($value, AbstractPlatform $platform)
     {
@@ -59,8 +63,10 @@ class UuidType extends Type
     }
 
     /**
-     * @param Uuid\Uuid|null                           $value
-     * @param Doctrine\DBAL\Platforms\AbstractPlatform $platform
+     * {@inheritdoc}
+     *
+     * @param Uuid|null                                 $value
+     * @param \Doctrine\DBAL\Platforms\AbstractPlatform $platform
      */
     public function convertToDatabaseValue($value, AbstractPlatform $platform)
     {
@@ -76,6 +82,8 @@ class UuidType extends Type
     }
 
     /**
+     * {@inheritdoc}
+     *
      * @return string
      */
     public function getName()
