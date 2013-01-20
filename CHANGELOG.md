@@ -1,8 +1,8 @@
 * 2.0.0 (???)
 
   * Break: `Uuid` class is now marked as "final"
-  * Break: `Uuid::getLeastSignificantBytes()` no longer returns an integer on 64-bit platforms; it requires `moontoast/math`
-  * Break: `Uuid::getMostSignificantBytes()` no longer returns an integer on 64-bit platforms; it requires `moontoast/math`
+  * Break: `Uuid::getLeastSignificantBits()` no longer returns an integer on 64-bit platforms; it requires `moontoast/math`
+  * Break: `Uuid::getMostSignificantBits()` no longer returns an integer on 64-bit platforms; it requires `moontoast/math`
   * Break: Moved `UnsupportedOperationException` to the `Exception` subnamespace
   * Added support for 32-bit platforms
   * Added generated API documentation to the repository
