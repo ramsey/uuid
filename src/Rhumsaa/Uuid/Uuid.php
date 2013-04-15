@@ -719,11 +719,12 @@ final class Uuid
      */
     public function getVariant()
     {
-        if (0 === ($this->getClockSeqHiAndReserved() & 0x80)) {
+        $clockSeq = $this->getClockSeqHiAndReserved();
+        if (0 === ($clockSeq & 0x80)) {
             $variant = self::RESERVED_NCS;
-        } elseif (0 === ($this->getClockSeqHiAndReserved() & 0x40)) {
+        } elseif (0 === ($clockSeq & 0x40)) {
             $variant = self::RFC_4122;
-        } elseif (0 === ($this->getClockSeqHiAndReserved() & 0x20)) {
+        } elseif (0 === ($clockSeq & 0x20)) {
             $variant = self::RESERVED_MICROSOFT;
         } else {
             $variant = self::RESERVED_FUTURE;
