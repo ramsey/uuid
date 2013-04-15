@@ -1226,4 +1226,112 @@ class UuidTest extends \PHPUnit_Framework_TestCase
         Uuid::$force32Bit = true;
         $this->assertFalse($is64BitSystem->invoke($uuid));
     }
+
+    /**
+     * @covers Rhumsaa\Uuid\Uuid::isValid
+     */
+    public function testIsValidGoodVersion1()
+    {
+        $valid = Uuid::isValid('ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
+        $this->assertTrue($valid);
+    }
+
+    /**
+     * @covers Rhumsaa\Uuid\Uuid::isValid
+     */
+    public function testIsValidGoodVersion2()
+    {
+        $valid = Uuid::isValid('ff6f8cb0-c57d-21e1-9b21-0800200c9a66');
+        $this->assertTrue($valid);
+    }
+
+    /**
+     * @covers Rhumsaa\Uuid\Uuid::isValid
+     */
+    public function testIsValidGoodVersion3()
+    {
+        $valid = Uuid::isValid('ff6f8cb0-c57d-31e1-9b21-0800200c9a66');
+        $this->assertTrue($valid);
+    }
+
+    /**
+     * @covers Rhumsaa\Uuid\Uuid::isValid
+     */
+    public function testIsValidGoodVersion4()
+    {
+        $valid = Uuid::isValid('ff6f8cb0-c57d-41e1-9b21-0800200c9a66');
+        $this->assertTrue($valid);
+    }
+
+    /**
+     * @covers Rhumsaa\Uuid\Uuid::isValid
+     */
+    public function testIsValidGoodVersion5()
+    {
+        $valid = Uuid::isValid('ff6f8cb0-c57d-51e1-9b21-0800200c9a66');
+        $this->assertTrue($valid);
+    }
+
+    /**
+     * @covers Rhumsaa\Uuid\Uuid::isValid
+     */
+    public function testIsValidBadVersion6()
+    {
+        $valid = Uuid::isValid('ff6f8cb0-c57d-61e1-9b21-0800200c9a66');
+        $this->assertFalse($valid);
+    }
+
+    /**
+     * @covers Rhumsaa\Uuid\Uuid::isValid
+     */
+    public function testIsValidGoodUpperCase()
+    {
+        $valid = Uuid::isValid('FF6F8CB0-C57D-11E1-9B21-0800200C9A66');
+        $this->assertTrue($valid);
+    }
+
+    /**
+     * @covers Rhumsaa\Uuid\Uuid::isValid
+     */
+    public function testIsValidBadHex()
+    {
+        $valid = Uuid::isValid('zf6f8cb0-c57d-11e1-9b21-0800200c9a66');
+        $this->assertFalse($valid);
+    }
+
+    /**
+     * @covers Rhumsaa\Uuid\Uuid::isValid
+     */
+    public function testIsValidTooShort1()
+    {
+        $valid = Uuid::isValid('3f6f8cb0-c57d-11e1-9b21-0800200c9a6');
+        $this->assertFalse($valid);
+    }
+
+    /**
+     * @covers Rhumsaa\Uuid\Uuid::isValid
+     */
+    public function testIsValidTooShort2()
+    {
+        $valid = Uuid::isValid('af6f8cb-c57d-11e1-9b21-0800200c9a66');
+        $this->assertFalse($valid);
+    }
+
+    /**
+     * @covers Rhumsaa\Uuid\Uuid::isValid
+     */
+    public function testIsValidNoDashes()
+    {
+        $valid = Uuid::isValid('af6f8cb0c57d11e19b210800200c9a66');
+        $this->assertFalse($valid);
+    }
+
+    /**
+     * @covers Rhumsaa\Uuid\Uuid::isValid
+     */
+    public function testIsValidTooLong()
+    {
+        $valid = Uuid::isValid('ff6f8cb0-c57da-51e1-9b21-0800200c9a66');
+        $this->assertFalse($valid);
+    }
 }
