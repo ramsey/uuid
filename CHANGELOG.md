@@ -1,3 +1,5 @@
+* 2.1.0 (2013-04-15)
+  * Added static `Uuid::isValid()` method for checking whether a string is a valid UUID
 * 2.0.0 (2013-02-11)
   * Break: `Uuid` class is now marked as "final"
   * Break: `Uuid::getLeastSignificantBits()` no longer returns an integer on 64-bit platforms; it requires `moontoast/math`
