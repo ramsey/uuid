@@ -67,7 +67,7 @@ and install the latest version of the Uuid library into your project:
 ```json
 {
     "require": {
-        "rhumsaa/uuid": "2.0.*"
+        "rhumsaa/uuid": "~2.1"
     }
 }
 ```
