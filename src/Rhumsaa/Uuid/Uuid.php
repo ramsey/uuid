@@ -719,11 +719,12 @@ final class Uuid
      */
     public function getVariant()
     {
-        if (0 === ($this->getClockSeqHiAndReserved() & 0x80)) {
+        $clockSeq = $this->getClockSeqHiAndReserved();
+        if (0 === ($clockSeq & 0x80)) {
             $variant = self::RESERVED_NCS;
-        } elseif (0 === ($this->getClockSeqHiAndReserved() & 0x40)) {
+        } elseif (0 === ($clockSeq & 0x40)) {
             $variant = self::RFC_4122;
-        } elseif (0 === ($this->getClockSeqHiAndReserved() & 0x20)) {
+        } elseif (0 === ($clockSeq & 0x20)) {
             $variant = self::RESERVED_MICROSOFT;
         } else {
             $variant = self::RESERVED_FUTURE;
@@ -778,7 +779,7 @@ final class Uuid
         $name = str_replace(array('urn:', 'uuid:', '{', '}'), '', $name);
         $components = explode('-', $name);
 
-        if (count($components) != 5) {
+        if (!self::isValid($name)) {
             throw new \InvalidArgumentException('Invalid UUID string: ' . $name);
         }
 
@@ -792,6 +793,22 @@ final class Uuid
         );
 
         return new self($fields);
+    }
+
+    /**
+     * Check if a string is a valid uuid
+     *
+     * @param string $uuid The uuid to test
+     * @return boolean
+     */
+    public static function isValid($uuid)
+    {
+        $uuid = str_replace(array('urn:', 'uuid:', '{', '}'), '', $uuid);
+
+        if (!preg_match('/^[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[1-5][0-9A-Fa-f]{3}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}$/', $uuid)) {
+            return false;
+        }
+        return true;
     }
 
     /**
