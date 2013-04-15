@@ -109,6 +109,7 @@ number (bits 49-64 of the UUID).</span><pre>getTimeHiAndVersionHex()</pre></a></
 <li class="method public "><a href="#method_getUrn" title="getUrn :: Returns the string representation of the UUID as a URN."><span class="description">Returns the string representation of the UUID as a URN.</span><pre>getUrn()</pre></a></li>
 <li class="method public "><a href="#method_getVariant" title="getVariant :: Returns the variant number associated with this UUID."><span class="description">Returns the variant number associated with this UUID.</span><pre>getVariant()</pre></a></li>
 <li class="method public "><a href="#method_getVersion" title="getVersion :: The version number associated with this UUID."><span class="description">The version number associated with this UUID.</span><pre>getVersion()</pre></a></li>
+<li class="method public "><a href="#method_isValid" title="isValid :: Check if a string is a valid uuid"><span class="description">Check if a string is a valid uuid</span><pre>isValid()</pre></a></li>
 <li class="method public "><a href="#method_toString" title="toString :: Converts this UUID into a string representation"><span class="description">Converts this UUID into a string representation</span><pre>toString()</pre></a></li>
 <li class="method public "><a href="#method_uuid1" title="uuid1 :: Generate a version 1 UUID from a host ID, sequence number, and the current time."><span class="description">Generate a version 1 UUID from a host ID, sequence number, and the current time.</span><pre>uuid1()</pre></a></li>
 <li class="method public "><a href="#method_uuid3" title="uuid3 :: Generate a version 3 UUID based on the MD5 hash of a namespace identifier (which
@@ -763,6 +764,20 @@ number describes how this UUID was generated.</p>
 <div class="subelement response"><code>int</code></div>
 </div></div>
 </div>
+<a id="method_isValid"></a><div class="element clickable method public method_isValid" data-toggle="collapse" data-target=".method_isValid .collapse">
+<h2>Check if a string is a valid uuid</h2>
+<pre>isValid(string $uuid) : boolean</pre>
+<div class="labels"><span class="label">Static</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$uuid</h4>
+<code>string</code><p>The uuid to test</p></div>
+<h3>Returns</h3>
+<div class="subelement response"><code>boolean</code></div>
+</div></div>
+</div>
 <a id="method_toString"></a><div class="element clickable method public method_toString" data-toggle="collapse" data-target=".method_toString .collapse">
 <h2>Converts this UUID into a string representation</h2>
 <pre>toString() : string</pre>
@@ -1097,7 +1112,7 @@ BigNumber is not available</h2>
 <div class="row"><footer class="span12">
             Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by <a href="http://glyphicons.com/">Glyphicons</a>.<br>
             Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor 2.0.0a10</a> and<br>
-            generated on 2013-01-19T13:28:42-06:00.<br></footer></div>
+            generated on 2013-04-15T18:32:42-05:00.<br></footer></div>
 </div>
 </body>
 </html>
