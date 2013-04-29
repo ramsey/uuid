@@ -1334,4 +1334,13 @@ class UuidTest extends \PHPUnit_Framework_TestCase
         $valid = Uuid::isValid('ff6f8cb0-c57da-51e1-9b21-0800200c9a66');
         $this->assertFalse($valid);
     }
+
+    /**
+     * @covers Rhumsaa\Uuid\Uuid::isValid
+     */
+    public function testUsingNilAsValidUuid()
+    {
+        $this->assertInstanceOf('Rhumsaa\Uuid\Uuid', Uuid::uuid3(Uuid::NIL, 'randomtext'));
+        $this->assertInstanceOf('Rhumsaa\Uuid\Uuid', Uuid::uuid5(Uuid::NIL, 'randomtext'));
+    }
 }

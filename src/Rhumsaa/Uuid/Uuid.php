@@ -805,6 +805,10 @@ final class Uuid
     {
         $uuid = str_replace(array('urn:', 'uuid:', '{', '}'), '', $uuid);
 
+        if ($uuid == self::NIL) {
+            return true;
+        }
+
         if (!preg_match('/^[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[1-5][0-9A-Fa-f]{3}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}$/', $uuid)) {
             return false;
         }
