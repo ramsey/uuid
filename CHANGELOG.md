@@ -1,3 +1,5 @@
+* 2.1.1 (2013-04-29)
+  * Fixed NIL bug in `Uuid::isValid()` method, reported by @ocubom in PR #11
 * 2.1.0 (2013-04-15)
   * Added static `Uuid::isValid()` method for checking whether a string is a valid UUID
 * 2.0.0 (2013-02-11)
