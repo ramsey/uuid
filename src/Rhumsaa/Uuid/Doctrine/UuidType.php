@@ -78,6 +78,10 @@ class UuidType extends Type
             return (string) $value;
         }
 
+        if (is_string($value) && Uuid::isValid($value)) {
+            return $value;
+        }
+
         throw ConversionException::conversionFailed($value, self::NAME);
     }
 

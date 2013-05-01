@@ -59,6 +59,19 @@ class UuidTypeTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers Rhumsaa\Uuid\Doctrine\UuidType::convertToDatabaseValue
+     */
+    public function testStringUuidConvertsToDatabaseValue()
+    {
+        $uuid = 'ff6f8cb0-c57d-11e1-9b21-0800200c9a66';
+
+        $expected = $uuid;
+        $actual = $this->type->convertToDatabaseValue($uuid, $this->platform);
+
+        $this->assertEquals($expected, $actual);
+    }
+
+    /**
      * @covers Rhumsaa\Uuid\Doctrine\UuidType::convertToPHPValue
      */
     public function testUuidConvertsToPHPValue()
