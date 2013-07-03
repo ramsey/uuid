@@ -1,3 +1,5 @@
+* 2.1.2 (2013-07-03)
+  * @ericthelin found cases where the system node was coming back with uppercase hexadecimal digits; this ensures that case in the node is converted to lowercase
 * 2.1.1 (2013-04-29)
   * Fixed NIL bug in `Uuid::isValid()` method, reported by @ocubom in PR #11
 * 2.1.0 (2013-04-15)
