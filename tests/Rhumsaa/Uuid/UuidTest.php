@@ -700,6 +700,24 @@ class UuidTest extends \PHPUnit_Framework_TestCase
     /**
      * @covers Rhumsaa\Uuid\Uuid::uuid1
      */
+    public function testUuid1WithMixedCaseHexadecimalNode()
+    {
+        $uuid = Uuid::uuid1('71B0aD5e');
+
+        $this->assertInstanceOf('\Rhumsaa\Uuid\Uuid', $uuid);
+        $this->assertInstanceOf('\DateTime', $uuid->getDateTime());
+        $this->assertEquals(2, $uuid->getVariant());
+        $this->assertEquals(1, $uuid->getVersion());
+        $this->assertEquals('000071b0ad5e', $uuid->getNodeHex());
+
+        if (PHP_INT_SIZE == 8) {
+            $this->assertEquals(1907404126, $uuid->getNode());
+        }
+    }
+
+    /**
+     * @covers Rhumsaa\Uuid\Uuid::uuid1
+     */
     public function testUuid1WithNodeAndClockSequence32Bit()
     {
         $uuid = Uuid::uuid1(0x7fffffff, 0x1669);

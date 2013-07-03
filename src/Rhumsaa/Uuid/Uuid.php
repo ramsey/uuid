@@ -848,7 +848,7 @@ final class Uuid
         }
 
         if (ctype_xdigit($node) && strlen($node) <= 12) {
-            $node = sprintf('%012s', $node);
+            $node = strtolower(sprintf('%012s', $node));
         } else {
             throw new \InvalidArgumentException('Invalid node value');
         }
