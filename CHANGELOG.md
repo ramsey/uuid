@@ -1,3 +1,6 @@
+* 2.2.0 (2013-07-04)
+  * Added `Doctrine\UuidType::requiresSQLCommentHint()` method by merging in PR #13 from @zerrvox
+  * Removed `"minimum-stability": "dev"` from composer.json
 * 2.1.2 (2013-07-03)
   * @ericthelin found cases where the system node was coming back with uppercase hexadecimal digits; this ensures that case in the node is converted to lowercase
 * 2.1.1 (2013-04-29)
