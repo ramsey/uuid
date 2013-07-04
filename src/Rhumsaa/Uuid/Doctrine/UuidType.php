@@ -90,4 +90,14 @@ class UuidType extends Type
     {
         return self::NAME;
     }
+    
+    /**
+     * {@inheritdoc}
+     *
+     * @return boolean
+     */
+    public function requiresSQLCommentHint(AbstractPlatform $platform)
+    {
+        return true;
+    }    
 }
