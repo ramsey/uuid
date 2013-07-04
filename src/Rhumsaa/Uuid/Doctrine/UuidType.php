@@ -94,6 +94,7 @@ class UuidType extends Type
     /**
      * {@inheritdoc}
      *
+     * @param \Doctrine\DBAL\Platforms\AbstractPlatform $platform
      * @return boolean
      */
     public function requiresSQLCommentHint(AbstractPlatform $platform)
