@@ -33,7 +33,6 @@
     "autoload": {
         "psr-0": {"Rhumsaa\\Uuid": "src/"}
     },
-    "minimum-stability": "dev",
     "extra": {
         "branch-alias": {
             "dev-master": "2.1.x-dev"
