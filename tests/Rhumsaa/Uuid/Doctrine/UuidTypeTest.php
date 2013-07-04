@@ -100,4 +100,12 @@ class UuidTypeTest extends PHPUnit_Framework_TestCase
     {
         $this->assertEquals('DUMMYVARCHAR()', $this->type->getSqlDeclaration(array('length' => 36), $this->platform));
     }
+
+    /**
+     * @covers Rhumsaa\Uuid\Doctrine\UuidType::requiresSQLCommentHint
+     */
+    public function testRequiresSQLCommentHint()
+    {
+        $this->assertTrue($this->type->requiresSQLCommentHint($this->platform));
+    }
 }

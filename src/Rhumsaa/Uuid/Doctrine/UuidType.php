@@ -90,4 +90,15 @@ class UuidType extends Type
     {
         return self::NAME;
     }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @param \Doctrine\DBAL\Platforms\AbstractPlatform $platform
+     * @return boolean
+     */
+    public function requiresSQLCommentHint(AbstractPlatform $platform)
+    {
+        return true;
+    }
 }
