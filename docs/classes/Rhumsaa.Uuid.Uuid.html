@@ -63,6 +63,7 @@ string context"><span class="description">Converts this UUID object to a string 
 string context</span><pre>__toString()</pre></a></li>
 <li class="method public "><a href="#method_compareTo" title="compareTo :: Compares this UUID with the specified UUID."><span class="description">Compares this UUID with the specified UUID.</span><pre>compareTo()</pre></a></li>
 <li class="method public "><a href="#method_equals" title="equals :: Compares this object to the specified object."><span class="description">Compares this object to the specified object.</span><pre>equals()</pre></a></li>
+<li class="method public "><a href="#method_fromBytes" title="fromBytes :: Creates a UUID from a byte string."><span class="description">Creates a UUID from a byte string.</span><pre>fromBytes()</pre></a></li>
 <li class="method public "><a href="#method_fromString" title="fromString :: Creates a UUID from the string standard representation as described
 in the toString() method."><span class="description">Creates a UUID from the string standard representation as described
 in the toString() method.</span><pre>fromString()</pre></a></li>
@@ -256,6 +257,26 @@ as this UUID.</p></div>
 <h3>Returns</h3>
 <div class="subelement response">
 <code>bool</code>True if $obj is equal to this UUID</div>
+</div></div>
+</div>
+<a id="method_fromBytes"></a><div class="element clickable method public method_fromBytes" data-toggle="collapse" data-target=".method_fromBytes .collapse">
+<h2>Creates a UUID from a byte string.</h2>
+<pre>fromBytes(string $bytes) : <a href="../classes/Rhumsaa.Uuid.Uuid.html">\Rhumsaa\Uuid\Uuid</a></pre>
+<div class="labels"><span class="label">Static</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$bytes</h4>
+<code>string</code>
+</div>
+<h3>Exceptions</h3>
+<table class="table table-bordered"><tr>
+<th><code><a href="http://php.net/manual/en/class.invalidargumentexception.php">\InvalidArgumentException</a></code></th>
+<td>If the $bytes string does not contain 16 characters</td>
+</tr></table>
+<h3>Returns</h3>
+<div class="subelement response"><code><a href="../classes/Rhumsaa.Uuid.Uuid.html">\Rhumsaa\Uuid\Uuid</a></code></div>
 </div></div>
 </div>
 <a id="method_fromString"></a><div class="element clickable method public method_fromString" data-toggle="collapse" data-target=".method_fromString .collapse">
@@ -1112,7 +1133,7 @@ BigNumber is not available</h2>
 <div class="row"><footer class="span12">
             Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by <a href="http://glyphicons.com/">Glyphicons</a>.<br>
             Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor 2.0.0a10</a> and<br>
-            generated on 2013-07-04T10:49:00-05:00.<br></footer></div>
+            generated on 2013-07-16T10:06:28-05:00.<br></footer></div>
 </div>
 </body>
 </html>
