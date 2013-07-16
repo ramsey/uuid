@@ -11,6 +11,8 @@
 
 namespace Rhumsaa\Uuid;
 
+use InvalidArgumentException;
+
 /**
  * Represents a universally unique identifier (UUID), according to RFC 4122
  *
@@ -767,12 +769,37 @@ final class Uuid
     }
 
     /**
+     * Creates a UUID from a byte string.
+     *
+     * @param string $bytes
+     * @return Uuid
+     * @throws InvalidArgumentException If the $bytes string does not contain 16 characters
+     */
+    public static function fromBytes($bytes)
+    {
+        if (strlen($bytes) !== 16) {
+            throw new InvalidArgumentException('$bytes string should contain 16 characters.');
+        }
+
+        $uuid = '';
+        foreach (range(0, 15) as $step) {
+            $uuid .= sprintf('%02x', ord($bytes[$step]));
+
+            if (in_array($step, array(3, 5, 7, 9))) {
+                $uuid .= '-';
+            }
+        }
+
+        return Uuid::fromString($uuid);
+    }
+
+    /**
      * Creates a UUID from the string standard representation as described
      * in the toString() method.
      *
      * @param string $name A string that specifies a UUID
      * @return Uuid
-     * @throws \InvalidArgumentException If the $name isn't a valid UUID
+     * @throws InvalidArgumentException If the $name isn't a valid UUID
      */
     public static function fromString($name)
     {
@@ -780,7 +807,7 @@ final class Uuid
         $components = explode('-', $name);
 
         if (!self::isValid($name)) {
-            throw new \InvalidArgumentException('Invalid UUID string: ' . $name);
+            throw new InvalidArgumentException('Invalid UUID string: ' . $name);
         }
 
         $fields = array(
@@ -828,7 +855,7 @@ final class Uuid
      *                      could arise when the clock is set backwards in time
      *                      or if the node ID changes.
      * @return Uuid
-     * @throws \InvalidArgumentException if the $node is invalid
+     * @throws InvalidArgumentException if the $node is invalid
      */
     public static function uuid1($node = null, $clockSeq = null)
     {
@@ -850,7 +877,7 @@ final class Uuid
         if (ctype_xdigit($node) && strlen($node) <= 12) {
             $node = strtolower(sprintf('%012s', $node));
         } else {
-            throw new \InvalidArgumentException('Invalid node value');
+            throw new InvalidArgumentException('Invalid node value');
         }
 
         if ($clockSeq === null) {

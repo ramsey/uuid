@@ -1361,4 +1361,35 @@ class UuidTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('Rhumsaa\Uuid\Uuid', Uuid::uuid3(Uuid::NIL, 'randomtext'));
         $this->assertInstanceOf('Rhumsaa\Uuid\Uuid', Uuid::uuid5(Uuid::NIL, 'randomtext'));
     }
+
+    /**
+     * @covers Rhumsaa\Uuid\Uuid::fromBytes
+     */
+    public function testFromBytes()
+    {
+        $uuid = Uuid::fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
+        $bytes = $uuid->getBytes();
+
+        $fromBytesUuid = Uuid::fromBytes($bytes);
+
+        $this->assertTrue($uuid->equals($fromBytesUuid));
+    }
+
+    /**
+     * @covers Rhumsaa\Uuid\Uuid::fromBytes
+     * @expectedException InvalidArgumentException
+     */
+    public function testFromBytesArgumentTooShort()
+    {
+        Uuid::fromBytes('thisisveryshort');
+    }
+
+    /**
+     * @covers Rhumsaa\Uuid\Uuid::fromBytes
+     * @expectedException InvalidArgumentException
+     */
+    public function testFromBytesArgumentTooLong()
+    {
+        Uuid::fromBytes('thisisabittoolong');
+    }
 }
