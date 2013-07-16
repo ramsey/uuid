@@ -1,3 +1,5 @@
+* 2.2.1 (2013-07-16)
+  * Added `Uuid::fromBytes()` by merging in PR #14 from @asm89
 * 2.2.0 (2013-07-04)
   * Added `Doctrine\UuidType::requiresSQLCommentHint()` method by merging in PR #13 from @zerrvox
   * Removed `"minimum-stability": "dev"` from composer.json
