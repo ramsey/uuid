@@ -1219,25 +1219,33 @@ class UuidTest extends \PHPUnit_Framework_TestCase
 
         while ($currentTime <= $endTime) {
 
-            $timeOfDay = array(
-                'sec' => $currentTime,
-                'usec' => 999999,
-                'minuteswest' => 0,
-                'dsttime' => 0,
-            );
+            foreach (array(0, 50000, 250000, 500000, 750000, 999999) as $usec) {
 
-            Uuid::$timeOfDayTest = $timeOfDay;
+                $timeOfDay = array(
+                    'sec' => $currentTime,
+                    'usec' => $usec,
+                    'minuteswest' => 0,
+                    'dsttime' => 0,
+                );
 
-            Uuid::$force32Bit = true;
-            $uuid32 = Uuid::uuid1(0x00007ffffffe, 0x1669);
+                Uuid::$timeOfDayTest = $timeOfDay;
 
-            Uuid::$force32Bit = false;
-            $uuid64 = Uuid::uuid1(0x00007ffffffe, 0x1669);
+                Uuid::$force32Bit = true;
+                $uuid32 = Uuid::uuid1(0x00007ffffffe, 0x1669);
 
-            $this->assertTrue(
-                $uuid32->equals($uuid64),
-                'Breaks at ' . gmdate('r', $currentTime) . "; 32-bit: {$uuid32->toString()}, 64-bit: {$uuid64->toString()}"
-            );
+                Uuid::$force32Bit = false;
+                $uuid64 = Uuid::uuid1(0x00007ffffffe, 0x1669);
+
+                $this->assertTrue(
+                    $uuid32->equals($uuid64),
+                    'Breaks at ' . gmdate('r', $currentTime) . "; 32-bit: {$uuid32->toString()}, 64-bit: {$uuid64->toString()}"
+                );
+
+                // Assert that the time matches
+                $testTime = round($currentTime + ($usec / 1000000));
+                $this->assertEquals($testTime, $uuid64->getDateTime()->getTimestamp());
+                $this->assertEquals($testTime, $uuid32->getDateTime()->getTimestamp());
+            }
 
             $currentTime++;
         }
