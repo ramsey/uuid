@@ -1441,4 +1441,329 @@ class UuidTest extends \PHPUnit_Framework_TestCase
     {
         Uuid::fromBytes('thisisabittoolong');
     }
+
+    /**
+     * This test ensures that Rhumsaa\Uuid passes the same test cases
+     * as the Python UUID library.
+     *
+     * Taken from the Python UUID tests in
+     * http://hg.python.org/cpython/file/2f4c4db9aee5/Lib/test/test_uuid.py
+     *
+     * @covers Rhumsaa\Uuid\Uuid::fromString
+     * @covers Rhumsaa\Uuid\Uuid::fromBytes
+     * @covers Rhumsaa\Uuid\Uuid::toString
+     * @covers Rhumsaa\Uuid\Uuid::getBytes
+     * @covers Rhumsaa\Uuid\Uuid::getFieldsHex
+     * @covers Rhumsaa\Uuid\Uuid::getTimeLowHex
+     * @covers Rhumsaa\Uuid\Uuid::getTimeMidHex
+     * @covers Rhumsaa\Uuid\Uuid::getTimeHiAndVersionHex
+     * @covers Rhumsaa\Uuid\Uuid::getClockSeqHiAndReservedHex
+     * @covers Rhumsaa\Uuid\Uuid::getClockSeqLowHex
+     * @covers Rhumsaa\Uuid\Uuid::getNodeHex
+     * @covers Rhumsaa\Uuid\Uuid::getUrn
+     * @covers Rhumsaa\Uuid\Uuid::getTimestampHex
+     * @covers Rhumsaa\Uuid\Uuid::getClockSequenceHex
+     * @covers Rhumsaa\Uuid\Uuid::getVariant
+     * @covers Rhumsaa\Uuid\Uuid::getVersion
+     */
+    public function testUuidPassesPythonTests()
+    {
+        // This array is taken directly from the Python tests, more or less
+        $tests = array(
+            array(
+                'string' => '00000000-0000-0000-0000-000000000000',
+                'curly' => '{00000000-0000-0000-0000-000000000000}',
+                'hex' => '00000000000000000000000000000000',
+                'bytes' => 'AAAAAAAAAAAAAAAAAAAAAA==',
+                'fields' => array(
+                    'time_low' => '0',
+                    'time_mid' => '0',
+                    'time_hi_and_version' => '0',
+                    'clock_seq_hi_and_reserved' => '0',
+                    'clock_seq_low' => '0',
+                    'node' => '0',
+                ),
+                'urn' => 'urn:uuid:00000000-0000-0000-0000-000000000000',
+                'time' => '0',
+                'clock_seq' => '0000',
+                'variant' => Uuid::RESERVED_NCS,
+                'version' => null,
+            ),
+            array(
+                'string' => '00010203-0405-0607-0809-0a0b0c0d0e0f',
+                'curly' => '{00010203-0405-0607-0809-0a0b0c0d0e0f}',
+                'hex' => '000102030405060708090a0b0c0d0e0f',
+                'bytes' => 'AAECAwQFBgcICQoLDA0ODw==',
+                'fields' => array(
+                    'time_low' => '10203',
+                    'time_mid' => '405',
+                    'time_hi_and_version' => '607',
+                    'clock_seq_hi_and_reserved' => '8',
+                    'clock_seq_low' => '9',
+                    'node' => '0a0b0c0d0e0f',
+                ),
+                'urn' => 'urn:uuid:00010203-0405-0607-0809-0a0b0c0d0e0f',
+                'time' => '607040500010203',
+                'clock_seq' => '0809',
+                'variant' => Uuid::RESERVED_NCS,
+                'version' => null,
+            ),
+            array(
+                'string' => '02d9e6d5-9467-382e-8f9b-9300a64ac3cd',
+                'curly' => '{02d9e6d5-9467-382e-8f9b-9300a64ac3cd}',
+                'hex' => '02d9e6d59467382e8f9b9300a64ac3cd',
+                'bytes' => 'Atnm1ZRnOC6Pm5MApkrDzQ==',
+                'fields' => array(
+                    'time_low' => '02d9e6d5',
+                    'time_mid' => '9467',
+                    'time_hi_and_version' => '382e',
+                    'clock_seq_hi_and_reserved' => '8f',
+                    'clock_seq_low' => '9b',
+                    'node' => '9300a64ac3cd',
+                ),
+                'urn' => 'urn:uuid:02d9e6d5-9467-382e-8f9b-9300a64ac3cd',
+                'time' => '82e946702d9e6d5',
+                'clock_seq' => '0f9b',
+                'variant' => Uuid::RFC_4122,
+                'version' => 3,
+            ),
+            array(
+                'string' => '12345678-1234-5678-1234-567812345678',
+                'curly' => '{12345678-1234-5678-1234-567812345678}',
+                'hex' => '12345678123456781234567812345678',
+                'bytes' => 'EjRWeBI0VngSNFZ4EjRWeA==',
+                'fields' => array(
+                    'time_low' => '12345678',
+                    'time_mid' => '1234',
+                    'time_hi_and_version' => '5678',
+                    'clock_seq_hi_and_reserved' => '12',
+                    'clock_seq_low' => '34',
+                    'node' => '567812345678',
+                ),
+                'urn' => 'urn:uuid:12345678-1234-5678-1234-567812345678',
+                'time' => '678123412345678',
+                'clock_seq' => '1234',
+                'variant' => Uuid::RESERVED_NCS,
+                'version' => null,
+            ),
+            array(
+                'string' => '6ba7b810-9dad-11d1-80b4-00c04fd430c8',
+                'curly' => '{6ba7b810-9dad-11d1-80b4-00c04fd430c8}',
+                'hex' => '6ba7b8109dad11d180b400c04fd430c8',
+                'bytes' => 'a6e4EJ2tEdGAtADAT9QwyA==',
+                'fields' => array(
+                    'time_low' => '6ba7b810',
+                    'time_mid' => '9dad',
+                    'time_hi_and_version' => '11d1',
+                    'clock_seq_hi_and_reserved' => '80',
+                    'clock_seq_low' => 'b4',
+                    'node' => '00c04fd430c8',
+                ),
+                'urn' => 'urn:uuid:6ba7b810-9dad-11d1-80b4-00c04fd430c8',
+                'time' => '1d19dad6ba7b810',
+                'clock_seq' => '00b4',
+                'variant' => Uuid::RFC_4122,
+                'version' => 1,
+            ),
+            array(
+                'string' => '6ba7b811-9dad-11d1-80b4-00c04fd430c8',
+                'curly' => '{6ba7b811-9dad-11d1-80b4-00c04fd430c8}',
+                'hex' => '6ba7b8119dad11d180b400c04fd430c8',
+                'bytes' => 'a6e4EZ2tEdGAtADAT9QwyA==',
+                'fields' => array(
+                    'time_low' => '6ba7b811',
+                    'time_mid' => '9dad',
+                    'time_hi_and_version' => '11d1',
+                    'clock_seq_hi_and_reserved' => '80',
+                    'clock_seq_low' => 'b4',
+                    'node' => '00c04fd430c8',
+                ),
+                'urn' => 'urn:uuid:6ba7b811-9dad-11d1-80b4-00c04fd430c8',
+                'time' => '1d19dad6ba7b811',
+                'clock_seq' => '00b4',
+                'variant' => Uuid::RFC_4122,
+                'version' => 1,
+            ),
+            array(
+                'string' => '6ba7b812-9dad-11d1-80b4-00c04fd430c8',
+                'curly' => '{6ba7b812-9dad-11d1-80b4-00c04fd430c8}',
+                'hex' => '6ba7b8129dad11d180b400c04fd430c8',
+                'bytes' => 'a6e4Ep2tEdGAtADAT9QwyA==',
+                'fields' => array(
+                    'time_low' => '6ba7b812',
+                    'time_mid' => '9dad',
+                    'time_hi_and_version' => '11d1',
+                    'clock_seq_hi_and_reserved' => '80',
+                    'clock_seq_low' => 'b4',
+                    'node' => '00c04fd430c8',
+                ),
+                'urn' => 'urn:uuid:6ba7b812-9dad-11d1-80b4-00c04fd430c8',
+                'time' => '1d19dad6ba7b812',
+                'clock_seq' => '00b4',
+                'variant' => Uuid::RFC_4122,
+                'version' => 1,
+            ),
+            array(
+                'string' => '6ba7b814-9dad-11d1-80b4-00c04fd430c8',
+                'curly' => '{6ba7b814-9dad-11d1-80b4-00c04fd430c8}',
+                'hex' => '6ba7b8149dad11d180b400c04fd430c8',
+                'bytes' => 'a6e4FJ2tEdGAtADAT9QwyA==',
+                'fields' => array(
+                    'time_low' => '6ba7b814',
+                    'time_mid' => '9dad',
+                    'time_hi_and_version' => '11d1',
+                    'clock_seq_hi_and_reserved' => '80',
+                    'clock_seq_low' => 'b4',
+                    'node' => '00c04fd430c8',
+                ),
+                'urn' => 'urn:uuid:6ba7b814-9dad-11d1-80b4-00c04fd430c8',
+                'time' => '1d19dad6ba7b814',
+                'clock_seq' => '00b4',
+                'variant' => Uuid::RFC_4122,
+                'version' => 1,
+            ),
+            array(
+                'string' => '7d444840-9dc0-11d1-b245-5ffdce74fad2',
+                'curly' => '{7d444840-9dc0-11d1-b245-5ffdce74fad2}',
+                'hex' => '7d4448409dc011d1b2455ffdce74fad2',
+                'bytes' => 'fURIQJ3AEdGyRV/9znT60g==',
+                'fields' => array(
+                    'time_low' => '7d444840',
+                    'time_mid' => '9dc0',
+                    'time_hi_and_version' => '11d1',
+                    'clock_seq_hi_and_reserved' => 'b2',
+                    'clock_seq_low' => '45',
+                    'node' => '5ffdce74fad2',
+                ),
+                'urn' => 'urn:uuid:7d444840-9dc0-11d1-b245-5ffdce74fad2',
+                'time' => '1d19dc07d444840',
+                'clock_seq' => '3245',
+                'variant' => Uuid::RFC_4122,
+                'version' => 1,
+            ),
+            array(
+                'string' => 'e902893a-9d22-3c7e-a7b8-d6e313b71d9f',
+                'curly' => '{e902893a-9d22-3c7e-a7b8-d6e313b71d9f}',
+                'hex' => 'e902893a9d223c7ea7b8d6e313b71d9f',
+                'bytes' => '6QKJOp0iPH6nuNbjE7cdnw==',
+                'fields' => array(
+                    'time_low' => 'e902893a',
+                    'time_mid' => '9d22',
+                    'time_hi_and_version' => '3c7e',
+                    'clock_seq_hi_and_reserved' => 'a7',
+                    'clock_seq_low' => 'b8',
+                    'node' => 'd6e313b71d9f',
+                ),
+                'urn' => 'urn:uuid:e902893a-9d22-3c7e-a7b8-d6e313b71d9f',
+                'time' => 'c7e9d22e902893a',
+                'clock_seq' => '27b8',
+                'variant' => Uuid::RFC_4122,
+                'version' => 3,
+            ),
+            array(
+                'string' => 'eb424026-6f54-4ef8-a4d0-bb658a1fc6cf',
+                'curly' => '{eb424026-6f54-4ef8-a4d0-bb658a1fc6cf}',
+                'hex' => 'eb4240266f544ef8a4d0bb658a1fc6cf',
+                'bytes' => '60JAJm9UTvik0Ltlih/Gzw==',
+                'fields' => array(
+                    'time_low' => 'eb424026',
+                    'time_mid' => '6f54',
+                    'time_hi_and_version' => '4ef8',
+                    'clock_seq_hi_and_reserved' => 'a4',
+                    'clock_seq_low' => 'd0',
+                    'node' => 'bb658a1fc6cf',
+                ),
+                'urn' => 'urn:uuid:eb424026-6f54-4ef8-a4d0-bb658a1fc6cf',
+                'time' => 'ef86f54eb424026',
+                'clock_seq' => '24d0',
+                'variant' => Uuid::RFC_4122,
+                'version' => 4,
+            ),
+            array(
+                'string' => 'f81d4fae-7dec-11d0-a765-00a0c91e6bf6',
+                'curly' => '{f81d4fae-7dec-11d0-a765-00a0c91e6bf6}',
+                'hex' => 'f81d4fae7dec11d0a76500a0c91e6bf6',
+                'bytes' => '+B1Prn3sEdCnZQCgyR5r9g==',
+                'fields' => array(
+                    'time_low' => 'f81d4fae',
+                    'time_mid' => '7dec',
+                    'time_hi_and_version' => '11d0',
+                    'clock_seq_hi_and_reserved' => 'a7',
+                    'clock_seq_low' => '65',
+                    'node' => '00a0c91e6bf6',
+                ),
+                'urn' => 'urn:uuid:f81d4fae-7dec-11d0-a765-00a0c91e6bf6',
+                'time' => '1d07decf81d4fae',
+                'clock_seq' => '2765',
+                'variant' => Uuid::RFC_4122,
+                'version' => 1,
+            ),
+            array(
+                'string' => 'fffefdfc-fffe-fffe-fffe-fffefdfcfbfa',
+                'curly' => '{fffefdfc-fffe-fffe-fffe-fffefdfcfbfa}',
+                'hex' => 'fffefdfcfffefffefffefffefdfcfbfa',
+                'bytes' => '//79/P/+//7//v/+/fz7+g==',
+                'fields' => array(
+                    'time_low' => 'fffefdfc',
+                    'time_mid' => 'fffe',
+                    'time_hi_and_version' => 'fffe',
+                    'clock_seq_hi_and_reserved' => 'ff',
+                    'clock_seq_low' => 'fe',
+                    'node' => 'fffefdfcfbfa',
+                ),
+                'urn' => 'urn:uuid:fffefdfc-fffe-fffe-fffe-fffefdfcfbfa',
+                'time' => 'ffefffefffefdfc',
+                'clock_seq' => '3ffe',
+                'variant' => Uuid::RESERVED_FUTURE,
+                'version' => null,
+            ),
+            array(
+                'string' => 'ffffffff-ffff-ffff-ffff-ffffffffffff',
+                'curly' => '{ffffffff-ffff-ffff-ffff-ffffffffffff}',
+                'hex' => 'ffffffffffffffffffffffffffffffff',
+                'bytes' => '/////////////////////w==',
+                'fields' => array(
+                    'time_low' => 'ffffffff',
+                    'time_mid' => 'ffff',
+                    'time_hi_and_version' => 'ffff',
+                    'clock_seq_hi_and_reserved' => 'ff',
+                    'clock_seq_low' => 'ff',
+                    'node' => 'ffffffffffff',
+                ),
+                'urn' => 'urn:uuid:ffffffff-ffff-ffff-ffff-ffffffffffff',
+                'time' => 'fffffffffffffff',
+                'clock_seq' => '3fff',
+                'variant' => Uuid::RESERVED_FUTURE,
+                'version' => null,
+            ),
+        );
+
+        foreach ($tests as $test) {
+            $uuids = array(
+                Uuid::fromString($test['string']),
+                Uuid::fromString($test['curly']),
+                Uuid::fromString($test['hex']),
+                Uuid::fromBytes(base64_decode($test['bytes'])),
+                Uuid::fromString($test['urn']),
+            );
+            foreach ($uuids as $uuid) {
+                $this->assertEquals($test['string'], (string) $uuid);
+                $this->assertEquals(base64_decode($test['bytes']), $uuid->getBytes());
+                $this->assertEquals($test['fields'], $uuid->getFieldsHex());
+                $this->assertEquals($test['fields']['time_low'], $uuid->getTimeLowHex());
+                $this->assertEquals($test['fields']['time_mid'], $uuid->getTimeMidHex());
+                $this->assertEquals($test['fields']['time_hi_and_version'], $uuid->getTimeHiAndVersionHex());
+                $this->assertEquals($test['fields']['clock_seq_hi_and_reserved'], $uuid->getClockSeqHiAndReservedHex());
+                $this->assertEquals($test['fields']['clock_seq_low'], $uuid->getClockSeqLowHex());
+                $this->assertEquals($test['fields']['node'], $uuid->getNodeHex());
+                $this->assertEquals($test['urn'], $uuid->getUrn());
+                if ($uuid->getVersion() == 1) {
+                    $this->assertEquals($test['time'], $uuid->getTimestampHex());
+                }
+                $this->assertEquals($test['clock_seq'], $uuid->getClockSequenceHex());
+                $this->assertEquals($test['variant'], $uuid->getVariant());
+                $this->assertEquals($test['version'], $uuid->getVersion());
+            }
+        }
+    }
 }
