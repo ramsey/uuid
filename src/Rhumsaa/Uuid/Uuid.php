@@ -1008,6 +1008,8 @@ final class Uuid
     {
         if (self::is64BitSystem()) {
 
+            // 0x01b21dd213814000 is the number of 100-ns intervals between the
+            // UUID epoch 1582-10-15 00:00:00 and the Unix epoch 1970-01-01 00:00:00.
             $uuidTime = ($sec * 10000000) + ($usec * 10) + 0x01b21dd213814000;
 
             return array(
