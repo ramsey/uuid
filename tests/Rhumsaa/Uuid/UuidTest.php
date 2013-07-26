@@ -1293,15 +1293,6 @@ class UuidTest extends \PHPUnit_Framework_TestCase
     /**
      * @covers Rhumsaa\Uuid\Uuid::isValid
      */
-    public function testIsValidBadVersion6()
-    {
-        $valid = Uuid::isValid('ff6f8cb0-c57d-61e1-9b21-0800200c9a66');
-        $this->assertFalse($valid);
-    }
-
-    /**
-     * @covers Rhumsaa\Uuid\Uuid::isValid
-     */
     public function testIsValidGoodUpperCase()
     {
         $valid = Uuid::isValid('FF6F8CB0-C57D-11E1-9B21-0800200C9A66');

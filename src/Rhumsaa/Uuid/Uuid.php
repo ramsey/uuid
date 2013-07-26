@@ -811,10 +811,21 @@ final class Uuid
      */
     public static function fromString($name)
     {
-        $name = str_replace(array('urn:', 'uuid:', '{', '}'), '', $name);
-        $components = explode('-', $name);
+        $nameParsed = str_replace(array('urn:', 'uuid:', '{', '}', '-'), '', $name);
 
-        if (!self::isValid($name)) {
+        // We have stripped out the dashes and are breaking up the string using
+        // substr(). In this way, we can accept a full hex value that doesn't
+        // contain dashes.
+        $components = array(
+            substr($nameParsed, 0, 8),
+            substr($nameParsed, 8, 4),
+            substr($nameParsed, 12, 4),
+            substr($nameParsed, 16, 4),
+            substr($nameParsed, 20),
+        );
+        $nameParsed = implode('-', $components);
+
+        if (!self::isValid($nameParsed)) {
             throw new InvalidArgumentException('Invalid UUID string: ' . $name);
         }
 
@@ -844,7 +855,7 @@ final class Uuid
             return true;
         }
 
-        if (!preg_match('/^[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[1-5][0-9A-Fa-f]{3}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}$/', $uuid)) {
+        if (!preg_match('/^[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}$/', $uuid)) {
             return false;
         }
         return true;
