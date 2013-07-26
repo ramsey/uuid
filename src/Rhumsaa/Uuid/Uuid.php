@@ -755,7 +755,12 @@ final class Uuid
      */
     public function getVersion()
     {
-        return (($this->getTimeHiAndVersion() >> 12) & 0x0f);
+        // The version bits are only meaningful for RFC 4122 UUIDs.
+        if ($this->getVariant() == self::RFC_4122) {
+            return (int) (($this->getTimeHiAndVersion() >> 12) & 0x0f);
+        }
+
+        return null;
     }
 
     /**
