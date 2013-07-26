@@ -164,6 +164,9 @@ final class Uuid
      * significant field in which the UUIDs differ is greater for the first
      * UUID.
      *
+     * Q. What's the value of being able to sort UUIDs?
+     * A. Use them as keys in a B-Tree or similar mapping.
+     *
      * @param Uuid $uuid UUID to which this UUID is to be compared
      * @return int -1, 0 or 1 as this UUID is less than, equal to, or greater than $uuid
      */
