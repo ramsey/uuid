@@ -164,7 +164,7 @@ final class Uuid
      * significant field in which the UUIDs differ is greater for the first
      * UUID.
      *
-     * Q. What's the value of being able to sort UUIDs?
+     * Q. What's the value of being able to sort UUIDs?<br>
      * A. Use them as keys in a B-Tree or similar mapping.
      *
      * @param Uuid $uuid UUID to which this UUID is to be compared
@@ -750,12 +750,14 @@ final class Uuid
      * * 4 - Randomly generated UUID
      * * 5 - Name-based UUID hashed with SHA-1
      *
-     * @return int
+     * Returns null if this UUID is not an RFC 4122 variant, since version
+     * is only meaningul for this variant.
+     *
+     * @return int|null
      * @link http://tools.ietf.org/html/rfc4122#section-4.1.3
      */
     public function getVersion()
     {
-        // The version bits are only meaningful for RFC 4122 UUIDs.
         if ($this->getVariant() == self::RFC_4122) {
             return (int) (($this->getTimeHiAndVersion() >> 12) & 0x0f);
         }
