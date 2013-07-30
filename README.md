@@ -1,14 +1,31 @@
-# Rhumsaa\Uuid
+## About
 
-[![Build Status](https://secure.travis-ci.org/ramsey/uuid.png)](http://travis-ci.org/ramsey/uuid)
+Rhumsaa\Uuid is a PHP 5.3+ library for generating and working with
+[RFC 4122][rfc4122] version 1, 3, 4, and 5 universally unique identifiers (UUID).
 
-A PHP 5.3+ library for generating and working with [RFC 4122][rfc4122] version
-1, 3, 4, and 5 universally unique identifiers (UUID).
+From [Wikipedia](http://en.wikipedia.org/wiki/Universally_unique_identifier):
+
+> The intent of UUIDs is to enable distributed systems to uniquely identify
+> information without significant central coordination. In this context the word
+> unique should be taken to mean "practically unique" rather than "guaranteed
+> unique". Since the identifiers have a finite size, it is possible for two
+> differing items to share the same identifier. The identifier size and
+> generation process need to be selected so as to make this sufficiently
+> improbable in practice. Anyone can create a UUID and use it to identify
+> something with reasonable confidence that the same identifier will never be
+> unintentionally created by anyone to identify something else. Information
+> labeled with UUIDs can therefore be later combined into a single database
+> without needing to resolve identifier (ID) conflicts.
 
 Much inspiration for this library came from the [Java][javauuid] and
 [Python][pyuuid] UUID libraries.
 
-Please see `docs/` for generated API documentation.
+## API Documentation
+
+The [latest class API documentation][apidocs] is available online. This project
+uses [phpDocumentor](http://phpdoc.org/) to generate this documentation. To
+generate the documentation on your own, run `phpdoc` from the root of the project.
+This will generate documentation in the `docs/` folder.
 
 ## Requirements
 
@@ -60,21 +77,19 @@ try {
 
 ## Installation
 
-The preferred method of installation is via [Packagist][], as this provides
-the PSR-0 autoloader functionality. The following `composer.json` will download
-and install the latest version of the Uuid library into your project:
+The preferred method of installation is via [Packagist][] and [Composer][]. Run
+the following command to install the package and add it as a requirement to
+`composer.json`:
 
-```json
-{
-    "require": {
-        "rhumsaa/uuid": "~2.4"
-    }
-}
+```bash
+composer.phar require "rhumsaa/uuid=~2.4"
 ```
 
 
 [rfc4122]: http://tools.ietf.org/html/rfc4122
 [javauuid]: http://docs.oracle.com/javase/6/docs/api/java/util/UUID.html
 [pyuuid]: http://docs.python.org/3/library/uuid.html
-[packagist]: http://packagist.org/
+[packagist]: https://packagist.org/packages/rhumsaa/uuid
+[composer]: http://getcomposer.org/
 [moontoast\math]: https://github.com/moontoast/math
+[apidocs]: http://ramsey.github.io/uuid/apidocs
