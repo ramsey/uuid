@@ -231,7 +231,10 @@ string context</h2>
 <div class="row collapse"><div class="detail-description">
 <div class="long_description"><p>The first of two UUIDs is greater than the second if the most
 significant field in which the UUIDs differ is greater for the first
-UUID.</p></div>
+UUID.</p>
+
+<p>Q. What's the value of being able to sort UUIDs?<br>
+A. Use them as keys in a B-Tree or similar mapping.</p></div>
 <h3>Parameters</h3>
 <div class="subelement argument">
 <h4>$uuid</h4>
@@ -762,7 +765,7 @@ number has the following meaning:</p>
 </div>
 <a id="method_getVersion"></a><div class="element clickable method public method_getVersion" data-toggle="collapse" data-target=".method_getVersion .collapse">
 <h2>The version number associated with this UUID.</h2>
-<pre>getVersion() : int</pre>
+<pre>getVersion() : int | null</pre>
 <div class="labels"></div>
 <div class="row collapse"><div class="detail-description">
 <div class="long_description"><p>The version
@@ -776,13 +779,18 @@ number describes how this UUID was generated.</p>
 <li>3 - Name-based UUID hashed with MD5</li>
 <li>4 - Randomly generated UUID</li>
 <li>5 - Name-based UUID hashed with SHA-1</li>
-</ul></div>
+</ul>
+
+<p>Returns null if this UUID is not an RFC 4122 variant, since version
+is only meaningul for this variant.</p></div>
 <table class="table table-bordered"><tr>
 <th>link</th>
 <td><a href="http://tools.ietf.org/html/rfc4122#section-4.1.3">http://tools.ietf.org/html/rfc4122#section-4.1.3</a></td>
 </tr></table>
 <h3>Returns</h3>
-<div class="subelement response"><code>int</code></div>
+<div class="subelement response">
+<code>int</code><code>null</code>
+</div>
 </div></div>
 </div>
 <a id="method_isValid"></a><div class="element clickable method public method_isValid" data-toggle="collapse" data-target=".method_isValid .collapse">
@@ -1133,7 +1141,7 @@ BigNumber is not available</h2>
 <div class="row"><footer class="span12">
             Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by <a href="http://glyphicons.com/">Glyphicons</a>.<br>
             Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor 2.0.0a10</a> and<br>
-            generated on 2013-07-16T10:06:28-05:00.<br></footer></div>
+            generated on 2013-07-29T18:54:13-05:00.<br></footer></div>
 </div>
 </body>
 </html>
