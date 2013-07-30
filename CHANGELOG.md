@@ -1,3 +1,7 @@
+* 2.4.0 (2013-07-29)
+  * `Uuid::getVersion()` now returns null if the UUID isn't an RFC 4122 variant
+  * `Uuid::fromString()` now supports a 128-bit integer formatted as a hexadecimal string (UUID without dashes)
+  * Tests have been greatly enhanced, borrowing from the Python UUID library
 * 2.3.0 (2013-07-16)
   * Added `Uuid::fromBytes()` by merging in PR #14 from @asm89
 * 2.2.0 (2013-07-04)
