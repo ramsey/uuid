@@ -865,7 +865,7 @@ final class Uuid
 
     /**
      * Generate a version 1 UUID from a host ID, sequence number, and the current time.
-     * If $node is not given, getMacAddress() is used to obtain the hardware
+     * If $node is not given, we will attempt to obtain the local hardware
      * address. If $clockSeq is given, it is used as the sequence number;
      * otherwise a random 14-bit sequence number is chosen.
      *
