@@ -4,3 +4,4 @@ composer.lock
 build
 vendor
 *.phar
+docs
