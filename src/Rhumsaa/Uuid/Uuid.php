@@ -120,7 +120,7 @@ final class Uuid
      * This is initialized to the nil value.
      *
      * @var array
-     * @see Uuid::getFields
+     * @link Rhumsaa.Uuid.Uuid.html#method_getFields
      */
     protected $fields = array(
         'time_low' => '00000000',
@@ -132,13 +132,13 @@ final class Uuid
     );
 
     /**
-     * Creates a universally unique identifier (UUID) from the most significant
-     * bits and least significant bits.
+     * Creates a universally unique identifier (UUID) from an array of fields.
      *
      * Protected to prevent direct instantiation. Use static methods to create
      * UUIDs.
      *
      * @param array $fields
+     * @link Rhumsaa.Uuid.Uuid.html#method_getFields
      */
     protected function __construct(array $fields)
     {
