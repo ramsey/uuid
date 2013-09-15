@@ -963,11 +963,7 @@ final class Uuid
      */
     public static function uuid4()
     {
-        // Generate a random 16-byte binary string
-        $bytes = '';
-        foreach (range(1, 16) as $i) {
-            $bytes = chr(mt_rand(0, 256)) . $bytes;
-        }
+        $bytes = self::generateBytes(16);
 
         // When converting the bytes to hex, it turns into a 32-character
         // hexadecimal string that looks a lot like an MD5 hash, so at this
@@ -1137,5 +1133,22 @@ final class Uuid
         );
 
         return new self($fields);
+    }
+
+    /**
+     * @param int $length
+     * @return string
+     */
+    private static function generateBytes($length)
+    {
+        if (function_exists('openssl_random_pseudo_bytes')) {
+            return openssl_random_pseudo_bytes($length);
+        }
+
+        $bytes = '';
+        foreach (range(1, $length) as $i) {
+            $bytes = chr(mt_rand(0, 256)) . $bytes;
+        }
+        return $bytes;
     }
 }
