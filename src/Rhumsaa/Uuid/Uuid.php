@@ -101,6 +101,14 @@ final class Uuid
     public static $forceNoBigNumber = false;
 
     /**
+     * For testing, openssl_random_pseudo_bytes() override; if true, treat as
+     * if openssl_random_pseudo_bytes() is not available
+     *
+     * @var bool
+     */
+    public static $forceNoOpensslRandomPseudoBytes = false;
+
+    /**
      * For testing, sets time of day to a static, known value
      *
      * @var array
@@ -1094,6 +1102,16 @@ final class Uuid
     }
 
     /**
+     * Returns true if the system has openssl_random_pseudo_bytes()
+     *
+     * @return bool
+     */
+    protected static function hasOpensslRandomPseudoBytes()
+    {
+        return (function_exists('openssl_random_pseudo_bytes') && !self::$forceNoOpensslRandomPseudoBytes);
+    }
+
+    /**
      * Returns true if the system is 64-bit, false otherwise
      *
      * @return bool
@@ -1141,7 +1159,7 @@ final class Uuid
      */
     private static function generateBytes($length)
     {
-        if (function_exists('openssl_random_pseudo_bytes')) {
+        if (self::hasOpensslRandomPseudoBytes()) {
             return openssl_random_pseudo_bytes($length);
         }
 

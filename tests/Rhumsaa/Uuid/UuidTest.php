@@ -10,6 +10,7 @@ class UuidTest extends \PHPUnit_Framework_TestCase
         Uuid::$timeOfDayTest = null;
         Uuid::$force32Bit = false;
         Uuid::$forceNoBigNumber = false;
+        Uuid::$forceNoOpensslRandomPseudoBytes = false;
         Uuid::$ignoreSystemNode = false;
     }
 
@@ -838,10 +839,25 @@ class UuidTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers Rhumsaa\Uuid\Uuid::uuid4
+     * @covers Rhumsaa\Uuid\Uuid::generateBytes
      * @covers Rhumsaa\Uuid\Uuid::uuidFromHashedName
      */
     public function testUuid4()
     {
+        $uuid = Uuid::uuid4();
+        $this->assertInstanceOf('Rhumsaa\Uuid\Uuid', $uuid);
+        $this->assertEquals(2, $uuid->getVariant());
+        $this->assertEquals(4, $uuid->getVersion());
+    }
+
+    /**
+     * @covers Rhumsaa\Uuid\Uuid::uuid4
+     * @covers Rhumsaa\Uuid\Uuid::generateBytes
+     * @covers Rhumsaa\Uuid\Uuid::uuidFromHashedName
+     */
+    public function testUuid4WithoutOpensslRandomPseudoBytes()
+    {
+        Uuid::$forceNoOpensslRandomPseudoBytes = true;
         $uuid = Uuid::uuid4();
         $this->assertInstanceOf('Rhumsaa\Uuid\Uuid', $uuid);
         $this->assertEquals(2, $uuid->getVariant());
@@ -1279,6 +1295,24 @@ class UuidTest extends \PHPUnit_Framework_TestCase
 
         Uuid::$forceNoBigNumber = true;
         $this->assertFalse($hasBigNumber->invoke($uuid));
+    }
+
+    /**
+     * @covers Rhumsaa\Uuid\Uuid::hasOpensslRandomPseudoBytes
+     */
+    public function testHasOpensslRandomPseudoBytes()
+    {
+        $hasOpensslRandomPseudoBytes = new \ReflectionMethod(
+            'Rhumsaa\Uuid\Uuid', 'hasOpensslRandomPseudoBytes'
+        );
+        $hasOpensslRandomPseudoBytes->setAccessible(true);
+
+        $uuid = Uuid::fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
+
+        $this->assertTrue($hasOpensslRandomPseudoBytes->invoke($uuid));
+
+        Uuid::$forceNoOpensslRandomPseudoBytes = true;
+        $this->assertFalse($hasOpensslRandomPseudoBytes->invoke($uuid));
     }
 
     /**
