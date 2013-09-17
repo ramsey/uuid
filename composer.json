@@ -23,7 +23,7 @@
         "php": ">=5.3.3"
     },
     "require-dev": {
-        "doctrine/dbal": "2.3.*",
+        "doctrine/dbal": ">=2.3",
         "moontoast/math": "1.1.0"
     },
     "suggest": {
