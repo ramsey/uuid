@@ -24,7 +24,11 @@ class UuidTypeTest extends PHPUnit_Framework_TestCase
             );
         }
 
-        $this->platform = new MockPlatform();
+        $this->platform = $this->getPlatformMock();
+        $this->platform->expects($this->any())
+            ->method('getGuidTypeDeclarationSQL')
+            ->will($this->returnValue('DUMMYVARCHAR()'));
+
         $this->type = Type::getType('uuid');
     }
 
@@ -107,5 +111,15 @@ class UuidTypeTest extends PHPUnit_Framework_TestCase
     public function testRequiresSQLCommentHint()
     {
         $this->assertTrue($this->type->requiresSQLCommentHint($this->platform));
+    }
+
+    /**
+     * @return \PHPUnit_Framework_MockObject_MockObject
+     */
+    private function getPlatformMock()
+    {
+        return $this->getMockBuilder('Doctrine\DBAL\Platforms\AbstractPlatform')
+            ->setMethods(array('getGuidTypeDeclarationSQL'))
+            ->getMockForAbstractClass();
     }
 }
