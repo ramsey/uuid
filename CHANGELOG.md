@@ -1,3 +1,7 @@
+* 2.5.0 (2013-10-30)
+  * Using `openssl_random_pseudo_bytes()`, if available, to generate random bytes, by merging in PR #15 from @dfreudenberger
+  * Fixed test for Rhumsaa\Uuid\Doctrine\UuidType, by merging in PR #17 from @dfreudenberger
+  * Documentation fixes
 * 2.4.0 (2013-07-29)
   * `Uuid::getVersion()` now returns null if the UUID isn't an RFC 4122 variant
   * `Uuid::fromString()` now supports a 128-bit integer formatted as a hexadecimal string (UUID without dashes)
