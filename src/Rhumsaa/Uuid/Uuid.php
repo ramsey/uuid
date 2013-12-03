@@ -759,7 +759,7 @@ final class Uuid
      * * 5 - Name-based UUID hashed with SHA-1
      *
      * Returns null if this UUID is not an RFC 4122 variant, since version
-     * is only meaningul for this variant.
+     * is only meaningful for this variant.
      *
      * @return int|null
      * @link http://tools.ietf.org/html/rfc4122#section-4.1.3
