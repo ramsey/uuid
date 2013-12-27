@@ -86,6 +86,11 @@ final class Uuid
     const RESERVED_FUTURE = 7;
 
     /**
+     * Version of the Rhumsaa\Uuid package
+     */
+    const VERSION = '2.6.0-dev';
+
+    /**
      * For testing, 64-bit system override; if true, treat the system as 32-bit
      *
      * @var bool

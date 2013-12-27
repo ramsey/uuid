@@ -12,3 +12,4 @@ if (!file_exists(dirname(__DIR__) . DIRECTORY_SEPARATOR . 'composer.lock')) {
 $loader = include realpath(dirname(__FILE__) . '/../vendor/autoload.php');
 
 $loader->add("Doctrine\Tests\DBAL", __DIR__."/../vendor/doctrine/dbal/tests");
+$loader->add('Rhumsaa\Uuid', __DIR__);
