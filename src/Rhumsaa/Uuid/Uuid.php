@@ -1061,6 +1061,23 @@ final class Uuid
     }
 
     /**
+     * Returns the network interface configuration for the system
+     *
+     * @todo Needs evaluation and possibly modification to ensure this works
+     *       well across multiple platforms.
+     * @codeCoverageIgnore
+     */
+    protected static function getIfconfig()
+    {
+        // If we're on Windows, use ipconfig; otherwise use ifconfig
+        if (strtoupper(substr(php_uname('a'), 0, 3)) == 'WIN') {
+            return `ipconfig /all 2>&1`;
+        }
+
+        return `ifconfig 2>&1`;
+    }
+
+    /**
      * Get the hardware address as a 48-bit positive integer. If all attempts to
      * obtain the hardware address fail, we choose a random 48-bit number with
      * its eighth bit set to 1 as recommended in RFC 4122. "Hardware address"
@@ -1069,25 +1086,16 @@ final class Uuid
      * returned.
      *
      * @return string
-     * @todo Needs evaluation and possibly modification to ensure this works
-     *       well across multiple platforms.
      */
     protected static function getNodeFromSystem()
     {
-        // If we're on Windows, use ipconfig; otherwise use ifconfig
-        if (strtoupper(substr(php_uname('a'), 0, 3)) == 'WIN') {
-            $ifconfig = `ipconfig /all 2>&1`;
-        } else {
-            $ifconfig = `ifconfig 2>&1`;
-        }
-
         $node = null;
         $pattern = '/[^:]([0-9A-Fa-f]{2}([:-])[0-9A-Fa-f]{2}(\2[0-9A-Fa-f]{2}){4})[^:]/';
         $matches = array();
 
         // Search the ifconfig output for all MAC addresses and return
         // the first one found
-        if (preg_match_all($pattern, $ifconfig, $matches, PREG_PATTERN_ORDER)) {
+        if (preg_match_all($pattern, self::getIfconfig(), $matches, PREG_PATTERN_ORDER)) {
             $node = $matches[1][0];
             $node = str_replace(':', '', $node);
             $node = str_replace('-', '', $node);
