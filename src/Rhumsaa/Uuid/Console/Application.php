@@ -11,7 +11,6 @@
 
 namespace Rhumsaa\Uuid\Console;
 
-use Rhumsaa\Uuid\Console\Command;
 use Rhumsaa\Uuid\Console\Util;
 use Rhumsaa\Uuid\Uuid;
 use Symfony\Component\Console\Application as BaseApplication;
@@ -32,18 +31,5 @@ class Application extends BaseApplication
 
         Util\ErrorHandler::register();
         parent::__construct('uuid', Uuid::VERSION);
-    }
-
-    /**
-     * Initializes all the commands we have
-     *
-     * @return array The array of Command classes
-     */
-    protected function getDefaultCommands()
-    {
-        $commands   = parent::getDefaultCommands();
-        $commands[] = new Command\GenerateCommand();
-
-        return $commands;
     }
 }

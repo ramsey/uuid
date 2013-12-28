@@ -26,6 +26,8 @@ if (!file_exists(__DIR__ . '/../vendor/autoload.php')) {
 require __DIR__ . '/../vendor/autoload.php';
 
 use Rhumsaa\Uuid\Console\Application;
+use Rhumsaa\Uuid\Console\Command;
 
 $app = new Application();
+$app->add(new Command\GenerateCommand());
 $app->run();
