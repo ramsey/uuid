@@ -35,7 +35,7 @@ class Application extends BaseApplication
     }
 
     /**
-     * Initializes all the composer commands we have
+     * Initializes all the commands we have
      *
      * @return array The array of Command classes
      */
