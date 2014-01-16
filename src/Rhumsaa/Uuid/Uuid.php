@@ -1098,12 +1098,22 @@ final class Uuid
      */
     protected static function getIfconfig()
     {
-        // If we're on Windows, use ipconfig; otherwise use ifconfig
-        if (strtoupper(substr(php_uname('a'), 0, 3)) == 'WIN') {
-            return `ipconfig /all 2>&1`;
+        $ifconfig = '';
+
+        switch (strtoupper(substr(php_uname('a'), 0, 3))) {
+            case 'WIN':
+                $ifconfig = `ipconfig /all 2>&1`;
+                break;
+            case 'DAR':
+                $ifconfig = `ifconfig 2>&1`;
+                break;
+            case 'LIN':
+            default:
+                $ifconfig = `netstat -ie 2>&1`;
+                break;
         }
 
-        return `ifconfig 2>&1`;
+        return $ifconfig;
     }
 
     /**
