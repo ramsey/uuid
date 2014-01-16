@@ -424,6 +424,35 @@ final class Uuid
     }
 
     /**
+     * Returns the integer value of the UUID, represented as a BigNumber
+     *
+     * @return \Moontoast\Math\BigNumber BigNumber representation of the unsigned 128-bit integer value
+     * @throws Exception\UnsatisfiedDependencyException if Moontoast\Math\BigNumber is not present
+     */
+    public function getInteger()
+    {
+        if (!self::hasBigNumber()) {
+            throw new Exception\UnsatisfiedDependencyException(
+                'Cannot call ' . __METHOD__ . ' without support for large '
+                . 'integers, since integer is an unsigned '
+                . '128-bit integer; Moontoast\Math\BigNumber is required'
+                . '; consider calling getMostSignificantBitsHex instead'
+            );
+        }
+
+        $hex = $this->toString();
+        $hex = str_replace('-', '', $hex);
+
+        $number = \Moontoast\Math\BigNumber::baseConvert(
+            $hex,
+            16,
+            10
+        );
+
+        return new \Moontoast\Math\BigNumber($number);
+    }
+
+    /**
      * Returns the least significant 64 bits of this UUID's 128 bit value
      *
      * @return \Moontoast\Math\BigNumber BigNumber representation of the unsigned 64-bit integer value

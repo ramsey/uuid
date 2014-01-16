@@ -30,4 +30,5 @@ use Rhumsaa\Uuid\Console\Command;
 
 $app = new Application();
 $app->add(new Command\GenerateCommand());
+$app->add(new Command\DecodeCommand());
 $app->run();
