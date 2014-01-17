@@ -52,8 +52,23 @@ class DecodeCommand extends Command
 
         $uuid = Uuid::fromString($input->getArgument('uuid'));
 
+        $table = $this->getHelperSet()->get('table');
+        $table->setLayout(TableHelper::LAYOUT_COMPACT);
+
+        $table->addRows(array(
+            array('encode:', 'STR:', (string) $uuid),
+            array('',        'INT:', (string) $uuid->getInteger()),
+        ));
+
         if ($uuid->getVariant() != Uuid::RFC_4122) {
-            // Not an RFC 4122 variant UUID; what to do?
+
+            $table->addRows(array(
+                array('decode:', 'variant:', 'Not an RFC 4122 UUID'),
+            ));
+
+            $table->render($output);
+
+            return;
         }
 
         switch ($uuid->getVersion()) {
@@ -74,11 +89,7 @@ class DecodeCommand extends Command
                 break;
         }
 
-        $table = $this->getHelperSet()->get('table');
-        $table->setLayout(TableHelper::LAYOUT_COMPACT);
-        $table->setRows(array(
-            array('encode:', 'STR:',     (string) $uuid),
-            array('',        'INT:',     (string) $uuid->getInteger()),
+        $table->addRows(array(
             array('decode:', 'variant:', 'RFC 4122'),
             array('',        'version:', $version),
         ));
@@ -88,6 +99,20 @@ class DecodeCommand extends Command
                 array('', 'content:', 'time:  ' . $uuid->getDateTime()->format('c')),
                 array('', '', 'clock: ' . $uuid->getClockSequence() . ' (usually random)'),
                 array('', '', 'node:  ' . substr(chunk_split($uuid->getNodeHex(), 2, ':'), 0, -1)),
+            ));
+        }
+
+        if ($uuid->getVersion() == 4) {
+            $table->addRows(array(
+                array('', 'content:', substr(chunk_split($uuid->getHex(), 2, ':'), 0, -1)),
+                array('', '', '(no semantics: random data only)'),
+            ));
+        }
+
+        if ($uuid->getVersion() == 3 || $uuid->getVersion() == 5) {
+            $table->addRows(array(
+                array('', 'content:', substr(chunk_split($uuid->getHex(), 2, ':'), 0, -1)),
+                array('', '', '(not decipherable: MD5 message digest only)'),
             ));
         }
 
