@@ -43,6 +43,9 @@ class DecodeCommand extends Command
 
     /**
      * {@inheritDoc}
+     *
+     * @param InputInterface $input
+     * @param OutputInterface $output
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {

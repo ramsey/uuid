@@ -1210,6 +1210,8 @@ final class Uuid
     }
 
     /**
+     * Generates random bytes for use in version 4 UUIDs
+     *
      * @param int $length
      * @return string
      */
@@ -1223,6 +1225,7 @@ final class Uuid
         foreach (range(1, $length) as $i) {
             $bytes = chr(mt_rand(0, 256)) . $bytes;
         }
+
         return $bytes;
     }
 }
