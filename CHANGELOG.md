@@ -1,3 +1,9 @@
+* 2.6.0 (2014-01-17)
+  * Introduced `uuid` console application for generating and decoding UUIDs from CLI (run `./bin/uuid` for details)
+  * Added `Uuid::getInteger()` to retrieve a Moontoast\Math\BigNumber representation of the 128-bit integer representing the UUID
+  * Added `Uuid::getHex()` to retrieve the hexadecimal representation of the UUID
+  * Now using netstat on Linux to capture the node for a version 1 UUID
+  * Now requiring Moontoast\Math as part of the regular package requirements, not just the dev requirements
 * 2.5.0 (2013-10-30)
   * Using `openssl_random_pseudo_bytes()`, if available, to generate random bytes, by merging in PR #15 from @dfreudenberger
   * Fixed test for Rhumsaa\Uuid\Doctrine\UuidType, by merging in PR #17 from @dfreudenberger

@@ -88,7 +88,7 @@ final class Uuid
     /**
      * Version of the Rhumsaa\Uuid package
      */
-    const VERSION = '2.6.0-dev';
+    const VERSION = '2.6.0';
 
     /**
      * For testing, 64-bit system override; if true, treat the system as 32-bit
