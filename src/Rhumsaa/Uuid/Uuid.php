@@ -231,11 +231,8 @@ final class Uuid
     {
         $bytes = '';
 
-        $hex = $this->toString();
-        $hex = str_replace('-', '', $hex);
-
         foreach (range(-2, -32, 2) as $step) {
-            $bytes = chr(hexdec(substr($hex, $step, 2))) . $bytes;
+            $bytes = chr(hexdec(substr($this->getHex(), $step, 2))) . $bytes;
         }
 
         return $bytes;
@@ -424,6 +421,16 @@ final class Uuid
     }
 
     /**
+     * Returns the hexadecimal value of the UUID
+     *
+     * @return string
+     */
+    public function getHex()
+    {
+        return str_replace('-', '', $this->toString());
+    }
+
+    /**
      * Returns the integer value of the UUID, represented as a BigNumber
      *
      * @return \Moontoast\Math\BigNumber BigNumber representation of the unsigned 128-bit integer value
@@ -440,11 +447,8 @@ final class Uuid
             );
         }
 
-        $hex = $this->toString();
-        $hex = str_replace('-', '', $hex);
-
         $number = \Moontoast\Math\BigNumber::baseConvert(
-            $hex,
+            $this->getHex(),
             16,
             10
         );
