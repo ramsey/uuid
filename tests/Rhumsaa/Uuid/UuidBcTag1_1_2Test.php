@@ -1,8 +1,6 @@
 <?php
 namespace Rhumsaa\Uuid;
 
-require_once 'functions.php';
-
 /**
  * This is a backwards-compatibility test to ensure that Rhumsaa\Uuid
  * maintains backwards compatibility with tag 1.1.2.
@@ -380,26 +378,6 @@ class UuidBcTag1_1_2Test extends \PHPUnit_Framework_TestCase
         $uuid = Uuid::fromString('0901e600-0154-1000-9b21-0800200c9a66');
         $this->assertEquals('0901e600-0154-1000-9b21-0800200c9a66', $uuid->toString());
         $this->assertEquals('0901e600-0154-1000-9b21-0800200c9a66', sprintf('%s', $uuid));
-    }
-
-    /**
-     * This calls php_uname() in getNodeFromSystem. The first time it is
-     * called, it returns "WIN." Each additional times, it returns the
-     * normal system php_uname().
-     *
-     * See the bottom of this test file to see where we are overriding
-     * php_uname() for the purpose of this test.
-     *
-     * @covers Rhumsaa\Uuid\Uuid::uuid1
-     * @covers Rhumsaa\Uuid\Uuid::getNodeFromSystem
-     */
-    public function testUuid1CoverageForWindows()
-    {
-        $uuid = Uuid::uuid1();
-        $this->assertInstanceOf('\Rhumsaa\Uuid\Uuid', $uuid);
-        $this->assertInstanceOf('\DateTime', $uuid->getDateTime());
-        $this->assertEquals(2, $uuid->getVariant());
-        $this->assertEquals(1, $uuid->getVersion());
     }
 
     /**

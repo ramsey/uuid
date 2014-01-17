@@ -20,13 +20,15 @@
         "source": "https://github.com/ramsey/uuid"
     },
     "require": {
-        "php": ">=5.3.3"
+        "php": ">=5.3.3",
+        "moontoast/math": "~1.1",
+        "symfony/console": "~2.4"
     },
     "require-dev": {
         "doctrine/dbal": ">=2.3",
-        "moontoast/math": "1.1.0",
         "phpunit/phpunit": "~3.7"
     },
+    "bin": ["bin/uuid"],
     "suggest": {
         "doctrine/dbal": "Allow the use of a UUID as doctrine field type.",
         "moontoast/math": "Provides support for large integers."
@@ -36,7 +38,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "2.5.x-dev"
+            "dev-master": "2.6.x-dev"
         }
     }
 }

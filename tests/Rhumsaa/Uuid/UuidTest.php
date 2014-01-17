@@ -1,8 +1,6 @@
 <?php
 namespace Rhumsaa\Uuid;
 
-require_once 'functions.php';
-
 class UuidTest extends \PHPUnit_Framework_TestCase
 {
     protected function setUp()
@@ -628,26 +626,6 @@ class UuidTest extends \PHPUnit_Framework_TestCase
         $uuid = Uuid::fromString('0901e600-0154-1000-9b21-0800200c9a66');
         $this->assertEquals('0901e600-0154-1000-9b21-0800200c9a66', $uuid->toString());
         $this->assertEquals('0901e600-0154-1000-9b21-0800200c9a66', sprintf('%s', $uuid));
-    }
-
-    /**
-     * This calls php_uname() in getNodeFromSystem. The first time it is
-     * called, it returns "WIN." Each additional times, it returns the
-     * normal system php_uname().
-     *
-     * See the bottom of this test file to see where we are overriding
-     * php_uname() for the purpose of this test.
-     *
-     * @covers Rhumsaa\Uuid\Uuid::uuid1
-     * @covers Rhumsaa\Uuid\Uuid::getNodeFromSystem
-     */
-    public function testUuid1CoverageForWindows()
-    {
-        $uuid = Uuid::uuid1();
-        $this->assertInstanceOf('\Rhumsaa\Uuid\Uuid', $uuid);
-        $this->assertInstanceOf('\DateTime', $uuid->getDateTime());
-        $this->assertEquals(2, $uuid->getVariant());
-        $this->assertEquals(1, $uuid->getVersion());
     }
 
     /**
@@ -1488,6 +1466,8 @@ class UuidTest extends \PHPUnit_Framework_TestCase
      * @covers Rhumsaa\Uuid\Uuid::toString
      * @covers Rhumsaa\Uuid\Uuid::getBytes
      * @covers Rhumsaa\Uuid\Uuid::getFieldsHex
+     * @covers Rhumsaa\Uuid\Uuid::getHex
+     * @covers Rhumsaa\Uuid\Uuid::getInteger
      * @covers Rhumsaa\Uuid\Uuid::getTimeLowHex
      * @covers Rhumsaa\Uuid\Uuid::getTimeMidHex
      * @covers Rhumsaa\Uuid\Uuid::getTimeHiAndVersionHex
@@ -1509,6 +1489,7 @@ class UuidTest extends \PHPUnit_Framework_TestCase
                 'curly' => '{00000000-0000-0000-0000-000000000000}',
                 'hex' => '00000000000000000000000000000000',
                 'bytes' => 'AAAAAAAAAAAAAAAAAAAAAA==',
+                'int' => '0',
                 'fields' => array(
                     'time_low' => '0',
                     'time_mid' => '0',
@@ -1528,6 +1509,7 @@ class UuidTest extends \PHPUnit_Framework_TestCase
                 'curly' => '{00010203-0405-0607-0809-0a0b0c0d0e0f}',
                 'hex' => '000102030405060708090a0b0c0d0e0f',
                 'bytes' => 'AAECAwQFBgcICQoLDA0ODw==',
+                'int' => '5233100606242806050955395731361295',
                 'fields' => array(
                     'time_low' => '10203',
                     'time_mid' => '405',
@@ -1547,6 +1529,7 @@ class UuidTest extends \PHPUnit_Framework_TestCase
                 'curly' => '{02d9e6d5-9467-382e-8f9b-9300a64ac3cd}',
                 'hex' => '02d9e6d59467382e8f9b9300a64ac3cd',
                 'bytes' => 'Atnm1ZRnOC6Pm5MApkrDzQ==',
+                'int' => '3789866285607910888100818383505376205',
                 'fields' => array(
                     'time_low' => '02d9e6d5',
                     'time_mid' => '9467',
@@ -1566,6 +1549,7 @@ class UuidTest extends \PHPUnit_Framework_TestCase
                 'curly' => '{12345678-1234-5678-1234-567812345678}',
                 'hex' => '12345678123456781234567812345678',
                 'bytes' => 'EjRWeBI0VngSNFZ4EjRWeA==',
+                'int' => '24197857161011715162171839636988778104',
                 'fields' => array(
                     'time_low' => '12345678',
                     'time_mid' => '1234',
@@ -1585,6 +1569,7 @@ class UuidTest extends \PHPUnit_Framework_TestCase
                 'curly' => '{6ba7b810-9dad-11d1-80b4-00c04fd430c8}',
                 'hex' => '6ba7b8109dad11d180b400c04fd430c8',
                 'bytes' => 'a6e4EJ2tEdGAtADAT9QwyA==',
+                'int' => '143098242404177361603877621312831893704',
                 'fields' => array(
                     'time_low' => '6ba7b810',
                     'time_mid' => '9dad',
@@ -1604,6 +1589,7 @@ class UuidTest extends \PHPUnit_Framework_TestCase
                 'curly' => '{6ba7b811-9dad-11d1-80b4-00c04fd430c8}',
                 'hex' => '6ba7b8119dad11d180b400c04fd430c8',
                 'bytes' => 'a6e4EZ2tEdGAtADAT9QwyA==',
+                'int' => '143098242483405524118141958906375844040',
                 'fields' => array(
                     'time_low' => '6ba7b811',
                     'time_mid' => '9dad',
@@ -1623,6 +1609,7 @@ class UuidTest extends \PHPUnit_Framework_TestCase
                 'curly' => '{6ba7b812-9dad-11d1-80b4-00c04fd430c8}',
                 'hex' => '6ba7b8129dad11d180b400c04fd430c8',
                 'bytes' => 'a6e4Ep2tEdGAtADAT9QwyA==',
+                'int' => '143098242562633686632406296499919794376',
                 'fields' => array(
                     'time_low' => '6ba7b812',
                     'time_mid' => '9dad',
@@ -1642,6 +1629,7 @@ class UuidTest extends \PHPUnit_Framework_TestCase
                 'curly' => '{6ba7b814-9dad-11d1-80b4-00c04fd430c8}',
                 'hex' => '6ba7b8149dad11d180b400c04fd430c8',
                 'bytes' => 'a6e4FJ2tEdGAtADAT9QwyA==',
+                'int' => '143098242721090011660934971687007695048',
                 'fields' => array(
                     'time_low' => '6ba7b814',
                     'time_mid' => '9dad',
@@ -1661,6 +1649,7 @@ class UuidTest extends \PHPUnit_Framework_TestCase
                 'curly' => '{7d444840-9dc0-11d1-b245-5ffdce74fad2}',
                 'hex' => '7d4448409dc011d1b2455ffdce74fad2',
                 'bytes' => 'fURIQJ3AEdGyRV/9znT60g==',
+                'int' => '166508041112410060672666770310773930706',
                 'fields' => array(
                     'time_low' => '7d444840',
                     'time_mid' => '9dc0',
@@ -1680,6 +1669,7 @@ class UuidTest extends \PHPUnit_Framework_TestCase
                 'curly' => '{e902893a-9d22-3c7e-a7b8-d6e313b71d9f}',
                 'hex' => 'e902893a9d223c7ea7b8d6e313b71d9f',
                 'bytes' => '6QKJOp0iPH6nuNbjE7cdnw==',
+                'int' => '309723290945582129846206211755626405279',
                 'fields' => array(
                     'time_low' => 'e902893a',
                     'time_mid' => '9d22',
@@ -1699,6 +1689,7 @@ class UuidTest extends \PHPUnit_Framework_TestCase
                 'curly' => '{eb424026-6f54-4ef8-a4d0-bb658a1fc6cf}',
                 'hex' => 'eb4240266f544ef8a4d0bb658a1fc6cf',
                 'bytes' => '60JAJm9UTvik0Ltlih/Gzw==',
+                'int' => '312712571721458096795100956955942831823',
                 'fields' => array(
                     'time_low' => 'eb424026',
                     'time_mid' => '6f54',
@@ -1718,6 +1709,7 @@ class UuidTest extends \PHPUnit_Framework_TestCase
                 'curly' => '{f81d4fae-7dec-11d0-a765-00a0c91e6bf6}',
                 'hex' => 'f81d4fae7dec11d0a76500a0c91e6bf6',
                 'bytes' => '+B1Prn3sEdCnZQCgyR5r9g==',
+                'int' => '329800735698586629295641978511506172918',
                 'fields' => array(
                     'time_low' => 'f81d4fae',
                     'time_mid' => '7dec',
@@ -1737,6 +1729,7 @@ class UuidTest extends \PHPUnit_Framework_TestCase
                 'curly' => '{fffefdfc-fffe-fffe-fffe-fffefdfcfbfa}',
                 'hex' => 'fffefdfcfffefffefffefffefdfcfbfa',
                 'bytes' => '//79/P/+//7//v/+/fz7+g==',
+                'int' => '340277133821575024845345576078114880506',
                 'fields' => array(
                     'time_low' => 'fffefdfc',
                     'time_mid' => 'fffe',
@@ -1756,6 +1749,7 @@ class UuidTest extends \PHPUnit_Framework_TestCase
                 'curly' => '{ffffffff-ffff-ffff-ffff-ffffffffffff}',
                 'hex' => 'ffffffffffffffffffffffffffffffff',
                 'bytes' => '/////////////////////w==',
+                'int' => '340282366920938463463374607431768211455',
                 'fields' => array(
                     'time_low' => 'ffffffff',
                     'time_mid' => 'ffff',
@@ -1782,7 +1776,9 @@ class UuidTest extends \PHPUnit_Framework_TestCase
             );
             foreach ($uuids as $uuid) {
                 $this->assertEquals($test['string'], (string) $uuid);
+                $this->assertEquals($test['hex'], $uuid->getHex());
                 $this->assertEquals(base64_decode($test['bytes']), $uuid->getBytes());
+                $this->assertEquals($test['int'], (string) $uuid->getInteger());
                 $this->assertEquals($test['fields'], $uuid->getFieldsHex());
                 $this->assertEquals($test['fields']['time_low'], $uuid->getTimeLowHex());
                 $this->assertEquals($test['fields']['time_mid'], $uuid->getTimeMidHex());
@@ -1799,5 +1795,18 @@ class UuidTest extends \PHPUnit_Framework_TestCase
                 $this->assertEquals($test['version'], $uuid->getVersion());
             }
         }
+    }
+
+    /**
+     * @covers Rhumsaa\Uuid\Uuid::getInteger
+     * @expectedException Rhumsaa\Uuid\Exception\UnsatisfiedDependencyException
+     * @expectedExceptionMessage Cannot call Rhumsaa\Uuid\Uuid::getInteger without support for large integers
+     */
+    public function testGetInteger()
+    {
+        Uuid::$forceNoBigNumber = true;
+
+        $uuid = Uuid::uuid1();
+        $uuid->getInteger();
     }
 }
