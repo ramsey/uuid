@@ -1,3 +1,5 @@
+* 2.6.1 (2014-01-27)
+  * Fixed bug where `uuid` console application could not find the Composer autoloader when installed in another project
 * 2.6.0 (2014-01-17)
   * Introduced `uuid` console application for generating and decoding UUIDs from CLI (run `./bin/uuid` for details)
   * Added `Uuid::getInteger()` to retrieve a Moontoast\Math\BigNumber representation of the 128-bit integer representing the UUID
