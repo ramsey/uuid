@@ -1,3 +1,5 @@
+* 2.7.0 (2014-01-31)
+  * Moved UUID validation regex pattern into constant for external use (`Uuid::VALID_PATTERN`)
 * 2.6.1 (2014-01-27)
   * Fixed bug where `uuid` console application could not find the Composer autoloader when installed in another project
 * 2.6.0 (2014-01-17)
