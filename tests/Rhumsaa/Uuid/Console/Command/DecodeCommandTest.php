@@ -2,9 +2,9 @@
 namespace Rhumsaa\Uuid\Console\Command;
 
 use Rhumsaa\Uuid\Console\Util\TestOutput;
+use Rhumsaa\Uuid\Console\Util\BufferedOutput;
 use Rhumsaa\Uuid\Uuid;
 use Symfony\Component\Console\Input\StringInput;
-use Symfony\Component\Console\Output\BufferedOutput;
 
 class DecodeCommandTest extends \PHPUnit_Framework_TestCase
 {

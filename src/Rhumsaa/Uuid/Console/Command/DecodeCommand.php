@@ -56,7 +56,7 @@ class DecodeCommand extends Command
         $uuid = Uuid::fromString($input->getArgument('uuid'));
 
         $table = $this->getHelperSet()->get('table');
-        $table->setLayout(TableHelper::LAYOUT_COMPACT);
+        $table->setLayout(TableHelper::LAYOUT_BORDERLESS);
 
         $table->addRows(array(
             array('encode:', 'STR:', (string) $uuid),

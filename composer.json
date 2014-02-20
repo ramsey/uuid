@@ -24,7 +24,7 @@
     },
     "require-dev": {
         "moontoast/math": "~1.1",
-        "symfony/console": "~2.4",
+        "symfony/console": "~2.3",
         "doctrine/dbal": ">=2.3",
         "phpunit/phpunit": "~3.7"
     },
