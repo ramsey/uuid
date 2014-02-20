@@ -20,16 +20,18 @@
         "source": "https://github.com/ramsey/uuid"
     },
     "require": {
-        "php": ">=5.3.3",
-        "moontoast/math": "~1.1",
-        "symfony/console": "~2.4"
+        "php": ">=5.3.3"
     },
     "require-dev": {
+        "moontoast/math": "~1.1",
+        "symfony/console": "~2.4",
         "doctrine/dbal": ">=2.3",
         "phpunit/phpunit": "~3.7"
     },
     "bin": ["bin/uuid"],
     "suggest": {
+        "moontoast/math": "Support for converting UUID to 128-bit integer (in string form).",
+        "symfony/console": "Support for use of the bin/uuid command line tool.",
         "doctrine/dbal": "Allow the use of a UUID as doctrine field type."
     },
     "autoload": {

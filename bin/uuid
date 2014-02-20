@@ -37,6 +37,17 @@ if (!defined('UUID_COMPOSER_INSTALL')) {
     );
 }
 
+// We require the Symfony Console component and Moontoast\Math to run
+// this command line tool.
+if (!class_exists('Symfony\Component\Console\Application') || !class_exists('Moontoast\Math\BigNumber')) {
+    die(
+        'To use the uuid command line tool, you need to install symfony/console' . PHP_EOL .
+        'and moontoast/math. To do so, run the following Composer commands:' . PHP_EOL .
+        '' . PHP_EOL .
+        'composer.phar require "moontoast/math=~1.1" "symfony/console=~2.3"' . PHP_EOL
+    );
+}
+
 use Rhumsaa\Uuid\Console\Application;
 use Rhumsaa\Uuid\Console\Command;
 
