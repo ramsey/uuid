@@ -137,22 +137,22 @@ class UuidTest extends \PHPUnit_Framework_TestCase
         // Check a recent date
         $uuid = Uuid::fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
         $this->assertInstanceOf('\DateTime', $uuid->getDateTime());
-        $this->assertEquals('Wed, 04 Jul 2012 02:14:34 +0000', $uuid->getDateTime()->format('r'));
+        $this->assertEquals('2012-07-04T02:14:34+00:00', $uuid->getDateTime()->format('c'));
 
         // Check an old date
         $uuid = Uuid::fromString('0901e600-0154-1000-9b21-0800200c9a66');
         $this->assertInstanceOf('\DateTime', $uuid->getDateTime());
-        $this->assertEquals('Sun, 16 Oct 1582 16:34:04 +0000', $uuid->getDateTime()->format('r'));
+        $this->assertEquals('1582-10-16T16:34:04+00:00', $uuid->getDateTime()->format('c'));
 
         // Check a future date
         $uuid = Uuid::fromString('ff9785f6-ffff-1fff-9669-00007ffffffe');
         $this->assertInstanceOf('\DateTime', $uuid->getDateTime());
-        $this->assertEquals('Mon, 31 Mar 5236 21:21:00 +0000', $uuid->getDateTime()->format('r'));
+        $this->assertEquals('5236-03-31T21:21:00+00:00', $uuid->getDateTime()->format('c'));
 
         // Check the oldest date
         $uuid = Uuid::fromString('00000000-0000-1000-9669-00007ffffffe');
         $this->assertInstanceOf('\DateTime', $uuid->getDateTime());
-        $this->assertEquals('Sat, 15 Oct 1582 00:00:00 +0000', $uuid->getDateTime()->format('r'));
+        $this->assertEquals('1582-10-15T00:00:00+00:00', $uuid->getDateTime()->format('c'));
     }
 
     /**
@@ -165,22 +165,22 @@ class UuidTest extends \PHPUnit_Framework_TestCase
         // Check a recent date
         $uuid = Uuid::fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
         $this->assertInstanceOf('\DateTime', $uuid->getDateTime());
-        $this->assertEquals('Wed, 04 Jul 2012 02:14:34 +0000', $uuid->getDateTime()->format('r'));
+        $this->assertEquals('2012-07-04T02:14:34+00:00', $uuid->getDateTime()->format('c'));
 
         // Check an old date
         $uuid = Uuid::fromString('0901e600-0154-1000-9b21-0800200c9a66');
         $this->assertInstanceOf('\DateTime', $uuid->getDateTime());
-        $this->assertEquals('Sun, 16 Oct 1582 16:34:04 +0000', $uuid->getDateTime()->format('r'));
+        $this->assertEquals('1582-10-16T16:34:04+00:00', $uuid->getDateTime()->format('c'));
 
         // Check a future date
         $uuid = Uuid::fromString('ff9785f6-ffff-1fff-9669-00007ffffffe');
         $this->assertInstanceOf('\DateTime', $uuid->getDateTime());
-        $this->assertEquals('Mon, 31 Mar 5236 21:21:00 +0000', $uuid->getDateTime()->format('r'));
+        $this->assertEquals('5236-03-31T21:21:00+00:00', $uuid->getDateTime()->format('c'));
 
         // Check the oldest date
         $uuid = Uuid::fromString('00000000-0000-1000-9669-00007ffffffe');
         $this->assertInstanceOf('\DateTime', $uuid->getDateTime());
-        $this->assertEquals('Sat, 15 Oct 1582 00:00:00 +0000', $uuid->getDateTime()->format('r'));
+        $this->assertEquals('1582-10-15T00:00:00+00:00', $uuid->getDateTime()->format('c'));
     }
 
     /**
@@ -1036,7 +1036,7 @@ class UuidTest extends \PHPUnit_Framework_TestCase
     {
         $this->skip64BitTest();
 
-        // Mon, 31 Mar 5236 21:20:59 +0000
+        // 5235-03-31T21:20:59+00:00
         $timeOfDay = array(
             'sec' => 103072857659,
             'usec' => 999999,
@@ -1052,7 +1052,7 @@ class UuidTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('ffff', $uuidA->getTimeMidHex());
         $this->assertEquals('1fff', $uuidA->getTimeHiAndVersionHex());
 
-        // Sat, 15 Oct 1582 00:00:00 +0000
+        // 1582-10-15T00:00:00+00:00
         $timeOfDay = array(
             'sec' => -12219292800,
             'usec' => 0,
@@ -1082,7 +1082,7 @@ class UuidTest extends \PHPUnit_Framework_TestCase
 
         Uuid::$force32Bit = true;
 
-        // Mon, 31 Mar 5236 21:20:59 +0000
+        // 5235-03-31T21:20:59+00:00
         $timeOfDay = array(
             'sec' => 103072857659,
             'usec' => 999999,
@@ -1098,7 +1098,7 @@ class UuidTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('ffff', $uuidA->getTimeMidHex());
         $this->assertEquals('1fff', $uuidA->getTimeHiAndVersionHex());
 
-        // Sat, 15 Oct 1582 00:00:00 +0000
+        // 1582-10-15T00:00:00+00:00
         $timeOfDay = array(
             'sec' => -12219292800,
             'usec' => 0,
@@ -1123,7 +1123,7 @@ class UuidTest extends \PHPUnit_Framework_TestCase
     {
         Uuid::$force32Bit = true;
 
-        // Tue, 19 Jan 2038 03:14:07 +0000
+        // 2038-01-19T03:14:07+00:00
         $timeOfDay = array(
             'sec' => 2147483647,
             'usec' => 999999,
@@ -1139,7 +1139,7 @@ class UuidTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('6912', $uuidA->getTimeMidHex());
         $this->assertEquals('11fe', $uuidA->getTimeHiAndVersionHex());
 
-        // Fri, 13 Dec 1901 20:45:53 +0000
+        // 1901-12-13T20:45:53+00:00
         $timeOfDay = array(
             'sec' => -2147483647,
             'usec' => 0,
@@ -1167,7 +1167,7 @@ class UuidTest extends \PHPUnit_Framework_TestCase
     {
         $this->skip64BitTest();
 
-        // Tue, 19 Jan 2038 03:14:07 +0000
+        // 2038-01-19T03:14:07+00:00
         $timeOfDay = array(
             'sec' => 2147483647,
             'usec' => 999999,
@@ -1183,7 +1183,7 @@ class UuidTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('6912', $uuidA->getTimeMidHex());
         $this->assertEquals('11fe', $uuidA->getTimeHiAndVersionHex());
 
-        // Fri, 13 Dec 1901 20:45:53 +0000
+        // 1901-12-13T20:45:53+00:00
         $timeOfDay = array(
             'sec' => -2147483647,
             'usec' => 0,
@@ -1208,7 +1208,7 @@ class UuidTest extends \PHPUnit_Framework_TestCase
     {
         $this->skip64BitTest();
 
-        $currentTime = strtotime('Tue, 11 Dec 2012 00:00:00 +0000');
+        $currentTime = strtotime('2012-12-11T00:00:00+00:00');
         $endTime = $currentTime + 3600;
 
         while ($currentTime <= $endTime) {

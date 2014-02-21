@@ -105,12 +105,12 @@ class UuidBcTag1_1_2Test extends \PHPUnit_Framework_TestCase
         // Check a recent date
         $uuid = Uuid::fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
         $this->assertInstanceOf('\DateTime', $uuid->getDateTime());
-        $this->assertEquals('Wed, 04 Jul 2012 02:14:34 +0000', $uuid->getDateTime()->format('r'));
+        $this->assertEquals('2012-07-04T02:14:34+00:00', $uuid->getDateTime()->format('c'));
 
         // Check an old date
         $uuid = Uuid::fromString('0901e600-0154-1000-9b21-0800200c9a66');
         $this->assertInstanceOf('\DateTime', $uuid->getDateTime());
-        $this->assertEquals('Sun, 16 Oct 1582 16:34:04 +0000', $uuid->getDateTime()->format('r'));
+        $this->assertEquals('1582-10-16T16:34:04+00:00', $uuid->getDateTime()->format('c'));
     }
 
     /**
