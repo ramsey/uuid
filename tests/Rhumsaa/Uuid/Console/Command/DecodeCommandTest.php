@@ -1,18 +1,21 @@
 <?php
 namespace Rhumsaa\Uuid\Console\Command;
 
+use Rhumsaa\Uuid\Console\TestCase;
 use Rhumsaa\Uuid\Console\Util\TestOutput;
 use Rhumsaa\Uuid\Console\Util\BufferedOutput;
 use Rhumsaa\Uuid\Uuid;
 use Symfony\Component\Console\Input\StringInput;
 
-class DecodeCommandTest extends \PHPUnit_Framework_TestCase
+class DecodeCommandTest extends TestCase
 {
     protected $execute;
     protected $decode;
 
     protected function setUp()
     {
+        parent::setUp();
+
         $this->execute = new \ReflectionMethod('Rhumsaa\\Uuid\\Console\\Command\\DecodeCommand', 'execute');
         $this->execute->setAccessible(true);
 

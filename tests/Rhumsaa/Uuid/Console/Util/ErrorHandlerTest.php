@@ -1,7 +1,9 @@
 <?php
 namespace Rhumsaa\Uuid\Console\Util;
 
-class ErrorHandlerTest extends \PHPUnit_Framework_TestCase
+use Rhumsaa\Uuid\Console\TestCase;
+
+class ErrorHandlerTest extends TestCase
 {
     /**
      * @covers Rhumsaa\Uuid\Console\Util\ErrorHandler::register

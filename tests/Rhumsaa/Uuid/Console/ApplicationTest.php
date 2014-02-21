@@ -1,7 +1,7 @@
 <?php
 namespace Rhumsaa\Uuid\Console;
 
-class ApplicationTest extends \PHPUnit_Framework_TestCase
+class ApplicationTest extends TestCase
 {
     /**
      * @covers Rhumsaa\Uuid\Console\Application::__construct

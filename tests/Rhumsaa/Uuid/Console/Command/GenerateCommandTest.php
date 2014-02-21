@@ -1,11 +1,12 @@
 <?php
 namespace Rhumsaa\Uuid\Console\Command;
 
+use Rhumsaa\Uuid\Console\TestCase;
 use Rhumsaa\Uuid\Console\Util\TestOutput;
 use Rhumsaa\Uuid\Uuid;
 use Symfony\Component\Console\Input\StringInput;
 
-class GenerateCommandTest extends \PHPUnit_Framework_TestCase
+class GenerateCommandTest extends TestCase
 {
     const FOO_NS = 'bbd8a651-6f00-11e3-8ad8-28cfe91e4895';
 
@@ -13,6 +14,8 @@ class GenerateCommandTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
+        parent::setUp();
+
         $this->execute = new \ReflectionMethod('Rhumsaa\\Uuid\\Console\\Command\\GenerateCommand', 'execute');
         $this->execute->setAccessible(true);
     }
