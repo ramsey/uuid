@@ -1,3 +1,7 @@
+* 2.7.1 (2014-02-19)
+  * Moved moontoast/math and symfony/console to require-dev; fixes #20
+  * Now supporting symfony/console for 2.3 (LTS version); fixes #21
+  * Updated tests to run even when dev packages are not installed (skips tests if requirements are not met)
 * 2.7.0 (2014-01-31)
   * Moved UUID validation regex pattern into constant for external use (`Uuid::VALID_PATTERN`)
 * 2.6.1 (2014-01-27)
