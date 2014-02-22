@@ -12,4 +12,4 @@ if (!file_exists(dirname(__DIR__) . '/vendor/autoload.php')) {
 $loader = include realpath(dirname(__FILE__) . '/../vendor/autoload.php');
 
 $loader->add("Doctrine\Tests\DBAL", __DIR__."/../vendor/doctrine/dbal/tests");
-$loader->add('Rhumsaa\Uuid', __DIR__);
+$loader->addPsr4('Rhumsaa\\Uuid\\', __DIR__);

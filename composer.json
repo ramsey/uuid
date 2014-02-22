@@ -35,11 +35,11 @@
         "doctrine/dbal": "Allow the use of a UUID as doctrine field type."
     },
     "autoload": {
-        "psr-0": {"Rhumsaa\\Uuid": "src/"}
+        "psr-4": {"Rhumsaa\\Uuid\\": "src/"}
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "2.7.x-dev"
+            "dev-master": "2.8.x-dev"
         }
     }
 }
