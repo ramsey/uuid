@@ -1,7 +1,7 @@
 <?php
 namespace Rhumsaa\Uuid;
 
-class UuidTest extends \PHPUnit_Framework_TestCase
+class UuidTest extends TestCase
 {
     protected function setUp()
     {
@@ -10,18 +10,6 @@ class UuidTest extends \PHPUnit_Framework_TestCase
         Uuid::$forceNoBigNumber = false;
         Uuid::$forceNoOpensslRandomPseudoBytes = false;
         Uuid::$ignoreSystemNode = false;
-    }
-
-    /**
-     * If the system is 32-bit, this will mark a test as skipped
-     */
-    protected function skip64BitTest()
-    {
-        if (PHP_INT_SIZE == 4) {
-            $this->markTestSkipped(
-                'Skipping test that can run only on a 64-bit build of PHP.'
-            );
-        }
     }
 
     /**
@@ -160,6 +148,7 @@ class UuidTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetDateTime32Bit()
     {
+        $this->skipIfNoMoontoastMath();
         Uuid::$force32Bit = true;
 
         // Check a recent date
@@ -265,6 +254,8 @@ class UuidTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetLeastSignificantBits()
     {
+        $this->skipIfNoMoontoastMath();
+
         $uuid = Uuid::fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
         $this->assertInstanceOf('Moontoast\Math\BigNumber', $uuid->getLeastSignificantBits());
         $this->assertEquals('11178224546741000806', $uuid->getLeastSignificantBits()->getValue());
@@ -295,6 +286,8 @@ class UuidTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetMostSignificantBits()
     {
+        $this->skipIfNoMoontoastMath();
+
         $uuid = Uuid::fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
         $this->assertInstanceOf('Moontoast\Math\BigNumber', $uuid->getMostSignificantBits());
         $this->assertEquals('18406084892941947361', $uuid->getMostSignificantBits()->getValue());
@@ -991,6 +984,7 @@ class UuidTest extends \PHPUnit_Framework_TestCase
      */
     public function testCalculateUuidTimeForce32BitPath()
     {
+        $this->skipIfNoMoontoastMath();
         Uuid::$force32Bit = true;
 
         $timeOfDay = array(
@@ -1078,6 +1072,7 @@ class UuidTest extends \PHPUnit_Framework_TestCase
      */
     public function testCalculateUuidTimeUpperLowerBounds64BitThrough32BitPath()
     {
+        $this->skipIfNoMoontoastMath();
         $this->skip64BitTest();
 
         Uuid::$force32Bit = true;
@@ -1121,6 +1116,7 @@ class UuidTest extends \PHPUnit_Framework_TestCase
      */
     public function testCalculateUuidTimeUpperLowerBounds32Bit()
     {
+        $this->skipIfNoMoontoastMath();
         Uuid::$force32Bit = true;
 
         // 2038-01-19T03:14:07+00:00
@@ -1206,6 +1202,7 @@ class UuidTest extends \PHPUnit_Framework_TestCase
      */
     public function test32BitMatch64BitForOneHourPeriod()
     {
+        $this->skipIfNoMoontoastMath();
         $this->skip64BitTest();
 
         $currentTime = strtotime('2012-12-11T00:00:00+00:00');
@@ -1262,6 +1259,8 @@ class UuidTest extends \PHPUnit_Framework_TestCase
      */
     public function testHasBigNumber()
     {
+        $this->skipIfNoMoontoastMath();
+
         $hasBigNumber = new \ReflectionMethod(
             'Rhumsaa\Uuid\Uuid', 'hasBigNumber'
         );
@@ -1778,7 +1777,9 @@ class UuidTest extends \PHPUnit_Framework_TestCase
                 $this->assertEquals($test['string'], (string) $uuid);
                 $this->assertEquals($test['hex'], $uuid->getHex());
                 $this->assertEquals(base64_decode($test['bytes']), $uuid->getBytes());
-                $this->assertEquals($test['int'], (string) $uuid->getInteger());
+                if ($this->hasMoontoastMath()) {
+                    $this->assertEquals($test['int'], (string) $uuid->getInteger());
+                }
                 $this->assertEquals($test['fields'], $uuid->getFieldsHex());
                 $this->assertEquals($test['fields']['time_low'], $uuid->getTimeLowHex());
                 $this->assertEquals($test['fields']['time_mid'], $uuid->getTimeMidHex());

@@ -3,26 +3,24 @@ namespace Rhumsaa\Uuid;
 
 use Doctrine\DBAL\Types\Type;
 use Doctrine\Tests\DBAL\Mocks\MockPlatform;
-use PHPUnit_Framework_TestCase;
+use Rhumsaa\Uuid\TestCase;
 
-class UuidTypeTest extends PHPUnit_Framework_TestCase
+class UuidTypeTest extends TestCase
 {
     private $platform;
     private $type;
 
     public static function setUpBeforeClass()
     {
-        Type::addType('uuid', 'Rhumsaa\Uuid\Doctrine\UuidType');
+        if (class_exists('Doctrine\\DBAL\\Types\\Type')) {
+            Type::addType('uuid', 'Rhumsaa\Uuid\Doctrine\UuidType');
+        }
     }
 
     protected function setUp()
     {
-        // Skip these tests if run on a 32-bit build of PHP
-        if (PHP_INT_SIZE == 4) {
-            $this->markTestSkipped(
-                'Running tests on a 32-bit build of PHP; 64-bit build required.'
-            );
-        }
+        $this->skipIfNoDoctrineDbal();
+        $this->skip64BitTest();
 
         $this->platform = $this->getPlatformMock();
         $this->platform->expects($this->any())
