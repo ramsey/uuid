@@ -26,7 +26,8 @@
         "moontoast/math": "~1.1",
         "symfony/console": "~2.3",
         "doctrine/dbal": ">=2.3",
-        "phpunit/phpunit": "~3.7"
+        "phpunit/phpunit": "~3.7",
+        "satooshi/php-coveralls": "~0.6"
     },
     "bin": ["bin/uuid"],
     "suggest": {
