@@ -12,7 +12,7 @@
 namespace Rhumsaa\Uuid\Exception;
 
 /**
- * Thrown to indicate that the requested operation has depencies that have not
+ * Thrown to indicate that the requested operation has dependencies that have not
  * been satisfied.
  */
 class UnsatisfiedDependencyException extends \RuntimeException

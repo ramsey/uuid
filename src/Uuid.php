@@ -1107,8 +1107,6 @@ final class Uuid
      */
     protected static function getIfconfig()
     {
-        $ifconfig = '';
-
         switch (strtoupper(substr(php_uname('a'), 0, 3))) {
             case 'WIN':
                 $ifconfig = `ipconfig /all 2>&1`;
