@@ -5,6 +5,7 @@
 [![Latest Stable Version](https://poser.pugx.org/rhumsaa/uuid/v/stable.png)](https://packagist.org/packages/rhumsaa/uuid)
 [![Latest Unstable Version](https://poser.pugx.org/rhumsaa/uuid/v/unstable.png)](https://packagist.org/packages/rhumsaa/uuid)
 [![Total Downloads](https://poser.pugx.org/rhumsaa/uuid/downloads.png)](https://packagist.org/packages/rhumsaa/uuid)
+[![HHVM Status](http://hhvm.h4cc.de/badge/rhumsaa/uuid.png)](http://hhvm.h4cc.de/package/rhumsaa/uuid)
 
 ## About
 
