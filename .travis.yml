@@ -8,6 +8,7 @@ php:
   - hhvm
 
 before_script:
+  - composer self-update
   - composer install --dev --prefer-source
 
 script: ./vendor/bin/phpunit --coverage-text --coverage-clover ./build/logs/clover.xml
