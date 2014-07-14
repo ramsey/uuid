@@ -895,6 +895,33 @@ final class Uuid
     }
 
     /**
+     * Creates a UUID from either the UUID as a 128-bit integer string or a Moontoast\Math\BigNumber object.
+     *
+     * @param string|\Moontoast\Math\BigNumber $integer String/BigNumber representation of UUID integer
+     * @throws Exception\UnsatisfiedDependencyException If Moontoast\Math\BigNumber is not present
+     * @return \Rhumsaa\Uuid\Uuid
+     */
+    public static function fromInteger($integer)
+    {
+        if (!self::hasBigNumber()) {
+            throw new Exception\UnsatisfiedDependencyException(
+                'Cannot call ' . __METHOD__ . ' without support for large '
+                . 'integers, since integer is an unsigned '
+                . '128-bit integer; Moontoast\Math\BigNumber is required. '
+            );
+        }
+
+        if (!$integer instanceof \Moontoast\Math\BigNumber) {
+            $integer = new \Moontoast\Math\BigNumber($integer);
+        }
+
+        $hex = \Moontoast\Math\BigNumber::baseConvert($integer, 10, 16);
+        $hex = str_pad($hex, 32, '0', STR_PAD_LEFT);
+
+        return self::fromString($hex);
+    }
+
+    /**
      * Check if a string is a valid uuid
      *
      * @param string $uuid The uuid to test
