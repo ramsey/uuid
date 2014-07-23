@@ -29,7 +29,7 @@ use InvalidArgumentException;
  * @link http://docs.python.org/3/library/uuid.html
  * @link http://docs.oracle.com/javase/6/docs/api/java/util/UUID.html
  */
-final class Uuid
+final class Uuid implements \JsonSerializable
 {
     /**
      * When this namespace is specified, the name string is a fully-qualified domain name.
@@ -171,6 +171,19 @@ final class Uuid
      * @link http://www.php.net/manual/en/language.oop5.magic.php#object.tostring
      */
     public function __toString()
+    {
+        return $this->toString();
+    }
+
+    /**
+     * Converts this UUID object to a string when the object is serialized
+     * with json_encode()
+     *
+     * @link http://php.net/manual/en/class.jsonserializable.php
+     *
+     * @return string
+     */
+    public function jsonSerialize()
     {
         return $this->toString();
     }
