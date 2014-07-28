@@ -1,3 +1,10 @@
+* 2.7.2 (2014-07-28)
+  * Upgraded to PSR-4 autoloading
+  * Testing upgrades:
+    * Testing against PHP 5.6
+    * Testing with PHPUnit 4
+    * Using Coveralls.io to generate code coverage reports
+  * Documentation fixes
 * 2.7.1 (2014-02-19)
   * Moved moontoast/math and symfony/console to require-dev; fixes #20
   * Now supporting symfony/console for 2.3 (LTS version); fixes #21
