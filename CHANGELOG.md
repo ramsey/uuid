@@ -1,3 +1,5 @@
+* 2.7.3 (2014-08-27)
+  * Fixed upper range for `mt_rand` used in version 4 UUIDs
 * 2.7.2 (2014-07-28)
   * Upgraded to PSR-4 autoloading
   * Testing upgrades:
