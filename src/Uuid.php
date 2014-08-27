@@ -1226,7 +1226,7 @@ final class Uuid
 
         $bytes = '';
         foreach (range(1, $length) as $i) {
-            $bytes = chr(mt_rand(0, 256)) . $bytes;
+            $bytes = chr(mt_rand(0, 255)) . $bytes;
         }
 
         return $bytes;
