@@ -32,9 +32,9 @@ Much inspiration for this library came from the [Java][javauuid] and
 ## API Documentation
 
 The [latest class API documentation][apidocs] is available online. This project
-uses [phpDocumentor](http://phpdoc.org/) to generate this documentation. To
-generate the documentation on your own, run `phpdoc` from the root of the project.
-This will generate documentation in the `docs/` folder.
+uses [ApiGen](http://apigen.org/) to generate this documentation. To
+generate the documentation on your own, run `apigen` from the root of the project.
+This will generate documentation in the `build/apidocs/` folder.
 
 ## Requirements
 

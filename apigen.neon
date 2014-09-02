@@ -1,0 +1,15 @@
+# apigen configuration
+# This uses the NEON file format: http://ne-on.org/
+source:
+    - src
+destination: build/apidocs
+title: Rhumsaa\Uuid
+main: Rhumsaa
+deprecated: Yes
+todo: Yes
+sourceCode: Yes
+report: build/apigen-checkstyle.xml
+wipeout: Yes
+quiet: No
+progressbar: Yes
+colors: Yes
