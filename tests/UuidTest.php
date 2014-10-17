@@ -26,6 +26,21 @@ class UuidTest extends TestCase
     /**
      * @covers Rhumsaa\Uuid\Uuid::fromString
      */
+    public function testFromLittleEndianString()
+    {
+        $uuid = Uuid::fromString('b08c6fff-7dc5-e111-9b21-0800200c9a66');
+        $guid = Uuid::fromString('b08c6fff-7dc5-e111-9b21-0800200c9a66', true);
+
+        $this->assertInstanceOf('\Rhumsaa\Uuid\Uuid', $guid);
+        // UUID's and GUID's share the same textual representation
+        $this->assertEquals($uuid->toString(), $guid->toString());
+        // But not the same binary representation
+        $this->assertNotEquals(bin2hex($uuid->getBytes()), bin2hex($guid->getBytes()));
+    }
+
+    /**
+     * @covers Rhumsaa\Uuid\Uuid::fromString
+     */
     public function testFromStringWithCurlyBraces()
     {
         $uuid = Uuid::fromString('{ff6f8cb0-c57d-11e1-9b21-0800200c9a66}');
@@ -1433,6 +1448,28 @@ class UuidTest extends TestCase
         $fromBytesUuid = Uuid::fromBytes($bytes);
 
         $this->assertTrue($uuid->equals($fromBytesUuid));
+    }
+
+    public function testFromLittleEndianBytes()
+    {
+        // Check that parsing BE bytes as LE reverses fields
+        $uuid = Uuid::fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
+        $bytes = $uuid->getBytes();
+
+        $guid = Uuid::fromBytes($bytes, true);
+
+        // First three fields should be reversed
+        $this->assertEquals('b08c6fff-7dc5-e111-9b21-0800200c9a66', $guid->toString());
+        // Except if forcing big endian
+        $this->assertEquals($uuid->toString(), $guid->toString(true));
+
+        // Check that parsing LE bytes as LE preserves fields
+        $guid = Uuid::fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66', true);
+        $bytes = $guid->getBytes();
+
+        $parsedGuid = Uuid::fromBytes($bytes, true);
+
+        $this->assertEquals($guid->toString(), $parsedGuid->toString());
     }
 
     /**

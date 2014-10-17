@@ -150,17 +150,25 @@ class Uuid implements \JsonSerializable
     );
 
     /**
+     * Whether the first three fields are stored in little endian format (GUID's)
+     * @var bool
+     */
+    protected $isLittleEndian;
+
+    /**
      * Creates a universally unique identifier (UUID) from an array of fields.
      *
      * Protected to prevent direct instantiation. Use static methods to create
      * UUIDs.
      *
      * @param array $fields
+     * @param bool $littleEndian Whether the first three fields are in little-endian format.
      * @link Rhumsaa.Uuid.Uuid.html#method_getFields
      */
-    protected function __construct(array $fields)
+    protected function __construct(array $fields, $littleEndian = false)
     {
         $this->fields = $fields;
+        $this->isLittleEndian = (bool)$littleEndian;
     }
 
     /**
@@ -445,7 +453,7 @@ class Uuid implements \JsonSerializable
      */
     public function getHex()
     {
-        return str_replace('-', '', $this->toString());
+        return str_replace('-', '', $this->toString(true));
     }
 
     /**
@@ -834,11 +842,20 @@ class Uuid implements \JsonSerializable
      *
      * @return string
      */
-    public function toString()
+    public function toString($forceBigEndian = false)
     {
+        $fields = array_values($this->fields);
+
+        if ($this->isLittleEndian && $forceBigEndian == false) {
+                // Swap byte-order on the first three fields
+                $fields[0] = unpack('H*', pack('V', hexdec($fields[0])))[1];
+                $fields[1] = unpack('H*', pack('v', hexdec($fields[1])))[1];
+                $fields[2] = unpack('H*', pack('v', hexdec($fields[2])))[1];
+        }
+
         return vsprintf(
             '%08s-%04s-%04s-%02s%02s-%012s',
-            $this->fields
+            $fields
         );
     }
 
@@ -849,22 +866,18 @@ class Uuid implements \JsonSerializable
      * @return Uuid
      * @throws InvalidArgumentException If the $bytes string does not contain 16 characters
      */
-    public static function fromBytes($bytes)
+    public static function fromBytes($bytes, $littleEndian = false)
     {
         if (strlen($bytes) !== 16) {
             throw new InvalidArgumentException('$bytes string should contain 16 characters.');
         }
 
-        $uuid = '';
-        foreach (range(0, 15) as $step) {
-            $uuid .= sprintf('%02x', ord($bytes[$step]));
+        $hexUuid = unpack('H*', $bytes);
 
-            if (in_array($step, array(3, 5, 7, 9))) {
-                $uuid .= '-';
-            }
-        }
+        $uuid = Uuid::fromString($hexUuid[1], false);
+        $uuid->isLittleEndian = $littleEndian;
 
-        return Uuid::fromString($uuid);
+        return $uuid;
     }
 
     /**
@@ -872,10 +885,11 @@ class Uuid implements \JsonSerializable
      * in the toString() method.
      *
      * @param string $name A string that specifies a UUID
+     * @param bool $littleEndian A boolean specifying whether the time_low, time_mid, time_hi_and_version are encoded in little-endian format.
      * @return Uuid
      * @throws InvalidArgumentException If the $name isn't a valid UUID
      */
-    public static function fromString($name)
+    public static function fromString($name, $littleEndian = false)
     {
         $nameParsed = str_replace(array('urn:', 'uuid:', '{', '}', '-'), '', $name);
 
@@ -889,6 +903,14 @@ class Uuid implements \JsonSerializable
             substr($nameParsed, 16, 4),
             substr($nameParsed, 20),
         );
+
+        // Swap byte-order on the first three fields
+        if ($littleEndian) {
+            $components[0] = unpack('H*', pack('V', hexdec($components[0])))[1];
+            $components[1] = unpack('H*', pack('v', hexdec($components[1])))[1];
+            $components[2] = unpack('H*', pack('v', hexdec($components[2])))[1];
+        }
+
         $nameParsed = implode('-', $components);
 
         if (!self::isValid($nameParsed)) {
@@ -904,7 +926,7 @@ class Uuid implements \JsonSerializable
             'node' => sprintf('%012s', $components[4]),
         );
 
-        return new self($fields);
+        return new self($fields, $littleEndian);
     }
 
     /**
