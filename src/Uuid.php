@@ -848,9 +848,12 @@ class Uuid implements \JsonSerializable
 
         if ($this->isLittleEndian && $forceBigEndian == false) {
                 // Swap byte-order on the first three fields
-                $fields[0] = unpack('H*', pack('V', hexdec($fields[0])))[1];
-                $fields[1] = unpack('H*', pack('v', hexdec($fields[1])))[1];
-                $fields[2] = unpack('H*', pack('v', hexdec($fields[2])))[1];
+                $hex = unpack('H*', pack('V', hexdec($fields[0])));
+                $fields[0] = $hex[1];
+                $hex = unpack('H*', pack('v', hexdec($fields[1])));
+                $fields[1] = $hex[1];
+                $hex = unpack('H*', pack('v', hexdec($fields[2])));
+                $fields[2] = $hex[1];
         }
 
         return vsprintf(
@@ -906,9 +909,12 @@ class Uuid implements \JsonSerializable
 
         // Swap byte-order on the first three fields
         if ($littleEndian) {
-            $components[0] = unpack('H*', pack('V', hexdec($components[0])))[1];
-            $components[1] = unpack('H*', pack('v', hexdec($components[1])))[1];
-            $components[2] = unpack('H*', pack('v', hexdec($components[2])))[1];
+            $hex = unpack('H*', pack('V', hexdec($components[0])));
+            $components[0] = $hex[1];
+            $hex = unpack('H*', pack('v', hexdec($components[1])));
+            $components[1] = $hex[1];
+            $hex = unpack('H*', pack('v', hexdec($components[2])));
+            $components[2] = $hex[1];
         }
 
         $nameParsed = implode('-', $components);
