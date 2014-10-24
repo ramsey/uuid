@@ -1,6 +1,7 @@
 <?php
 
 error_reporting(E_ALL | E_STRICT);
+date_default_timezone_set('UTC');
 
 // Ensure that composer has installed all dependencies
 if (!file_exists(dirname(__DIR__) . '/vendor/autoload.php')) {
