@@ -1454,6 +1454,33 @@ class UuidTest extends TestCase
     }
 
     /**
+     * @covers Rhumsaa\Uuid\Uuid::fromInteger
+     */
+    public function testFromIntegerBigNumber()
+    {
+        $uuid = Uuid::fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
+        $integer = $uuid->getInteger();
+
+        $fromIntegerUuid = Uuid::fromInteger($integer);
+
+        $this->assertTrue($uuid->equals($fromIntegerUuid));
+    }
+
+    /**
+     * @covers Rhumsaa\Uuid\Uuid::fromInteger
+     */
+    public function testFromIntegerString()
+    {
+        $uuid = Uuid::fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
+        $integer = $uuid->getInteger()->getValue();
+
+        $fromIntegerUuid = Uuid::fromInteger($integer);
+
+        $this->assertTrue($uuid->equals($fromIntegerUuid));
+    }
+
+
+    /**
      * This test ensures that Rhumsaa\Uuid passes the same test cases
      * as the Python UUID library.
      *
@@ -1462,6 +1489,7 @@ class UuidTest extends TestCase
      *
      * @covers Rhumsaa\Uuid\Uuid::fromString
      * @covers Rhumsaa\Uuid\Uuid::fromBytes
+     * @covers Rhumsaa\Uuid\Uuid::fromInteger
      * @covers Rhumsaa\Uuid\Uuid::toString
      * @covers Rhumsaa\Uuid\Uuid::getBytes
      * @covers Rhumsaa\Uuid\Uuid::getFieldsHex
@@ -1772,6 +1800,7 @@ class UuidTest extends TestCase
                 Uuid::fromString($test['hex']),
                 Uuid::fromBytes(base64_decode($test['bytes'])),
                 Uuid::fromString($test['urn']),
+                Uuid::fromInteger($test['int']),
             );
             foreach ($uuids as $uuid) {
                 $this->assertEquals($test['string'], (string) $uuid);
