@@ -29,7 +29,7 @@ use InvalidArgumentException;
  * @link http://docs.python.org/3/library/uuid.html
  * @link http://docs.oracle.com/javase/6/docs/api/java/util/UUID.html
  */
-final class Uuid implements \JsonSerializable
+class Uuid implements \JsonSerializable
 {
     /**
      * When this namespace is specified, the name string is a fully-qualified domain name.
