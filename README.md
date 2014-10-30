@@ -91,7 +91,7 @@ the following command to install the package and add it as a requirement to
 `composer.json`:
 
 ```bash
-composer.phar require "rhumsaa/uuid=~2.7"
+composer.phar require "rhumsaa/uuid=~2.8"
 ```
 
 
