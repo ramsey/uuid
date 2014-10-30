@@ -53,6 +53,10 @@ class UuidType extends Type
             return null;
         }
 
+        if ($value instanceof Uuid) {
+            return $value;
+        }
+
         try {
             $uuid = Uuid::fromString($value);
         } catch (InvalidArgumentException $e) {
@@ -74,7 +78,7 @@ class UuidType extends Type
             return null;
         }
 
-        if ($value instanceof Uuid) {
+        if ($value instanceof Uuid || Uuid::isValid($value)) {
             return (string) $value;
         }
 
