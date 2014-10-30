@@ -29,7 +29,7 @@ use InvalidArgumentException;
  * @link http://docs.python.org/3/library/uuid.html
  * @link http://docs.oracle.com/javase/6/docs/api/java/util/UUID.html
  */
-final class Uuid
+class Uuid
 {
     /**
      * When this namespace is specified, the name string is a fully-qualified domain name.
