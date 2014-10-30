@@ -32,7 +32,7 @@ use Rhumsaa\Uuid\Codec\StringCodec;
  * @link http://docs.oracle.com/javase/6/docs/api/java/util/UUID.html
  */
 
-final class Uuid implements UuidInterface, \JsonSerializable
+class Uuid implements UuidInterface, \JsonSerializable
 {
     /**
      * When this namespace is specified, the name string is a fully-qualified domain name.
