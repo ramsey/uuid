@@ -230,6 +230,14 @@ class UuidFactory
         return $this->guidCodec->decode($this->getConverter(), $name);
     }
 
+    public function fromInteger($integer)
+    {
+        $hex = $this->getConverter()->toHex($integer);
+        $hex = str_pad($hex, 32, '0', STR_PAD_LEFT);
+
+        return $this->fromString($hex);
+    }
+
     public function getConverter()
     {
         $converter = new BigNumberConverter();

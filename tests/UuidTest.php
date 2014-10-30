@@ -1322,7 +1322,6 @@ class UuidTest extends TestCase
     }
 
     /**
-     * @covers Rhumsaa\Uuid\Uuid::fromInteger
      */
     public function testFromIntegerBigNumber()
     {
@@ -1335,7 +1334,6 @@ class UuidTest extends TestCase
     }
 
     /**
-     * @covers Rhumsaa\Uuid\Uuid::fromInteger
      */
     public function testFromIntegerString()
     {
@@ -1346,7 +1344,6 @@ class UuidTest extends TestCase
 
         $this->assertTrue($uuid->equals($fromIntegerUuid));
     }
-
 
     /**
      * This test ensures that Rhumsaa\Uuid passes the same test cases

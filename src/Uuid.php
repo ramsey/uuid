@@ -777,22 +777,7 @@ class Uuid implements UuidInterface, \JsonSerializable
      */
     public static function fromInteger($integer)
     {
-        if (!self::hasBigNumber()) {
-            throw new Exception\UnsatisfiedDependencyException(
-                'Cannot call ' . __METHOD__ . ' without support for large '
-                . 'integers, since integer is an unsigned '
-                . '128-bit integer; Moontoast\Math\BigNumber is required. '
-            );
-        }
-
-        if (!$integer instanceof \Moontoast\Math\BigNumber) {
-            $integer = new \Moontoast\Math\BigNumber($integer);
-        }
-
-        $hex = \Moontoast\Math\BigNumber::baseConvert($integer, 10, 16);
-        $hex = str_pad($hex, 32, '0', STR_PAD_LEFT);
-
-        return self::fromString($hex);
+        return self::getFactory()->fromInteger($integer);
     }
 
     /**

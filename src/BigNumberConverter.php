@@ -10,4 +10,13 @@ class BigNumberConverter
 
         return new \Moontoast\Math\BigNumber($number);
     }
+
+    public function toHex($integer)
+    {
+        if (!$integer instanceof \Moontoast\Math\BigNumber) {
+            $integer = new \Moontoast\Math\BigNumber($integer);
+        }
+
+        return \Moontoast\Math\BigNumber::baseConvert($integer, 10, 16);
+    }
 }
