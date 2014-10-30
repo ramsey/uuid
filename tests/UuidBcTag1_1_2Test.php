@@ -21,8 +21,6 @@ class UuidBcTag1_1_2Test extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Rhumsaa\Uuid\Uuid::fromString
-     * @covers Rhumsaa\Uuid\Uuid::__construct
      */
     public function testFromString()
     {
@@ -32,7 +30,6 @@ class UuidBcTag1_1_2Test extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Rhumsaa\Uuid\Uuid::fromString
      */
     public function testFromStringWithCurlyBraces()
     {
@@ -42,7 +39,6 @@ class UuidBcTag1_1_2Test extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Rhumsaa\Uuid\Uuid::fromString
      * @expectedException InvalidArgumentException
      * @expectedExceptionMessage Invalid UUID string:
      */
@@ -52,7 +48,6 @@ class UuidBcTag1_1_2Test extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Rhumsaa\Uuid\Uuid::fromString
      */
     public function testFromStringWithUrn()
     {
@@ -62,7 +57,6 @@ class UuidBcTag1_1_2Test extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Rhumsaa\Uuid\Uuid::getBytes
      */
     public function testGetBytes()
     {
@@ -71,7 +65,6 @@ class UuidBcTag1_1_2Test extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Rhumsaa\Uuid\Uuid::getClockSeqHiAndReserved
      */
     public function testGetClockSeqHiAndReserved()
     {
@@ -80,7 +73,6 @@ class UuidBcTag1_1_2Test extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Rhumsaa\Uuid\Uuid::getClockSeqLow
      */
     public function testGetClockSeqLow()
     {
@@ -89,7 +81,6 @@ class UuidBcTag1_1_2Test extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Rhumsaa\Uuid\Uuid::getClockSequence
      */
     public function testGetClockSequence()
     {
@@ -98,7 +89,6 @@ class UuidBcTag1_1_2Test extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Rhumsaa\Uuid\Uuid::getDateTime
      */
     public function testGetDateTime()
     {
@@ -114,8 +104,6 @@ class UuidBcTag1_1_2Test extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Rhumsaa\Uuid\Uuid::getDateTime
-     * @covers Rhumsaa\Uuid\Exception\UnsupportedOperationException
      * @expectedException Rhumsaa\Uuid\Exception\UnsupportedOperationException
      * @expectedExceptionMessage Not a time-based UUID
      */
@@ -127,7 +115,6 @@ class UuidBcTag1_1_2Test extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Rhumsaa\Uuid\Uuid::getFields
      */
     public function testGetFields()
     {
@@ -141,7 +128,6 @@ class UuidBcTag1_1_2Test extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Rhumsaa\Uuid\Uuid::getLeastSignificantBits
      */
     public function testGetLeastSignificantBits()
     {
@@ -158,7 +144,6 @@ class UuidBcTag1_1_2Test extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Rhumsaa\Uuid\Uuid::getMostSignificantBits
      */
     public function testGetMostSignificantBits()
     {
@@ -175,7 +160,6 @@ class UuidBcTag1_1_2Test extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Rhumsaa\Uuid\Uuid::getNode
      */
     public function testGetNode()
     {
@@ -184,7 +168,6 @@ class UuidBcTag1_1_2Test extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Rhumsaa\Uuid\Uuid::getTimeHiAndVersion
      */
     public function testGetTimeHiAndVersion()
     {
@@ -193,7 +176,6 @@ class UuidBcTag1_1_2Test extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Rhumsaa\Uuid\Uuid::getTimeLow
      */
     public function testGetTimeLow()
     {
@@ -202,7 +184,6 @@ class UuidBcTag1_1_2Test extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Rhumsaa\Uuid\Uuid::getTimeMid
      */
     public function testGetTimeMid()
     {
@@ -211,7 +192,6 @@ class UuidBcTag1_1_2Test extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Rhumsaa\Uuid\Uuid::getTimestamp
      */
     public function testGetTimestamp()
     {
@@ -225,8 +205,6 @@ class UuidBcTag1_1_2Test extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Rhumsaa\Uuid\Uuid::getTimestamp
-     * @covers Rhumsaa\Uuid\Exception\UnsupportedOperationException
      * @expectedException Rhumsaa\Uuid\Exception\UnsupportedOperationException
      * @expectedExceptionMessage Not a time-based UUID
      */
@@ -238,7 +216,6 @@ class UuidBcTag1_1_2Test extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Rhumsaa\Uuid\Uuid::getUrn
      */
     public function testGetUrn()
     {
@@ -247,7 +224,6 @@ class UuidBcTag1_1_2Test extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Rhumsaa\Uuid\Uuid::getVariant
      */
     public function testGetVariantForReservedNcs()
     {
@@ -277,7 +253,6 @@ class UuidBcTag1_1_2Test extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Rhumsaa\Uuid\Uuid::getVariant
      */
     public function testGetVariantForRfc4122()
     {
@@ -295,7 +270,6 @@ class UuidBcTag1_1_2Test extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Rhumsaa\Uuid\Uuid::getVariant
      */
     public function testGetVariantForReservedMicrosoft()
     {
@@ -307,7 +281,6 @@ class UuidBcTag1_1_2Test extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Rhumsaa\Uuid\Uuid::getVariant
      */
     public function testGetVariantForReservedFuture()
     {
@@ -319,7 +292,6 @@ class UuidBcTag1_1_2Test extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Rhumsaa\Uuid\Uuid::getVersion
      */
     public function testGetVersionForVersion1()
     {
@@ -328,7 +300,6 @@ class UuidBcTag1_1_2Test extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Rhumsaa\Uuid\Uuid::getVersion
      */
     public function testGetVersionForVersion2()
     {
@@ -337,7 +308,6 @@ class UuidBcTag1_1_2Test extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Rhumsaa\Uuid\Uuid::getVersion
      */
     public function testGetVersionForVersion3()
     {
@@ -346,7 +316,6 @@ class UuidBcTag1_1_2Test extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Rhumsaa\Uuid\Uuid::getVersion
      */
     public function testGetVersionForVersion4()
     {
@@ -355,7 +324,6 @@ class UuidBcTag1_1_2Test extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Rhumsaa\Uuid\Uuid::getVersion
      */
     public function testGetVersionForVersion5()
     {
@@ -364,8 +332,6 @@ class UuidBcTag1_1_2Test extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Rhumsaa\Uuid\Uuid::toString
-     * @covers Rhumsaa\Uuid\Uuid::__toString
      */
     public function testToString()
     {
@@ -381,8 +347,6 @@ class UuidBcTag1_1_2Test extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Rhumsaa\Uuid\Uuid::uuid1
-     * @covers Rhumsaa\Uuid\Uuid::getNodeFromSystem
      */
     public function testUuid1()
     {
@@ -394,7 +358,6 @@ class UuidBcTag1_1_2Test extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Rhumsaa\Uuid\Uuid::uuid1
      */
     public function testUuid1WithNodeAndClockSequence()
     {
@@ -409,11 +372,10 @@ class UuidBcTag1_1_2Test extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Rhumsaa\Uuid\Uuid::uuid1
      */
     public function testUuid1WithRandomNode()
     {
-        Uuid::$ignoreSystemNode = true;
+        UuidFactory::$ignoreSystemNode = true;
 
         $uuid = Uuid::uuid1();
         $this->assertInstanceOf('\Rhumsaa\Uuid\Uuid', $uuid);
@@ -427,8 +389,6 @@ class UuidBcTag1_1_2Test extends \PHPUnit_Framework_TestCase
      * library generates a matching UUID for the same name.
      * @see http://docs.python.org/library/uuid.html
      *
-     * @covers Rhumsaa\Uuid\Uuid::uuid3
-     * @covers Rhumsaa\Uuid\Uuid::uuidFromHashedName
      */
     public function testUuid3WithNamespaceAsUuidObject()
     {
@@ -444,8 +404,6 @@ class UuidBcTag1_1_2Test extends \PHPUnit_Framework_TestCase
      * library generates a matching UUID for the same name.
      * @see http://docs.python.org/library/uuid.html
      *
-     * @covers Rhumsaa\Uuid\Uuid::uuid3
-     * @covers Rhumsaa\Uuid\Uuid::uuidFromHashedName
      */
     public function testUuid3WithNamespaceAsUuidString()
     {
@@ -456,8 +414,6 @@ class UuidBcTag1_1_2Test extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Rhumsaa\Uuid\Uuid::uuid4
-     * @covers Rhumsaa\Uuid\Uuid::uuidFromHashedName
      */
     public function testUuid4()
     {
@@ -472,8 +428,6 @@ class UuidBcTag1_1_2Test extends \PHPUnit_Framework_TestCase
      * library generates a matching UUID for the same name.
      * @see http://docs.python.org/library/uuid.html
      *
-     * @covers Rhumsaa\Uuid\Uuid::uuid5
-     * @covers Rhumsaa\Uuid\Uuid::uuidFromHashedName
      */
     public function testUuid5WithNamespaceAsUuidObject()
     {
@@ -489,8 +443,6 @@ class UuidBcTag1_1_2Test extends \PHPUnit_Framework_TestCase
      * library generates a matching UUID for the same name.
      * @see http://docs.python.org/library/uuid.html
      *
-     * @covers Rhumsaa\Uuid\Uuid::uuid5
-     * @covers Rhumsaa\Uuid\Uuid::uuidFromHashedName
      */
     public function testUuid5WithNamespaceAsUuidString()
     {
@@ -501,7 +453,6 @@ class UuidBcTag1_1_2Test extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Rhumsaa\Uuid\Uuid::compareTo
      */
     public function testCompareTo()
     {
@@ -530,7 +481,6 @@ class UuidBcTag1_1_2Test extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Rhumsaa\Uuid\Uuid::equals
      */
     public function testEquals()
     {

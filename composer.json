@@ -1,6 +1,6 @@
 {
     "name": "rhumsaa/uuid",
-    "description": "A PHP 5.3+ library for generating RFC 4122 version 1, 3, 4, and 5 universally unique identifiers (UUID).",
+    "description": "A PHP 5.4+ library for generating RFC 4122 version 1, 3, 4, and 5 universally unique identifiers (UUID).",
     "type": "library",
     "keywords": ["uuid", "identifier", "guid"],
     "homepage": "https://github.com/ramsey/uuid",
@@ -20,7 +20,7 @@
         "source": "https://github.com/ramsey/uuid"
     },
     "require": {
-        "php": ">=5.3.3"
+        "php": ">=5.4"
     },
     "require-dev": {
         "moontoast/math": "~1.1",
@@ -40,7 +40,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "2.7.x-dev"
+            "dev-master": "3.0.x-dev"
         }
     }
 }

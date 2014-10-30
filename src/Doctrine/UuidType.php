@@ -5,7 +5,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @copyright Copyright (c) 2013-2014 Ben Ramsey <http://benramsey.com>
+ * @copyright Copyright (c) 2012-2014 Ben Ramsey <http://benramsey.com>
  * @license http://opensource.org/licenses/MIT MIT
  */
 
@@ -53,6 +53,10 @@ class UuidType extends Type
             return null;
         }
 
+        if ($value instanceof Uuid) {
+            return $value;
+        }
+
         try {
             $uuid = Uuid::fromString($value);
         } catch (InvalidArgumentException $e) {
@@ -74,7 +78,7 @@ class UuidType extends Type
             return null;
         }
 
-        if ($value instanceof Uuid) {
+        if ($value instanceof Uuid || Uuid::isValid($value)) {
             return (string) $value;
         }
 
