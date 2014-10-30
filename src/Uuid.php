@@ -12,6 +12,8 @@
 namespace Rhumsaa\Uuid;
 
 use InvalidArgumentException;
+use Rhumsaa\Uuid\Codec\GuidStringCodec;
+use Rhumsaa\Uuid\Codec\StringCodec;
 
 /**
  * Represents a universally unique identifier (UUID), according to RFC 4122
@@ -29,7 +31,8 @@ use InvalidArgumentException;
  * @link http://docs.python.org/3/library/uuid.html
  * @link http://docs.oracle.com/javase/6/docs/api/java/util/UUID.html
  */
-class Uuid implements \JsonSerializable
+
+final class Uuid implements UuidInterface, \JsonSerializable
 {
     /**
      * When this namespace is specified, the name string is a fully-qualified domain name.
@@ -150,10 +153,10 @@ class Uuid implements \JsonSerializable
     );
 
     /**
-     * Whether the first three fields are stored in little endian format (GUID's)
-     * @var bool
+     * String codec
+     * @var Codec
      */
-    protected $isLittleEndian;
+    protected $codec;
 
     /**
      * Creates a universally unique identifier (UUID) from an array of fields.
@@ -162,13 +165,13 @@ class Uuid implements \JsonSerializable
      * UUIDs.
      *
      * @param array $fields
-     * @param bool $littleEndian Whether the first three fields are in little-endian format.
+     * @param Codec $codec String codec
      * @link Rhumsaa.Uuid.Uuid.html#method_getFields
      */
-    protected function __construct(array $fields, $littleEndian = false)
+    public function __construct(array $fields, Codec $codec = null)
     {
         $this->fields = $fields;
-        $this->isLittleEndian = (bool)$littleEndian;
+        $this->codec = $codec ?: new StringCodec();
     }
 
     /**
@@ -209,7 +212,7 @@ class Uuid implements \JsonSerializable
      * @param Uuid $uuid UUID to which this UUID is to be compared
      * @return int -1, 0 or 1 as this UUID is less than, equal to, or greater than $uuid
      */
-    public function compareTo(Uuid $uuid)
+    public function compareTo(UuidInterface $uuid)
     {
         $comparison = null;
 
@@ -844,22 +847,7 @@ class Uuid implements \JsonSerializable
      */
     public function toString($forceBigEndian = false)
     {
-        $fields = array_values($this->fields);
-
-        if ($this->isLittleEndian && $forceBigEndian == false) {
-                // Swap byte-order on the first three fields
-                $hex = unpack('H*', pack('V', hexdec($fields[0])));
-                $fields[0] = $hex[1];
-                $hex = unpack('H*', pack('v', hexdec($fields[1])));
-                $fields[1] = $hex[1];
-                $hex = unpack('H*', pack('v', hexdec($fields[2])));
-                $fields[2] = $hex[1];
-        }
-
-        return vsprintf(
-            '%08s-%04s-%04s-%02s%02s-%012s',
-            $fields
-        );
+        return $this->codec->encode($this);
     }
 
     /**
@@ -871,16 +859,11 @@ class Uuid implements \JsonSerializable
      */
     public static function fromBytes($bytes, $littleEndian = false)
     {
-        if (strlen($bytes) !== 16) {
-            throw new InvalidArgumentException('$bytes string should contain 16 characters.');
+        if ($littleEndian) {
+            return (new GuidStringCodec())->decodeBytes($bytes);
         }
 
-        $hexUuid = unpack('H*', $bytes);
-
-        $uuid = Uuid::fromString($hexUuid[1], false);
-        $uuid->isLittleEndian = $littleEndian;
-
-        return $uuid;
+        return (new StringCodec())->decodeBytes($bytes);
     }
 
     /**
@@ -894,45 +877,11 @@ class Uuid implements \JsonSerializable
      */
     public static function fromString($name, $littleEndian = false)
     {
-        $nameParsed = str_replace(array('urn:', 'uuid:', '{', '}', '-'), '', $name);
-
-        // We have stripped out the dashes and are breaking up the string using
-        // substr(). In this way, we can accept a full hex value that doesn't
-        // contain dashes.
-        $components = array(
-            substr($nameParsed, 0, 8),
-            substr($nameParsed, 8, 4),
-            substr($nameParsed, 12, 4),
-            substr($nameParsed, 16, 4),
-            substr($nameParsed, 20),
-        );
-
-        // Swap byte-order on the first three fields
         if ($littleEndian) {
-            $hex = unpack('H*', pack('V', hexdec($components[0])));
-            $components[0] = $hex[1];
-            $hex = unpack('H*', pack('v', hexdec($components[1])));
-            $components[1] = $hex[1];
-            $hex = unpack('H*', pack('v', hexdec($components[2])));
-            $components[2] = $hex[1];
+            return (new GuidStringCodec())->decode($name);
         }
 
-        $nameParsed = implode('-', $components);
-
-        if (!self::isValid($nameParsed)) {
-            throw new InvalidArgumentException('Invalid UUID string: ' . $name);
-        }
-
-        $fields = array(
-            'time_low' => sprintf('%08s', $components[0]),
-            'time_mid' => sprintf('%04s', $components[1]),
-            'time_hi_and_version' => sprintf('%04s', $components[2]),
-            'clock_seq_hi_and_reserved' => sprintf('%02s', substr($components[3], 0, 2)),
-            'clock_seq_low' => sprintf('%02s', substr($components[3], 2)),
-            'node' => sprintf('%012s', $components[4]),
-        );
-
-        return new self($fields, $littleEndian);
+        return (new StringCodec())->decode($name);
     }
 
     /**

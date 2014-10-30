@@ -9,8 +9,6 @@ if (!file_exists(dirname(__DIR__) . '/vendor/autoload.php')) {
         . "See http://getcomposer.org for help with installing composer\n");
 }
 
-var_dump(phpversion());
-
 // Set a default timezone for HHVM tests
 date_default_timezone_set('UTC');
 
