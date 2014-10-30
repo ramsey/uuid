@@ -6,9 +6,18 @@ use InvalidArgumentException;
 use Rhumsaa\Uuid\Codec;
 use Rhumsaa\Uuid\UuidInterface;
 use Rhumsaa\Uuid\Uuid;
+use Rhumsaa\Uuid\BigNumberConverter;
+use Rhumsaa\Uuid\UuidFactory;
 
 class StringCodec implements Codec
 {
+
+    private $factory;
+
+    public function __construct(UuidFactory $factory)
+    {
+        $this->factory = $factory;
+    }
 
     public function encode(UuidInterface $uuid)
     {
@@ -31,7 +40,7 @@ class StringCodec implements Codec
         return $bytes;
     }
 
-    public function decode($encodedUuid)
+    public function decode(BigNumberConverter $converter, $encodedUuid)
     {
         $nameParsed = str_replace(array(
             'urn:',
@@ -67,10 +76,10 @@ class StringCodec implements Codec
             'node' => sprintf('%012s', $components[4])
         );
 
-        return new Uuid($fields, $this);
+        return $this->factory->uuid($fields, $this);
     }
 
-    public function decodeBytes($bytes)
+    public function decodeBytes(BigNumberConverter $converter, $bytes)
     {
         if (strlen($bytes) !== 16) {
             throw new InvalidArgumentException('$bytes string should contain 16 characters.');
@@ -78,6 +87,6 @@ class StringCodec implements Codec
 
         $hexUuid = unpack('H*', $bytes);
 
-        return $this->decode($hexUuid[1]);
+        return $this->decode($converter, $hexUuid[1]);
     }
 }

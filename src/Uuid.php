@@ -99,41 +99,16 @@ final class Uuid implements UuidInterface, \JsonSerializable
     const VERSION = '3.0.x-dev';
 
     /**
-     * For testing, 64-bit system override; if true, treat the system as 32-bit
      *
-     * @var bool
+     * @var UuidFactory
      */
-    public static $force32Bit = false;
+    private static $factory = null;
 
     /**
-     * For testing, Moontoast\Math\BigNumber override; if true, treat as if
-     * BigNumber is not available
-     *
-     * @var bool
+     * String codec
+     * @var Codec
      */
-    public static $forceNoBigNumber = false;
-
-    /**
-     * For testing, openssl_random_pseudo_bytes() override; if true, treat as
-     * if openssl_random_pseudo_bytes() is not available
-     *
-     * @var bool
-     */
-    public static $forceNoOpensslRandomPseudoBytes = false;
-
-    /**
-     * For testing, sets time of day to a static, known value
-     *
-     * @var array
-     */
-    public static $timeOfDayTest;
-
-    /**
-     * For testing, system override to ignore generating node from hardware
-     *
-     * @var bool
-     */
-    public static $ignoreSystemNode = false;
+    protected $codec;
 
     /**
      * The fields that make up this UUID
@@ -152,11 +127,7 @@ final class Uuid implements UuidInterface, \JsonSerializable
         'node' => '000000000000',
     );
 
-    /**
-     * String codec
-     * @var Codec
-     */
-    protected $codec;
+    protected $converter;
 
     /**
      * Creates a universally unique identifier (UUID) from an array of fields.
@@ -168,10 +139,11 @@ final class Uuid implements UuidInterface, \JsonSerializable
      * @param Codec $codec String codec
      * @link Rhumsaa.Uuid.Uuid.html#method_getFields
      */
-    public function __construct(array $fields, Codec $codec = null)
+    public function __construct(array $fields, BigNumberConverter $converter, Codec $codec)
     {
         $this->fields = $fields;
-        $this->codec = $codec ?: new StringCodec();
+        $this->codec = $codec;
+        $this->converter = $converter;
     }
 
     /**
@@ -335,6 +307,11 @@ final class Uuid implements UuidInterface, \JsonSerializable
         return sprintf('%04x', $this->getClockSequence());
     }
 
+    public function getConverter()
+    {
+        return $this->converter;
+    }
+
     /**
      * Returns a PHP DateTime object representing the timestamp associated
      * with this UUID.
@@ -353,31 +330,8 @@ final class Uuid implements UuidInterface, \JsonSerializable
             throw new Exception\UnsupportedOperationException('Not a time-based UUID');
         }
 
-
-        if (self::is64BitSystem()) {
-
-            $unixTime = ($this->getTimestamp() - 0x01b21dd213814000) / 1e7;
-            $unixTime = number_format($unixTime, 0, '', '');
-
-        } elseif (self::hasBigNumber()) {
-
-            $time = \Moontoast\Math\BigNumber::baseConvert($this->getTimestampHex(), 16, 10);
-
-            $ts = new \Moontoast\Math\BigNumber($time, 20);
-            $ts->subtract('122192928000000000');
-            $ts->divide('10000000.0');
-            $ts->round();
-            $unixTime = $ts->getValue();
-
-        } else {
-
-            throw new Exception\UnsatisfiedDependencyException(
-                'When calling ' . __METHOD__ . ' on a 32-bit system, '
-                . 'Moontoast\Math\BigNumber must be present in order '
-                . 'to extract DateTime from version 1 UUIDs'
-            );
-
-        }
+        $unixTime = ($this->getTimestamp() - 0x01b21dd213814000) / 1e7;
+        $unixTime = number_format($unixTime, 0, '', '');
 
         return new \DateTime("@{$unixTime}");
     }
@@ -403,14 +357,6 @@ final class Uuid implements UuidInterface, \JsonSerializable
      */
     public function getFields()
     {
-        if (!self::is64BitSystem()) {
-            throw new Exception\UnsatisfiedDependencyException(
-                'Cannot call ' . __METHOD__ . ' on a 32-bit system, since some '
-                . 'values overflow the system max integer value'
-                . '; consider calling getFieldsHex instead'
-            );
-        }
-
         return array(
             'time_low' => $this->getTimeLow(),
             'time_mid' => $this->getTimeMid(),
@@ -461,22 +407,7 @@ final class Uuid implements UuidInterface, \JsonSerializable
      */
     public function getInteger()
     {
-        if (!self::hasBigNumber()) {
-            throw new Exception\UnsatisfiedDependencyException(
-                'Cannot call ' . __METHOD__ . ' without support for large '
-                . 'integers, since integer is an unsigned '
-                . '128-bit integer; Moontoast\Math\BigNumber is required'
-                . '; consider calling getMostSignificantBitsHex instead'
-            );
-        }
-
-        $number = \Moontoast\Math\BigNumber::baseConvert(
-            $this->getHex(),
-            16,
-            10
-        );
-
-        return new \Moontoast\Math\BigNumber($number);
+        return $this->converter->fromHex($this->getHex());
     }
 
     /**
@@ -487,22 +418,7 @@ final class Uuid implements UuidInterface, \JsonSerializable
      */
     public function getLeastSignificantBits()
     {
-        if (!self::hasBigNumber()) {
-            throw new Exception\UnsatisfiedDependencyException(
-                'Cannot call ' . __METHOD__ . ' without support for large '
-                . 'integers, since least significant bits is an unsigned '
-                . '64-bit integer; Moontoast\Math\BigNumber is required'
-                . '; consider calling getLeastSignificantBitsHex instead'
-            );
-        }
-
-        $number = \Moontoast\Math\BigNumber::baseConvert(
-            $this->getLeastSignificantBitsHex(),
-            16,
-            10
-        );
-
-        return new \Moontoast\Math\BigNumber($number);
+        return $this->converter->fromHex($this->getLeastSignificantBitsHex());
     }
 
     /**
@@ -528,22 +444,7 @@ final class Uuid implements UuidInterface, \JsonSerializable
      */
     public function getMostSignificantBits()
     {
-        if (!self::hasBigNumber()) {
-            throw new Exception\UnsatisfiedDependencyException(
-                'Cannot call ' . __METHOD__ . ' without support for large '
-                . 'integers, since most significant bits is an unsigned '
-                . '64-bit integer; Moontoast\Math\BigNumber is required'
-                . '; consider calling getMostSignificantBitsHex instead'
-            );
-        }
-
-        $number = \Moontoast\Math\BigNumber::baseConvert(
-            $this->getMostSignificantBitsHex(),
-            16,
-            10
-        );
-
-        return new \Moontoast\Math\BigNumber($number);
+        return $this->converter->fromHex($this->getMostSignificantBitsHex());
     }
 
     /**
@@ -588,15 +489,6 @@ final class Uuid implements UuidInterface, \JsonSerializable
      */
     public function getNode()
     {
-        if (!self::is64BitSystem()) {
-            throw new Exception\UnsatisfiedDependencyException(
-                'Cannot call ' . __METHOD__ . ' on a 32-bit system, since node '
-                . 'is an unsigned 48-bit integer and can overflow the system '
-                . 'max integer value'
-                . '; consider calling getNodeHex instead'
-            );
-        }
-
         return hexdec($this->getNodeHex());
     }
 
@@ -659,15 +551,6 @@ final class Uuid implements UuidInterface, \JsonSerializable
      */
     public function getTimeLow()
     {
-        if (!self::is64BitSystem()) {
-            throw new Exception\UnsatisfiedDependencyException(
-                'Cannot call ' . __METHOD__ . ' on a 32-bit system, since time_low '
-                . 'is an unsigned 32-bit integer and can overflow the system '
-                . 'max integer value'
-                . '; consider calling getTimeLowHex instead'
-            );
-        }
-
         return hexdec($this->getTimeLowHex());
     }
 
@@ -722,15 +605,6 @@ final class Uuid implements UuidInterface, \JsonSerializable
     {
         if ($this->getVersion() != 1) {
             throw new Exception\UnsupportedOperationException('Not a time-based UUID');
-        }
-
-        if (!self::is64BitSystem()) {
-            throw new Exception\UnsatisfiedDependencyException(
-                'Cannot call ' . __METHOD__ . ' on a 32-bit system, since timestamp '
-                . 'is an unsigned 60-bit integer and can overflow the system '
-                . 'max integer value'
-                . '; consider calling getTimestampHex instead'
-            );
         }
 
         return hexdec($this->getTimestampHex());
@@ -844,6 +718,20 @@ final class Uuid implements UuidInterface, \JsonSerializable
         return $this->codec->encode($this);
     }
 
+    public static function getFactory()
+    {
+        if (! self::$factory) {
+            self::$factory = new UuidFactory();
+        }
+
+        return self::$factory;
+    }
+
+    public static function setFactory(UuidFactory $factory)
+    {
+        self::$factory = $factory;
+    }
+
     /**
      * Creates a UUID from a byte string.
      *
@@ -853,12 +741,12 @@ final class Uuid implements UuidInterface, \JsonSerializable
      */
     public static function fromBytes($bytes)
     {
-        return (new StringCodec())->decodeBytes($bytes);
+        return self::getFactory()->fromBytes($bytes);
     }
 
     public static function fromGuidBytes($bytes)
     {
-        return (new GuidStringCodec())->decodeBytes($bytes);
+        return self::getFactory()->fromGuidBytes($bytes);
     }
 
     /**
@@ -872,12 +760,12 @@ final class Uuid implements UuidInterface, \JsonSerializable
      */
     public static function fromString($name)
     {
-        return (new StringCodec())->decode($name);
+        return self::getFactory()->fromString($name);
     }
 
     public static function fromGuidString($name)
     {
-        return (new GuidStringCodec())->decode($name);
+        return self::getFactory()->fromGuidString($name);
     }
 
     /**
@@ -944,61 +832,7 @@ final class Uuid implements UuidInterface, \JsonSerializable
      */
     public static function uuid1($node = null, $clockSeq = null)
     {
-        if ($node === null && !self::$ignoreSystemNode) {
-            $node = self::getNodeFromSystem();
-        }
-
-        // if $node is still null (couldn't get from system), randomly generate
-        // a node value, according to RFC 4122, Section 4.5
-        if ($node === null) {
-            $node = sprintf('%06x%06x', mt_rand(0, 1 << 24), mt_rand(0, 1 << 24));
-        }
-
-        // Convert the node to hex, if it is still an integer
-        if (is_int($node)) {
-            $node = sprintf('%012x', $node);
-        }
-
-        if (ctype_xdigit($node) && strlen($node) <= 12) {
-            $node = strtolower(sprintf('%012s', $node));
-        } else {
-            throw new InvalidArgumentException('Invalid node value');
-        }
-
-        if ($clockSeq === null) {
-            // Not using "stable storage"; see RFC 4122, Section 4.2.1.1
-            $clockSeq = mt_rand(0, 1 << 14);
-        }
-
-        // Create a 60-bit time value as a count of 100-nanosecond intervals
-        // since 00:00:00.00, 15 October 1582
-        if (self::$timeOfDayTest === null) {
-            $timeOfDay = gettimeofday();
-        } else {
-            $timeOfDay = self::$timeOfDayTest;
-        }
-        $uuidTime = self::calculateUuidTime($timeOfDay['sec'], $timeOfDay['usec']);
-
-        // Set the version number to 1
-        $timeHi = hexdec($uuidTime['hi']) & 0x0fff;
-        $timeHi &= ~(0xf000);
-        $timeHi |= 1 << 12;
-
-        // Set the variant to RFC 4122
-        $clockSeqHi = ($clockSeq >> 8) & 0x3f;
-        $clockSeqHi &= ~(0xc0);
-        $clockSeqHi |= 0x80;
-
-        $fields = array(
-            'time_low' => $uuidTime['low'],
-            'time_mid' => $uuidTime['mid'],
-            'time_hi_and_version' => sprintf('%04x', $timeHi),
-            'clock_seq_hi_and_reserved' => sprintf('%02x', $clockSeqHi),
-            'clock_seq_low' => sprintf('%02x', $clockSeq & 0xff),
-            'node' => $node,
-        );
-
-        return new self($fields);
+        return self::getFactory()->uuid1($node, $clockSeq);
     }
 
     /**
@@ -1011,13 +845,7 @@ final class Uuid implements UuidInterface, \JsonSerializable
      */
     public static function uuid3($ns, $name)
     {
-        if (!($ns instanceof Uuid)) {
-            $ns = self::fromString($ns);
-        }
-
-        $hash = md5($ns->getBytes() . $name);
-
-        return self::uuidFromHashedName($hash, 3);
+        return self::getFactory()->uuid3($ns, $name);
     }
 
     /**
@@ -1027,13 +855,7 @@ final class Uuid implements UuidInterface, \JsonSerializable
      */
     public static function uuid4()
     {
-        $bytes = self::generateBytes(16);
-
-        // When converting the bytes to hex, it turns into a 32-character
-        // hexadecimal string that looks a lot like an MD5 hash, so at this
-        // point, we can just pass it to uuidFromHashedName.
-        $hex = bin2hex($bytes);
-        return self::uuidFromHashedName($hex, 4);
+        return self::getFactory()->uuid4();
     }
 
     /**
@@ -1046,202 +868,6 @@ final class Uuid implements UuidInterface, \JsonSerializable
      */
     public static function uuid5($ns, $name)
     {
-        if (!($ns instanceof Uuid)) {
-            $ns = self::fromString($ns);
-        }
-
-        $hash = sha1($ns->getBytes() . $name);
-
-        return self::uuidFromHashedName($hash, 5);
-    }
-
-    /**
-     * Calculates the UUID time fields from a UNIX timestamp
-     *
-     * UUID time is a 60-bit time value as a count of 100-nanosecond intervals
-     * since 00:00:00.00, 15 October 1582.
-     *
-     * @param int $sec Seconds since the Unix Epoch
-     * @param int $usec Microseconds
-     * @return array
-     * @throws Exception\UnsatisfiedDependencyException if called on a 32-bit system and Moontoast\Math\BigNumber is not present
-     */
-    protected static function calculateUuidTime($sec, $usec)
-    {
-        if (self::is64BitSystem()) {
-
-            // 0x01b21dd213814000 is the number of 100-ns intervals between the
-            // UUID epoch 1582-10-15 00:00:00 and the Unix epoch 1970-01-01 00:00:00.
-            $uuidTime = ($sec * 10000000) + ($usec * 10) + 0x01b21dd213814000;
-
-            return array(
-                'low' => sprintf('%08x', $uuidTime & 0xffffffff),
-                'mid' => sprintf('%04x', ($uuidTime >> 32) & 0xffff),
-                'hi' => sprintf('%04x', ($uuidTime >> 48) & 0x0fff),
-            );
-        }
-
-        if (self::hasBigNumber()) {
-
-            $uuidTime = new \Moontoast\Math\BigNumber('0');
-
-            $sec = new \Moontoast\Math\BigNumber($sec);
-            $sec->multiply('10000000');
-
-            $usec = new \Moontoast\Math\BigNumber($usec);
-            $usec->multiply('10');
-
-            $uuidTime->add($sec)
-                ->add($usec)
-                ->add('122192928000000000');
-
-            $uuidTimeHex = sprintf('%016s', $uuidTime->convertToBase(16));
-
-            return array(
-                'low' => substr($uuidTimeHex, 8),
-                'mid' => substr($uuidTimeHex, 4, 4),
-                'hi' => substr($uuidTimeHex, 0, 4),
-            );
-        }
-
-        throw new Exception\UnsatisfiedDependencyException(
-            'When calling ' . __METHOD__ . ' on a 32-bit system, '
-            . 'Moontoast\Math\BigNumber must be present in order '
-            . 'to generate version 1 UUIDs'
-        );
-    }
-
-    /**
-     * Returns the network interface configuration for the system
-     *
-     * @todo Needs evaluation and possibly modification to ensure this works
-     *       well across multiple platforms.
-     * @codeCoverageIgnore
-     */
-    protected static function getIfconfig()
-    {
-        switch (strtoupper(substr(php_uname('a'), 0, 3))) {
-            case 'WIN':
-                $ifconfig = `ipconfig /all 2>&1`;
-                break;
-            case 'DAR':
-                $ifconfig = `ifconfig 2>&1`;
-                break;
-            case 'LIN':
-            default:
-                $ifconfig = `netstat -ie 2>&1`;
-                break;
-        }
-
-        return $ifconfig;
-    }
-
-    /**
-     * Get the hardware address as a 48-bit positive integer. If all attempts to
-     * obtain the hardware address fail, we choose a random 48-bit number with
-     * its eighth bit set to 1 as recommended in RFC 4122. "Hardware address"
-     * means the MAC address of a network interface, and on a machine with
-     * multiple network interfaces the MAC address of any one of them may be
-     * returned.
-     *
-     * @return string
-     */
-    protected static function getNodeFromSystem()
-    {
-        $node = null;
-        $pattern = '/[^:]([0-9A-Fa-f]{2}([:-])[0-9A-Fa-f]{2}(\2[0-9A-Fa-f]{2}){4})[^:]/';
-        $matches = array();
-
-        // Search the ifconfig output for all MAC addresses and return
-        // the first one found
-        if (preg_match_all($pattern, self::getIfconfig(), $matches, PREG_PATTERN_ORDER)) {
-            $node = $matches[1][0];
-            $node = str_replace(':', '', $node);
-            $node = str_replace('-', '', $node);
-        }
-
-        return $node;
-    }
-
-    /**
-     * Returns true if the system has Moontoast\Math\BigNumber
-     *
-     * @return bool
-     */
-    protected static function hasBigNumber()
-    {
-        return (class_exists('Moontoast\Math\BigNumber') && !self::$forceNoBigNumber);
-    }
-
-    /**
-     * Returns true if the system has openssl_random_pseudo_bytes()
-     *
-     * @return bool
-     */
-    protected static function hasOpensslRandomPseudoBytes()
-    {
-        return (function_exists('openssl_random_pseudo_bytes') && !self::$forceNoOpensslRandomPseudoBytes);
-    }
-
-    /**
-     * Returns true if the system is 64-bit, false otherwise
-     *
-     * @return bool
-     */
-    protected static function is64BitSystem()
-    {
-        return (PHP_INT_SIZE == 8 && !self::$force32Bit);
-    }
-
-    /**
-     * Returns a version 3 or 5 UUID based on the hash (md5 or sha1) of a
-     * namespace identifier (which is a UUID) and a name (which is a string)
-     *
-     * @param string $hash The hash to use when creating the UUID
-     * @param int $version The UUID version to be generated
-     * @return Uuid
-     */
-    protected static function uuidFromHashedName($hash, $version)
-    {
-        // Set the version number
-        $timeHi = hexdec(substr($hash, 12, 4)) & 0x0fff;
-        $timeHi &= ~(0xf000);
-        $timeHi |= $version << 12;
-
-        // Set the variant to RFC 4122
-        $clockSeqHi = hexdec(substr($hash, 16, 2)) & 0x3f;
-        $clockSeqHi &= ~(0xc0);
-        $clockSeqHi |= 0x80;
-
-        $fields = array(
-            'time_low' => substr($hash, 0, 8),
-            'time_mid' => substr($hash, 8, 4),
-            'time_hi_and_version' => sprintf('%04x', $timeHi),
-            'clock_seq_hi_and_reserved' => sprintf('%02x', $clockSeqHi),
-            'clock_seq_low' => substr($hash, 18, 2),
-            'node' => substr($hash, 20, 12),
-        );
-
-        return new self($fields);
-    }
-
-    /**
-     * Generates random bytes for use in version 4 UUIDs
-     *
-     * @param int $length
-     * @return string
-     */
-    private static function generateBytes($length)
-    {
-        if (self::hasOpensslRandomPseudoBytes()) {
-            return openssl_random_pseudo_bytes($length);
-        }
-
-        $bytes = '';
-        for ($i = 1; $i <= $length; $i++) {
-            $bytes = chr(mt_rand(0, 255)) . $bytes;
-        }
-
-        return $bytes;
+        return self::getFactory()->uuid5($ns, $name);
     }
 }

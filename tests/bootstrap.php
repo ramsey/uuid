@@ -17,3 +17,9 @@ $loader = include realpath(dirname(__FILE__) . '/../vendor/autoload.php');
 
 $loader->add("Doctrine\Tests\DBAL", __DIR__."/../vendor/doctrine/dbal/tests");
 $loader->addPsr4('Rhumsaa\\Uuid\\', __DIR__);
+
+register_shutdown_function(function() {
+    if ($error = error_get_last()) {
+        var_dump($error);
+    }
+});
