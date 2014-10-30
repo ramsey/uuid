@@ -1225,7 +1225,7 @@ final class Uuid
         }
 
         $bytes = '';
-        foreach (range(1, $length) as $i) {
+        for ($i = 1; $i <= $length; $i++) {
             $bytes = chr(mt_rand(0, 255)) . $bytes;
         }
 

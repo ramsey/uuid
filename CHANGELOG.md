@@ -1,3 +1,8 @@
+* 2.7.4 (2014-10-29)
+  * Changed loop in `generateBytes()` from `foreach` to `for`; see #33
+  * Use `toString()` in README examples to avoid confusion
+  * Exclude build/development tools from releases using .gitattributes
+  * Set timezone properly for tests
 * 2.7.3 (2014-08-27)
   * Fixed upper range for `mt_rand` used in version 4 UUIDs
 * 2.7.2 (2014-07-28)
