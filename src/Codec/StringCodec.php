@@ -20,6 +20,17 @@ class StringCodec implements Codec
         );
     }
 
+    public function encodeBinary(UuidInterface $uuid)
+    {
+        $bytes = '';
+
+        foreach (range(-2, -32, 2) as $step) {
+            $bytes = chr(hexdec(substr($uuid->getHex(), $step, 2))) . $bytes;
+        }
+
+        return $bytes;
+    }
+
     public function decode($encodedUuid)
     {
         $nameParsed = str_replace(array(
@@ -44,7 +55,7 @@ class StringCodec implements Codec
         $nameParsed = implode('-', $components);
 
         if (! Uuid::isValid($nameParsed)) {
-            throw new InvalidArgumentException('Invalid UUID string: ' . $name);
+            throw new InvalidArgumentException('Invalid UUID string: ' . $encodedUuid);
         }
 
         $fields = array(
@@ -67,6 +78,6 @@ class StringCodec implements Codec
 
         $hexUuid = unpack('H*', $bytes);
 
-        return $this->decode($hexUuid);
+        return $this->decode($hexUuid[1]);
     }
 }

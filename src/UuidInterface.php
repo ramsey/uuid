@@ -9,6 +9,8 @@ interface UuidInterface
 
     public function equals($other);
 
+    public function getHex();
+
     public function getFieldsHex();
 
     public function getClockSeqHiAndReservedHex();

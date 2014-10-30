@@ -28,6 +28,13 @@ class GuidStringCodec implements Codec
         );
     }
 
+    public function encodeBinary(UuidInterface $uuid)
+    {
+        $reversed = $this->_decode($this->encode($uuid), false);
+
+        return (new StringCodec())->encodeBinary($reversed);
+    }
+
     public function decode($encodedUuid)
     {
         return $this->_decode($encodedUuid, true);
@@ -41,7 +48,7 @@ class GuidStringCodec implements Codec
 
         $hexUuid = unpack('H*', $bytes);
 
-        return $this->_decode($hexUuid, false);
+        return $this->_decode($hexUuid[1], false);
     }
 
     private function _decode($hex, $swap)
@@ -72,11 +79,12 @@ class GuidStringCodec implements Codec
             $components[1] = $hex[1];
             $hex = unpack('H*', pack('v', hexdec($components[2])));
             $components[2] = $hex[1];
-            $nameParsed = implode('-', $components);
         }
 
+        $nameParsed = implode('-', $components);
+
         if (! Uuid::isValid($nameParsed)) {
-            throw new InvalidArgumentException('Invalid UUID string: ' . $name);
+            throw new InvalidArgumentException('Invalid UUID string: ' . $hex);
         }
 
         $fields = array(

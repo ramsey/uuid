@@ -258,13 +258,7 @@ final class Uuid implements UuidInterface, \JsonSerializable
      */
     public function getBytes()
     {
-        $bytes = '';
-
-        foreach (range(-2, -32, 2) as $step) {
-            $bytes = chr(hexdec(substr($this->getHex(), $step, 2))) . $bytes;
-        }
-
-        return $bytes;
+        return $this->codec->encodeBinary($this);
     }
 
     /**
@@ -845,7 +839,7 @@ final class Uuid implements UuidInterface, \JsonSerializable
      *
      * @return string
      */
-    public function toString($forceBigEndian = false)
+    public function toString()
     {
         return $this->codec->encode($this);
     }
@@ -857,13 +851,14 @@ final class Uuid implements UuidInterface, \JsonSerializable
      * @return Uuid
      * @throws InvalidArgumentException If the $bytes string does not contain 16 characters
      */
-    public static function fromBytes($bytes, $littleEndian = false)
+    public static function fromBytes($bytes)
     {
-        if ($littleEndian) {
-            return (new GuidStringCodec())->decodeBytes($bytes);
-        }
-
         return (new StringCodec())->decodeBytes($bytes);
+    }
+
+    public static function fromGuidBytes($bytes)
+    {
+        return (new GuidStringCodec())->decodeBytes($bytes);
     }
 
     /**
@@ -875,13 +870,14 @@ final class Uuid implements UuidInterface, \JsonSerializable
      * @return Uuid
      * @throws InvalidArgumentException If the $name isn't a valid UUID
      */
-    public static function fromString($name, $littleEndian = false)
+    public static function fromString($name)
     {
-        if ($littleEndian) {
-            return (new GuidStringCodec())->decode($name);
-        }
-
         return (new StringCodec())->decode($name);
+    }
+
+    public static function fromGuidString($name)
+    {
+        return (new GuidStringCodec())->decode($name);
     }
 
     /**
