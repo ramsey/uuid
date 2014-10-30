@@ -9,7 +9,7 @@
 
 ## About
 
-Rhumsaa\Uuid is a PHP 5.3+ library for generating and working with
+Rhumsaa\Uuid is a PHP 5.4+ library for generating and working with
 [RFC 4122][rfc4122] version 1, 3, 4, and 5 universally unique identifiers (UUID).
 
 From [Wikipedia](http://en.wikipedia.org/wiki/Universally_unique_identifier):
