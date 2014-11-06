@@ -2,7 +2,7 @@
 
 namespace Rhumsaa\Uuid;
 
-class UnsatisfiedNumberConverter extends BigNumberConverter
+class DegradedNumberConverter extends BigNumberConverter
 {
     public function fromHex($hex)
     {

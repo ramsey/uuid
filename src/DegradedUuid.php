@@ -2,7 +2,7 @@
 
 namespace Rhumsaa\Uuid;
 
-class SmallIntUuid extends Uuid
+class DegradedUuid extends Uuid
 {
 
     public function __construct(array $fields, BigNumberConverter $converter, Codec $codec)

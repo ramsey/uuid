@@ -243,7 +243,7 @@ class UuidFactory
         $converter = new BigNumberConverter();
 
         if (! self::hasBigNumber()) {
-            $converter = new UnsatisfiedNumberConverter();
+            $converter = new DegradedNumberConverter();
         }
 
         return $converter;
@@ -384,7 +384,7 @@ class UuidFactory
         $codec = $codec ?: $this->codec;
 
         if (! self::is64BitSystem()) {
-            return new SmallIntUuid($fields, $this->getConverter(), $codec);
+            return new DegradedUuid($fields, $this->getConverter(), $codec);
         }
 
         return new Uuid($fields, $this->getConverter(), $codec);
