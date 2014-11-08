@@ -15,12 +15,13 @@ interface Codec
     public function encodeBinary(UuidInterface $uuid);
 
     /**
-     * @return callable
+     * @return UuidInterface
      */
     public function decode($encodedUuid);
 
     /**
      * @param string $bytes
+     * @return UuidInterface
      */
     public function decodeBytes($bytes);
 }
