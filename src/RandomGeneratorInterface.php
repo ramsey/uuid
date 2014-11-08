@@ -2,7 +2,7 @@
 
 namespace Rhumsaa\Uuid;
 
-interface RandomGenerator
+interface RandomGeneratorInterface
 {
     /**
      * @param integer $length

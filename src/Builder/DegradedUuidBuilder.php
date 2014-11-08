@@ -3,7 +3,7 @@
 namespace Rhumsaa\Uuid\Builder;
 
 use Rhumsaa\Uuid\UuidBuilder;
-use Rhumsaa\Uuid\Codec;
+use Rhumsaa\Uuid\CodecInterface;
 use Rhumsaa\Uuid\DegradedUuid;
 use Rhumsaa\Uuid\Converter\NumberConverterInterface;
 
@@ -17,7 +17,7 @@ class DegradedUuidBuilder implements UuidBuilder
         $this->converter = $converter;
     }
 
-    public function build(Codec $codec, array $fields)
+    public function build(CodecInterface $codec, array $fields)
     {
         return new DegradedUuid($fields, $this->converter, $codec);
     }

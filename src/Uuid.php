@@ -105,7 +105,7 @@ class Uuid implements UuidInterface, \JsonSerializable
 
     /**
      * String codec
-     * @var Codec
+     * @var CodecInterface
      */
     protected $codec;
 
@@ -135,10 +135,10 @@ class Uuid implements UuidInterface, \JsonSerializable
      * UUIDs.
      *
      * @param array $fields
-     * @param Codec $codec String codec
+     * @param CodecInterface $codec String codec
      * @link Rhumsaa.Uuid.Uuid.html#method_getFields
      */
-    public function __construct(array $fields, NumberConverterInterface $converter, Codec $codec)
+    public function __construct(array $fields, NumberConverterInterface $converter, CodecInterface $codec)
     {
         $this->fields = $fields;
         $this->codec = $codec;

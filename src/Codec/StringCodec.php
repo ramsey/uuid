@@ -3,12 +3,12 @@
 namespace Rhumsaa\Uuid\Codec;
 
 use InvalidArgumentException;
-use Rhumsaa\Uuid\Codec;
+use Rhumsaa\Uuid\CodecInterface;
 use Rhumsaa\Uuid\Uuid;
 use Rhumsaa\Uuid\UuidBuilder;
 use Rhumsaa\Uuid\UuidInterface;
 
-class StringCodec implements Codec
+class StringCodec implements CodecInterface
 {
 
     private $builder;

@@ -2,9 +2,9 @@
 
 namespace Rhumsaa\Uuid\Generator;
 
-use Rhumsaa\Uuid\RandomGenerator;
+use Rhumsaa\Uuid\RandomGeneratorInterface;
 
-class MtRandGenerator implements RandomGenerator
+class MtRandGenerator implements RandomGeneratorInterface
 {
     public function generate($length)
     {

@@ -13,7 +13,7 @@ class UuidFactory
 
     /**
      *
-     * @var Codec
+     * @var CodecInterface
      */
     private $codec = null;
 
@@ -30,7 +30,7 @@ class UuidFactory
     private $numberConverter = null;
 
     /**
-     * @var RandomGenerator
+     * @var RandomGeneratorInterface
      */
     private $randomGenerator = null;
 
@@ -84,7 +84,7 @@ class UuidFactory
         $this->timeProvider = $provider;
     }
 
-    public function setRandomGenerator(RandomGenerator $generator)
+    public function setRandomGenerator(RandomGeneratorInterface $generator)
     {
         $this->randomGenerator = $generator;
     }

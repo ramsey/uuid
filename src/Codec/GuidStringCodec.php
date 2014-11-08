@@ -4,7 +4,7 @@ namespace Rhumsaa\Uuid\Codec;
 
 use Rhumsaa\Uuid\UuidInterface;
 use Rhumsaa\Uuid\Uuid;
-use Rhumsaa\Uuid\Codec;
+use Rhumsaa\Uuid\CodecInterface;
 
 class GuidStringCodec extends StringCodec
 {
