@@ -217,13 +217,7 @@ class UuidFactory
      */
     public function uuid3($ns, $name)
     {
-        if (!($ns instanceof UuidInterface)) {
-            $ns = $this->codec->decode($ns);
-        }
-
-        $hash = md5($ns->getBytes() . $name);
-
-        return $this->uuidFromHashedName($hash, 3);
+        return $this->uuidFromNsAndName($ns, $name, 3, 'md5');
     }
 
     /**
@@ -253,18 +247,23 @@ class UuidFactory
      */
     public function uuid5($ns, $name)
     {
-        if (!($ns instanceof Uuid)) {
-            $ns = $this->codec->decode($ns);
-        }
-
-        $hash = sha1($ns->getBytes() . $name);
-
-        return $this->uuidFromHashedName($hash, 5);
+        return $this->uuidFromNsAndName($ns, $name, 5, 'sha1');
     }
 
     public function uuid(array $fields)
     {
         return $this->uuidBuilder->build($this->codec, $fields);
+    }
+
+    protected function uuidFromNsAndName($ns, $name, $version, $hashFunction)
+    {
+        if (!($ns instanceof Uuid)) {
+            $ns = $this->codec->decode($ns);
+        }
+
+        $hash = call_user_func($hashFunction, ($ns->getBytes() . $name));
+
+        return $this->uuidFromHashedName($hash, $version);
     }
 
     /**
