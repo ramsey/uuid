@@ -2,8 +2,8 @@
 
 namespace Rhumsaa\Uuid;
 
-use Rhumsaa\Uuid\Time\SystemTimeProvider;
-use Rhumsaa\Uuid\Time\FixedTimeProvider;
+use Rhumsaa\Uuid\Provider\Time\SystemTimeProvider;
+use Rhumsaa\Uuid\Provider\Time\FixedTimeProvider;
 
 class UuidTest extends TestCase
 {

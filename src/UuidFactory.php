@@ -5,6 +5,8 @@ namespace Rhumsaa\Uuid;
 use InvalidArgumentException;
 use Rhumsaa\Uuid\Converter\NumberConverterInterface;
 use Rhumsaa\Uuid\Converter\TimeConverterInterface;
+use Rhumsaa\Uuid\Provider\NodeProviderInterface;
+use Rhumsaa\Uuid\Provider\TimeProviderInterface;
 
 class UuidFactory
 {
@@ -17,7 +19,7 @@ class UuidFactory
 
     /**
      *
-     * @var NodeProvider
+     * @var NodeProviderInterface
      */
     private $nodeProvider = null;
 
@@ -40,7 +42,7 @@ class UuidFactory
 
     /**
      *
-     * @var TimeProvider
+     * @var TimeProviderInterface
      */
     private $timeProvider = null;
 
@@ -77,7 +79,7 @@ class UuidFactory
         $this->timeConverter = $converter;
     }
 
-    public function setTimeProvider(TimeProvider $provider)
+    public function setTimeProvider(TimeProviderInterface $provider)
     {
         $this->timeProvider = $provider;
     }
@@ -87,7 +89,7 @@ class UuidFactory
         $this->randomGenerator = $generator;
     }
 
-    public function setNodeProvider(NodeProvider $provider)
+    public function setNodeProvider(NodeProviderInterface $provider)
     {
         $this->nodeProvider = $provider;
     }

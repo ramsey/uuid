@@ -1,10 +1,10 @@
 <?php
 
-namespace Rhumsaa\Uuid\Time;
+namespace Rhumsaa\Uuid\Provider\Time;
 
-use Rhumsaa\Uuid\TimeProvider;
+use Rhumsaa\Uuid\Provider\TimeProviderInterface;
 
-class FixedTimeProvider implements TimeProvider
+class FixedTimeProvider implements TimeProviderInterface
 {
     private $fixedTime;
 

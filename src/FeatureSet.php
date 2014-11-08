@@ -2,15 +2,15 @@
 
 namespace Rhumsaa\Uuid;
 
-use Rhumsaa\Uuid\Node\FallbackNodeProvider;
-use Rhumsaa\Uuid\Node\RandomNodeProvider;
-use Rhumsaa\Uuid\Node\SystemNodeProvider;
+use Rhumsaa\Uuid\Provider\Node\FallbackNodeProvider;
+use Rhumsaa\Uuid\Provider\Node\RandomNodeProvider;
+use Rhumsaa\Uuid\Provider\Node\SystemNodeProvider;
 use Rhumsaa\Uuid\Converter\Number\BigNumberConverter;
 use Rhumsaa\Uuid\Converter\Number\DegradedNumberConverter;
 use Rhumsaa\Uuid\Converter\Time\BigNumberTimeConverter;
 use Rhumsaa\Uuid\Converter\Time\DegradedTimeConverter;
 use Rhumsaa\Uuid\Converter\Time\PhpTimeConverter;
-use Rhumsaa\Uuid\Time\SystemTimeProvider;
+use Rhumsaa\Uuid\Provider\Time\SystemTimeProvider;
 use Rhumsaa\Uuid\Builder\DefaultUuidBuilder;
 use Rhumsaa\Uuid\Codec\StringCodec;
 use Rhumsaa\Uuid\Codec\GuidStringCodec;

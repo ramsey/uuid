@@ -1,8 +1,8 @@
 <?php
 
-namespace Rhumsaa\Uuid;
+namespace Rhumsaa\Uuid\Provider;
 
-interface TimeProvider
+interface TimeProviderInterface
 {
     /**
      * @return string[] Array guaranteed to contain "sec" and "usec" components of current timestamp.
