@@ -23,12 +23,6 @@ class UuidFactory
 
     /**
      *
-     * @var Codec
-     */
-    private $guidCodec = null;
-
-    /**
-     *
      * @var NodeProvider
      */
     private $nodeProvider = null;
@@ -77,6 +71,11 @@ class UuidFactory
         $this->timeConverter = $features->getTimeConverter();
         $this->timeProvider = $features->getTimeProvider();
         $this->uuidBuilder = $features->getBuilder();
+    }
+
+    public function getCodec()
+    {
+        return $this->codec;
     }
 
     public function setTimeConverter(TimeConverter $converter)

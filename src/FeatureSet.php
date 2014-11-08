@@ -96,7 +96,7 @@ class FeatureSet
     protected function buildCodec($useGuids = false)
     {
         if ($useGuids) {
-            return new GuidStringCodec($this->builder, $this->buildCodec(false));
+            return new GuidStringCodec($this->builder);
         }
 
         return new StringCodec($this->builder);

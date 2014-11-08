@@ -4,7 +4,7 @@ namespace Rhumsaa\Uuid\Node;
 
 use Rhumsaa\Uuid\NodeProvider;
 
-class FallbackNodeProvider
+class FallbackNodeProvider implements NodeProvider
 {
     private $nodeProviders;
 

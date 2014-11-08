@@ -1294,22 +1294,23 @@ class UuidTest extends TestCase
 
     public function testFromLittleEndianBytes()
     {
+        $uuidFactory = new UuidFactory(new FeatureSet(false));
+        $guidFactory = new UuidFactory(new FeatureSet(true));
+
         // Check that parsing BE bytes as LE reverses fields
-        $uuid = Uuid::fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
+        $uuid = $uuidFactory->fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
         $bytes = $uuid->getBytes();
 
-        Uuid::setFactory(new UuidFactory(new FeatureSet(true)));
-
-        $guid = Uuid::fromBytes($bytes);
+        $guid = $guidFactory->fromBytes($bytes);
 
         // First three fields should be reversed
         $this->assertEquals('b08c6fff-7dc5-e111-9b21-0800200c9a66', $guid->toString());
 
         // Check that parsing LE bytes as LE preserves fields
-        $guid = Uuid::fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
+        $guid = $guidFactory->fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
         $bytes = $guid->getBytes();
 
-        $parsedGuid = Uuid::fromBytes($bytes);
+        $parsedGuid = $guidFactory->fromBytes($bytes);
 
         $this->assertEquals($guid->toString(), $parsedGuid->toString());
     }

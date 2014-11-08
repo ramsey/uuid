@@ -3,12 +3,12 @@
 namespace Rhumsaa\Uuid\Codec;
 
 use InvalidArgumentException;
-use Rhumsaa\Uuid\Codec;
-use Rhumsaa\Uuid\UuidInterface;
-use Rhumsaa\Uuid\Uuid;
 use Rhumsaa\Uuid\BigNumberConverter;
-use Rhumsaa\Uuid\UuidFactory;
+use Rhumsaa\Uuid\Codec;
+use Rhumsaa\Uuid\Uuid;
 use Rhumsaa\Uuid\UuidBuilder;
+use Rhumsaa\Uuid\UuidInterface;
+use Rhumsaa\Uuid\UuidFactory;
 
 class StringCodec implements Codec
 {
@@ -32,16 +32,34 @@ class StringCodec implements Codec
 
     public function encodeBinary(UuidInterface $uuid)
     {
-        $bytes = '';
-
-        foreach (range(-2, -32, 2) as $step) {
-            $bytes = chr(hexdec(substr($uuid->getHex(), $step, 2))) . $bytes;
-        }
-
-        return $bytes;
+        return hex2bin($uuid->getHex());
     }
 
     public function decode($encodedUuid)
+    {
+        $components = $this->extractComponents($encodedUuid);
+        $fields = $this->getFields($components);
+
+        return $this->builder->build($this, $fields);
+    }
+
+    public function decodeBytes($bytes)
+    {
+        if (strlen($bytes) !== 16) {
+            throw new InvalidArgumentException('$bytes string should contain 16 characters.');
+        }
+
+        $hexUuid = unpack('H*', $bytes);
+
+        return $this->decode($hexUuid[1]);
+    }
+
+    protected function getBuilder()
+    {
+        return $this->builder;
+    }
+
+    protected function extractComponents($encodedUuid)
     {
         $nameParsed = str_replace(array(
             'urn:',
@@ -68,7 +86,12 @@ class StringCodec implements Codec
             throw new InvalidArgumentException('Invalid UUID string: ' . $encodedUuid);
         }
 
-        $fields = array(
+        return $components;
+    }
+
+    protected function getFields(array $components)
+    {
+        return array(
             'time_low' => sprintf('%08s', $components[0]),
             'time_mid' => sprintf('%04s', $components[1]),
             'time_hi_and_version' => sprintf('%04s', $components[2]),
@@ -76,18 +99,5 @@ class StringCodec implements Codec
             'clock_seq_low' => sprintf('%02s', substr($components[3], 2)),
             'node' => sprintf('%012s', $components[4])
         );
-
-        return $this->builder->build($this, $fields);
-    }
-
-    public function decodeBytes($bytes)
-    {
-        if (strlen($bytes) !== 16) {
-            throw new InvalidArgumentException('$bytes string should contain 16 characters.');
-        }
-
-        $hexUuid = unpack('H*', $bytes);
-
-        return $this->decode($hexUuid[1]);
     }
 }

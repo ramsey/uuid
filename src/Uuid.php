@@ -787,6 +787,7 @@ class Uuid implements UuidInterface, \JsonSerializable
         if (!preg_match('/' . self::VALID_PATTERN . '/', $uuid)) {
             return false;
         }
+
         return true;
     }
 
