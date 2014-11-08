@@ -159,20 +159,7 @@ class UuidFactory
      */
     public function uuid1($node = null, $clockSeq = null)
     {
-        if ($node === null) {
-            $node = $this->nodeProvider->getNode();
-        }
-
-        // Convert the node to hex, if it is still an integer
-        if (is_int($node)) {
-            $node = sprintf('%012x', $node);
-        }
-
-        if (! ctype_xdigit($node) || strlen($node) > 12) {
-            throw new \InvalidArgumentException('Invalid node value');
-        }
-
-        $node = strtolower(sprintf('%012s', $node));
+        $node = $this->getValidNode($node);
 
         if ($clockSeq === null) {
             // Not using "stable storage"; see RFC 4122, Section 4.2.1.1
@@ -184,15 +171,8 @@ class UuidFactory
         $timeOfDay = $this->timeProvider->currentTime();
         $uuidTime = $this->timeConverter->calculateTime($timeOfDay['sec'], $timeOfDay['usec']);
 
-        // Set the version number to 1
-        $timeHi = hexdec($uuidTime['hi']) & 0x0fff;
-        $timeHi &= ~(0xf000);
-        $timeHi |= 1 << 12;
-
-        // Set the variant to RFC 4122
-        $clockSeqHi = ($clockSeq >> 8) & 0x3f;
-        $clockSeqHi &= ~(0xc0);
-        $clockSeqHi |= 0x80;
+        $timeHi = $this->applyVersion($uuidTime['hi'], 1);
+        $clockSeqHi = $this->applyVariant($clockSeq >> 8);
 
         $fields = array(
             'time_low' => $uuidTime['low'],
@@ -255,6 +235,25 @@ class UuidFactory
         return $this->uuidBuilder->build($this->codec, $fields);
     }
 
+    protected function applyVariant($clockSeqHi)
+    {
+        // Set the variant to RFC 4122
+        $clockSeqHi = $clockSeqHi & 0x3f;
+        $clockSeqHi &= ~(0xc0);
+        $clockSeqHi |= 0x80;
+
+        return $clockSeqHi;
+    }
+
+    protected function applyVersion($timeHi, $version)
+    {
+        $timeHi = hexdec($timeHi) & 0x0fff;
+        $timeHi &= ~(0xf000);
+        $timeHi |= $version << 12;
+
+        return $timeHi;
+    }
+
     protected function uuidFromNsAndName($ns, $name, $version, $hashFunction)
     {
         if (!($ns instanceof Uuid)) {
@@ -276,15 +275,8 @@ class UuidFactory
      */
     protected function uuidFromHashedName($hash, $version)
     {
-        // Set the version number
-        $timeHi = hexdec(substr($hash, 12, 4)) & 0x0fff;
-        $timeHi &= ~(0xf000);
-        $timeHi |= $version << 12;
-
-        // Set the variant to RFC 4122
-        $clockSeqHi = hexdec(substr($hash, 16, 2)) & 0x3f;
-        $clockSeqHi &= ~(0xc0);
-        $clockSeqHi |= 0x80;
+        $timeHi = $this->applyVersion(substr($hash, 12, 4), $version);
+        $clockSeqHi = $this->applyVariant(hexdec(substr($hash, 16, 2)));
 
         $fields = array(
             'time_low' => substr($hash, 0, 8),
@@ -296,5 +288,23 @@ class UuidFactory
         );
 
         return $this->uuid($fields);
+    }
+
+    protected function getValidNode($node)
+    {
+        if ($node === null) {
+            $node = $this->nodeProvider->getNode();
+        }
+
+        // Convert the node to hex, if it is still an integer
+        if (is_int($node)) {
+            $node = sprintf('%012x', $node);
+        }
+
+        if (! ctype_xdigit($node) || strlen($node) > 12) {
+            throw new \InvalidArgumentException('Invalid node value');
+        }
+
+        return strtolower(sprintf('%012s', $node));
     }
 }

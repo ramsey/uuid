@@ -1142,19 +1142,21 @@ class UuidTest extends TestCase
         $factory = new UuidFactory();
         $smallIntFactory = new UuidFactory(new FeatureSet(false, true));
 
+        $timeOfDay = new FixedTimeProvider(array(
+            'sec' => $currentTime,
+            'usec' => $usec,
+            'minuteswest' => 0,
+            'dsttime' => 0,
+        ));
+
+        $factory->setTimeProvider($timeOfDay);
+        $smallIntFactory->setTimeProvider($timeOfDay);
+
         while ($currentTime <= $endTime) {
 
             foreach (array(0, 50000, 250000, 500000, 750000, 999999) as $usec) {
-
-                $timeOfDay = new FixedTimeProvider(array(
-                    'sec' => $currentTime,
-                    'usec' => $usec,
-                    'minuteswest' => 0,
-                    'dsttime' => 0,
-                ));
-
-                $factory->setTimeProvider($timeOfDay);
-                $smallIntFactory->setTimeProvider($timeOfDay);
+                $timeOfDay->setSec($currentTime);
+                $timeOfDay->setUsec($usec);
 
                 $uuid32 = $smallIntFactory->uuid1(0x00007ffffffe, 0x1669);
                 $uuid64 = $factory->uuid1(0x00007ffffffe, 0x1669);
