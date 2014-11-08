@@ -186,7 +186,7 @@ class Uuid implements UuidInterface, \JsonSerializable
      */
     public function compareTo(UuidInterface $uuid)
     {
-        $comparison = null;
+        $comparison = 0;
 
         if ($this->getMostSignificantBitsHex() < $uuid->getMostSignificantBitsHex()) {
             $comparison = -1;
@@ -196,8 +196,6 @@ class Uuid implements UuidInterface, \JsonSerializable
             $comparison = -1;
         } elseif ($this->getLeastSignificantBitsHex() > $uuid->getLeastSignificantBitsHex()) {
             $comparison = 1;
-        } else {
-            $comparison = 0;
         }
 
         return $comparison;
@@ -396,7 +394,7 @@ class Uuid implements UuidInterface, \JsonSerializable
      */
     public function getHex()
     {
-        return str_replace('-', '', $this->toString(true));
+        return str_replace('-', '', $this->toString());
     }
 
     /**
