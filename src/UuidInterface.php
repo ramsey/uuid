@@ -108,5 +108,4 @@ interface UuidInterface
      * @return string
      */
     public function toString();
-
 }

@@ -319,7 +319,8 @@ class Uuid implements UuidInterface, \JsonSerializable
      *
      * @return \DateTime A PHP DateTime representation of the date
      * @throws Exception\UnsupportedOperationException If this UUID is not a version 1 UUID
-     * @throws Exception\UnsatisfiedDependencyException if called on a 32-bit system and Moontoast\Math\BigNumber is not present
+     * @throws Exception\UnsatisfiedDependencyException if called on a 32-bit system and
+     *         Moontoast\Math\BigNumber is not present
      */
     public function getDateTime()
     {

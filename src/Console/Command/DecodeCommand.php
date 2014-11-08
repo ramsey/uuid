@@ -66,8 +66,7 @@ class DecodeCommand extends Command
             $table->addRows(array(
                 array('decode:', 'variant:', 'Not an RFC 4122 UUID'),
             ));
-        }
-        else {
+        } else {
             $this->dumpUuid($table, $uuid);
         }
 

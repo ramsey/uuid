@@ -9,5 +9,5 @@ interface RandomGenerator
      *
      * @return string
      */
-    function generate($length);
+    public function generate($length);
 }

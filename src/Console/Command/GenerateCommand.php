@@ -159,9 +159,11 @@ class GenerateCommand extends Command
             return $namespace;
         }
 
-        throw new Exception('Invalid namespace. '
+        throw new Exception(
+            'Invalid namespace. '
             . 'May be either a UUID in string representation or an identifier '
             . 'for internally pre-defined namespace UUIDs (currently known '
-            . 'are "ns:DNS", "ns:URL", "ns:OID", and "ns:X500").');
+            . 'are "ns:DNS", "ns:URL", "ns:OID", and "ns:X500").'
+        );
     }
 }

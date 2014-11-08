@@ -45,8 +45,12 @@ class FeatureSet
 
     private $timeProvider;
 
-    public function __construct($useGuids = false, $force32Bit = false, $forceNoBigNumber = false, $ignoreSystemNode = false)
-    {
+    public function __construct(
+        $useGuids = false,
+        $force32Bit = false,
+        $forceNoBigNumber = false,
+        $ignoreSystemNode = false
+    ) {
         $this->disableBigNumber = $forceNoBigNumber;
         $this->disable64Bit = $force32Bit;
         $this->ignoreSystemNode = $ignoreSystemNode;
@@ -134,8 +138,7 @@ class FeatureSet
     {
         if ($this->is64BitSystem()) {
             return new PhpTimeConverter();
-        }
-        elseif ($this->hasBigNumber()) {
+        } elseif ($this->hasBigNumber()) {
             return new BigNumberTimeConverter();
         }
 
