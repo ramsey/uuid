@@ -1,12 +1,15 @@
 <?php
 
-namespace Rhumsaa\Uuid;
+namespace Rhumsaa\Uuid\Converter\Number;
 
-class DegradedNumberConverter extends BigNumberConverter
+use Rhumsaa\Uuid\Exception\UnsatisfiedDependencyException;
+use Rhumsaa\Uuid\Converter\NumberConverterInterface;
+
+class DegradedNumberConverter extends BigNumberConverter implements NumberConverterInterface
 {
     public function fromHex($hex)
     {
-        throw new Exception\UnsatisfiedDependencyException(
+        throw new UnsatisfiedDependencyException(
             'Cannot call ' . __METHOD__ . ' without support for large '
             . 'integers, since integer is an unsigned '
             . '128-bit integer; Moontoast\Math\BigNumber is required.'
@@ -16,7 +19,7 @@ class DegradedNumberConverter extends BigNumberConverter
 
     public function toHex($integer)
     {
-        throw new Exception\UnsatisfiedDependencyException(
+        throw new UnsatisfiedDependencyException(
             'Cannot call ' . __METHOD__ . ' without support for large '
             . 'integers, since integer is an unsigned '
             . '128-bit integer; Moontoast\Math\BigNumber is required. '

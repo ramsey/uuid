@@ -2,10 +2,12 @@
 
 namespace Rhumsaa\Uuid;
 
+use Rhumsaa\Uuid\Converter\NumberConverterInterface;
+
 class DegradedUuid extends Uuid
 {
 
-    public function __construct(array $fields, BigNumberConverter $converter, Codec $codec)
+    public function __construct(array $fields, NumberConverterInterface $converter, Codec $codec)
     {
         parent::__construct($fields, $converter, $codec);
     }

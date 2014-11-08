@@ -1,10 +1,10 @@
 <?php
 
-namespace Rhumsaa\Uuid\Time;
+namespace Rhumsaa\Uuid\Converter\Time;
 
-use Rhumsaa\Uuid\TimeConverter;
+use Rhumsaa\Uuid\Converter\TimeConverterInterface;
 
-class BigNumberTimeConverter implements TimeConverter
+class BigNumberTimeConverter implements TimeConverterInterface
 {
     public function calculateTime($seconds, $microSeconds)
     {

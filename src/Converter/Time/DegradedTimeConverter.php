@@ -1,11 +1,11 @@
 <?php
 
-namespace Rhumsaa\Uuid\Time;
+namespace Rhumsaa\Uuid\Converter\Time;
 
-use Rhumsaa\Uuid\TimeConverter;
+use Rhumsaa\Uuid\Converter\TimeConverterInterface;
 use Rhumsaa\Uuid\Exception\UnsatisfiedDependencyException;
 
-class DegradedTimeConverter implements TimeConverter
+class DegradedTimeConverter implements TimeConverterInterface
 {
     public function calculateTime($seconds, $microSeconds)
     {

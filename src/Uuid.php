@@ -12,6 +12,7 @@
 namespace Rhumsaa\Uuid;
 
 use InvalidArgumentException;
+use Rhumsaa\Uuid\Converter\NumberConverterInterface;
 
 /**
  * Represents a universally unique identifier (UUID), according to RFC 4122
@@ -137,7 +138,7 @@ class Uuid implements UuidInterface, \JsonSerializable
      * @param Codec $codec String codec
      * @link Rhumsaa.Uuid.Uuid.html#method_getFields
      */
-    public function __construct(array $fields, BigNumberConverter $converter, Codec $codec)
+    public function __construct(array $fields, NumberConverterInterface $converter, Codec $codec)
     {
         $this->fields = $fields;
         $this->codec = $codec;
@@ -303,7 +304,7 @@ class Uuid implements UuidInterface, \JsonSerializable
         return sprintf('%04x', $this->getClockSequence());
     }
 
-    public function getConverter()
+    public function getNumberConverter()
     {
         return $this->converter;
     }

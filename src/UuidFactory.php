@@ -2,6 +2,10 @@
 
 namespace Rhumsaa\Uuid;
 
+use InvalidArgumentException;
+use Rhumsaa\Uuid\Converter\NumberConverterInterface;
+use Rhumsaa\Uuid\Converter\TimeConverterInterface;
+
 class UuidFactory
 {
 
@@ -19,7 +23,7 @@ class UuidFactory
 
     /**
      *
-     * @var BigNumberConverter
+     * @var NumberConverterInterface
      */
     private $numberConverter = null;
 
@@ -30,7 +34,7 @@ class UuidFactory
 
     /**
      *
-     * @var TimeConverter
+     * @var TimeConverterInterface
      */
     private $timeConverter = null;
 
@@ -68,7 +72,7 @@ class UuidFactory
         return $this->codec;
     }
 
-    public function setTimeConverter(TimeConverter $converter)
+    public function setTimeConverter(TimeConverterInterface $converter)
     {
         $this->timeConverter = $converter;
     }
@@ -88,7 +92,7 @@ class UuidFactory
         $this->nodeProvider = $provider;
     }
 
-    public function setNumberConverter(BigNumberConverter $converter)
+    public function setNumberConverter(NumberConverterInterface $converter)
     {
         $this->numberConverter = $converter;
     }

@@ -187,7 +187,7 @@ class UuidTest extends TestCase
         $uuid = Uuid::fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
 
         $this->assertInstanceOf('Rhumsaa\Uuid\DegradedUuid', $uuid);
-        $this->assertInstanceOf('Rhumsaa\Uuid\DegradedNumberConverter', $uuid->getConverter());
+        $this->assertInstanceOf('Rhumsaa\Uuid\Converter\Number\DegradedNumberConverter', $uuid->getNumberConverter());
 
         $date = $uuid->getDateTime();
     }
@@ -1687,7 +1687,7 @@ class UuidTest extends TestCase
 
     /**
      * @expectedException Rhumsaa\Uuid\Exception\UnsatisfiedDependencyException
-     * @expectedExceptionMessage Cannot call Rhumsaa\Uuid\DegradedNumberConverter::fromHex without support for large integers
+     * @expectedExceptionMessage Cannot call Rhumsaa\Uuid\Converter\Number\DegradedNumberConverter::fromHex without support for large integers
      */
     public function testGetInteger()
     {

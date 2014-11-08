@@ -2,6 +2,8 @@
 
 namespace Rhumsaa\Uuid;
 
+use Rhumsaa\Uuid\Converter\NumberConverterInterface;
+
 interface UuidInterface
 {
 
@@ -16,9 +18,9 @@ interface UuidInterface
     public function equals($other);
 
     /**
-     * @return BigNumberConverter
+     * @return NumberConverterInterface
      */
-    public function getConverter();
+    public function getNumberConverter();
 
     /**
      * @return string

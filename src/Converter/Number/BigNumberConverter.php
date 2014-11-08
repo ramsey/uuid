@@ -1,8 +1,10 @@
 <?php
 
-namespace Rhumsaa\Uuid;
+namespace Rhumsaa\Uuid\Converter\Number;
 
-class BigNumberConverter
+use Rhumsaa\Uuid\Converter\NumberConverterInterface;
+
+class BigNumberConverter implements NumberConverterInterface
 {
     /**
      * @param string $hex
