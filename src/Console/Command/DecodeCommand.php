@@ -95,7 +95,7 @@ class DecodeCommand extends Command
                 $version = '3 (name based, MD5)';
                 $content = array(
                     array('', 'content:', substr(chunk_split($uuid->getHex(), 2, ':'), 0, -1)),
-                    array('', '', '(not decipherable: SHA1 message digest only)'),
+                    array('', '', '(not decipherable: MD5 message digest only)'),
                 );
                 break;
             case 4:
