@@ -1,9 +1,10 @@
 <?php
 
-namespace Rhumsaa\Uuid;
+namespace Rhumsaa\Uuid\Generator;
 
 use RandomLib\Generator;
 use RandomLib\Factory;
+use Rhumsaa\Uuid\RandomGenerator;
 
 class RandomLibAdapter implements RandomGenerator
 {
