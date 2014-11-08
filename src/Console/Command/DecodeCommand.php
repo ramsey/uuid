@@ -90,6 +90,8 @@ class DecodeCommand extends Command
             case 5:
                 $version = '5 (name based, SHA-1)';
                 break;
+            default:
+                $version = 'Invalid or unknown UUID version';
         }
 
         $table->addRows(array(
