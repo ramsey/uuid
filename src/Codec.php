@@ -8,7 +8,7 @@ interface Codec
 
     public function encodeBinary(UuidInterface $uuid);
 
-    public function decode(BigNumberConverter $converter, $encodedUuid);
+    public function decode($encodedUuid);
 
-    public function decodeBytes(BigNumberConverter $converter, $bytes);
+    public function decodeBytes($bytes);
 }

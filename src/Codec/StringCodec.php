@@ -8,15 +8,16 @@ use Rhumsaa\Uuid\UuidInterface;
 use Rhumsaa\Uuid\Uuid;
 use Rhumsaa\Uuid\BigNumberConverter;
 use Rhumsaa\Uuid\UuidFactory;
+use Rhumsaa\Uuid\UuidBuilder;
 
 class StringCodec implements Codec
 {
 
-    private $factory;
+    private $builder;
 
-    public function __construct(UuidFactory $factory)
+    public function __construct(UuidBuilder $builder)
     {
-        $this->factory = $factory;
+        $this->builder = $builder;
     }
 
     public function encode(UuidInterface $uuid)
@@ -40,7 +41,7 @@ class StringCodec implements Codec
         return $bytes;
     }
 
-    public function decode(BigNumberConverter $converter, $encodedUuid)
+    public function decode($encodedUuid)
     {
         $nameParsed = str_replace(array(
             'urn:',
@@ -76,10 +77,10 @@ class StringCodec implements Codec
             'node' => sprintf('%012s', $components[4])
         );
 
-        return $this->factory->uuid($fields, $this);
+        return $this->builder->build($this, $fields);
     }
 
-    public function decodeBytes(BigNumberConverter $converter, $bytes)
+    public function decodeBytes($bytes)
     {
         if (strlen($bytes) !== 16) {
             throw new InvalidArgumentException('$bytes string should contain 16 characters.');
@@ -87,6 +88,6 @@ class StringCodec implements Codec
 
         $hexUuid = unpack('H*', $bytes);
 
-        return $this->decode($converter, $hexUuid[1]);
+        return $this->decode($hexUuid[1]);
     }
 }

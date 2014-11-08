@@ -4,194 +4,109 @@ namespace Rhumsaa\Uuid;
 
 use Rhumsaa\Uuid\Codec\StringCodec;
 use Rhumsaa\Uuid\Codec\GuidStringCodec;
+use Rhumsaa\Uuid\Time\PhpTimeConverter;
+use Rhumsaa\Uuid\Time\BigNumberTimeConverter;
+use Rhumsaa\Uuid\Time\DegradedTimeConverter;
+use Rhumsaa\Uuid\Time\SystemTimeProvider;
+use Rhumsaa\Uuid\Node\FallbackNodeProvider;
+use Rhumsaa\Uuid\Node\SystemNodeProvider;
+use Rhumsaa\Uuid\Node\RandomNodeProvider;
 
 class UuidFactory
 {
 
     /**
-     * For testing, 64-bit system override; if true, treat the system as 32-bit
      *
-     * @var bool
+     * @var Codec
      */
-    public static $force32Bit = false;
+    private $codec = null;
 
     /**
-     * For testing, Moontoast\Math\BigNumber override; if true, treat as if
-     * BigNumber is not available
      *
-     * @var bool
+     * @var Codec
      */
-    public static $forceNoBigNumber = false;
+    private $guidCodec = null;
 
     /**
-     * For testing, system override to ignore generating node from hardware
      *
-     * @var bool
+     * @var NodeProvider
      */
-    public static $ignoreSystemNode = false;
+    private $nodeProvider = null;
 
     /**
-     * For testing, sets time of day to a static, known value
      *
-     * @var array
+     * @var BigNumberConverter
      */
-    public static $timeOfDayTest;
+    private $numberConverter = null;
 
     /**
      * @var RandomGenerator
      */
-    private static $prng = null;
+    private $randomGenerator = null;
 
     /**
-     * Calculates the UUID time fields from a UNIX timestamp
      *
-     * UUID time is a 60-bit time value as a count of 100-nanosecond intervals
-     * since 00:00:00.00, 15 October 1582.
-     *
-     * @param int $sec Seconds since the Unix Epoch
-     * @param int $usec Microseconds
-     * @return array
-     * @throws Exception\UnsatisfiedDependencyException if called on a 32-bit system and Moontoast\Math\BigNumber is not present
+     * @var TimeConverter
      */
-    protected static function calculateUuidTime($sec, $usec)
-    {
-        if (self::is64BitSystem()) {
-
-            // 0x01b21dd213814000 is the number of 100-ns intervals between the
-            // UUID epoch 1582-10-15 00:00:00 and the Unix epoch 1970-01-01 00:00:00.
-            $uuidTime = ($sec * 10000000) + ($usec * 10) + 0x01b21dd213814000;
-
-            return array(
-                'low' => sprintf('%08x', $uuidTime & 0xffffffff),
-                'mid' => sprintf('%04x', ($uuidTime >> 32) & 0xffff),
-                'hi' => sprintf('%04x', ($uuidTime >> 48) & 0x0fff),
-            );
-        }
-
-        if (self::hasBigNumber()) {
-
-            $uuidTime = new \Moontoast\Math\BigNumber('0');
-
-            $sec = new \Moontoast\Math\BigNumber($sec);
-            $sec->multiply('10000000');
-
-            $usec = new \Moontoast\Math\BigNumber($usec);
-            $usec->multiply('10');
-
-            $uuidTime->add($sec)
-            ->add($usec)
-            ->add('122192928000000000');
-
-            $uuidTimeHex = sprintf('%016s', $uuidTime->convertToBase(16));
-
-            return array(
-                'low' => substr($uuidTimeHex, 8),
-                'mid' => substr($uuidTimeHex, 4, 4),
-                'hi' => substr($uuidTimeHex, 0, 4),
-            );
-        }
-
-        throw new Exception\UnsatisfiedDependencyException(
-            'When calling ' . __METHOD__ . ' on a 32-bit system, '
-            . 'Moontoast\Math\BigNumber must be present in order '
-            . 'to generate version 1 UUIDs'
-        );
-    }
+    private $timeConverter = null;
 
     /**
-     * Get the hardware address as a 48-bit positive integer. If all attempts to
-     * obtain the hardware address fail, we choose a random 48-bit number with
-     * its eighth bit set to 1 as recommended in RFC 4122. "Hardware address"
-     * means the MAC address of a network interface, and on a machine with
-     * multiple network interfaces the MAC address of any one of them may be
-     * returned.
      *
-     * @return string
+     * @var TimeProvider
      */
-    protected static function getNodeFromSystem()
-    {
-        $node = null;
-        $pattern = '/[^:]([0-9A-Fa-f]{2}([:-])[0-9A-Fa-f]{2}(\2[0-9A-Fa-f]{2}){4})[^:]/';
-        $matches = array();
-
-        // Search the ifconfig output for all MAC addresses and return
-        // the first one found
-        if (preg_match_all($pattern, self::getIfconfig(), $matches, PREG_PATTERN_ORDER)) {
-            $node = $matches[1][0];
-            $node = str_replace(':', '', $node);
-            $node = str_replace('-', '', $node);
-        }
-
-        return $node;
-    }
+    private $timeProvider = null;
 
     /**
-     * Returns the network interface configuration for the system
      *
-     * @todo Needs evaluation and possibly modification to ensure this works
-     *       well across multiple platforms.
-     * @codeCoverageIgnore
+     * @var UuidBuilder
      */
-    protected static function getIfconfig()
-    {
-        switch (strtoupper(substr(php_uname('a'), 0, 3))) {
-            case 'WIN':
-                $ifconfig = `ipconfig /all 2>&1`;
-                break;
-            case 'DAR':
-                $ifconfig = `ifconfig 2>&1`;
-                break;
-            case 'LIN':
-            default:
-                $ifconfig = `netstat -ie 2>&1`;
-                break;
-        }
-
-        return $ifconfig;
-    }
+    private $uuidBuilder = null;
 
     /**
-     * Returns true if the system has Moontoast\Math\BigNumber
+     * Create a new a instance
      *
-     * @return bool
      */
-    protected static function hasBigNumber()
+    public function __construct(FeatureSet $features = null)
     {
-        return (class_exists('Moontoast\Math\BigNumber') && !self::$forceNoBigNumber);
+        $features = $features ?: new FeatureSet();
+
+        $this->codec = $features->getCodec();
+        $this->nodeProvider = $features->getNodeProvider();
+        $this->numberConverter = $features->getNumberConverter();
+        $this->randomGenerator = $features->getRandomGenerator();
+        $this->timeConverter = $features->getTimeConverter();
+        $this->timeProvider = $features->getTimeProvider();
+        $this->uuidBuilder = $features->getBuilder();
     }
 
-    /**
-     * Returns true if the system is 64-bit, false otherwise
-     *
-     * @return bool
-     */
-    protected static function is64BitSystem()
+    public function setTimeConverter(TimeConverter $converter)
     {
-        return (PHP_INT_SIZE == 8 && !self::$force32Bit);
+        $this->timeConverter = $converter;
     }
 
-
-    /**
-     * Generates random bytes for use in version 4 UUIDs
-     *
-     * @param int $length
-     * @return string
-     */
-    private static function generateBytes($length)
+    public function setTimeProvider(TimeProvider $provider)
     {
-        if (! self::$prng) {
-            self::$prng = (new RandomGeneratorFactory())->getGenerator();
-        }
-
-        return self::$prng->generate($length);
+        $this->timeProvider = $provider;
     }
 
-    private $codec = null;
-
-    public function __construct(Codec $uuidCodec = null, Codec $guidCodec = null)
+    public function setRandomGenerator(RandomGenerator $generator)
     {
-        $this->codec = $uuidCodec ?: new StringCodec($this);
-        $this->guidCodec = $guidCodec ?: new GuidStringCodec($this);
+        $this->randomGenerator = $generator;
+    }
+
+    public function setNodeProvider(NodeProvider $provider)
+    {
+        $this->nodeProvider = $provider;
+    }
+
+    public function setNumberConverter(BigNumberConverter $converter)
+    {
+        $this->numberConverter = $converter;
+    }
+
+    public function setUuidBuilder(UuidBuilder $builder)
+    {
+        $this->uuidBuilder = $builder;
     }
 
     /**
@@ -203,12 +118,7 @@ class UuidFactory
      */
     public function fromBytes($bytes)
     {
-        return $this->codec->decodeBytes($this->getConverter(), $bytes);
-    }
-
-    public function fromGuidBytes($bytes)
-    {
-        return $this->guidCodec->decodeBytes($this->getConverter(), $bytes);
+        return $this->codec->decodeBytes($bytes);
     }
 
     /**
@@ -222,31 +132,15 @@ class UuidFactory
      */
     public function fromString($name)
     {
-        return $this->codec->decode($this->getConverter(), $name);
-    }
-
-    public function fromGuidString($name)
-    {
-        return $this->guidCodec->decode($this->getConverter(), $name);
+        return $this->codec->decode($name);
     }
 
     public function fromInteger($integer)
     {
-        $hex = $this->getConverter()->toHex($integer);
+        $hex = $this->numberConverter->toHex($integer);
         $hex = str_pad($hex, 32, '0', STR_PAD_LEFT);
 
         return $this->fromString($hex);
-    }
-
-    public function getConverter()
-    {
-        $converter = new BigNumberConverter();
-
-        if (! self::hasBigNumber()) {
-            $converter = new DegradedNumberConverter();
-        }
-
-        return $converter;
     }
 
     /**
@@ -266,14 +160,8 @@ class UuidFactory
      */
     public function uuid1($node = null, $clockSeq = null)
     {
-        if ($node === null && !self::$ignoreSystemNode) {
-            $node = self::getNodeFromSystem();
-        }
-
-        // if $node is still null (couldn't get from system), randomly generate
-        // a node value, according to RFC 4122, Section 4.5
         if ($node === null) {
-            $node = sprintf('%06x%06x', mt_rand(0, 1 << 24), mt_rand(0, 1 << 24));
+            $node = $this->nodeProvider->getNode();
         }
 
         // Convert the node to hex, if it is still an integer
@@ -281,11 +169,11 @@ class UuidFactory
             $node = sprintf('%012x', $node);
         }
 
-        if (ctype_xdigit($node) && strlen($node) <= 12) {
-            $node = strtolower(sprintf('%012s', $node));
-        } else {
+        if (! ctype_xdigit($node) || strlen($node) > 12) {
             throw new \InvalidArgumentException('Invalid node value');
         }
+
+        $node = strtolower(sprintf('%012s', $node));
 
         if ($clockSeq === null) {
             // Not using "stable storage"; see RFC 4122, Section 4.2.1.1
@@ -294,13 +182,8 @@ class UuidFactory
 
         // Create a 60-bit time value as a count of 100-nanosecond intervals
         // since 00:00:00.00, 15 October 1582
-        if (self::$timeOfDayTest === null) {
-            $timeOfDay = gettimeofday();
-        } else {
-            $timeOfDay = self::$timeOfDayTest;
-        }
-
-        $uuidTime = self::calculateUuidTime($timeOfDay['sec'], $timeOfDay['usec']);
+        $timeOfDay = $this->timeProvider->currentTime();
+        $uuidTime = $this->timeConverter->calculateTime($timeOfDay['sec'], $timeOfDay['usec']);
 
         // Set the version number to 1
         $timeHi = hexdec($uuidTime['hi']) & 0x0fff;
@@ -336,7 +219,7 @@ class UuidFactory
     public function uuid3($ns, $name)
     {
         if (!($ns instanceof UuidInterface)) {
-            $ns = $this->codec->decode($this->getConverter(), $ns);
+            $ns = $this->codec->decode($ns);
         }
 
         $hash = md5($ns->getBytes() . $name);
@@ -351,12 +234,13 @@ class UuidFactory
      */
     public function uuid4()
     {
-        $bytes = self::generateBytes(16);
+        $bytes = $this->randomGenerator->generate(16);
 
         // When converting the bytes to hex, it turns into a 32-character
         // hexadecimal string that looks a lot like an MD5 hash, so at this
         // point, we can just pass it to uuidFromHashedName.
         $hex = bin2hex($bytes);
+
         return $this->uuidFromHashedName($hex, 4);
     }
 
@@ -371,7 +255,7 @@ class UuidFactory
     public function uuid5($ns, $name)
     {
         if (!($ns instanceof Uuid)) {
-            $ns = $this->codec->decode($this->getConverter(), $ns);
+            $ns = $this->codec->decode($ns);
         }
 
         $hash = sha1($ns->getBytes() . $name);
@@ -379,15 +263,9 @@ class UuidFactory
         return $this->uuidFromHashedName($hash, 5);
     }
 
-    public function uuid(array $fields, Codec $codec = null)
+    public function uuid(array $fields)
     {
-        $codec = $codec ?: $this->codec;
-
-        if (! self::is64BitSystem()) {
-            return new DegradedUuid($fields, $this->getConverter(), $codec);
-        }
-
-        return new Uuid($fields, $this->getConverter(), $codec);
+        return $this->uuidBuilder->build($this->codec, $fields);
     }
 
     /**

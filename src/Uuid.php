@@ -744,11 +744,6 @@ class Uuid implements UuidInterface, \JsonSerializable
         return self::getFactory()->fromBytes($bytes);
     }
 
-    public static function fromGuidBytes($bytes)
-    {
-        return self::getFactory()->fromGuidBytes($bytes);
-    }
-
     /**
      * Creates a UUID from the string standard representation as described
      * in the toString() method.
@@ -761,11 +756,6 @@ class Uuid implements UuidInterface, \JsonSerializable
     public static function fromString($name)
     {
         return self::getFactory()->fromString($name);
-    }
-
-    public static function fromGuidString($name)
-    {
-        return self::getFactory()->fromGuidString($name);
     }
 
     /**

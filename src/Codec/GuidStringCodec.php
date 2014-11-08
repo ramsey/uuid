@@ -8,15 +8,19 @@ use Rhumsaa\Uuid\UuidInterface;
 use Rhumsaa\Uuid\Uuid;
 use Rhumsaa\Uuid\BigNumberConverter;
 use Rhumsaa\Uuid\UuidFactory;
+use Rhumsaa\Uuid\UuidBuilder;
 
 class GuidStringCodec implements Codec
 {
 
-    private $factory;
+    private $builder;
 
-    public function __construct(UuidFactory $factory)
+    private $uuidCodec;
+
+    public function __construct(UuidBuilder $builder, Codec $uuidCodec)
     {
-        $this->factory = $factory;
+        $this->builder = $builder;
+        $this->uuidCodec = $uuidCodec;
     }
 
     public function encode(UuidInterface $uuid)
@@ -39,17 +43,17 @@ class GuidStringCodec implements Codec
 
     public function encodeBinary(UuidInterface $uuid)
     {
-        $reversed = $this->_decode($uuid->getConverter(), $this->encode($uuid), false);
+        $reversed = $this->_decode($this->encode($uuid), false);
 
-        return (new StringCodec())->encodeBinary($reversed);
+        return $this->uuidCodec->encodeBinary($reversed);
     }
 
-    public function decode(BigNumberConverter $converter, $encodedUuid)
+    public function decode($encodedUuid)
     {
-        return $this->_decode($converter, $encodedUuid, true);
+        return $this->_decode($encodedUuid, true);
     }
 
-    public function decodeBytes(BigNumberConverter $converter, $bytes)
+    public function decodeBytes($bytes)
     {
         if (strlen($bytes) !== 16) {
             throw new InvalidArgumentException('$bytes string should contain 16 characters.');
@@ -57,10 +61,10 @@ class GuidStringCodec implements Codec
 
         $hexUuid = unpack('H*', $bytes);
 
-        return $this->_decode($converter, $hexUuid[1], false);
+        return $this->_decode($hexUuid[1], false);
     }
 
-    private function _decode(BigNumberConverter $converter, $hex, $swap)
+    private function _decode($hex, $swap)
     {
         $nameParsed = str_replace(array(
             'urn:',
@@ -105,6 +109,6 @@ class GuidStringCodec implements Codec
             'node' => sprintf('%012s', $components[4])
         );
 
-        return $this->factory->uuid($fields, $this);
+        return $this->builder->build($this, $fields);
     }
 }

@@ -12,6 +12,8 @@ class UuidBcTag1_1_2Test extends \PHPUnit_Framework_TestCase
 {
     protected function setUp()
     {
+        Uuid::setFactory(new UuidFactory());
+
         // Skip these tests if run on a 32-bit build of PHP
         if (PHP_INT_SIZE == 4) {
             $this->markTestSkipped(
@@ -375,7 +377,7 @@ class UuidBcTag1_1_2Test extends \PHPUnit_Framework_TestCase
      */
     public function testUuid1WithRandomNode()
     {
-        UuidFactory::$ignoreSystemNode = true;
+        Uuid::setFactory(new UuidFactory(new FeatureSet(false, false, false, true)));
 
         $uuid = Uuid::uuid1();
         $this->assertInstanceOf('\Rhumsaa\Uuid\Uuid', $uuid);
