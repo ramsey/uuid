@@ -63,34 +63,55 @@ class DecodeCommand extends Command
         ));
 
         if ($uuid->getVariant() != Uuid::RFC_4122) {
-
             $table->addRows(array(
                 array('decode:', 'variant:', 'Not an RFC 4122 UUID'),
             ));
-
-            $table->render($output);
-
-            return;
         }
+        else {
+            $this->dumpUuid($table, $uuid);
+        }
+
+        $table->render($output);
+    }
+
+    protected function dumpUuid($table, $uuid)
+    {
+        $content = null;
+        $version = 'Invalid or unknown UUID version';
 
         switch ($uuid->getVersion()) {
             case 1:
                 $version = '1 (time and node based)';
+                $content = array(
+                    array('', 'content:', 'time:  ' . $uuid->getDateTime()->format('c')),
+                    array('', '', 'clock: ' . $uuid->getClockSequence() . ' (usually random)'),
+                    array('', '', 'node:  ' . substr(chunk_split($uuid->getNodeHex(), 2, ':'), 0, -1)),
+                );
                 break;
             case 2:
                 $version = '2 (DCE security based)';
                 break;
             case 3:
                 $version = '3 (name based, MD5)';
+                $content = array(
+                    array('', 'content:', substr(chunk_split($uuid->getHex(), 2, ':'), 0, -1)),
+                    array('', '', '(not decipherable: SHA1 message digest only)'),
+                );
                 break;
             case 4:
                 $version = '4 (random data based)';
+                $content = array(
+                    array('', 'content:', substr(chunk_split($uuid->getHex(), 2, ':'), 0, -1)),
+                    array('', '', '(no semantics: random data only)'),
+                );
                 break;
             case 5:
                 $version = '5 (name based, SHA-1)';
+                $content = array(
+                    array('', 'content:', substr(chunk_split($uuid->getHex(), 2, ':'), 0, -1)),
+                    array('', '', '(not decipherable: SHA1 message digest only)'),
+                );
                 break;
-            default:
-                $version = 'Invalid or unknown UUID version';
         }
 
         $table->addRows(array(
@@ -98,28 +119,8 @@ class DecodeCommand extends Command
             array('',        'version:', $version),
         ));
 
-        if ($uuid->getVersion() == 1) {
-            $table->addRows(array(
-                array('', 'content:', 'time:  ' . $uuid->getDateTime()->format('c')),
-                array('', '', 'clock: ' . $uuid->getClockSequence() . ' (usually random)'),
-                array('', '', 'node:  ' . substr(chunk_split($uuid->getNodeHex(), 2, ':'), 0, -1)),
-            ));
+        if ($content) {
+            $table->addRows($content);
         }
-
-        if ($uuid->getVersion() == 4) {
-            $table->addRows(array(
-                array('', 'content:', substr(chunk_split($uuid->getHex(), 2, ':'), 0, -1)),
-                array('', '', '(no semantics: random data only)'),
-            ));
-        }
-
-        if ($uuid->getVersion() == 3 || $uuid->getVersion() == 5) {
-            $table->addRows(array(
-                array('', 'content:', substr(chunk_split($uuid->getHex(), 2, ':'), 0, -1)),
-                array('', '', '(not decipherable: MD5 message digest only)'),
-            ));
-        }
-
-        $table->render($output);
     }
 }
