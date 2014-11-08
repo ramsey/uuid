@@ -29,6 +29,7 @@ class SystemNodeProvider implements NodeProvider
      * @todo Needs evaluation and possibly modification to ensure this works
      *       well across multiple platforms.
      * @codeCoverageIgnore
+     * @return string
      */
     protected function getIfconfig()
     {

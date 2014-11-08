@@ -3,12 +3,10 @@
 namespace Rhumsaa\Uuid\Codec;
 
 use InvalidArgumentException;
-use Rhumsaa\Uuid\BigNumberConverter;
 use Rhumsaa\Uuid\Codec;
 use Rhumsaa\Uuid\Uuid;
 use Rhumsaa\Uuid\UuidBuilder;
 use Rhumsaa\Uuid\UuidInterface;
-use Rhumsaa\Uuid\UuidFactory;
 
 class StringCodec implements Codec
 {

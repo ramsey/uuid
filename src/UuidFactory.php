@@ -2,16 +2,6 @@
 
 namespace Rhumsaa\Uuid;
 
-use Rhumsaa\Uuid\Codec\StringCodec;
-use Rhumsaa\Uuid\Codec\GuidStringCodec;
-use Rhumsaa\Uuid\Time\PhpTimeConverter;
-use Rhumsaa\Uuid\Time\BigNumberTimeConverter;
-use Rhumsaa\Uuid\Time\DegradedTimeConverter;
-use Rhumsaa\Uuid\Time\SystemTimeProvider;
-use Rhumsaa\Uuid\Node\FallbackNodeProvider;
-use Rhumsaa\Uuid\Node\SystemNodeProvider;
-use Rhumsaa\Uuid\Node\RandomNodeProvider;
-
 class UuidFactory
 {
 
@@ -125,7 +115,6 @@ class UuidFactory
      * in the toString() method.
      *
      * @param string $name A string that specifies a UUID
-     * @param bool $littleEndian A boolean specifying whether the time_low, time_mid, time_hi_and_version are encoded in little-endian format.
      * @return Uuid
      * @throws InvalidArgumentException If the $name isn't a valid UUID
      */
@@ -245,6 +234,10 @@ class UuidFactory
         return $clockSeqHi;
     }
 
+    /**
+     * @param string $timeHi
+     * @param integer $version
+     */
     protected function applyVersion($timeHi, $version)
     {
         $timeHi = hexdec($timeHi) & 0x0fff;
@@ -254,6 +247,11 @@ class UuidFactory
         return $timeHi;
     }
 
+    /**
+     * @param string $name
+     * @param integer $version
+     * @param string $hashFunction
+     */
     protected function uuidFromNsAndName($ns, $name, $version, $hashFunction)
     {
         if (!($ns instanceof Uuid)) {

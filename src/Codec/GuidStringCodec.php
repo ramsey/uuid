@@ -2,12 +2,8 @@
 
 namespace Rhumsaa\Uuid\Codec;
 
-use InvalidArgumentException;
 use Rhumsaa\Uuid\UuidInterface;
 use Rhumsaa\Uuid\Uuid;
-use Rhumsaa\Uuid\BigNumberConverter;
-use Rhumsaa\Uuid\UuidFactory;
-use Rhumsaa\Uuid\UuidBuilder;
 use Rhumsaa\Uuid\Codec;
 
 class GuidStringCodec extends StringCodec

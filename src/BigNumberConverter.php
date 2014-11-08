@@ -4,6 +4,9 @@ namespace Rhumsaa\Uuid;
 
 class BigNumberConverter
 {
+    /**
+     * @param string $hex
+     */
     public function fromHex($hex)
     {
         $number = \Moontoast\Math\BigNumber::baseConvert($hex, 16, 10);

@@ -12,8 +12,6 @@
 namespace Rhumsaa\Uuid;
 
 use InvalidArgumentException;
-use Rhumsaa\Uuid\Codec\GuidStringCodec;
-use Rhumsaa\Uuid\Codec\StringCodec;
 
 /**
  * Represents a universally unique identifier (UUID), according to RFC 4122
@@ -747,7 +745,6 @@ class Uuid implements UuidInterface, \JsonSerializable
      * in the toString() method.
      *
      * @param string $name A string that specifies a UUID
-     * @param bool $littleEndian A boolean specifying whether the time_low, time_mid, time_hi_and_version are encoded in little-endian format.
      * @return Uuid
      * @throws InvalidArgumentException If the $name isn't a valid UUID
      */
@@ -813,7 +810,7 @@ class Uuid implements UuidInterface, \JsonSerializable
      * Generate a version 3 UUID based on the MD5 hash of a namespace identifier (which
      * is a UUID) and a name (which is a string).
      *
-     * @param Uuid|string $ns The UUID namespace in which to create the named UUID
+     * @param string $ns The UUID namespace in which to create the named UUID
      * @param string $name The name to create a UUID for
      * @return Uuid
      */
@@ -836,7 +833,7 @@ class Uuid implements UuidInterface, \JsonSerializable
      * Generate a version 5 UUID based on the SHA-1 hash of a namespace identifier (which
      * is a UUID) and a name (which is a string).
      *
-     * @param Uuid|string $ns The UUID namespace in which to create the named UUID
+     * @param string $ns The UUID namespace in which to create the named UUID
      * @param string $name The name to create a UUID for
      * @return Uuid
      */
