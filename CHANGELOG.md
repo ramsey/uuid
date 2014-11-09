@@ -1,5 +1,13 @@
 # Rhumsaa\Uuid Changelog
 
+## 2.8.0
+
+_Released: 2014-11-09_
+
+  * Added static `fromInteger()` method to create UUIDs from string integer or `\Moontoast\Math\BigNumber`.
+  * Friendlier Doctrine conversion to Uuid or string.
+  * Documentation fixes.
+
 ## 2.7.4
 
 _Released: 2014-10-29_
