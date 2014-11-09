@@ -5,7 +5,7 @@ namespace Rhumsaa\Uuid\Converter\Number;
 use Rhumsaa\Uuid\Exception\UnsatisfiedDependencyException;
 use Rhumsaa\Uuid\Converter\NumberConverterInterface;
 
-class DegradedNumberConverter extends BigNumberConverter implements NumberConverterInterface
+class DegradedNumberConverter implements NumberConverterInterface
 {
     public function fromHex($hex)
     {
