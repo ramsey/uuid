@@ -1,8 +1,8 @@
 <?php
 
-namespace Rhumsaa\Uuid;
+namespace Rhumsaa\Uuid\Converter;
 
-interface TimeConverter
+interface TimeConverterInterface
 {
 
     /**

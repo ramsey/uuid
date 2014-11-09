@@ -2,13 +2,15 @@
 
 namespace Rhumsaa\Uuid;
 
-use Rhumsaa\Uuid\Node\FallbackNodeProvider;
-use Rhumsaa\Uuid\Node\RandomNodeProvider;
-use Rhumsaa\Uuid\Node\SystemNodeProvider;
-use Rhumsaa\Uuid\Time\BigNumberTimeConverter;
-use Rhumsaa\Uuid\Time\DegradedTimeConverter;
-use Rhumsaa\Uuid\Time\PhpTimeConverter;
-use Rhumsaa\Uuid\Time\SystemTimeProvider;
+use Rhumsaa\Uuid\Provider\Node\FallbackNodeProvider;
+use Rhumsaa\Uuid\Provider\Node\RandomNodeProvider;
+use Rhumsaa\Uuid\Provider\Node\SystemNodeProvider;
+use Rhumsaa\Uuid\Converter\Number\BigNumberConverter;
+use Rhumsaa\Uuid\Converter\Number\DegradedNumberConverter;
+use Rhumsaa\Uuid\Converter\Time\BigNumberTimeConverter;
+use Rhumsaa\Uuid\Converter\Time\DegradedTimeConverter;
+use Rhumsaa\Uuid\Converter\Time\PhpTimeConverter;
+use Rhumsaa\Uuid\Provider\Time\SystemTimeProvider;
 use Rhumsaa\Uuid\Builder\DefaultUuidBuilder;
 use Rhumsaa\Uuid\Codec\StringCodec;
 use Rhumsaa\Uuid\Codec\GuidStringCodec;
@@ -43,8 +45,12 @@ class FeatureSet
 
     private $timeProvider;
 
-    public function __construct($useGuids = false, $force32Bit = false, $forceNoBigNumber = false, $ignoreSystemNode = false)
-    {
+    public function __construct(
+        $useGuids = false,
+        $force32Bit = false,
+        $forceNoBigNumber = false,
+        $ignoreSystemNode = false
+    ) {
         $this->disableBigNumber = $forceNoBigNumber;
         $this->disable64Bit = $force32Bit;
         $this->ignoreSystemNode = $ignoreSystemNode;
@@ -132,8 +138,7 @@ class FeatureSet
     {
         if ($this->is64BitSystem()) {
             return new PhpTimeConverter();
-        }
-        elseif ($this->hasBigNumber()) {
+        } elseif ($this->hasBigNumber()) {
             return new BigNumberTimeConverter();
         }
 

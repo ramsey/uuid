@@ -1,10 +1,10 @@
 <?php
 
-namespace Rhumsaa\Uuid\Node;
+namespace Rhumsaa\Uuid\Provider\Node;
 
-use Rhumsaa\Uuid\NodeProvider;
+use Rhumsaa\Uuid\Provider\NodeProviderInterface;
 
-class FallbackNodeProvider implements NodeProvider
+class FallbackNodeProvider implements NodeProviderInterface
 {
     private $nodeProviders;
 

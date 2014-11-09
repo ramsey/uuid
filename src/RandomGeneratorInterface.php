@@ -2,12 +2,12 @@
 
 namespace Rhumsaa\Uuid;
 
-interface RandomGenerator
+interface RandomGeneratorInterface
 {
     /**
      * @param integer $length
      *
      * @return string
      */
-    function generate($length);
+    public function generate($length);
 }

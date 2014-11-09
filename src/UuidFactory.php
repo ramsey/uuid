@@ -2,41 +2,47 @@
 
 namespace Rhumsaa\Uuid;
 
+use InvalidArgumentException;
+use Rhumsaa\Uuid\Converter\NumberConverterInterface;
+use Rhumsaa\Uuid\Converter\TimeConverterInterface;
+use Rhumsaa\Uuid\Provider\NodeProviderInterface;
+use Rhumsaa\Uuid\Provider\TimeProviderInterface;
+
 class UuidFactory
 {
 
     /**
      *
-     * @var Codec
+     * @var CodecInterface
      */
     private $codec = null;
 
     /**
      *
-     * @var NodeProvider
+     * @var NodeProviderInterface
      */
     private $nodeProvider = null;
 
     /**
      *
-     * @var BigNumberConverter
+     * @var NumberConverterInterface
      */
     private $numberConverter = null;
 
     /**
-     * @var RandomGenerator
+     * @var RandomGeneratorInterface
      */
     private $randomGenerator = null;
 
     /**
      *
-     * @var TimeConverter
+     * @var TimeConverterInterface
      */
     private $timeConverter = null;
 
     /**
      *
-     * @var TimeProvider
+     * @var TimeProviderInterface
      */
     private $timeProvider = null;
 
@@ -68,27 +74,27 @@ class UuidFactory
         return $this->codec;
     }
 
-    public function setTimeConverter(TimeConverter $converter)
+    public function setTimeConverter(TimeConverterInterface $converter)
     {
         $this->timeConverter = $converter;
     }
 
-    public function setTimeProvider(TimeProvider $provider)
+    public function setTimeProvider(TimeProviderInterface $provider)
     {
         $this->timeProvider = $provider;
     }
 
-    public function setRandomGenerator(RandomGenerator $generator)
+    public function setRandomGenerator(RandomGeneratorInterface $generator)
     {
         $this->randomGenerator = $generator;
     }
 
-    public function setNodeProvider(NodeProvider $provider)
+    public function setNodeProvider(NodeProviderInterface $provider)
     {
         $this->nodeProvider = $provider;
     }
 
-    public function setNumberConverter(BigNumberConverter $converter)
+    public function setNumberConverter(NumberConverterInterface $converter)
     {
         $this->numberConverter = $converter;
     }

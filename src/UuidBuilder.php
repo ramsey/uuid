@@ -7,5 +7,5 @@ interface UuidBuilder
     /**
      * @return Uuid
      */
-    public function build(Codec $codec, array $fields);
+    public function build(CodecInterface $codec, array $fields);
 }

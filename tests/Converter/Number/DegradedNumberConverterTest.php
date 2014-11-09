@@ -1,6 +1,8 @@
 <?php
 
-namespace Rhumsaa\Uuid;
+namespace Rhumsaa\Uuid\Converter\Number;
+
+use Rhumsaa\Uuid\TestCase;
 
 class DegradedNumberConverterTest extends TestCase
 {

@@ -2,10 +2,12 @@
 
 namespace Rhumsaa\Uuid;
 
+use Rhumsaa\Uuid\Converter\NumberConverterInterface;
+
 class DegradedUuid extends Uuid
 {
 
-    public function __construct(array $fields, BigNumberConverter $converter, Codec $codec)
+    public function __construct(array $fields, NumberConverterInterface $converter, CodecInterface $codec)
     {
         parent::__construct($fields, $converter, $codec);
     }
@@ -20,7 +22,8 @@ class DegradedUuid extends Uuid
      *
      * @return \DateTime A PHP DateTime representation of the date
      * @throws Exception\UnsupportedOperationException If this UUID is not a version 1 UUID
-     * @throws Exception\UnsatisfiedDependencyException if called on a 32-bit system and Moontoast\Math\BigNumber is not present
+     * @throws Exception\UnsatisfiedDependencyException if called on a 32-bit system and
+     *         Moontoast\Math\BigNumber is not present
      */
     public function getDateTime()
     {
@@ -61,9 +64,9 @@ class DegradedUuid extends Uuid
     public function getFields()
     {
         throw new Exception\UnsatisfiedDependencyException(
-                'Cannot call ' . __METHOD__ . ' on a 32-bit system, since some '
-                . 'values overflow the system max integer value'
-                . '; consider calling getFieldsHex instead'
+            'Cannot call ' . __METHOD__ . ' on a 32-bit system, since some '
+            . 'values overflow the system max integer value'
+            . '; consider calling getFieldsHex instead'
         );
     }
 

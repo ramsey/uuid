@@ -12,6 +12,7 @@
 namespace Rhumsaa\Uuid;
 
 use InvalidArgumentException;
+use Rhumsaa\Uuid\Converter\NumberConverterInterface;
 
 /**
  * Represents a universally unique identifier (UUID), according to RFC 4122
@@ -104,7 +105,7 @@ class Uuid implements UuidInterface, \JsonSerializable
 
     /**
      * String codec
-     * @var Codec
+     * @var CodecInterface
      */
     protected $codec;
 
@@ -134,10 +135,10 @@ class Uuid implements UuidInterface, \JsonSerializable
      * UUIDs.
      *
      * @param array $fields
-     * @param Codec $codec String codec
+     * @param CodecInterface $codec String codec
      * @link Rhumsaa.Uuid.Uuid.html#method_getFields
      */
-    public function __construct(array $fields, BigNumberConverter $converter, Codec $codec)
+    public function __construct(array $fields, NumberConverterInterface $converter, CodecInterface $codec)
     {
         $this->fields = $fields;
         $this->codec = $codec;
@@ -303,7 +304,7 @@ class Uuid implements UuidInterface, \JsonSerializable
         return sprintf('%04x', $this->getClockSequence());
     }
 
-    public function getConverter()
+    public function getNumberConverter()
     {
         return $this->converter;
     }
@@ -318,7 +319,8 @@ class Uuid implements UuidInterface, \JsonSerializable
      *
      * @return \DateTime A PHP DateTime representation of the date
      * @throws Exception\UnsupportedOperationException If this UUID is not a version 1 UUID
-     * @throws Exception\UnsatisfiedDependencyException if called on a 32-bit system and Moontoast\Math\BigNumber is not present
+     * @throws Exception\UnsatisfiedDependencyException if called on a 32-bit system and
+     *         Moontoast\Math\BigNumber is not present
      */
     public function getDateTime()
     {

@@ -2,7 +2,7 @@
 
 namespace Rhumsaa\Uuid;
 
-interface Codec
+interface CodecInterface
 {
     /**
      * @return string

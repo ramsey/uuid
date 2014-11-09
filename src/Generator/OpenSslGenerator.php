@@ -2,9 +2,9 @@
 
 namespace Rhumsaa\Uuid\Generator;
 
-use Rhumsaa\Uuid\RandomGenerator;
+use Rhumsaa\Uuid\RandomGeneratorInterface;
 
-class OpenSslGenerator implements RandomGenerator
+class OpenSslGenerator implements RandomGeneratorInterface
 {
 
     public function generate($length)
