@@ -58,8 +58,7 @@ class UuidFormatter
             ));
 
             $table->addRows($this->getContent($uuid));
-        }
-        else {
+        } else {
             $table->addRows(array(
                 array('decode:', 'variant:', 'Not an RFC 4122 UUID'),
             ));
