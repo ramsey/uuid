@@ -18,6 +18,8 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Rhumsaa\Uuid\Console\Exception;
 use Rhumsaa\Uuid\Uuid;
+use Rhumsaa\Uuid\Console\Util\UuidFormatter;
+use Symfony\Component\Console\Helper\Table;
 
 /**
  * Provides the console command to decode UUIDs and dump information about them
@@ -57,69 +59,8 @@ class DecodeCommand extends Command
         $table = $this->getHelperSet()->get('table');
         $table->setLayout(TableHelper::LAYOUT_BORDERLESS);
 
-        $table->addRows(array(
-            array('encode:', 'STR:', (string) $uuid),
-            array('',        'INT:', (string) $uuid->getInteger()),
-        ));
-
-        if ($uuid->getVariant() != Uuid::RFC_4122) {
-            $table->addRows(array(
-                array('decode:', 'variant:', 'Not an RFC 4122 UUID'),
-            ));
-        } else {
-            $this->dumpUuid($table, $uuid);
-        }
+        (new UuidFormatter())->write($table, $uuid);
 
         $table->render($output);
-    }
-
-    protected function dumpUuid($table, $uuid)
-    {
-        $content = null;
-        $version = 'Invalid or unknown UUID version';
-
-        switch ($uuid->getVersion()) {
-            case 1:
-                $version = '1 (time and node based)';
-                $content = array(
-                    array('', 'content:', 'time:  ' . $uuid->getDateTime()->format('c')),
-                    array('', '', 'clock: ' . $uuid->getClockSequence() . ' (usually random)'),
-                    array('', '', 'node:  ' . substr(chunk_split($uuid->getNodeHex(), 2, ':'), 0, -1)),
-                );
-                break;
-            case 2:
-                $version = '2 (DCE security based)';
-                break;
-            case 3:
-                $version = '3 (name based, MD5)';
-                $content = array(
-                    array('', 'content:', substr(chunk_split($uuid->getHex(), 2, ':'), 0, -1)),
-                    array('', '', '(not decipherable: MD5 message digest only)'),
-                );
-                break;
-            case 4:
-                $version = '4 (random data based)';
-                $content = array(
-                    array('', 'content:', substr(chunk_split($uuid->getHex(), 2, ':'), 0, -1)),
-                    array('', '', '(no semantics: random data only)'),
-                );
-                break;
-            case 5:
-                $version = '5 (name based, SHA-1)';
-                $content = array(
-                    array('', 'content:', substr(chunk_split($uuid->getHex(), 2, ':'), 0, -1)),
-                    array('', '', '(not decipherable: SHA1 message digest only)'),
-                );
-                break;
-        }
-
-        $table->addRows(array(
-            array('decode:', 'variant:', 'RFC 4122'),
-            array('',        'version:', $version),
-        ));
-
-        if ($content) {
-            $table->addRows($content);
-        }
     }
 }
