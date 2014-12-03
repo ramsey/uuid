@@ -4,5 +4,5 @@
   decode:   variant:   RFC 4122                                         
             version:   5 (name based, SHA-1)                            
             content:   88:63:13:e1:3b:8a:53:72:9b:90:0c:9a:ee:19:9e:5d  
-                       (not decipherable: MD5 message digest only)      
+                       (not decipherable: SHA1 message digest only)     
  ========= ========== ================================================= 

@@ -24,14 +24,17 @@
     },
     "require-dev": {
         "moontoast/math": "~1.1",
+        "ircmaxell/random-lib": "~1.0",
         "symfony/console": "~2.3",
         "doctrine/dbal": ">=2.3",
         "phpunit/phpunit": "~4.1",
+        "squizlabs/php_codesniffer": "2.0.0RC4",
         "satooshi/php-coveralls": "~0.6"
     },
     "bin": ["bin/uuid"],
     "suggest": {
         "moontoast/math": "Support for converting UUID to 128-bit integer (in string form).",
+        "ircmaxell/random-lib": "Provides RandomLib to use with the RandomLibAdapter",
         "symfony/console": "Support for use of the bin/uuid command line tool.",
         "doctrine/dbal": "Allow the use of a UUID as doctrine field type."
     },
