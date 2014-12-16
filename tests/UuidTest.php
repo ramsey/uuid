@@ -4,6 +4,7 @@ namespace Rhumsaa\Uuid;
 
 use Rhumsaa\Uuid\Provider\Time\SystemTimeProvider;
 use Rhumsaa\Uuid\Provider\Time\FixedTimeProvider;
+use Rhumsaa\Uuid\Generator\CombGenerator;
 
 class UuidTest extends TestCase
 {
@@ -783,6 +784,58 @@ class UuidTest extends TestCase
         $this->assertInstanceOf('Rhumsaa\Uuid\Uuid', $uuid);
         $this->assertEquals(2, $uuid->getVariant());
         $this->assertEquals(4, $uuid->getVersion());
+    }
+
+    /**
+     * Tests that generated UUID's using COMB are sequential
+     * @return string
+     */
+    public function testUuid4Comb()
+    {
+        $mock = $this->getMock('Rhumsaa\Uuid\RandomGeneratorInterface');
+        $mock->expects($this->any())
+            ->method('generate')
+            ->willReturnCallback(function ($length)
+        {
+            // Makes first fields of UUIDs equal
+            return str_pad('', $length, '0');
+        });
+
+        $generator = new CombGenerator($mock);
+        $factory = new UuidFactory();
+        $factory->setRandomGenerator($generator);
+
+        $previous = $factory->uuid4();
+
+        for ($i = 0; $i < 100; $i ++) {
+            // Just to make sure we dont generate more than one UUID / ms for the purpose of this test.
+            usleep(5000);
+            $uuid = $factory->uuid4();
+            $this->assertGreaterThan($previous->toString(), $uuid->toString());
+        }
+    }
+
+    /**
+     * Test that COMB UUID's have a version 4 flag
+     */
+    public function testUuid4CombVersion()
+    {
+        $generator = new CombGenerator(RandomGeneratorFactory::getGenerator());
+        $factory = new UuidFactory();
+        $factory->setRandomGenerator($generator);
+
+        $uuid = $factory->uuid4();
+
+        $this->assertEquals(4, $uuid->getVersion());
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testUuid4CombRejectsSmallLengths()
+    {
+        $generator = new CombGenerator(RandomGeneratorFactory::getGenerator());
+        $generator->generate(5);
     }
 
     /**
