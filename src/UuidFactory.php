@@ -74,6 +74,16 @@ class UuidFactory implements UuidFactoryInterface
         return $this->codec;
     }
 
+    public function getNumberConverter()
+    {
+        return $this->numberConverter;
+    }
+
+    public function getTimeConverter()
+    {
+        return $this->timeConverter;
+    }
+
     public function setTimeConverter(TimeConverterInterface $converter)
     {
         $this->timeConverter = $converter;
