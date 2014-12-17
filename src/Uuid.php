@@ -719,7 +719,7 @@ class Uuid implements UuidInterface, \JsonSerializable
     public static function getFactory()
     {
         if (! self::$factory) {
-            self::$factory = new UuidFactory();
+            self::$factory = new PeclUuidFactory(new UuidFactory());
         }
 
         return self::$factory;
