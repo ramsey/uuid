@@ -808,10 +808,13 @@ class UuidTest extends TestCase
         $previous = $factory->uuid4();
 
         for ($i = 0; $i < 100; $i ++) {
-            // Just to make sure we dont generate more than one UUID / ms for the purpose of this test.
-            usleep(5000);
+            // Just to make sure we dont generate more than one UUID / s for the purpose of this test.
+            usleep(1000);
+
             $uuid = $factory->uuid4();
             $this->assertGreaterThan($previous->toString(), $uuid->toString());
+
+            $previous = $uuid;
         }
     }
 

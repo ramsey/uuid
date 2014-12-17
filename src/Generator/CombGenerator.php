@@ -33,7 +33,7 @@ class CombGenerator implements RandomGeneratorInterface
         }
 
         $hash = $this->randomGenerator->generate($length - 6);
-        $lsbTime = hexdec(substr(dechex(round(microtime(true) * 10000, 0)), -12));
+        $lsbTime = substr(round(microtime(true) * 10000, 0), -6);
 
         return $hash . $lsbTime;
     }
