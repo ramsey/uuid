@@ -8,7 +8,7 @@ use Rhumsaa\Uuid\Converter\TimeConverterInterface;
 use Rhumsaa\Uuid\Provider\NodeProviderInterface;
 use Rhumsaa\Uuid\Provider\TimeProviderInterface;
 
-class UuidFactory
+class UuidFactory implements UuidFactoryInterface
 {
 
     /**
