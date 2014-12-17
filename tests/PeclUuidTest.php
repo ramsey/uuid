@@ -37,9 +37,6 @@ class PeclUuidTest extends \PHPUnit_Framework_TestCase
      */
     public function testUuid1WithParametersIsDelegated($node, $clockSeq)
     {
-        $node = true;
-        $clockSeq = null;
-
         $this->mockFactory->expects($this->once())
             ->method('uuid1')
             ->with($node, $clockSeq);

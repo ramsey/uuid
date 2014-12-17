@@ -13,9 +13,10 @@ before_script:
   - composer self-update
   - composer install --dev --prefer-source
   - sh -c 'if [ "$TRAVIS_PHP_VERSION" != "hhvm" ]; then printf "\n" | pecl install uuid; fi;'
+  - phpenv rehash
 
 script:
-  - ./vendor/bin/phpunit --coverage-text --coverage-clover ./build/logs/clover.xml
+  - ./vendor/bin/phpunit --coverage-text --coverage-clover ./build/logs/clover.xml tests/PeclUuidTest.php
   - ./vendor/bin/phpcs --standard=phpcs.xml ./
 
 after_script: php vendor/bin/coveralls
