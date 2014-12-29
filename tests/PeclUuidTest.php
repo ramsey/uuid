@@ -36,6 +36,10 @@ class PeclUuidTest extends \PHPUnit_Framework_TestCase
 
     public function testUuid1WithoutParametersIsNotDelegated()
     {
+        if (defined('HHVM_VERSION')) {
+            $this->markTestSkipped('PECL Uuid extension not available in HHVM');
+        }
+
         $this->mockFactory->expects($this->never())
             ->method('uuid1');
 
@@ -87,6 +91,10 @@ class PeclUuidTest extends \PHPUnit_Framework_TestCase
 
     public function testUuid4WithParametersIsNeverDelegated()
     {
+        if (defined('HHVM_VERSION')) {
+            $this->markTestSkipped('PECL Uuid extension not available in HHVM');
+        }
+
         $this->mockFactory->expects($this->never())
             ->method('uuid4');
 
