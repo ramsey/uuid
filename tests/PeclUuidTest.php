@@ -6,19 +6,9 @@ class PeclUuidTest extends \PHPUnit_Framework_TestCase
 {
     private $mockFactory;
 
-    public static $mockNoExt = false;
-
     protected function setUp()
     {
         $this->mockFactory = $this->getMock('Rhumsaa\Uuid\UuidFactoryInterface');
-
-        if (! function_exists('\Rhumsaa\Uuid\extension_loaded')) {
-            // Hackish, but allows mocking extension not avail without
-            // breaking the function if tests are loaded accidently in non test env.
-            eval('namespace Rhumsaa\Uuid { function extension_loaded($name) {
-                return ! PeclUuidTest::$mockNoExt;
-            } }');
-        }
 
         Uuid::setFactory(new PeclUuidFactory($this->mockFactory));
     }
@@ -54,16 +44,15 @@ class PeclUuidTest extends \PHPUnit_Framework_TestCase
 
     public function testUuid1WithoutExtensionIsDelegated()
     {
-        self::$mockNoExt = true;
+        $factory = new PeclUuidFactory($this->mockFactory);
+        $factory->disablePecl();
 
-        Uuid::setFactory(new PeclUuidFactory($this->mockFactory));
+        Uuid::setFactory($factory);
 
         $this->mockFactory->expects($this->once())
             ->method('uuid1');
 
         Uuid::uuid1();
-
-        self::$mockNoExt = false;
     }
 
     public function testUuid1Version()
@@ -85,16 +74,15 @@ class PeclUuidTest extends \PHPUnit_Framework_TestCase
 
     public function testUuid4WithoutExtensionIsDelegated()
     {
-        self::$mockNoExt = true;
+        $factory = new PeclUuidFactory($this->mockFactory);
+        $factory->disablePecl();
 
-        Uuid::setFactory(new PeclUuidFactory($this->mockFactory));
+        Uuid::setFactory($factory);
 
         $this->mockFactory->expects($this->once())
             ->method('uuid4');
 
         Uuid::uuid4();
-
-        self::$mockNoExt = false;
     }
 
     public function testUuid4WithParametersIsNeverDelegated()

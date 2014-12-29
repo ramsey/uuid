@@ -33,6 +33,14 @@ class PeclUuidFactory implements UuidFactoryInterface
     }
 
     /**
+     * Forces factory to act as if PECL extension is not available
+     */
+    public function disablePecl()
+    {
+        $this->hasExt = false;
+    }
+
+    /**
      * (non-PHPdoc) @see \Rhumsaa\Uuid\UuidFactoryInterface::uuid1()
      */
     public function uuid1($node = null, $clockSeq = null)
