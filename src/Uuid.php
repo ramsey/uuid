@@ -99,7 +99,7 @@ class Uuid implements UuidInterface, \JsonSerializable
 
     /**
      *
-     * @var UuidFactory
+     * @var UuidFactoryInterface
      */
     private static $factory = null;
 
@@ -719,13 +719,13 @@ class Uuid implements UuidInterface, \JsonSerializable
     public static function getFactory()
     {
         if (! self::$factory) {
-            self::$factory = new UuidFactory();
+            self::$factory = new PeclUuidFactory(new UuidFactory());
         }
 
         return self::$factory;
     }
 
-    public static function setFactory(UuidFactory $factory)
+    public static function setFactory(UuidFactoryInterface $factory)
     {
         self::$factory = $factory;
     }
