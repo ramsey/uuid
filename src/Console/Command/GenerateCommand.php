@@ -18,6 +18,10 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Rhumsaa\Uuid\Console\Exception;
 use Rhumsaa\Uuid\Uuid;
+use Rhumsaa\Uuid\Generator\CombGenerator;
+use Rhumsaa\Uuid\Codec\GuidStringCodec;
+use Rhumsaa\Uuid\FeatureSet;
+use Rhumsaa\Uuid\UuidFactory;
 
 /**
  * Provides the console command to generate UUIDs
@@ -60,6 +64,18 @@ class GenerateCommand extends Command
                 InputOption::VALUE_REQUIRED,
                 'Generate count UUIDs instead of just a single one.',
                 1
+            )
+            ->addOption(
+                'comb',
+                null,
+                InputOption::VALUE_NONE,
+                'For version 4 UUIDs, uses the COMB strategy to generate the random data.'
+            )
+            ->addOption(
+                'guid',
+                'g',
+                InputOption::VALUE_NONE,
+                'Returns a GUID formatted UUID.'
             );
     }
 
@@ -81,6 +97,21 @@ class GenerateCommand extends Command
                 'min_range' => 1,
             )
         );
+
+        if (((bool) $input->getOption('guid')) == true) {
+            $features = new FeatureSet(true);
+
+            Uuid::setFactory(new UuidFactory($features));
+        }
+
+        if (((bool) $input->getOption('comb')) === true) {
+            Uuid::getFactory()->setRandomGenerator(
+                new CombGenerator(
+                    Uuid::getFactory()->getRandomGenerator(),
+                    Uuid::getFactory()->getNumberConverter()
+                )
+            );
+        }
 
         for ($i = 0; $i < $count; $i++) {
             $uuids[] = $this->createUuid(

@@ -74,6 +74,11 @@ class UuidFactory implements UuidFactoryInterface
         return $this->codec;
     }
 
+    public function getRandomGenerator()
+    {
+        return $this->randomGenerator;
+    }
+
     public function getNumberConverter()
     {
         return $this->numberConverter;
