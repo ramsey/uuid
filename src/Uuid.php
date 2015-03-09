@@ -448,7 +448,7 @@ final class Uuid
                 'Cannot call ' . __METHOD__ . ' without support for large '
                 . 'integers, since integer is an unsigned '
                 . '128-bit integer; Moontoast\Math\BigNumber is required'
-                . '; consider calling getMostSignificantBitsHex instead'
+                . '; consider calling getHex instead'
             );
         }
 
