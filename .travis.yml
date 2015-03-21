@@ -4,19 +4,23 @@ php:
   - 5.4
   - 5.5
   - 5.6
+  - 7.0
   - hhvm
 
 before_install:
   - sudo apt-get update && sudo apt-get install uuid-dev
 
 before_script:
-  - composer self-update
-  - composer install --dev --prefer-source
+  - travis_retry composer self-update
+  - travis_retry composer install --no-interaction --prefer-source
   - sh -c 'if [ "$TRAVIS_PHP_VERSION" != "hhvm" ]; then printf "\n" | pecl install uuid; fi;'
   - phpenv rehash
 
 script:
-  - ./vendor/bin/phpunit --coverage-text --coverage-clover ./build/logs/clover.xml
-  - ./vendor/bin/phpcs --standard=phpcs.xml ./
+  - mkdir -p build/logs
+  - ./vendor/bin/parallel-lint src tests
+  - ./vendor/bin/phpunit --coverage-text
+  - ./vendor/bin/phpcs src --standard=psr2 -sp
 
-after_script: php vendor/bin/coveralls
+after_script:
+  - php vendor/bin/coveralls
