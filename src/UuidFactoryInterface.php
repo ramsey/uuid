@@ -17,5 +17,4 @@ interface UuidFactoryInterface
     public function fromString($name);
 
     public function fromInteger($integer);
-
 }

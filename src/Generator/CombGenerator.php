@@ -42,7 +42,7 @@ class CombGenerator implements RandomGeneratorInterface
 
         $hash = '';
 
-        if ($this->timestampBytes > 0 && $length > $this->timestampBytes)  {
+        if ($this->timestampBytes > 0 && $length > $this->timestampBytes) {
             $hash = $this->randomGenerator->generate($length - $this->timestampBytes);
         }
 
