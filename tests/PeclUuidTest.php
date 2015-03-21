@@ -40,6 +40,10 @@ class PeclUuidTest extends \PHPUnit_Framework_TestCase
             $this->markTestSkipped('PECL Uuid extension not available in HHVM');
         }
 
+        if (version_compare(PHP_VERSION, '7.0.0-dev', '>=')) {
+            $this->markTestSkipped('PECL Uuid extension does not yet work in PHP 7');
+        }
+
         $this->mockFactory->expects($this->never())
             ->method('uuid1');
 
@@ -93,6 +97,10 @@ class PeclUuidTest extends \PHPUnit_Framework_TestCase
     {
         if (defined('HHVM_VERSION')) {
             $this->markTestSkipped('PECL Uuid extension not available in HHVM');
+        }
+
+        if (version_compare(PHP_VERSION, '7.0.0-dev', '>=')) {
+            $this->markTestSkipped('PECL Uuid extension does not yet work in PHP 7');
         }
 
         $this->mockFactory->expects($this->never())
