@@ -1,11 +1,11 @@
 # Rhumsaa\Uuid for PHP
 
-[![Build Status](https://travis-ci.org/ramsey/uuid.png?branch=master)](https://travis-ci.org/ramsey/uuid)
-[![Coverage Status](https://coveralls.io/repos/ramsey/uuid/badge.png)](https://coveralls.io/r/ramsey/uuid)
-[![Latest Stable Version](https://poser.pugx.org/rhumsaa/uuid/v/stable.png)](https://packagist.org/packages/rhumsaa/uuid)
-[![Latest Unstable Version](https://poser.pugx.org/rhumsaa/uuid/v/unstable.png)](https://packagist.org/packages/rhumsaa/uuid)
-[![Total Downloads](https://poser.pugx.org/rhumsaa/uuid/downloads.png)](https://packagist.org/packages/rhumsaa/uuid)
-[![HHVM Status](http://hhvm.h4cc.de/badge/rhumsaa/uuid.png)](http://hhvm.h4cc.de/package/rhumsaa/uuid)
+[![Build Status](https://travis-ci.org/ramsey/uuid.svg?branch=master)](https://travis-ci.org/ramsey/uuid)
+[![Coverage Status](https://coveralls.io/repos/ramsey/uuid/badge.svg?branch=master)](https://coveralls.io/r/ramsey/uuid)
+[![Latest Stable Version](https://poser.pugx.org/rhumsaa/uuid/v/stable.svg)](https://packagist.org/packages/rhumsaa/uuid)
+[![Total Downloads](https://poser.pugx.org/rhumsaa/uuid/downloads.svg)](https://packagist.org/packages/rhumsaa/uuid)
+[![Latest Unstable Version](https://poser.pugx.org/rhumsaa/uuid/v/unstable.svg)](https://packagist.org/packages/rhumsaa/uuid)
+[![License](https://poser.pugx.org/rhumsaa/uuid/license.svg)](https://packagist.org/packages/rhumsaa/uuid)
 
 ## About
 
