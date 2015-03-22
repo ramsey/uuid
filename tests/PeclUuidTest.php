@@ -36,12 +36,8 @@ class PeclUuidTest extends \PHPUnit_Framework_TestCase
 
     public function testUuid1WithoutParametersIsNotDelegated()
     {
-        if (defined('HHVM_VERSION')) {
-            $this->markTestSkipped('PECL Uuid extension not available in HHVM');
-        }
-
-        if (version_compare(PHP_VERSION, '7.0.0-dev', '>=')) {
-            $this->markTestSkipped('PECL Uuid extension does not yet work in PHP 7');
+        if (!extension_loaded('uuid')) {
+            $this->markTestSkipped('PECL UUID extension not loaded');
         }
 
         $this->mockFactory->expects($this->never())
@@ -95,12 +91,8 @@ class PeclUuidTest extends \PHPUnit_Framework_TestCase
 
     public function testUuid4WithParametersIsNeverDelegated()
     {
-        if (defined('HHVM_VERSION')) {
-            $this->markTestSkipped('PECL Uuid extension not available in HHVM');
-        }
-
-        if (version_compare(PHP_VERSION, '7.0.0-dev', '>=')) {
-            $this->markTestSkipped('PECL Uuid extension does not yet work in PHP 7');
+        if (!extension_loaded('uuid')) {
+            $this->markTestSkipped('PECL UUID extension not loaded');
         }
 
         $this->mockFactory->expects($this->never())
