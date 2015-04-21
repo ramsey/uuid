@@ -2,10 +2,9 @@
 
 [![Build Status](https://travis-ci.org/ramsey/uuid.svg?branch=master)](https://travis-ci.org/ramsey/uuid)
 [![Coverage Status](https://coveralls.io/repos/ramsey/uuid/badge.svg?branch=master)](https://coveralls.io/r/ramsey/uuid)
-[![Latest Stable Version](https://poser.pugx.org/rhumsaa/uuid/v/stable.svg)](https://packagist.org/packages/rhumsaa/uuid)
-[![Total Downloads](https://poser.pugx.org/rhumsaa/uuid/downloads.svg)](https://packagist.org/packages/rhumsaa/uuid)
-[![Latest Unstable Version](https://poser.pugx.org/rhumsaa/uuid/v/unstable.svg)](https://packagist.org/packages/rhumsaa/uuid)
-[![License](https://poser.pugx.org/rhumsaa/uuid/license.svg)](https://packagist.org/packages/rhumsaa/uuid)
+[![Latest Stable Version](https://poser.pugx.org/rhumsaa/uuid/v/stable)](https://packagist.org/packages/rhumsaa/uuid)
+[![Total Downloads](https://poser.pugx.org/rhumsaa/uuid/downloads)](https://packagist.org/packages/rhumsaa/uuid)
+[![Latest Unstable Version](https://poser.pugx.org/rhumsaa/uuid/v/unstable)](https://packagist.org/packages/rhumsaa/uuid) [![License](https://poser.pugx.org/rhumsaa/uuid/license)](https://packagist.org/packages/rhumsaa/uuid)
 
 ## About
 
