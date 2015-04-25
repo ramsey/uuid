@@ -1,6 +1,6 @@
 {
     "name": "ramsey/uuid",
-    "description": "A PHP 5.4+ library for generating RFC 4122 version 1, 3, 4, and 5 universally unique identifiers (UUID).",
+    "description": "Formerly rhumsaa/uuid. A PHP 5.4+ library for generating RFC 4122 version 1, 3, 4, and 5 universally unique identifiers (UUID).",
     "type": "library",
     "keywords": ["uuid", "identifier", "guid"],
     "homepage": "https://github.com/ramsey/uuid",
@@ -8,6 +8,7 @@
     "authors": [
         {
             "name": "Ben Ramsey",
+            "email": "ben@benramsey.com",
             "homepage": "http://benramsey.com"
         },
         {
