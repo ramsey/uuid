@@ -1,4 +1,4 @@
-# Rhumsaa\Uuid for PHP
+# Ramsey\Uuid for PHP
 
 [![Build Status](https://travis-ci.org/ramsey/uuid.svg?branch=master)](https://travis-ci.org/ramsey/uuid)
 [![Coverage Status](https://coveralls.io/repos/ramsey/uuid/badge.svg?branch=master)](https://coveralls.io/r/ramsey/uuid)
@@ -8,7 +8,7 @@
 
 ## About
 
-Rhumsaa\Uuid is a PHP 5.4+ library for generating and working with
+Ramsey\Uuid is a PHP 5.4+ library for generating and working with
 [RFC 4122][rfc4122] version 1, 3, 4, and 5 universally unique identifiers (UUID).
 
 From [Wikipedia](http://en.wikipedia.org/wiki/Universally_unique_identifier):
@@ -43,7 +43,7 @@ library are recommended. However, this library is designed to work on 32-bit
 builds of PHP without Moontoast\Math, with some degraded functionality. Please
 check the API documentation for more information.
 
-If a particular requirement is not present, then a `Rhumsaa\Uuid\Exception\UnsatisfiedDependencyException`
+If a particular requirement is not present, then a `Ramsey\Uuid\Exception\UnsatisfiedDependencyException`
 is thrown, allowing one to catch a bad call in an environment where the call is
 not supported and gracefully degrade.
 
@@ -53,8 +53,8 @@ not supported and gracefully degrade.
 <?php
 require 'vendor/autoload.php';
 
-use Rhumsaa\Uuid\Uuid;
-use Rhumsaa\Uuid\Exception\UnsatisfiedDependencyException;
+use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\Exception\UnsatisfiedDependencyException;
 
 try {
 
@@ -90,14 +90,14 @@ the following command to install the package and add it as a requirement to
 `composer.json`:
 
 ```bash
-composer.phar require "rhumsaa/uuid=~3.0"
+composer.phar require "ramsey/uuid=~3.0"
 ```
 
 
 [rfc4122]: http://tools.ietf.org/html/rfc4122
 [javauuid]: http://docs.oracle.com/javase/6/docs/api/java/util/UUID.html
 [pyuuid]: http://docs.python.org/3/library/uuid.html
-[packagist]: https://packagist.org/packages/rhumsaa/uuid
+[packagist]: https://packagist.org/packages/ramsey/uuid
 [composer]: http://getcomposer.org/
 [moontoast\math]: https://github.com/moontoast/math
 [apidocs]: http://ramsey.github.io/uuid/apidocs

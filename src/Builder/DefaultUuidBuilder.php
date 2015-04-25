@@ -1,11 +1,11 @@
 <?php
 
-namespace Rhumsaa\Uuid\Builder;
+namespace Ramsey\Uuid\Builder;
 
-use Rhumsaa\Uuid\Converter\NumberConverterInterface;
-use Rhumsaa\Uuid\CodecInterface;
-use Rhumsaa\Uuid\Uuid;
-use Rhumsaa\Uuid\UuidBuilder;
+use Ramsey\Uuid\Converter\NumberConverterInterface;
+use Ramsey\Uuid\CodecInterface;
+use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidBuilder;
 
 class DefaultUuidBuilder implements UuidBuilder
 {

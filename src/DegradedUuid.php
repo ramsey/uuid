@@ -1,8 +1,8 @@
 <?php
 
-namespace Rhumsaa\Uuid;
+namespace Ramsey\Uuid;
 
-use Rhumsaa\Uuid\Converter\NumberConverterInterface;
+use Ramsey\Uuid\Converter\NumberConverterInterface;
 
 class DegradedUuid extends Uuid
 {

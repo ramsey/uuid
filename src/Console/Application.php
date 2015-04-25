@@ -1,6 +1,6 @@
 <?php
 /**
- * This file is part of the Rhumsaa\Uuid library
+ * This file is part of the Ramsey\Uuid library
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -9,10 +9,10 @@
  * @license http://opensource.org/licenses/MIT MIT
  */
 
-namespace Rhumsaa\Uuid\Console;
+namespace Ramsey\Uuid\Console;
 
-use Rhumsaa\Uuid\Console\Util;
-use Rhumsaa\Uuid\Uuid;
+use Ramsey\Uuid\Console\Util;
+use Ramsey\Uuid\Uuid;
 use Symfony\Component\Console\Application as BaseApplication;
 
 /**

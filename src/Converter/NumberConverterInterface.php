@@ -1,6 +1,6 @@
 <?php
 
-namespace Rhumsaa\Uuid\Converter;
+namespace Ramsey\Uuid\Converter;
 
 interface NumberConverterInterface
 {

@@ -1,12 +1,12 @@
 <?php
 
-namespace Rhumsaa\Uuid\Codec;
+namespace Ramsey\Uuid\Codec;
 
 use InvalidArgumentException;
-use Rhumsaa\Uuid\CodecInterface;
-use Rhumsaa\Uuid\Uuid;
-use Rhumsaa\Uuid\UuidBuilder;
-use Rhumsaa\Uuid\UuidInterface;
+use Ramsey\Uuid\CodecInterface;
+use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidBuilder;
+use Ramsey\Uuid\UuidInterface;
 
 class StringCodec implements CodecInterface
 {

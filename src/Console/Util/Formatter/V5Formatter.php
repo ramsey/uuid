@@ -1,10 +1,10 @@
 <?php
 
-namespace Rhumsaa\Uuid\Console\Util\Formatter;
+namespace Ramsey\Uuid\Console\Util\Formatter;
 
-use Rhumsaa\Uuid\Console\Util\UuidFormatter;
-use Rhumsaa\Uuid\UuidInterface;
-use Rhumsaa\Uuid\Console\Util\UuidContentFormatterInterface;
+use Ramsey\Uuid\Console\Util\UuidFormatter;
+use Ramsey\Uuid\UuidInterface;
+use Ramsey\Uuid\Console\Util\UuidContentFormatterInterface;
 
 class V5Formatter implements UuidContentFormatterInterface
 {

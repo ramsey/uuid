@@ -1,6 +1,6 @@
 <?php
 
-namespace Rhumsaa\Uuid;
+namespace Ramsey\Uuid;
 
 interface UuidBuilder
 {

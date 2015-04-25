@@ -1,8 +1,8 @@
 <?php
 
-namespace Rhumsaa\Uuid\Converter\Time;
+namespace Ramsey\Uuid\Converter\Time;
 
-use Rhumsaa\Uuid\Converter\TimeConverterInterface;
+use Ramsey\Uuid\Converter\TimeConverterInterface;
 
 class BigNumberTimeConverter implements TimeConverterInterface
 {

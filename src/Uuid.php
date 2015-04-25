@@ -1,6 +1,6 @@
 <?php
 /**
- * This file is part of the Rhumsaa\Uuid library
+ * This file is part of the Ramsey\Uuid library
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -9,10 +9,10 @@
  * @license http://opensource.org/licenses/MIT MIT
  */
 
-namespace Rhumsaa\Uuid;
+namespace Ramsey\Uuid;
 
 use InvalidArgumentException;
-use Rhumsaa\Uuid\Converter\NumberConverterInterface;
+use Ramsey\Uuid\Converter\NumberConverterInterface;
 
 /**
  * Represents a universally unique identifier (UUID), according to RFC 4122
@@ -93,7 +93,7 @@ class Uuid implements UuidInterface, \JsonSerializable
     const VALID_PATTERN = '^[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}$';
 
     /**
-     * Version of the Rhumsaa\Uuid package
+     * Version of the Ramsey\Uuid package
      */
     const VERSION = '3.0.x-dev';
 
@@ -115,7 +115,7 @@ class Uuid implements UuidInterface, \JsonSerializable
      * This is initialized to the nil value.
      *
      * @var array
-     * @link Rhumsaa.Uuid.Uuid.html#method_getFields
+     * @link Ramsey.Uuid.Uuid.html#method_getFields
      */
     protected $fields = array(
         'time_low' => '00000000',
@@ -136,7 +136,7 @@ class Uuid implements UuidInterface, \JsonSerializable
      *
      * @param array $fields
      * @param CodecInterface $codec String codec
-     * @link Rhumsaa.Uuid.Uuid.html#method_getFields
+     * @link Ramsey.Uuid.Uuid.html#method_getFields
      */
     public function __construct(array $fields, NumberConverterInterface $converter, CodecInterface $codec)
     {
@@ -760,7 +760,7 @@ class Uuid implements UuidInterface, \JsonSerializable
      *
      * @param string|\Moontoast\Math\BigNumber $integer String/BigNumber representation of UUID integer
      * @throws Exception\UnsatisfiedDependencyException If Moontoast\Math\BigNumber is not present
-     * @return \Rhumsaa\Uuid\Uuid
+     * @return \Ramsey\Uuid\Uuid
      */
     public static function fromInteger($integer)
     {

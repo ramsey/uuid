@@ -1,8 +1,8 @@
 <?php
 
-namespace Rhumsaa\Uuid\Generator;
+namespace Ramsey\Uuid\Generator;
 
-use Rhumsaa\Uuid\RandomGeneratorInterface;
+use Ramsey\Uuid\RandomGeneratorInterface;
 
 class OpenSslGenerator implements RandomGeneratorInterface
 {

@@ -1,9 +1,9 @@
 <?php
 
-namespace Rhumsaa\Uuid\Generator;
+namespace Ramsey\Uuid\Generator;
 
-use Rhumsaa\Uuid\RandomGeneratorInterface;
-use Rhumsaa\Uuid\Converter\NumberConverterInterface;
+use Ramsey\Uuid\RandomGeneratorInterface;
+use Ramsey\Uuid\Converter\NumberConverterInterface;
 
 /**
  * Generator to be used for COMB sequential UUID's.
@@ -32,7 +32,7 @@ class CombGenerator implements RandomGeneratorInterface
     }
 
     /**
-     * (non-PHPdoc) @see \Rhumsaa\Uuid\RandomGeneratorInterface::generate()
+     * (non-PHPdoc) @see \Ramsey\Uuid\RandomGeneratorInterface::generate()
      */
     public function generate($length)
     {

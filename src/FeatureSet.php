@@ -1,20 +1,20 @@
 <?php
 
-namespace Rhumsaa\Uuid;
+namespace Ramsey\Uuid;
 
-use Rhumsaa\Uuid\Provider\Node\FallbackNodeProvider;
-use Rhumsaa\Uuid\Provider\Node\RandomNodeProvider;
-use Rhumsaa\Uuid\Provider\Node\SystemNodeProvider;
-use Rhumsaa\Uuid\Converter\Number\BigNumberConverter;
-use Rhumsaa\Uuid\Converter\Number\DegradedNumberConverter;
-use Rhumsaa\Uuid\Converter\Time\BigNumberTimeConverter;
-use Rhumsaa\Uuid\Converter\Time\DegradedTimeConverter;
-use Rhumsaa\Uuid\Converter\Time\PhpTimeConverter;
-use Rhumsaa\Uuid\Provider\Time\SystemTimeProvider;
-use Rhumsaa\Uuid\Builder\DefaultUuidBuilder;
-use Rhumsaa\Uuid\Codec\StringCodec;
-use Rhumsaa\Uuid\Codec\GuidStringCodec;
-use Rhumsaa\Uuid\Builder\DegradedUuidBuilder;
+use Ramsey\Uuid\Provider\Node\FallbackNodeProvider;
+use Ramsey\Uuid\Provider\Node\RandomNodeProvider;
+use Ramsey\Uuid\Provider\Node\SystemNodeProvider;
+use Ramsey\Uuid\Converter\Number\BigNumberConverter;
+use Ramsey\Uuid\Converter\Number\DegradedNumberConverter;
+use Ramsey\Uuid\Converter\Time\BigNumberTimeConverter;
+use Ramsey\Uuid\Converter\Time\DegradedTimeConverter;
+use Ramsey\Uuid\Converter\Time\PhpTimeConverter;
+use Ramsey\Uuid\Provider\Time\SystemTimeProvider;
+use Ramsey\Uuid\Builder\DefaultUuidBuilder;
+use Ramsey\Uuid\Codec\StringCodec;
+use Ramsey\Uuid\Codec\GuidStringCodec;
+use Ramsey\Uuid\Builder\DegradedUuidBuilder;
 
 /**
  * Detects and exposes available features in current environment (32 or 64 bit, available dependencies...)

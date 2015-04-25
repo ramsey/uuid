@@ -1,6 +1,6 @@
 <?php
 
-namespace Rhumsaa\Uuid\Provider;
+namespace Ramsey\Uuid\Provider;
 
 interface NodeProviderInterface
 {

@@ -1,8 +1,8 @@
 <?php
 
-namespace Rhumsaa\Uuid\Provider\Node;
+namespace Ramsey\Uuid\Provider\Node;
 
-use Rhumsaa\Uuid\Provider\NodeProviderInterface;
+use Ramsey\Uuid\Provider\NodeProviderInterface;
 
 class SystemNodeProvider implements NodeProviderInterface
 {

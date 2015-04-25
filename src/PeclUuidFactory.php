@@ -1,6 +1,6 @@
 <?php
 
-namespace Rhumsaa\Uuid;
+namespace Ramsey\Uuid;
 
 /**
  * Factory relying on PECL UUID library whenever possible, otherwise defaulting
@@ -41,7 +41,7 @@ class PeclUuidFactory implements UuidFactoryInterface
     }
 
     /**
-     * (non-PHPdoc) @see \Rhumsaa\Uuid\UuidFactoryInterface::uuid1()
+     * (non-PHPdoc) @see \Ramsey\Uuid\UuidFactoryInterface::uuid1()
      */
     public function uuid1($node = null, $clockSeq = null)
     {
@@ -54,7 +54,7 @@ class PeclUuidFactory implements UuidFactoryInterface
     }
 
     /**
-     * (non-PHPdoc) @see \Rhumsaa\Uuid\UuidFactoryInterface::uuid3()
+     * (non-PHPdoc) @see \Ramsey\Uuid\UuidFactoryInterface::uuid3()
      */
     public function uuid3($ns, $name)
     {
@@ -62,7 +62,7 @@ class PeclUuidFactory implements UuidFactoryInterface
     }
 
     /**
-     * (non-PHPdoc) @see \Rhumsaa\Uuid\UuidFactoryInterface::uuid4()
+     * (non-PHPdoc) @see \Ramsey\Uuid\UuidFactoryInterface::uuid4()
      */
     public function uuid4()
     {
@@ -74,7 +74,7 @@ class PeclUuidFactory implements UuidFactoryInterface
     }
 
     /**
-     * (non-PHPdoc) @see \Rhumsaa\Uuid\UuidFactoryInterface::uuid5()
+     * (non-PHPdoc) @see \Ramsey\Uuid\UuidFactoryInterface::uuid5()
      */
     public function uuid5($ns, $name)
     {
@@ -82,7 +82,7 @@ class PeclUuidFactory implements UuidFactoryInterface
     }
 
     /**
-     * (non-PHPdoc) @see \Rhumsaa\Uuid\UuidFactoryInterface::fromBytes()
+     * (non-PHPdoc) @see \Ramsey\Uuid\UuidFactoryInterface::fromBytes()
      */
     public function fromBytes($bytes)
     {
@@ -90,7 +90,7 @@ class PeclUuidFactory implements UuidFactoryInterface
     }
 
     /**
-     * (non-PHPdoc) @see \Rhumsaa\Uuid\UuidFactoryInterface::fromString()
+     * (non-PHPdoc) @see \Ramsey\Uuid\UuidFactoryInterface::fromString()
      */
     public function fromString($name)
     {
@@ -98,7 +98,7 @@ class PeclUuidFactory implements UuidFactoryInterface
     }
 
     /**
-     * (non-PHPdoc) @see \Rhumsaa\Uuid\UuidFactoryInterface::fromInteger()
+     * (non-PHPdoc) @see \Ramsey\Uuid\UuidFactoryInterface::fromInteger()
      */
     public function fromInteger($integer)
     {

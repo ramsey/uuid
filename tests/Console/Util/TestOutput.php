@@ -1,5 +1,5 @@
 <?php
-namespace Rhumsaa\Uuid\Console\Util;
+namespace Ramsey\Uuid\Console\Util;
 
 use Symfony\Component\Console\Output\Output;
 

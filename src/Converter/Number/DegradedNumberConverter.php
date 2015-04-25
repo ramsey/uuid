@@ -1,9 +1,9 @@
 <?php
 
-namespace Rhumsaa\Uuid\Converter\Number;
+namespace Ramsey\Uuid\Converter\Number;
 
-use Rhumsaa\Uuid\Exception\UnsatisfiedDependencyException;
-use Rhumsaa\Uuid\Converter\NumberConverterInterface;
+use Ramsey\Uuid\Exception\UnsatisfiedDependencyException;
+use Ramsey\Uuid\Converter\NumberConverterInterface;
 
 class DegradedNumberConverter implements NumberConverterInterface
 {

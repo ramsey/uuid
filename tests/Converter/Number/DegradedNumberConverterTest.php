@@ -1,13 +1,13 @@
 <?php
 
-namespace Rhumsaa\Uuid\Converter\Number;
+namespace Ramsey\Uuid\Converter\Number;
 
-use Rhumsaa\Uuid\TestCase;
+use Ramsey\Uuid\TestCase;
 
 class DegradedNumberConverterTest extends TestCase
 {
     /**
-     * @expectedException Rhumsaa\Uuid\Exception\UnsatisfiedDependencyException
+     * @expectedException Ramsey\Uuid\Exception\UnsatisfiedDependencyException
      */
     public function testConvertingFromHexThrowsException()
     {
@@ -17,7 +17,7 @@ class DegradedNumberConverterTest extends TestCase
     }
 
     /**
-     * @expectedException Rhumsaa\Uuid\Exception\UnsatisfiedDependencyException
+     * @expectedException Ramsey\Uuid\Exception\UnsatisfiedDependencyException
      */
     public function testConvertingToHexThrowsException()
     {

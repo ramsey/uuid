@@ -1,9 +1,9 @@
 <?php
 
-namespace Rhumsaa\Uuid;
+namespace Ramsey\Uuid;
 
-use Rhumsaa\Uuid\Generator\OpenSslGenerator;
-use Rhumsaa\Uuid\Generator\MtRandGenerator;
+use Ramsey\Uuid\Generator\OpenSslGenerator;
+use Ramsey\Uuid\Generator\MtRandGenerator;
 
 class RandomGeneratorFactory
 {

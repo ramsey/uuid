@@ -1,14 +1,14 @@
 <?php
 
-namespace Rhumsaa\Uuid\Console\Util;
+namespace Ramsey\Uuid\Console\Util;
 
-use Rhumsaa\Uuid\Uuid;
-use Rhumsaa\Uuid\UuidInterface;
-use Rhumsaa\Uuid\Console\Util\Formatter\V1Formatter;
-use Rhumsaa\Uuid\Console\Util\Formatter\V2Formatter;
-use Rhumsaa\Uuid\Console\Util\Formatter\V3Formatter;
-use Rhumsaa\Uuid\Console\Util\Formatter\V4Formatter;
-use Rhumsaa\Uuid\Console\Util\Formatter\V5Formatter;
+use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
+use Ramsey\Uuid\Console\Util\Formatter\V1Formatter;
+use Ramsey\Uuid\Console\Util\Formatter\V2Formatter;
+use Ramsey\Uuid\Console\Util\Formatter\V3Formatter;
+use Ramsey\Uuid\Console\Util\Formatter\V4Formatter;
+use Ramsey\Uuid\Console\Util\Formatter\V5Formatter;
 use Symfony\Component\Console\Helper\TableHelper;
 
 class UuidFormatter

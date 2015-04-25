@@ -1,11 +1,11 @@
 <?php
 
-namespace Rhumsaa\Uuid\Builder;
+namespace Ramsey\Uuid\Builder;
 
-use Rhumsaa\Uuid\UuidBuilder;
-use Rhumsaa\Uuid\CodecInterface;
-use Rhumsaa\Uuid\DegradedUuid;
-use Rhumsaa\Uuid\Converter\NumberConverterInterface;
+use Ramsey\Uuid\UuidBuilder;
+use Ramsey\Uuid\CodecInterface;
+use Ramsey\Uuid\DegradedUuid;
+use Ramsey\Uuid\Converter\NumberConverterInterface;
 
 class DegradedUuidBuilder implements UuidBuilder
 {

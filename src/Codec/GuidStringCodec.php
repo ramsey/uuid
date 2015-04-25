@@ -1,10 +1,10 @@
 <?php
 
-namespace Rhumsaa\Uuid\Codec;
+namespace Ramsey\Uuid\Codec;
 
-use Rhumsaa\Uuid\UuidInterface;
-use Rhumsaa\Uuid\Uuid;
-use Rhumsaa\Uuid\CodecInterface;
+use Ramsey\Uuid\UuidInterface;
+use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\CodecInterface;
 
 class GuidStringCodec extends StringCodec
 {

@@ -1,12 +1,12 @@
 <?php
 
-namespace Rhumsaa\Uuid;
+namespace Ramsey\Uuid;
 
 use InvalidArgumentException;
-use Rhumsaa\Uuid\Converter\NumberConverterInterface;
-use Rhumsaa\Uuid\Converter\TimeConverterInterface;
-use Rhumsaa\Uuid\Provider\NodeProviderInterface;
-use Rhumsaa\Uuid\Provider\TimeProviderInterface;
+use Ramsey\Uuid\Converter\NumberConverterInterface;
+use Ramsey\Uuid\Converter\TimeConverterInterface;
+use Ramsey\Uuid\Provider\NodeProviderInterface;
+use Ramsey\Uuid\Provider\TimeProviderInterface;
 
 class UuidFactory implements UuidFactoryInterface
 {

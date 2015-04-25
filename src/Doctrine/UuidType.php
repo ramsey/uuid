@@ -1,6 +1,6 @@
 <?php
 /**
- * This file is part of the Rhumsaa\Uuid library
+ * This file is part of the Ramsey\Uuid library
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -9,10 +9,10 @@
  * @license http://opensource.org/licenses/MIT MIT
  */
 
-namespace Rhumsaa\Uuid\Doctrine;
+namespace Ramsey\Uuid\Doctrine;
 
 use InvalidArgumentException;
-use Rhumsaa\Uuid\Uuid;
+use Ramsey\Uuid\Uuid;
 use Doctrine\DBAL\Types\ConversionException;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\DBAL\Platforms\AbstractPlatform;

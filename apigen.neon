@@ -2,8 +2,8 @@ source:
 	- src
 	
 destination: build/apidocs
-title: Rhumsaa\Uuid
-main: Rhumsaa
+title: Ramsey\Uuid
+main: Ramsey
 deprecated: true
 todo: true
 sourceCode: true

@@ -1,8 +1,8 @@
 <?php
-namespace Rhumsaa\Uuid;
+namespace Ramsey\Uuid;
 
 /**
- * This is a backwards-compatibility test to ensure that Rhumsaa\Uuid
+ * This is a backwards-compatibility test to ensure that Ramsey\Uuid
  * maintains backwards compatibility with tag 1.1.2.
  *
  * This test was copied directly from the UuidTest case at tag 1.1.2.
@@ -27,7 +27,7 @@ class UuidBcTag1_1_2Test extends \PHPUnit_Framework_TestCase
     public function testFromString()
     {
         $uuid = Uuid::fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
-        $this->assertInstanceOf('\Rhumsaa\Uuid\Uuid', $uuid);
+        $this->assertInstanceOf('\Ramsey\Uuid\Uuid', $uuid);
         $this->assertEquals('ff6f8cb0-c57d-11e1-9b21-0800200c9a66', $uuid->toString());
     }
 
@@ -36,7 +36,7 @@ class UuidBcTag1_1_2Test extends \PHPUnit_Framework_TestCase
     public function testFromStringWithCurlyBraces()
     {
         $uuid = Uuid::fromString('{ff6f8cb0-c57d-11e1-9b21-0800200c9a66}');
-        $this->assertInstanceOf('\Rhumsaa\Uuid\Uuid', $uuid);
+        $this->assertInstanceOf('\Ramsey\Uuid\Uuid', $uuid);
         $this->assertEquals('ff6f8cb0-c57d-11e1-9b21-0800200c9a66', $uuid->toString());
     }
 
@@ -54,7 +54,7 @@ class UuidBcTag1_1_2Test extends \PHPUnit_Framework_TestCase
     public function testFromStringWithUrn()
     {
         $uuid = Uuid::fromString('urn:uuid:ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
-        $this->assertInstanceOf('\Rhumsaa\Uuid\Uuid', $uuid);
+        $this->assertInstanceOf('\Ramsey\Uuid\Uuid', $uuid);
         $this->assertEquals('ff6f8cb0-c57d-11e1-9b21-0800200c9a66', $uuid->toString());
     }
 
@@ -106,7 +106,7 @@ class UuidBcTag1_1_2Test extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException Rhumsaa\Uuid\Exception\UnsupportedOperationException
+     * @expectedException Ramsey\Uuid\Exception\UnsupportedOperationException
      * @expectedExceptionMessage Not a time-based UUID
      */
     public function testGetDateTimeFromNonVersion1Uuid()
@@ -207,7 +207,7 @@ class UuidBcTag1_1_2Test extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException Rhumsaa\Uuid\Exception\UnsupportedOperationException
+     * @expectedException Ramsey\Uuid\Exception\UnsupportedOperationException
      * @expectedExceptionMessage Not a time-based UUID
      */
     public function testGetTimestampFromNonVersion1Uuid()
@@ -353,7 +353,7 @@ class UuidBcTag1_1_2Test extends \PHPUnit_Framework_TestCase
     public function testUuid1()
     {
         $uuid = Uuid::uuid1();
-        $this->assertInstanceOf('\Rhumsaa\Uuid\Uuid', $uuid);
+        $this->assertInstanceOf('\Ramsey\Uuid\Uuid', $uuid);
         $this->assertInstanceOf('\DateTime', $uuid->getDateTime());
         $this->assertEquals(2, $uuid->getVariant());
         $this->assertEquals(1, $uuid->getVersion());
@@ -364,7 +364,7 @@ class UuidBcTag1_1_2Test extends \PHPUnit_Framework_TestCase
     public function testUuid1WithNodeAndClockSequence()
     {
         $uuid = Uuid::uuid1(0x0800200c9a66, 0x1669);
-        $this->assertInstanceOf('\Rhumsaa\Uuid\Uuid', $uuid);
+        $this->assertInstanceOf('\Ramsey\Uuid\Uuid', $uuid);
         $this->assertInstanceOf('\DateTime', $uuid->getDateTime());
         $this->assertEquals(2, $uuid->getVariant());
         $this->assertEquals(1, $uuid->getVersion());
@@ -380,7 +380,7 @@ class UuidBcTag1_1_2Test extends \PHPUnit_Framework_TestCase
         Uuid::setFactory(new UuidFactory(new FeatureSet(false, false, false, true)));
 
         $uuid = Uuid::uuid1();
-        $this->assertInstanceOf('\Rhumsaa\Uuid\Uuid', $uuid);
+        $this->assertInstanceOf('\Ramsey\Uuid\Uuid', $uuid);
         $this->assertInstanceOf('\DateTime', $uuid->getDateTime());
         $this->assertEquals(2, $uuid->getVariant());
         $this->assertEquals(1, $uuid->getVersion());
@@ -420,7 +420,7 @@ class UuidBcTag1_1_2Test extends \PHPUnit_Framework_TestCase
     public function testUuid4()
     {
         $uuid = Uuid::uuid4();
-        $this->assertInstanceOf('Rhumsaa\Uuid\Uuid', $uuid);
+        $this->assertInstanceOf('Ramsey\Uuid\Uuid', $uuid);
         $this->assertEquals(2, $uuid->getVariant());
         $this->assertEquals(4, $uuid->getVersion());
     }

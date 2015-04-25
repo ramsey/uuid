@@ -1,6 +1,6 @@
 <?php
 
-namespace Rhumsaa\Uuid;
+namespace Ramsey\Uuid;
 
 class RandomGeneratorFactoryTest extends TestCase
 {
@@ -10,7 +10,7 @@ class RandomGeneratorFactoryTest extends TestCase
 
         $generator = RandomGeneratorFactory::getGenerator();
 
-        $this->assertNotInstanceOf('\Rhumsaa\Uuid\Generator\OpenSslGenerator', $generator);
+        $this->assertNotInstanceOf('\Ramsey\Uuid\Generator\OpenSslGenerator', $generator);
     }
 
     public function testFactoryReturnsOpenSslGeneratorIfAvailable()
@@ -19,6 +19,6 @@ class RandomGeneratorFactoryTest extends TestCase
 
         $generator = RandomGeneratorFactory::getGenerator();
 
-        $this->assertInstanceOf('\Rhumsaa\Uuid\Generator\OpenSslGenerator', $generator);
+        $this->assertInstanceOf('\Ramsey\Uuid\Generator\OpenSslGenerator', $generator);
     }
 }

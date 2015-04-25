@@ -1,8 +1,8 @@
 <?php
 
-namespace Rhumsaa\Uuid\Console\Util;
+namespace Ramsey\Uuid\Console\Util;
 
-use Rhumsaa\Uuid\UuidInterface;
+use Ramsey\Uuid\UuidInterface;
 
 interface UuidContentFormatterInterface
 {

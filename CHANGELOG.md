@@ -1,4 +1,4 @@
-# Rhumsaa\Uuid Changelog
+# Ramsey\Uuid Changelog
 
 ## 2.8.0
 

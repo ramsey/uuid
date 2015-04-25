@@ -1,8 +1,8 @@
 <?php
 
-namespace Rhumsaa\Uuid\Provider\Time;
+namespace Ramsey\Uuid\Provider\Time;
 
-use Rhumsaa\Uuid\Provider\TimeProviderInterface;
+use Ramsey\Uuid\Provider\TimeProviderInterface;
 
 class FixedTimeProvider implements TimeProviderInterface
 {

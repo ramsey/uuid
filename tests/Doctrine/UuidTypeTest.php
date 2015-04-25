@@ -1,9 +1,9 @@
 <?php
-namespace Rhumsaa\Uuid;
+namespace Ramsey\Uuid;
 
 use Doctrine\DBAL\Types\Type;
 use Doctrine\Tests\DBAL\Mocks\MockPlatform;
-use Rhumsaa\Uuid\TestCase;
+use Ramsey\Uuid\TestCase;
 
 class UuidTypeTest extends TestCase
 {
@@ -13,7 +13,7 @@ class UuidTypeTest extends TestCase
     public static function setUpBeforeClass()
     {
         if (class_exists('Doctrine\\DBAL\\Types\\Type')) {
-            Type::addType('uuid', 'Rhumsaa\Uuid\Doctrine\UuidType');
+            Type::addType('uuid', 'Ramsey\Uuid\Doctrine\UuidType');
         }
     }
 
@@ -31,7 +31,7 @@ class UuidTypeTest extends TestCase
     }
 
     /**
-     * @covers Rhumsaa\Uuid\Doctrine\UuidType::convertToDatabaseValue
+     * @covers Ramsey\Uuid\Doctrine\UuidType::convertToDatabaseValue
      */
     public function testUuidConvertsToDatabaseValue()
     {
@@ -44,7 +44,7 @@ class UuidTypeTest extends TestCase
     }
 
     /**
-     * @covers Rhumsaa\Uuid\Doctrine\UuidType::convertToDatabaseValue
+     * @covers Ramsey\Uuid\Doctrine\UuidType::convertToDatabaseValue
      */
     public function testInvalidUuidConversionForDatabaseValue()
     {
@@ -53,7 +53,7 @@ class UuidTypeTest extends TestCase
     }
 
     /**
-     * @covers Rhumsaa\Uuid\Doctrine\UuidType::convertToDatabaseValue
+     * @covers Ramsey\Uuid\Doctrine\UuidType::convertToDatabaseValue
      */
     public function testNullConversionForDatabaseValue()
     {
@@ -61,17 +61,17 @@ class UuidTypeTest extends TestCase
     }
 
     /**
-     * @covers Rhumsaa\Uuid\Doctrine\UuidType::convertToPHPValue
+     * @covers Ramsey\Uuid\Doctrine\UuidType::convertToPHPValue
      */
     public function testUuidConvertsToPHPValue()
     {
         $uuid = $this->type->convertToPHPValue('ff6f8cb0-c57d-11e1-9b21-0800200c9a66', $this->platform);
-        $this->assertInstanceOf('Rhumsaa\Uuid\Uuid', $uuid);
+        $this->assertInstanceOf('Ramsey\Uuid\Uuid', $uuid);
         $this->assertEquals('ff6f8cb0-c57d-11e1-9b21-0800200c9a66', $uuid->toString());
     }
 
     /**
-     * @covers Rhumsaa\Uuid\Doctrine\UuidType::convertToPHPValue
+     * @covers Ramsey\Uuid\Doctrine\UuidType::convertToPHPValue
      */
     public function testInvalidUuidConversionForPHPValue()
     {
@@ -80,7 +80,7 @@ class UuidTypeTest extends TestCase
     }
 
     /**
-     * @covers Rhumsaa\Uuid\Doctrine\UuidType::convertToPHPValue
+     * @covers Ramsey\Uuid\Doctrine\UuidType::convertToPHPValue
      */
     public function testNullConversionForPHPValue()
     {
@@ -88,7 +88,7 @@ class UuidTypeTest extends TestCase
     }
 
     /**
-     * @covers Rhumsaa\Uuid\Doctrine\UuidType::getName
+     * @covers Ramsey\Uuid\Doctrine\UuidType::getName
      */
     public function testGetName()
     {
@@ -96,7 +96,7 @@ class UuidTypeTest extends TestCase
     }
 
     /**
-     * @covers Rhumsaa\Uuid\Doctrine\UuidType::getSqlDeclaration
+     * @covers Ramsey\Uuid\Doctrine\UuidType::getSqlDeclaration
      */
     public function testGetGuidTypeDeclarationSQL()
     {
@@ -104,7 +104,7 @@ class UuidTypeTest extends TestCase
     }
 
     /**
-     * @covers Rhumsaa\Uuid\Doctrine\UuidType::requiresSQLCommentHint
+     * @covers Ramsey\Uuid\Doctrine\UuidType::requiresSQLCommentHint
      */
     public function testRequiresSQLCommentHint()
     {

@@ -1,9 +1,9 @@
 <?php
 
-namespace Rhumsaa\Uuid\Converter\Time;
+namespace Ramsey\Uuid\Converter\Time;
 
-use Rhumsaa\Uuid\Converter\TimeConverterInterface;
-use Rhumsaa\Uuid\Exception\UnsatisfiedDependencyException;
+use Ramsey\Uuid\Converter\TimeConverterInterface;
+use Ramsey\Uuid\Exception\UnsatisfiedDependencyException;
 
 class DegradedTimeConverter implements TimeConverterInterface
 {

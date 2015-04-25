@@ -1,6 +1,6 @@
 <?php
 
-namespace Rhumsaa\Uuid;
+namespace Ramsey\Uuid;
 
 class PeclUuidTest extends \PHPUnit_Framework_TestCase
 {
@@ -8,7 +8,7 @@ class PeclUuidTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->mockFactory = $this->getMock('Rhumsaa\Uuid\UuidFactoryInterface');
+        $this->mockFactory = $this->getMock('Ramsey\Uuid\UuidFactoryInterface');
 
         Uuid::setFactory(new PeclUuidFactory($this->mockFactory));
     }
