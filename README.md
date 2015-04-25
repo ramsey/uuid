@@ -1,7 +1,9 @@
 # ramsey/uuid for PHP
 
-_**Formerly known as `rhumsaa/uuid`, I have changed the package and namespace
-names to `ramsey/uuid` and `Ramsey\Uuid`, respectively.**_
+_NOTICE: Formerly known as `rhumsaa/uuid`, I have changed the package and namespace
+names to `ramsey/uuid` and `Ramsey\Uuid`, respectively._
+
+---
 
 [![Build Status](https://travis-ci.org/ramsey/uuid.svg?branch=master)](https://travis-ci.org/ramsey/uuid)
 [![Coverage Status](https://coveralls.io/repos/ramsey/uuid/badge.svg?branch=master)](https://coveralls.io/r/ramsey/uuid)
