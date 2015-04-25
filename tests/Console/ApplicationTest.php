@@ -1,10 +1,10 @@
 <?php
-namespace Rhumsaa\Uuid\Console;
+namespace Ramsey\Uuid\Console;
 
 class ApplicationTest extends TestCase
 {
     /**
-     * @covers Rhumsaa\Uuid\Console\Application::__construct
+     * @covers Ramsey\Uuid\Console\Application::__construct
      */
     public function testConstructor()
     {
@@ -13,8 +13,8 @@ class ApplicationTest extends TestCase
         // Reset the error handler, since the constructor sets it
         restore_error_handler();
 
-        $this->assertInstanceOf('Rhumsaa\\Uuid\\Console\\Application', $app);
+        $this->assertInstanceOf('Ramsey\\Uuid\\Console\\Application', $app);
         $this->assertEquals('uuid', $app->getName());
-        $this->assertEquals(\Rhumsaa\Uuid\Uuid::VERSION, $app->getVersion());
+        $this->assertEquals(\Ramsey\Uuid\Uuid::VERSION, $app->getVersion());
     }
 }

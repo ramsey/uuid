@@ -1,10 +1,10 @@
 <?php
-namespace Rhumsaa\Uuid\Console\Command;
+namespace Ramsey\Uuid\Console\Command;
 
-use Rhumsaa\Uuid\Console\TestCase;
-use Rhumsaa\Uuid\Console\Util\TestOutput;
-use Rhumsaa\Uuid\Console\Util\BufferedOutput;
-use Rhumsaa\Uuid\Uuid;
+use Ramsey\Uuid\Console\TestCase;
+use Ramsey\Uuid\Console\Util\TestOutput;
+use Ramsey\Uuid\Console\Util\BufferedOutput;
+use Ramsey\Uuid\Uuid;
 use Symfony\Component\Console\Input\StringInput;
 
 class DecodeCommandTest extends TestCase
@@ -16,15 +16,15 @@ class DecodeCommandTest extends TestCase
     {
         parent::setUp();
 
-        $this->execute = new \ReflectionMethod('Rhumsaa\\Uuid\\Console\\Command\\DecodeCommand', 'execute');
+        $this->execute = new \ReflectionMethod('Ramsey\\Uuid\\Console\\Command\\DecodeCommand', 'execute');
         $this->execute->setAccessible(true);
 
         $this->decode = new DecodeCommand();
-        $this->decode->setApplication(new \Rhumsaa\Uuid\Console\Application());
+        $this->decode->setApplication(new \Ramsey\Uuid\Console\Application());
     }
 
     /**
-     * @covers Rhumsaa\Uuid\Console\Command\DecodeCommand::configure
+     * @covers Ramsey\Uuid\Console\Command\DecodeCommand::configure
      */
     public function testConfigure()
     {
@@ -35,8 +35,8 @@ class DecodeCommandTest extends TestCase
     }
 
     /**
-     * @covers Rhumsaa\Uuid\Console\Command\DecodeCommand::execute
-     * @expectedException Rhumsaa\Uuid\Console\Exception
+     * @covers Ramsey\Uuid\Console\Command\DecodeCommand::execute
+     * @expectedException Ramsey\Uuid\Console\Exception
      * @expectedExceptionMessage Invalid UUID
      */
     public function testExecuteForInvalidUuid()
@@ -52,7 +52,7 @@ class DecodeCommandTest extends TestCase
     }
 
     /**
-     * @covers Rhumsaa\Uuid\Console\Command\DecodeCommand::execute
+     * @covers Ramsey\Uuid\Console\Command\DecodeCommand::execute
      */
     public function testExecuteForNonRFC4122Uuid()
     {
@@ -71,7 +71,7 @@ class DecodeCommandTest extends TestCase
     }
 
     /**
-     * @covers Rhumsaa\Uuid\Console\Command\DecodeCommand::execute
+     * @covers Ramsey\Uuid\Console\Command\DecodeCommand::execute
      */
     public function testExecuteForVersion1Uuid()
     {
@@ -90,7 +90,7 @@ class DecodeCommandTest extends TestCase
     }
 
     /**
-     * @covers Rhumsaa\Uuid\Console\Command\DecodeCommand::execute
+     * @covers Ramsey\Uuid\Console\Command\DecodeCommand::execute
      */
     public function testExecuteForVersion2Uuid()
     {
@@ -109,7 +109,7 @@ class DecodeCommandTest extends TestCase
     }
 
     /**
-     * @covers Rhumsaa\Uuid\Console\Command\DecodeCommand::execute
+     * @covers Ramsey\Uuid\Console\Command\DecodeCommand::execute
      */
     public function testExecuteForVersion3Uuid()
     {
@@ -128,7 +128,7 @@ class DecodeCommandTest extends TestCase
     }
 
     /**
-     * @covers Rhumsaa\Uuid\Console\Command\DecodeCommand::execute
+     * @covers Ramsey\Uuid\Console\Command\DecodeCommand::execute
      */
     public function testExecuteForVersion4Uuid()
     {
@@ -147,7 +147,7 @@ class DecodeCommandTest extends TestCase
     }
 
     /**
-     * @covers Rhumsaa\Uuid\Console\Command\DecodeCommand::execute
+     * @covers Ramsey\Uuid\Console\Command\DecodeCommand::execute
      */
     public function testExecuteForVersion5Uuid()
     {

@@ -1,7 +1,7 @@
 <?php
-namespace Rhumsaa\Uuid\Console;
+namespace Ramsey\Uuid\Console;
 
-use Rhumsaa\Uuid\TestCase as UuidTestCase;
+use Ramsey\Uuid\TestCase as UuidTestCase;
 
 class TestCase extends UuidTestCase
 {

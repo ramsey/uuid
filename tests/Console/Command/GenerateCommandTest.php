@@ -1,9 +1,9 @@
 <?php
-namespace Rhumsaa\Uuid\Console\Command;
+namespace Ramsey\Uuid\Console\Command;
 
-use Rhumsaa\Uuid\Console\TestCase;
-use Rhumsaa\Uuid\Console\Util\TestOutput;
-use Rhumsaa\Uuid\Uuid;
+use Ramsey\Uuid\Console\TestCase;
+use Ramsey\Uuid\Console\Util\TestOutput;
+use Ramsey\Uuid\Uuid;
 use Symfony\Component\Console\Input\StringInput;
 
 class GenerateCommandTest extends TestCase
@@ -16,12 +16,12 @@ class GenerateCommandTest extends TestCase
     {
         parent::setUp();
 
-        $this->execute = new \ReflectionMethod('Rhumsaa\\Uuid\\Console\\Command\\GenerateCommand', 'execute');
+        $this->execute = new \ReflectionMethod('Ramsey\\Uuid\\Console\\Command\\GenerateCommand', 'execute');
         $this->execute->setAccessible(true);
     }
 
     /**
-     * @covers Rhumsaa\Uuid\Console\Command\GenerateCommand::configure
+     * @covers Ramsey\Uuid\Console\Command\GenerateCommand::configure
      */
     public function testConfigure()
     {
@@ -32,8 +32,8 @@ class GenerateCommandTest extends TestCase
     }
 
     /**
-     * @covers Rhumsaa\Uuid\Console\Command\GenerateCommand::execute
-     * @covers Rhumsaa\Uuid\Console\Command\GenerateCommand::createUuid
+     * @covers Ramsey\Uuid\Console\Command\GenerateCommand::execute
+     * @covers Ramsey\Uuid\Console\Command\GenerateCommand::createUuid
      */
     public function testExecuteForUuidDefault()
     {
@@ -54,8 +54,8 @@ class GenerateCommandTest extends TestCase
     }
 
     /**
-     * @covers Rhumsaa\Uuid\Console\Command\GenerateCommand::execute
-     * @covers Rhumsaa\Uuid\Console\Command\GenerateCommand::createUuid
+     * @covers Ramsey\Uuid\Console\Command\GenerateCommand::execute
+     * @covers Ramsey\Uuid\Console\Command\GenerateCommand::createUuid
      */
     public function testExecuteForUuidDefaultWithCount()
     {
@@ -101,8 +101,8 @@ class GenerateCommandTest extends TestCase
     }
 
     /**
-     * @covers Rhumsaa\Uuid\Console\Command\GenerateCommand::execute
-     * @covers Rhumsaa\Uuid\Console\Command\GenerateCommand::createUuid
+     * @covers Ramsey\Uuid\Console\Command\GenerateCommand::execute
+     * @covers Ramsey\Uuid\Console\Command\GenerateCommand::createUuid
      */
     public function testExecuteForUuidSpecifyVersion1()
     {
@@ -123,8 +123,8 @@ class GenerateCommandTest extends TestCase
     }
 
     /**
-     * @covers Rhumsaa\Uuid\Console\Command\GenerateCommand::execute
-     * @covers Rhumsaa\Uuid\Console\Command\GenerateCommand::createUuid
+     * @covers Ramsey\Uuid\Console\Command\GenerateCommand::execute
+     * @covers Ramsey\Uuid\Console\Command\GenerateCommand::createUuid
      */
     public function testExecuteForUuidSpecifyVersion1WithCount()
     {
@@ -170,8 +170,8 @@ class GenerateCommandTest extends TestCase
     }
 
     /**
-     * @covers Rhumsaa\Uuid\Console\Command\GenerateCommand::execute
-     * @covers Rhumsaa\Uuid\Console\Command\GenerateCommand::createUuid
+     * @covers Ramsey\Uuid\Console\Command\GenerateCommand::execute
+     * @covers Ramsey\Uuid\Console\Command\GenerateCommand::createUuid
      */
     public function testExecuteForUuidSpecifyVersion4()
     {
@@ -192,8 +192,8 @@ class GenerateCommandTest extends TestCase
     }
 
     /**
-     * @covers Rhumsaa\Uuid\Console\Command\GenerateCommand::execute
-     * @covers Rhumsaa\Uuid\Console\Command\GenerateCommand::createUuid
+     * @covers Ramsey\Uuid\Console\Command\GenerateCommand::execute
+     * @covers Ramsey\Uuid\Console\Command\GenerateCommand::createUuid
      */
     public function testExecuteForUuidSpecifyVersion4WithCount()
     {
@@ -239,9 +239,9 @@ class GenerateCommandTest extends TestCase
     }
 
     /**
-     * @covers Rhumsaa\Uuid\Console\Command\GenerateCommand::execute
-     * @covers Rhumsaa\Uuid\Console\Command\GenerateCommand::createUuid
-     * @covers Rhumsaa\Uuid\Console\Command\GenerateCommand::validateNamespace
+     * @covers Ramsey\Uuid\Console\Command\GenerateCommand::execute
+     * @covers Ramsey\Uuid\Console\Command\GenerateCommand::createUuid
+     * @covers Ramsey\Uuid\Console\Command\GenerateCommand::validateNamespace
      */
     public function testExecuteForUuidSpecifyVersion3WithDnsNs()
     {
@@ -263,9 +263,9 @@ class GenerateCommandTest extends TestCase
     }
 
     /**
-     * @covers Rhumsaa\Uuid\Console\Command\GenerateCommand::execute
-     * @covers Rhumsaa\Uuid\Console\Command\GenerateCommand::createUuid
-     * @covers Rhumsaa\Uuid\Console\Command\GenerateCommand::validateNamespace
+     * @covers Ramsey\Uuid\Console\Command\GenerateCommand::execute
+     * @covers Ramsey\Uuid\Console\Command\GenerateCommand::createUuid
+     * @covers Ramsey\Uuid\Console\Command\GenerateCommand::validateNamespace
      */
     public function testExecuteForUuidSpecifyVersion3WithUrlNs()
     {
@@ -287,9 +287,9 @@ class GenerateCommandTest extends TestCase
     }
 
     /**
-     * @covers Rhumsaa\Uuid\Console\Command\GenerateCommand::execute
-     * @covers Rhumsaa\Uuid\Console\Command\GenerateCommand::createUuid
-     * @covers Rhumsaa\Uuid\Console\Command\GenerateCommand::validateNamespace
+     * @covers Ramsey\Uuid\Console\Command\GenerateCommand::execute
+     * @covers Ramsey\Uuid\Console\Command\GenerateCommand::createUuid
+     * @covers Ramsey\Uuid\Console\Command\GenerateCommand::validateNamespace
      */
     public function testExecuteForUuidSpecifyVersion3WithOidNs()
     {
@@ -311,9 +311,9 @@ class GenerateCommandTest extends TestCase
     }
 
     /**
-     * @covers Rhumsaa\Uuid\Console\Command\GenerateCommand::execute
-     * @covers Rhumsaa\Uuid\Console\Command\GenerateCommand::createUuid
-     * @covers Rhumsaa\Uuid\Console\Command\GenerateCommand::validateNamespace
+     * @covers Ramsey\Uuid\Console\Command\GenerateCommand::execute
+     * @covers Ramsey\Uuid\Console\Command\GenerateCommand::createUuid
+     * @covers Ramsey\Uuid\Console\Command\GenerateCommand::validateNamespace
      */
     public function testExecuteForUuidSpecifyVersion3WithX500Ns()
     {
@@ -335,9 +335,9 @@ class GenerateCommandTest extends TestCase
     }
 
     /**
-     * @covers Rhumsaa\Uuid\Console\Command\GenerateCommand::execute
-     * @covers Rhumsaa\Uuid\Console\Command\GenerateCommand::createUuid
-     * @covers Rhumsaa\Uuid\Console\Command\GenerateCommand::validateNamespace
+     * @covers Ramsey\Uuid\Console\Command\GenerateCommand::execute
+     * @covers Ramsey\Uuid\Console\Command\GenerateCommand::createUuid
+     * @covers Ramsey\Uuid\Console\Command\GenerateCommand::validateNamespace
      */
     public function testExecuteForUuidSpecifyVersion3WithOtherNs()
     {
@@ -359,10 +359,10 @@ class GenerateCommandTest extends TestCase
     }
 
     /**
-     * @covers Rhumsaa\Uuid\Console\Command\GenerateCommand::execute
-     * @covers Rhumsaa\Uuid\Console\Command\GenerateCommand::createUuid
-     * @covers Rhumsaa\Uuid\Console\Command\GenerateCommand::validateNamespace
-     * @expectedException Rhumsaa\Uuid\Console\Exception
+     * @covers Ramsey\Uuid\Console\Command\GenerateCommand::execute
+     * @covers Ramsey\Uuid\Console\Command\GenerateCommand::createUuid
+     * @covers Ramsey\Uuid\Console\Command\GenerateCommand::validateNamespace
+     * @expectedException Ramsey\Uuid\Console\Exception
      * @expectedExceptionMessage May be either a UUID in string representation or an identifier
      */
     public function testExecuteForUuidSpecifyVersion3WithInvalidNs()
@@ -380,9 +380,9 @@ class GenerateCommandTest extends TestCase
     }
 
     /**
-     * @covers Rhumsaa\Uuid\Console\Command\GenerateCommand::execute
-     * @covers Rhumsaa\Uuid\Console\Command\GenerateCommand::createUuid
-     * @covers Rhumsaa\Uuid\Console\Command\GenerateCommand::validateNamespace
+     * @covers Ramsey\Uuid\Console\Command\GenerateCommand::execute
+     * @covers Ramsey\Uuid\Console\Command\GenerateCommand::createUuid
+     * @covers Ramsey\Uuid\Console\Command\GenerateCommand::validateNamespace
      */
     public function testExecuteForUuidSpecifyVersion3WithCount()
     {
@@ -407,10 +407,10 @@ class GenerateCommandTest extends TestCase
     }
 
     /**
-     * @covers Rhumsaa\Uuid\Console\Command\GenerateCommand::execute
-     * @covers Rhumsaa\Uuid\Console\Command\GenerateCommand::createUuid
-     * @covers Rhumsaa\Uuid\Console\Command\GenerateCommand::validateNamespace
-     * @expectedException Rhumsaa\Uuid\Console\Exception
+     * @covers Ramsey\Uuid\Console\Command\GenerateCommand::execute
+     * @covers Ramsey\Uuid\Console\Command\GenerateCommand::createUuid
+     * @covers Ramsey\Uuid\Console\Command\GenerateCommand::validateNamespace
+     * @expectedException Ramsey\Uuid\Console\Exception
      * @expectedExceptionMessage The name argument is required for version 3 or 5 UUIDs
      */
     public function testExecuteForUuidSpecifyVersion3WithoutName()
@@ -428,9 +428,9 @@ class GenerateCommandTest extends TestCase
     }
 
     /**
-     * @covers Rhumsaa\Uuid\Console\Command\GenerateCommand::execute
-     * @covers Rhumsaa\Uuid\Console\Command\GenerateCommand::createUuid
-     * @covers Rhumsaa\Uuid\Console\Command\GenerateCommand::validateNamespace
+     * @covers Ramsey\Uuid\Console\Command\GenerateCommand::execute
+     * @covers Ramsey\Uuid\Console\Command\GenerateCommand::createUuid
+     * @covers Ramsey\Uuid\Console\Command\GenerateCommand::validateNamespace
      */
     public function testExecuteForUuidSpecifyVersion5WithDnsNs()
     {
@@ -452,9 +452,9 @@ class GenerateCommandTest extends TestCase
     }
 
     /**
-     * @covers Rhumsaa\Uuid\Console\Command\GenerateCommand::execute
-     * @covers Rhumsaa\Uuid\Console\Command\GenerateCommand::createUuid
-     * @covers Rhumsaa\Uuid\Console\Command\GenerateCommand::validateNamespace
+     * @covers Ramsey\Uuid\Console\Command\GenerateCommand::execute
+     * @covers Ramsey\Uuid\Console\Command\GenerateCommand::createUuid
+     * @covers Ramsey\Uuid\Console\Command\GenerateCommand::validateNamespace
      */
     public function testExecuteForUuidSpecifyVersion5WithUrlNs()
     {
@@ -476,9 +476,9 @@ class GenerateCommandTest extends TestCase
     }
 
     /**
-     * @covers Rhumsaa\Uuid\Console\Command\GenerateCommand::execute
-     * @covers Rhumsaa\Uuid\Console\Command\GenerateCommand::createUuid
-     * @covers Rhumsaa\Uuid\Console\Command\GenerateCommand::validateNamespace
+     * @covers Ramsey\Uuid\Console\Command\GenerateCommand::execute
+     * @covers Ramsey\Uuid\Console\Command\GenerateCommand::createUuid
+     * @covers Ramsey\Uuid\Console\Command\GenerateCommand::validateNamespace
      */
     public function testExecuteForUuidSpecifyVersion5WithOidNs()
     {
@@ -500,9 +500,9 @@ class GenerateCommandTest extends TestCase
     }
 
     /**
-     * @covers Rhumsaa\Uuid\Console\Command\GenerateCommand::execute
-     * @covers Rhumsaa\Uuid\Console\Command\GenerateCommand::createUuid
-     * @covers Rhumsaa\Uuid\Console\Command\GenerateCommand::validateNamespace
+     * @covers Ramsey\Uuid\Console\Command\GenerateCommand::execute
+     * @covers Ramsey\Uuid\Console\Command\GenerateCommand::createUuid
+     * @covers Ramsey\Uuid\Console\Command\GenerateCommand::validateNamespace
      */
     public function testExecuteForUuidSpecifyVersion5WithX500Ns()
     {
@@ -524,9 +524,9 @@ class GenerateCommandTest extends TestCase
     }
 
     /**
-     * @covers Rhumsaa\Uuid\Console\Command\GenerateCommand::execute
-     * @covers Rhumsaa\Uuid\Console\Command\GenerateCommand::createUuid
-     * @covers Rhumsaa\Uuid\Console\Command\GenerateCommand::validateNamespace
+     * @covers Ramsey\Uuid\Console\Command\GenerateCommand::execute
+     * @covers Ramsey\Uuid\Console\Command\GenerateCommand::createUuid
+     * @covers Ramsey\Uuid\Console\Command\GenerateCommand::validateNamespace
      */
     public function testExecuteForUuidSpecifyVersion5WithOtherNs()
     {
@@ -548,10 +548,10 @@ class GenerateCommandTest extends TestCase
     }
 
     /**
-     * @covers Rhumsaa\Uuid\Console\Command\GenerateCommand::execute
-     * @covers Rhumsaa\Uuid\Console\Command\GenerateCommand::createUuid
-     * @covers Rhumsaa\Uuid\Console\Command\GenerateCommand::validateNamespace
-     * @expectedException Rhumsaa\Uuid\Console\Exception
+     * @covers Ramsey\Uuid\Console\Command\GenerateCommand::execute
+     * @covers Ramsey\Uuid\Console\Command\GenerateCommand::createUuid
+     * @covers Ramsey\Uuid\Console\Command\GenerateCommand::validateNamespace
+     * @expectedException Ramsey\Uuid\Console\Exception
      * @expectedExceptionMessage May be either a UUID in string representation or an identifier
      */
     public function testExecuteForUuidSpecifyVersion5WithInvalidNs()
@@ -569,9 +569,9 @@ class GenerateCommandTest extends TestCase
     }
 
     /**
-     * @covers Rhumsaa\Uuid\Console\Command\GenerateCommand::execute
-     * @covers Rhumsaa\Uuid\Console\Command\GenerateCommand::createUuid
-     * @covers Rhumsaa\Uuid\Console\Command\GenerateCommand::validateNamespace
+     * @covers Ramsey\Uuid\Console\Command\GenerateCommand::execute
+     * @covers Ramsey\Uuid\Console\Command\GenerateCommand::createUuid
+     * @covers Ramsey\Uuid\Console\Command\GenerateCommand::validateNamespace
      */
     public function testExecuteForUuidSpecifyVersion5WithCount()
     {
@@ -596,10 +596,10 @@ class GenerateCommandTest extends TestCase
     }
 
     /**
-     * @covers Rhumsaa\Uuid\Console\Command\GenerateCommand::execute
-     * @covers Rhumsaa\Uuid\Console\Command\GenerateCommand::createUuid
-     * @covers Rhumsaa\Uuid\Console\Command\GenerateCommand::validateNamespace
-     * @expectedException Rhumsaa\Uuid\Console\Exception
+     * @covers Ramsey\Uuid\Console\Command\GenerateCommand::execute
+     * @covers Ramsey\Uuid\Console\Command\GenerateCommand::createUuid
+     * @covers Ramsey\Uuid\Console\Command\GenerateCommand::validateNamespace
+     * @expectedException Ramsey\Uuid\Console\Exception
      * @expectedExceptionMessage The name argument is required for version 3 or 5 UUIDs
      */
     public function testExecuteForUuidSpecifyVersion5WithoutName()
@@ -617,9 +617,9 @@ class GenerateCommandTest extends TestCase
     }
 
     /**
-     * @covers Rhumsaa\Uuid\Console\Command\GenerateCommand::execute
-     * @covers Rhumsaa\Uuid\Console\Command\GenerateCommand::createUuid
-     * @expectedException Rhumsaa\Uuid\Console\Exception
+     * @covers Ramsey\Uuid\Console\Command\GenerateCommand::execute
+     * @covers Ramsey\Uuid\Console\Command\GenerateCommand::createUuid
+     * @expectedException Ramsey\Uuid\Console\Exception
      * @expectedExceptionMessage Invalid UUID version. Supported are version "1", "3", "4", and "5".
      */
     public function testExecuteForUuidSpecifyInvalidVersion()

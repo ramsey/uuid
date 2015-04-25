@@ -1,4 +1,4 @@
-.idea
+.idea/
 *.phar
 .DS_Store
 build
