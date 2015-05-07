@@ -93,7 +93,7 @@ the following command to install the package and add it as a requirement to
 `composer.json`:
 
 ```bash
-composer require ramsey/uuid
+composer require ramsey/uuid "3.0.*@dev"
 ```
 
 
