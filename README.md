@@ -1,5 +1,7 @@
 # ramsey/uuid for PHP
 
+[![Join the chat at https://gitter.im/ramsey/uuid](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/ramsey/uuid?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 _NOTICE: Formerly known as `rhumsaa/uuid`, I have changed the package and namespace
 names to `ramsey/uuid` and `Ramsey\Uuid`, respectively._
 
