@@ -1,6 +1,7 @@
 <?php
 
 namespace Ramsey\Uuid;
+
 use Ramsey\Uuid\Converter\NumberConverterInterface;
 
 /**
