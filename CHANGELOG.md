@@ -1,5 +1,14 @@
 # Ramsey\Uuid Changelog
 
+## 2.8.1
+
+_Released: 2015-06-16_
+
+  * Use `passthru()` and output buffering in `getIfconfig()`.
+  * Cache the system node in a static variable so that we process it only once per runtime.
+  * Set ramsey/uuid as a replacement for rhumsaa/uuid in composer.json.
+  * Documentation updates and corrections.
+
 ## 2.8.0
 
 _Released: 2014-11-09_
