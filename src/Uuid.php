@@ -1164,11 +1164,11 @@ final class Uuid
     protected static function getNodeFromSystem()
     {
         static $node = null;
-        
-        if($node !== null) {
+
+        if ($node !== null) {
             return $node;
         }
-        
+
         $pattern = '/[^:]([0-9A-Fa-f]{2}([:-])[0-9A-Fa-f]{2}(\2[0-9A-Fa-f]{2}){4})[^:]/';
         $matches = array();
 
