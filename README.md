@@ -1,10 +1,13 @@
 # Rhumsaa\Uuid for PHP
 
-[![Build Status](https://travis-ci.org/ramsey/uuid.svg?branch=master)](https://travis-ci.org/ramsey/uuid)
-[![Coverage Status](https://coveralls.io/repos/ramsey/uuid/badge.svg?branch=master)](https://coveralls.io/r/ramsey/uuid)
-[![Latest Stable Version](https://poser.pugx.org/rhumsaa/uuid/v/stable)](https://packagist.org/packages/rhumsaa/uuid)
-[![Total Downloads](https://poser.pugx.org/rhumsaa/uuid/downloads)](https://packagist.org/packages/rhumsaa/uuid)
-[![Latest Unstable Version](https://poser.pugx.org/rhumsaa/uuid/v/unstable)](https://packagist.org/packages/rhumsaa/uuid) [![License](https://poser.pugx.org/rhumsaa/uuid/license)](https://packagist.org/packages/rhumsaa/uuid)
+[![Join the chat at https://gitter.im/ramsey/uuid](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/ramsey/uuid?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
+[![Build Status](https://travis-ci.org/ramsey/uuid.svg?branch=2.8)](https://travis-ci.org/ramsey/uuid)
+[![Coverage Status](https://coveralls.io/repos/ramsey/uuid/badge.svg?branch=2.8)](https://coveralls.io/r/ramsey/uuid)
+[![Latest Stable Version](https://poser.pugx.org/ramsey/uuid/v/stable)](https://packagist.org/packages/ramsey/uuid)
+[![Total Downloads](https://poser.pugx.org/ramsey/uuid/downloads)](https://packagist.org/packages/ramsey/uuid)
+[![Latest Unstable Version](https://poser.pugx.org/ramsey/uuid/v/unstable)](https://packagist.org/packages/ramsey/uuid)
+[![License](https://poser.pugx.org/ramsey/uuid/license)](https://packagist.org/packages/ramsey/uuid)
 
 ## About
 
@@ -97,7 +100,7 @@ composer.phar require "ramsey/uuid=~2.8"
 [rfc4122]: http://tools.ietf.org/html/rfc4122
 [javauuid]: http://docs.oracle.com/javase/6/docs/api/java/util/UUID.html
 [pyuuid]: http://docs.python.org/3/library/uuid.html
-[packagist]: https://packagist.org/packages/rhumsaa/uuid
+[packagist]: https://packagist.org/packages/ramsey/uuid
 [composer]: http://getcomposer.org/
 [moontoast\math]: https://github.com/moontoast/math
-[apidocs]: http://ramsey.github.io/uuid/apidocs
+[apidocs]: http://docs.benramsey.com/ramsey-uuid/2.8/
