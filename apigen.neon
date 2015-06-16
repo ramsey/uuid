@@ -1,14 +1,8 @@
-source:
-	- src
-	
+source: src/
 destination: build/apidocs
-title: Rhumsaa\Uuid
-main: Rhumsaa
+title: Rhumsaa\Uuid 2.8
+main: Ramsey
 deprecated: true
+templateTheme: bootstrap
 todo: true
 sourceCode: true
-report: build/apigen-checkstyle.xml
-wipeout: true
-quiet: false
-progressbar: true
-colors: true
