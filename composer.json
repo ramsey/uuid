@@ -1,5 +1,5 @@
 {
-    "name": "rhumsaa/uuid",
+    "name": "ramsey/uuid",
     "description": "A PHP 5.3+ library for generating RFC 4122 version 1, 3, 4, and 5 universally unique identifiers (UUID).",
     "type": "library",
     "keywords": ["uuid", "identifier", "guid"],
@@ -38,9 +38,7 @@
     "autoload": {
         "psr-4": {"Rhumsaa\\Uuid\\": "src/"}
     },
-    "extra": {
-        "branch-alias": {
-            "dev-master": "2.8.x-dev"
-        }
+    "replace": {
+        "rhumsaa/uuid": "self.version"
     }
 }
