@@ -33,9 +33,9 @@
         "symfony/console": "~2.3",
         "doctrine/dbal": ">=2.3",
         "phpunit/phpunit": "~4.5",
-        "squizlabs/php_codesniffer": "~2.2",
-        "jakub-onderka/php-parallel-lint": "0.8.*",
-        "satooshi/php-coveralls": "0.6.*"
+        "squizlabs/php_codesniffer": "^2.3",
+        "jakub-onderka/php-parallel-lint": "^0.9.0",
+        "satooshi/php-coveralls": "~0.6"
     },
     "bin": ["bin/uuid"],
     "suggest": {

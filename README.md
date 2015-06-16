@@ -9,7 +9,10 @@ names to `ramsey/uuid` and `Ramsey\Uuid`, respectively._
 
 [![Build Status](https://travis-ci.org/ramsey/uuid.svg?branch=master)](https://travis-ci.org/ramsey/uuid)
 [![Coverage Status](https://coveralls.io/repos/ramsey/uuid/badge.svg?branch=master)](https://coveralls.io/r/ramsey/uuid)
-[![Latest Stable Version](https://poser.pugx.org/ramsey/uuid/v/stable)](https://packagist.org/packages/ramsey/uuid) [![Total Downloads](https://poser.pugx.org/ramsey/uuid/downloads)](https://packagist.org/packages/ramsey/uuid) [![Latest Unstable Version](https://poser.pugx.org/ramsey/uuid/v/unstable)](https://packagist.org/packages/ramsey/uuid) [![License](https://poser.pugx.org/ramsey/uuid/license)](https://packagist.org/packages/ramsey/uuid)
+[![Latest Stable Version](https://poser.pugx.org/ramsey/uuid/v/stable)](https://packagist.org/packages/ramsey/uuid)
+[![Total Downloads](https://poser.pugx.org/ramsey/uuid/downloads)](https://packagist.org/packages/ramsey/uuid)
+[![Latest Unstable Version](https://poser.pugx.org/ramsey/uuid/v/unstable)](https://packagist.org/packages/ramsey/uuid)
+[![License](https://poser.pugx.org/ramsey/uuid/license)](https://packagist.org/packages/ramsey/uuid)
 
 ## About
 
@@ -105,4 +108,4 @@ composer require ramsey/uuid
 [packagist]: https://packagist.org/packages/ramsey/uuid
 [composer]: http://getcomposer.org/
 [moontoast\math]: https://github.com/moontoast/math
-[apidocs]: http://ramsey.github.io/uuid/apidocs
+[apidocs]: http://docs.benramsey.com/ramsey-uuid/2.8/
