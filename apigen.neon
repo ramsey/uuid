@@ -1,14 +1,8 @@
-source:
-	- src
-	
+source: src/
 destination: build/apidocs
-title: Ramsey\Uuid
+title: ramsey/uuid 3.0.x-dev
 main: Ramsey
 deprecated: true
+templateTheme: bootstrap
 todo: true
 sourceCode: true
-report: build/apigen-checkstyle.xml
-wipeout: true
-quiet: false
-progressbar: true
-colors: true
