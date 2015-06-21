@@ -30,15 +30,6 @@ class TestCase extends \PHPUnit_Framework_TestCase
         }
     }
 
-    protected function skipIfNoDoctrineDbal()
-    {
-        if (!$this->hasDoctrineDbal()) {
-            $this->markTestSkipped(
-                'Skipping test that requires doctrine/dbal.'
-            );
-        }
-    }
-
     protected function hasMoontoastMath()
     {
         return class_exists('Moontoast\\Math\\BigNumber');
@@ -47,10 +38,5 @@ class TestCase extends \PHPUnit_Framework_TestCase
     protected function hasSymfonyConsole()
     {
         return class_exists('Symfony\\Component\\Console\\Application');
-    }
-
-    protected function hasDoctrineDbal()
-    {
-        return class_exists('Doctrine\\DBAL\\Types\\Type');
     }
 }

@@ -31,7 +31,6 @@
         "moontoast/math": "~1.1",
         "ircmaxell/random-lib": "~1.0",
         "symfony/console": "~2.3",
-        "doctrine/dbal": ">=2.3",
         "phpunit/phpunit": "~4.5",
         "squizlabs/php_codesniffer": "^2.3",
         "jakub-onderka/php-parallel-lint": "^0.9.0",
@@ -39,10 +38,10 @@
     },
     "bin": ["bin/uuid"],
     "suggest": {
+        "ramsey/uuid-doctrine": "Allow the use of a UUID as Doctrine field type.",
         "moontoast/math": "Support for converting UUID to 128-bit integer (in string form).",
         "ircmaxell/random-lib": "Provides RandomLib to use with the RandomLibAdapter",
-        "symfony/console": "Support for use of the bin/uuid command line tool.",
-        "doctrine/dbal": "Allow the use of a UUID as doctrine field type."
+        "symfony/console": "Support for use of the bin/uuid command line tool."
     },
     "autoload": {
         "psr-4": {"Ramsey\\Uuid\\": "src/"}
