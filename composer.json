@@ -3,7 +3,7 @@
     "description": "NO LONGER MAINTAINED. Use ramsey/uuid instead. A PHP 5.3+ library for generating RFC 4122 version 1, 3, 4, and 5 universally unique identifiers (UUID).",
     "type": "library",
     "keywords": ["uuid", "identifier", "guid"],
-    "homepage": "https://github.com/ramsey/uuid",
+    "homepage": "https://github.com/ramsey/rhumsaa-uuid",
     "license": "MIT",
     "authors": [
         {
@@ -16,8 +16,8 @@
         }
     ],
     "support": {
-        "issues": "https://github.com/ramsey/uuid/issues",
-        "source": "https://github.com/ramsey/uuid"
+        "issues": "https://github.com/ramsey/rhumsaa-uuid/issues",
+        "source": "https://github.com/ramsey/rhumsaa-uuid"
     },
     "require": {
         "php": ">=5.3.3"
