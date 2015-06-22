@@ -114,4 +114,4 @@ composer require ramsey/uuid
 [packagist]: https://packagist.org/packages/ramsey/uuid
 [composer]: http://getcomposer.org/
 [moontoast\math]: https://github.com/moontoast/math
-[apidocs]: http://docs.benramsey.com/ramsey-uuid/2.8/
+[apidocs]: http://docs.benramsey.com/ramsey-uuid/3.0.x-dev/
