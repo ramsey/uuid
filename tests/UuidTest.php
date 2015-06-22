@@ -1189,7 +1189,7 @@ class UuidTest extends TestCase
 
         $timeOfDay = new FixedTimeProvider(array(
             'sec' => $currentTime,
-            'usec' => $usec,
+            'usec' => 0,
             'minuteswest' => 0,
             'dsttime' => 0,
         ));
