@@ -21,22 +21,8 @@ class TestCase extends \PHPUnit_Framework_TestCase
         }
     }
 
-    protected function skipIfNoSymfonyConsole()
-    {
-        if (!$this->hasSymfonyConsole()) {
-            $this->markTestSkipped(
-                'Skipping test that requires symfony/console.'
-            );
-        }
-    }
-
     protected function hasMoontoastMath()
     {
         return class_exists('Moontoast\\Math\\BigNumber');
-    }
-
-    protected function hasSymfonyConsole()
-    {
-        return class_exists('Symfony\\Component\\Console\\Application');
     }
 }
