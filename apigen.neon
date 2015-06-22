@@ -1,8 +1,0 @@
-source: src/
-destination: build/apidocs
-title: ramsey/uuid 3.0.x-dev
-main: Ramsey
-deprecated: true
-templateTheme: bootstrap
-todo: true
-sourceCode: true
