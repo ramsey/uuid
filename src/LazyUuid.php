@@ -25,6 +25,7 @@ class LazyUuid extends Uuid
         }
 
         $this->fields = $this->codec->decode($this->uuidString)->getFieldsHex();
+        $this->isParsed = true;
     }
 
     public function compareTo(UuidInterface $uuid)
