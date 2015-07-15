@@ -1,18 +1,16 @@
 # ramsey/uuid for PHP
 
-[![Join the chat at https://gitter.im/ramsey/uuid](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/ramsey/uuid?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+_NOTICE: Formerly known as `rhumsaa/uuid`, The package and namespace
+names have changed to `ramsey/uuid` and `Ramsey\Uuid`, respectively._
 
-_NOTICE: Formerly known as `rhumsaa/uuid`, I have changed the package and namespace
-names to `ramsey/uuid` and `Ramsey\Uuid`, respectively._
-
----
-
-[![Build Status](https://travis-ci.org/ramsey/uuid.svg?branch=master)](https://travis-ci.org/ramsey/uuid)
-[![Coverage Status](https://coveralls.io/repos/ramsey/uuid/badge.svg?branch=master)](https://coveralls.io/r/ramsey/uuid)
-[![Latest Stable Version](https://poser.pugx.org/ramsey/uuid/v/stable)](https://packagist.org/packages/ramsey/uuid)
-[![Total Downloads](https://poser.pugx.org/ramsey/uuid/downloads)](https://packagist.org/packages/ramsey/uuid)
-[![Latest Unstable Version](https://poser.pugx.org/ramsey/uuid/v/unstable)](https://packagist.org/packages/ramsey/uuid)
-[![License](https://poser.pugx.org/ramsey/uuid/license)](https://packagist.org/packages/ramsey/uuid)
+[![Gitter Chat](https://img.shields.io/badge/gitter-join_chat-brightgreen.svg?style=flat-square)](https://gitter.im/ramsey/uuid)
+[![Source Code](http://img.shields.io/badge/source-ramsey/uuid-blue.svg?style=flat-square)](https://github.com/ramsey/uuid)
+[![Latest Version](https://img.shields.io/github/release/ramsey/uuid.svg?style=flat-square)](https://github.com/ramsey/uuid/releases)
+[![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](https://github.com/ramsey/uuid/blob/master/LICENSE)
+[![Build Status](https://img.shields.io/travis/ramsey/uuid/master.svg?style=flat-square)](https://travis-ci.org/ramsey/uuid)
+[![HHVM Status](https://img.shields.io/hhvm/ramsey/uuid.svg?style=flat-square)](http://hhvm.h4cc.de/package/ramsey/uuid)
+[![Coverage Status](https://img.shields.io/coveralls/ramsey/uuid/master.svg?style=flat-square)](https://coveralls.io/r/ramsey/uuid?branch=master)
+[![Total Downloads](https://img.shields.io/packagist/dt/ramsey/uuid.svg?style=flat-square)](https://packagist.org/packages/ramsey/uuid)
 
 ## About
 
