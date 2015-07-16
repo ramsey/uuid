@@ -12,7 +12,7 @@
  * @link https://github.com/ramsey/uuid GitHub
  */
 
-namespace Ramsey\Uuid;
+namespace Ramsey\Uuid\Generator;
 
 interface RandomGeneratorInterface
 {

@@ -19,6 +19,7 @@ use Ramsey\Uuid\Converter\NumberConverterInterface;
 use Ramsey\Uuid\Converter\TimeConverterInterface;
 use Ramsey\Uuid\Provider\NodeProviderInterface;
 use Ramsey\Uuid\Provider\TimeProviderInterface;
+use Ramsey\Uuid\Generator\RandomGeneratorInterface;
 
 class UuidFactory implements UuidFactoryInterface
 {

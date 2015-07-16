@@ -5,6 +5,7 @@ namespace Ramsey\Uuid;
 use Ramsey\Uuid\Provider\Time\SystemTimeProvider;
 use Ramsey\Uuid\Provider\Time\FixedTimeProvider;
 use Ramsey\Uuid\Generator\CombGenerator;
+use Ramsey\Uuid\Generator\RandomGeneratorFactory;
 
 class UuidTest extends TestCase
 {
@@ -792,7 +793,7 @@ class UuidTest extends TestCase
      */
     public function testUuid4Comb()
     {
-        $mock = $this->getMock('Ramsey\Uuid\RandomGeneratorInterface');
+        $mock = $this->getMock('Ramsey\Uuid\Generator\RandomGeneratorInterface');
         $mock->expects($this->any())
             ->method('generate')
             ->willReturnCallback(function ($length)

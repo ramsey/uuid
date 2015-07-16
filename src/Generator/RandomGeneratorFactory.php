@@ -12,10 +12,7 @@
  * @link https://github.com/ramsey/uuid GitHub
  */
 
-namespace Ramsey\Uuid;
-
-use Ramsey\Uuid\Generator\OpenSslGenerator;
-use Ramsey\Uuid\Generator\MtRandGenerator;
+namespace Ramsey\Uuid\Generator;
 
 class RandomGeneratorFactory
 {

@@ -14,8 +14,6 @@
 
 namespace Ramsey\Uuid\Generator;
 
-use Ramsey\Uuid\RandomGeneratorInterface;
-
 class OpenSslGenerator implements RandomGeneratorInterface
 {
 

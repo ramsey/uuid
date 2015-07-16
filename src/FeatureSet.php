@@ -27,6 +27,7 @@ use Ramsey\Uuid\Builder\DefaultUuidBuilder;
 use Ramsey\Uuid\Codec\StringCodec;
 use Ramsey\Uuid\Codec\GuidStringCodec;
 use Ramsey\Uuid\Builder\DegradedUuidBuilder;
+use Ramsey\Uuid\Generator\RandomGeneratorFactory;
 
 /**
  * Detects and exposes available features in current environment (32 or 64 bit, available dependencies...)

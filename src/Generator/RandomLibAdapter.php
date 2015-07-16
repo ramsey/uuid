@@ -16,7 +16,6 @@ namespace Ramsey\Uuid\Generator;
 
 use RandomLib\Generator;
 use RandomLib\Factory;
-use Ramsey\Uuid\RandomGeneratorInterface;
 
 class RandomLibAdapter implements RandomGeneratorInterface
 {

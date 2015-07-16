@@ -14,7 +14,6 @@
 
 namespace Ramsey\Uuid\Generator;
 
-use Ramsey\Uuid\RandomGeneratorInterface;
 use Ramsey\Uuid\Converter\NumberConverterInterface;
 
 /**
