@@ -4,14 +4,15 @@
 
 _Released: 2015-07-16_
 
-  * The 3.0.0 release represents a significant step for the ramsey/uuid library. While the simple and familiar API used in previous versions remains intact, this release provides greater flexibility to integrators, including the ability to inject your own number generators, UUID codecs, node and time providers, and more.
+The 3.0.0 release represents a significant step for the ramsey/uuid library. While the simple and familiar API used in previous versions remains intact, this release provides greater flexibility to integrators, including the ability to inject your own number generators, UUID codecs, node and time providers, and more.
+
   * BREAK: The root namespace for this package has changed from "Rhumsaa" to "Ramsey." In most cases, simply making this change in your applications is the only upgrade path you will need. Everything else should work as expected.
-  * BREAK: The UUID [Doctrine field type](http://doctrine-dbal.readthedocs.org/en/latest/reference/types.html) has been moved to `ramsey/uuid-doctrine`.
-  * BREAK: The `uuid` console application has been moved to `ramsey/uuid-console`.
+  * BREAK: The UUID [Doctrine field type](http://doctrine-dbal.readthedocs.org/en/latest/reference/types.html) has been moved to [ramsey/uuid-doctrine](https://github.com/ramsey/uuid-doctrine).
+  * BREAK: The `uuid` console application has been moved to [ramsey/uuid-console](https://github.com/ramsey/uuid-console).
   * BREAK: The `Uuid::VERSION` package version constant has been removed.
   * NEW: The `Uuid` class is no longer marked as `final`. Everything is now based around interfaces and factories, allowing you to use this package as a base to implement other kinds of UUIDs with different dependencies.
   * NEW: Through setting dependencies on `UuidFactory` and/or extending `FeatureSet`, you may override any package defaults, injecting your own dependencies.
-  * NEW: For random number generation, in addition to `OpenSslGenerator` (used if `openssl_random_pseudo_bytes()` is present) and the fallback `MtRandGenerator`, you may use the bundled `CombGenerator` for sequential UUIDs or the `RandomLibAdapter` if using ircmaxell/random-lib.
+  * NEW: For random number generation, in addition to `OpenSslGenerator` (used if `openssl_random_pseudo_bytes()` is present) and the fallback `MtRandGenerator`, you may use the bundled `CombGenerator` for sequential UUIDs or the `RandomLibAdapter` if using [ircmaxell/random-lib](https://github.com/ircmaxell/RandomLib).
   * NEW: In addition to the default UUID generation, this library also supports GUID generation by configuring a `FeatureSet` to use GUIDs.
   * NEW: While the interface to create UUIDs hasn't changed, if using this package on a 32-bit system, you will now receive an object of type `DegradedUuid` (which extends `Uuid`, which implements `UuidInterface`).
   * NEW: All UUIDs are now [JsonSerializable](http://php.net/JsonSerializable).
