@@ -16,6 +16,7 @@ namespace Ramsey\Uuid;
 
 use InvalidArgumentException;
 use Ramsey\Uuid\Converter\NumberConverterInterface;
+use Ramsey\Uuid\Codec\CodecInterface;
 
 /**
  * Represents a universally unique identifier (UUID), according to RFC 4122

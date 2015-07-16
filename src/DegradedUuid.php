@@ -15,6 +15,7 @@
 namespace Ramsey\Uuid;
 
 use Ramsey\Uuid\Converter\NumberConverterInterface;
+use Ramsey\Uuid\Codec\CodecInterface;
 
 class DegradedUuid extends Uuid
 {

@@ -12,7 +12,9 @@
  * @link https://github.com/ramsey/uuid GitHub
  */
 
-namespace Ramsey\Uuid;
+namespace Ramsey\Uuid\Codec;
+
+use Ramsey\Uuid\UuidInterface;
 
 interface CodecInterface
 {

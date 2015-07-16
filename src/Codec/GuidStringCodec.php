@@ -16,7 +16,6 @@ namespace Ramsey\Uuid\Codec;
 
 use Ramsey\Uuid\UuidInterface;
 use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\CodecInterface;
 
 class GuidStringCodec extends StringCodec
 {

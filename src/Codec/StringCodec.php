@@ -15,7 +15,6 @@
 namespace Ramsey\Uuid\Codec;
 
 use InvalidArgumentException;
-use Ramsey\Uuid\CodecInterface;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidBuilder;
 use Ramsey\Uuid\UuidInterface;

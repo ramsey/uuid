@@ -15,7 +15,7 @@
 namespace Ramsey\Uuid\Builder;
 
 use Ramsey\Uuid\Converter\NumberConverterInterface;
-use Ramsey\Uuid\CodecInterface;
+use Ramsey\Uuid\Codec\CodecInterface;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidBuilder;
 
