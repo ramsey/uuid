@@ -1742,4 +1742,14 @@ class UuidTest extends TestCase
         $uuid = Uuid::uuid1();
         $uuid->getInteger();
     }
+
+    /**
+     * @covers Ramsey\Uuid\Uuid::jsonSerialize
+     */
+    public function testJsonSerialize()
+    {
+        $uuid = Uuid::uuid1();
+
+        $this->assertEquals('"' . $uuid->toString() . '"', json_encode($uuid));
+    }
 }

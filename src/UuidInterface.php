@@ -16,7 +16,7 @@ namespace Ramsey\Uuid;
 
 use Ramsey\Uuid\Converter\NumberConverterInterface;
 
-interface UuidInterface
+interface UuidInterface extends \JsonSerializable
 {
 
     /**
