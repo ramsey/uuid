@@ -97,11 +97,6 @@ class Uuid implements UuidInterface
     const VALID_PATTERN = '^[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}$';
 
     /**
-     * Version of the Ramsey\Uuid package
-     */
-    const VERSION = '3.0.x-dev';
-
-    /**
      *
      * @var UuidFactoryInterface
      */
