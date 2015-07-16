@@ -16,7 +16,7 @@ namespace Ramsey\Uuid\Codec;
 
 use InvalidArgumentException;
 use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidBuilder;
+use Ramsey\Uuid\Builder\UuidBuilderInterface;
 use Ramsey\Uuid\UuidInterface;
 
 class StringCodec implements CodecInterface
@@ -24,7 +24,7 @@ class StringCodec implements CodecInterface
 
     private $builder;
 
-    public function __construct(UuidBuilder $builder)
+    public function __construct(UuidBuilderInterface $builder)
     {
         $this->builder = $builder;
     }

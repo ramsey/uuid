@@ -14,12 +14,11 @@
 
 namespace Ramsey\Uuid\Builder;
 
-use Ramsey\Uuid\UuidBuilder;
 use Ramsey\Uuid\Codec\CodecInterface;
 use Ramsey\Uuid\DegradedUuid;
 use Ramsey\Uuid\Converter\NumberConverterInterface;
 
-class DegradedUuidBuilder implements UuidBuilder
+class DegradedUuidBuilder implements UuidBuilderInterface
 {
 
     private $converter;

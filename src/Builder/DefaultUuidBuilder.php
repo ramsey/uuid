@@ -17,9 +17,8 @@ namespace Ramsey\Uuid\Builder;
 use Ramsey\Uuid\Converter\NumberConverterInterface;
 use Ramsey\Uuid\Codec\CodecInterface;
 use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidBuilder;
 
-class DefaultUuidBuilder implements UuidBuilder
+class DefaultUuidBuilder implements UuidBuilderInterface
 {
 
     private $converter;

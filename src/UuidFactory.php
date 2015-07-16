@@ -21,6 +21,7 @@ use Ramsey\Uuid\Provider\NodeProviderInterface;
 use Ramsey\Uuid\Provider\TimeProviderInterface;
 use Ramsey\Uuid\Generator\RandomGeneratorInterface;
 use Ramsey\Uuid\Codec\CodecInterface;
+use Ramsey\Uuid\Builder\UuidBuilderInterface;
 
 class UuidFactory implements UuidFactoryInterface
 {
@@ -62,7 +63,7 @@ class UuidFactory implements UuidFactoryInterface
 
     /**
      *
-     * @var UuidBuilder
+     * @var UuidBuilderInterface
      */
     private $uuidBuilder = null;
 
@@ -128,7 +129,7 @@ class UuidFactory implements UuidFactoryInterface
         $this->numberConverter = $converter;
     }
 
-    public function setUuidBuilder(UuidBuilder $builder)
+    public function setUuidBuilder(UuidBuilderInterface $builder)
     {
         $this->uuidBuilder = $builder;
     }

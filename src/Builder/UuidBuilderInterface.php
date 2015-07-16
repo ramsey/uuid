@@ -12,11 +12,11 @@
  * @link https://github.com/ramsey/uuid GitHub
  */
 
-namespace Ramsey\Uuid;
+namespace Ramsey\Uuid\Builder;
 
 use Ramsey\Uuid\Codec\CodecInterface;
 
-interface UuidBuilder
+interface UuidBuilderInterface
 {
     /**
      * @return Uuid
