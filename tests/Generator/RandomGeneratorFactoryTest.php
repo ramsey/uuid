@@ -8,6 +8,7 @@ class RandomGeneratorFactoryTest extends TestCase
 {
     public function testFactoryReturnsNonOpenSslGeneratorWithForceNoOpenSsl()
     {
+        RandomGeneratorFactory::$forceNoRandomBytes = true;
         RandomGeneratorFactory::$forceNoOpensslRandomPseudoBytes = true;
 
         $generator = RandomGeneratorFactory::getGenerator();

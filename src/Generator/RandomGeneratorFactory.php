@@ -25,6 +25,14 @@ class RandomGeneratorFactory
     public static $forceNoOpensslRandomPseudoBytes = false;
 
     /**
+     * For testing, random_bytes() override; if true, treat as if random_bytes()
+     * is not available.
+     *
+     * @var bool
+     */
+    public static $forceNoRandomBytes = false;
+
+    /**
      * Returns true if the system has openssl_random_pseudo_bytes()
      *
      * @return bool
@@ -34,8 +42,22 @@ class RandomGeneratorFactory
         return (function_exists('openssl_random_pseudo_bytes') && !self::$forceNoOpensslRandomPseudoBytes);
     }
 
+    /**
+     * Returns true if the system has random_bytes()
+     *
+     * @return bool
+     */
+    protected static function hasRandomBytes()
+    {
+        return (function_exists('random_bytes') && !self::$forceNoRandomBytes);
+    }
+
     public static function getGenerator()
     {
+        if (self::hasRandomBytes()) {
+            return new RandomBytesGenerator();
+        }
+
         if (self::hasOpensslRandomPseudoBytes()) {
             return new OpenSslGenerator();
         }
