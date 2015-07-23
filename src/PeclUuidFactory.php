@@ -14,6 +14,8 @@
 
 namespace Ramsey\Uuid;
 
+use Ramsey\Uuid\Converter\NumberConverterInterface;
+
 /**
  * Factory relying on PECL UUID library whenever possible, otherwise defaulting
  * to pure PHP factory.
@@ -22,6 +24,16 @@ namespace Ramsey\Uuid;
  */
 class PeclUuidFactory implements UuidFactoryInterface
 {
+    /**
+     * @var CodecInterface
+     */
+    private $codec;
+
+    /**
+     * @var NumberConverterInterface
+     */
+    private $converter;
+
     /**
      *
      * @var UuidFactoryInterface
@@ -38,10 +50,15 @@ class PeclUuidFactory implements UuidFactoryInterface
      *
      * @param UuidFactoryInterface $factory
      */
-    public function __construct(UuidFactoryInterface $factory)
+    public function __construct(UuidFactoryInterface $factory, FeatureSet $features = null)
     {
         $this->hasExt = extension_loaded('uuid');
         $this->factory = $factory;
+
+        $features = $features ?: new FeatureSet();
+
+        $this->codec = $features->getCodec();
+        $this->converter = $features->getNumberConverter();
     }
 
     /**
@@ -62,7 +79,7 @@ class PeclUuidFactory implements UuidFactoryInterface
             return $this->factory->uuid1($node, $clockSeq);
         }
 
-        return $this->fromString(uuid_create(UUID_TYPE_TIME));
+        return new LazyUuid(uuid_create(UUID_TYPE_TIME), $this->converter, $this->codec);
     }
 
     /**
@@ -82,7 +99,7 @@ class PeclUuidFactory implements UuidFactoryInterface
             return $this->factory->uuid4();
         }
 
-        return $this->fromString(uuid_create(UUID_TYPE_RANDOM));
+        return new LazyUuid(uuid_create(UUID_TYPE_RANDOM), $this->converter, $this->codec);
     }
 
     /**
