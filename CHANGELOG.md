@@ -17,6 +17,13 @@ The 3.0.0 release represents a significant step for the ramsey/uuid library. Whi
   * NEW: While the interface to create UUIDs hasn't changed, if using this package on a 32-bit system, you will now receive an object of type `DegradedUuid` (which extends `Uuid`, which implements `UuidInterface`).
   * NEW: All UUIDs are now [JsonSerializable](http://php.net/JsonSerializable).
 
+## 2.8.2
+
+_Released: 2015-07-23_
+
+  * Ensure the release tag makes it into the rhumsaa/uuid package.
+  * Minor documentation changes.
+
 ## 2.8.1
 
 _Released: 2015-06-16_
