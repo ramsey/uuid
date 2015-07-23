@@ -1,5 +1,12 @@
 # Rhumsaa\Uuid Changelog
 
+## 2.8.2
+
+_Released: 2015-07-23_
+
+  * Ensure the release tag makes it into the rhumsaa/uuid package.
+  * Minor documentation changes.
+
 ## 2.8.1
 
 _Released: 2015-06-16_
