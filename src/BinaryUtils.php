@@ -31,6 +31,4 @@ class BinaryUtils
 
         return $timeHi;
     }
-
-
 }
