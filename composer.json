@@ -27,7 +27,9 @@
         "symfony/console": "~2.3",
         "doctrine/dbal": ">=2.3",
         "phpunit/phpunit": "~4.1",
-        "satooshi/php-coveralls": "~0.6"
+        "satooshi/php-coveralls": "~0.6",
+        "squizlabs/php_codesniffer": "^2.3",
+        "jakub-onderka/php-parallel-lint": "^0.9.0"
     },
     "bin": ["bin/uuid"],
     "suggest": {
@@ -38,9 +40,7 @@
     "autoload": {
         "psr-4": {"Rhumsaa\\Uuid\\": "src/"}
     },
-    "extra": {
-        "branch-alias": {
-            "dev-master": "2.8.x-dev"
-        }
+    "replace": {
+        "rhumsaa/uuid": "self.version"
     }
 }

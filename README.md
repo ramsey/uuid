@@ -95,14 +95,14 @@ the following command to install the package and add it as a requirement to
 `composer.json`:
 
 ```bash
-composer.phar require "rhumsaa/uuid=~2.8"
+composer.phar require "ramsey/uuid=~2.8"
 ```
 
 
 [rfc4122]: http://tools.ietf.org/html/rfc4122
 [javauuid]: http://docs.oracle.com/javase/6/docs/api/java/util/UUID.html
 [pyuuid]: http://docs.python.org/3/library/uuid.html
-[packagist]: https://packagist.org/packages/rhumsaa/uuid
+[packagist]: https://packagist.org/packages/ramsey/uuid
 [composer]: http://getcomposer.org/
 [moontoast\math]: https://github.com/moontoast/math
-[apidocs]: http://ramsey.github.io/uuid/apidocs
+[apidocs]: http://docs.benramsey.com/ramsey-uuid/2.8/
