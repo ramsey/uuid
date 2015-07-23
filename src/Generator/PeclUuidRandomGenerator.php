@@ -14,8 +14,6 @@
 
 namespace Ramsey\Uuid\Generator;
 
-use Ramsey\Uuid\UuidFactory;
-
 class PeclUuidRandomGenerator implements RandomGeneratorInterface
 {
     public function generate($length)

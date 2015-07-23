@@ -14,10 +14,26 @@
 
 namespace Ramsey\Uuid\Generator;
 
+use Ramsey\Uuid\FeatureSet;
+
 class TimeGeneratorFactory
 {
-    public static function getGenerator()
+    /**
+     * @var FeatureSet
+     */
+    private $featureSet;
+
+    public function __construct(FeatureSet $featureSet)
     {
-        return new DefaultTimeGenerator();
+        $this->featureSet = $featureSet;
+    }
+
+    public function getGenerator()
+    {
+        return new DefaultTimeGenerator(
+            $this->featureSet->getNodeProvider(),
+            $this->featureSet->getTimeConverter(),
+            $this->featureSet->getTimeProvider()
+        );
     }
 }

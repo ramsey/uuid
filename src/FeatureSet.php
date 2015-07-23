@@ -29,6 +29,7 @@ use Ramsey\Uuid\Codec\GuidStringCodec;
 use Ramsey\Uuid\Builder\DegradedUuidBuilder;
 use Ramsey\Uuid\Generator\RandomGeneratorFactory;
 use Ramsey\Uuid\Generator\TimeGeneratorFactory;
+use Ramsey\Uuid\Provider\TimeProviderInterface;
 
 /**
  * Detects and exposes available features in current environment (32 or 64 bit, available dependencies...)
@@ -76,9 +77,10 @@ class FeatureSet
         $this->codec = $this->buildCodec($useGuids);
         $this->nodeProvider = $this->buildNodeProvider();
         $this->randomGenerator = $this->buildRandomGenerator();
-        $this->timeGenerator = $this->buildTimeGenerator();
         $this->timeConverter = $this->buildTimeConverter();
         $this->timeProvider = new SystemTimeProvider();
+        // Called last as TimeGeneratorFactory requires nodeProvider, timeConverter, and timeProvider to be available
+        $this->timeGenerator = $this->buildTimeGenerator();
     }
 
     public function getBuilder()
@@ -121,6 +123,12 @@ class FeatureSet
         return $this->timeProvider;
     }
 
+    public function setTimeProvider(TimeProviderInterface $timeProvider)
+    {
+        $this->timeProvider = $timeProvider;
+        $this->timeGenerator = $this->buildTimeGenerator();
+    }
+
     protected function buildCodec($useGuids = false)
     {
         if ($useGuids) {
@@ -158,7 +166,7 @@ class FeatureSet
 
     protected function buildTimeGenerator()
     {
-        return (new TimeGeneratorFactory())->getGenerator();
+        return (new TimeGeneratorFactory($this))->getGenerator();
     }
 
     protected function buildTimeConverter()

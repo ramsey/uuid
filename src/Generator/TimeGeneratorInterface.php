@@ -14,8 +14,6 @@
 
 namespace Ramsey\Uuid\Generator;
 
-use Ramsey\Uuid\UuidFactory;
-
 interface TimeGeneratorInterface
 {
     /**
@@ -25,7 +23,6 @@ interface TimeGeneratorInterface
      * address. If $clockSeq is given, it is used as the sequence number;
      * otherwise a random 14-bit sequence number is chosen.
      *
-     * @param UuidFactory $factory
      * @param int|string $node A 48-bit number representing the hardware address
      *     This number may be represented as an integer or a hexadecimal string.
      * @param int $clockSeq A 14-bit number used to help avoid duplicates that
@@ -33,5 +30,5 @@ interface TimeGeneratorInterface
      *     changes.
      * @return string A 16-byte binary string representing a UUID
      */
-    public function generate(UuidFactory $factory, $node = null, $clockSeq = null);
+    public function generate($node = null, $clockSeq = null);
 }

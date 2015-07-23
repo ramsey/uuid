@@ -14,11 +14,9 @@
 
 namespace Ramsey\Uuid\Generator;
 
-use Ramsey\Uuid\UuidFactory;
-
 class PeclUuidTimeGenerator implements TimeGeneratorInterface
 {
-    public function generate(UuidFactory $factory, $node = null, $clockSeq = null)
+    public function generate($node = null, $clockSeq = null)
     {
         $uuid = uuid_create(UUID_TYPE_TIME);
 

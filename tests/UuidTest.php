@@ -937,8 +937,11 @@ class UuidTest extends TestCase
             'dsttime' => 0,
         ));
 
+        $featureSet = new FeatureSet();
+        $featureSet->setTimeProvider($timeOfDay);
+
         // For usec = 277885
-        Uuid::getFactory()->setTimeProvider($timeOfDay);
+        Uuid::setFactory(new UuidFactory($featureSet));
         $uuidA = Uuid::uuid1(0x00007ffffffe, 0x1669);
 
         $this->assertEquals('c4dbe7e2-097f-11e2-9669-00007ffffffe', (string) $uuidA);
@@ -970,7 +973,6 @@ class UuidTest extends TestCase
     public function testCalculateUuidTimeForce32BitPath()
     {
         $this->skipIfNoMoontoastMath();
-        Uuid::setFactory(new UuidFactory(new FeatureSet(false, true)));
 
         $timeOfDay = new FixedTimeProvider(array(
             'sec' => 1348845514,
@@ -979,8 +981,12 @@ class UuidTest extends TestCase
             'dsttime' => 0,
         ));
 
+        $featureSet = new FeatureSet(false, true);
+        $featureSet->setTimeProvider($timeOfDay);
+
+        Uuid::setFactory(new UuidFactory($featureSet));
+
         // For usec = 277885
-        Uuid::getFactory()->setTimeProvider($timeOfDay);
         $uuidA = Uuid::uuid1(0x00007ffffffe, 0x1669);
 
         $this->assertEquals('c4dbe7e2-097f-11e2-9669-00007ffffffe', (string) $uuidA);
@@ -1021,7 +1027,10 @@ class UuidTest extends TestCase
             'dsttime' => 0,
         ));
 
-        Uuid::getFactory()->setTimeProvider($timeOfDay);
+        $featureSet = new FeatureSet();
+        $featureSet->setTimeProvider($timeOfDay);
+
+        Uuid::setFactory(new UuidFactory($featureSet));
         $uuidA = Uuid::uuid1(0x00007ffffffe, 0x1669);
 
         $this->assertEquals('ff9785f6-ffff-1fff-9669-00007ffffffe', (string) $uuidA);
@@ -1037,7 +1046,9 @@ class UuidTest extends TestCase
             'dsttime' => 0,
         ));
 
-        Uuid::getFactory()->setTimeProvider($timeOfDay);
+        $featureSet->setTimeProvider($timeOfDay);
+
+        Uuid::setFactory(new UuidFactory($featureSet));
         $uuidB = Uuid::uuid1(0x00007ffffffe, 0x1669);
 
         $this->assertEquals('00000000-0000-1000-9669-00007ffffffe', (string) $uuidB);
@@ -1056,7 +1067,7 @@ class UuidTest extends TestCase
         $this->skipIfNoMoontoastMath();
         $this->skip64BitTest();
 
-        Uuid::setFactory(new UuidFactory(new FeatureSet(false, true)));
+        $featureSet = new FeatureSet(false, true);
 
         // 5235-03-31T21:20:59+00:00
         $timeOfDay = new FixedTimeProvider(array(
@@ -1066,7 +1077,10 @@ class UuidTest extends TestCase
             'dsttime' => 0,
         ));
 
-        Uuid::getFactory()->setTimeProvider($timeOfDay);
+        $featureSet->setTimeProvider($timeOfDay);
+
+        Uuid::setFactory(new UuidFactory($featureSet));
+
         $uuidA = Uuid::uuid1(0x00007ffffffe, 0x1669);
 
         $this->assertEquals('ff9785f6-ffff-1fff-9669-00007ffffffe', (string) $uuidA);
@@ -1082,7 +1096,10 @@ class UuidTest extends TestCase
             'dsttime' => 0,
         ));
 
-        Uuid::getFactory()->setTimeProvider($timeOfDay);
+        $featureSet->setTimeProvider($timeOfDay);
+
+        Uuid::setFactory(new UuidFactory($featureSet));
+
         $uuidB = Uuid::uuid1(0x00007ffffffe, 0x1669);
 
         $this->assertEquals('00000000-0000-1000-9669-00007ffffffe', (string) $uuidB);
@@ -1096,7 +1113,6 @@ class UuidTest extends TestCase
     public function testCalculateUuidTimeUpperLowerBounds32Bit()
     {
         $this->skipIfNoMoontoastMath();
-        Uuid::setFactory(new UuidFactory(new FeatureSet(false, true)));
 
         // 2038-01-19T03:14:07+00:00
         $timeOfDay = new FixedTimeProvider(array(
@@ -1106,7 +1122,11 @@ class UuidTest extends TestCase
             'dsttime' => 0,
         ));
 
-        Uuid::getFactory()->setTimeProvider($timeOfDay);
+        $featureSet = new FeatureSet(false, true);
+        $featureSet->setTimeProvider($timeOfDay);
+
+        Uuid::setFactory(new UuidFactory($featureSet));
+
         $uuidA = Uuid::uuid1(0x00007ffffffe, 0x1669);
 
         $this->assertEquals('13813ff6-6912-11fe-9669-00007ffffffe', (string) $uuidA);
@@ -1122,7 +1142,10 @@ class UuidTest extends TestCase
             'dsttime' => 0,
         ));
 
-        Uuid::getFactory()->setTimeProvider($timeOfDay);
+        $featureSet->setTimeProvider($timeOfDay);
+
+        Uuid::setFactory(new UuidFactory($featureSet));
+
         $uuidB = Uuid::uuid1(0x00007ffffffe, 0x1669);
 
         $this->assertEquals('1419d680-d292-1165-9669-00007ffffffe', (string) $uuidB);
@@ -1148,7 +1171,11 @@ class UuidTest extends TestCase
             'dsttime' => 0,
         ));
 
-        Uuid::getFactory()->setTimeProvider($timeOfDay);
+        $featureSet = new FeatureSet();
+        $featureSet->setTimeProvider($timeOfDay);
+
+        Uuid::setFactory(new UuidFactory($featureSet));
+
         $uuidA = Uuid::uuid1(0x00007ffffffe, 0x1669);
 
         $this->assertEquals('13813ff6-6912-11fe-9669-00007ffffffe', (string) $uuidA);
@@ -1164,7 +1191,10 @@ class UuidTest extends TestCase
             'dsttime' => 0,
         ));
 
-        Uuid::getFactory()->setTimeProvider($timeOfDay);
+        $featureSet->setTimeProvider($timeOfDay);
+
+        Uuid::setFactory(new UuidFactory($featureSet));
+        ;
         $uuidB = Uuid::uuid1(0x00007ffffffe, 0x1669);
 
         $this->assertEquals('1419d680-d292-1165-9669-00007ffffffe', (string) $uuidB);
@@ -1185,9 +1215,6 @@ class UuidTest extends TestCase
         $currentTime = strtotime('2012-12-11T00:00:00+00:00');
         $endTime = $currentTime + 3600;
 
-        $factory = new UuidFactory();
-        $smallIntFactory = new UuidFactory(new FeatureSet(false, true));
-
         $timeOfDay = new FixedTimeProvider(array(
             'sec' => $currentTime,
             'usec' => 0,
@@ -1195,8 +1222,15 @@ class UuidTest extends TestCase
             'dsttime' => 0,
         ));
 
-        $factory->setTimeProvider($timeOfDay);
-        $smallIntFactory->setTimeProvider($timeOfDay);
+        $smallIntFeatureSet = new FeatureSet(false, true);
+        $smallIntFeatureSet->setTimeProvider($timeOfDay);
+
+        $smallIntFactory = new UuidFactory($smallIntFeatureSet);
+
+        $featureSet = new FeatureSet();
+        $featureSet->setTimeProvider($timeOfDay);
+
+        $factory = new UuidFactory($featureSet);
 
         while ($currentTime <= $endTime) {
 
