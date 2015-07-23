@@ -14,13 +14,41 @@
 
 namespace Ramsey\Uuid\Generator;
 
-use Ramsey\Uuid\UuidFactory;
+use Ramsey\Uuid\BinaryUtils;
+use Ramsey\Uuid\Converter\TimeConverterInterface;
+use Ramsey\Uuid\Provider\NodeProviderInterface;
+use Ramsey\Uuid\Provider\TimeProviderInterface;
 
 class DefaultTimeGenerator implements TimeGeneratorInterface
 {
-    public function generate(UuidFactory $factory, $node = null, $clockSeq = null)
+    /**
+     * @var NodeProviderInterface
+     */
+    private $nodeProvider;
+
+    /**
+     * @var TimeConverterInterface
+     */
+    private $timeConverter;
+
+    /**
+     * @var TimeProviderInterface
+     */
+    private $timeProvider;
+
+    public function __construct(
+        NodeProviderInterface $nodeProvider,
+        TimeConverterInterface $timeConverter,
+        TimeProviderInterface $timeProvider
+    ) {
+        $this->nodeProvider = $nodeProvider;
+        $this->timeConverter = $timeConverter;
+        $this->timeProvider = $timeProvider;
+    }
+
+    public function generate($node = null, $clockSeq = null)
     {
-        $node = $this->getValidNode($node, $factory);
+        $node = $this->getValidNode($node);
 
         if ($clockSeq === null) {
             // Not using "stable storage"; see RFC 4122, Section 4.2.1.1
@@ -29,11 +57,11 @@ class DefaultTimeGenerator implements TimeGeneratorInterface
 
         // Create a 60-bit time value as a count of 100-nanosecond intervals
         // since 00:00:00.00, 15 October 1582
-        $timeOfDay = $factory->getTimeProvider()->currentTime();
-        $uuidTime = $factory->getTimeConverter()->calculateTime($timeOfDay['sec'], $timeOfDay['usec']);
+        $timeOfDay = $this->timeProvider->currentTime();
+        $uuidTime = $this->timeConverter->calculateTime($timeOfDay['sec'], $timeOfDay['usec']);
 
-        $timeHi = $factory->applyVersion($uuidTime['hi'], 1);
-        $clockSeqHi = $factory->applyVariant($clockSeq >> 8);
+        $timeHi = BinaryUtils::applyVersion($uuidTime['hi'], 1);
+        $clockSeqHi = BinaryUtils::applyVariant($clockSeq >> 8);
 
         $hex = vsprintf(
             '%08s%04s%04s%02s%02s%012s',
@@ -50,10 +78,10 @@ class DefaultTimeGenerator implements TimeGeneratorInterface
         return hex2bin($hex);
     }
 
-    protected function getValidNode($node, UuidFactory $factory)
+    protected function getValidNode($node)
     {
         if ($node === null) {
-            $node = $factory->getNodeProvider()->getNode();
+            $node = $this->nodeProvider->getNode();
         }
 
         // Convert the node to hex, if it is still an integer

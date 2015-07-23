@@ -55,7 +55,7 @@ class UuidFactory implements UuidFactoryInterface
      */
     private $timeGenerator = null;
 
-    /**
+    /*
      *
      * @var TimeConverterInterface
      */
@@ -75,7 +75,7 @@ class UuidFactory implements UuidFactoryInterface
 
     /**
      * Create a new a instance
-     *
+     * @param FeatureSet $features
      */
     public function __construct(FeatureSet $features = null)
     {
@@ -121,34 +121,14 @@ class UuidFactory implements UuidFactoryInterface
         return $this->timeConverter;
     }
 
-    public function setTimeConverter(TimeConverterInterface $converter)
-    {
-        $this->timeConverter = $converter;
-    }
-
     public function getTimeProvider()
     {
         return $this->timeProvider;
     }
 
-    public function setTimeProvider(TimeProviderInterface $provider)
-    {
-        $this->timeProvider = $provider;
-    }
-
     public function setRandomGenerator(RandomGeneratorInterface $generator)
     {
         $this->randomGenerator = $generator;
-    }
-
-    public function setTimeGenerator(TimeGeneratorInterface $generator)
-    {
-        $this->timeGenerator = $generator;
-    }
-
-    public function setNodeProvider(NodeProviderInterface $provider)
-    {
-        $this->nodeProvider = $provider;
     }
 
     public function setNumberConverter(NumberConverterInterface $converter)
@@ -211,7 +191,7 @@ class UuidFactory implements UuidFactoryInterface
      */
     public function uuid1($node = null, $clockSeq = null)
     {
-        $bytes = $this->timeGenerator->generate($this, $node, $clockSeq);
+        $bytes = $this->timeGenerator->generate($node, $clockSeq);
         $hex = bin2hex($bytes);
 
         return $this->uuidFromHashedName($hex, 1);
@@ -266,29 +246,6 @@ class UuidFactory implements UuidFactoryInterface
         return $this->uuidBuilder->build($this->codec, $fields);
     }
 
-    public function applyVariant($clockSeqHi)
-    {
-        // Set the variant to RFC 4122
-        $clockSeqHi = $clockSeqHi & 0x3f;
-        $clockSeqHi &= ~(0xc0);
-        $clockSeqHi |= 0x80;
-
-        return $clockSeqHi;
-    }
-
-    /**
-     * @param string $timeHi
-     * @param integer $version
-     */
-    public function applyVersion($timeHi, $version)
-    {
-        $timeHi = hexdec($timeHi) & 0x0fff;
-        $timeHi &= ~(0xf000);
-        $timeHi |= $version << 12;
-
-        return $timeHi;
-    }
-
     /**
      * @param string $name
      * @param integer $version
@@ -315,8 +272,8 @@ class UuidFactory implements UuidFactoryInterface
      */
     protected function uuidFromHashedName($hash, $version)
     {
-        $timeHi = $this->applyVersion(substr($hash, 12, 4), $version);
-        $clockSeqHi = $this->applyVariant(hexdec(substr($hash, 16, 2)));
+        $timeHi = BinaryUtils::applyVersion(substr($hash, 12, 4), $version);
+        $clockSeqHi = BinaryUtils::applyVariant(hexdec(substr($hash, 16, 2)));
 
         $fields = array(
             'time_low' => substr($hash, 0, 8),
