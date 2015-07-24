@@ -78,9 +78,7 @@ class FeatureSet
         $this->nodeProvider = $this->buildNodeProvider();
         $this->randomGenerator = $this->buildRandomGenerator();
         $this->timeConverter = $this->buildTimeConverter();
-        $this->timeProvider = new SystemTimeProvider();
-        // Called last as TimeGeneratorFactory requires nodeProvider, timeConverter, and timeProvider to be available
-        $this->timeGenerator = $this->buildTimeGenerator();
+        $this->setTimeProvider(new SystemTimeProvider());
     }
 
     public function getBuilder()
