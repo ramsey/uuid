@@ -7,8 +7,12 @@ php:
   - 7.0
   - hhvm
 
-before_install:
-  - sudo apt-get update && sudo apt-get install uuid-dev
+sudo: false
+
+addons:
+  apt:
+    packages:
+      - uuid-dev
 
 before_script:
   - travis_retry composer self-update
