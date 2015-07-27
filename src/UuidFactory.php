@@ -55,7 +55,7 @@ class UuidFactory implements UuidFactoryInterface
      */
     private $timeGenerator = null;
 
-    /*
+    /**
      *
      * @var TimeConverterInterface
      */
