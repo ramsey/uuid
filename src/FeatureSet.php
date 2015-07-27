@@ -28,6 +28,8 @@ use Ramsey\Uuid\Codec\StringCodec;
 use Ramsey\Uuid\Codec\GuidStringCodec;
 use Ramsey\Uuid\Builder\DegradedUuidBuilder;
 use Ramsey\Uuid\Generator\RandomGeneratorFactory;
+use Ramsey\Uuid\Generator\TimeGeneratorFactory;
+use Ramsey\Uuid\Provider\TimeProviderInterface;
 
 /**
  * Detects and exposes available features in current environment (32 or 64 bit, available dependencies...)
@@ -54,6 +56,8 @@ class FeatureSet
 
     private $randomGenerator;
 
+    private $timeGenerator;
+
     private $timeConverter;
 
     private $timeProvider;
@@ -74,7 +78,7 @@ class FeatureSet
         $this->nodeProvider = $this->buildNodeProvider();
         $this->randomGenerator = $this->buildRandomGenerator();
         $this->timeConverter = $this->buildTimeConverter();
-        $this->timeProvider = new SystemTimeProvider();
+        $this->setTimeProvider(new SystemTimeProvider());
     }
 
     public function getBuilder()
@@ -102,6 +106,11 @@ class FeatureSet
         return $this->randomGenerator;
     }
 
+    public function getTimeGenerator()
+    {
+        return $this->timeGenerator;
+    }
+
     public function getTimeConverter()
     {
         return $this->timeConverter;
@@ -110,6 +119,12 @@ class FeatureSet
     public function getTimeProvider()
     {
         return $this->timeProvider;
+    }
+
+    public function setTimeProvider(TimeProviderInterface $timeProvider)
+    {
+        $this->timeProvider = $timeProvider;
+        $this->timeGenerator = $this->buildTimeGenerator();
     }
 
     protected function buildCodec($useGuids = false)
@@ -145,6 +160,11 @@ class FeatureSet
     protected function buildRandomGenerator()
     {
         return (new RandomGeneratorFactory())->getGenerator();
+    }
+
+    protected function buildTimeGenerator()
+    {
+        return (new TimeGeneratorFactory($this))->getGenerator();
     }
 
     protected function buildTimeConverter()

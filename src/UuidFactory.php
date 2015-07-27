@@ -20,6 +20,7 @@ use Ramsey\Uuid\Converter\TimeConverterInterface;
 use Ramsey\Uuid\Provider\NodeProviderInterface;
 use Ramsey\Uuid\Provider\TimeProviderInterface;
 use Ramsey\Uuid\Generator\RandomGeneratorInterface;
+use Ramsey\Uuid\Generator\TimeGeneratorInterface;
 use Ramsey\Uuid\Codec\CodecInterface;
 use Ramsey\Uuid\Builder\UuidBuilderInterface;
 
@@ -50,6 +51,11 @@ class UuidFactory implements UuidFactoryInterface
     private $randomGenerator = null;
 
     /**
+     * @var TimeGeneratorInterface
+     */
+    private $timeGenerator = null;
+
+    /**
      *
      * @var TimeConverterInterface
      */
@@ -69,7 +75,7 @@ class UuidFactory implements UuidFactoryInterface
 
     /**
      * Create a new a instance
-     *
+     * @param FeatureSet $features
      */
     public function __construct(FeatureSet $features = null)
     {
@@ -79,6 +85,7 @@ class UuidFactory implements UuidFactoryInterface
         $this->nodeProvider = $features->getNodeProvider();
         $this->numberConverter = $features->getNumberConverter();
         $this->randomGenerator = $features->getRandomGenerator();
+        $this->timeGenerator = $features->getTimeGenerator();
         $this->timeConverter = $features->getTimeConverter();
         $this->timeProvider = $features->getTimeProvider();
         $this->uuidBuilder = $features->getBuilder();
@@ -89,9 +96,19 @@ class UuidFactory implements UuidFactoryInterface
         return $this->codec;
     }
 
+    public function getNodeProvider()
+    {
+        return $this->nodeProvider;
+    }
+
     public function getRandomGenerator()
     {
         return $this->randomGenerator;
+    }
+
+    public function getTimeGenerator()
+    {
+        return $this->timeGenerator;
     }
 
     public function getNumberConverter()
@@ -104,24 +121,14 @@ class UuidFactory implements UuidFactoryInterface
         return $this->timeConverter;
     }
 
-    public function setTimeConverter(TimeConverterInterface $converter)
+    public function getTimeProvider()
     {
-        $this->timeConverter = $converter;
-    }
-
-    public function setTimeProvider(TimeProviderInterface $provider)
-    {
-        $this->timeProvider = $provider;
+        return $this->timeProvider;
     }
 
     public function setRandomGenerator(RandomGeneratorInterface $generator)
     {
         $this->randomGenerator = $generator;
-    }
-
-    public function setNodeProvider(NodeProviderInterface $provider)
-    {
-        $this->nodeProvider = $provider;
     }
 
     public function setNumberConverter(NumberConverterInterface $converter)
@@ -184,31 +191,10 @@ class UuidFactory implements UuidFactoryInterface
      */
     public function uuid1($node = null, $clockSeq = null)
     {
-        $node = $this->getValidNode($node);
+        $bytes = $this->timeGenerator->generate($node, $clockSeq);
+        $hex = bin2hex($bytes);
 
-        if ($clockSeq === null) {
-            // Not using "stable storage"; see RFC 4122, Section 4.2.1.1
-            $clockSeq = mt_rand(0, 1 << 14);
-        }
-
-        // Create a 60-bit time value as a count of 100-nanosecond intervals
-        // since 00:00:00.00, 15 October 1582
-        $timeOfDay = $this->timeProvider->currentTime();
-        $uuidTime = $this->timeConverter->calculateTime($timeOfDay['sec'], $timeOfDay['usec']);
-
-        $timeHi = $this->applyVersion($uuidTime['hi'], 1);
-        $clockSeqHi = $this->applyVariant($clockSeq >> 8);
-
-        $fields = array(
-            'time_low' => $uuidTime['low'],
-            'time_mid' => $uuidTime['mid'],
-            'time_hi_and_version' => sprintf('%04x', $timeHi),
-            'clock_seq_hi_and_reserved' => sprintf('%02x', $clockSeqHi),
-            'clock_seq_low' => sprintf('%02x', $clockSeq & 0xff),
-            'node' => $node,
-        );
-
-        return $this->uuid($fields);
+        return $this->uuidFromHashedName($hex, 1);
     }
 
 
@@ -260,29 +246,6 @@ class UuidFactory implements UuidFactoryInterface
         return $this->uuidBuilder->build($this->codec, $fields);
     }
 
-    protected function applyVariant($clockSeqHi)
-    {
-        // Set the variant to RFC 4122
-        $clockSeqHi = $clockSeqHi & 0x3f;
-        $clockSeqHi &= ~(0xc0);
-        $clockSeqHi |= 0x80;
-
-        return $clockSeqHi;
-    }
-
-    /**
-     * @param string $timeHi
-     * @param integer $version
-     */
-    protected function applyVersion($timeHi, $version)
-    {
-        $timeHi = hexdec($timeHi) & 0x0fff;
-        $timeHi &= ~(0xf000);
-        $timeHi |= $version << 12;
-
-        return $timeHi;
-    }
-
     /**
      * @param string $name
      * @param integer $version
@@ -309,8 +272,8 @@ class UuidFactory implements UuidFactoryInterface
      */
     protected function uuidFromHashedName($hash, $version)
     {
-        $timeHi = $this->applyVersion(substr($hash, 12, 4), $version);
-        $clockSeqHi = $this->applyVariant(hexdec(substr($hash, 16, 2)));
+        $timeHi = BinaryUtils::applyVersion(substr($hash, 12, 4), $version);
+        $clockSeqHi = BinaryUtils::applyVariant(hexdec(substr($hash, 16, 2)));
 
         $fields = array(
             'time_low' => substr($hash, 0, 8),
@@ -322,23 +285,5 @@ class UuidFactory implements UuidFactoryInterface
         );
 
         return $this->uuid($fields);
-    }
-
-    protected function getValidNode($node)
-    {
-        if ($node === null) {
-            $node = $this->nodeProvider->getNode();
-        }
-
-        // Convert the node to hex, if it is still an integer
-        if (is_int($node)) {
-            $node = sprintf('%012x', $node);
-        }
-
-        if (! ctype_xdigit($node) || strlen($node) > 12) {
-            throw new \InvalidArgumentException('Invalid node value');
-        }
-
-        return strtolower(sprintf('%012s', $node));
     }
 }
