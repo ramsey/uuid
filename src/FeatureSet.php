@@ -14,6 +14,7 @@
 
 namespace Ramsey\Uuid;
 
+use Ramsey\Uuid\Converter\TimeConverterInterface;
 use Ramsey\Uuid\Provider\Node\FallbackNodeProvider;
 use Ramsey\Uuid\Provider\Node\RandomNodeProvider;
 use Ramsey\Uuid\Provider\Node\SystemNodeProvider;
@@ -46,6 +47,8 @@ class FeatureSet
 
     private $ignoreSystemNode = false;
 
+    private $enablePecl = false;
+
     private $builder;
 
     private $codec;
@@ -58,26 +61,23 @@ class FeatureSet
 
     private $timeGenerator;
 
-    private $timeConverter;
-
-    private $timeProvider;
-
     public function __construct(
         $useGuids = false,
         $force32Bit = false,
         $forceNoBigNumber = false,
-        $ignoreSystemNode = false
+        $ignoreSystemNode = false,
+        $enablePecl = false
     ) {
         $this->disableBigNumber = $forceNoBigNumber;
         $this->disable64Bit = $force32Bit;
         $this->ignoreSystemNode = $ignoreSystemNode;
+        $this->enablePecl = $enablePecl;
 
         $this->numberConverter = $this->buildNumberConverter();
         $this->builder = $this->buildUuidBuilder();
         $this->codec = $this->buildCodec($useGuids);
         $this->nodeProvider = $this->buildNodeProvider();
         $this->randomGenerator = $this->buildRandomGenerator();
-        $this->timeConverter = $this->buildTimeConverter();
         $this->setTimeProvider(new SystemTimeProvider());
     }
 
@@ -111,20 +111,9 @@ class FeatureSet
         return $this->timeGenerator;
     }
 
-    public function getTimeConverter()
-    {
-        return $this->timeConverter;
-    }
-
-    public function getTimeProvider()
-    {
-        return $this->timeProvider;
-    }
-
     public function setTimeProvider(TimeProviderInterface $timeProvider)
     {
-        $this->timeProvider = $timeProvider;
-        $this->timeGenerator = $this->buildTimeGenerator();
+        $this->timeGenerator = $this->buildTimeGenerator($timeProvider);
     }
 
     protected function buildCodec($useGuids = false)
@@ -162,9 +151,13 @@ class FeatureSet
         return (new RandomGeneratorFactory())->getGenerator();
     }
 
-    protected function buildTimeGenerator()
+    protected function buildTimeGenerator(TimeProviderInterface $timeProvider)
     {
-        return (new TimeGeneratorFactory($this))->getGenerator();
+        return (new TimeGeneratorFactory(
+            $this->nodeProvider,
+            $this->buildTimeConverter(),
+            $timeProvider
+        ))->getGenerator();
     }
 
     protected function buildTimeConverter()

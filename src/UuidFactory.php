@@ -16,9 +16,7 @@ namespace Ramsey\Uuid;
 
 use InvalidArgumentException;
 use Ramsey\Uuid\Converter\NumberConverterInterface;
-use Ramsey\Uuid\Converter\TimeConverterInterface;
 use Ramsey\Uuid\Provider\NodeProviderInterface;
-use Ramsey\Uuid\Provider\TimeProviderInterface;
 use Ramsey\Uuid\Generator\RandomGeneratorInterface;
 use Ramsey\Uuid\Generator\TimeGeneratorInterface;
 use Ramsey\Uuid\Codec\CodecInterface;
@@ -57,18 +55,6 @@ class UuidFactory implements UuidFactoryInterface
 
     /**
      *
-     * @var TimeConverterInterface
-     */
-    private $timeConverter = null;
-
-    /**
-     *
-     * @var TimeProviderInterface
-     */
-    private $timeProvider = null;
-
-    /**
-     *
      * @var UuidBuilderInterface
      */
     private $uuidBuilder = null;
@@ -86,8 +72,6 @@ class UuidFactory implements UuidFactoryInterface
         $this->numberConverter = $features->getNumberConverter();
         $this->randomGenerator = $features->getRandomGenerator();
         $this->timeGenerator = $features->getTimeGenerator();
-        $this->timeConverter = $features->getTimeConverter();
-        $this->timeProvider = $features->getTimeProvider();
         $this->uuidBuilder = $features->getBuilder();
     }
 
@@ -111,19 +95,14 @@ class UuidFactory implements UuidFactoryInterface
         return $this->timeGenerator;
     }
 
+    public function setTimeGenerator(TimeGeneratorInterface $generator)
+    {
+        $this->timeGenerator = $generator;
+    }
+
     public function getNumberConverter()
     {
         return $this->numberConverter;
-    }
-
-    public function getTimeConverter()
-    {
-        return $this->timeConverter;
-    }
-
-    public function getTimeProvider()
-    {
-        return $this->timeProvider;
     }
 
     public function setRandomGenerator(RandomGeneratorInterface $generator)
