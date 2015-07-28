@@ -1,5 +1,15 @@
 # ramsey/uuid Changelog
 
+## 3.0.0-alpha3
+
+_Released: 2015-07-28_
+
+  * Time generator improvements:
+    * Enabled use of custom TimeGenerator implementations.
+      * BREAK: Removed now unnecessary `timeConverter` and `timeProvider` properties, setters, and getters in both `FeatureSet` and `UuidFactory` as those are now exclusively used by the default `TimeGenerator`.
+      * Added a `setTimeGenerator` method on `UuidFactory` to override the default time generator.
+    * Add option to enable `PeclUuidTimeGenerator` via `FeatureSet`.
+
 ## 3.0.0-alpha2
 
 _Released: 2015-07-28_
