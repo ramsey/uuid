@@ -1,5 +1,17 @@
 # ramsey/uuid Changelog
 
+## 3.0.0-alpha2
+
+_Released: 2015-07-28_
+
+  * BREAK: Removed `PeclUuidFactory` in favor of using pecl-uuid with generators.
+  * NEW: Refactored time-based (version 1) UUIDs into a `TimeGeneratorInterface` to allow for other sources to generate version 1 UUIDs in this library.
+  * NEW: Added `PeclUuidTimeGenerator` and `PeclUuidRandomGenerator` for creating version 1 or version 4 UUIDs using the pecl-uuid extension.
+  * NEW: Add `RandomBytesGenerator` for use with PHP 7. ramsey/uuid will default to use this generator when running on PHP 7.
+  * `RandomLibAdapter` now defaults to a medium-strength generator with [ircmaxell/random-lib](https://github.com/ircmaxell/RandomLib). This is configurable, so other generator strengths may be used.
+  * Migrated to the Travis CI container-based infrastructure for builds.
+  * Documentation updates and corrections.
+
 ## 3.0.0-alpha1
 
 _Released: 2015-07-16_
