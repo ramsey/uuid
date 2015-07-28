@@ -14,26 +14,43 @@
 
 namespace Ramsey\Uuid\Generator;
 
-use Ramsey\Uuid\FeatureSet;
+use Ramsey\Uuid\Converter\TimeConverterInterface;
+use Ramsey\Uuid\Provider\NodeProviderInterface;
+use Ramsey\Uuid\Provider\TimeProviderInterface;
 
 class TimeGeneratorFactory
 {
     /**
-     * @var FeatureSet
+     * @var NodeProviderInterface
      */
-    private $featureSet;
+    private $nodeProvider;
 
-    public function __construct(FeatureSet $featureSet)
-    {
-        $this->featureSet = $featureSet;
+    /**
+     * @var TimeConverterInterface
+     */
+    private $timeConverter;
+
+    /**
+     * @var TimeProviderInterface
+     */
+    private $timeProvider;
+
+    public function __construct(
+        NodeProviderInterface $nodeProvider,
+        TimeConverterInterface $timeConverter,
+        TimeProviderInterface $timeProvider
+    ) {
+        $this->nodeProvider = $nodeProvider;
+        $this->timeConverter = $timeConverter;
+        $this->timeProvider = $timeProvider;
     }
 
     public function getGenerator()
     {
         return new DefaultTimeGenerator(
-            $this->featureSet->getNodeProvider(),
-            $this->featureSet->getTimeConverter(),
-            $this->featureSet->getTimeProvider()
+            $this->nodeProvider,
+            $this->timeConverter,
+            $this->timeProvider
         );
     }
 }
