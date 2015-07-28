@@ -28,7 +28,7 @@ class RandomLibAdapter implements RandomGeneratorInterface
         if ($this->generator == null) {
             $factory = new Factory();
 
-            $this->generator = $factory->getLowStrengthGenerator();
+            $this->generator = $factory->getMediumStrengthGenerator();
         }
     }
 
