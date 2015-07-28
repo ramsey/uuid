@@ -15,6 +15,7 @@
 namespace Ramsey\Uuid;
 
 use Ramsey\Uuid\Converter\TimeConverterInterface;
+use Ramsey\Uuid\Generator\PeclUuidTimeGenerator;
 use Ramsey\Uuid\Provider\Node\FallbackNodeProvider;
 use Ramsey\Uuid\Provider\Node\RandomNodeProvider;
 use Ramsey\Uuid\Provider\Node\SystemNodeProvider;
@@ -153,6 +154,10 @@ class FeatureSet
 
     protected function buildTimeGenerator(TimeProviderInterface $timeProvider)
     {
+        if ($this->enablePecl) {
+            return new PeclUuidTimeGenerator();
+        }
+
         return (new TimeGeneratorFactory(
             $this->nodeProvider,
             $this->buildTimeConverter(),
