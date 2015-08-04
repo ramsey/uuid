@@ -1,9 +1,5 @@
 # Rhumsaa\Uuid for PHP
 
-_**WARNING: This package is no longer maintained. Use [ramsey/uuid](https://github.com/ramsey/uuid) instead.**_
-
-----
-
 [![Build Status](https://travis-ci.org/ramsey/uuid.png?branch=master)](https://travis-ci.org/ramsey/uuid)
 [![Coverage Status](https://coveralls.io/repos/ramsey/uuid/badge.png)](https://coveralls.io/r/ramsey/uuid)
 [![Latest Stable Version](https://poser.pugx.org/rhumsaa/uuid/v/stable.png)](https://packagist.org/packages/rhumsaa/uuid)
