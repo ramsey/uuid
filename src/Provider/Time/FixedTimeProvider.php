@@ -22,7 +22,7 @@ class FixedTimeProvider implements TimeProviderInterface
 
     public function __construct(array $timestamp)
     {
-        if (! array_key_exists('sec', $timestamp) || ! array_key_exists('usec', $timestamp)) {
+        if (!array_key_exists('sec', $timestamp) || !array_key_exists('usec', $timestamp)) {
             throw new \InvalidArgumentException('Array must contain sec and usec keys.');
         }
 

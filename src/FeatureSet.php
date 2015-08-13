@@ -192,7 +192,7 @@ class FeatureSet
      */
     protected function hasBigNumber()
     {
-        return class_exists('Moontoast\Math\BigNumber') && ! $this->disableBigNumber;
+        return class_exists('Moontoast\Math\BigNumber') && !$this->disableBigNumber;
     }
 
     /**
@@ -202,6 +202,6 @@ class FeatureSet
      */
     protected function is64BitSystem()
     {
-        return PHP_INT_SIZE == 8 && ! $this->disable64Bit;
+        return PHP_INT_SIZE == 8 && !$this->disable64Bit;
     }
 }
