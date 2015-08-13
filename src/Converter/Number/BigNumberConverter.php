@@ -23,7 +23,7 @@ class BigNumberConverter implements NumberConverterInterface
      */
     public function fromHex($hex)
     {
-        $number = \Moontoast\Math\BigNumber::baseConvert($hex, 16, 10);
+        $number = \Moontoast\Math\BigNumber::convertToBase10($hex, 16);
 
         return new \Moontoast\Math\BigNumber($number);
     }
@@ -34,6 +34,6 @@ class BigNumberConverter implements NumberConverterInterface
             $integer = new \Moontoast\Math\BigNumber($integer);
         }
 
-        return \Moontoast\Math\BigNumber::baseConvert($integer, 10, 16);
+        return \Moontoast\Math\BigNumber::convertFromBase10($integer, 16);
     }
 }
