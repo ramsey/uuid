@@ -9,6 +9,7 @@ names have changed to `ramsey/uuid` and `Ramsey\Uuid`, respectively._
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](https://github.com/ramsey/uuid/blob/master/LICENSE)
 [![Build Status](https://img.shields.io/travis/ramsey/uuid/master.svg?style=flat-square)](https://travis-ci.org/ramsey/uuid)
 [![HHVM Status](https://img.shields.io/hhvm/ramsey/uuid.svg?style=flat-square)](http://hhvm.h4cc.de/package/ramsey/uuid)
+[![Scrutinizer](https://img.shields.io/scrutinizer/g/ramsey/uuid/master.svg?style=flat-square)](https://scrutinizer-ci.com/g/ramsey/uuid/)
 [![Coverage Status](https://img.shields.io/coveralls/ramsey/uuid/master.svg?style=flat-square)](https://coveralls.io/r/ramsey/uuid?branch=master)
 [![Total Downloads](https://img.shields.io/packagist/dt/ramsey/uuid.svg?style=flat-square)](https://packagist.org/packages/ramsey/uuid)
 
