@@ -15,6 +15,7 @@
 namespace Ramsey\Uuid\Builder;
 
 use Ramsey\Uuid\Codec\CodecInterface;
+use Ramsey\Uuid\Uuid;
 
 interface UuidBuilderInterface
 {
