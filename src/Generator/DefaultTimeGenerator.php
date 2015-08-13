@@ -89,7 +89,7 @@ class DefaultTimeGenerator implements TimeGeneratorInterface
             $node = sprintf('%012x', $node);
         }
 
-        if (! ctype_xdigit($node) || strlen($node) > 12) {
+        if (!ctype_xdigit($node) || strlen($node) > 12) {
             throw new \InvalidArgumentException('Invalid node value');
         }
 

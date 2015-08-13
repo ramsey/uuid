@@ -91,7 +91,7 @@ class StringCodec implements CodecInterface
 
         $nameParsed = implode('-', $components);
 
-        if (! Uuid::isValid($nameParsed)) {
+        if (!Uuid::isValid($nameParsed)) {
             throw new InvalidArgumentException('Invalid UUID string: ' . $encodedUuid);
         }
 

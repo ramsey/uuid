@@ -736,7 +736,7 @@ class Uuid implements UuidInterface
      */
     public static function getFactory()
     {
-        if (! self::$factory) {
+        if (!self::$factory) {
             self::$factory = new UuidFactory();
         }
 
