@@ -28,7 +28,7 @@ class TestCase extends \PHPUnit_Framework_TestCase
 
     protected function skipIfLittleEndianHost()
     {
-        if (FeatureSet::isLittleEndianSystem()) {
+        if (self::isLittleEndianSystem()) {
             $this->markTestSkipped(
                 'Skipping test targeting big-endian architectures.'
             );
@@ -37,10 +37,15 @@ class TestCase extends \PHPUnit_Framework_TestCase
 
     protected function skipIfBigEndianHost()
     {
-        if (! FeatureSet::isLittleEndianSystem()) {
+        if (! self::isLittleEndianSystem()) {
             $this->markTestSkipped(
                 'Skipping test targeting little-endian architectures.'
             );
         }
+    }
+
+    public static function isLittleEndianSystem()
+    {
+        return current(unpack('v', pack('S', 0x00FF))) === 0x00FF;
     }
 }
