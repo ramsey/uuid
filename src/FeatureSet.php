@@ -42,6 +42,11 @@ use Ramsey\Uuid\Provider\TimeProviderInterface;
 class FeatureSet
 {
 
+    public static function isLittleEndianSystem()
+    {
+        return current(unpack('v', pack('S', 0x00FF))) === 0x00FF;
+    }
+
     private $disableBigNumber = false;
 
     private $disable64Bit = false;
@@ -119,7 +124,7 @@ class FeatureSet
 
     protected function buildCodec($useGuids = false)
     {
-        if ($useGuids) {
+        if ($useGuids && $this->isLittleEndianSystem()) {
             return new GuidStringCodec($this->builder);
         }
 

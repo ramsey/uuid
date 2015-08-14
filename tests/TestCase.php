@@ -25,4 +25,22 @@ class TestCase extends \PHPUnit_Framework_TestCase
     {
         return class_exists('Moontoast\\Math\\BigNumber');
     }
+
+    protected function skipIfLittleEndianHost()
+    {
+        if (FeatureSet::isLittleEndianSystem()) {
+            $this->markTestSkipped(
+                'Skipping test targeting big-endian architectures.'
+            );
+        }
+    }
+
+    protected function skipIfBigEndianHost()
+    {
+        if (! FeatureSet::isLittleEndianSystem()) {
+            $this->markTestSkipped(
+                'Skipping test targeting little-endian architectures.'
+            );
+        }
+    }
 }
