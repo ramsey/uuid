@@ -1830,7 +1830,6 @@ class UuidTest extends TestCase
     /**
      * @covers Rhumsaa\Uuid\Uuid::getInteger
      * @expectedException Rhumsaa\Uuid\Exception\UnsatisfiedDependencyException
-     * @expectedExceptionMessage When calling Rhumsaa\Uuid\Uuid::calculateUuidTime on a 32-bit system, Moontoast\Math\BigNumber must be present
      */
     public function testGetInteger()
     {
