@@ -180,7 +180,7 @@ class UuidTest extends TestCase
     }
 
     /**
-     * @expectedException Ramsey\Uuid\Exception\UnsatisfiedDependencyException
+     * @expectedException \Ramsey\Uuid\Exception\UnsatisfiedDependencyException
      */
     public function testGetDateTimeThrownException()
     {
@@ -195,7 +195,7 @@ class UuidTest extends TestCase
     }
 
     /**
-     * @expectedException Ramsey\Uuid\Exception\UnsupportedOperationException
+     * @expectedException \Ramsey\Uuid\Exception\UnsupportedOperationException
      * @expectedExceptionMessage Not a time-based UUID
      */
     public function testGetDateTimeFromNonVersion1Uuid()
@@ -226,7 +226,7 @@ class UuidTest extends TestCase
     }
 
     /**
-     * @expectedException Ramsey\Uuid\Exception\UnsatisfiedDependencyException
+     * @expectedException \Ramsey\Uuid\Exception\UnsatisfiedDependencyException
      */
     public function testGetFields32Bit()
     {
@@ -266,7 +266,7 @@ class UuidTest extends TestCase
     }
 
     /**
-     * @expectedException Ramsey\Uuid\Exception\UnsatisfiedDependencyException
+     * @expectedException \Ramsey\Uuid\Exception\UnsatisfiedDependencyException
      */
     public function testGetLeastSignificantBitsException()
     {
@@ -296,7 +296,7 @@ class UuidTest extends TestCase
     }
 
     /**
-     * @expectedException Ramsey\Uuid\Exception\UnsatisfiedDependencyException
+     * @expectedException \Ramsey\Uuid\Exception\UnsatisfiedDependencyException
      */
     public function testGetMostSignificantBitsException()
     {
@@ -325,7 +325,7 @@ class UuidTest extends TestCase
     }
 
     /**
-     * @expectedException Ramsey\Uuid\Exception\UnsatisfiedDependencyException
+     * @expectedException \Ramsey\Uuid\Exception\UnsatisfiedDependencyException
      */
     public function testGetNode32Bit()
     {
@@ -370,7 +370,7 @@ class UuidTest extends TestCase
     }
 
     /**
-     * @expectedException Ramsey\Uuid\Exception\UnsatisfiedDependencyException
+     * @expectedException \Ramsey\Uuid\Exception\UnsatisfiedDependencyException
      */
     public function testGetTimeLow32Bit()
     {
@@ -433,7 +433,7 @@ class UuidTest extends TestCase
     }
 
     /**
-     * @expectedException Ramsey\Uuid\Exception\UnsupportedOperationException
+     * @expectedException \Ramsey\Uuid\Exception\UnsupportedOperationException
      * @expectedExceptionMessage Not a time-based UUID
      */
     public function testGetTimestampFromNonVersion1Uuid()
@@ -444,7 +444,7 @@ class UuidTest extends TestCase
     }
 
     /**
-     * @expectedException Ramsey\Uuid\Exception\UnsupportedOperationException
+     * @expectedException \Ramsey\Uuid\Exception\UnsupportedOperationException
      * @expectedExceptionMessage Not a time-based UUID
      */
     public function testGetTimestampHexFromNonVersion1Uuid()
@@ -455,7 +455,7 @@ class UuidTest extends TestCase
     }
 
     /**
-     * @expectedException Ramsey\Uuid\Exception\UnsatisfiedDependencyException
+     * @expectedException \Ramsey\Uuid\Exception\UnsatisfiedDependencyException
      */
     public function testGetTimestamp32Bit()
     {
@@ -1257,7 +1257,7 @@ class UuidTest extends TestCase
     }
 
     /**
-     * @expectedException Ramsey\Uuid\Exception\UnsatisfiedDependencyException
+     * @expectedException \Ramsey\Uuid\Exception\UnsatisfiedDependencyException
      */
     public function testCalculateUuidTimeThrownException()
     {
@@ -1766,8 +1766,7 @@ class UuidTest extends TestCase
     }
 
     /**
-     * @expectedException Ramsey\Uuid\Exception\UnsatisfiedDependencyException
-     * @expectedExceptionMessage When calling Ramsey\Uuid\Converter\Time\DegradedTimeConverter::calculateTime on a 32-bit system, Moontoast\Math\BigNumber must be present
+     * @expectedException \Ramsey\Uuid\Exception\UnsatisfiedDependencyException
      */
     public function testGetInteger()
     {
