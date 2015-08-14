@@ -26,6 +26,7 @@ class UuidTest extends TestCase
     }
 
     /**
+     * Tests that UUID and GUID's have the same textual representation but not the same binary representation.
      */
     public function testFromLittleEndianString()
     {
@@ -38,7 +39,8 @@ class UuidTest extends TestCase
         $this->assertInstanceOf('\Ramsey\Uuid\Uuid', $guid);
         // UUID's and GUID's share the same textual representation
         $this->assertEquals($uuid->toString(), $guid->toString());
-        // But not the same binary representation
+        // But not the same binary representation (this assertion is valid on little endian hosts
+        // only)
         $this->assertNotEquals(bin2hex($uuid->getBytes()), bin2hex($guid->getBytes()));
     }
 

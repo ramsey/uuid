@@ -51,16 +51,17 @@ class GuidStringCodec extends StringCodec
 
     public function decodeBytes($bytes)
     {
+        // Specifically call parent::decode to preserve correct byte order
         return parent::decode(bin2hex($bytes));
     }
 
     protected function swapFields(array & $components)
     {
-        $hex = unpack('H*', pack('V', hexdec($components[0])));
+        $hex = unpack('H*', pack('L', hexdec($components[0])));
         $components[0] = $hex[1];
-        $hex = unpack('H*', pack('v', hexdec($components[1])));
+        $hex = unpack('H*', pack('S', hexdec($components[1])));
         $components[1] = $hex[1];
-        $hex = unpack('H*', pack('v', hexdec($components[2])));
+        $hex = unpack('H*', pack('S', hexdec($components[2])));
         $components[2] = $hex[1];
     }
 }
