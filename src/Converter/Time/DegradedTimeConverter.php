@@ -23,8 +23,7 @@ class DegradedTimeConverter implements TimeConverterInterface
     {
         throw new UnsatisfiedDependencyException(
             'When calling ' . __METHOD__ . ' on a 32-bit system, '
-            . 'Moontoast\Math\BigNumber must be present in order '
-            . 'to generate version 1 UUIDs'
+            . 'Moontoast\Math\BigNumber must be present.'
         );
     }
 }

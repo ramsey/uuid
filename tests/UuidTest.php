@@ -1767,7 +1767,7 @@ class UuidTest extends TestCase
 
     /**
      * @expectedException Ramsey\Uuid\Exception\UnsatisfiedDependencyException
-     * @expectedExceptionMessage Cannot call Ramsey\Uuid\Converter\Number\DegradedNumberConverter::fromHex without support for large integers
+     * @expectedExceptionMessage When calling Ramsey\Uuid\Converter\Time\DegradedTimeConverter::calculateTime on a 32-bit system, Moontoast\Math\BigNumber must be present
      */
     public function testGetInteger()
     {
