@@ -29,13 +29,15 @@
         "phpunit/phpunit": "~4.1",
         "satooshi/php-coveralls": "~0.6",
         "squizlabs/php_codesniffer": "^2.3",
-        "jakub-onderka/php-parallel-lint": "^0.9.0"
+        "jakub-onderka/php-parallel-lint": "^0.9.0",
+        "ircmaxell/random-lib": "^1.1"
     },
     "bin": ["bin/uuid"],
     "suggest": {
         "moontoast/math": "Support for converting UUID to 128-bit integer (in string form).",
         "symfony/console": "Support for use of the bin/uuid command line tool.",
-        "doctrine/dbal": "Allow the use of a UUID as doctrine field type."
+        "doctrine/dbal": "Allow the use of a UUID as doctrine field type.",
+        "ircmaxell/random-lib": "Better random number generator for UUID v4"
     },
     "autoload": {
         "psr-4": {"Rhumsaa\\Uuid\\": "src/"}

@@ -9,7 +9,9 @@ class UuidTest extends TestCase
         Uuid::$force32Bit = false;
         Uuid::$forceNoBigNumber = false;
         Uuid::$forceNoOpensslRandomPseudoBytes = false;
+        Uuid::$forceNoRandomNumberGenerator = false;
         Uuid::$ignoreSystemNode = false;
+        Uuid::$randomNumberGenerator = null;
     }
 
     /**
@@ -826,9 +828,40 @@ class UuidTest extends TestCase
      * @covers Rhumsaa\Uuid\Uuid::generateBytes
      * @covers Rhumsaa\Uuid\Uuid::uuidFromHashedName
      */
+    public function testUuid4WithoutRandomNumberGenerator()
+    {
+        $this->skipIfNoRandomNumberGenerator();
+        Uuid::$forceNoRandomNumberGenerator = true;
+        $uuid = Uuid::uuid4();
+        $this->assertInstanceOf('Rhumsaa\Uuid\Uuid', $uuid);
+        $this->assertEquals(2, $uuid->getVariant());
+        $this->assertEquals(4, $uuid->getVersion());
+    }
+
+    /**
+     * @covers Rhumsaa\Uuid\Uuid::uuid4
+     * @covers Rhumsaa\Uuid\Uuid::generateBytes
+     * @covers Rhumsaa\Uuid\Uuid::uuidFromHashedName
+     */
     public function testUuid4WithoutOpensslRandomPseudoBytes()
     {
         Uuid::$forceNoOpensslRandomPseudoBytes = true;
+        $uuid = Uuid::uuid4();
+        $this->assertInstanceOf('Rhumsaa\Uuid\Uuid', $uuid);
+        $this->assertEquals(2, $uuid->getVariant());
+        $this->assertEquals(4, $uuid->getVersion());
+    }
+
+    /**
+     * @covers Rhumsaa\Uuid\Uuid::uuid4
+     * @covers Rhumsaa\Uuid\Uuid::generateBytes
+     * @covers Rhumsaa\Uuid\Uuid::uuidFromHashedName
+     */
+    public function testUuid4WithoutOpensslRandomPseudoBytesOrRandomNumberGenerator()
+    {
+        $this->skipIfNoRandomNumberGenerator();
+        Uuid::$forceNoOpensslRandomPseudoBytes = true;
+        Uuid::$forceNoRandomNumberGenerator = true;
         $uuid = Uuid::uuid4();
         $this->assertInstanceOf('Rhumsaa\Uuid\Uuid', $uuid);
         $this->assertEquals(2, $uuid->getVariant());
