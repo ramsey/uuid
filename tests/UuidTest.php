@@ -1830,7 +1830,6 @@ class UuidTest extends TestCase
     /**
      * @covers Rhumsaa\Uuid\Uuid::getInteger
      * @expectedException Rhumsaa\Uuid\Exception\UnsatisfiedDependencyException
-     * @expectedExceptionMessage Cannot call Rhumsaa\Uuid\Uuid::getInteger without support for large integers
      */
     public function testGetInteger()
     {
