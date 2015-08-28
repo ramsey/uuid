@@ -39,6 +39,15 @@ class TestCase extends \PHPUnit_Framework_TestCase
         }
     }
 
+    protected function skipIfNoRandomNumberGenerator()
+    {
+        if (!$this->hasRandomNumberGenerator()) {
+            $this->markTestSkipped(
+                'Skipping test that requires ircmaxell/random-lib.'
+            );
+        }
+    }
+
     protected function hasMoontoastMath()
     {
         return class_exists('Moontoast\\Math\\BigNumber');
@@ -52,5 +61,10 @@ class TestCase extends \PHPUnit_Framework_TestCase
     protected function hasDoctrineDbal()
     {
         return class_exists('Doctrine\\DBAL\\Types\\Type');
+    }
+
+    protected function hasRandomNumberGenerator()
+    {
+        return class_exists('RandomLib\\Generator');
     }
 }

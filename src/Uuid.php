@@ -12,6 +12,7 @@
 namespace Rhumsaa\Uuid;
 
 use InvalidArgumentException;
+use LogicException;
 
 /**
  * Represents a universally unique identifier (UUID), according to RFC 4122
@@ -119,6 +120,14 @@ final class Uuid
     public static $forceNoOpensslRandomPseudoBytes = false;
 
     /**
+     * For testing, RandomLib\Generator override; if true, treat as if
+     * Generator is not available
+     *
+     * @var bool
+     */
+    public static $forceNoRandomNumberGenerator = false;
+
+    /**
      * For testing, sets time of day to a static, known value
      *
      * @var array
@@ -131,6 +140,13 @@ final class Uuid
      * @var bool
      */
     public static $ignoreSystemNode = false;
+
+    /**
+     * For testing, holds the random number generator function
+     *
+     * @var callable
+     */
+    public static $randomNumberGenerator = null;
 
     /**
      * The fields that make up this UUID
@@ -1196,6 +1212,16 @@ final class Uuid
     }
 
     /**
+     * Returns true if the system has RandomLib\Generator
+     *
+     * @return boolean
+     */
+    protected static function hasRandomNumberGenerator()
+    {
+        return (class_exists('RandomLib\Generator') && !self::$forceNoRandomNumberGenerator);
+    }
+
+    /**
      * Returns true if the system is 64-bit, false otherwise
      *
      * @return bool
@@ -1245,15 +1271,32 @@ final class Uuid
      */
     private static function generateBytes($length)
     {
-        if (self::hasOpensslRandomPseudoBytes()) {
-            return openssl_random_pseudo_bytes($length);
+        if (empty(static::$randomNumberGenerator)) {
+            switch(true) {
+                case self::hasRandomNumberGenerator():
+                    $factory = new \RandomLib\Factory;
+                    $generator = $factory->getGenerator(new \SecurityLib\Strength(\SecurityLib\Strength::MEDIUM));
+                    static::$randomNumberGenerator = [$generator, 'generate'];
+                    break;
+
+                case self::hasOpensslRandomPseudoBytes():
+                    static::$randomNumberGenerator = 'openssl_random_pseudo_bytes';
+                    break;
+
+                default:
+                    static::$randomNumberGenerator = function($length) {
+                        for ($i = 1, $bytes = ''; $i <= $length; $i++, $bytes .= chr(mt_rand(0, 255)));
+                        return $bytes;
+                    };
+                    break;
+            }
         }
 
-        $bytes = '';
-        for ($i = 1; $i <= $length; $i++) {
-            $bytes = chr(mt_rand(0, 255)) . $bytes;
+        if (!is_callable(static::$randomNumberGenerator)) {
+            throw new LogicException("Unusable random number generator");
         }
 
-        return $bytes;
+        $rng = static::$randomNumberGenerator;
+        return $rng($length);
     }
 }
