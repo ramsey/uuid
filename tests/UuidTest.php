@@ -26,9 +26,12 @@ class UuidTest extends TestCase
     }
 
     /**
+     * Tests that UUID and GUID's have the same textual representation but not the same binary representation.
      */
-    public function testFromLittleEndianString()
+    public function testFromGuidStringOnLittleEndianHost()
     {
+        $this->skipIfBigEndianHost();
+
         $uuid = Uuid::fromString('b08c6fff-7dc5-e111-9b21-0800200c9a66');
 
         Uuid::setFactory(new UuidFactory(new FeatureSet(true)));
@@ -38,8 +41,31 @@ class UuidTest extends TestCase
         $this->assertInstanceOf('\Ramsey\Uuid\Uuid', $guid);
         // UUID's and GUID's share the same textual representation
         $this->assertEquals($uuid->toString(), $guid->toString());
-        // But not the same binary representation
+        // But not the same binary representation (this assertion is valid on little endian hosts
+        // only)
         $this->assertNotEquals(bin2hex($uuid->getBytes()), bin2hex($guid->getBytes()));
+    }
+
+    /**
+     * Tests that UUID and GUID's have the same textual representation and the same binary representation.
+     * This test is only valid on big endian hosts.
+     */
+    public function testFromGuidStringOnBigEndianHost()
+    {
+        $this->skipIfLittleEndianHost();
+
+        $uuid = Uuid::fromString('b08c6fff-7dc5-e111-9b21-0800200c9a66');
+
+        Uuid::setFactory(new UuidFactory(new FeatureSet(true)));
+
+        $guid = Uuid::fromString('b08c6fff-7dc5-e111-9b21-0800200c9a66');
+
+        $this->assertInstanceOf('\Ramsey\Uuid\Uuid', $guid);
+        // UUID's and GUID's share the same textual representation
+        $this->assertEquals($uuid->toString(), $guid->toString());
+        // But not the same binary representation (this assertion is valid on little endian hosts
+        // only)
+        $this->assertEquals(bin2hex($uuid->getBytes()), bin2hex($guid->getBytes()));
     }
 
     /**
@@ -1374,8 +1400,10 @@ class UuidTest extends TestCase
         $this->assertTrue($uuid->equals($fromBytesUuid));
     }
 
-    public function testFromLittleEndianBytes()
+    public function testFromGuidBytesOnLittleEndianHost()
     {
+        $this->skipIfBigEndianHost();
+
         $uuidFactory = new UuidFactory(new FeatureSet(false));
         $guidFactory = new UuidFactory(new FeatureSet(true));
 
@@ -1389,6 +1417,29 @@ class UuidTest extends TestCase
         $this->assertEquals('b08c6fff-7dc5-e111-9b21-0800200c9a66', $guid->toString());
 
         // Check that parsing LE bytes as LE preserves fields
+        $guid = $guidFactory->fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
+        $bytes = $guid->getBytes();
+
+        $parsedGuid = $guidFactory->fromBytes($bytes);
+
+        $this->assertEquals($guid->toString(), $parsedGuid->toString());
+    }
+
+    public function testFromGuidBytesOnBigEndianHost()
+    {
+        $this->skipIfLittleEndianHost();
+
+        $uuidFactory = new UuidFactory(new FeatureSet(false));
+        $guidFactory = new UuidFactory(new FeatureSet(true));
+
+        $uuid = $uuidFactory->fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
+        $bytes = $uuid->getBytes();
+
+        $guid = $guidFactory->fromBytes($bytes);
+
+        // UUIDs and GUIDs should have the same binary representation on BE hosts
+        $this->assertEquals($uuid->toString(), $guid->toString());
+
         $guid = $guidFactory->fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
         $bytes = $guid->getBytes();
 
