@@ -39,6 +39,13 @@ The 3.0.0 release represents a significant step for the ramsey/uuid library. Whi
   * NEW: While the interface to create UUIDs hasn't changed, if using this package on a 32-bit system, you will now receive an object of type `DegradedUuid` (which extends `Uuid`, which implements `UuidInterface`).
   * NEW: All UUIDs are now [JsonSerializable](http://php.net/JsonSerializable).
 
+## 2.8.3
+
+_Released: 2015-08-31_
+
+  * Fix exception message in `Uuid::calculateUuidTime()`.
+  * Update composer.json to reflect new repository and package name.
+
 ## 2.8.2
 
 _Released: 2015-07-23_
