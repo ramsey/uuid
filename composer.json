@@ -21,8 +21,8 @@
         }
     ],
     "support": {
-        "issues": "https://github.com/ramsey/rhumsaa-uuid/issues",
-        "source": "https://github.com/ramsey/rhumsaa-uuid"
+        "issues": "https://github.com/ramsey/uuid/issues",
+        "source": "https://github.com/ramsey/uuid"
     },
     "require": {
         "php": ">=5.4"
