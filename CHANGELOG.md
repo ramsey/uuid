@@ -1,5 +1,18 @@
 # ramsey/uuid Changelog
 
+## 3.0.0-beta1
+
+_Released: 2015-08-31_
+
+  * Improve GUID support to ensure that:
+    * On little endian (LE) architectures, the byte order of the first three fields is LE.
+    * On big endian (BE) architectures, it is the same as a GUID.
+    * String representation is always the same.
+  * Fix exception message for `DegradedNumberConverter::fromHex()`.
+  * Add Scrutinizer configuration to run code-quality builds through Scrutinizer.
+  * Auto-fix Scrutinizer issues.
+  * Fix support URLs in composer.json to point to the correct GitHub repository.
+
 ## 3.0.0-alpha3
 
 _Released: 2015-07-28_
