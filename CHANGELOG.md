@@ -1,5 +1,12 @@
 # Rhumsaa\Uuid Changelog
 
+## 2.8.3
+
+_Released: 2015-08-31_
+
+  * Fix exception message in `Uuid::calculateUuidTime()`.
+  * Update composer.json to reflect new repository and package name.
+
 ## 2.8.2
 
 _Released: 2015-07-23_
