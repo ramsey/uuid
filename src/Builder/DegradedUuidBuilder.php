@@ -15,19 +15,37 @@
 namespace Ramsey\Uuid\Builder;
 
 use Ramsey\Uuid\Codec\CodecInterface;
-use Ramsey\Uuid\DegradedUuid;
 use Ramsey\Uuid\Converter\NumberConverterInterface;
+use Ramsey\Uuid\DegradedUuid;
 
+/**
+ * DegradedUuidBuilder builds instances of DegradedUuid
+ */
 class DegradedUuidBuilder implements UuidBuilderInterface
 {
-
+    /**
+     * @var NumberConverterInterface
+     */
     private $converter;
 
+    /**
+     * Constructs the DegradedUuidBuilder
+     *
+     * @param NumberConverterInterface The number converter to use when constructing the DegradedUuid
+     */
     public function __construct(NumberConverterInterface $converter)
     {
         $this->converter = $converter;
     }
 
+    /**
+     * Builds a DegradedUuid
+     *
+     * @param CodecInterface $codec The codec to use for building this DegradedUuid
+     * @param array $fields An array of fields from which to construct the DegradedUuid;
+     *     see {@see \Ramsey\Uuid\Uuid::getFields()} for array structure.
+     * @return DegradedUuid
+     */
     public function build(CodecInterface $codec, array $fields)
     {
         return new DegradedUuid($fields, $this->converter, $codec);

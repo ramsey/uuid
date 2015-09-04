@@ -14,20 +14,39 @@
 
 namespace Ramsey\Uuid\Builder;
 
-use Ramsey\Uuid\Converter\NumberConverterInterface;
 use Ramsey\Uuid\Codec\CodecInterface;
+use Ramsey\Uuid\Converter\NumberConverterInterface;
 use Ramsey\Uuid\Uuid;
 
+/**
+ * DefaultUuidBuilder is the default UUID builder for ramsey/uuid; it builds
+ * instances of Uuid objects
+ */
 class DefaultUuidBuilder implements UuidBuilderInterface
 {
-
+    /**
+     * @var NumberConverterInterface
+     */
     private $converter;
 
+    /**
+     * Constructs the DefaultUuidBuilder
+     *
+     * @param NumberConverterInterface The number converter to use when constructing the Uuid
+     */
     public function __construct(NumberConverterInterface $converter)
     {
         $this->converter = $converter;
     }
 
+    /**
+     * Builds a Uuid
+     *
+     * @param CodecInterface $codec The codec to use for building this Uuid
+     * @param array $fields An array of fields from which to construct the Uuid;
+     *     see {@see \Ramsey\Uuid\Uuid::getFields()} for array structure.
+     * @return Uuid
+     */
     public function build(CodecInterface $codec, array $fields)
     {
         return new Uuid($fields, $this->converter, $codec);

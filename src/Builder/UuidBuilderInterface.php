@@ -15,12 +15,20 @@
 namespace Ramsey\Uuid\Builder;
 
 use Ramsey\Uuid\Codec\CodecInterface;
-use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 
+/**
+ * UuidBuilderInterface builds instances UuidInterface
+ */
 interface UuidBuilderInterface
 {
     /**
-     * @return Uuid
+     * Builds an instance of a UuidInterface
+     *
+     * @param CodecInterface $codec The codec to use for building this UuidInterface instance
+     * @param array $fields An array of fields from which to construct a UuidInterface instance;
+     *     see {@see \Ramsey\Uuid\Uuid::getFields()} for array structure.
+     * @return UuidInterface
      */
     public function build(CodecInterface $codec, array $fields);
 }
