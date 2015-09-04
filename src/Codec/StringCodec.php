@@ -15,20 +15,38 @@
 namespace Ramsey\Uuid\Codec;
 
 use InvalidArgumentException;
-use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\Builder\UuidBuilderInterface;
+use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
+/**
+ * StringCodec encodes and decodes RFC 4122 UUIDs
+ *
+ * @link http://tools.ietf.org/html/rfc4122
+ */
 class StringCodec implements CodecInterface
 {
-
+    /**
+     * @var UuidBuilderInterface
+     */
     private $builder;
 
+    /**
+     * Constructs a StringCodec for use encoding and decoding UUIDs
+     *
+     * @param UuidBuilderInterface $builder The UUID builder to use when encoding UUIDs
+     */
     public function __construct(UuidBuilderInterface $builder)
     {
         $this->builder = $builder;
     }
 
+    /**
+     * Encodes a UuidInterface as a string representation of a UUID
+     *
+     * @param UuidInterface $uuid
+     * @return string Hexadecimal string representation of a UUID
+     */
     public function encode(UuidInterface $uuid)
     {
         $fields = array_values($uuid->getFieldsHex());
@@ -39,11 +57,23 @@ class StringCodec implements CodecInterface
         );
     }
 
+    /**
+     * Encodes a UuidInterface as a binary representation of a UUID
+     *
+     * @param UuidInterface $uuid
+     * @return string Binary string representation of a UUID
+     */
     public function encodeBinary(UuidInterface $uuid)
     {
         return hex2bin($uuid->getHex());
     }
 
+    /**
+     * Decodes a string representation of a UUID into a UuidInterface object instance
+     *
+     * @param string $encodedUuid
+     * @return UuidInterface
+     */
     public function decode($encodedUuid)
     {
         $components = $this->extractComponents($encodedUuid);
@@ -52,6 +82,12 @@ class StringCodec implements CodecInterface
         return $this->builder->build($this, $fields);
     }
 
+    /**
+     * Decodes a binary representation of a UUID into a UuidInterface object instance
+     *
+     * @param string $bytes
+     * @return UuidInterface
+     */
     public function decodeBytes($bytes)
     {
         if (strlen($bytes) !== 16) {
@@ -63,11 +99,21 @@ class StringCodec implements CodecInterface
         return $this->decode($hexUuid[1]);
     }
 
+    /**
+     * Returns the UUID builder
+     *
+     * @return UuidBuilderInterface
+     */
     protected function getBuilder()
     {
         return $this->builder;
     }
 
+    /**
+     * Returns an array of UUID components (the UUID exploded on its dashes)
+     *
+     * @return array
+     */
     protected function extractComponents($encodedUuid)
     {
         $nameParsed = str_replace(array(
@@ -98,6 +144,12 @@ class StringCodec implements CodecInterface
         return $components;
     }
 
+    /**
+     * Returns the fields that make up this UUID
+     *
+     * @see \Ramsey\Uuid\Uuid::getFields()
+     * @return array
+     */
     protected function getFields(array $components)
     {
         return array(

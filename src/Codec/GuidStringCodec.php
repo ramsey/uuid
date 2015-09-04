@@ -14,12 +14,22 @@
 
 namespace Ramsey\Uuid\Codec;
 
-use Ramsey\Uuid\UuidInterface;
 use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 
+/**
+ * GuidStringCodec encodes and decodes globally unique identifiers (GUID)
+ *
+ * @link https://en.wikipedia.org/wiki/Globally_unique_identifier
+ */
 class GuidStringCodec extends StringCodec
 {
-
+    /**
+     * Encodes a UuidInterface as a string representation of a GUID
+     *
+     * @param UuidInterface $uuid
+     * @return string Hexadecimal string representation of a GUID
+     */
     public function encode(UuidInterface $uuid)
     {
         $components = array_values($uuid->getFieldsHex());
@@ -33,6 +43,12 @@ class GuidStringCodec extends StringCodec
         );
     }
 
+    /**
+     * Encodes a UuidInterface as a binary representation of a GUID
+     *
+     * @param UuidInterface $uuid
+     * @return string Binary string representation of a GUID
+     */
     public function encodeBinary(UuidInterface $uuid)
     {
         $components = array_values($uuid->getFieldsHex());
@@ -40,6 +56,12 @@ class GuidStringCodec extends StringCodec
         return hex2bin(implode('', $components));
     }
 
+    /**
+     * Decodes a string representation of a GUID into a UuidInterface object instance
+     *
+     * @param string $encodedUuid
+     * @return UuidInterface
+     */
     public function decode($encodedUuid)
     {
         $components = $this->extractComponents($encodedUuid);
@@ -49,13 +71,25 @@ class GuidStringCodec extends StringCodec
         return $this->getBuilder()->build($this, $this->getFields($components));
     }
 
+    /**
+     * Decodes a binary representation of a GUID into a UuidInterface object instance
+     *
+     * @param string $bytes
+     * @return UuidInterface
+     */
     public function decodeBytes($bytes)
     {
         // Specifically call parent::decode to preserve correct byte order
         return parent::decode(bin2hex($bytes));
     }
 
-    protected function swapFields(array & $components)
+    /**
+     * Swaps fields to support GUID byte order
+     *
+     * @param array $components An array of UUID components (the UUID exploded on its dashes)
+     * @return void
+     */
+    protected function swapFields(array &$components)
     {
         $hex = unpack('H*', pack('L', hexdec($components[0])));
         $components[0] = $hex[1];
