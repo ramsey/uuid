@@ -29,7 +29,7 @@ use InvalidArgumentException;
  * @link http://docs.python.org/3/library/uuid.html
  * @link http://docs.oracle.com/javase/6/docs/api/java/util/UUID.html
  */
-final class Uuid
+final class Uuid implements \JsonSerializable
 {
     /**
      * When this namespace is specified, the name string is a fully-qualified domain name.
@@ -821,6 +821,16 @@ final class Uuid
             $this->fields
         );
     }
+
+	/**
+	 * Returns the string representation of this UUID during json serialization
+	 *
+	 * @return string
+	 */
+	public function jsonSerialize()
+	{
+		return $this->toString();
+	}
 
     /**
      * Creates a UUID from a byte string.
