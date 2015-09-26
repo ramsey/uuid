@@ -14,9 +14,31 @@
 
 namespace Ramsey\Uuid\Converter;
 
+/**
+ * NumberConverterInterface converts UUIDs from hexadecimal characters into
+ * representations of integers and vice versa
+ */
 interface NumberConverterInterface
 {
+    /**
+     * Converts a hexadecimal number into an integer representation of the number
+     *
+     * The integer representation returned may be an object or a string
+     * representation of the integer, depending on the implementation.
+     *
+     * @param string $hex The hexadecimal string representation to convert
+     * @return mixed
+     */
     public function fromHex($hex);
 
+    /**
+     * Converts an integer representation into a hexadecimal string representation
+     * of the number
+     *
+     * @param mixed $integer An integer representation to convert; this may be
+     *     a true integer, a string integer, or a object representation that
+     *     this converter can understand
+     * @return string Hexadecimal string
+     */
     public function toHex($integer);
 }

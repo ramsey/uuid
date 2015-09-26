@@ -17,8 +17,20 @@ namespace Ramsey\Uuid\Converter\Number;
 use Ramsey\Uuid\Exception\UnsatisfiedDependencyException;
 use Ramsey\Uuid\Converter\NumberConverterInterface;
 
+/**
+ * DegradedNumberConverter throws `UnsatisfiedDependencyException` exceptions
+ * if attempting to use number conversion functionality in an environment that
+ * does not support large integers (i.e. when moontoast/math is not available)
+ */
 class DegradedNumberConverter implements NumberConverterInterface
 {
+    /**
+     * Throws an `UnsatisfiedDependencyException`
+     *
+     * @param string $hex The hexadecimal string representation to convert
+     * @return void
+     * @throws UnsatisfiedDependencyException
+     */
     public function fromHex($hex)
     {
         throw new UnsatisfiedDependencyException(
@@ -28,6 +40,13 @@ class DegradedNumberConverter implements NumberConverterInterface
         );
     }
 
+    /**
+     * Throws an `UnsatisfiedDependencyException`
+     *
+     * @param mixed $integer An integer representation to convert
+     * @return void
+     * @throws UnsatisfiedDependencyException
+     */
     public function toHex($integer)
     {
         throw new UnsatisfiedDependencyException(

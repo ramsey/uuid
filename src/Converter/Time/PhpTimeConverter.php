@@ -16,8 +16,22 @@ namespace Ramsey\Uuid\Converter\Time;
 
 use Ramsey\Uuid\Converter\TimeConverterInterface;
 
+/**
+ * PhpTimeConverter uses built-in PHP functions and standard math operations
+ * available to the PHP programming language to provide facilities for
+ * converting parts of time into representations that may be used in UUIDs
+ */
 class PhpTimeConverter implements TimeConverterInterface
 {
+    /**
+     * Uses the provided seconds and micro-seconds to calculate the time_low,
+     * time_mid, and time_high fields used by RFC 4122 version 1 UUIDs
+     *
+     * @param string $seconds
+     * @param string $microSeconds
+     * @return string[] An array containing `low`, `mid`, and `high` keys
+     * @link http://tools.ietf.org/html/rfc4122#section-4.2.2
+     */
     public function calculateTime($seconds, $microSeconds)
     {
         // 0x01b21dd213814000 is the number of 100-ns intervals between the

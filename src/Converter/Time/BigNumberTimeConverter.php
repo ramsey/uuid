@@ -14,18 +14,33 @@
 
 namespace Ramsey\Uuid\Converter\Time;
 
+use Moontoast\Math\BigNumber;
 use Ramsey\Uuid\Converter\TimeConverterInterface;
 
+/**
+ * BigNumberTimeConverter uses the moontoast/math library's `BigNumber` to
+ * provide facilities for converting parts of time into representations that may
+ * be used in UUIDs
+ */
 class BigNumberTimeConverter implements TimeConverterInterface
 {
+    /**
+     * Uses the provided seconds and micro-seconds to calculate the time_low,
+     * time_mid, and time_high fields used by RFC 4122 version 1 UUIDs
+     *
+     * @param string $seconds
+     * @param string $microSeconds
+     * @return string[] An array containing `low`, `mid`, and `high` keys
+     * @link http://tools.ietf.org/html/rfc4122#section-4.2.2
+     */
     public function calculateTime($seconds, $microSeconds)
     {
-        $uuidTime = new \Moontoast\Math\BigNumber('0');
+        $uuidTime = new BigNumber('0');
 
-        $sec = new \Moontoast\Math\BigNumber($seconds);
+        $sec = new BigNumber($seconds);
         $sec->multiply('10000000');
 
-        $usec = new \Moontoast\Math\BigNumber($microSeconds);
+        $usec = new BigNumber($microSeconds);
         $usec->multiply('10');
 
         $uuidTime->add($sec)

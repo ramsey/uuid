@@ -17,8 +17,21 @@ namespace Ramsey\Uuid\Converter\Time;
 use Ramsey\Uuid\Converter\TimeConverterInterface;
 use Ramsey\Uuid\Exception\UnsatisfiedDependencyException;
 
+/**
+ * DegradedTimeConverter throws `UnsatisfiedDependencyException` exceptions
+ * if attempting to use time conversion functionality in an environment that
+ * does not support large integers (i.e. when moontoast/math is not available)
+ */
 class DegradedTimeConverter implements TimeConverterInterface
 {
+    /**
+     * Throws an `UnsatisfiedDependencyException`
+     *
+     * @param string $seconds
+     * @param string $microSeconds
+     * @return void
+     * @throws UnsatisfiedDependencyException
+     */
     public function calculateTime($seconds, $microSeconds)
     {
         throw new UnsatisfiedDependencyException(

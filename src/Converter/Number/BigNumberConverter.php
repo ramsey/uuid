@@ -14,26 +14,41 @@
 
 namespace Ramsey\Uuid\Converter\Number;
 
+use Moontoast\Math\BigNumber;
 use Ramsey\Uuid\Converter\NumberConverterInterface;
 
+/**
+ * BigNumberConverter converts UUIDs from hexadecimal characters into
+ * moontoast/math `BigNumber` representations of integers and vice versa
+ */
 class BigNumberConverter implements NumberConverterInterface
 {
     /**
-     * @param string $hex
+     * Converts a hexadecimal number into a `Moontoast\Math\BigNumber` representation
+     *
+     * @param string $hex The hexadecimal string representation to convert
+     * @return BigNumber
      */
     public function fromHex($hex)
     {
-        $number = \Moontoast\Math\BigNumber::convertToBase10($hex, 16);
+        $number = BigNumber::convertToBase10($hex, 16);
 
-        return new \Moontoast\Math\BigNumber($number);
+        return new BigNumber($number);
     }
 
+    /**
+     * Converts an integer or `Moontoast\Math\BigNumber` integer representation
+     * into a hexadecimal string representation
+     *
+     * @param int|string|BigNumber $integer An integer or `Moontoast\Math\BigNumber`
+     * @return string Hexadecimal string
+     */
     public function toHex($integer)
     {
-        if (!$integer instanceof \Moontoast\Math\BigNumber) {
-            $integer = new \Moontoast\Math\BigNumber($integer);
+        if (!$integer instanceof BigNumber) {
+            $integer = new BigNumber($integer);
         }
 
-        return \Moontoast\Math\BigNumber::convertFromBase10($integer, 16);
+        return BigNumber::convertFromBase10($integer, 16);
     }
 }
