@@ -16,8 +16,16 @@ namespace Ramsey\Uuid\Provider\Time;
 
 use Ramsey\Uuid\Provider\TimeProviderInterface;
 
+/**
+ * SystemTimeProvider uses built-in PHP functions to provide the time
+ */
 class SystemTimeProvider implements TimeProviderInterface
 {
+    /**
+     * Returns a timestamp array
+     *
+     * @return int[] Array containing `sec` and `usec` components of a timestamp
+     */
     public function currentTime()
     {
         return gettimeofday();

@@ -16,12 +16,21 @@ namespace Ramsey\Uuid\Provider\Node;
 
 use Ramsey\Uuid\Provider\NodeProviderInterface;
 
+/**
+ * RandomNodeProvider provides functionality to generate a random node ID, in
+ * the event that the node ID could not be obtained from the host system
+ *
+ * @link http://tools.ietf.org/html/rfc4122#section-4.5
+ */
 class RandomNodeProvider implements NodeProviderInterface
 {
+    /**
+     * Returns the system node ID
+     *
+     * @return string System node ID as a hexadecimal string
+     */
     public function getNode()
     {
-        // if $node is still null (couldn't get from system), randomly generate
-        // a node value, according to RFC 4122, Section 4.5
         return sprintf('%06x%06x', mt_rand(0, 1 << 24), mt_rand(0, 1 << 24));
     }
 }

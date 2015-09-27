@@ -14,10 +14,16 @@
 
 namespace Ramsey\Uuid\Provider;
 
+/**
+ * TimeProviderInterface provides functionality to get the time from a specific
+ * type of time provider
+ */
 interface TimeProviderInterface
 {
     /**
-     * @return string[] Array guaranteed to contain "sec" and "usec" components of current timestamp.
+     * Returns a timestamp array
+     *
+     * @return int[] Array guaranteed to contain `sec` and `usec` components of a timestamp
      */
     public function currentTime();
 }

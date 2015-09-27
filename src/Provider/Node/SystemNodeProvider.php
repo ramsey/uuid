@@ -16,8 +16,17 @@ namespace Ramsey\Uuid\Provider\Node;
 
 use Ramsey\Uuid\Provider\NodeProviderInterface;
 
+/**
+ * SystemNodeProvider provides functionality to get the system node ID (MAC
+ * address) using external system calls
+ */
 class SystemNodeProvider implements NodeProviderInterface
 {
+    /**
+     * Returns the system node ID
+     *
+     * @return string System node ID as a hexadecimal string
+     */
     public function getNode()
     {
         static $node = null;
@@ -43,8 +52,6 @@ class SystemNodeProvider implements NodeProviderInterface
     /**
      * Returns the network interface configuration for the system
      *
-     * @todo Needs evaluation and possibly modification to ensure this works
-     *       well across multiple platforms.
      * @codeCoverageIgnore
      * @return string
      */
