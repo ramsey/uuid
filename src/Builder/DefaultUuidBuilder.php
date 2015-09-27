@@ -44,7 +44,7 @@ class DefaultUuidBuilder implements UuidBuilderInterface
      *
      * @param CodecInterface $codec The codec to use for building this Uuid
      * @param array $fields An array of fields from which to construct the Uuid;
-     *     see {@see \Ramsey\Uuid\Uuid::getFields()} for array structure.
+     *     see {@see \Ramsey\Uuid\UuidInterface::getFieldsHex()} for array structure.
      * @return Uuid
      */
     public function build(CodecInterface $codec, array $fields)

@@ -147,7 +147,7 @@ class StringCodec implements CodecInterface
     /**
      * Returns the fields that make up this UUID
      *
-     * @see \Ramsey\Uuid\Uuid::getFields()
+     * @see \Ramsey\Uuid\UuidInterface::getFieldsHex()
      * @return array
      */
     protected function getFields(array $components)
