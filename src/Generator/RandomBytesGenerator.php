@@ -14,9 +14,20 @@
 
 namespace Ramsey\Uuid\Generator;
 
+/**
+ * RandomBytesGenerator provides functionality to generate strings of random
+ * binary data using `random_bytes()` function in PHP 7+
+ *
+ * @link http://php.net/random_bytes
+ */
 class RandomBytesGenerator implements RandomGeneratorInterface
 {
-
+    /**
+     * Generates a string of random binary data of the specified length
+     *
+     * @param integer $length The number of bytes of random binary data to generate
+     * @return string A binary string
+     */
     public function generate($length)
     {
         return random_bytes($length);

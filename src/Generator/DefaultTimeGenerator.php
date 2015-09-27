@@ -19,6 +19,11 @@ use Ramsey\Uuid\Converter\TimeConverterInterface;
 use Ramsey\Uuid\Provider\NodeProviderInterface;
 use Ramsey\Uuid\Provider\TimeProviderInterface;
 
+/**
+ * DefaultTimeGenerator provides functionality to generate strings of binary
+ * data for version 1 UUIDs based on a host ID, sequence number, and the current
+ * time
+ */
 class DefaultTimeGenerator implements TimeGeneratorInterface
 {
     /**
@@ -36,6 +41,14 @@ class DefaultTimeGenerator implements TimeGeneratorInterface
      */
     private $timeProvider;
 
+    /**
+     * Constructs a `DefaultTimeGenerator` using a node provider, time converter,
+     * and time provider
+     *
+     * @param NodeProviderInterface $nodeProvider
+     * @param TimeConverterInterface $timeConverter
+     * @param TimeProviderInterface $timeProvider
+     */
     public function __construct(
         NodeProviderInterface $nodeProvider,
         TimeConverterInterface $timeConverter,
@@ -46,6 +59,20 @@ class DefaultTimeGenerator implements TimeGeneratorInterface
         $this->timeProvider = $timeProvider;
     }
 
+    /**
+     * Generate a version 1 UUID from a host ID, sequence number, and the current time
+     *
+     * If $node is not given, we will attempt to obtain the local hardware
+     * address. If $clockSeq is given, it is used as the sequence number;
+     * otherwise a random 14-bit sequence number is chosen.
+     *
+     * @param int|string $node A 48-bit number representing the hardware address
+     *     This number may be represented as an integer or a hexadecimal string.
+     * @param int $clockSeq A 14-bit number used to help avoid duplicates that
+     *     could arise when the clock is set backwards in time or if the node ID
+     *     changes.
+     * @return string A binary string
+     */
     public function generate($node = null, $clockSeq = null)
     {
         $node = $this->getValidNode($node);
@@ -78,6 +105,13 @@ class DefaultTimeGenerator implements TimeGeneratorInterface
         return hex2bin($hex);
     }
 
+    /**
+     * Uses the node provider given when constructing this instance to get
+     * the node ID (usually a MAC address)
+     *
+     * @param string|int $node A node value that may be used to override the node provider
+     * @return string Hexadecimal representation of the node ID
+     */
     protected function getValidNode($node)
     {
         if ($node === null) {

@@ -18,6 +18,9 @@ use Ramsey\Uuid\Converter\TimeConverterInterface;
 use Ramsey\Uuid\Provider\NodeProviderInterface;
 use Ramsey\Uuid\Provider\TimeProviderInterface;
 
+/**
+ * A factory for retrieving a time generator, based on the environment
+ */
 class TimeGeneratorFactory
 {
     /**
@@ -35,6 +38,14 @@ class TimeGeneratorFactory
      */
     private $timeProvider;
 
+    /**
+     * Constructs a `TimeGeneratorFactory` using a node provider, time converter,
+     * and time provider
+     *
+     * @param NodeProviderInterface $nodeProvider
+     * @param TimeConverterInterface $timeConverter
+     * @param TimeProviderInterface $timeProvider
+     */
     public function __construct(
         NodeProviderInterface $nodeProvider,
         TimeConverterInterface $timeConverter,
@@ -45,6 +56,11 @@ class TimeGeneratorFactory
         $this->timeProvider = $timeProvider;
     }
 
+    /**
+     * Returns a default time generator, based on the current environment
+     *
+     * @return TimeGeneratorInterface
+     */
     public function getGenerator()
     {
         return new DefaultTimeGenerator(

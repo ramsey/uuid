@@ -14,12 +14,17 @@
 
 namespace Ramsey\Uuid\Generator;
 
+/**
+ * RandomGeneratorInterface provides functionality to generate strings of random
+ * binary data
+ */
 interface RandomGeneratorInterface
 {
     /**
-     * @param integer $length
+     * Generates a string of random binary data of the specified length
      *
-     * @return string
+     * @param integer $length The number of bytes of random binary data to generate
+     * @return string A binary string
      */
     public function generate($length);
 }

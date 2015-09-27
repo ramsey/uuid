@@ -17,22 +17,32 @@ namespace Ramsey\Uuid\Generator;
 use Ramsey\Uuid\Converter\NumberConverterInterface;
 
 /**
- * Generator to be used for COMB sequential UUID's.
+ * CombGenerator provides functionality to generate COMB (combined GUID/timestamp)
+ * sequential UUIDs
  *
- * @author thibaud
- *
+ * @link https://en.wikipedia.org/wiki/Globally_unique_identifier#Sequential_algorithms
  */
 class CombGenerator implements RandomGeneratorInterface
 {
-
+    /**
+     * @var RandomGeneratorInterface
+     */
     private $randomGenerator;
 
+    /**
+     * @var NumberConverterInterface
+     */
     private $converter;
 
+    /**
+     * @var integer
+     */
     private $timestampBytes;
 
     /**
-     * @param RandomGeneratorInterface $generator RNG for the non-time part.
+     * Constructs a `CombGenerator` using a random-number generator and a number converter
+     *
+     * @param RandomGeneratorInterface $generator Random-number generator for the non-time part.
      * @param NumberConverterInterface $numberConverter Instance of number converter.
      */
     public function __construct(RandomGeneratorInterface $generator, NumberConverterInterface $numberConverter)
@@ -43,7 +53,10 @@ class CombGenerator implements RandomGeneratorInterface
     }
 
     /**
-     * (non-PHPdoc) @see \Ramsey\Uuid\RandomGeneratorInterface::generate()
+     * Generates a string of binary data of the specified length
+     *
+     * @param integer $length The number of bytes of random binary data to generate
+     * @return string A binary string
      */
     public function generate($length)
     {
@@ -68,7 +81,8 @@ class CombGenerator implements RandomGeneratorInterface
 
     /**
      * Returns current timestamp as integer, precise to 0.00001 seconds
-     * @return number
+     *
+     * @return integer
      */
     private function timestamp()
     {

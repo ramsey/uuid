@@ -14,8 +14,20 @@
 
 namespace Ramsey\Uuid\Generator;
 
+/**
+ * MtRandRandomGenerator provides functionality to generate strings of random
+ * binary data using the `mt_rand()` PHP function
+ *
+ * @link http://php.net/mt_rand
+ */
 class MtRandGenerator implements RandomGeneratorInterface
 {
+    /**
+     * Generates a string of random binary data of the specified length
+     *
+     * @param integer $length The number of bytes of random binary data to generate
+     * @return string A binary string
+     */
     public function generate($length)
     {
         $bytes = '';

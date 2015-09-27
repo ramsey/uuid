@@ -14,8 +14,20 @@
 
 namespace Ramsey\Uuid\Generator;
 
+/**
+ * PeclUuidRandomGenerator provides functionality to generate strings of random
+ * binary data using the PECL UUID PHP extension
+ *
+ * @link https://pecl.php.net/package/uuid
+ */
 class PeclUuidRandomGenerator implements RandomGeneratorInterface
 {
+    /**
+     * Generates a string of random binary data of the specified length
+     *
+     * @param integer $length The number of bytes of random binary data to generate
+     * @return string A binary string
+     */
     public function generate($length)
     {
         $uuid = uuid_create(UUID_TYPE_RANDOM);
