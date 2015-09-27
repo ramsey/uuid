@@ -21,24 +21,21 @@ use Ramsey\Uuid\Generator\RandomGeneratorInterface;
 use Ramsey\Uuid\Generator\TimeGeneratorInterface;
 use Ramsey\Uuid\Codec\CodecInterface;
 use Ramsey\Uuid\Builder\UuidBuilderInterface;
+use Ramsey\Uuid\UuidInterface;
 
 class UuidFactory implements UuidFactoryInterface
 {
-
     /**
-     *
      * @var CodecInterface
      */
     private $codec = null;
 
     /**
-     *
      * @var NodeProviderInterface
      */
     private $nodeProvider = null;
 
     /**
-     *
      * @var NumberConverterInterface
      */
     private $numberConverter = null;
@@ -54,14 +51,14 @@ class UuidFactory implements UuidFactoryInterface
     private $timeGenerator = null;
 
     /**
-     *
      * @var UuidBuilderInterface
      */
     private $uuidBuilder = null;
 
     /**
-     * Create a new a instance
-     * @param FeatureSet $features
+     * Constructs a `UuidFactory` for creating `Ramsey\Uuid\UuidInterface` instances
+     *
+     * @param FeatureSet $features A set of features for use when creating UUIDs
      */
     public function __construct(FeatureSet $features = null)
     {
@@ -75,74 +72,104 @@ class UuidFactory implements UuidFactoryInterface
         $this->uuidBuilder = $features->getBuilder();
     }
 
+    /**
+     * Returns the UUID coder-decoder used by this factory
+     *
+     * @return CodecInterface
+     */
     public function getCodec()
     {
         return $this->codec;
     }
 
+    /**
+     * Returns the system node ID provider used by this factory
+     *
+     * @return NodeProviderInterface
+     */
     public function getNodeProvider()
     {
         return $this->nodeProvider;
     }
 
+    /**
+     * Returns the random UUID generator used by this factory
+     *
+     * @return RandomGeneratorInterface
+     */
     public function getRandomGenerator()
     {
         return $this->randomGenerator;
     }
 
+    /**
+     * Returns the time-based UUID generator used by this factory
+     *
+     * @return TimeGeneratorInterface
+     */
     public function getTimeGenerator()
     {
         return $this->timeGenerator;
     }
 
+    /**
+     * Sets the time-based UUID generator this factory will use to generate version 1 UUIDs
+     *
+     * @param TimeGeneratorInterface $generator
+     */
     public function setTimeGenerator(TimeGeneratorInterface $generator)
     {
         $this->timeGenerator = $generator;
     }
 
+    /**
+     * Returns the number converter used by this factory
+     *
+     * @return NumberConverterInterface
+     */
     public function getNumberConverter()
     {
         return $this->numberConverter;
     }
 
+    /**
+     * Sets the random UUID generator this factory will use to generate version 4 UUIDs
+     *
+     * @param RandomGeneratorInterface $generator
+     */
     public function setRandomGenerator(RandomGeneratorInterface $generator)
     {
         $this->randomGenerator = $generator;
     }
 
+    /**
+     * Sets the number converter this factory will use
+     *
+     * @param NumberConverterInterface $converter
+     */
     public function setNumberConverter(NumberConverterInterface $converter)
     {
         $this->numberConverter = $converter;
     }
 
+    /**
+     * Sets the UUID builder this factory will use when creating `Uuid` instances
+     *
+     * @param UuidBuilderInterface $builder
+     */
     public function setUuidBuilder(UuidBuilderInterface $builder)
     {
         $this->uuidBuilder = $builder;
     }
 
-    /**
-     * Creates a UUID from a byte string.
-     *
-     * @param string $bytes
-     * @return Uuid
-     * @throws InvalidArgumentException If the $bytes string does not contain 16 characters
-     */
     public function fromBytes($bytes)
     {
         return $this->codec->decodeBytes($bytes);
     }
 
-    /**
-     * Creates a UUID from the string standard representation as described
-     * in the toString() method.
-     *
-     * @param string $name A string that specifies a UUID
-     * @return Uuid
-     * @throws InvalidArgumentException If the $name isn't a valid UUID
-     */
-    public function fromString($name)
+    public function fromString($uuid)
     {
-        return $this->codec->decode($name);
+        return $this->codec->decode($uuid);
     }
 
     public function fromInteger($integer)
@@ -153,21 +180,6 @@ class UuidFactory implements UuidFactoryInterface
         return $this->fromString($hex);
     }
 
-    /**
-     * Generate a version 1 UUID from a host ID, sequence number, and the current time.
-     * If $node is not given, we will attempt to obtain the local hardware
-     * address. If $clockSeq is given, it is used as the sequence number;
-     * otherwise a random 14-bit sequence number is chosen.
-     *
-     * @param int|string $node A 48-bit number representing the hardware
-     *                         address. This number may be represented as
-     *                         an integer or a hexadecimal string.
-     * @param int $clockSeq A 14-bit number used to help avoid duplicates that
-     *                      could arise when the clock is set backwards in time
-     *                      or if the node ID changes.
-     * @return Uuid
-     * @throws InvalidArgumentException if the $node is invalid
-     */
     public function uuid1($node = null, $clockSeq = null)
     {
         $bytes = $this->timeGenerator->generate($node, $clockSeq);
@@ -176,25 +188,11 @@ class UuidFactory implements UuidFactoryInterface
         return $this->uuidFromHashedName($hex, 1);
     }
 
-
-    /**
-     * Generate a version 3 UUID based on the MD5 hash of a namespace identifier (which
-     * is a UUID) and a name (which is a string).
-     *
-     * @param Uuid|string $ns The UUID namespace in which to create the named UUID
-     * @param string $name The name to create a UUID for
-     * @return Uuid
-     */
     public function uuid3($ns, $name)
     {
         return $this->uuidFromNsAndName($ns, $name, 3, 'md5');
     }
 
-    /**
-     * Generate a version 4 (random) UUID.
-     *
-     * @return Uuid
-     */
     public function uuid4()
     {
         $bytes = $this->randomGenerator->generate(16);
@@ -207,32 +205,39 @@ class UuidFactory implements UuidFactoryInterface
         return $this->uuidFromHashedName($hex, 4);
     }
 
-    /**
-     * Generate a version 5 UUID based on the SHA-1 hash of a namespace identifier (which
-     * is a UUID) and a name (which is a string).
-     *
-     * @param Uuid|string $ns The UUID namespace in which to create the named UUID
-     * @param string $name The name to create a UUID for
-     * @return Uuid
-     */
     public function uuid5($ns, $name)
     {
         return $this->uuidFromNsAndName($ns, $name, 5, 'sha1');
     }
 
+    /**
+     * Returns a `Uuid`
+     *
+     * Uses the configured builder and codec and the provided array of hexadecimal
+     * value UUID fields to construct a `Uuid` object.
+     *
+     * @param array $fields An array of fields from which to construct a UUID;
+     *     see {@see \Ramsey\Uuid\UuidInterface::getFieldsHex()} for array structure.
+     * @return UuidInterface
+     */
     public function uuid(array $fields)
     {
         return $this->uuidBuilder->build($this->codec, $fields);
     }
 
     /**
-     * @param string $name
-     * @param integer $version
-     * @param string $hashFunction
+     * Returns a version 3 or 5 namespaced `Uuid`
+     *
+     * @param string|UuidInterface $ns The UUID namespace to use
+     * @param string $name The string to hash together with the namespace
+     * @param int $version The version of UUID to create (3 or 5)
+     * @param string $hashFunction The hash function to use when hashing together
+     *     the namespace and name
+     * @return UuidInterface
      */
     protected function uuidFromNsAndName($ns, $name, $version, $hashFunction)
     {
-        if (!($ns instanceof Uuid)) {
+        if (!($ns instanceof UuidInterface)) {
             $ns = $this->codec->decode($ns);
         }
 
@@ -242,12 +247,12 @@ class UuidFactory implements UuidFactoryInterface
     }
 
     /**
-     * Returns a version 3 or 5 UUID based on the hash (md5 or sha1) of a
-     * namespace identifier (which is a UUID) and a name (which is a string)
+     * Returns a `Uuid` created from `$hash` with the version field set to `$version`
+     * and the variant field set for RFC 4122
      *
      * @param string $hash The hash to use when creating the UUID
-     * @param int $version The UUID version to be generated
-     * @return Uuid
+     * @param int $version The UUID version to set for this hash (1, 3, 4, or 5)
+     * @return UuidInterface
      */
     protected function uuidFromHashedName($hash, $version)
     {
