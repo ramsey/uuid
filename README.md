@@ -35,18 +35,28 @@ From [Wikipedia](http://en.wikipedia.org/wiki/Universally_unique_identifier):
 Much inspiration for this library came from the [Java][javauuid] and
 [Python][pyuuid] UUID libraries.
 
-## API Documentation
 
-The [latest class API documentation][apidocs] is available online. This project
-uses [ApiGen](http://apigen.org/) to generate this documentation. To
-generate the documentation on your own, install dev dependencies and run the
-following command from the root of the project:
+## Upgrading from 2.x to 3.x
 
+While we have made significant internal changes to the library, we have made every effort to ensure a seamless upgrade path from the 2.x series of this library to 3.x.
+
+One major breaking change is the transition from the `Rhumsaa` root namespace to `Ramsey`. In most cases, all you will need is to change the namespace to `Ramsey` in your code, and everything will "just work."
+
+Here are full details on the breaking changes to the public API of this library:
+
+1. All namespace references of `Rhumsaa` have changed to `Ramsey`. Simply change the namespace to `Ramsey` in your code and everything should work.
+2. The console application has moved to [ramsey/uuid-console](https://packagist.org/packages/ramsey/uuid-console). If using the console functionality, use Composer to require `ramsey/uuid-console`.
+3. The Doctrine field type mapping has moved to [ramsey/uuid-doctrine](https://packagist.org/packages/ramsey/uuid-doctrine). If using the Doctrine functionality, use Composer to require `ramsey/uuid-doctrine`.
+
+## Installation
+
+The preferred method of installation is via [Packagist][] and [Composer][]. Run
+the following command to install the package and add it as a requirement to
+your project's `composer.json`:
+
+```bash
+composer require ramsey/uuid
 ```
-./vendor/bin/apigen generate --source="src" --destination="build/apidocs" --title="ramsey/uuid" --template-theme="bootstrap" --deprecated --todo
-```
-
-This will generate documentation in the `build/apidocs/` folder.
 
 ## Requirements
 
@@ -60,7 +70,25 @@ If a particular requirement is not present, then a `Ramsey\Uuid\Exception\Unsati
 is thrown, allowing one to catch a bad call in an environment where the call is
 not supported and gracefully degrade.
 
+
+## API Documentation
+
+The [latest class API documentation][apidocs] is available online.
+
+This project uses [ApiGen](http://apigen.org/) to generate this documentation.
+To generate the documentation on your own, install dev dependencies and run the
+following command from the root of the project:
+
+```
+./vendor/bin/apigen generate --source="src" --destination="build/apidocs" --title="ramsey/uuid" --template-theme="bootstrap" --deprecated --todo
+```
+
+This will generate documentation in the `build/apidocs/` folder.
+
 ## Examples
+
+See the [cookbook on the wiki][wiki-cookbook] for more examples and approaches
+to specific use-cases.
 
 ```php
 <?php
@@ -73,19 +101,19 @@ try {
 
     // Generate a version 1 (time-based) UUID object
     $uuid1 = Uuid::uuid1();
-    echo $uuid1->toString() . "\n"; // e4eaaaf2-d142-11e1-b3e4-080027620cdd
+    echo $uuid1->toString() . "\n"; // i.e. e4eaaaf2-d142-11e1-b3e4-080027620cdd
 
     // Generate a version 3 (name-based and hashed with MD5) UUID object
     $uuid3 = Uuid::uuid3(Uuid::NAMESPACE_DNS, 'php.net');
-    echo $uuid3->toString() . "\n"; // 11a38b9a-b3da-360f-9353-a5a725514269
+    echo $uuid3->toString() . "\n"; // i.e. 11a38b9a-b3da-360f-9353-a5a725514269
 
     // Generate a version 4 (random) UUID object
     $uuid4 = Uuid::uuid4();
-    echo $uuid4->toString() . "\n"; // 25769c6c-d34d-4bfe-ba98-e0ee856f3e7a
+    echo $uuid4->toString() . "\n"; // i.e. 25769c6c-d34d-4bfe-ba98-e0ee856f3e7a
 
     // Generate a version 5 (name-based and hashed with SHA1) UUID object
     $uuid5 = Uuid::uuid5(Uuid::NAMESPACE_DNS, 'php.net');
-    echo $uuid5->toString() . "\n"; // c4a760a8-dbcf-5254-a0d9-6a4474bd1b62
+    echo $uuid5->toString() . "\n"; // i.e. c4a760a8-dbcf-5254-a0d9-6a4474bd1b62
 
 } catch (UnsatisfiedDependencyException $e) {
 
@@ -96,16 +124,6 @@ try {
 }
 ```
 
-## Installation
-
-The preferred method of installation is via [Packagist][] and [Composer][]. Run
-the following command to install the package and add it as a requirement to
-`composer.json`:
-
-```bash
-composer require ramsey/uuid
-```
-
 
 [rfc4122]: http://tools.ietf.org/html/rfc4122
 [javauuid]: http://docs.oracle.com/javase/6/docs/api/java/util/UUID.html
@@ -113,4 +131,5 @@ composer require ramsey/uuid
 [packagist]: https://packagist.org/packages/ramsey/uuid
 [composer]: http://getcomposer.org/
 [moontoast\math]: https://github.com/moontoast/math
-[apidocs]: http://docs.benramsey.com/ramsey-uuid/3.0.x-dev/
+[apidocs]: http://docs.benramsey.com/ramsey-uuid/latest/
+[wiki-cookbook]: https://github.com/ramsey/uuid/wiki/Ramsey%5CUuid-Cookbook
