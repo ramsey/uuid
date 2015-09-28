@@ -188,30 +188,30 @@ class Uuid implements UuidInterface
         return $this->toString();
     }
 
-    public function compareTo(UuidInterface $uuid)
+    public function compareTo(UuidInterface $other)
     {
         $comparison = 0;
 
-        if ($this->getMostSignificantBitsHex() < $uuid->getMostSignificantBitsHex()) {
+        if ($this->getMostSignificantBitsHex() < $other->getMostSignificantBitsHex()) {
             $comparison = -1;
-        } elseif ($this->getMostSignificantBitsHex() > $uuid->getMostSignificantBitsHex()) {
+        } elseif ($this->getMostSignificantBitsHex() > $other->getMostSignificantBitsHex()) {
             $comparison = 1;
-        } elseif ($this->getLeastSignificantBitsHex() < $uuid->getLeastSignificantBitsHex()) {
+        } elseif ($this->getLeastSignificantBitsHex() < $other->getLeastSignificantBitsHex()) {
             $comparison = -1;
-        } elseif ($this->getLeastSignificantBitsHex() > $uuid->getLeastSignificantBitsHex()) {
+        } elseif ($this->getLeastSignificantBitsHex() > $other->getLeastSignificantBitsHex()) {
             $comparison = 1;
         }
 
         return $comparison;
     }
 
-    public function equals($obj)
+    public function equals($other)
     {
-        if (!($obj instanceof UuidInterface)) {
+        if (!($other instanceof UuidInterface)) {
             return false;
         }
 
-        return ($this->compareTo($obj) == 0);
+        return ($this->compareTo($other) == 0);
     }
 
     public function getBytes()

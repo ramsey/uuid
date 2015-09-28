@@ -32,7 +32,7 @@ interface UuidInterface extends \JsonSerializable
      * * Q. What's the value of being able to sort UUIDs?
      * * A. Use them as keys in a B-Tree or similar mapping.
      *
-     * @param UuidInterface $uuid UUID to which this UUID is compared
+     * @param UuidInterface $other UUID to which this UUID is compared
      * @return int -1, 0 or 1 as this UUID is less than, equal to, or greater than `$uuid`
      */
     public function compareTo(UuidInterface $other);
@@ -44,8 +44,8 @@ interface UuidInterface extends \JsonSerializable
      * object, has the same variant, and contains the same value, bit for bit,
      * as this UUID.
      *
-     * @param object $obj
-     * @return bool True if `$obj` is equal to this UUID
+     * @param object $other
+     * @return bool True if `$other` is equal to this UUID
      */
     public function equals($other);
 
