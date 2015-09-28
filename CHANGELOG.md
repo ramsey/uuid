@@ -1,5 +1,22 @@
 # ramsey/uuid Changelog
 
+## 3.0.0
+
+_Released: 2015-09-28_
+
+The 3.0.0 release represents a significant step for the ramsey/uuid library. While the simple and familiar API used in previous versions remains intact, this release provides greater flexibility to integrators, including the ability to inject your own number generators, UUID codecs, node and time providers, and more.
+
+  * BREAK: The root namespace for this package has changed from "Rhumsaa" to "Ramsey." In most cases, simply making this change in your applications is the only upgrade path you will need. Everything else should work as expected.
+  * BREAK: The UUID [Doctrine field type](http://doctrine-dbal.readthedocs.org/en/latest/reference/types.html) has been moved to [ramsey/uuid-doctrine](https://github.com/ramsey/uuid-doctrine).
+  * BREAK: The `uuid` console application has been moved to [ramsey/uuid-console](https://github.com/ramsey/uuid-console).
+  * BREAK: The `Uuid::VERSION` package version constant has been removed.
+  * See also the release notes for [3.0.0-alpha1][300-alpha1], [3.0.0-alpha2][300-alpha2], [3.0.0-alpha3][300-alpha3], and [3.0.0-beta1][300-beta1].
+
+[300-alpha1]: https://github.com/ramsey/uuid/blob/master/CHANGELOG.md#300-alpha1
+[300-alpha2]: https://github.com/ramsey/uuid/blob/master/CHANGELOG.md#300-alpha2
+[300-alpha3]: https://github.com/ramsey/uuid/blob/master/CHANGELOG.md#300-alpha3
+[300-beta1]: https://github.com/ramsey/uuid/blob/master/CHANGELOG.md#300-beta1
+
 ## 3.0.0-beta1
 
 _Released: 2015-08-31_
@@ -38,8 +55,6 @@ _Released: 2015-07-28_
 ## 3.0.0-alpha1
 
 _Released: 2015-07-16_
-
-The 3.0.0 release represents a significant step for the ramsey/uuid library. While the simple and familiar API used in previous versions remains intact, this release provides greater flexibility to integrators, including the ability to inject your own number generators, UUID codecs, node and time providers, and more.
 
   * BREAK: The root namespace for this package has changed from "Rhumsaa" to "Ramsey." In most cases, simply making this change in your applications is the only upgrade path you will need. Everything else should work as expected.
   * BREAK: The UUID [Doctrine field type](http://doctrine-dbal.readthedocs.org/en/latest/reference/types.html) has been moved to [ramsey/uuid-doctrine](https://github.com/ramsey/uuid-doctrine).
