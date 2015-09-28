@@ -130,6 +130,6 @@ try {
 [pyuuid]: http://docs.python.org/3/library/uuid.html
 [packagist]: https://packagist.org/packages/ramsey/uuid
 [composer]: http://getcomposer.org/
-[moontoast\math]: https://github.com/moontoast/math
+[moontoast\math]: https://packagist.org/packages/moontoast/math
 [apidocs]: http://docs.benramsey.com/ramsey-uuid/latest/
 [wiki-cookbook]: https://github.com/ramsey/uuid/wiki/Ramsey%5CUuid-Cookbook
