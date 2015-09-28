@@ -124,6 +124,14 @@ try {
 }
 ```
 
+## Contributing
+
+Contributions are welcome! Please read [CONTRIBUTING][] for details.
+
+## Copyright and License
+
+The ramsey/uuid library is copyright © [Ben Ramsey](https://benramsey.com/) and licensed for use under the MIT License (MIT). Please see [LICENSE][] for more information.
+
 
 [rfc4122]: http://tools.ietf.org/html/rfc4122
 [javauuid]: http://docs.oracle.com/javase/6/docs/api/java/util/UUID.html
@@ -133,3 +141,5 @@ try {
 [moontoast\math]: https://packagist.org/packages/moontoast/math
 [apidocs]: http://docs.benramsey.com/ramsey-uuid/latest/
 [wiki-cookbook]: https://github.com/ramsey/uuid/wiki/Ramsey%5CUuid-Cookbook
+[contributing]: https://github.com/ramsey/uuid/blob/master/CONTRIBUTING.md
+[license]: https://github.com/ramsey/uuid/blob/master/LICENSE
