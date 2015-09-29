@@ -39,6 +39,17 @@ Much inspiration for this library came from the [Java][javauuid] and
 [Python][pyuuid] UUID libraries.
 
 
+## Installation
+
+The preferred method of installation is via [Packagist][] and [Composer][]. Run
+the following command to install the package and add it as a requirement to
+your project's `composer.json`:
+
+```bash
+composer require ramsey/uuid
+```
+
+
 ## Upgrading from 2.x to 3.x
 
 While we have made significant internal changes to the library, we have made every effort to ensure a seamless upgrade path from the 2.x series of this library to 3.x.
@@ -52,15 +63,22 @@ Here are full details on the breaking changes to the public API of this library:
 3. The Doctrine field type mapping has moved to [ramsey/uuid-doctrine](https://packagist.org/packages/ramsey/uuid-doctrine). If using the Doctrine functionality, use Composer to require `ramsey/uuid-doctrine`.
 
 
-## Installation
+## What to do if you see a "rhumsaa/uuid is abandoned" message
 
-The preferred method of installation is via [Packagist][] and [Composer][]. Run
-the following command to install the package and add it as a requirement to
-your project's `composer.json`:
+When installing your project's dependencies using Composer, you might see the following message:
 
-```bash
-composer require ramsey/uuid
 ```
+Package rhumsaa/uuid is abandoned, you should avoid using it. Use ramsey/uuid instead.
+```
+
+Don't panic. Simply execute the following commands with Composer:
+
+``` bash
+composer remove rhumsaa/uuid
+composer require ramsey/uuid=^2.8
+```
+
+After doing so, you will have the latest ramsey/uuid package in the 2.8.x series, and there will be no need to modify any code; the namespace in the 2.8.x series is still `Rhumsaa`.
 
 
 ## Requirements
@@ -76,7 +94,7 @@ is thrown, allowing one to catch a bad call in an environment where the call is
 not supported and gracefully degrade.
 
 
-## API Documentation
+## API documentation
 
 The [latest class API documentation][apidocs] is available online.
 
@@ -136,7 +154,7 @@ try {
 Contributions are welcome! Please read [CONTRIBUTING][] for details.
 
 
-## Copyright and License
+## Copyright and license
 
 The ramsey/uuid library is copyright © [Ben Ramsey](https://benramsey.com/) and licensed for use under the MIT License (MIT). Please see [LICENSE][] for more information.
 
