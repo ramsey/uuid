@@ -152,7 +152,6 @@ The ramsey/uuid library is copyright © [Ben Ramsey](https://benramsey.com/) and
 [apidocs]: http://docs.benramsey.com/ramsey-uuid/latest/
 [wiki-cookbook]: https://github.com/ramsey/uuid/wiki/Ramsey%5CUuid-Cookbook
 [contributing]: https://github.com/ramsey/uuid/blob/master/CONTRIBUTING.md
-[license]: https://github.com/ramsey/uuid/blob/master/LICENSE
 
 [badge-gitter]: https://img.shields.io/badge/gitter-join_chat-brightgreen.svg?style=flat-square
 [badge-source]: http://img.shields.io/badge/source-ramsey/uuid-blue.svg?style=flat-square
