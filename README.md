@@ -1,7 +1,6 @@
 # ramsey/uuid
 
-_NOTICE: Formerly known as `rhumsaa/uuid`, The package and namespace
-names have changed to `ramsey/uuid` and `Ramsey\Uuid`, respectively._
+_NOTICE: Formerly known as `rhumsaa/uuid`, The package and namespace names have changed to `ramsey/uuid` and `Ramsey\Uuid`, respectively._
 
 [![Gitter Chat][badge-gitter]][gitter]
 [![Source Code][badge-source]][source]
@@ -13,8 +12,7 @@ names have changed to `ramsey/uuid` and `Ramsey\Uuid`, respectively._
 [![Coverage Status][badge-coverage]][coverage]
 [![Total Downloads][badge-downloads]][downloads]
 
-ramsey/uuid is a PHP 5.4+ library for generating and working with
-[RFC 4122][rfc4122] version 1, 3, 4, and 5 universally unique identifiers (UUID).
+ramsey/uuid is a PHP 5.4+ library for generating and working with [RFC 4122][rfc4122] version 1, 3, 4, and 5 universally unique identifiers (UUID).
 
 This project adheres to a [Contributor Code of Conduct][conduct]. By participating in this project and its community, you are expected to uphold this code.
 
@@ -23,27 +21,14 @@ This project adheres to a [Contributor Code of Conduct][conduct]. By participati
 
 From [Wikipedia](http://en.wikipedia.org/wiki/Universally_unique_identifier):
 
-> The intent of UUIDs is to enable distributed systems to uniquely identify
-> information without significant central coordination. In this context the word
-> unique should be taken to mean "practically unique" rather than "guaranteed
-> unique". Since the identifiers have a finite size, it is possible for two
-> differing items to share the same identifier. The identifier size and
-> generation process need to be selected so as to make this sufficiently
-> improbable in practice. Anyone can create a UUID and use it to identify
-> something with reasonable confidence that the same identifier will never be
-> unintentionally created by anyone to identify something else. Information
-> labeled with UUIDs can therefore be later combined into a single database
-> without needing to resolve identifier (ID) conflicts.
+> The intent of UUIDs is to enable distributed systems to uniquely identify information without significant central coordination. In this context the word unique should be taken to mean "practically unique" rather than "guaranteed unique". Since the identifiers have a finite size, it is possible for two differing items to share the same identifier. The identifier size and generation process need to be selected so as to make this sufficiently improbable in practice. Anyone can create a UUID and use it to identify something with reasonable confidence that the same identifier will never be unintentionally created by anyone to identify something else. Information labeled with UUIDs can therefore be later combined into a single database without needing to resolve identifier (ID) conflicts.
 
-Much inspiration for this library came from the [Java][javauuid] and
-[Python][pyuuid] UUID libraries.
+Much inspiration for this library came from the [Java][javauuid] and [Python][pyuuid] UUID libraries.
 
 
 ## Installation
 
-The preferred method of installation is via [Packagist][] and [Composer][]. Run
-the following command to install the package and add it as a requirement to
-your project's `composer.json`:
+The preferred method of installation is via [Packagist][] and [Composer][]. Run the following command to install the package and add it as a requirement to your project's `composer.json`:
 
 ```bash
 composer require ramsey/uuid
@@ -83,24 +68,16 @@ After doing so, you will have the latest ramsey/uuid package in the 2.8.x series
 
 ## Requirements
 
-Some methods in this library have requirements due to integer size restrictions
-on 32-bit and 64-bit builds of PHP. A 64-bit build of PHP and the [Moontoast\Math][]
-library are recommended. However, this library is designed to work on 32-bit
-builds of PHP without Moontoast\Math, with some degraded functionality. Please
-check the API documentation for more information.
+Some methods in this library have requirements due to integer size restrictions on 32-bit and 64-bit builds of PHP. A 64-bit build of PHP and the [Moontoast\Math][] library are recommended. However, this library is designed to work on 32-bit builds of PHP without Moontoast\Math, with some degraded functionality. Please check the API documentation for more information.
 
-If a particular requirement is not present, then a `Ramsey\Uuid\Exception\UnsatisfiedDependencyException`
-is thrown, allowing one to catch a bad call in an environment where the call is
-not supported and gracefully degrade.
+If a particular requirement is not present, then a `Ramsey\Uuid\Exception\UnsatisfiedDependencyException` is thrown, allowing one to catch a bad call in an environment where the call is not supported and gracefully degrade.
 
 
 ## API documentation
 
 The [latest class API documentation][apidocs] is available online.
 
-This project uses [ApiGen](http://apigen.org/) to generate this documentation.
-To generate the documentation on your own, install dev dependencies and run the
-following command from the root of the project:
+This project uses [ApiGen](http://apigen.org/) to generate this documentation. To generate the documentation on your own, install dev dependencies and run the following command from the root of the project:
 
 ```
 ./vendor/bin/apigen generate --source="src" --destination="build/apidocs" --title="ramsey/uuid" --template-theme="bootstrap" --deprecated --todo
@@ -111,8 +88,7 @@ This will generate documentation in the `build/apidocs/` folder.
 
 ## Examples
 
-See the [cookbook on the wiki][wiki-cookbook] for more examples and approaches
-to specific use-cases.
+See the [cookbook on the wiki][wiki-cookbook] for more examples and approaches to specific use-cases.
 
 ```php
 <?php
