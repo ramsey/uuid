@@ -148,7 +148,7 @@ The ramsey/uuid library is copyright © [Ben Ramsey](https://benramsey.com/) and
 [contributing]: https://github.com/ramsey/uuid/blob/master/CONTRIBUTING.md
 
 [badge-gitter]: https://img.shields.io/badge/gitter-join_chat-brightgreen.svg?style=flat-square
-[badge-source]: http://img.shields.io/badge/source-ramsey/uuid-blue.svg?style=flat-square
+[badge-source]: https://img.shields.io/badge/source-ramsey/uuid-blue.svg?style=flat-square
 [badge-release]: https://img.shields.io/github/release/ramsey/uuid.svg?style=flat-square
 [badge-license]: https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square
 [badge-build]: https://img.shields.io/travis/ramsey/uuid/master.svg?style=flat-square
