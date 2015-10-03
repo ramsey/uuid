@@ -37,10 +37,11 @@
         "apigen/apigen": "^4.1"
     },
     "suggest": {
-        "ramsey/uuid-doctrine": "Allow the use of a UUID as Doctrine field type.",
-        "ramsey/uuid-console": "A console application for generating UUIDs with ramsey/uuid",
-        "moontoast/math": "Support for converting UUID to 128-bit integer (in string form).",
-        "ircmaxell/random-lib": "Provides RandomLib to use with the RandomLibAdapter"
+        "ircmaxell/random-lib": "Provides RandomLib for use with the RandomLibAdapter",
+        "ext-uuid": "Provides the PECL UUID extension for use with the PeclUuidTimeGenerator and PeclUuidRandomGenerator",
+        "moontoast/math": "Provides support for converting UUID to 128-bit integer (in string form).",
+        "ramsey/uuid-doctrine": "Allows the use of Ramsey\\Uuid\\Uuid as Doctrine field type.",
+        "ramsey/uuid-console": "A console application for generating UUIDs with ramsey/uuid"
     },
     "autoload": {
         "psr-4": {"Ramsey\\Uuid\\": "src/"}
