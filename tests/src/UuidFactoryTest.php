@@ -1,6 +1,9 @@
 <?php
 
-namespace Ramsey\Uuid;
+namespace Ramsey\Uuid\Test;
+
+use Ramsey\Uuid\FeatureSet;
+use Ramsey\Uuid\UuidFactory;
 
 class UuidFactoryTest extends TestCase
 {

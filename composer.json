@@ -50,6 +50,9 @@
             "dev-master": "3.0.x-dev"
         }
     },
+    "autoload-dev": {
+        "psr-4": {"Ramsey\\Uuid\\Test\\": "tests/src/"}
+    },
     "replace": {
         "rhumsaa/uuid": "self.version"
     }

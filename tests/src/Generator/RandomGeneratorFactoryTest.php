@@ -1,8 +1,9 @@
 <?php
 
-namespace Ramsey\Uuid\Generator;
+namespace Ramsey\Uuid\Test\Generator;
 
-use Ramsey\Uuid\TestCase;
+use Ramsey\Uuid\Test\TestCase;
+use Ramsey\Uuid\Generator\RandomGeneratorFactory;
 
 class RandomGeneratorFactoryTest extends TestCase
 {

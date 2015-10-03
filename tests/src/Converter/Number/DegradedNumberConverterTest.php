@@ -1,8 +1,9 @@
 <?php
 
-namespace Ramsey\Uuid\Converter\Number;
+namespace Ramsey\Uuid\Test\Converter\Number;
 
-use Ramsey\Uuid\TestCase;
+use Ramsey\Uuid\Test\TestCase;
+use Ramsey\Uuid\Converter\Number\DegradedNumberConverter;
 
 class DegradedNumberConverterTest extends TestCase
 {
