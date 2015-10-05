@@ -31,7 +31,7 @@ class DegradedUuidBuilder implements UuidBuilderInterface
     /**
      * Constructs the DegradedUuidBuilder
      *
-     * @param NumberConverterInterface The number converter to use when constructing the DegradedUuid
+     * @param NumberConverterInterface $converter The number converter to use when constructing the DegradedUuid
      */
     public function __construct(NumberConverterInterface $converter)
     {

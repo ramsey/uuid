@@ -15,7 +15,7 @@
 namespace Ramsey\Uuid;
 
 use Ramsey\Uuid\Converter\NumberConverterInterface;
-
+use Ramsey\Uuid\Exception\UnsupportedOperationException;
 /**
  * UuidInterface defines common functionality for all universally unique
  * identifiers (UUIDs)

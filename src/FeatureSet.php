@@ -263,6 +263,7 @@ class FeatureSet
      * Determines which time-based UUID generator to use and returns the configured
      * time-based UUID generator for this environment
      *
+     * @param TimeProviderInterface $timeProvider
      * @return TimeGeneratorInterface
      */
     protected function buildTimeGenerator(TimeProviderInterface $timeProvider)

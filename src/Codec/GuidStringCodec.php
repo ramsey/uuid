@@ -14,7 +14,6 @@
 
 namespace Ramsey\Uuid\Codec;
 
-use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
 /**
