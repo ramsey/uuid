@@ -14,8 +14,6 @@
 
 namespace Ramsey\Uuid;
 
-use Ramsey\Uuid\Converter\NumberConverterInterface;
-use Ramsey\Uuid\Codec\CodecInterface;
 use Ramsey\Uuid\Exception\UnsatisfiedDependencyException;
 use Ramsey\Uuid\Exception\UnsupportedOperationException;
 

@@ -112,6 +112,7 @@ class StringCodec implements CodecInterface
     /**
      * Returns an array of UUID components (the UUID exploded on its dashes)
      *
+     * @param string $encodedUuid
      * @return array
      */
     protected function extractComponents($encodedUuid)
@@ -148,6 +149,7 @@ class StringCodec implements CodecInterface
      * Returns the fields that make up this UUID
      *
      * @see \Ramsey\Uuid\UuidInterface::getFieldsHex()
+     * @param array $components
      * @return array
      */
     protected function getFields(array $components)

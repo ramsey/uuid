@@ -32,7 +32,7 @@ class DefaultUuidBuilder implements UuidBuilderInterface
     /**
      * Constructs the DefaultUuidBuilder
      *
-     * @param NumberConverterInterface The number converter to use when constructing the Uuid
+     * @param NumberConverterInterface $converter The number converter to use when constructing the Uuid
      */
     public function __construct(NumberConverterInterface $converter)
     {
