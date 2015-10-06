@@ -60,3 +60,19 @@ The following tests must pass before we will accept a pull request. If any of th
 ./vendor/bin/phpunit --verbose
 ./vendor/bin/phpcs src --standard=psr2 -sp
 ```
+
+### Locally Test With Emulated MIPS Architecture
+
+The following commands use [Vagrant](https://www.vagrantup.com/) to start an Ubuntu VM, install necessary dependencies, and then run the `util/run-tests.sh` script that will download a Docker image emulating the MIPS architecture. This is especially helpful for testing UUID generation in a big-endian environment.
+
+```
+vagrant init ubuntu/trusty64
+vagrant up
+vagrant ssh
+sudo apt-get install docker.io qemu-user-static php5-cli php5-curl
+cd /vagrant
+curl -sS https://getcomposer.org/installer | php
+php composer.phar install --no-interaction --prefer-dist
+mkdir -p build/logs
+ARCH=mips PHP_VERSION=5.6.14 TRAVIS_BUILD_DIR=/vagrant ./util/run-tests.sh
+```

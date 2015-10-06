@@ -1,6 +1,7 @@
-.idea/
 *.phar
 .DS_Store
+.idea/
+.vagrant/
 build
 composer.lock
 docs
