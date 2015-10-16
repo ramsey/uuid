@@ -5,3 +5,4 @@
 /tests            export-ignore
 /phpunit.xml.dist export-ignore
 /phpcs.xml        export-ignore
+/util             export-ignore
