@@ -1,5 +1,13 @@
 # ramsey/uuid Changelog
 
+## 3.0.1
+
+_Released: 2015-10-21_
+
+  * Add project [Contributor Code of Conduct](https://github.com/ramsey/uuid/blob/master/CONDUCT.md)
+  * Modify Travis CI builds to run tests on multiple CPU architectures
+  * Clean up code, tests, and documentation
+
 ## 3.0.0
 
 _Released: 2015-09-28_
