@@ -288,9 +288,9 @@ class Uuid implements UuidInterface
         }
 
         $unixTime = ($this->getTimestamp() - 0x01b21dd213814000) / 1e7;
-        $unixTime = number_format($unixTime, 0, '', '');
+        $microTime = abs($unixTime * 1e6 - (int) $unixTime * 1e6);
 
-        return new \DateTime("@{$unixTime}");
+        return new \DateTime(date('Y-m-d H:i:s', (int) $unixTime) . '.' . (int) $microTime);
     }
 
     /**

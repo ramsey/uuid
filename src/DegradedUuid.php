@@ -33,12 +33,21 @@ class DegradedUuid extends Uuid
         $time = $this->converter->fromHex($this->getTimestampHex());
 
         $ts = new \Moontoast\Math\BigNumber($time, 20);
-        $ts->subtract('122192928000000000');
-        $ts->divide('10000000.0');
-        $ts->round();
+        $ts->subtract('122192928000000000'); // 0x01b21dd213814000
+        $ts->divide('10000000.0'); // 1e7
         $unixTime = $ts->getValue();
 
-        return new \DateTime("@{$unixTime}");
+        $microTime = new \Moontoast\Math\BigNumber($unixTime, 20);
+        $microTime->multiply('1000000.0'); // 1e6
+
+        // Strip the precision from the timestamp (essentially casting to int)
+        $microTimeSubtractor = new \Moontoast\Math\BigNumber($unixTime, 0);
+        $microTimeSubtractor->multiply('1000000.0'); // 1e6
+
+        $microTime->subtract($microTimeSubtractor);
+        $microTime->abs();
+
+        return new \DateTime(date('Y-m-d H:i:s', (int) $unixTime) . '.' . (int) $microTime->getValue());
     }
 
     /**
