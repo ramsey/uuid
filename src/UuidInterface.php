@@ -21,7 +21,7 @@ use Ramsey\Uuid\Exception\UnsupportedOperationException;
  * UuidInterface defines common functionality for all universally unique
  * identifiers (UUIDs)
  */
-interface UuidInterface extends \JsonSerializable
+interface UuidInterface extends \JsonSerializable, \Serializable
 {
     /**
      * Compares this UUID to the specified UUID.

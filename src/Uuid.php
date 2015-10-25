@@ -187,6 +187,32 @@ class Uuid implements UuidInterface
         return $this->toString();
     }
 
+    /**
+     * Converts this UUID object to a string when the object is serialized
+     * with `serialize()`
+     *
+     * @return string
+     * @link http://php.net/manual/en/class.serializable.php
+     */
+    public function serialize()
+    {
+        return $this->toString();
+    }
+
+    /**
+     * Re-constructs the object from its serialized form.
+     *
+     * @param string $serialized
+     * @link http://php.net/manual/en/class.serializable.php
+     */
+    public function unserialize($serialized)
+    {
+        $uuid = self::fromString($serialized);
+        $this->codec = $uuid->codec;
+        $this->converter = $uuid->converter;
+        $this->fields = $uuid->fields;
+    }
+
     public function compareTo(UuidInterface $other)
     {
         $comparison = 0;

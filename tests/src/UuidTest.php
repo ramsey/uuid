@@ -1840,4 +1840,12 @@ class UuidTest extends TestCase
 
         $this->assertEquals('"' . $uuid->toString() . '"', json_encode($uuid));
     }
+
+    public function testSerialize()
+    {
+        $uuid = Uuid::uuid4();
+        $serialized = serialize($uuid);
+        $unserializedUuid = unserialize($serialized);
+        $this->assertTrue($uuid->equals($unserializedUuid));
+    }
 }
