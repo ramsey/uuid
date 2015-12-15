@@ -94,7 +94,7 @@ chroot $chroot_dir bash -c 'printf "extension=uuid.so\n" >> /usr/local/lib/php.i
 ### download, build, and install Xdebug
 wget http://xdebug.org/files/xdebug-2.4.0rc3.tgz
 tar zxf xdebug-2.4.0rc3.tgz
-chroot $chroot_dir bash -c "cd /php-src/xdebug-2.4.0rc3 && phpize && ./configure --enable-xdebug && make && make install"
+chroot $chroot_dir bash -c "cd /php-src/xdebug-2.4.0RC3 && phpize && ./configure --enable-xdebug && make && make install"
 chroot $chroot_dir bash -c "printf \"zend_extension=\$(php -r \"echo ini_get('extension_dir');\")/xdebug.so\n\" >> /usr/local/lib/php.ini"
 
 
