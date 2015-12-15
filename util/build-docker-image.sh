@@ -39,12 +39,8 @@ chroot_dir="/tmp/chroot/${qemu_arch}-${suite}-php-${php_version}"
 apt_mirror="http://ftp.us.debian.org/debian"
 docker_image="benramsey/ramsey-uuid:${qemu_arch}-${suite}-php-${php_version}"
 tmp_package="/tmp/${qemu_arch}-${suite}-php-${php_version}.tgz"
+php_package="https://secure.php.net/distributions/php-${php_version}.tar.bz2"
 
-if [ `echo "${php_version}" | cut -c 1` = "7" ]; then
-    php_package="https://downloads.php.net/~ab/php-${php_version}.tar.bz2"
-else
-    php_package="https://secure.php.net/distributions/php-${php_version}.tar.bz2"
-fi
 
 ### make sure that the required tools are installed
 export DEBIAN_FRONTEND=noninteractive
@@ -82,7 +78,7 @@ chroot $chroot_dir apt-get --allow-unauthenticated install -qq -y \
 mkdir -p $chroot_dir/php-src
 cd $chroot_dir/php-src
 wget $php_package
-tar jxf "php-${php_version}.tar.bz2"
+tar xf "php-${php_version}.tar.bz2"
 chroot $chroot_dir bash -c "cd /php-src/php-${php_version} && ./configure --disable-all --enable-bcmath --with-gmp --disable-cgi --enable-xml --enable-libxml --enable-dom --enable-filter --enable-ctype --enable-json --with-openssl --enable-phar --enable-hash --with-curl --enable-simplexml --enable-tokenizer --enable-xmlwriter --enable-zip"
 chroot $chroot_dir bash -c "cd /php-src/php-${php_version} && make && make install"
 chroot $chroot_dir cp "/php-src/php-${php_version}/php.ini-development" /usr/local/lib/php.ini
@@ -94,13 +90,13 @@ chroot $chroot_dir bash -c "cd /php-src/uuid-1.0.4 && phpize && ./configure && m
 chroot $chroot_dir bash -c 'printf "date.timezone=UTC\n" >> /usr/local/lib/php.ini'
 chroot $chroot_dir bash -c 'printf "extension=uuid.so\n" >> /usr/local/lib/php.ini'
 
-if [ `echo "${php_version}" | cut -c 1` != "7" ]; then
-    ### download, build, and install Xdebug, if not PHP 7
-    wget http://xdebug.org/files/xdebug-2.3.3.tgz
-    tar zxf xdebug-2.3.3.tgz
-    chroot $chroot_dir bash -c "cd /php-src/xdebug-2.3.3 && phpize && ./configure --enable-xdebug && make && make install"
-    chroot $chroot_dir bash -c "printf \"zend_extension=\$(php -r \"echo ini_get('extension_dir');\")/xdebug.so\n\" >> /usr/local/lib/php.ini"
-fi
+
+### download, build, and install Xdebug
+wget http://xdebug.org/files/xdebug-2.4.0rc3.tgz
+tar zxf xdebug-2.4.0rc3.tgz
+chroot $chroot_dir bash -c "cd /php-src/xdebug-2.4.0rc3 && phpize && ./configure --enable-xdebug && make && make install"
+chroot $chroot_dir bash -c "printf \"zend_extension=\$(php -r \"echo ini_get('extension_dir');\")/xdebug.so\n\" >> /usr/local/lib/php.ini"
+
 
 ### globally install Composer
 chroot $chroot_dir bash -c "curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer"
