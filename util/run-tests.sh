@@ -30,9 +30,10 @@ declare -a commands
 commands[0]="echo \"Environment: \$(uname -a)\""
 commands[1]="php --version"
 commands[2]="cd ${TRAVIS_BUILD_DIR}"
-commands[3]="./vendor/bin/parallel-lint src tests"
-commands[4]="./vendor/bin/phpcs src --standard=psr2 -sp"
-commands[5]="./vendor/bin/phpunit --verbose"
+commands[3]="composer install --no-interaction --prefer-dist"
+commands[4]="./vendor/bin/parallel-lint src tests"
+commands[5]="./vendor/bin/phpcs src --standard=psr2 -sp"
+commands[6]="./vendor/bin/phpunit --verbose"
 
 printf -v command "%s && " "${commands[@]}"
 command=${command::-4}
