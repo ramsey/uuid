@@ -1,5 +1,12 @@
 # ramsey/uuid Changelog
 
+## 3.1.0
+
+_Released: 2015-12-17_
+
+  * Uuid objects now may be properly serialized/unserialized.
+  * Update build environments for testing on Travis CI.
+
 ## 3.0.1
 
 _Released: 2015-10-21_
