@@ -24,9 +24,9 @@
     },
     "require-dev": {
         "moontoast/math": "~1.1",
-        "symfony/console": "~2.3",
+        "symfony/console": "~2.3|~3.0",
         "doctrine/dbal": ">=2.3",
-        "phpunit/phpunit": "~4.1",
+        "phpunit/phpunit": "~4.1|~5.0",
         "satooshi/php-coveralls": "~0.6",
         "squizlabs/php_codesniffer": "^2.3",
         "jakub-onderka/php-parallel-lint": "^0.9.0"

@@ -12,10 +12,8 @@
 namespace Rhumsaa\Uuid\Console\Command;
 
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Helper\TableHelper;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Rhumsaa\Uuid\Console\Exception;
 use Rhumsaa\Uuid\Uuid;
@@ -55,8 +53,8 @@ class DecodeCommand extends Command
 
         $uuid = Uuid::fromString($input->getArgument('uuid'));
 
-        $table = $this->getHelperSet()->get('table');
-        $table->setLayout(TableHelper::LAYOUT_BORDERLESS);
+        $table = $this->createTable($output);
+        $this->setTableLayout($table);
 
         $table->addRows(array(
             array('encode:', 'STR:', (string) $uuid),
@@ -119,5 +117,27 @@ class DecodeCommand extends Command
         }
 
         $table->render($output);
+    }
+
+    protected function createTable(OutputInterface $output)
+    {
+        $class = 'Symfony\\Component\\Console\\Helper\\Table';
+        if (class_exists($class)) {
+            return new $class($output);
+        }
+
+        return $this->getHelperSet()->get('table');
+    }
+
+    /**
+     * @param object $table
+     */
+    protected function setTableLayout($table)
+    {
+        if (method_exists($table, 'setLayout')) {
+            $table->setLayout(1); // TableHelper::LAYOUT_BORDERLESS
+        } else {
+            $table->setStyle('borderless');
+        }
     }
 }
