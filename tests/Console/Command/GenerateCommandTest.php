@@ -10,6 +10,9 @@ class GenerateCommandTest extends TestCase
 {
     const FOO_NS = 'bbd8a651-6f00-11e3-8ad8-28cfe91e4895';
 
+    /**
+     * @var \ReflectionMethod
+     */
     protected $execute;
 
     protected function setUp()
@@ -39,10 +42,8 @@ class GenerateCommandTest extends TestCase
     {
         $generate = new GenerateCommand();
 
-        $input = new StringInput(
-            '',
-            $generate->getDefinition()
-        );
+        $input = new StringInput('');
+        $input->bind($generate->getDefinition());
 
         $output = new TestOutput();
 
@@ -65,10 +66,8 @@ class GenerateCommandTest extends TestCase
         // Test using the "-c" option
         //
 
-        $input1 = new StringInput(
-            '-c 9',
-            $generate->getDefinition()
-        );
+        $input1 = new StringInput('-c 9');
+        $input1->bind($generate->getDefinition());
 
         $output1 = new TestOutput();
         $this->execute->invoke($generate, $input1, $output1);
@@ -84,10 +83,8 @@ class GenerateCommandTest extends TestCase
         // Test using the "--count" option
         //
 
-        $input2 = new StringInput(
-            '--count=12',
-            $generate->getDefinition()
-        );
+        $input2 = new StringInput('--count=12');
+        $input2->bind($generate->getDefinition());
 
         $output2 = new TestOutput();
         $this->execute->invoke($generate, $input2, $output2);
@@ -108,10 +105,8 @@ class GenerateCommandTest extends TestCase
     {
         $generate = new GenerateCommand();
 
-        $input = new StringInput(
-            '1',
-            $generate->getDefinition()
-        );
+        $input = new StringInput('1');
+        $input->bind($generate->getDefinition());
 
         $output = new TestOutput();
 
@@ -134,10 +129,8 @@ class GenerateCommandTest extends TestCase
         // Test using the "-c" option
         //
 
-        $input1 = new StringInput(
-            '1 -c 3',
-            $generate->getDefinition()
-        );
+        $input1 = new StringInput('1 -c 3');
+        $input1->bind($generate->getDefinition());
 
         $output1 = new TestOutput();
         $this->execute->invoke($generate, $input1, $output1);
@@ -153,10 +146,8 @@ class GenerateCommandTest extends TestCase
         // Test using the "--count" option
         //
 
-        $input2 = new StringInput(
-            '1 --count=8',
-            $generate->getDefinition()
-        );
+        $input2 = new StringInput('1 --count=8');
+        $input2->bind($generate->getDefinition());
 
         $output2 = new TestOutput();
         $this->execute->invoke($generate, $input2, $output2);
@@ -177,10 +168,8 @@ class GenerateCommandTest extends TestCase
     {
         $generate = new GenerateCommand();
 
-        $input = new StringInput(
-            '4',
-            $generate->getDefinition()
-        );
+        $input = new StringInput('4');
+        $input->bind($generate->getDefinition());
 
         $output = new TestOutput();
 
@@ -203,10 +192,8 @@ class GenerateCommandTest extends TestCase
         // Test using the "-c" option
         //
 
-        $input1 = new StringInput(
-            '4 -c 3',
-            $generate->getDefinition()
-        );
+        $input1 = new StringInput('4 -c 3');
+        $input1->bind($generate->getDefinition());
 
         $output1 = new TestOutput();
         $this->execute->invoke($generate, $input1, $output1);
@@ -222,10 +209,8 @@ class GenerateCommandTest extends TestCase
         // Test using the "--count" option
         //
 
-        $input2 = new StringInput(
-            '4 --count=8',
-            $generate->getDefinition()
-        );
+        $input2 = new StringInput('4 --count=8');
+        $input2->bind($generate->getDefinition());
 
         $output2 = new TestOutput();
         $this->execute->invoke($generate, $input2, $output2);
@@ -247,10 +232,8 @@ class GenerateCommandTest extends TestCase
     {
         $generate = new GenerateCommand();
 
-        $input = new StringInput(
-            '3 ns:DNS "python.org"',
-            $generate->getDefinition()
-        );
+        $input = new StringInput('3 ns:DNS "python.org"');
+        $input->bind($generate->getDefinition());
 
         $output = new TestOutput();
 
@@ -271,10 +254,8 @@ class GenerateCommandTest extends TestCase
     {
         $generate = new GenerateCommand();
 
-        $input = new StringInput(
-            '3 ns:URL "http://python.org/"',
-            $generate->getDefinition()
-        );
+        $input = new StringInput('3 ns:URL "http://python.org/"');
+        $input->bind($generate->getDefinition());
 
         $output = new TestOutput();
 
@@ -295,10 +276,8 @@ class GenerateCommandTest extends TestCase
     {
         $generate = new GenerateCommand();
 
-        $input = new StringInput(
-            '3 ns:OID "1.3.6.1"',
-            $generate->getDefinition()
-        );
+        $input = new StringInput('3 ns:OID "1.3.6.1"');
+        $input->bind($generate->getDefinition());
 
         $output = new TestOutput();
 
@@ -319,10 +298,8 @@ class GenerateCommandTest extends TestCase
     {
         $generate = new GenerateCommand();
 
-        $input = new StringInput(
-            '3 ns:X500 "c=ca"',
-            $generate->getDefinition()
-        );
+        $input = new StringInput('3 ns:X500 "c=ca"');
+        $input->bind($generate->getDefinition());
 
         $output = new TestOutput();
 
@@ -343,10 +320,8 @@ class GenerateCommandTest extends TestCase
     {
         $generate = new GenerateCommand();
 
-        $input = new StringInput(
-            '3 bbd8a651-6f00-11e3-8ad8-28cfe91e4895 foobar',
-            $generate->getDefinition()
-        );
+        $input = new StringInput('3 bbd8a651-6f00-11e3-8ad8-28cfe91e4895 foobar');
+        $input->bind($generate->getDefinition());
 
         $output = new TestOutput();
 
@@ -362,17 +337,15 @@ class GenerateCommandTest extends TestCase
      * @covers Rhumsaa\Uuid\Console\Command\GenerateCommand::execute
      * @covers Rhumsaa\Uuid\Console\Command\GenerateCommand::createUuid
      * @covers Rhumsaa\Uuid\Console\Command\GenerateCommand::validateNamespace
-     * @expectedException Rhumsaa\Uuid\Console\Exception
+     * @expectedException \Rhumsaa\Uuid\Console\Exception
      * @expectedExceptionMessage May be either a UUID in string representation or an identifier
      */
     public function testExecuteForUuidSpecifyVersion3WithInvalidNs()
     {
         $generate = new GenerateCommand();
 
-        $input = new StringInput(
-            '3 foo foobar',
-            $generate->getDefinition()
-        );
+        $input = new StringInput('3 foo foobar');
+        $input->bind($generate->getDefinition());
 
         $output = new TestOutput();
 
@@ -388,10 +361,8 @@ class GenerateCommandTest extends TestCase
     {
         $generate = new GenerateCommand();
 
-        $input = new StringInput(
-            '3 ns:DNS "python.org" -c 21',
-            $generate->getDefinition()
-        );
+        $input = new StringInput('3 ns:DNS "python.org" -c 21');
+        $input->bind($generate->getDefinition());
 
         $output = new TestOutput();
 
@@ -410,17 +381,15 @@ class GenerateCommandTest extends TestCase
      * @covers Rhumsaa\Uuid\Console\Command\GenerateCommand::execute
      * @covers Rhumsaa\Uuid\Console\Command\GenerateCommand::createUuid
      * @covers Rhumsaa\Uuid\Console\Command\GenerateCommand::validateNamespace
-     * @expectedException Rhumsaa\Uuid\Console\Exception
+     * @expectedException \Rhumsaa\Uuid\Console\Exception
      * @expectedExceptionMessage The name argument is required for version 3 or 5 UUIDs
      */
     public function testExecuteForUuidSpecifyVersion3WithoutName()
     {
         $generate = new GenerateCommand();
 
-        $input = new StringInput(
-            '3 ns:DNS',
-            $generate->getDefinition()
-        );
+        $input = new StringInput('3 ns:DNS');
+        $input->bind($generate->getDefinition());
 
         $output = new TestOutput();
 
@@ -436,10 +405,8 @@ class GenerateCommandTest extends TestCase
     {
         $generate = new GenerateCommand();
 
-        $input = new StringInput(
-            '5 ns:DNS "python.org"',
-            $generate->getDefinition()
-        );
+        $input = new StringInput('5 ns:DNS "python.org"');
+        $input->bind($generate->getDefinition());
 
         $output = new TestOutput();
 
@@ -460,10 +427,8 @@ class GenerateCommandTest extends TestCase
     {
         $generate = new GenerateCommand();
 
-        $input = new StringInput(
-            '5 ns:URL "http://python.org/"',
-            $generate->getDefinition()
-        );
+        $input = new StringInput('5 ns:URL "http://python.org/"');
+        $input->bind($generate->getDefinition());
 
         $output = new TestOutput();
 
@@ -484,10 +449,8 @@ class GenerateCommandTest extends TestCase
     {
         $generate = new GenerateCommand();
 
-        $input = new StringInput(
-            '5 ns:OID "1.3.6.1"',
-            $generate->getDefinition()
-        );
+        $input = new StringInput('5 ns:OID "1.3.6.1"');
+        $input->bind($generate->getDefinition());
 
         $output = new TestOutput();
 
@@ -508,10 +471,8 @@ class GenerateCommandTest extends TestCase
     {
         $generate = new GenerateCommand();
 
-        $input = new StringInput(
-            '5 ns:X500 "c=ca"',
-            $generate->getDefinition()
-        );
+        $input = new StringInput('5 ns:X500 "c=ca"');
+        $input->bind($generate->getDefinition());
 
         $output = new TestOutput();
 
@@ -532,10 +493,8 @@ class GenerateCommandTest extends TestCase
     {
         $generate = new GenerateCommand();
 
-        $input = new StringInput(
-            '5 bbd8a651-6f00-11e3-8ad8-28cfe91e4895 foobar',
-            $generate->getDefinition()
-        );
+        $input = new StringInput('5 bbd8a651-6f00-11e3-8ad8-28cfe91e4895 foobar');
+        $input->bind($generate->getDefinition());
 
         $output = new TestOutput();
 
@@ -551,17 +510,15 @@ class GenerateCommandTest extends TestCase
      * @covers Rhumsaa\Uuid\Console\Command\GenerateCommand::execute
      * @covers Rhumsaa\Uuid\Console\Command\GenerateCommand::createUuid
      * @covers Rhumsaa\Uuid\Console\Command\GenerateCommand::validateNamespace
-     * @expectedException Rhumsaa\Uuid\Console\Exception
+     * @expectedException \Rhumsaa\Uuid\Console\Exception
      * @expectedExceptionMessage May be either a UUID in string representation or an identifier
      */
     public function testExecuteForUuidSpecifyVersion5WithInvalidNs()
     {
         $generate = new GenerateCommand();
 
-        $input = new StringInput(
-            '5 foo foobar',
-            $generate->getDefinition()
-        );
+        $input = new StringInput('5 foo foobar');
+        $input->bind($generate->getDefinition());
 
         $output = new TestOutput();
 
@@ -577,10 +534,8 @@ class GenerateCommandTest extends TestCase
     {
         $generate = new GenerateCommand();
 
-        $input = new StringInput(
-            '5 ns:DNS "python.org" -c 21',
-            $generate->getDefinition()
-        );
+        $input = new StringInput('5 ns:DNS "python.org" -c 21');
+        $input->bind($generate->getDefinition());
 
         $output = new TestOutput();
 
@@ -599,17 +554,15 @@ class GenerateCommandTest extends TestCase
      * @covers Rhumsaa\Uuid\Console\Command\GenerateCommand::execute
      * @covers Rhumsaa\Uuid\Console\Command\GenerateCommand::createUuid
      * @covers Rhumsaa\Uuid\Console\Command\GenerateCommand::validateNamespace
-     * @expectedException Rhumsaa\Uuid\Console\Exception
+     * @expectedException \Rhumsaa\Uuid\Console\Exception
      * @expectedExceptionMessage The name argument is required for version 3 or 5 UUIDs
      */
     public function testExecuteForUuidSpecifyVersion5WithoutName()
     {
         $generate = new GenerateCommand();
 
-        $input = new StringInput(
-            '5 ns:DNS',
-            $generate->getDefinition()
-        );
+        $input = new StringInput('5 ns:DNS');
+        $input->bind($generate->getDefinition());
 
         $output = new TestOutput();
 
@@ -619,17 +572,15 @@ class GenerateCommandTest extends TestCase
     /**
      * @covers Rhumsaa\Uuid\Console\Command\GenerateCommand::execute
      * @covers Rhumsaa\Uuid\Console\Command\GenerateCommand::createUuid
-     * @expectedException Rhumsaa\Uuid\Console\Exception
+     * @expectedException \Rhumsaa\Uuid\Console\Exception
      * @expectedExceptionMessage Invalid UUID version. Supported are version "1", "3", "4", and "5".
      */
     public function testExecuteForUuidSpecifyInvalidVersion()
     {
         $generate = new GenerateCommand();
 
-        $input = new StringInput(
-            '6',
-            $generate->getDefinition()
-        );
+        $input = new StringInput('6');
+        $input->bind($generate->getDefinition());
 
         $output = new TestOutput();
 

@@ -1,3 +1,5 @@
+sudo: false
+
 language: php
 
 php:
@@ -7,9 +9,15 @@ php:
   - 5.6
   - hhvm
 
+matrix:
+  include:
+    - php: 5.6
+      env: COMPOSER_FLAGS='--prefer-lowest --prefer-stable'
+  fast_finish: true
+
 before_script:
   - composer self-update
-  - composer install --dev --prefer-source
+  - composer update $COMPOSER_FLAGS --prefer-source
 
 script: ./vendor/bin/phpunit --coverage-text --coverage-clover ./build/logs/clover.xml
 
