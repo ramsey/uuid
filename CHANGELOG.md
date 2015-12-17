@@ -1,5 +1,12 @@
 # Rhumsaa\Uuid Changelog
 
+## 2.8.4
+
+_Released: 2015-12-17_
+
+  * Add support for symfony/console v3.
+  * Update build matrix to run Travis CI tests on PHP 7 & with lowest package versions.
+
 ## 2.8.3
 
 _Released: 2015-08-31_
