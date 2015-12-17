@@ -26,6 +26,9 @@ before_script:
   - composer self-update
   - composer update $COMPOSER_FLAGS --prefer-source
 
-script: ./vendor/bin/phpunit --coverage-clover ./build/logs/clover.xml
+script:
+  - ./vendor/bin/parallel-lint src tests
+  - ./vendor/bin/phpunit --verbose
+  - ./vendor/bin/phpcs src --standard=psr2 -sp
 
 after_script: php vendor/bin/coveralls
