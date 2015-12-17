@@ -825,11 +825,11 @@ class UuidTest extends TestCase
         $mock = $this->getMock('Ramsey\Uuid\Generator\RandomGeneratorInterface');
         $mock->expects($this->any())
             ->method('generate')
-            ->willReturnCallback(function ($length)
-        {
+            ->willReturnCallback(function ($length) {
+        
             // Makes first fields of UUIDs equal
-            return str_pad('', $length, '0');
-        });
+                return str_pad('', $length, '0');
+            });
 
         $factory = new UuidFactory();
         $generator = new CombGenerator($mock, $factory->getNumberConverter());
@@ -1273,7 +1273,8 @@ class UuidTest extends TestCase
 
                 $this->assertTrue(
                     $uuid32->equals($uuid64),
-                    'Breaks at ' . gmdate('r', $currentTime) . "; 32-bit: {$uuid32->toString()}, 64-bit: {$uuid64->toString()}"
+                    'Breaks at ' . gmdate('r', $currentTime)
+                        . "; 32-bit: {$uuid32->toString()}, 64-bit: {$uuid64->toString()}"
                 );
 
                 // Assert that the time matches
