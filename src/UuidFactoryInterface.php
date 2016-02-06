@@ -18,6 +18,7 @@ use Exception;
 use InvalidArgumentException;
 use Ramsey\Uuid\Exception\InvalidUuidStringException;
 use Ramsey\Uuid\Exception\UnsatisfiedDependencyException;
+use Ramsey\Uuid\Validator\ValidatorInterface;
 
 /**
  * UuidFactoryInterface defines common functionality all `UuidFactory` instances
@@ -25,6 +26,11 @@ use Ramsey\Uuid\Exception\UnsatisfiedDependencyException;
  */
 interface UuidFactoryInterface
 {
+    /**
+     * @return ValidatorInterface
+     */
+    public function getValidator();
+
     /**
      * Generate a version 1 UUID from a host ID, sequence number, and the current time.
      *

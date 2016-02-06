@@ -14,30 +14,31 @@
 
 namespace Ramsey\Uuid;
 
-use Ramsey\Uuid\Converter\TimeConverterInterface;
-use Ramsey\Uuid\Generator\PeclUuidTimeGenerator;
-use Ramsey\Uuid\Provider\Node\FallbackNodeProvider;
-use Ramsey\Uuid\Provider\Node\RandomNodeProvider;
-use Ramsey\Uuid\Provider\Node\SystemNodeProvider;
+use Ramsey\Uuid\Builder\DefaultUuidBuilder;
+use Ramsey\Uuid\Builder\DegradedUuidBuilder;
+use Ramsey\Uuid\Builder\UuidBuilderInterface;
+use Ramsey\Uuid\Codec\CodecInterface;
+use Ramsey\Uuid\Codec\GuidStringCodec;
+use Ramsey\Uuid\Codec\StringCodec;
 use Ramsey\Uuid\Converter\NumberConverterInterface;
 use Ramsey\Uuid\Converter\Number\BigNumberConverter;
 use Ramsey\Uuid\Converter\Number\DegradedNumberConverter;
 use Ramsey\Uuid\Converter\Time\BigNumberTimeConverter;
 use Ramsey\Uuid\Converter\Time\DegradedTimeConverter;
 use Ramsey\Uuid\Converter\Time\PhpTimeConverter;
-use Ramsey\Uuid\Provider\Time\SystemTimeProvider;
-use Ramsey\Uuid\Builder\UuidBuilderInterface;
-use Ramsey\Uuid\Builder\DefaultUuidBuilder;
-use Ramsey\Uuid\Codec\CodecInterface;
-use Ramsey\Uuid\Codec\StringCodec;
-use Ramsey\Uuid\Codec\GuidStringCodec;
-use Ramsey\Uuid\Builder\DegradedUuidBuilder;
+use Ramsey\Uuid\Generator\PeclUuidTimeGenerator;
 use Ramsey\Uuid\Generator\RandomGeneratorFactory;
 use Ramsey\Uuid\Generator\RandomGeneratorInterface;
 use Ramsey\Uuid\Generator\TimeGeneratorFactory;
 use Ramsey\Uuid\Generator\TimeGeneratorInterface;
-use Ramsey\Uuid\Provider\TimeProviderInterface;
 use Ramsey\Uuid\Provider\NodeProviderInterface;
+use Ramsey\Uuid\Provider\Node\FallbackNodeProvider;
+use Ramsey\Uuid\Provider\Node\RandomNodeProvider;
+use Ramsey\Uuid\Provider\Node\SystemNodeProvider;
+use Ramsey\Uuid\Provider\TimeProviderInterface;
+use Ramsey\Uuid\Provider\Time\SystemTimeProvider;
+use Ramsey\Uuid\Validator\Validator;
+use Ramsey\Uuid\Validator\ValidatorInterface;
 
 /**
  * FeatureSet detects and exposes available features in the current environment
@@ -96,6 +97,11 @@ class FeatureSet
     private $timeGenerator;
 
     /**
+     * @var ValidatorInterface
+     */
+    private $validator;
+
+    /**
      * Constructs a `FeatureSet` for use by a `UuidFactory` to determine or set
      * features available to the environment
      *
@@ -127,6 +133,7 @@ class FeatureSet
         $this->nodeProvider = $this->buildNodeProvider();
         $this->randomGenerator = $this->buildRandomGenerator();
         $this->setTimeProvider(new SystemTimeProvider());
+        $this->validator = new Validator;
     }
 
     /**
@@ -190,6 +197,16 @@ class FeatureSet
     }
 
     /**
+     * Returns the validator to use for this environment
+     *
+     * @return ValidatorInterface
+     */
+    public function getValidator()
+    {
+        return $this->validator;
+    }
+
+    /**
      * Sets the time provider for use in this environment
      *
      * @param TimeProviderInterface $timeProvider
@@ -198,6 +215,17 @@ class FeatureSet
     public function setTimeProvider(TimeProviderInterface $timeProvider)
     {
         $this->timeGenerator = $this->buildTimeGenerator($timeProvider);
+    }
+
+    /**
+     * Set the validator to use in this environment
+     *
+     * @param ValidatorInterface $validator
+     * @return void
+     */
+    public function setValidator(ValidatorInterface $validator)
+    {
+        $this->validator = $validator;
     }
 
     /**

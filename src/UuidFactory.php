@@ -14,13 +14,14 @@
 
 namespace Ramsey\Uuid;
 
+use Ramsey\Uuid\Builder\UuidBuilderInterface;
+use Ramsey\Uuid\Codec\CodecInterface;
 use Ramsey\Uuid\Converter\NumberConverterInterface;
 use Ramsey\Uuid\Exception\InvalidUuidStringException;
-use Ramsey\Uuid\Provider\NodeProviderInterface;
 use Ramsey\Uuid\Generator\RandomGeneratorInterface;
 use Ramsey\Uuid\Generator\TimeGeneratorInterface;
-use Ramsey\Uuid\Codec\CodecInterface;
-use Ramsey\Uuid\Builder\UuidBuilderInterface;
+use Ramsey\Uuid\Provider\NodeProviderInterface;
+use Ramsey\Uuid\Validator\ValidatorInterface;
 
 class UuidFactory implements UuidFactoryInterface
 {
@@ -55,6 +56,11 @@ class UuidFactory implements UuidFactoryInterface
     private $uuidBuilder = null;
 
     /**
+     * @var ValidatorInterface
+     */
+    private $validator = null;
+
+    /**
      * Constructs a `UuidFactory` for creating `Ramsey\Uuid\UuidInterface` instances
      *
      * @param FeatureSet $features A set of features for use when creating UUIDs
@@ -69,6 +75,7 @@ class UuidFactory implements UuidFactoryInterface
         $this->randomGenerator = $features->getRandomGenerator();
         $this->timeGenerator = $features->getTimeGenerator();
         $this->uuidBuilder = $features->getBuilder();
+        $this->validator = $features->getValidator();
     }
 
     /**
@@ -187,8 +194,22 @@ class UuidFactory implements UuidFactoryInterface
     }
 
     /**
-     * @inheritdoc
+     * @return ValidatorInterface
      */
+    public function getValidator()
+    {
+        return $this->validator;
+    }
+
+    /**
+     * @param ValidatorInterface $validator
+     * @return void
+     */
+    public function setValidator(ValidatorInterface $validator)
+    {
+        $this->validator = $validator;
+    }
+
     public function fromBytes($bytes)
     {
         return $this->codec->decodeBytes($bytes);
