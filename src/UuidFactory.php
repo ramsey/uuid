@@ -24,6 +24,11 @@ use Ramsey\Uuid\Builder\UuidBuilderInterface;
 class UuidFactory implements UuidFactoryInterface
 {
     /**
+     * Regular expression pattern for matching a valid UUID of any variant.
+     */
+    const VALID_PATTERN = '^[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}$';
+
+    /**
      * @var CodecInterface
      */
     private $codec = null;
@@ -176,6 +181,29 @@ class UuidFactory implements UuidFactoryInterface
         $hex = str_pad($hex, 32, '0', STR_PAD_LEFT);
 
         return $this->fromString($hex);
+    }
+
+    /**
+     * Checks if a uuid string is valid
+     *
+     * @param  string  $uuid The string to check
+     * @return boolean       Returns true if the string represents a valid UUID; otherwise, returns false
+     */
+    public function isValid($uuid)
+    {
+        // assert or InvalidArgumentException should be used for the integrity of the argument
+        // These statements give helpful indication during debugging
+        assert(func_num_args() === 1);
+        assert('is_string($uuid)');
+
+        $uuid = str_replace(array('urn:', 'uuid:', '{', '}'), '', $uuid);
+
+        // This should probably be moved to the UuidFactory from Uuid
+        if ($uuid === Uuid::NIL || preg_match('/' . self::VALID_PATTERN . '/', $uuid)) {
+            return true;
+        }
+
+        return false;
     }
 
     public function uuid1($node = null, $clockSeq = null)

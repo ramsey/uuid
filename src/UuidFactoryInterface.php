@@ -86,4 +86,12 @@ interface UuidFactoryInterface
      * @return UuidInterface
      */
     public function fromInteger($integer);
+
+    /**
+     * Check if a string is a valid UUID.
+     *
+     * @param string $uuid The string UUID to test
+     * @return boolean
+     */
+    public function isValid($uuid);
 }

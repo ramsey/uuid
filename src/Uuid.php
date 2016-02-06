@@ -623,17 +623,7 @@ class Uuid implements UuidInterface
      */
     public static function isValid($uuid)
     {
-        $uuid = str_replace(array('urn:', 'uuid:', '{', '}'), '', $uuid);
-
-        if ($uuid == self::NIL) {
-            return true;
-        }
-
-        if (!preg_match('/' . self::VALID_PATTERN . '/', $uuid)) {
-            return false;
-        }
-
-        return true;
+        return self::getFactory()->isValid($uuid);
     }
 
     /**
