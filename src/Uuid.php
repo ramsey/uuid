@@ -93,7 +93,7 @@ class Uuid implements UuidInterface
     /**
      * Regular expression pattern for matching a valid UUID of any variant.
      */
-    const VALID_PATTERN = '^[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}$';
+    const VALID_PATTERN = UuidFactory::VALID_PATTERN;
 
     /**
      * The factory to use when creating UUIDs.
