@@ -191,11 +191,6 @@ class UuidFactory implements UuidFactoryInterface
      */
     public function isValid($uuid)
     {
-        // assert or InvalidArgumentException should be used for the integrity of the argument
-        // These statements give helpful indication during debugging
-        assert(func_num_args() === 1);
-        assert('is_string($uuid)');
-
         $uuid = str_replace(array('urn:', 'uuid:', '{', '}'), '', $uuid);
 
         // This should probably be moved to the UuidFactory from Uuid
