@@ -35,7 +35,7 @@ class SodiumRandomGeneratorTest extends TestCase
         $uuid = \Ramsey\Uuid\Uuid::uuid4();
 
         $this->assertInstanceOf(
-            SodiumRandomGenerator::class,
+            'Ramsey\Uuid\Generator\SodiumRandomGenerator',
             $uuid->getFactory()->getRandomGenerator()
         );
     }
