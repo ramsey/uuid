@@ -82,13 +82,26 @@ tar xf "php-${php_version}.tar.bz2"
 chroot $chroot_dir bash -c "cd /php-src/php-${php_version} && ./configure --disable-all --enable-bcmath --with-gmp --disable-cgi --enable-xml --enable-libxml --enable-dom --enable-filter --enable-ctype --enable-json --with-openssl --enable-phar --enable-hash --with-curl --enable-simplexml --enable-tokenizer --enable-xmlwriter --enable-zip"
 chroot $chroot_dir bash -c "cd /php-src/php-${php_version} && make && make install"
 chroot $chroot_dir cp "/php-src/php-${php_version}/php.ini-development" /usr/local/lib/php.ini
+chroot $chroot_dir bash -c 'printf "date.timezone=UTC\n" >> /usr/local/lib/php.ini'
 
 ### download, build, and install the PECL UUID extension
 wget https://pecl.php.net/get/uuid-1.0.4.tgz
 tar zxf uuid-1.0.4.tgz
 chroot $chroot_dir bash -c "cd /php-src/uuid-1.0.4 && phpize && ./configure && make && make install"
-chroot $chroot_dir bash -c 'printf "date.timezone=UTC\n" >> /usr/local/lib/php.ini'
 chroot $chroot_dir bash -c 'printf "extension=uuid.so\n" >> /usr/local/lib/php.ini'
+
+
+### download, build, and install the PECL libsodium extension
+mkdir -p $chroot_dir/libsodium-src
+cd $chroot_dir/libsodium-src
+wget https://download.libsodium.org/libsodium/releases/libsodium-1.0.8.tar.gz
+tar zxf libsodium-1.0.8.tar.gz
+chroot $chroot_dir bash -c "cd /libsodium-src/libsodium-1.0.8 && ./configure && make && make install"
+cd $chroot_dir/php-src
+wget http://pecl.php.net/get/libsodium-1.0.2.tgz
+tar zxf libsodium-1.0.2.tgz
+chroot $chroot_dir bash -c "cd /php-src/libsodium-1.0.2 && phpize && ./configure && make && make install"
+chroot $chroot_dir bash -c 'printf "extension=libsodium.so\n" >> /usr/local/lib/php.ini'
 
 
 ### download, build, and install Xdebug
