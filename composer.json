@@ -38,6 +38,7 @@
     },
     "suggest": {
         "ircmaxell/random-lib": "Provides RandomLib for use with the RandomLibAdapter",
+        "ext-libsodium": "Provides the PECL libsodium extension for use with the SodiumRandomGenerator",
         "ext-uuid": "Provides the PECL UUID extension for use with the PeclUuidTimeGenerator and PeclUuidRandomGenerator",
         "moontoast/math": "Provides support for converting UUID to 128-bit integer (in string form).",
         "ramsey/uuid-doctrine": "Allows the use of Ramsey\\Uuid\\Uuid as Doctrine field type.",
