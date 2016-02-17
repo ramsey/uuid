@@ -1,5 +1,12 @@
 # ramsey/uuid Changelog
 
+## 3.2.0
+
+_Released: 2016-02-17_
+
+  * Add random generator option for use for the PECL libsodium extension.
+  * Updates to test infrastructure.
+
 ## 3.1.0
 
 _Released: 2015-12-17_
