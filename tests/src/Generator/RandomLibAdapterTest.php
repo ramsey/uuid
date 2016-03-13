@@ -39,4 +39,32 @@ class RandomLibAdapterTest extends TestCase
 
         new RandomLibAdapter();
     }
+
+    public function testGenerateUsesGenerator()
+    {
+        $length    = 10;
+        $generator = $this->getMockBuilder('RandomLib\Generator')
+                          ->disableOriginalConstructor()
+                          ->getMock();
+        $generator->expects($this->once())
+                  ->method('generate')
+                  ->with($length);
+
+        $adapter = new RandomLibAdapter($generator);
+        $adapter->generate($length);
+    }
+
+    public function testGenerateReturnsString()
+    {
+        $generator = $this->getMockBuilder('RandomLib\Generator')
+                          ->disableOriginalConstructor()
+                          ->getMock();
+        $generator->expects($this->once())
+                  ->method('generate')
+                  ->willReturn('random-string');
+
+        $adapter = new RandomLibAdapter($generator);
+        $result  = $adapter->generate(1);
+        $this->assertEquals('random-string', $result);
+    }
 }
