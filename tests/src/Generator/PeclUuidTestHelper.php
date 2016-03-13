@@ -1,5 +1,5 @@
 <?php
-
+// @codingStandardsIgnoreFile
 namespace Ramsey\Uuid\Generator;
 
 define('UUID_TYPE_TIME', 1);
