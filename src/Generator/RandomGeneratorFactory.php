@@ -20,56 +20,12 @@ namespace Ramsey\Uuid\Generator;
 class RandomGeneratorFactory
 {
     /**
-     * For testing, `openssl_random_pseudo_bytes()` override; if `true`, treat as
-     * if `openssl_random_pseudo_bytes()` is not available
-     *
-     * @var bool
-     */
-    public static $forceNoOpensslRandomPseudoBytes = false;
-
-    /**
-     * For testing, `random_bytes()` override; if `true`, treat as if `random_bytes()`
-     * is not available.
-     *
-     * @var bool
-     */
-    public static $forceNoRandomBytes = false;
-
-    /**
-     * Returns `true` if the system has `openssl_random_pseudo_bytes()`
-     *
-     * @return bool
-     */
-    protected static function hasOpensslRandomPseudoBytes()
-    {
-        return (function_exists('openssl_random_pseudo_bytes') && !self::$forceNoOpensslRandomPseudoBytes);
-    }
-
-    /**
-     * Returns `true` if the system has `random_bytes()`
-     *
-     * @return bool
-     */
-    protected static function hasRandomBytes()
-    {
-        return (function_exists('random_bytes') && !self::$forceNoRandomBytes);
-    }
-
-    /**
      * Returns a default random generator, based on the current environment
      *
      * @return RandomGeneratorInterface
      */
     public static function getGenerator()
     {
-        if (self::hasRandomBytes()) {
-            return new RandomBytesGenerator();
-        }
-
-        if (self::hasOpensslRandomPseudoBytes()) {
-            return new OpenSslGenerator();
-        }
-
-        return new MtRandGenerator();
+        return new RandomBytesGenerator();
     }
 }
