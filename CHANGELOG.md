@@ -89,6 +89,12 @@ _Released: 2015-07-16_
   * NEW: While the interface to create UUIDs hasn't changed, if using this package on a 32-bit system, you will now receive an object of type `DegradedUuid` (which extends `Uuid`, which implements `UuidInterface`).
   * NEW: All UUIDs are now [JsonSerializable](http://php.net/JsonSerializable).
 
+## 2.9.0
+
+_Released: TBD_
+
+  * Drop support for OpenSSL in favor of [paragonie/random_compat][]. This addresses and fixes the [collision issue][].
+
 ## 2.8.4
 
 _Released: 2015-12-17_
@@ -265,3 +271,7 @@ _Released: 2012-08-06_
 _Released: 2012-07-19_
 
   * Initial release
+
+
+[paragonie/random_compat]: https://github.com/paragonie/random_compat
+[collision issue]: https://github.com/ramsey/uuid/issues/80

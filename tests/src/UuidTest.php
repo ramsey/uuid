@@ -807,7 +807,7 @@ class UuidTest extends TestCase
 
     /**
      */
-    public function testUuid4WithoutOpensslRandomPseudoBytes()
+    public function testUuid4WithoutRandomBytes()
     {
         RandomGeneratorFactory::$forceNoOpensslRandomPseudoBytes = true;
         $uuid = Uuid::uuid4();
