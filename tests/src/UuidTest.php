@@ -2,10 +2,12 @@
 
 namespace Ramsey\Uuid\Test;
 
+use Ramsey\Uuid\Codec\TimestampFirstCombCodec;
+use Ramsey\Uuid\Codec\TimestampLastCombCodec;
 use Ramsey\Uuid\FeatureSet;
+use Ramsey\Uuid\Generator\CombGenerator;
 use Ramsey\Uuid\Provider\Time\SystemTimeProvider;
 use Ramsey\Uuid\Provider\Time\FixedTimeProvider;
-use Ramsey\Uuid\Generator\CombGenerator;
 use Ramsey\Uuid\Generator\RandomGeneratorFactory;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidFactory;
@@ -817,23 +819,57 @@ class UuidTest extends TestCase
     }
 
     /**
-     * Tests that generated UUID's using COMB are sequential
+     * Tests that generated UUID's using timestamp last COMB are sequential
      * @return string
      */
-    public function testUuid4Comb()
+    public function testUuid4TimestampLastComb()
     {
         $mock = $this->getMock('Ramsey\Uuid\Generator\RandomGeneratorInterface');
         $mock->expects($this->any())
             ->method('generate')
             ->willReturnCallback(function ($length) {
-        
+
             // Makes first fields of UUIDs equal
                 return str_pad('', $length, '0');
             });
 
         $factory = new UuidFactory();
         $generator = new CombGenerator($mock, $factory->getNumberConverter());
+        $codec = new TimestampLastCombCodec($factory->getUuidBuilder());
         $factory->setRandomGenerator($generator);
+        $factory->setCodec($codec);
+
+        $previous = $factory->uuid4();
+
+        for ($i = 0; $i < 1000; $i ++) {
+            usleep(10);
+            $uuid = $factory->uuid4();
+            $this->assertGreaterThan($previous->toString(), $uuid->toString());
+
+            $previous = $uuid;
+        }
+    }
+
+    /**
+     * Tests that generated UUID's using timestamp first COMB are sequential
+     * @return string
+     */
+    public function testUuid4TimestampFirstComb()
+    {
+        $mock = $this->getMock('Ramsey\Uuid\Generator\RandomGeneratorInterface');
+        $mock->expects($this->any())
+            ->method('generate')
+            ->willReturnCallback(function ($length) {
+
+                // Makes first fields of UUIDs equal
+                return str_pad('', $length, '0');
+            });
+
+        $factory = new UuidFactory();
+        $generator = new CombGenerator($mock, $factory->getNumberConverter());
+        $codec = new TimestampFirstCombCodec($factory->getUuidBuilder());
+        $factory->setRandomGenerator($generator);
+        $factory->setCodec($codec);
 
         $previous = $factory->uuid4();
 
@@ -852,7 +888,10 @@ class UuidTest extends TestCase
     public function testUuid4CombVersion()
     {
         $factory = new UuidFactory();
-        $generator = new CombGenerator(RandomGeneratorFactory::getGenerator(), $factory->getNumberConverter());
+        $generator = new CombGenerator(
+            RandomGeneratorFactory::getGenerator(),
+            $factory->getNumberConverter()
+        );
 
         $factory->setRandomGenerator($generator);
 
