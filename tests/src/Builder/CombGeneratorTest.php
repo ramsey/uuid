@@ -68,7 +68,7 @@ class CombGeneratorTest extends \PHPUnit_Framework_TestCase
      */
     public function testGenerateWithLessThanTimestampBytesThrowsException($length)
     {
-        $this->expectException('InvalidArgumentException');
+        $this->setExpectedException('InvalidArgumentException');
         $randomGenerator = $this->getMock('Ramsey\Uuid\Generator\RandomGeneratorInterface');
         $converter = $this->getMock('Ramsey\Uuid\Converter\NumberConverterInterface');
         $generator = new CombGenerator($randomGenerator, $converter);
@@ -80,7 +80,7 @@ class CombGeneratorTest extends \PHPUnit_Framework_TestCase
      */
     public function testGenerateWithOddNumberOverTimestampBytesCausesError()
     {
-        $this->expectException('PHPUnit_Framework_Error');
+        $this->setExpectedException('PHPUnit_Framework_Error');
         $randomGenerator = $this->getMock('Ramsey\Uuid\Generator\RandomGeneratorInterface');
         $converter = $this->getMock('Ramsey\Uuid\Converter\NumberConverterInterface');
         $generator = new CombGenerator($randomGenerator, $converter);
