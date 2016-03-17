@@ -7,6 +7,8 @@
 [![Total Downloads](https://poser.pugx.org/rhumsaa/uuid/downloads.png)](https://packagist.org/packages/rhumsaa/uuid)
 [![HHVM Status](http://hhvm.h4cc.de/badge/rhumsaa/uuid.png)](http://hhvm.h4cc.de/package/rhumsaa/uuid)
 
+This project adheres to a [Contributor Code of Conduct](https://github.com/ramsey/uuid/blob/master/CODE_OF_CONDUCT.md). By participating in this project and its community, you are expected to uphold this code.
+
 ## About
 
 Rhumsaa\Uuid is a PHP 5.3+ library for generating and working with

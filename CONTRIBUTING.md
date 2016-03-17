@@ -2,7 +2,7 @@
 
 Contributions are welcome. We accept pull requests on [GitHub](https://github.com/ramsey/uuid).
 
-_**Please note:** Currently, all active development is working towards the major 3.0 release. This work is taking place in the `master` branch. If you have patches for the 2.x series, please send those to the `2.8` branch._
+This project adheres to a [Contributor Code of Conduct](https://github.com/ramsey/uuid/blob/master/CODE_OF_CONDUCT.md). By participating in this project and its community, you are expected to uphold this code.
 
 ## Team members
 
