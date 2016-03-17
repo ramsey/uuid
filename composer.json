@@ -21,7 +21,7 @@
     },
     "require": {
         "php": ">=5.3.3",
-        "paragonie/random_compat": "dev-without-openssl"
+        "paragonie/random_compat": "dev-master"
     },
     "require-dev": {
         "moontoast/math": "~1.1",
