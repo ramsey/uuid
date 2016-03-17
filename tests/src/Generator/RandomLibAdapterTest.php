@@ -22,33 +22,37 @@ class RandomLibAdapterTest extends TestCase
     {
         $factory = Mockery::mock('overload:RandomLib\Factory');
         $factory->shouldNotReceive('getMediumStrengthGenerator')
-                ->getMock();
+            ->getMock();
 
         $generator = $this->getMockBuilder('RandomLib\Generator')
-                          ->disableOriginalConstructor()
-                          ->getMock();
+            ->disableOriginalConstructor()
+            ->getMock();
         new RandomLibAdapter($generator);
     }
 
+    /**
+     * @runInSeparateProcess
+     * @preserveGlobalState disabled
+     */
     public function testAdapterWithoutGeneratorGreatesGenerator()
     {
         $factory = Mockery::mock('overload:RandomLib\Factory');
         $factory->shouldReceive('getMediumStrengthGenerator')
-                ->once()
-                ->getMock();
+            ->once()
+            ->getMock();
 
         new RandomLibAdapter();
     }
 
     public function testGenerateUsesGenerator()
     {
-        $length    = 10;
+        $length = 10;
         $generator = $this->getMockBuilder('RandomLib\Generator')
-                          ->disableOriginalConstructor()
-                          ->getMock();
+            ->disableOriginalConstructor()
+            ->getMock();
         $generator->expects($this->once())
-                  ->method('generate')
-                  ->with($length);
+            ->method('generate')
+            ->with($length);
 
         $adapter = new RandomLibAdapter($generator);
         $adapter->generate($length);
@@ -57,14 +61,14 @@ class RandomLibAdapterTest extends TestCase
     public function testGenerateReturnsString()
     {
         $generator = $this->getMockBuilder('RandomLib\Generator')
-                          ->disableOriginalConstructor()
-                          ->getMock();
+            ->disableOriginalConstructor()
+            ->getMock();
         $generator->expects($this->once())
-                  ->method('generate')
-                  ->willReturn('random-string');
+            ->method('generate')
+            ->willReturn('random-string');
 
         $adapter = new RandomLibAdapter($generator);
-        $result  = $adapter->generate(1);
+        $result = $adapter->generate(1);
         $this->assertEquals('random-string', $result);
     }
 }
