@@ -59,10 +59,10 @@ Don't panic. Simply execute the following commands with Composer:
 
 ``` bash
 composer remove rhumsaa/uuid
-composer require ramsey/uuid=^2.8
+composer require ramsey/uuid=^2.9
 ```
 
-After doing so, you will have the latest ramsey/uuid package in the 2.8.x series, and there will be no need to modify any code; the namespace in the 2.8.x series is still `Rhumsaa`.
+After doing so, you will have the latest ramsey/uuid package in the 2.x series, and there will be no need to modify any code; the namespace in the 2.x series is still `Rhumsaa`.
 
 
 ## Requirements
