@@ -26,7 +26,7 @@
     },
     "require": {
         "php": ">=5.4",
-        "paragonie/random_compat": "^2.0"
+        "paragonie/random_compat": "^1.0|^2.0"
     },
     "require-dev": {
         "moontoast/math": "^1.1",
