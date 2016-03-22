@@ -53,5 +53,10 @@
     },
     "replace": {
         "rhumsaa/uuid": "self.version"
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "3.x-dev"
+        }
     }
 }
