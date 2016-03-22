@@ -25,7 +25,8 @@
         "source": "https://github.com/ramsey/uuid"
     },
     "require": {
-        "php": ">=5.4"
+        "php": ">=5.4",
+        "paragonie/random_compat": "^1.0|^2.0"
     },
     "require-dev": {
         "moontoast/math": "^1.1",
@@ -34,7 +35,8 @@
         "squizlabs/php_codesniffer": "^2.3",
         "jakub-onderka/php-parallel-lint": "^0.9.0",
         "satooshi/php-coveralls": "^0.6.1",
-        "apigen/apigen": "^4.1"
+        "apigen/apigen": "^4.1",
+        "mockery/mockery": "^0.9.4"
     },
     "suggest": {
         "ircmaxell/random-lib": "Provides RandomLib for use with the RandomLibAdapter",
@@ -52,5 +54,10 @@
     },
     "replace": {
         "rhumsaa/uuid": "self.version"
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "3.x-dev"
+        }
     }
 }

@@ -16,9 +16,10 @@ namespace Ramsey\Uuid\Generator;
 
 /**
  * RandomBytesGenerator provides functionality to generate strings of random
- * binary data using `random_bytes()` function in PHP 7+
+ * binary data using `random_bytes()` function in PHP 7+ or paragonie/random_compat
  *
  * @link http://php.net/random_bytes
+ * @link https://github.com/paragonie/random_compat
  */
 class RandomBytesGenerator implements RandomGeneratorInterface
 {

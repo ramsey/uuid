@@ -59,10 +59,10 @@ Don't panic. Simply execute the following commands with Composer:
 
 ``` bash
 composer remove rhumsaa/uuid
-composer require ramsey/uuid=^2.8
+composer require ramsey/uuid=^2.9
 ```
 
-After doing so, you will have the latest ramsey/uuid package in the 2.8.x series, and there will be no need to modify any code; the namespace in the 2.8.x series is still `Rhumsaa`.
+After doing so, you will have the latest ramsey/uuid package in the 2.x series, and there will be no need to modify any code; the namespace in the 2.x series is still `Rhumsaa`.
 
 
 ## Requirements
@@ -136,7 +136,7 @@ The ramsey/uuid library is copyright © [Ben Ramsey](https://benramsey.com/) and
 
 
 [rfc4122]: http://tools.ietf.org/html/rfc4122
-[conduct]: https://github.com/ramsey/uuid/blob/master/CONDUCT.md
+[conduct]: https://github.com/ramsey/uuid/blob/master/CODE_OF_CONDUCT.md
 [javauuid]: http://docs.oracle.com/javase/6/docs/api/java/util/UUID.html
 [pyuuid]: http://docs.python.org/3/library/uuid.html
 [packagist]: https://packagist.org/packages/ramsey/uuid

@@ -17,8 +17,6 @@ class UuidTest extends TestCase
     protected function setUp()
     {
         Uuid::setFactory(new UuidFactory());
-
-        RandomGeneratorFactory::$forceNoOpensslRandomPseudoBytes = false;
     }
 
     /**
@@ -801,17 +799,6 @@ class UuidTest extends TestCase
      */
     public function testUuid4()
     {
-        $uuid = Uuid::uuid4();
-        $this->assertInstanceOf('Ramsey\Uuid\Uuid', $uuid);
-        $this->assertEquals(2, $uuid->getVariant());
-        $this->assertEquals(4, $uuid->getVersion());
-    }
-
-    /**
-     */
-    public function testUuid4WithoutOpensslRandomPseudoBytes()
-    {
-        RandomGeneratorFactory::$forceNoOpensslRandomPseudoBytes = true;
         $uuid = Uuid::uuid4();
         $this->assertInstanceOf('Ramsey\Uuid\Uuid', $uuid);
         $this->assertEquals(2, $uuid->getVariant());
