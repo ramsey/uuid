@@ -51,7 +51,7 @@ class TestCase extends \PHPUnit_Framework_TestCase
 
     protected function skipIfHhvm()
     {
-        if (getenv('PHP_VERSION') === 'hhvm') {
+        if (defined('HHVM_VERSION')) {
             $this->markTestSkipped('Skipping test that cannot run on HHVM');
         }
     }
