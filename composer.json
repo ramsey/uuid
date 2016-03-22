@@ -20,7 +20,8 @@
         "source": "https://github.com/ramsey/uuid"
     },
     "require": {
-        "php": ">=5.3.3"
+        "php": ">=5.3.3",
+        "paragonie/random_compat": "^1.0|^2.0"
     },
     "require-dev": {
         "moontoast/math": "~1.1",
