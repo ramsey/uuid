@@ -2,7 +2,7 @@
 
 ## 2.9.0
 
-_Released: TBD_
+_Released: 2016-03-22_
 
   * Drop support for OpenSSL in favor of [paragonie/random_compat][]. This addresses and fixes the [collision issue][].
 
