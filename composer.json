@@ -25,7 +25,8 @@
         "source": "https://github.com/ramsey/uuid"
     },
     "require": {
-        "php": ">=5.4"
+        "php": ">=5.4",
+        "codeception/aspect-mock": "^1.0"
     },
     "require-dev": {
         "moontoast/math": "^1.1",
