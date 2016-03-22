@@ -5,6 +5,8 @@
 _Released: 2016-03-22_
 
   * Drop the use of OpenSSL as a fallback and use [paragonie/random_compat][] to support RandomBytesGenerator in versions of PHP earlier than 7.0. This addresses and fixes the [collision issue][].
+  * Improved test coverage.
+  * Update code to conduct to version 1.4 of the Contributor Covenant.
 
 ## 3.2.0
 
