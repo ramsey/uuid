@@ -5,7 +5,9 @@ use Ramsey\Uuid\Generator\PeclUuidTimeGenerator;
 use Ramsey\Uuid\Test\TestCase;
 use AspectMock\Test as AspectMock;
 
-define('UUID_TYPE_TIME', 1);
+if (!defined('UUID_TYPE_TIME')) {
+    define('UUID_TYPE_TIME', 1);
+}
 
 class PeclUuidTimeGeneratorTest extends TestCase
 {
