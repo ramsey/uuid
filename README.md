@@ -136,7 +136,7 @@ The ramsey/uuid library is copyright © [Ben Ramsey](https://benramsey.com/) and
 
 
 [rfc4122]: http://tools.ietf.org/html/rfc4122
-[conduct]: https://github.com/ramsey/uuid/blob/master/CONDUCT.md
+[conduct]: https://github.com/ramsey/uuid/blob/master/CODE_OF_CONDUCT.md
 [javauuid]: http://docs.oracle.com/javase/6/docs/api/java/util/UUID.html
 [pyuuid]: http://docs.python.org/3/library/uuid.html
 [packagist]: https://packagist.org/packages/ramsey/uuid

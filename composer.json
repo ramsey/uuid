@@ -35,6 +35,7 @@
         "jakub-onderka/php-parallel-lint": "^0.9.0",
         "satooshi/php-coveralls": "^0.6.1",
         "apigen/apigen": "^4.1",
+        "mockery/mockery": "^0.9.4",
         "goaop/framework": "1.0.0-alpha.2",
         "codeception/aspect-mock": "1.0.0"
     },
