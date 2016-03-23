@@ -37,7 +37,7 @@ class TestCase extends \PHPUnit_Framework_TestCase
 
     protected function skipIfBigEndianHost()
     {
-        if (! self::isLittleEndianSystem()) {
+        if (!self::isLittleEndianSystem()) {
             $this->markTestSkipped(
                 'Skipping test targeting little-endian architectures.'
             );
@@ -47,5 +47,17 @@ class TestCase extends \PHPUnit_Framework_TestCase
     public static function isLittleEndianSystem()
     {
         return current(unpack('v', pack('S', 0x00FF))) === 0x00FF;
+    }
+
+    protected function skipIfHhvm()
+    {
+        if (self::isHhvm()) {
+            $this->markTestSkipped('Skipping test that cannot run on HHVM');
+        }
+    }
+
+    protected static function isHhvm()
+    {
+        return defined('HHVM_VERSION');
     }
 }
