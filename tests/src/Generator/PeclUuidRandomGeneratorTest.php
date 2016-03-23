@@ -2,7 +2,6 @@
 namespace Ramsey\Uuid\Test\Generator;
 
 use Ramsey\Uuid\Generator\PeclUuidRandomGenerator;
-use Ramsey\Uuid\Test\TestCase;
 use AspectMock\Test as AspectMock;
 
 class PeclUuidRandomGeneratorTest extends PeclUuidTestCase
