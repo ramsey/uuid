@@ -60,6 +60,4 @@ class TestCase extends \PHPUnit_Framework_TestCase
     {
         return defined('HHVM_VERSION');
     }
-
-
 }
