@@ -3,7 +3,6 @@
 namespace Ramsey\Uuid\Test;
 
 use Ramsey\Uuid\FeatureSet;
-use Ramsey\Uuid\Provider\Time\SystemTimeProvider;
 use Ramsey\Uuid\Provider\Time\FixedTimeProvider;
 use Ramsey\Uuid\Generator\CombGenerator;
 use Ramsey\Uuid\Generator\RandomGeneratorFactory;
