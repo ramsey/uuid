@@ -45,7 +45,9 @@ class DefaultTimeGeneratorTest extends TestCase
         $this->nodeProvider = null;
         $this->timeConverter = null;
         Mockery::close();
-        AspectMock::clean();
+        if (!self::isHhvm()) {
+            AspectMock::clean();
+        }
     }
 
     public function testGenerateUsesNodeProviderWhenNodeIsNull()

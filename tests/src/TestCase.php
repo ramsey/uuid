@@ -51,8 +51,15 @@ class TestCase extends \PHPUnit_Framework_TestCase
 
     protected function skipIfHhvm()
     {
-        if (defined('HHVM_VERSION')) {
+        if (self::isHhvm()) {
             $this->markTestSkipped('Skipping test that cannot run on HHVM');
         }
     }
+
+    protected static function isHhvm()
+    {
+        return defined('HHVM_VERSION');
+    }
+
+
 }
