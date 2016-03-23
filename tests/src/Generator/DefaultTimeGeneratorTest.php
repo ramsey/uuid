@@ -54,7 +54,7 @@ class DefaultTimeGeneratorTest extends TestCase
             ->method('getNode')
             ->willReturn('122f80ca9e06');
         $defaultTimeGenerator = new DefaultTimeGenerator($this->nodeProvider, $this->timeConverter, $this->timeProvider);
-        $defaultTimeGenerator->generate();
+        $defaultTimeGenerator->generate(null, $this->clockSeq);
     }
 
     public function testGenerateUsesTimeProvidersCurrentTime()
@@ -63,7 +63,7 @@ class DefaultTimeGeneratorTest extends TestCase
             ->method('currentTime')
             ->willReturn($this->currentTime);
         $defaultTimeGenerator = new DefaultTimeGenerator($this->nodeProvider, $this->timeConverter, $this->timeProvider);
-        $defaultTimeGenerator->generate($this->nodeId);
+        $defaultTimeGenerator->generate($this->nodeId, $this->clockSeq);
     }
 
     public function testGenerateCalculatesTimeWithConverter()
@@ -75,7 +75,7 @@ class DefaultTimeGeneratorTest extends TestCase
             ->with($this->currentTime['sec'], $this->currentTime['usec'])
             ->willReturn($this->calculatedTime);
         $defaultTimeGenerator = new DefaultTimeGenerator($this->nodeProvider, $this->timeConverter, $this->timeProvider);
-        $defaultTimeGenerator->generate($this->nodeId);
+        $defaultTimeGenerator->generate($this->nodeId, $this->clockSeq);
     }
 
     /**
@@ -147,6 +147,4 @@ class DefaultTimeGeneratorTest extends TestCase
         $defaultTimeGenerator->generate($this->nodeId);
         $mt_rand->verifyInvokedOnce([0, 16384]);
     }
-
-
 }
