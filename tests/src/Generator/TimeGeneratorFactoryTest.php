@@ -17,5 +17,4 @@ class TimeGeneratorFactoryTest extends TestCase
         $generator = $factory->getGenerator();
         $this->assertInstanceOf('Ramsey\Uuid\Generator\TimeGeneratorInterface', $generator);
     }
-
 }

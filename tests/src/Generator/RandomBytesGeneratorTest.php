@@ -60,5 +60,4 @@ class RandomBytesGeneratorTest extends TestCase
         $generator = new RandomBytesGenerator();
         $this->assertEquals($bytes, $generator->generate($length));
     }
-
 }

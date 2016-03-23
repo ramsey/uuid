@@ -28,5 +28,4 @@ class PeclUuidTestCase extends TestCase
         AspectMock::clean();
         parent::tearDown();
     }
-
 }
