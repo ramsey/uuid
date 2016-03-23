@@ -145,7 +145,9 @@ class DefaultTimeGeneratorTest extends TestCase
          * $clockSeq = 4066;
          * $node = '122f80ca9e06';
          *
-         * $values = [$low, $mid, sprintf('%04x', $timeHi), sprintf('%02x', $clockSeqHi), sprintf('%02x', $clockSeq & 0xff), $node];
+         * $values = [$low, $mid,
+         * sprintf('%04x', $timeHi), sprintf('%02x', $clockSeqHi),
+         * sprintf('%02x', $clockSeq & 0xff), $node];
          *
          * // then:
          * $hex = vsprintf('%08s%04s%04s%02s%02s%012s', $values);
