@@ -1,6 +1,6 @@
 <?php
 
-namespace Ramsey\Uuid\Test\Builder;
+namespace Ramsey\Uuid\Test\Generator;
 
 use Ramsey\Uuid\Generator\CombGenerator;
 
