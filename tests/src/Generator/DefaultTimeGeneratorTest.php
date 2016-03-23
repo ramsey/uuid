@@ -8,7 +8,7 @@ use Ramsey\Uuid\Provider\NodeProviderInterface;
 use Ramsey\Uuid\Provider\TimeProviderInterface;
 use Ramsey\Uuid\Test\TestCase;
 use Mockery;
-use AspectMock\Test AS AspectMock;
+use AspectMock\Test as AspectMock;
 
 class DefaultTimeGeneratorTest extends TestCase
 {
@@ -53,7 +53,9 @@ class DefaultTimeGeneratorTest extends TestCase
         $this->nodeProvider->expects($this->once())
             ->method('getNode')
             ->willReturn('122f80ca9e06');
-        $defaultTimeGenerator = new DefaultTimeGenerator($this->nodeProvider, $this->timeConverter, $this->timeProvider);
+        $defaultTimeGenerator = new DefaultTimeGenerator($this->nodeProvider,
+            $this->timeConverter,
+            $this->timeProvider);
         $defaultTimeGenerator->generate(null, $this->clockSeq);
     }
 
@@ -62,7 +64,9 @@ class DefaultTimeGeneratorTest extends TestCase
         $this->timeProvider->expects($this->once())
             ->method('currentTime')
             ->willReturn($this->currentTime);
-        $defaultTimeGenerator = new DefaultTimeGenerator($this->nodeProvider, $this->timeConverter, $this->timeProvider);
+        $defaultTimeGenerator = new DefaultTimeGenerator($this->nodeProvider,
+            $this->timeConverter,
+            $this->timeProvider);
         $defaultTimeGenerator->generate($this->nodeId, $this->clockSeq);
     }
 
@@ -74,7 +78,9 @@ class DefaultTimeGeneratorTest extends TestCase
             ->method('calculateTime')
             ->with($this->currentTime['sec'], $this->currentTime['usec'])
             ->willReturn($this->calculatedTime);
-        $defaultTimeGenerator = new DefaultTimeGenerator($this->nodeProvider, $this->timeConverter, $this->timeProvider);
+        $defaultTimeGenerator = new DefaultTimeGenerator($this->nodeProvider,
+            $this->timeConverter,
+            $this->timeProvider);
         $defaultTimeGenerator->generate($this->nodeId, $this->clockSeq);
     }
 
@@ -98,7 +104,9 @@ class DefaultTimeGeneratorTest extends TestCase
             ->with($clockSeqShifted)
             ->andReturn(143);
 
-        $defaultTimeGenerator = new DefaultTimeGenerator($this->nodeProvider, $this->timeConverter, $this->timeProvider);
+        $defaultTimeGenerator = new DefaultTimeGenerator($this->nodeProvider,
+            $this->timeConverter,
+            $this->timeProvider);
         $defaultTimeGenerator->generate($this->nodeId, $this->clockSeq);
     }
 
@@ -114,7 +122,9 @@ class DefaultTimeGeneratorTest extends TestCase
         $binaryUtils->shouldReceive('applyVersion')->andReturn(971);
         $binaryUtils->shouldReceive('applyVariant')->andReturn(143);
 
-        $defaultTimeGenerator = new DefaultTimeGenerator($this->nodeProvider, $this->timeConverter, $this->timeProvider);
+        $defaultTimeGenerator = new DefaultTimeGenerator($this->nodeProvider,
+            $this->timeConverter,
+            $this->timeProvider);
         $result = $defaultTimeGenerator->generate($this->nodeId, $this->clockSeq);
         /**
          * // Given we use values:
@@ -143,7 +153,9 @@ class DefaultTimeGeneratorTest extends TestCase
     {
         $this->skipIfHhvm();
         $mt_rand = AspectMock::func('Ramsey\Uuid\Generator', 'mt_rand', 9622);
-        $defaultTimeGenerator = new DefaultTimeGenerator($this->nodeProvider, $this->timeConverter, $this->timeProvider);
+        $defaultTimeGenerator = new DefaultTimeGenerator($this->nodeProvider,
+            $this->timeConverter,
+            $this->timeProvider);
         $defaultTimeGenerator->generate($this->nodeId);
         $mt_rand->verifyInvokedOnce([0, 16384]);
     }
