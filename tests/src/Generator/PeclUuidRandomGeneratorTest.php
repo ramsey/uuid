@@ -1,12 +1,13 @@
 <?php
 namespace Ramsey\Uuid\Test\Generator;
 
-use Ramsey\Uuid\Generator\PeclUuidTimeGenerator;
+use Ramsey\Uuid\Generator\PeclUuidRandomGenerator;
 use Ramsey\Uuid\Test\TestCase;
 use AspectMock\Test as AspectMock;
 
-class PeclUuidTimeGeneratorTest extends PeclUuidTestCase
+class PeclUuidRandomGeneratorTest extends PeclUuidTestCase
 {
+    private $length = 10; //Doesn't matter, it isn't used
 
     /**
      * This test is just to check collaboration with the PECL UUID extension - not to check
@@ -18,10 +19,10 @@ class PeclUuidTimeGeneratorTest extends PeclUuidTestCase
         $create = AspectMock::func('Ramsey\Uuid\Generator', 'uuid_create', $this->uuidString);
         $parse = AspectMock::func('Ramsey\Uuid\Generator', 'uuid_parse', $this->uuidBinary);
 
-        $generator = new PeclUuidTimeGenerator;
-        $generator->generate();
+        $generator = new PeclUuidRandomGenerator();
+        $generator->generate($this->length);
 
-        $create->verifyInvoked(UUID_TYPE_TIME);
+        $create->verifyInvoked(UUID_TYPE_RANDOM);
         $parse->verifyInvoked($this->uuidString);
     }
 
@@ -33,8 +34,8 @@ class PeclUuidTimeGeneratorTest extends PeclUuidTestCase
     {
         AspectMock::func('Ramsey\Uuid\Generator', 'uuid_create', $this->uuidString);
         AspectMock::func('Ramsey\Uuid\Generator', 'uuid_parse', $this->uuidBinary);
-        $generator = new PeclUuidTimeGenerator;
-        $uuid = $generator->generate();
+        $generator = new PeclUuidRandomGenerator;
+        $uuid = $generator->generate($this->length);
         $this->assertEquals($this->uuidBinary, $uuid);
     }
 }
