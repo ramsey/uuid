@@ -17,13 +17,17 @@ class SystemTimeProviderTest extends TestCase
         $this->assertArrayHasKey('usec', $time);
     }
 
+    /**
+     * @runInSeparateProcess
+     * @preserveGlobalState disabled
+     */
     public function testCurrentTimeUsesGettimeofday()
     {
         $this->skipIfHhvm();
-        $time = ['sec' => 1458844556, 'usec' => 200997];
-        $func = AspectMock::func('Ramsey\Uuid\Provider\Time', 'gettimeofday', $time);
+        $timestamp = ['sec' => 1458844556, 'usec' => 200997];
+        $func = AspectMock::func('Ramsey\Uuid\Provider\Time', 'gettimeofday', $timestamp);
         $provider = new SystemTimeProvider();
-        $this->assertEquals($time, $provider->currentTime());
+        $provider->currentTime();
         $func->verifyInvokedOnce();
 
     }
