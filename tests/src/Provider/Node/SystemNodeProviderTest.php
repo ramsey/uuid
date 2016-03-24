@@ -107,4 +107,53 @@ class SystemNodeProviderTest extends TestCase
         $passthru->verifyInvokedOnce([$command]);
     }
 
+    /**
+     * @runInSeparateProcess
+     * @preserveGlobalState disabled
+     */
+    public function testGetNodeReturnsSameNodeUponSubsequentCalls()
+    {
+        //Creating stub for the node
+        $provider = new class extends SystemNodeProvider
+        {
+            protected function getIfconfig()
+            {
+                return PHP_EOL . 'AA-BB-CC-DD-EE-FF' . PHP_EOL;
+            }
+        };
+
+        $node = $provider->getNode();
+        $node2 = $provider->getNode();
+        $this->assertEquals($node, $node2);
+    }
+
+    /**
+     * @runInSeparateProcess
+     * @preserveGlobalState disabled
+     */
+    public function testSubsequentCallsToGetNodeDoNotRecallIfconfig()
+    {
+        //Creating a mock so we can verify that the method is only called once.
+        $provider = new class extends SystemNodeProvider
+        {
+            private $calls = 0;
+
+            protected function getIfconfig()
+            {
+                $this->calls++;
+                return PHP_EOL . 'AA-BB-CC-DD-EE-FF' . PHP_EOL;
+            }
+
+            public function __destruct()
+            {
+                if ($this->calls != 1) {
+                    throw new \Exception("getIfconfig was called {$this->calls} times, expected only once");
+                }
+            }
+        };
+
+        $provider->getNode();
+        $provider->getNode();
+    }
+
 }
