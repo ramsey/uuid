@@ -40,17 +40,12 @@ class SystemNodeProviderTest extends TestCase
      */
     public function testGetNodeReturnsNodeStrippedOfNotationalFormatting($formatted, $expected)
     {
-        //Stubbing a protected method so we can stub the results of getIfconfig
-        $provider = new class extends SystemNodeProvider
-        {
-            public $config;
-
-            protected function getIfconfig()
-            {
-                return $this->config;
-            }
-        };
-        $provider->config = PHP_EOL . $formatted . PHP_EOL;
+        //Using a stub to provide data for the protected method that gets the node
+        $provider = $this->getMockBuilder('Ramsey\Uuid\Provider\Node\SystemNodeProvider')
+            ->setMethods(['getIfconfig'])
+            ->getMock();
+        $provider->method('getIfconfig')
+            ->willReturn(PHP_EOL . $formatted . PHP_EOL);
 
         $node = $provider->getNode();
         $this->assertEquals($expected, $node);
@@ -62,19 +57,14 @@ class SystemNodeProviderTest extends TestCase
      */
     public function testGetNodeReturnsFirstMacAddressFound()
     {
-        //Stubbing a protected method so we can stub having multiple addresses to match
-        $provider = new class extends SystemNodeProvider
-        {
-            public $config;
-
-            protected function getIfconfig()
-            {
-                return $this->config;
-            }
-        };
-        $provider->config = PHP_EOL . 'AA-BB-CC-DD-EE-FF' . PHP_EOL .
-            '00-11-22-33-44-55' . PHP_EOL .
-            'FF-11-EE-22-DD-33' . PHP_EOL;
+        //Using a stub to provide data for the protected method that gets the node
+        $provider = $this->getMockBuilder('Ramsey\Uuid\Provider\Node\SystemNodeProvider')
+            ->setMethods(['getIfconfig'])
+            ->getMock();
+        $provider->method('getIfconfig')
+            ->willReturn(PHP_EOL . 'AA-BB-CC-DD-EE-FF' . PHP_EOL .
+                '00-11-22-33-44-55' . PHP_EOL .
+                'FF-11-EE-22-DD-33' . PHP_EOL);
 
         $node = $provider->getNode();
         $this->assertEquals('AABBCCDDEEFF', $node);
@@ -113,14 +103,12 @@ class SystemNodeProviderTest extends TestCase
      */
     public function testGetNodeReturnsSameNodeUponSubsequentCalls()
     {
-        //Creating stub for the node
-        $provider = new class extends SystemNodeProvider
-        {
-            protected function getIfconfig()
-            {
-                return PHP_EOL . 'AA-BB-CC-DD-EE-FF' . PHP_EOL;
-            }
-        };
+        //Using a stub to provide data for the protected method that gets the node
+        $provider = $this->getMockBuilder('Ramsey\Uuid\Provider\Node\SystemNodeProvider')
+            ->setMethods(['getIfconfig'])
+            ->getMock();
+        $provider->method('getIfconfig')
+            ->willReturn(PHP_EOL . 'AA-BB-CC-DD-EE-FF' . PHP_EOL);
 
         $node = $provider->getNode();
         $node2 = $provider->getNode();
@@ -133,25 +121,13 @@ class SystemNodeProviderTest extends TestCase
      */
     public function testSubsequentCallsToGetNodeDoNotRecallIfconfig()
     {
-        //Creating a mock so we can verify that the method is only called once.
-        $provider = new class extends SystemNodeProvider
-        {
-            private $calls = 0;
-
-            protected function getIfconfig()
-            {
-                $this->calls++;
-                return PHP_EOL . 'AA-BB-CC-DD-EE-FF' . PHP_EOL;
-            }
-
-            public function __destruct()
-            {
-                if ($this->calls != 1) {
-                    throw new \Exception("getIfconfig was called {$this->calls} times, expected only once");
-                }
-            }
-        };
-
+        //Using a mock to verify the provider only gets the node from ifconfig one time
+        $provider = $this->getMockBuilder('Ramsey\Uuid\Provider\Node\SystemNodeProvider')
+            ->setMethods(['getIfconfig'])
+            ->getMock();
+        $provider->expects($this->once())
+            ->method('getIfconfig')
+            ->willReturn(PHP_EOL . 'AA-BB-CC-DD-EE-FF' . PHP_EOL);
         $provider->getNode();
         $provider->getNode();
     }
