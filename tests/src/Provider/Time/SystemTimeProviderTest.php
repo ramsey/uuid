@@ -31,5 +31,4 @@ class SystemTimeProviderTest extends TestCase
         $func->verifyInvokedOnce();
 
     }
-
 }
