@@ -17,10 +17,10 @@ class SystemNodeProviderTest extends TestCase
         $provider = new SystemNodeProvider();
         $node = $provider->getNode();
 
-        $this->assertTrue(ctype_xdigit($node), 'Node is not a hexadecimal string. Actual node: ' . $node);
-        $this->assertTrue(strlen($node) === 12, 'Node is 12 characters long. Actual length: ' . strlen(
-            $node
-        ) . PHP_EOL . ' Actual node: ' . $node);
+        $this->assertTrue(ctype_xdigit($node), 'Node should be a hexadecimal string. Actual node: ' . $node);
+        $length = strlen($node);
+        $lengthError = 'Node should be 12 characters. Actual length: ' . $length . PHP_EOL . ' Actual node: ' . $node;
+        $this->assertTrue(($length === 12), $lengthError);
     }
 
 
