@@ -1,8 +1,18 @@
 <?php
 namespace Ramsey\Uuid\Test;
 
+use AspectMock\Test as AspectMock;
+
 class TestCase extends \PHPUnit_Framework_TestCase
 {
+    public function tearDown()
+    {
+        parent::tearDown();
+        if (!self::isHhvm()) {
+            AspectMock::clean();
+        }
+    }
+
     protected function skip64BitTest()
     {
         if (PHP_INT_SIZE == 4) {
