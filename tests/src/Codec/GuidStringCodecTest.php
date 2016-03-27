@@ -59,6 +59,17 @@ class GuidStringCodecTest extends TestCase
         $this->assertEquals('78563412-3412-cdab-abef-1234abcd4321', $result);
     }
 
+    public function testEncodeReturnsFormattedStringOnBigEndian()
+    {
+        $this->skipIfLittleEndianHost();
+        $this->uuid->method('getFieldsHex')
+            ->willReturn($this->fields);
+        $codec = new GuidStringCodec($this->builder);
+        $result = $codec->encode($this->uuid);
+        $this->assertEquals('12345678-1234-abcd-abef-1234abcd4321', $result);
+    }
+
+
     public function testEncodeBinaryUsesFieldsArray()
     {
         $this->uuid->expects($this->once())
@@ -82,6 +93,17 @@ class GuidStringCodecTest extends TestCase
     {
         $this->skipIfBigEndianHost();
         $string = 'uuid:78563412-3412-cdab-abef-1234abcd4321';
+        $this->builder->expects($this->once())
+            ->method('build')
+            ->with($this->isInstanceOf('Ramsey\Uuid\Codec\GuidStringCodec'), $this->fields);
+        $codec = new GuidStringCodec($this->builder);
+        $codec->decode($string);
+    }
+
+    public function testDecodeUsesBuilderOnFieldsOnBigEndian()
+    {
+        $this->skipIfLittleEndianHost();
+        $string = 'uuid:12345678-1234-abcd-abef-1234abcd4321';
         $this->builder->expects($this->once())
             ->method('build')
             ->with($this->isInstanceOf('Ramsey\Uuid\Codec\GuidStringCodec'), $this->fields);
