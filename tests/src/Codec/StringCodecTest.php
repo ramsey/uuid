@@ -81,7 +81,7 @@ class StringCodecTest extends TestCase
         $this->assertEquals($expected, $result);
     }
 
-    public function testDecodeUsesBulderOnFields()
+    public function testDecodeUsesBuilderOnFields()
     {
         $string = 'uuid:12345678-1234-abcd-abef-1234abcd4321';
         $this->builder->expects($this->once())
