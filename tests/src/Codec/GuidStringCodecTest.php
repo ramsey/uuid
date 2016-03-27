@@ -51,6 +51,7 @@ class GuidStringCodecTest extends TestCase
 
     public function testEncodeReturnsFormattedString()
     {
+        $this->skipIfLittleEndianHost();
         $this->uuid->method('getFieldsHex')
             ->willReturn($this->fields);
         $codec = new GuidStringCodec($this->builder);
@@ -79,6 +80,7 @@ class GuidStringCodecTest extends TestCase
 
     public function testDecodeUsesBuilderOnFields()
     {
+        $this->skipIfLittleEndianHost();
         $string = 'uuid:78563412-3412-cdab-abef-1234abcd4321';
         $this->builder->expects($this->once())
             ->method('build')
