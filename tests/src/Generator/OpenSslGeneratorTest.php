@@ -4,6 +4,7 @@ namespace Ramsey\Uuid\Test\Generator;
 
 use Ramsey\Uuid\Generator\OpenSslGenerator;
 use Ramsey\Uuid\Test\TestCase;
+use AspectMock\Test as AspectMock;
 
 /**
  * Class OpenSslGeneratorTest
