@@ -2,8 +2,10 @@
 
 namespace Ramsey\Uuid\Test\Codec;
 
+use Ramsey\Uuid\Builder\UuidBuilderInterface;
 use Ramsey\Uuid\Codec\StringCodec;
 use Ramsey\Uuid\Test\TestCase;
+use Ramsey\Uuid\UuidInterface;
 
 /**
  * Class StringCodecTest
@@ -13,8 +15,11 @@ use Ramsey\Uuid\Test\TestCase;
 class StringCodecTest extends TestCase
 {
 
+    /** @var UuidBuilderInterface */
     private $builder;
+    /** @var UuidInterface */
     private $uuid;
+    /** @var array */
     private $fields;
 
     public function setUp()
@@ -78,21 +83,49 @@ class StringCodecTest extends TestCase
 
     public function testDecodeUsesBulderOnFields()
     {
+        $string = 'uuid:12345678-1234-abcd-abef-1234abcd4321';
+        $this->builder->expects($this->once())
+            ->method('build')
+            ->with($this->isInstanceOf('Ramsey\Uuid\Codec\StringCodec'), $this->fields);
+        $codec = new StringCodec($this->builder);
+        $codec->decode($string);
+    }
 
+    public function testDecodeThrowsExceptionOnInvalidUuid()
+    {
+        $string = 'invalid-uuid';
+        $this->setExpectedException('\InvalidArgumentException');
+        $codec = new StringCodec($this->builder);
+        $codec->decode($string);
     }
 
     public function testDecodeReturnsUuidFromBuilder()
     {
-
+        $string = 'uuid:12345678-1234-abcd-abef-1234abcd4321';
+        $this->builder->method('build')
+            ->willReturn($this->uuid);
+        $codec = new StringCodec($this->builder);
+        $result = $codec->decode($string);
+        $this->assertEquals($this->uuid, $result);
     }
 
     public function testDecodeBytesThrowsExceptionWhenBytesStringNotSixteenCharacters()
     {
-
+        $string = '61';
+        $bytes = pack('H*', $string);
+        $codec = new StringCodec($this->builder);
+        $this->setExpectedException('InvalidArgumentException', '$bytes string should contain 16 characters.');
+        $codec->decodeBytes($bytes);
     }
 
     public function testDecodeBytesReturnsUuid()
     {
-
+        $string = '123456781234abcdabef1234abcd4321';
+        $bytes = pack('H*', $string);
+        $codec = new StringCodec($this->builder);
+        $this->builder->method('build')
+            ->willReturn($this->uuid);
+        $result = $codec->decodeBytes($bytes);
+        $this->assertEquals($this->uuid, $result);
     }
 }
