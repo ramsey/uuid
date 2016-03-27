@@ -3,7 +3,6 @@
 namespace Ramsey\Uuid\Test\Generator;
 
 use Ramsey\Uuid\Test\TestCase;
-use AspectMock\Test as AspectMock;
 
 if (!defined('UUID_TYPE_TIME')) {
     define('UUID_TYPE_TIME', 1);
@@ -21,11 +20,5 @@ class PeclUuidTestCase extends TestCase
     {
         $this->skipIfHhvm();
         parent::setUp();
-    }
-
-    public function tearDown()
-    {
-        AspectMock::clean();
-        parent::tearDown();
     }
 }

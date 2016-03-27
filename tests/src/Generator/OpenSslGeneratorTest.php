@@ -4,20 +4,18 @@ namespace Ramsey\Uuid\Test\Generator;
 
 use Ramsey\Uuid\Generator\OpenSslGenerator;
 use Ramsey\Uuid\Test\TestCase;
-use AspectMock\Test as AspectMock;
 
+/**
+ * Class OpenSslGeneratorTest
+ * @package Ramsey\Uuid\Test\Generator
+ * @covers Ramsey\Uuid\Generator\OpenSslGenerator
+ */
 class OpenSslGeneratorTest extends TestCase
 {
     public function setUp()
     {
         $this->skipIfHhvm();
         parent::setUp();
-    }
-
-    public function tearDown()
-    {
-        parent::tearDown();
-        AspectMock::clean();
     }
 
     public function lengthAndHexDataProvider()

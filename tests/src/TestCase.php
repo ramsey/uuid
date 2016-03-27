@@ -2,6 +2,7 @@
 namespace Ramsey\Uuid\Test;
 
 use AspectMock\Test as AspectMock;
+use Mockery;
 
 class TestCase extends \PHPUnit_Framework_TestCase
 {
@@ -11,6 +12,7 @@ class TestCase extends \PHPUnit_Framework_TestCase
         if (!self::isHhvm()) {
             AspectMock::clean();
         }
+        Mockery::close();
     }
 
     protected function skip64BitTest()
