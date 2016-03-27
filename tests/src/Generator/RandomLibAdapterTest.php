@@ -9,7 +9,7 @@ use Mockery;
 /**
  * Class RandomLibAdapterTest
  * @package Ramsey\Uuid\Test\Generator
- * @covers Ramsey\Uuid\Generator\SodiumRandomGenerator
+ * @covers Ramsey\Uuid\Generator\RandomLibAdapter
  */
 class RandomLibAdapterTest extends TestCase
 {
