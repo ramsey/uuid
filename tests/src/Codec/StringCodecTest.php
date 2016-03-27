@@ -41,6 +41,7 @@ class StringCodecTest extends TestCase
     {
         parent::tearDown();
         $this->builder = null;
+        $this->uuid = null;
         $this->fields = null;
     }
 

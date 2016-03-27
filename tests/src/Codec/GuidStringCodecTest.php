@@ -38,6 +38,7 @@ class GuidStringCodecTest extends TestCase
         parent::tearDown();
         $this->builder = null;
         $this->fields = null;
+        $this->uuid = null;
     }
 
     public function testEncodeUsesFieldsArray()
