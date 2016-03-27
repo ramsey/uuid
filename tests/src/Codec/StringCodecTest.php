@@ -21,6 +21,8 @@ class StringCodecTest extends TestCase
     private $uuid;
     /** @var array */
     private $fields;
+    /** @var string */
+    private $uuidString = '12345678-1234-abcd-abef-1234abcd4321';
 
     public function setUp()
     {
@@ -55,11 +57,9 @@ class StringCodecTest extends TestCase
     {
         $this->uuid->method('getFieldsHex')
             ->willReturn($this->fields);
-        $expected = '12345678-1234-abcd-abef-1234abcd4321';
-
         $codec = new StringCodec($this->builder);
         $result = $codec->encode($this->uuid);
-        $this->assertEquals($expected, $result);
+        $this->assertEquals($this->uuidString, $result);
     }
 
     public function testEncodeBinaryUsesHexadecimalValue()
