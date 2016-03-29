@@ -6,14 +6,13 @@ use Ramsey\Uuid\Generator\RandomLibAdapter;
 use Ramsey\Uuid\Test\TestCase;
 use Mockery;
 
+/**
+ * Class RandomLibAdapterTest
+ * @package Ramsey\Uuid\Test\Generator
+ * @covers Ramsey\Uuid\Generator\RandomLibAdapter
+ */
 class RandomLibAdapterTest extends TestCase
 {
-    public function tearDown()
-    {
-        parent::tearDown();
-        Mockery::close();
-    }
-
     /**
      * @runInSeparateProcess
      * @preserveGlobalState disabled

@@ -3,8 +3,14 @@
 namespace Ramsey\Uuid\Test\Generator;
 
 use Ramsey\Uuid\Generator\MtRandGenerator;
+use Ramsey\Uuid\Test\TestCase;
 
-class MtRandGeneratorTest extends \PHPUnit_Framework_TestCase
+/**
+ * Class MtRandGeneratorTest
+ * @package Ramsey\Uuid\Test\Generator
+ * @covers Ramsey\Uuid\Generator\MtRandGenerator
+ */
+class MtRandGeneratorTest extends TestCase
 {
     public function lengthDataProvider()
     {

@@ -1,12 +1,17 @@
 <?php
 
-namespace Ramsey\Uuid\Test\Builder;
+namespace Ramsey\Uuid\Test\Generator;
 
 use Ramsey\Uuid\Generator\CombGenerator;
+use Ramsey\Uuid\Test\TestCase;
 
-class CombGeneratorTest extends \PHPUnit_Framework_TestCase
+/**
+ * Class CombGeneratorTest
+ * @package Ramsey\Uuid\Test\Generator
+ * @covers Ramsey\Uuid\Generator\CombGenerator
+ */
+class CombGeneratorTest extends TestCase
 {
-
     private $timestampBytes = 6;
 
     public function testGenerateUsesRandomGeneratorWithLengthMinusTimestampBytes()

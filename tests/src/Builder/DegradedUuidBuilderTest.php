@@ -4,6 +4,11 @@ namespace Ramsey\Uuid\Test\Builder;
 
 use Ramsey\Uuid\Builder\DegradedUuidBuilder;
 
+/**
+ * Class DegradedUuidBuilderTest
+ * @package Ramsey\Uuid\Test\Builder
+ * @covers Ramsey\Uuid\Builder\DegradedUuidBuilder
+ */
 class DegradedUuidBuilderTest extends \PHPUnit_Framework_TestCase
 {
 
