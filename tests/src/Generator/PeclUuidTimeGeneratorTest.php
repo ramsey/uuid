@@ -4,6 +4,11 @@ namespace Ramsey\Uuid\Test\Generator;
 use Ramsey\Uuid\Generator\PeclUuidTimeGenerator;
 use AspectMock\Test as AspectMock;
 
+/**
+ * Class PeclUuidTimeGeneratorTest
+ * @package Ramsey\Uuid\Test\Generator
+ * @covers Ramsey\Uuid\Generator\PeclUuidTimeGenerator
+ */
 class PeclUuidTimeGeneratorTest extends PeclUuidTestCase
 {
 

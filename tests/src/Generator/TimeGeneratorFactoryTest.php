@@ -5,6 +5,11 @@ namespace Ramsey\Uuid\Test\Generator;
 use Ramsey\Uuid\Generator\TimeGeneratorFactory;
 use Ramsey\Uuid\Test\TestCase;
 
+/**
+ * Class TimeGeneratorFactoryTest
+ * @package Ramsey\Uuid\Test\Generator
+ * @covers Ramsey\Uuid\Generator\TimeGeneratorFactory
+ */
 class TimeGeneratorFactoryTest extends TestCase
 {
     public function testGeneratorReturnsNewGenerator()

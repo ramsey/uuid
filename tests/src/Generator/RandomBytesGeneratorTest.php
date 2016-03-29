@@ -6,18 +6,17 @@ use Ramsey\Uuid\Generator\RandomBytesGenerator;
 use Ramsey\Uuid\Test\TestCase;
 use AspectMock\Test as AspectMock;
 
+/**
+ * Class RandomBytesGeneratorTest
+ * @package Ramsey\Uuid\Test\Generator
+ * @covers Ramsey\Uuid\Generator\RandomBytesGenerator
+ */
 class RandomBytesGeneratorTest extends TestCase
 {
     public function setUp()
     {
         $this->skipIfHhvm();
         parent::setUp();
-    }
-
-    public function tearDown()
-    {
-        parent::tearDown();
-        AspectMock::clean();
     }
 
     public function lengthAndHexDataProvider()
