@@ -24,6 +24,8 @@ use Ramsey\Uuid\Converter\NumberConverterInterface;
  */
 class CombGenerator implements RandomGeneratorInterface
 {
+    const TIMESTAMP_BYTES = 6;
+
     /**
      * @var RandomGeneratorInterface
      */
@@ -35,11 +37,6 @@ class CombGenerator implements RandomGeneratorInterface
     private $converter;
 
     /**
-     * @var integer
-     */
-    private $timestampBytes;
-
-    /**
      * Constructs a `CombGenerator` using a random-number generator and a number converter
      *
      * @param RandomGeneratorInterface $generator Random-number generator for the non-time part.
@@ -49,7 +46,6 @@ class CombGenerator implements RandomGeneratorInterface
     {
         $this->converter = $numberConverter;
         $this->randomGenerator = $generator;
-        $this->timestampBytes = 6;
     }
 
     /**
@@ -60,29 +56,25 @@ class CombGenerator implements RandomGeneratorInterface
      */
     public function generate($length)
     {
-        if ($length < $this->timestampBytes || $length < 0) {
+        if ($length < self::TIMESTAMP_BYTES || $length < 0) {
             throw new \InvalidArgumentException('Length must be a positive integer.');
         }
 
         $hash = '';
 
-        if ($this->timestampBytes > 0 && $length > $this->timestampBytes) {
-            $hash = $this->randomGenerator->generate($length - $this->timestampBytes);
+        if (self::TIMESTAMP_BYTES > 0 && $length > self::TIMESTAMP_BYTES) {
+            $hash = $this->randomGenerator->generate($length - self::TIMESTAMP_BYTES);
         }
 
-        $lsbTime = str_pad($this->converter->toHex($this->timestamp()), $this->timestampBytes * 2, '0', STR_PAD_LEFT);
+        $lsbTime = str_pad($this->converter->toHex($this->timestamp()), self::TIMESTAMP_BYTES * 2, '0', STR_PAD_LEFT);
 
-        if ($this->timestampBytes > 0 && strlen($lsbTime) > $this->timestampBytes * 2) {
-            $lsbTime = substr($lsbTime, 0 - ($this->timestampBytes * 2));
-        }
-
-        return hex2bin(str_pad(bin2hex($hash), $length - $this->timestampBytes, '0')) . hex2bin($lsbTime);
+        return hex2bin(str_pad(bin2hex($hash), $length - self::TIMESTAMP_BYTES, '0') . $lsbTime);
     }
 
     /**
      * Returns current timestamp as integer, precise to 0.00001 seconds
      *
-     * @return integer
+     * @return string
      */
     private function timestamp()
     {
