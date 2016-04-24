@@ -1,5 +1,13 @@
 # ramsey/uuid Changelog
 
+## 3.4.0
+
+_Released: 2016-04-23_
+
+  * Add `TimestampFirstCombCodec` and `TimestampLastCombCodec` codecs.
+  * Improve logic of `CombGenerator` for COMB sequential UUIDs.
+  * Significantly improved test coverage.
+
 ## 3.3.0
 
 _Released: 2016-03-22_
