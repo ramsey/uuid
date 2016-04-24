@@ -1,5 +1,11 @@
 # ramsey/uuid Changelog
 
+## 3.4.1
+
+_Released: 2016-04-23_
+
+  * Fixed test that violated a PHP CodeSniffer rule, breaking the build.
+
 ## 3.4.0
 
 _Released: 2016-04-23_
