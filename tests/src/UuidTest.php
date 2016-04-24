@@ -1288,7 +1288,6 @@ class UuidTest extends TestCase
         $factory = new UuidFactory($featureSet);
 
         while ($currentTime <= $endTime) {
-
             foreach (array(0, 50000, 250000, 500000, 750000, 999999) as $usec) {
                 $timeOfDay->setSec($currentTime);
                 $timeOfDay->setUsec($usec);
