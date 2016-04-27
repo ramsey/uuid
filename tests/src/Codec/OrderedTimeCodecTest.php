@@ -84,6 +84,15 @@ class OrderedTimeCodecTest extends TestCase
         $this->assertEquals($expected, $result);
     }
 
+    public function testDecodeBytesThrowsExceptionWhenBytesStringNotSixteenCharacters()
+    {
+        $string = '61';
+        $bytes = pack('H*', $string);
+        $codec = new OrderedTimeCodec($this->builder);
+        $this->setExpectedException('InvalidArgumentException', '$bytes string should contain 16 characters.');
+        $codec->decodeBytes($bytes);
+    }
+
     public function testDecodeReturnsUuidFromBuilder()
     {
         $string = 'uuid:58e0a7d7-eebc-11d8-9669-0800200c9a66';
