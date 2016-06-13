@@ -3,12 +3,13 @@
 namespace Ramsey\Uuid\Test;
 
 use Ramsey\Uuid\FeatureSet;
-use Ramsey\Uuid\Provider\Time\SystemTimeProvider;
-use Ramsey\Uuid\Provider\Time\FixedTimeProvider;
 use Ramsey\Uuid\Generator\CombGenerator;
 use Ramsey\Uuid\Generator\RandomGeneratorFactory;
+use Ramsey\Uuid\Provider\Time\FixedTimeProvider;
+use Ramsey\Uuid\Provider\Time\SystemTimeProvider;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidFactory;
+use Ramsey\Uuid\Validator\Validator;
 
 class UuidTest extends TestCase
 {
@@ -822,7 +823,7 @@ class UuidTest extends TestCase
      */
     public function testUuid4Comb()
     {
-        $mock = $this->getMock('Ramsey\Uuid\Generator\RandomGeneratorInterface');
+        $mock = $this->getMockBuilder('Ramsey\Uuid\Generator\RandomGeneratorInterface')->getMock();
         $mock->expects($this->any())
             ->method('generate')
             ->willReturnCallback(function ($length) {
@@ -1302,11 +1303,16 @@ class UuidTest extends TestCase
      */
     public function testIsValid()
     {
-        $factory = $this->getMockBuilder('Ramsey\Uuid\UuidFactoryInterface')->getMock();
-        $factory->expects($this->once())->method('isValid')->willReturn(true);
-        Uuid::setFactory($factory);
+        $argument = uniqid('passed argument ');
 
-        $this->assertTrue(Uuid::isValid('test0'));
+        $validator = $this->getMockBuilder('Ramsey\Uuid\Validator\ValidatorInterface')->getMock();
+        $validator->expects($this->once())->method('validate')->with($argument)->willReturn(true);
+        Uuid::setValidator($validator);
+
+        $this->assertTrue(Uuid::isValid($argument));
+
+        // reset the static validator
+        Uuid::setValidator(new Validator);
     }
 
     /**
