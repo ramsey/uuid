@@ -38,6 +38,7 @@ use Ramsey\Uuid\Provider\Node\RandomNodeProvider;
 use Ramsey\Uuid\Provider\Node\SystemNodeProvider;
 use Ramsey\Uuid\Provider\TimeProviderInterface;
 use Ramsey\Uuid\Provider\Time\SystemTimeProvider;
+use Ramsey\Uuid\Validator\Validator;
 use Ramsey\Uuid\Validator\ValidatorInterface;
 
 /**
@@ -133,6 +134,7 @@ class FeatureSet
         $this->nodeProvider = $this->buildNodeProvider();
         $this->randomGenerator = $this->buildRandomGenerator();
         $this->setTimeProvider(new SystemTimeProvider());
+        $this->validator = new Validator;
     }
 
     /**

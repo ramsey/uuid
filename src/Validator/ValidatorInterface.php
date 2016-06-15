@@ -21,11 +21,6 @@ namespace Ramsey\Uuid\Validator;
 interface ValidatorInterface
 {
     /**
-     * Regular expression pattern for matching a valid UUID of any variant.
-     */
-    const VALID_PATTERN = '^[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}$';
-
-    /**
      * Validate that a string represents a UUID
      *
      * @param string $uuid

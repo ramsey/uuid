@@ -18,7 +18,6 @@ use Ramsey\Uuid\Codec\CodecInterface;
 use Ramsey\Uuid\Converter\NumberConverterInterface;
 use Ramsey\Uuid\Exception\UnsupportedOperationException;
 use Ramsey\Uuid\Validator\Validator;
-use Ramsey\Uuid\Validator\ValidatorInterface;
 
 /**
  * Represents a universally unique identifier (UUID), according to RFC 4122.
@@ -95,19 +94,13 @@ class Uuid implements UuidInterface
     /**
      * Regular expression pattern for matching a valid UUID of any variant.
      */
-    const VALID_PATTERN = ValidatorInterface::VALID_PATTERN;
+    const VALID_PATTERN = Validator::VALID_PATTERN;
 
     /**
      * The factory to use when creating UUIDs.
      * @var UuidFactoryInterface
      */
     private static $factory = null;
-
-    /**
-     * The validator to use when validating string representations of UUIDs
-     * @var ValidatorInterface
-     */
-    private static $validator = null;
 
     /**
      * The codec to use when encoding or decoding UUID strings.
@@ -590,20 +583,6 @@ class Uuid implements UuidInterface
         self::$factory = $factory;
     }
 
-    public static function getValidator()
-    {
-        if (null === self::$validator) {
-            self::$validator = new Validator;
-        }
-
-        return self::$validator;
-    }
-
-    public static function setValidator(ValidatorInterface $validator)
-    {
-        self::$validator = $validator;
-    }
-
     /**
      * Creates a UUID from a byte string.
      *
@@ -645,7 +624,7 @@ class Uuid implements UuidInterface
      */
     public static function isValid($uuid)
     {
-        return self::getValidator()->validate($uuid);
+        return self::getFactory()->getValidator()->validate($uuid);
     }
 
     /**

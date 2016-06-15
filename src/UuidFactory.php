@@ -20,6 +20,7 @@ use Ramsey\Uuid\Converter\NumberConverterInterface;
 use Ramsey\Uuid\Generator\RandomGeneratorInterface;
 use Ramsey\Uuid\Generator\TimeGeneratorInterface;
 use Ramsey\Uuid\Provider\NodeProviderInterface;
+use Ramsey\Uuid\Validator\ValidatorInterface;
 
 class UuidFactory implements UuidFactoryInterface
 {
@@ -54,6 +55,11 @@ class UuidFactory implements UuidFactoryInterface
     private $uuidBuilder = null;
 
     /**
+     * @var ValidatorInterface
+     */
+    private $validator = null;
+
+    /**
      * Constructs a `UuidFactory` for creating `Ramsey\Uuid\UuidInterface` instances
      *
      * @param FeatureSet $features A set of features for use when creating UUIDs
@@ -68,6 +74,7 @@ class UuidFactory implements UuidFactoryInterface
         $this->randomGenerator = $features->getRandomGenerator();
         $this->timeGenerator = $features->getTimeGenerator();
         $this->uuidBuilder = $features->getBuilder();
+        $this->validator = $features->getValidator();
     }
 
     /**
@@ -158,6 +165,24 @@ class UuidFactory implements UuidFactoryInterface
     public function setUuidBuilder(UuidBuilderInterface $builder)
     {
         $this->uuidBuilder = $builder;
+    }
+
+    /**
+     * @return ValidatorInterface
+     */
+    public function getValidator()
+    {
+        return $this->validator;
+    }
+
+    /**
+     * @return void
+     */
+    public function setValidator(ValidatorInterface $validator)
+    {
+        assert(func_num_args() === 1);
+
+        $this->validator = $validator;
     }
 
     public function fromBytes($bytes)

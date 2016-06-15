@@ -1307,12 +1307,13 @@ class UuidTest extends TestCase
 
         $validator = $this->getMockBuilder('Ramsey\Uuid\Validator\ValidatorInterface')->getMock();
         $validator->expects($this->once())->method('validate')->with($argument)->willReturn(true);
-        Uuid::setValidator($validator);
+        $factory = Uuid::getFactory();
+        $factory->setValidator($validator);
 
         $this->assertTrue(Uuid::isValid($argument));
 
         // reset the static validator
-        Uuid::setValidator(new Validator);
+        $factory->setValidator(new Validator);
     }
 
     /**
