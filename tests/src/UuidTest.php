@@ -2,7 +2,10 @@
 
 namespace Ramsey\Uuid\Test;
 
+use Ramsey\Uuid\Codec\TimestampFirstCombCodec;
+use Ramsey\Uuid\Codec\TimestampLastCombCodec;
 use Ramsey\Uuid\FeatureSet;
+use Ramsey\Uuid\Provider\Time\FixedTimeProvider;
 use Ramsey\Uuid\Generator\CombGenerator;
 use Ramsey\Uuid\Generator\RandomGeneratorFactory;
 use Ramsey\Uuid\Provider\Time\FixedTimeProvider;
@@ -16,8 +19,6 @@ class UuidTest extends TestCase
     protected function setUp()
     {
         Uuid::setFactory(new UuidFactory());
-
-        RandomGeneratorFactory::$forceNoOpensslRandomPseudoBytes = false;
     }
 
     /**
@@ -807,23 +808,12 @@ class UuidTest extends TestCase
     }
 
     /**
-     */
-    public function testUuid4WithoutOpensslRandomPseudoBytes()
-    {
-        RandomGeneratorFactory::$forceNoOpensslRandomPseudoBytes = true;
-        $uuid = Uuid::uuid4();
-        $this->assertInstanceOf('Ramsey\Uuid\Uuid', $uuid);
-        $this->assertEquals(2, $uuid->getVariant());
-        $this->assertEquals(4, $uuid->getVersion());
-    }
-
-    /**
-     * Tests that generated UUID's using COMB are sequential
+     * Tests that generated UUID's using timestamp last COMB are sequential
      * @return string
      */
-    public function testUuid4Comb()
+    public function testUuid4TimestampLastComb()
     {
-        $mock = $this->getMockBuilder('Ramsey\Uuid\Generator\RandomGeneratorInterface')->getMock();
+        $mock = $this->getMock('Ramsey\Uuid\Generator\RandomGeneratorInterface');
         $mock->expects($this->any())
             ->method('generate')
             ->willReturnCallback(function ($length) {
@@ -834,7 +824,41 @@ class UuidTest extends TestCase
 
         $factory = new UuidFactory();
         $generator = new CombGenerator($mock, $factory->getNumberConverter());
+        $codec = new TimestampLastCombCodec($factory->getUuidBuilder());
         $factory->setRandomGenerator($generator);
+        $factory->setCodec($codec);
+
+        $previous = $factory->uuid4();
+
+        for ($i = 0; $i < 1000; $i ++) {
+            usleep(10);
+            $uuid = $factory->uuid4();
+            $this->assertGreaterThan($previous->toString(), $uuid->toString());
+
+            $previous = $uuid;
+        }
+    }
+
+    /**
+     * Tests that generated UUID's using timestamp first COMB are sequential
+     * @return string
+     */
+    public function testUuid4TimestampFirstComb()
+    {
+        $mock = $this->getMockBuilder('Ramsey\Uuid\Generator\RandomGeneratorInterface')->getMock();
+        $mock->expects($this->any())
+            ->method('generate')
+            ->willReturnCallback(function ($length) {
+
+                // Makes first fields of UUIDs equal
+                return str_pad('', $length, '0');
+            });
+
+        $factory = new UuidFactory();
+        $generator = new CombGenerator($mock, $factory->getNumberConverter());
+        $codec = new TimestampFirstCombCodec($factory->getUuidBuilder());
+        $factory->setRandomGenerator($generator);
+        $factory->setCodec($codec);
 
         $previous = $factory->uuid4();
 
@@ -853,7 +877,10 @@ class UuidTest extends TestCase
     public function testUuid4CombVersion()
     {
         $factory = new UuidFactory();
-        $generator = new CombGenerator(RandomGeneratorFactory::getGenerator(), $factory->getNumberConverter());
+        $generator = new CombGenerator(
+            RandomGeneratorFactory::getGenerator(),
+            $factory->getNumberConverter()
+        );
 
         $factory->setRandomGenerator($generator);
 
@@ -1264,7 +1291,6 @@ class UuidTest extends TestCase
         $factory = new UuidFactory($featureSet);
 
         while ($currentTime <= $endTime) {
-
             foreach (array(0, 50000, 250000, 500000, 750000, 999999) as $usec) {
                 $timeOfDay->setSec($currentTime);
                 $timeOfDay->setUsec($usec);

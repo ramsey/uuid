@@ -1,8 +1,20 @@
 <?php
 namespace Ramsey\Uuid\Test;
 
+use AspectMock\Test as AspectMock;
+use Mockery;
+
 class TestCase extends \PHPUnit_Framework_TestCase
 {
+    public function tearDown()
+    {
+        parent::tearDown();
+        if (!self::isHhvm()) {
+            AspectMock::clean();
+        }
+        Mockery::close();
+    }
+
     protected function skip64BitTest()
     {
         if (PHP_INT_SIZE == 4) {
@@ -37,7 +49,7 @@ class TestCase extends \PHPUnit_Framework_TestCase
 
     protected function skipIfBigEndianHost()
     {
-        if (! self::isLittleEndianSystem()) {
+        if (!self::isLittleEndianSystem()) {
             $this->markTestSkipped(
                 'Skipping test targeting little-endian architectures.'
             );
@@ -47,5 +59,17 @@ class TestCase extends \PHPUnit_Framework_TestCase
     public static function isLittleEndianSystem()
     {
         return current(unpack('v', pack('S', 0x00FF))) === 0x00FF;
+    }
+
+    protected function skipIfHhvm()
+    {
+        if (self::isHhvm()) {
+            $this->markTestSkipped('Skipping test that cannot run on HHVM');
+        }
+    }
+
+    protected static function isHhvm()
+    {
+        return defined('HHVM_VERSION');
     }
 }

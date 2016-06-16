@@ -15,13 +15,13 @@
 namespace Ramsey\Uuid\Generator;
 
 /**
- * RandomBytesGenerator provides functionality to generate strings of random
- * binary data using `random_bytes()` function in PHP 7+ or paragonie/random_compat
+ * SodiumRandomGenerator provides functionality to generate strings of random
+ * binary data using the PECL libsodium extension
  *
- * @link http://php.net/random_bytes
- * @link https://github.com/paragonie/random_compat
+ * @link http://pecl.php.net/package/libsodium
+ * @link https://paragonie.com/book/pecl-libsodium
  */
-class RandomBytesGenerator implements RandomGeneratorInterface
+class SodiumRandomGenerator implements RandomGeneratorInterface
 {
     /**
      * Generates a string of random binary data of the specified length
@@ -31,6 +31,6 @@ class RandomBytesGenerator implements RandomGeneratorInterface
      */
     public function generate($length)
     {
-        return random_bytes($length);
+        return \Sodium\randombytes_buf($length);
     }
 }

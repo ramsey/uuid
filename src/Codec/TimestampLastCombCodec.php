@@ -11,21 +11,13 @@
  * @link https://packagist.org/packages/ramsey/uuid Packagist
  * @link https://github.com/ramsey/uuid GitHub
  */
-
-namespace Ramsey\Uuid\Generator;
+namespace Ramsey\Uuid\Codec;
 
 /**
- * A factory for retrieving a random generator, based on the environment
+ * TimestampLastCombCodec encodes and decodes COMB UUIDs which have the timestamp as the last 48 bits.
+ * To be used with MSSQL.
  */
-class RandomGeneratorFactory
+class TimestampLastCombCodec extends StringCodec
 {
-    /**
-     * Returns a default random generator, based on the current environment
-     *
-     * @return RandomGeneratorInterface
-     */
-    public static function getGenerator()
-    {
-        return new RandomBytesGenerator();
-    }
+
 }

@@ -1,5 +1,34 @@
 # ramsey/uuid Changelog
 
+## 3.4.1
+
+_Released: 2016-04-23_
+
+  * Fixed test that violated a PHP CodeSniffer rule, breaking the build.
+
+## 3.4.0
+
+_Released: 2016-04-23_
+
+  * Add `TimestampFirstCombCodec` and `TimestampLastCombCodec` codecs.
+  * Improve logic of `CombGenerator` for COMB sequential UUIDs.
+  * Significantly improved test coverage.
+
+## 3.3.0
+
+_Released: 2016-03-22_
+
+  * Drop the use of OpenSSL as a fallback and use [paragonie/random_compat][] to support RandomBytesGenerator in versions of PHP earlier than 7.0. This addresses and fixes the [collision issue][].
+  * Improved test coverage.
+  * Update code to conduct to version 1.4 of the Contributor Covenant.
+
+## 3.2.0
+
+_Released: 2016-02-17_
+
+  * Add random generator option for use for the PECL libsodium extension.
+  * Updates to test infrastructure.
+
 ## 3.1.0
 
 _Released: 2015-12-17_
@@ -81,6 +110,12 @@ _Released: 2015-07-16_
   * NEW: In addition to the default UUID generation, this library also supports GUID generation by configuring a `FeatureSet` to use GUIDs.
   * NEW: While the interface to create UUIDs hasn't changed, if using this package on a 32-bit system, you will now receive an object of type `DegradedUuid` (which extends `Uuid`, which implements `UuidInterface`).
   * NEW: All UUIDs are now [JsonSerializable](http://php.net/JsonSerializable).
+
+## 2.9.0
+
+_Released: 2016-03-22_
+
+  * Drop support for OpenSSL in favor of [paragonie/random_compat][]. This addresses and fixes the [collision issue][].
 
 ## 2.8.4
 
@@ -258,3 +293,7 @@ _Released: 2012-08-06_
 _Released: 2012-07-19_
 
   * Initial release
+
+
+[paragonie/random_compat]: https://github.com/paragonie/random_compat
+[collision issue]: https://github.com/ramsey/uuid/issues/80

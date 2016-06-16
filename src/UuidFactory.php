@@ -88,6 +88,16 @@ class UuidFactory implements UuidFactoryInterface
     }
 
     /**
+     * Sets the UUID coder-decoder used by this factory
+     *
+     * @param CodecInterface $codec
+     */
+    public function setCodec(CodecInterface $codec)
+    {
+        $this->codec = $codec;
+    }
+
+    /**
      * Returns the system node ID provider used by this factory
      *
      * @return NodeProviderInterface
@@ -155,6 +165,16 @@ class UuidFactory implements UuidFactoryInterface
     public function setNumberConverter(NumberConverterInterface $converter)
     {
         $this->numberConverter = $converter;
+    }
+
+    /**
+     * Returns the UUID builder this factory uses when creating `Uuid` instances
+     *
+     * @return UuidBuilderInterface $builder
+     */
+    public function getUuidBuilder()
+    {
+        return $this->uuidBuilder;
     }
 
     /**

@@ -33,7 +33,7 @@ commands[2]="cd ${TRAVIS_BUILD_DIR}"
 commands[3]="composer install --no-interaction --prefer-dist"
 commands[4]="./vendor/bin/parallel-lint src tests"
 commands[5]="./vendor/bin/phpcs src tests --standard=psr2 -sp"
-commands[6]="./vendor/bin/phpunit --verbose"
+commands[6]="./vendor/bin/phpunit --verbose --coverage-clover build/logs/clover.xml"
 
 printf -v command "%s && " "${commands[@]}"
 command=${command::-4}
