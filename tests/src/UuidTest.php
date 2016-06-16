@@ -5,7 +5,6 @@ namespace Ramsey\Uuid\Test;
 use Ramsey\Uuid\Codec\TimestampFirstCombCodec;
 use Ramsey\Uuid\Codec\TimestampLastCombCodec;
 use Ramsey\Uuid\FeatureSet;
-use Ramsey\Uuid\Provider\Time\FixedTimeProvider;
 use Ramsey\Uuid\Generator\CombGenerator;
 use Ramsey\Uuid\Generator\RandomGeneratorFactory;
 use Ramsey\Uuid\Provider\Time\FixedTimeProvider;
