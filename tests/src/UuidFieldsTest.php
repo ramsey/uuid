@@ -8,6 +8,18 @@ use Ramsey\Uuid\UuidFields;
 
 class UuidFieldsTest extends PHPUnit_Framework_TestCase
 {
+    const TIME_LOW = '12345678';
+
+    const TIME_MID = '1234';
+
+    const TIME_HI_AND_VERSION = '1234';
+
+    const CLOCK_SEQ_HI_AND_RESERVED = '12';
+
+    const CLOCK_SEQ_LOW = '12';
+
+    const NODE = '123456789012';
+
     public function testShouldFailIfFieldsAreNotStrings()
     {
         $this->expectException(InvalidArgumentException::class);
@@ -52,6 +64,25 @@ class UuidFieldsTest extends PHPUnit_Framework_TestCase
         );
     }
 
+    public function testShouldReturnFields()
+    {
+        $fields = new UuidFields(
+            self::TIME_LOW,
+            self::TIME_MID,
+            self::TIME_HI_AND_VERSION,
+            self::CLOCK_SEQ_HI_AND_RESERVED,
+            self::CLOCK_SEQ_LOW,
+            self::NODE
+        );
+
+        $this->assertSame(self::TIME_LOW, $fields->getTimeLow());
+        $this->assertSame(self::TIME_MID, $fields->getTimeMid());
+        $this->assertSame(self::TIME_HI_AND_VERSION, $fields->getTimeHiAndVersion());
+        $this->assertSame(self::CLOCK_SEQ_HI_AND_RESERVED, $fields->getClockSeqHiAndReserved());
+        $this->assertSame(self::CLOCK_SEQ_LOW, $fields->getClockSeqLow());
+        $this->assertSame(self::NODE, $fields->getNode());
+    }
+
     /**
      * @return array
      */
@@ -60,50 +91,50 @@ class UuidFieldsTest extends PHPUnit_Framework_TestCase
         return [
             [
                 '12345678a',
-                '1234',
-                '1234',
-                '12',
-                '12',
-                '123456789012',
+                self::TIME_MID,
+                self::TIME_HI_AND_VERSION,
+                self::CLOCK_SEQ_HI_AND_RESERVED,
+                self::CLOCK_SEQ_LOW,
+                self::NODE,
             ],
             [
-                '12345678',
+                self::TIME_LOW,
                 '1234a',
-                '1234',
-                '12',
-                '12',
-                '123456789012',
+                self::TIME_HI_AND_VERSION,
+                self::CLOCK_SEQ_HI_AND_RESERVED,
+                self::CLOCK_SEQ_LOW,
+                self::NODE,
             ],
             [
-                '12345678',
-                '1234',
+                self::TIME_LOW,
+                self::TIME_MID,
                 '1234a',
-                '12',
-                '12',
-                '123456789012',
+                self::CLOCK_SEQ_HI_AND_RESERVED,
+                self::CLOCK_SEQ_LOW,
+                self::NODE,
             ],
             [
-                '12345678',
-                '1234',
-                '1234',
+                self::TIME_LOW,
+                self::TIME_MID,
+                self::TIME_HI_AND_VERSION,
                 '12a',
-                '12',
-                '123456789012',
+                self::CLOCK_SEQ_LOW,
+                self::NODE,
             ],
             [
-                '12345678',
-                '1234',
-                '1234',
-                '12',
+                self::TIME_LOW,
+                self::TIME_MID,
+                self::TIME_HI_AND_VERSION,
+                self::CLOCK_SEQ_HI_AND_RESERVED,
                 '12a',
-                '123456789012',
+                self::NODE,
             ],
             [
-                '12345678',
-                '1234',
-                '1234',
-                '12',
-                '12',
+                self::TIME_LOW,
+                self::TIME_MID,
+                self::TIME_HI_AND_VERSION,
+                self::CLOCK_SEQ_HI_AND_RESERVED,
+                self::CLOCK_SEQ_LOW,
                 '123456789012a',
             ],
         ];

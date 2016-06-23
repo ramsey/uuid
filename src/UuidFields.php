@@ -88,4 +88,52 @@ class UuidFields
         $this->clock_seq_low = $clock_seq_low;
         $this->node = $node;
     }
+
+    /**
+     * @return string
+     */
+    public function getTimeLow()
+    {
+        return $this->time_low;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTimeMid()
+    {
+        return $this->time_mid;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTimeHiAndVersion()
+    {
+        return $this->time_hi_and_version;
+    }
+
+    /**
+     * @return string
+     */
+    public function getClockSeqHiAndReserved()
+    {
+        return $this->clock_seq_hi_and_reserved;
+    }
+
+    /**
+     * @return string
+     */
+    public function getClockSeqLow()
+    {
+        return $this->clock_seq_low;
+    }
+
+    /**
+     * @return string
+     */
+    public function getNode()
+    {
+        return $this->node;
+    }
 }
