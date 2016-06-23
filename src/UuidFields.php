@@ -10,82 +10,82 @@ use Assert\Assertion;
 class UuidFields
 {
     /**
-     * The low field of the timestamp
+     * The low field of the timestamp (time_low)
      *
      * @var string
      */
-    private $time_low;
+    private $timeLow;
 
     /**
-     * The middle field of the timestamp
+     * The middle field of the timestamp (time_mid)
      *
      * @var string
      */
-    private $time_mid;
+    private $timeMid;
 
     /**
-     * The high field of the timestamp multiplexed with the version number
+     * The high field of the timestamp multiplexed with the version number (time_hi_and_version)
      *
      * @var string
      */
-    private $time_hi_and_version;
+    private $timeHiAndVersion;
 
     /**
-     * The high field of the clock sequence multiplexed with the variant
+     * The high field of the clock sequence multiplexed with the variant (clock_seq_hi_and_reserved)
      *
      * @var string
      */
-    private $clock_seq_hi_and_reserved;
+    private $clockSeqHiAndReserved;
 
     /**
-     * The low field of the clock sequence
+     * The low field of the clock sequence (clock_seq_low)
      *
      * @var string
      */
-    private $clock_seq_low;
+    private $clockSeqLow;
 
     /**
-     * The spatially unique node identifier
+     * The spatially unique node identifier (node)
      *
      * @var string
      */
     private $node;
 
     /**
-     * @param string $time_low
-     * @param string $time_mid
-     * @param string $time_hi_and_version
-     * @param string $clock_seq_hi_and_reserved
-     * @param string $clock_seq_low
+     * @param string $timeLow
+     * @param string $timeMid
+     * @param string $timeHiAndVersion
+     * @param string $clockSeqHiAndReserved
+     * @param string $clockSeqLow
      * @param string $node
      */
     public function __construct(
-        $time_low,
-        $time_mid,
-        $time_hi_and_version,
-        $clock_seq_hi_and_reserved,
-        $clock_seq_low,
+        $timeLow,
+        $timeMid,
+        $timeHiAndVersion,
+        $clockSeqHiAndReserved,
+        $clockSeqLow,
         $node
     ) {
-        Assertion::string($time_low);
-        Assertion::string($time_mid);
-        Assertion::string($time_hi_and_version);
-        Assertion::string($clock_seq_hi_and_reserved);
-        Assertion::string($clock_seq_low);
+        Assertion::string($timeLow);
+        Assertion::string($timeMid);
+        Assertion::string($timeHiAndVersion);
+        Assertion::string($clockSeqHiAndReserved);
+        Assertion::string($clockSeqLow);
         Assertion::string($node);
 
-        Assertion::length($time_low, 8);
-        Assertion::length($time_mid, 4);
-        Assertion::length($time_hi_and_version, 4);
-        Assertion::length($clock_seq_hi_and_reserved, 2);
-        Assertion::length($clock_seq_low, 2);
+        Assertion::length($timeLow, 8);
+        Assertion::length($timeMid, 4);
+        Assertion::length($timeHiAndVersion, 4);
+        Assertion::length($clockSeqHiAndReserved, 2);
+        Assertion::length($clockSeqLow, 2);
         Assertion::length($node, 12);
 
-        $this->time_low = $time_low;
-        $this->time_mid = $time_mid;
-        $this->time_hi_and_version = $time_hi_and_version;
-        $this->clock_seq_hi_and_reserved = $clock_seq_hi_and_reserved;
-        $this->clock_seq_low = $clock_seq_low;
+        $this->timeLow = $timeLow;
+        $this->timeMid = $timeMid;
+        $this->timeHiAndVersion = $timeHiAndVersion;
+        $this->clockSeqHiAndReserved = $clockSeqHiAndReserved;
+        $this->clockSeqLow = $clockSeqLow;
         $this->node = $node;
     }
 
@@ -94,7 +94,7 @@ class UuidFields
      */
     public function getTimeLow()
     {
-        return $this->time_low;
+        return $this->timeLow;
     }
 
     /**
@@ -102,7 +102,7 @@ class UuidFields
      */
     public function getTimeMid()
     {
-        return $this->time_mid;
+        return $this->timeMid;
     }
 
     /**
@@ -110,7 +110,7 @@ class UuidFields
      */
     public function getTimeHiAndVersion()
     {
-        return $this->time_hi_and_version;
+        return $this->timeHiAndVersion;
     }
 
     /**
@@ -118,7 +118,7 @@ class UuidFields
      */
     public function getClockSeqHiAndReserved()
     {
-        return $this->clock_seq_hi_and_reserved;
+        return $this->clockSeqHiAndReserved;
     }
 
     /**
@@ -126,7 +126,7 @@ class UuidFields
      */
     public function getClockSeqLow()
     {
-        return $this->clock_seq_low;
+        return $this->clockSeqLow;
     }
 
     /**

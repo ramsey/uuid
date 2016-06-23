@@ -37,29 +37,29 @@ class UuidFieldsTest extends PHPUnit_Framework_TestCase
     /**
      * @dataProvider getFieldsWithIncorrectNumberOfCharacters
      *
-     * @param string $time_low
-     * @param string $time_mid
-     * @param string $time_hi_and_version
-     * @param string $clock_seq_hi_and_reserved
-     * @param string $clock_seq_low
+     * @param string $timeLow
+     * @param string $timeMid
+     * @param string $timeHiAndVersion
+     * @param string $clockSeqHiAndReserved
+     * @param string $clockSeqLow
      * @param string $node
      */
     public function testShouldFailIfFieldsHaveIncorrectAmountOfCharacters(
-        $time_low,
-        $time_mid,
-        $time_hi_and_version,
-        $clock_seq_hi_and_reserved,
-        $clock_seq_low,
+        $timeLow,
+        $timeMid,
+        $timeHiAndVersion,
+        $clockSeqHiAndReserved,
+        $clockSeqLow,
         $node
     ) {
         $this->expectException(InvalidArgumentException::class);
 
         new UuidFields(
-            $time_low,
-            $time_mid,
-            $time_hi_and_version,
-            $clock_seq_hi_and_reserved,
-            $clock_seq_low,
+            $timeLow,
+            $timeMid,
+            $timeHiAndVersion,
+            $clockSeqHiAndReserved,
+            $clockSeqLow,
             $node
         );
     }
