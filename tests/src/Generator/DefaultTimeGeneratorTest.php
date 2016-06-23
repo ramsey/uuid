@@ -31,9 +31,9 @@ class DefaultTimeGeneratorTest extends TestCase
     public function setUp()
     {
         parent::setUp();
-        $this->timeProvider = $this->getMock('Ramsey\Uuid\Provider\TimeProviderInterface');
-        $this->nodeProvider = $this->getMock('Ramsey\Uuid\Provider\NodeProviderInterface');
-        $this->timeConverter = $this->getMock('Ramsey\Uuid\Converter\TimeConverterInterface');
+        $this->timeProvider = $this->createMock('Ramsey\Uuid\Provider\TimeProviderInterface');
+        $this->nodeProvider = $this->createMock('Ramsey\Uuid\Provider\NodeProviderInterface');
+        $this->timeConverter = $this->createMock('Ramsey\Uuid\Converter\TimeConverterInterface');
         $this->currentTime = ["sec" => 1458733431, "usec" => 877449];
         $this->calculatedTime = ["low" => "83cb98e0", "mid" => "98e0", "hi" => "03cb"];
     }

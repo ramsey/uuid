@@ -14,9 +14,9 @@ class DegradedUuidBuilderTest extends \PHPUnit_Framework_TestCase
 
     public function testBuildCreatesUuid()
     {
-        $converter = $this->getMock('Ramsey\Uuid\Converter\NumberConverterInterface');
+        $converter = $this->createMock('Ramsey\Uuid\Converter\NumberConverterInterface');
         $builder = new DegradedUuidBuilder($converter);
-        $codec = $this->getMock('Ramsey\Uuid\Codec\CodecInterface');
+        $codec = $this->createMock('Ramsey\Uuid\Codec\CodecInterface');
 
         $fields = [
             'time_low' => '754cd475',
