@@ -42,8 +42,7 @@ class SystemNodeProvider implements NodeProviderInterface
         // the first one found
         if (preg_match_all($pattern, $this->getIfconfig(), $matches, PREG_PATTERN_ORDER)) {
             $node = $matches[1][0];
-            $node = str_replace(':', '', $node);
-            $node = str_replace('-', '', $node);
+            $node = str_replace([':', '-'], '', $node);
         }
 
         return $node;
