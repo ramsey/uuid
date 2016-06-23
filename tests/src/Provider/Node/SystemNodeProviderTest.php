@@ -71,6 +71,20 @@ class SystemNodeProviderTest extends TestCase
         $this->assertEquals('AABBCCDDEEFF', $node);
     }
 
+    public function testGetNodeWillNotExecuteSystemCallIfFailedFirstTime()
+    {
+        $provider = $this->getMockBuilder('Ramsey\Uuid\Provider\Node\SystemNodeProvider')
+            ->setMethods(['getIfconfig'])
+            ->getMock();
+
+        $provider->expects($this->once())
+            ->method('getIfconfig')
+            ->willReturn('some string that does not match the mac address');
+
+        $provider->getNode();
+        $provider->getNode();
+    }
+
     public function osCommandDataProvider()
     {
         return [
