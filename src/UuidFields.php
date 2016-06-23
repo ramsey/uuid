@@ -9,6 +9,8 @@ use Assert\Assertion;
  */
 class UuidFields
 {
+    const HEXADECIMAL_REGEX = '(^[0-9a-fA-F]+$)';
+
     /**
      * The low field of the timestamp (time_low)
      *
@@ -80,6 +82,13 @@ class UuidFields
         Assertion::length($clockSeqHiAndReserved, 2);
         Assertion::length($clockSeqLow, 2);
         Assertion::length($node, 12);
+
+        Assertion::regex($timeLow, self::HEXADECIMAL_REGEX);
+        Assertion::regex($timeMid, self::HEXADECIMAL_REGEX);
+        Assertion::regex($timeHiAndVersion, self::HEXADECIMAL_REGEX);
+        Assertion::regex($clockSeqHiAndReserved, self::HEXADECIMAL_REGEX);
+        Assertion::regex($clockSeqLow, self::HEXADECIMAL_REGEX);
+        Assertion::regex($node, self::HEXADECIMAL_REGEX);
 
         $this->timeLow = $timeLow;
         $this->timeMid = $timeMid;

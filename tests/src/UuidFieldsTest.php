@@ -64,6 +64,36 @@ class UuidFieldsTest extends PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * @dataProvider getFieldsWithNonHexadecimalCharacters
+     *
+     * @param string $timeLow
+     * @param string $timeMid
+     * @param string $timeHiAndVersion
+     * @param string $clockSeqHiAndReserved
+     * @param string $clockSeqLow
+     * @param string $node
+     */
+    public function testShouldFailIfFieldsContainNonHexadecimalCharacters(
+        $timeLow,
+        $timeMid,
+        $timeHiAndVersion,
+        $clockSeqHiAndReserved,
+        $clockSeqLow,
+        $node
+    ) {
+        $this->expectException(InvalidArgumentException::class);
+
+        new UuidFields(
+            $timeLow,
+            $timeMid,
+            $timeHiAndVersion,
+            $clockSeqHiAndReserved,
+            $clockSeqLow,
+            $node
+        );
+    }
+
     public function testShouldReturnFields()
     {
         $fields = new UuidFields(
@@ -136,6 +166,63 @@ class UuidFieldsTest extends PHPUnit_Framework_TestCase
                 self::CLOCK_SEQ_HI_AND_RESERVED,
                 self::CLOCK_SEQ_LOW,
                 '123456789012a',
+            ],
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    public function getFieldsWithNonHexadecimalCharacters()
+    {
+        return [
+            [
+                '!!!!!!!!',
+                self::TIME_MID,
+                self::TIME_HI_AND_VERSION,
+                self::CLOCK_SEQ_HI_AND_RESERVED,
+                self::CLOCK_SEQ_LOW,
+                self::NODE,
+            ],
+            [
+                self::TIME_LOW,
+                '12!4',
+                self::TIME_HI_AND_VERSION,
+                self::CLOCK_SEQ_HI_AND_RESERVED,
+                self::CLOCK_SEQ_LOW,
+                self::NODE,
+            ],
+            [
+                self::TIME_LOW,
+                self::TIME_MID,
+                '123-',
+                self::CLOCK_SEQ_HI_AND_RESERVED,
+                self::CLOCK_SEQ_LOW,
+                self::NODE,
+            ],
+            [
+                self::TIME_LOW,
+                self::TIME_MID,
+                self::TIME_HI_AND_VERSION,
+                '1G',
+                self::CLOCK_SEQ_LOW,
+                self::NODE,
+            ],
+            [
+                self::TIME_LOW,
+                self::TIME_MID,
+                self::TIME_HI_AND_VERSION,
+                self::CLOCK_SEQ_HI_AND_RESERVED,
+                'ZZ',
+                self::NODE,
+            ],
+            [
+                self::TIME_LOW,
+                self::TIME_MID,
+                self::TIME_HI_AND_VERSION,
+                self::CLOCK_SEQ_HI_AND_RESERVED,
+                self::CLOCK_SEQ_LOW,
+                '1234!6789012',
             ],
         ];
     }
