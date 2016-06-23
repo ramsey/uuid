@@ -4,6 +4,8 @@ namespace Ramsey\Uuid\Test\Generator;
 
 use Ramsey\Uuid\Test\TestCase;
 use Ramsey\Uuid\Generator\SodiumRandomGenerator;
+use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidFactory;
 
 class SodiumRandomGeneratorTest extends TestCase
 {
@@ -28,14 +30,14 @@ class SodiumRandomGeneratorTest extends TestCase
 
     public function testFactoryUsesSodiumRandomGenerator()
     {
-        $uuidFactory = new \Ramsey\Uuid\UuidFactory();
+        $uuidFactory = new UuidFactory();
         $uuidFactory->setRandomGenerator(new SodiumRandomGenerator());
-        \Ramsey\Uuid\Uuid::setFactory($uuidFactory);
+        Uuid::setFactory($uuidFactory);
 
-        $uuid = \Ramsey\Uuid\Uuid::uuid4();
+        $uuid = Uuid::uuid4();
 
         $this->assertInstanceOf(
-            'Ramsey\Uuid\Generator\SodiumRandomGenerator',
+            SodiumRandomGenerator::class,
             $uuid->getFactory()->getRandomGenerator()
         );
     }

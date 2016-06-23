@@ -2,6 +2,7 @@
 
 namespace Ramsey\Uuid\Test\Generator;
 
+use Ramsey\Uuid\BinaryUtils;
 use Ramsey\Uuid\Converter\TimeConverterInterface;
 use Ramsey\Uuid\Generator\DefaultTimeGenerator;
 use Ramsey\Uuid\Provider\NodeProviderInterface;
@@ -31,9 +32,9 @@ class DefaultTimeGeneratorTest extends TestCase
     public function setUp()
     {
         parent::setUp();
-        $this->timeProvider = $this->getMock('Ramsey\Uuid\Provider\TimeProviderInterface');
-        $this->nodeProvider = $this->getMock('Ramsey\Uuid\Provider\NodeProviderInterface');
-        $this->timeConverter = $this->getMock('Ramsey\Uuid\Converter\TimeConverterInterface');
+        $this->timeProvider = $this->createMock(TimeProviderInterface::class);
+        $this->nodeProvider = $this->createMock(NodeProviderInterface::class);
+        $this->timeConverter = $this->createMock(TimeConverterInterface::class);
         $this->currentTime = ["sec" => 1458733431, "usec" => 877449];
         $this->calculatedTime = ["low" => "83cb98e0", "mid" => "98e0", "hi" => "03cb"];
     }
@@ -103,7 +104,7 @@ class DefaultTimeGeneratorTest extends TestCase
         $this->timeConverter->method('calculateTime')
             ->with($this->currentTime['sec'], $this->currentTime['usec'])
             ->willReturn($this->calculatedTime);
-        $binaryUtils = Mockery::mock('alias:Ramsey\Uuid\BinaryUtils');
+        $binaryUtils = Mockery::mock('alias:'.BinaryUtils::class);
         $binaryUtils->shouldReceive('applyVersion')
             ->with($this->calculatedTime['hi'], 1)
             ->andReturn(971);
@@ -128,7 +129,7 @@ class DefaultTimeGeneratorTest extends TestCase
     {
         $this->timeProvider->method('currentTime')->willReturn($this->currentTime);
         $this->timeConverter->method('calculateTime')->willReturn($this->calculatedTime);
-        $binaryUtils = Mockery::mock('alias:Ramsey\Uuid\BinaryUtils');
+        $binaryUtils = Mockery::mock('alias:'.BinaryUtils::class);
         $binaryUtils->shouldReceive('applyVersion')->andReturn(971);
         $binaryUtils->shouldReceive('applyVariant')->andReturn(143);
 

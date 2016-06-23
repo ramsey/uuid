@@ -2,8 +2,10 @@
 
 namespace Ramsey\Uuid\Test\Codec;
 
+use Ramsey\Uuid\Builder\UuidBuilderInterface;
 use Ramsey\Uuid\Codec\GuidStringCodec;
 use Ramsey\Uuid\Test\TestCase;
+use Ramsey\Uuid\UuidInterface;
 
 /**
  * Class GuidStringCodecTest
@@ -23,8 +25,8 @@ class GuidStringCodecTest extends TestCase
     public function setUp()
     {
         parent::setUp();
-        $this->builder = $this->getMock('Ramsey\Uuid\Builder\UuidBuilderInterface');
-        $this->uuid = $this->getMock('Ramsey\Uuid\UuidInterface');
+        $this->builder = $this->createMock(UuidBuilderInterface::class);
+        $this->uuid = $this->createMock(UuidInterface::class);
         $this->fields = ['time_low' => '12345678',
             'time_mid' => '1234',
             'time_hi_and_version' => 'abcd',
@@ -96,7 +98,7 @@ class GuidStringCodecTest extends TestCase
         $string = 'uuid:78563412-3412-cdab-abef-1234abcd4321';
         $this->builder->expects($this->once())
             ->method('build')
-            ->with($this->isInstanceOf('Ramsey\Uuid\Codec\GuidStringCodec'), $this->fields);
+            ->with($this->isInstanceOf(GuidStringCodec::class), $this->fields);
         $codec = new GuidStringCodec($this->builder);
         $codec->decode($string);
     }
@@ -107,7 +109,7 @@ class GuidStringCodecTest extends TestCase
         $string = 'uuid:12345678-1234-abcd-abef-1234abcd4321';
         $this->builder->expects($this->once())
             ->method('build')
-            ->with($this->isInstanceOf('Ramsey\Uuid\Codec\GuidStringCodec'), $this->fields);
+            ->with($this->isInstanceOf(GuidStringCodec::class), $this->fields);
         $codec = new GuidStringCodec($this->builder);
         $codec->decode($string);
     }
