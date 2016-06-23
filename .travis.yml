@@ -1,41 +1,21 @@
-# Fake out Travis CI, since PHP isn't supported when using their Docker services
-language: python
+language: php
 
-env:
-  - PHP_VERSION=5.4.45 ARCH=x86_64
-  - PHP_VERSION=5.4.45 ARCH=mips
-  - PHP_VERSION=5.5.32 ARCH=x86_64
-  - PHP_VERSION=5.5.31 ARCH=mips
-  - PHP_VERSION=5.6.18 ARCH=x86_64
-  - PHP_VERSION=5.6.17 ARCH=mips
-  - PHP_VERSION=7.0.3 ARCH=x86_64
-  - PHP_VERSION=hhvm ARCH=x86_64
+php:
+  - 5.6
+  - 7.0
+  - hhvm
 
-sudo: required
+sudo: false
 
-addons:
-  apt:
-    packages:
-      - php5-cli
-      - php5-curl
-      - qemu-user-static
-
-services:
-  - docker
-
-install:
-  - mkdir -p build/logs
+before_script:
+  - travis_retry composer self-update
+  - travis_retry composer install --no-interaction --prefer-dist
 
 script:
-  - bash -ex ./util/run-tests.sh
+  - mkdir -p build/logs
+  - ./vendor/bin/parallel-lint src tests
+  - ./vendor/bin/phpunit --verbose --coverage-clover build/logs/clover.xml
+  - ./vendor/bin/phpcs src tests --standard=psr2 -sp
 
 after_script:
   - php vendor/bin/coveralls
-
-notifications:
-  webhooks:
-    urls:
-      - 'https://webhooks.gitter.im/e/f3356db3405001e47b5e'
-    on_success: change
-    on_failure: always
-    on_start: false
