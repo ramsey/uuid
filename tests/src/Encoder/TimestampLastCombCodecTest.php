@@ -5,6 +5,7 @@ use PHPUnit_Framework_MockObject_MockObject;
 use Ramsey\Uuid\Codec\CodecInterface;
 use Ramsey\Uuid\Codec\TimestampLastCombCodec;
 use Ramsey\Uuid\Test\TestCase;
+use Ramsey\Uuid\UuidInterface;
 
 class TimestampLastCombCodecTest extends TestCase
 {
@@ -37,7 +38,7 @@ class TimestampLastCombCodecTest extends TestCase
 
     public function testBinaryEncoding()
     {
-        $uuidMock = $this->createMock('Ramsey\Uuid\UuidInterface');
+        $uuidMock = $this->createMock(UuidInterface::class);
         $uuidMock->expects($this->any())
             ->method('getHex')
             ->willReturn('0800200c9a6611e19b21ff6f8cb0c57d');
