@@ -200,8 +200,6 @@ class UuidFactory implements UuidFactoryInterface
      */
     public function setValidator(ValidatorInterface $validator)
     {
-        assert(func_num_args() === 1);
-
         $this->validator = $validator;
     }
 

@@ -92,11 +92,6 @@ class Uuid implements UuidInterface
     const RESERVED_FUTURE = 7;
 
     /**
-     * Regular expression pattern for matching a valid UUID of any variant.
-     */
-    const VALID_PATTERN = Validator::VALID_PATTERN;
-
-    /**
      * The factory to use when creating UUIDs.
      * @var UuidFactoryInterface
      */

@@ -35,8 +35,6 @@ class Validator implements ValidatorInterface
      */
     public function validate($uuid)
     {
-        assert(func_num_args() === 1);
-
         $uuid = str_replace(array('urn:', 'uuid:', '{', '}'), '', $uuid);
 
         if ($uuid === Uuid::NIL || preg_match('/' . self::VALID_PATTERN . '/', $uuid)) {
