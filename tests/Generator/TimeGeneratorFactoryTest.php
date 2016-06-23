@@ -2,7 +2,11 @@
 
 namespace Ramsey\Uuid\Test\Generator;
 
+use Ramsey\Uuid\Converter\TimeConverterInterface;
 use Ramsey\Uuid\Generator\TimeGeneratorFactory;
+use Ramsey\Uuid\Generator\TimeGeneratorInterface;
+use Ramsey\Uuid\Provider\NodeProviderInterface;
+use Ramsey\Uuid\Provider\TimeProviderInterface;
 use Ramsey\Uuid\Test\TestCase;
 
 /**
@@ -14,12 +18,12 @@ class TimeGeneratorFactoryTest extends TestCase
 {
     public function testGeneratorReturnsNewGenerator()
     {
-        $timeProvider = $this->getMockBuilder('Ramsey\Uuid\Provider\TimeProviderInterface')->getMock();
-        $nodeProvider = $this->getMockBuilder('Ramsey\Uuid\Provider\NodeProviderInterface')->getMock();
-        $timeConverter = $this->getMockBuilder('Ramsey\Uuid\Converter\TimeConverterInterface')->getMock();
+        $timeProvider = $this->getMockBuilder(TimeProviderInterface::class)->getMock();
+        $nodeProvider = $this->getMockBuilder(NodeProviderInterface::class)->getMock();
+        $timeConverter = $this->getMockBuilder(TimeConverterInterface::class)->getMock();
 
         $factory = new TimeGeneratorFactory($nodeProvider, $timeConverter, $timeProvider);
         $generator = $factory->getGenerator();
-        $this->assertInstanceOf('Ramsey\Uuid\Generator\TimeGeneratorInterface', $generator);
+        $this->assertInstanceOf(TimeGeneratorInterface::class, $generator);
     }
 }
