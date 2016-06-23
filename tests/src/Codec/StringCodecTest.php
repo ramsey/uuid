@@ -27,8 +27,8 @@ class StringCodecTest extends TestCase
     public function setUp()
     {
         parent::setUp();
-        $this->builder = $this->createMock('Ramsey\Uuid\Builder\UuidBuilderInterface');
-        $this->uuid = $this->createMock('Ramsey\Uuid\UuidInterface');
+        $this->builder = $this->createMock('\Ramsey\Uuid\Builder\UuidBuilderInterface');
+        $this->uuid = $this->createMock('\Ramsey\Uuid\UuidInterface');
         $this->fields = ['time_low' => '12345678',
             'time_mid' => '1234',
             'time_hi_and_version' => 'abcd',
@@ -87,7 +87,7 @@ class StringCodecTest extends TestCase
         $string = 'uuid:12345678-1234-abcd-abef-1234abcd4321';
         $this->builder->expects($this->once())
             ->method('build')
-            ->with($this->isInstanceOf('Ramsey\Uuid\Codec\StringCodec'), $this->fields);
+            ->with($this->isInstanceOf(StringCodec::class), $this->fields);
         $codec = new StringCodec($this->builder);
         $codec->decode($string);
     }
@@ -95,7 +95,7 @@ class StringCodecTest extends TestCase
     public function testDecodeThrowsExceptionOnInvalidUuid()
     {
         $string = 'invalid-uuid';
-        $this->setExpectedException('\InvalidArgumentException');
+        $this->setExpectedException(\InvalidArgumentException::class);
         $codec = new StringCodec($this->builder);
         $codec->decode($string);
     }
