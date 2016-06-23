@@ -2,9 +2,11 @@
 namespace Ramsey\Uuid\Test\Encoder;
 
 use PHPUnit_Framework_MockObject_MockObject;
+use Ramsey\Uuid\Builder\UuidBuilderInterface;
 use Ramsey\Uuid\Codec\CodecInterface;
 use Ramsey\Uuid\Codec\TimestampFirstCombCodec;
 use Ramsey\Uuid\Test\TestCase;
+use Ramsey\Uuid\UuidInterface;
 
 class TimestampFirstCombCodecTest extends TestCase
 {
@@ -20,13 +22,13 @@ class TimestampFirstCombCodecTest extends TestCase
 
     protected function setUp()
     {
-        $this->builderMock = $this->getMockBuilder('Ramsey\Uuid\Builder\UuidBuilderInterface')->getMock();
+        $this->builderMock = $this->getMockBuilder(UuidBuilderInterface::class)->getMock();
         $this->codec = new TimestampFirstCombCodec($this->builderMock);
     }
 
     public function testEncoding()
     {
-        $uuidMock = $this->getMockBuilder('Ramsey\Uuid\UuidInterface')->getMock();
+        $uuidMock = $this->getMockBuilder(UuidInterface::class)->getMock();
         $uuidMock->expects($this->any())
             ->method('getFieldsHex')
             ->willReturn(['ff6f8cb0', 'c57d', '11e1', '9b', '21', '0800200c9a66']);
@@ -37,7 +39,7 @@ class TimestampFirstCombCodecTest extends TestCase
 
     public function testBinaryEncoding()
     {
-        $uuidMock = $this->getMockBuilder('Ramsey\Uuid\UuidInterface')->getMock();
+        $uuidMock = $this->getMockBuilder(UuidInterface::class)->getMock();
         $uuidMock->expects($this->any())
             ->method('getFieldsHex')
             ->willReturn(['ff6f8cb0', 'c57d', '11e1', '9b', '21', '0800200c9a66']);

@@ -2,6 +2,7 @@
 
 namespace Ramsey\Uuid\Test\Generator;
 
+use Ramsey\Uuid\Generator\RandomBytesGenerator;
 use Ramsey\Uuid\Test\TestCase;
 use Ramsey\Uuid\Generator\RandomGeneratorFactory;
 
@@ -11,6 +12,6 @@ class RandomGeneratorFactoryTest extends TestCase
     {
         $generator = RandomGeneratorFactory::getGenerator();
 
-        $this->assertInstanceOf('Ramsey\\Uuid\\Generator\\RandomBytesGenerator', $generator);
+        $this->assertInstanceOf(RandomBytesGenerator::class, $generator);
     }
 }
