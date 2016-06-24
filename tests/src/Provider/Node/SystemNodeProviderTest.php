@@ -84,6 +84,10 @@ TXT
         $this->assertEquals('AABBCCDDEEFF', $node);
     }
 
+    /**
+     * @runInSeparateProcess
+     * @preserveGlobalState disabled
+     */
     public function testGetNodeReturnsFalseWhenNodeIsNotFound()
     {
         $provider = $this->getMockBuilder('Ramsey\Uuid\Provider\Node\SystemNodeProvider')
@@ -98,6 +102,10 @@ TXT
         $this->assertFalse($node);
     }
 
+    /**
+     * @runInSeparateProcess
+     * @preserveGlobalState disabled
+     */
     public function testGetNodeWillNotExecuteSystemCallIfFailedFirstTime()
     {
         $provider = $this->getMockBuilder('Ramsey\Uuid\Provider\Node\SystemNodeProvider')
