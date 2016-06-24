@@ -18,15 +18,9 @@ class SystemNodeProviderTest extends TestCase
             ->setMethods(['getIfconfig'])
             ->getMock();
 
-        // @codingStandardsIgnoreStart
-        $provider->method('getIfconfig')
-            ->willReturn(<<<TXT
-vboxnet0: flags=8943<UP,BROADCAST,RUNNING,PROMISC,SIMPLEX,MULTICAST> mtu 1500
-    ether 0a:00:27:00:00:00
-    inet 192.168.60.1 netmask 0xffffff00 broadcast 192.168.60.255
-TXT
-        );
-        // @codingStandardsIgnoreEnd
+        $provider->expects($this->once())
+            ->method('getIfconfig')
+            ->willReturn(PHP_EOL . 'AA-BB-CC-DD-EE-FF' . PHP_EOL);
 
         $node = $provider->getNode();
 
