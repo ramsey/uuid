@@ -31,7 +31,7 @@
     "require-dev": {
         "moontoast/math": "^1.1",
         "ircmaxell/random-lib": "^1.1",
-        "phpunit/phpunit": "^4.7|^5.0",
+        "phpunit/phpunit": "^4.7|>=5.0 <5.4",
         "squizlabs/php_codesniffer": "^2.3",
         "jakub-onderka/php-parallel-lint": "^0.9.0",
         "satooshi/php-coveralls": "^0.6.1",
