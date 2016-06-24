@@ -14,7 +14,18 @@ class SystemNodeProviderTest extends TestCase
      */
     public function testGetNodeReturnsSystemNodeFromMacAddress()
     {
-        $provider = new SystemNodeProvider();
+        $provider = $this->getMockBuilder('Ramsey\Uuid\Provider\Node\SystemNodeProvider')
+            ->setMethods(['getIfconfig'])
+            ->getMock();
+
+        $provider->method('getIfconfig')
+            ->willReturn(<<<TXT
+vboxnet0: flags=8943<UP,BROADCAST,RUNNING,PROMISC,SIMPLEX,MULTICAST> mtu 1500
+    ether 0a:00:27:00:00:00
+    inet 192.168.60.1 netmask 0xffffff00 broadcast 192.168.60.255
+TXT
+        );
+
         $node = $provider->getNode();
 
         $this->assertTrue(ctype_xdigit($node), 'Node should be a hexadecimal string. Actual node: ' . $node);
@@ -52,7 +63,7 @@ class SystemNodeProviderTest extends TestCase
         $this->assertEquals($expected, $node);
     }
 
-    /**
+    /**\
      * @runInSeparateProcess
      * @preserveGlobalState disabled
      */
