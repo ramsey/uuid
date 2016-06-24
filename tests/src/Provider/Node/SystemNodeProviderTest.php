@@ -18,6 +18,7 @@ class SystemNodeProviderTest extends TestCase
             ->setMethods(['getIfconfig'])
             ->getMock();
 
+        // @codingStandardsIgnoreStart
         $provider->method('getIfconfig')
             ->willReturn(<<<TXT
 vboxnet0: flags=8943<UP,BROADCAST,RUNNING,PROMISC,SIMPLEX,MULTICAST> mtu 1500
@@ -25,6 +26,7 @@ vboxnet0: flags=8943<UP,BROADCAST,RUNNING,PROMISC,SIMPLEX,MULTICAST> mtu 1500
     inet 192.168.60.1 netmask 0xffffff00 broadcast 192.168.60.255
 TXT
         );
+        // @codingStandardsIgnoreEnd
 
         $node = $provider->getNode();
 
@@ -63,7 +65,7 @@ TXT
         $this->assertEquals($expected, $node);
     }
 
-    /**\
+    /**
      * @runInSeparateProcess
      * @preserveGlobalState disabled
      */
