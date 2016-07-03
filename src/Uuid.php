@@ -19,6 +19,7 @@ use Exception;
 use InvalidArgumentException;
 use Ramsey\Uuid\Codec\CodecInterface;
 use Ramsey\Uuid\Converter\NumberConverterInterface;
+use Ramsey\Uuid\Converter\TimeConverterInterface;
 use Ramsey\Uuid\Exception\InvalidUuidStringException;
 use Ramsey\Uuid\Exception\UnsatisfiedDependencyException;
 use Ramsey\Uuid\Exception\UnsupportedOperationException;
@@ -153,7 +154,13 @@ class Uuid implements UuidInterface
      * The number converter to use for converting hex values to/from integers.
      * @var NumberConverterInterface
      */
-    protected $converter;
+    protected $numberConverter;
+
+    /**
+     * The time converter to use for converting timestamps extracted from UUIDs to unix timestamps
+     * @var TimeConverterInterface
+     */
+    protected $timeConverter;
 
     /**
      * Creates a universally unique identifier (UUID) from an array of fields.
@@ -173,19 +180,23 @@ class Uuid implements UuidInterface
      *
      * @param array $fields An array of fields from which to construct a UUID;
      *     see {@see \Ramsey\Uuid\UuidInterface::getFieldsHex()} for array structure.
-     * @param NumberConverterInterface $converter The number converter to use
+     * @param NumberConverterInterface $numberConverter The number converter to use
      *     for converting hex values to/from integers.
      * @param CodecInterface $codec The codec to use when encoding or decoding
      *     UUID strings.
+     * @param TimeConverterInterface $timeConverter The time converter to use
+     *     for converting timestamps extracted from a UUID to unix timestamps
      */
     public function __construct(
         array $fields,
-        NumberConverterInterface $converter,
-        CodecInterface $codec
+        NumberConverterInterface $numberConverter,
+        CodecInterface $codec,
+        TimeConverterInterface $timeConverter
     ) {
         $this->fields = $fields;
         $this->codec = $codec;
-        $this->converter = $converter;
+        $this->numberConverter = $numberConverter;
+        $this->timeConverter = $timeConverter;
     }
 
     /**
@@ -237,7 +248,7 @@ class Uuid implements UuidInterface
         /** @var \Ramsey\Uuid\Uuid $uuid */
         $uuid = self::fromString($serialized);
         $this->codec = $uuid->codec;
-        $this->converter = $uuid->converter;
+        $this->numberConverter = $uuid->getNumberConverter();
         $this->fields = $uuid->fields;
     }
 
@@ -335,7 +346,7 @@ class Uuid implements UuidInterface
 
     public function getNumberConverter()
     {
-        return $this->converter;
+        return $this->numberConverter;
     }
 
     /**
@@ -347,8 +358,7 @@ class Uuid implements UuidInterface
             throw new UnsupportedOperationException('Not a time-based UUID');
         }
 
-        $unixTime = ($this->getTimestamp() - 0x01b21dd213814000) / 1e7;
-        $unixTime = number_format($unixTime, 0, '', '');
+        $unixTime = $this->timeConverter->convertTime($this->getTimestamp());
 
         return new DateTime("@{$unixTime}");
     }
@@ -398,7 +408,7 @@ class Uuid implements UuidInterface
      */
     public function getInteger()
     {
-        return $this->converter->fromHex($this->getHex());
+        return $this->numberConverter->fromHex($this->getHex());
     }
 
     /**
@@ -409,7 +419,7 @@ class Uuid implements UuidInterface
      */
     public function getLeastSignificantBits()
     {
-        return $this->converter->fromHex($this->getLeastSignificantBitsHex());
+        return $this->numberConverter->fromHex($this->getLeastSignificantBitsHex());
     }
 
     public function getLeastSignificantBitsHex()
@@ -430,7 +440,7 @@ class Uuid implements UuidInterface
      */
     public function getMostSignificantBits()
     {
-        return $this->converter->fromHex($this->getMostSignificantBitsHex());
+        return $this->numberConverter->fromHex($this->getMostSignificantBitsHex());
     }
 
     public function getMostSignificantBitsHex()

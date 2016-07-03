@@ -15,6 +15,7 @@
         "symfony/polyfill-ctype": "^1.8"
     },
     "require-dev": {
+        "ext-gmp": "*",
         "codeception/aspect-mock": "^3",
         "doctrine/annotations": "^1.8",
         "goaop/framework": "^2",
@@ -32,6 +33,7 @@
     },
     "suggest": {
         "ext-ctype": "Provides support for PHP Ctype functions",
+        "ext-gmp": "Provides support for converting UUID to 128-bit integer (in string form).",
         "ext-libsodium": "Provides the PECL libsodium extension for use with the SodiumRandomGenerator",
         "ext-openssl": "Provides the OpenSSL extension for use with the OpenSslGenerator",
         "ext-uuid": "Provides the PECL UUID extension for use with the PeclUuidTimeGenerator and PeclUuidRandomGenerator",

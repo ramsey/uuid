@@ -44,4 +44,15 @@ class PhpTimeConverter implements TimeConverterInterface
             'hi' => sprintf('%04x', ($uuidTime >> 48) & 0x0fff),
         ];
     }
+
+    /**
+     * Converts a timestamp extracted from a UUID to a unix timestamp
+     * @param int|string $timestamp
+     * @return string
+     */
+    public function convertTime($timestamp)
+    {
+        $unixTime = ((int) $timestamp - 0x01b21dd213814000) / 1e7;
+        return number_format($unixTime, 0, '', '');
+    }
 }
