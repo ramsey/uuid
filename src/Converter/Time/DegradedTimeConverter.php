@@ -36,7 +36,22 @@ class DegradedTimeConverter implements TimeConverterInterface
     {
         throw new UnsatisfiedDependencyException(
             'When calling ' . __METHOD__ . ' on a 32-bit system, '
-            . 'Moontoast\Math\BigNumber must be present.'
+            . 'Moontoast\Math\BigNumber or the GMP PHP-extension must be present.'
+        );
+    }
+
+    /**
+     * Throws an `UnsatisfiedDependencyException`
+     *
+     * @param mixed $timestamp
+     * @throws UnsatisfiedDependencyException
+     * @return string
+     */
+    public function convertTime($timestamp)
+    {
+        throw new UnsatisfiedDependencyException(
+            'When calling ' . __METHOD__ . ' on a 32-bit system, '
+            . 'Moontoast\Math\BigNumber or the GMP PHP-extension must be present.'
         );
     }
 }
