@@ -33,9 +33,23 @@ class TestCase extends \PHPUnit_Framework_TestCase
         }
     }
 
+    protected function skipIfNoGmp()
+    {
+        if (!$this->hasGmp()) {
+            $this->markTestSkipped(
+                'Skipping test that requires GMP.'
+            );
+        }
+    }
+
     protected function hasMoontoastMath()
     {
         return class_exists('Moontoast\\Math\\BigNumber');
+    }
+
+    protected function hasGmp()
+    {
+        return extension_loaded('gmp');
     }
 
     protected function skipIfLittleEndianHost()
