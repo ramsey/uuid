@@ -5,6 +5,7 @@ namespace Ramsey\Uuid\Test\Builder;
 use Ramsey\Uuid\Builder\DegradedUuidBuilder;
 use Ramsey\Uuid\Codec\CodecInterface;
 use Ramsey\Uuid\Converter\NumberConverterInterface;
+use Ramsey\Uuid\Converter\TimeConverterInterface;
 use Ramsey\Uuid\DegradedUuid;
 
 /**
@@ -17,8 +18,9 @@ class DegradedUuidBuilderTest extends \PHPUnit_Framework_TestCase
 
     public function testBuildCreatesUuid()
     {
-        $converter = $this->getMockBuilder(NumberConverterInterface::class)->getMock();
-        $builder = new DegradedUuidBuilder($converter);
+        $numberConverter = $this->getMockBuilder(NumberConverterInterface::class)->getMock();
+        $timeConverter = $this->getMockBuilder(TimeConverterInterface::class)->getMock();
+        $builder = new DegradedUuidBuilder($numberConverter, $timeConverter);
         $codec = $this->getMockBuilder(CodecInterface::class)->getMock();
 
         $fields = [

@@ -29,6 +29,7 @@
         "paragonie/random_compat": "^1.0|^2.0"
     },
     "require-dev": {
+        "ext-gmp": "*",
         "moontoast/math": "^1.1",
         "ircmaxell/random-lib": "^1.1",
         "phpunit/phpunit": "^5.4",
@@ -44,6 +45,7 @@
         "ircmaxell/random-lib": "Provides RandomLib for use with the RandomLibAdapter",
         "ext-libsodium": "Provides the PECL libsodium extension for use with the SodiumRandomGenerator",
         "ext-uuid": "Provides the PECL UUID extension for use with the PeclUuidTimeGenerator and PeclUuidRandomGenerator",
+        "ext-gmp": "Provides support for converting UUID to 128-bit integer (in string form).",
         "moontoast/math": "Provides support for converting UUID to 128-bit integer (in string form).",
         "ramsey/uuid-doctrine": "Allows the use of Ramsey\\Uuid\\Uuid as Doctrine field type.",
         "ramsey/uuid-console": "A console application for generating UUIDs with ramsey/uuid"
