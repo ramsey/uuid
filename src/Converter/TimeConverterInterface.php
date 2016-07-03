@@ -34,4 +34,12 @@ interface TimeConverterInterface
      * @link http://tools.ietf.org/html/rfc4122#section-4.2.2
      */
     public function calculateTime($seconds, $microSeconds);
+
+
+    /**
+     * Converts a timestamp extracted from a UUID to a unix timestamp
+     * @param mixed $timestamp - an integer, string or object representation of a timestamp
+     * @return string
+     */
+    public function convertTime($timestamp);
 }

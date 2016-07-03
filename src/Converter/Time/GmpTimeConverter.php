@@ -14,15 +14,13 @@
 
 namespace Ramsey\Uuid\Converter\Time;
 
-use Moontoast\Math\BigNumber;
 use Ramsey\Uuid\Converter\TimeConverterInterface;
 
 /**
- * BigNumberTimeConverter uses the moontoast/math library's `BigNumber` to
- * provide facilities for converting parts of time into representations that may
+ * BigNumberTimeConverter provides facilities for converting parts of time into representations that may
  * be used in UUIDs
  */
-class BigNumberTimeConverter implements TimeConverterInterface
+class GmpTimeConverter implements TimeConverterInterface
 {
     /**
      * Uses the provided seconds and micro-seconds to calculate the time_low,
@@ -35,40 +33,45 @@ class BigNumberTimeConverter implements TimeConverterInterface
      */
     public function calculateTime($seconds, $microSeconds)
     {
-        $uuidTime = new BigNumber('0');
+        $sec = gmp_init($seconds);
+        $sec = gmp_mul($sec, gmp_init(10000000));
 
-        $sec = new BigNumber($seconds);
-        $sec->multiply('10000000');
+        $usec = gmp_init($microSeconds);
+        $usec = gmp_mul($usec, gmp_init(10));
 
-        $usec = new BigNumber($microSeconds);
-        $usec->multiply('10');
+        $uuidTime = gmp_add($sec, $usec);
+        $uuidTime = gmp_add($uuidTime, gmp_init('122192928000000000'));
 
-        $uuidTime
-            ->add($sec)
-            ->add($usec)
-            ->add('122192928000000000');
+        $uuidTimeHex = sprintf('%016s', gmp_strval($uuidTime, 16));
 
-        $uuidTimeHex = sprintf('%016s', $uuidTime->convertToBase(16));
-
-        return [
+        return array(
             'low' => substr($uuidTimeHex, 8),
             'mid' => substr($uuidTimeHex, 4, 4),
             'hi' => substr($uuidTimeHex, 0, 4),
-        ];
+        );
     }
 
     /**
      * Converts a timestamp extracted from a UUID to a unix timestamp
-     * @param mixed $timestamp - an integer, string or a Moontoast\Bignumber object
+     * @param mixed $timestamp - an integer, string or a GMP object
      * @return string
      */
     public function convertTime($timestamp)
     {
-        $ts = new BigNumber($timestamp, 20);
-        $ts->subtract('122192928000000000');
-        $ts->divide('10000000.0');
-        $ts->round();
+        if (!$timestamp instanceof \GMP) {
+            $timestamp = gmp_init($timestamp);
+        }
 
-        return $ts->getValue();
+        $timestamp = gmp_sub($timestamp, gmp_init('122192928000000000'));
+        $d = gmp_init('10000000');
+        list($q, $r) = gmp_div_qr($timestamp, $d);
+
+        //If $r >= $d/2, we have to round up
+        $sign = gmp_sign(gmp_sub($d, gmp_add($r, $r)));
+        if ($sign <= 0) {
+            $q = gmp_add($q, gmp_init(1));
+        }
+
+        return gmp_strval($q);
     }
 }

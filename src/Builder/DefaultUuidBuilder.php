@@ -16,6 +16,7 @@ namespace Ramsey\Uuid\Builder;
 
 use Ramsey\Uuid\Codec\CodecInterface;
 use Ramsey\Uuid\Converter\NumberConverterInterface;
+use Ramsey\Uuid\Converter\TimeConverterInterface;
 use Ramsey\Uuid\Uuid;
 
 /**
@@ -27,16 +28,25 @@ class DefaultUuidBuilder implements UuidBuilderInterface
     /**
      * @var NumberConverterInterface
      */
-    private $converter;
+    private $numberConverter;
+
+    /**
+     * The time converter to use for converting timestamps extracted from UUIDs to unix timestamps
+     * @var TimeConverterInterface
+     */
+    protected $timeConverter;
 
     /**
      * Constructs the DefaultUuidBuilder
      *
-     * @param NumberConverterInterface $converter The number converter to use when constructing the Uuid
+     * @param NumberConverterInterface $numberConverter The number converter to use when constructing the Uuid
+     * @param TimeConverterInterface $timeConverter The time converter to use
+     *     for converting timestamps extracted from a UUID to unix timestamps
      */
-    public function __construct(NumberConverterInterface $converter)
+    public function __construct(NumberConverterInterface $numberConverter, TimeConverterInterface $timeConverter)
     {
-        $this->converter = $converter;
+        $this->numberConverter = $numberConverter;
+        $this->timeConverter = $timeConverter;
     }
 
     /**
@@ -49,6 +59,6 @@ class DefaultUuidBuilder implements UuidBuilderInterface
      */
     public function build(CodecInterface $codec, array $fields)
     {
-        return new Uuid($fields, $this->converter, $codec);
+        return new Uuid($fields, $this->numberConverter, $codec, $this->timeConverter);
     }
 }
