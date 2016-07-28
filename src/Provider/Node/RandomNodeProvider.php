@@ -31,6 +31,6 @@ class RandomNodeProvider implements NodeProviderInterface
      */
     public function getNode()
     {
-        return sprintf('%06x%06x', mt_rand(0, 1 << 24), mt_rand(0, 1 << 24));
+        return sprintf('%06x%06x', mt_rand(0, 0xffffff), mt_rand(0, 0xffffff));
     }
 }
