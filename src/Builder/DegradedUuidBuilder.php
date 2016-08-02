@@ -18,6 +18,7 @@ use Ramsey\Uuid\Codec\CodecInterface;
 use Ramsey\Uuid\Converter\NumberConverterInterface;
 use Ramsey\Uuid\Converter\TimeConverterInterface;
 use Ramsey\Uuid\DegradedUuid;
+use Ramsey\Uuid\UuidFields;
 
 /**
  * DegradedUuidBuilder builds instances of DegradedUuid
@@ -51,12 +52,12 @@ class DegradedUuidBuilder implements UuidBuilderInterface
     /**
      * Builds a DegradedUuid
      *
-     * @param CodecInterface $codec The codec to use for building this DegradedUuid
-     * @param array $fields An array of fields from which to construct the DegradedUuid;
-     *     see {@see \Ramsey\Uuid\UuidInterface::getFieldsHex()} for array structure.
+     * @param CodecInterface $codec  The codec to use for building this DegradedUuid
+     * @param UuidFields     $fields The fields of the UUID
+     *
      * @return DegradedUuid
      */
-    public function build(CodecInterface $codec, array $fields)
+    public function build(CodecInterface $codec, UuidFields $fields)
     {
         return new DegradedUuid($fields, $this->numberConverter, $codec, $this->timeConverter);
     }

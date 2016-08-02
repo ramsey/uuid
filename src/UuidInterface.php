@@ -73,21 +73,9 @@ interface UuidInterface extends \JsonSerializable, \Serializable
     public function getHex();
 
     /**
-     * Returns an array of the fields of this UUID, with keys named according
-     * to the RFC 4122 names for the fields.
+     * Returns the fields of the Uuid
      *
-     * * **time_low**: The low field of the timestamp, an unsigned 32-bit integer
-     * * **time_mid**: The middle field of the timestamp, an unsigned 16-bit integer
-     * * **time_hi_and_version**: The high field of the timestamp multiplexed with
-     *   the version number, an unsigned 16-bit integer
-     * * **clock_seq_hi_and_reserved**: The high field of the clock sequence
-     *   multiplexed with the variant, an unsigned 8-bit integer
-     * * **clock_seq_low**: The low field of the clock sequence, an unsigned
-     *   8-bit integer
-     * * **node**: The spatially unique node identifier, an unsigned 48-bit
-     *   integer
-     *
-     * @return array The UUID fields represented as hexadecimal values
+     * @return UuidFields The UUID fields represented as hexadecimal values
      */
     public function getFieldsHex();
 

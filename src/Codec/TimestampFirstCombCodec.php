@@ -30,7 +30,7 @@ class TimestampFirstCombCodec extends StringCodec
      */
     public function encode(UuidInterface $uuid)
     {
-        $sixPieceComponents = array_values($uuid->getFieldsHex());
+        $sixPieceComponents = array_values($uuid->getFieldsHex()->getFields());
 
         $this->swapTimestampAndRandomBits($sixPieceComponents);
 

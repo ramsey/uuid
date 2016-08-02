@@ -17,6 +17,7 @@ namespace Ramsey\Uuid\Codec;
 use InvalidArgumentException;
 use Ramsey\Uuid\Builder\UuidBuilderInterface;
 use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidFields;
 use Ramsey\Uuid\UuidInterface;
 
 /**
@@ -49,7 +50,7 @@ class StringCodec implements CodecInterface
      */
     public function encode(UuidInterface $uuid)
     {
-        $fields = array_values($uuid->getFieldsHex());
+        $fields = array_values($uuid->getFieldsHex()->getFields());
 
         return vsprintf(
             '%08s-%04s-%04s-%02s%02s-%012s',
@@ -148,19 +149,19 @@ class StringCodec implements CodecInterface
     /**
      * Returns the fields that make up this UUID
      *
-     * @see \Ramsey\Uuid\UuidInterface::getFieldsHex()
      * @param array $components
-     * @return array
+     *
+     * @return UuidFields
      */
     protected function getFields(array $components)
     {
-        return array(
-            'time_low' => sprintf('%08s', $components[0]),
-            'time_mid' => sprintf('%04s', $components[1]),
-            'time_hi_and_version' => sprintf('%04s', $components[2]),
-            'clock_seq_hi_and_reserved' => sprintf('%02s', substr($components[3], 0, 2)),
-            'clock_seq_low' => sprintf('%02s', substr($components[3], 2)),
-            'node' => sprintf('%012s', $components[4])
+        return new UuidFields(
+            sprintf('%08s', $components[0]),
+            sprintf('%04s', $components[1]),
+            sprintf('%04s', $components[2]),
+            sprintf('%02s', substr($components[3], 0, 2)),
+            sprintf('%02s', substr($components[3], 2)),
+            sprintf('%012s', $components[4])
         );
     }
 }

@@ -10,6 +10,7 @@ use Ramsey\Uuid\Generator\CombGenerator;
 use Ramsey\Uuid\Generator\RandomGeneratorFactory;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidFactory;
+use Ramsey\Uuid\UuidFields;
 
 class UuidTest extends TestCase
 {
@@ -296,13 +297,13 @@ class UuidTest extends TestCase
      */
     public function testGetFieldsHex()
     {
-        $fields = array(
-            'time_low' => 'ff6f8cb0',
-            'time_mid' => 'c57d',
-            'time_hi_and_version' => '11e1',
-            'clock_seq_hi_and_reserved' => '9b',
-            'clock_seq_low' => '21',
-            'node' => '0800200c9a66',
+        $fields = new UuidFields(
+            'ff6f8cb0',
+            'c57d',
+            '11e1',
+            '9b',
+            '21',
+            '0800200c9a66'
         );
 
         $uuid = Uuid::fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
@@ -2105,7 +2106,7 @@ class UuidTest extends TestCase
                 if ($this->hasGmp() || $this->hasMoontoastMath()) {
                     $this->assertEquals($test['int'], (string) $uuid->getInteger());
                 }
-                $this->assertEquals($test['fields'], $uuid->getFieldsHex());
+                $this->assertEquals($test['fields'], $uuid->getFieldsHex()->getFields());
                 $this->assertEquals($test['fields']['time_low'], $uuid->getTimeLowHex());
                 $this->assertEquals($test['fields']['time_mid'], $uuid->getTimeMidHex());
                 $this->assertEquals($test['fields']['time_hi_and_version'], $uuid->getTimeHiAndVersionHex());

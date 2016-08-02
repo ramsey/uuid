@@ -145,4 +145,19 @@ class UuidFields
     {
         return $this->node;
     }
+
+    /**
+     * @return array
+     */
+    public function getFields()
+    {
+        return [
+            'time_low' => $this->timeLow,
+            'time_mid' => $this->timeMid,
+            'time_hi_and_version' => $this->timeHiAndVersion,
+            'clock_seq_hi_and_reserved' => $this->clockSeqHiAndReserved,
+            'clock_seq_low' => $this->clockSeqLow,
+            'node' => $this->node,
+        ];
+    }
 }
