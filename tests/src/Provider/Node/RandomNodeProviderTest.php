@@ -32,7 +32,7 @@ class RandomNodeProviderTest extends TestCase
         $mtRand = AspectMock::func('Ramsey\Uuid\Provider\Node', 'mt_rand', $this->num);
         $provider = new RandomNodeProvider();
         $provider->getNode();
-        $mtRand->verifyInvokedMultipleTimes(2, [0, 1 << 24]);
+        $mtRand->verifyInvokedMultipleTimes(2, [0, 0xffffff]);
     }
 
     /**

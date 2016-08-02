@@ -29,6 +29,5 @@ class SystemTimeProviderTest extends TestCase
         $provider = new SystemTimeProvider();
         $provider->currentTime();
         $func->verifyInvokedOnce();
-
     }
 }
