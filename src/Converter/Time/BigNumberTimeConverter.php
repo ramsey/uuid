@@ -55,4 +55,19 @@ class BigNumberTimeConverter implements TimeConverterInterface
             'hi' => substr($uuidTimeHex, 0, 4),
         );
     }
+
+    /**
+     * Converts a timestamp extracted from a UUID to a unix timestamp
+     * @param mixed $timestamp - an integer, string or a Moontoast\Bignumber object
+     * @return string
+     */
+    public function convertTime($timestamp)
+    {
+        $ts = new BigNumber($timestamp, 20);
+        $ts->subtract('122192928000000000');
+        $ts->divide('10000000.0');
+        $ts->round();
+        
+        return $ts->getValue();
+    }
 }
