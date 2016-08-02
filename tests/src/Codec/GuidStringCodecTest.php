@@ -2,8 +2,10 @@
 
 namespace Ramsey\Uuid\Test\Codec;
 
+use Ramsey\Uuid\Builder\UuidBuilderInterface;
 use Ramsey\Uuid\Codec\GuidStringCodec;
 use Ramsey\Uuid\Test\TestCase;
+use Ramsey\Uuid\UuidInterface;
 
 /**
  * Class GuidStringCodecTest
