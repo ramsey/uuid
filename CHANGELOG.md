@@ -1,5 +1,14 @@
 # ramsey/uuid Changelog
 
+## 3.5.0
+
+_Released: 2016-08-02_
+
+  * Add `OrderedTimeCodec` to store UUID in an optimized way for InnoDB ([#117](https://github.com/ramsey/uuid/issues/117), [#118](https://github.com/ramsey/uuid/pull/118)).
+  * Fixed `RandomNodeProvider` to prevent invalid node generation ([#129](https://github.com/ramsey/uuid/pull/129)).
+  * Cache failed attempt to retrieve system node to avoid multiple system calls ([#107](https://github.com/ramsey/uuid/issues/107), [#121](https://github.com/ramsey/uuid/pull/121)).
+  * Various test improvements.
+
 ## 3.4.1
 
 _Released: 2016-04-23_
