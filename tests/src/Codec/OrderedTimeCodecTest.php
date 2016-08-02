@@ -5,6 +5,7 @@ namespace Ramsey\Uuid\Test\Codec;
 use Ramsey\Uuid\Builder\UuidBuilderInterface;
 use Ramsey\Uuid\Codec\OrderedTimeCodec;
 use Ramsey\Uuid\Test\TestCase;
+use Ramsey\Uuid\UuidFields;
 use Ramsey\Uuid\UuidInterface;
 
 /**
@@ -19,7 +20,7 @@ class OrderedTimeCodecTest extends TestCase
     private $builder;
     /** @var UuidInterface */
     private $uuid;
-    /** @var array */
+    /** @var UuidFields */
     private $fields;
     /** @var string */
     private $uuidString = '58e0a7d7-eebc-11d8-9669-0800200c9a66';
@@ -31,12 +32,14 @@ class OrderedTimeCodecTest extends TestCase
         parent::setUp();
         $this->builder = $this->getMock('Ramsey\Uuid\Builder\UuidBuilderInterface');
         $this->uuid = $this->getMock('Ramsey\Uuid\UuidInterface');
-        $this->fields = ['time_low' => '58e0a7d7',
-            'time_mid' => 'eebc',
-            'time_hi_and_version' => '11d8',
-            'clock_seq_hi_and_reserved' => '96',
-            'clock_seq_low' => '69',
-            'node' => '0800200c9a66'];
+        $this->fields = new UuidFields(
+            '58e0a7d7',
+            'eebc',
+            '11d8',
+            '96',
+            '69',
+            '0800200c9a66'
+        );
     }
 
     public function tearDown()

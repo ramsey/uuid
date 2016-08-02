@@ -14,12 +14,12 @@
 
 namespace Ramsey\Uuid;
 
+use Ramsey\Uuid\Builder\UuidBuilderInterface;
+use Ramsey\Uuid\Codec\CodecInterface;
 use Ramsey\Uuid\Converter\NumberConverterInterface;
-use Ramsey\Uuid\Provider\NodeProviderInterface;
 use Ramsey\Uuid\Generator\RandomGeneratorInterface;
 use Ramsey\Uuid\Generator\TimeGeneratorInterface;
-use Ramsey\Uuid\Codec\CodecInterface;
-use Ramsey\Uuid\Builder\UuidBuilderInterface;
+use Ramsey\Uuid\Provider\NodeProviderInterface;
 
 class UuidFactory implements UuidFactoryInterface
 {
@@ -231,14 +231,13 @@ class UuidFactory implements UuidFactoryInterface
     /**
      * Returns a `Uuid`
      *
-     * Uses the configured builder and codec and the provided array of hexadecimal
+     * Uses the configured builder and codec and the provided hexadecimal
      * value UUID fields to construct a `Uuid` object.
      *
-     * @param array $fields An array of fields from which to construct a UUID;
-     *     see {@see \Ramsey\Uuid\UuidInterface::getFieldsHex()} for array structure.
+     * @param UuidFields $fields The fields from which to construct a UUID
      * @return UuidInterface
      */
-    public function uuid(array $fields)
+    public function uuid(UuidFields $fields)
     {
         return $this->uuidBuilder->build($this->codec, $fields);
     }
@@ -277,13 +276,13 @@ class UuidFactory implements UuidFactoryInterface
         $timeHi = BinaryUtils::applyVersion(substr($hash, 12, 4), $version);
         $clockSeqHi = BinaryUtils::applyVariant(hexdec(substr($hash, 16, 2)));
 
-        $fields = array(
-            'time_low' => substr($hash, 0, 8),
-            'time_mid' => substr($hash, 8, 4),
-            'time_hi_and_version' => sprintf('%04x', $timeHi),
-            'clock_seq_hi_and_reserved' => sprintf('%02x', $clockSeqHi),
-            'clock_seq_low' => substr($hash, 18, 2),
-            'node' => substr($hash, 20, 12),
+        $fields = new UuidFields(
+            substr($hash, 0, 8),
+            substr($hash, 8, 4),
+            sprintf('%04x', $timeHi),
+            sprintf('%02x', $clockSeqHi),
+            substr($hash, 18, 2),
+            substr($hash, 20, 12)
         );
 
         return $this->uuid($fields);

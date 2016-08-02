@@ -111,19 +111,9 @@ class Uuid implements UuidInterface
     /**
      * The fields that make up this UUID.
      *
-     * This is initialized to the nil value.
-     *
-     * @var array
-     * @see UuidInterface::getFieldsHex()
+     * @var UuidFields
      */
-    protected $fields = array(
-        'time_low' => '00000000',
-        'time_mid' => '0000',
-        'time_hi_and_version' => '0000',
-        'clock_seq_hi_and_reserved' => '00',
-        'clock_seq_low' => '00',
-        'node' => '000000000000',
-    );
+    protected $fields;
 
     /**
      * The number converter to use for converting hex values to/from integers.
@@ -153,8 +143,7 @@ class Uuid implements UuidInterface
      * $namespaceSha1Uuid = Uuid::uuid5(Uuid::NAMESPACE_URL, 'http://php.net/');
      * ```
      *
-     * @param array $fields An array of fields from which to construct a UUID;
-     *     see {@see \Ramsey\Uuid\UuidInterface::getFieldsHex()} for array structure.
+     * @param UuidFields $fields The fields that make up this UUID.
      * @param NumberConverterInterface $numberConverter The number converter to use
      *     for converting hex values to/from integers.
      * @param CodecInterface $codec The codec to use when encoding or decoding
@@ -163,7 +152,7 @@ class Uuid implements UuidInterface
      *     for converting timestamps extracted from a UUID to unix timestamps
      */
     public function __construct(
-        array $fields,
+        UuidFields $fields,
         NumberConverterInterface $numberConverter,
         CodecInterface $codec,
         TimeConverterInterface $timeConverter
@@ -268,7 +257,7 @@ class Uuid implements UuidInterface
 
     public function getClockSeqHiAndReservedHex()
     {
-        return $this->fields['clock_seq_hi_and_reserved'];
+        return $this->fields->getClockSeqHiAndReserved();
     }
 
     /**
@@ -283,7 +272,7 @@ class Uuid implements UuidInterface
 
     public function getClockSeqLowHex()
     {
-        return $this->fields['clock_seq_low'];
+        return $this->fields->getClockSeqLow();
     }
 
     /**
@@ -388,9 +377,9 @@ class Uuid implements UuidInterface
     {
         return sprintf(
             '%02s%02s%012s',
-            $this->fields['clock_seq_hi_and_reserved'],
-            $this->fields['clock_seq_low'],
-            $this->fields['node']
+            $this->fields->getClockSeqHiAndReserved(),
+            $this->fields->getClockSeqLow(),
+            $this->fields->getNode()
         );
     }
 
@@ -408,9 +397,9 @@ class Uuid implements UuidInterface
     {
         return sprintf(
             '%08s%04s%04s',
-            $this->fields['time_low'],
-            $this->fields['time_mid'],
-            $this->fields['time_hi_and_version']
+            $this->fields->getTimeLow(),
+            $this->fields->getTimeMid(),
+            $this->fields->getTimeHiAndVersion()
         );
     }
 
@@ -445,7 +434,7 @@ class Uuid implements UuidInterface
 
     public function getNodeHex()
     {
-        return $this->fields['node'];
+        return $this->fields->getNode();
     }
 
     /**
@@ -461,7 +450,7 @@ class Uuid implements UuidInterface
 
     public function getTimeHiAndVersionHex()
     {
-        return $this->fields['time_hi_and_version'];
+        return $this->fields->getTimeHiAndVersion();
     }
 
     /**
@@ -476,7 +465,7 @@ class Uuid implements UuidInterface
 
     public function getTimeLowHex()
     {
-        return $this->fields['time_low'];
+        return $this->fields->getTimeLow();
     }
 
     /**
@@ -491,7 +480,7 @@ class Uuid implements UuidInterface
 
     public function getTimeMidHex()
     {
-        return $this->fields['time_mid'];
+        return $this->fields->getTimeMid();
     }
 
     /**
@@ -528,8 +517,8 @@ class Uuid implements UuidInterface
         return sprintf(
             '%03x%04s%08s',
             ($this->getTimeHiAndVersion() & 0x0fff),
-            $this->fields['time_mid'],
-            $this->fields['time_low']
+            $this->fields->getTimeMid(),
+            $this->fields->getTimeLow()
         );
     }
 

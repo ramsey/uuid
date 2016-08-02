@@ -31,7 +31,7 @@ class OrderedTimeCodec extends StringCodec
      */
     public function encodeBinary(UuidInterface $uuid)
     {
-        $fields = $uuid->getFieldsHex();
+        $fields = $uuid->getFieldsHex()->getFields();
 
         $optimized = [
             $fields['time_hi_and_version'],

@@ -31,7 +31,7 @@ class GuidStringCodec extends StringCodec
      */
     public function encode(UuidInterface $uuid)
     {
-        $components = array_values($uuid->getFieldsHex());
+        $components = array_values($uuid->getFieldsHex()->getFields());
 
         // Swap byte-order on the first three fields
         $this->swapFields($components);
@@ -50,7 +50,7 @@ class GuidStringCodec extends StringCodec
      */
     public function encodeBinary(UuidInterface $uuid)
     {
-        $components = array_values($uuid->getFieldsHex());
+        $components = array_values($uuid->getFieldsHex()->getFields());
 
         return hex2bin(implode('', $components));
     }

@@ -5,6 +5,7 @@ namespace Ramsey\Uuid\Test\Codec;
 use Ramsey\Uuid\Builder\UuidBuilderInterface;
 use Ramsey\Uuid\Codec\GuidStringCodec;
 use Ramsey\Uuid\Test\TestCase;
+use Ramsey\Uuid\UuidFields;
 use Ramsey\Uuid\UuidInterface;
 
 /**
@@ -19,7 +20,7 @@ class GuidStringCodecTest extends TestCase
     private $builder;
     /** @var UuidInterface */
     private $uuid;
-    /** @var array */
+    /** @var UuidFields */
     private $fields;
 
     public function setUp()
@@ -27,12 +28,14 @@ class GuidStringCodecTest extends TestCase
         parent::setUp();
         $this->builder = $this->createMock(UuidBuilderInterface::class);
         $this->uuid = $this->createMock(UuidInterface::class);
-        $this->fields = ['time_low' => '12345678',
-            'time_mid' => '1234',
-            'time_hi_and_version' => 'abcd',
-            'clock_seq_hi_and_reserved' => 'ab',
-            'clock_seq_low' => 'ef',
-            'node' => '1234abcd4321'];
+        $this->fields = new UuidFields(
+            '12345678',
+            '1234',
+            'abcd',
+            'ab',
+            'ef',
+            '1234abcd4321'
+        );
     }
 
     public function tearDown()
