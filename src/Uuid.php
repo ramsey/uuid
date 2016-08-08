@@ -15,6 +15,7 @@
 namespace Ramsey\Uuid;
 
 use Ramsey\Uuid\Codec\CodecInterface;
+use Ramsey\Uuid\Converter\NumberConverterInterface;
 use Ramsey\Uuid\Converter\TimeConverterInterface;
 use Ramsey\Uuid\Exception\UnsupportedOperationException;
 use Ramsey\Uuid\Validator\Validator;
