@@ -67,7 +67,7 @@ After doing so, you will have the latest ramsey/uuid package in the 2.x series, 
 
 ## Requirements
 
-Some methods in this library have requirements due to integer size restrictions on 32-bit and 64-bit builds of PHP. A 64-bit build of PHP and the [Moontoast\Math][] library are recommended. However, this library is designed to work on 32-bit builds of PHP without Moontoast\Math, with some degraded functionality. Please check the API documentation for more information.
+Some methods in this library have requirements due to integer size restrictions on 32-bit and 64-bit builds of PHP. A 64-bit build of PHP and either the [GMP PHP-extension][ext-gmp] or the [Moontoast\Math][] library are recommended. However, this library is designed to work on 32-bit builds of PHP without GMP or Moontoast\Math, with some degraded functionality. Please check the API documentation for more information.
 
 If a particular requirement is not present, then an `UnsatisfiedDependencyException` is thrown, allowing one to catch a bad call in an environment where the call is not supported and gracefully degrade.
 
@@ -142,6 +142,7 @@ The ramsey/uuid library is copyright © [Ben Ramsey](https://benramsey.com/) and
 [packagist]: https://packagist.org/packages/ramsey/uuid
 [composer]: http://getcomposer.org/
 [moontoast\math]: https://packagist.org/packages/moontoast/math
+[ext-gmp]: http://php.net/manual/en/book.gmp.php
 [apidocs]: http://docs.benramsey.com/ramsey-uuid/latest/
 [wiki-cookbook]: https://github.com/ramsey/uuid/wiki/Ramsey%5CUuid-Cookbook
 [contributing]: https://github.com/ramsey/uuid/blob/master/CONTRIBUTING.md

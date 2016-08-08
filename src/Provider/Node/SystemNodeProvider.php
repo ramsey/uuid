@@ -25,7 +25,7 @@ class SystemNodeProvider implements NodeProviderInterface
     /**
      * Returns the system node ID
      *
-     * @return string System node ID as a hexadecimal string
+     * @return string|false System node ID as a hexadecimal string, or false if it is not found
      */
     public function getNode()
     {
@@ -40,10 +40,10 @@ class SystemNodeProvider implements NodeProviderInterface
 
         // Search the ifconfig output for all MAC addresses and return
         // the first one found
+        $node = false;
         if (preg_match_all($pattern, $this->getIfconfig(), $matches, PREG_PATTERN_ORDER)) {
             $node = $matches[1][0];
-            $node = str_replace(':', '', $node);
-            $node = str_replace('-', '', $node);
+            $node = str_replace([':', '-'], '', $node);
         }
 
         return $node;

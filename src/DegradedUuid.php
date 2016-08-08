@@ -30,13 +30,8 @@ class DegradedUuid extends Uuid
             throw new UnsupportedOperationException('Not a time-based UUID');
         }
 
-        $time = $this->converter->fromHex($this->getTimestampHex());
-
-        $ts = new \Moontoast\Math\BigNumber($time, 20);
-        $ts->subtract('122192928000000000');
-        $ts->divide('10000000.0');
-        $ts->round();
-        $unixTime = $ts->getValue();
+        $time = $this->numberConverter->fromHex($this->getTimestampHex());
+        $unixTime = $this->timeConverter->convertTime($time);
 
         return new \DateTime("@{$unixTime}");
     }
