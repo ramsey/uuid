@@ -10,12 +10,16 @@ php:
 
 sudo: false
 
-before_script:
+before_install:
   - travis_retry composer self-update
+
+install:
   - travis_retry composer install --no-interaction --prefer-dist
 
-script:
+before_script:
   - mkdir -p build/logs
+
+script:
   - ./vendor/bin/parallel-lint src tests
   - ./vendor/bin/phpunit --verbose --coverage-clover build/logs/clover.xml
   - ./vendor/bin/phpcs src tests --standard=psr2 -sp
