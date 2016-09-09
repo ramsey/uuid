@@ -11,13 +11,13 @@ class RandomNodeProviderTest extends TestCase
     private $num = 16532480;
     private $node = 'fc4400fc4400';
 
-    public function setUp()
+    protected function setUp()
     {
         $this->skipIfHhvm();
         parent::setUp();
     }
 
-    public function tearDown()
+    protected function tearDown()
     {
         parent::tearDown();
         AspectMock::clean();

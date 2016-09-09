@@ -13,7 +13,7 @@ use AspectMock\Test as AspectMock;
  */
 class OpenSslGeneratorTest extends TestCase
 {
-    public function setUp()
+    protected function setUp()
     {
         $this->skipIfHhvm();
         parent::setUp();

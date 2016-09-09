@@ -7,7 +7,7 @@ use Ramsey\Uuid\Generator\SodiumRandomGenerator;
 
 class SodiumRandomGeneratorTest extends TestCase
 {
-    public function setUp()
+    protected function setUp()
     {
         if (!extension_loaded('libsodium')) {
             $this->markTestSkipped(

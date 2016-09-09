@@ -24,7 +24,7 @@ class StringCodecTest extends TestCase
     /** @var string */
     private $uuidString = '12345678-1234-abcd-abef-1234abcd4321';
 
-    public function setUp()
+    protected function setUp()
     {
         parent::setUp();
         $this->builder = $this->getMock('Ramsey\Uuid\Builder\UuidBuilderInterface');
@@ -37,7 +37,7 @@ class StringCodecTest extends TestCase
             'node' => '1234abcd4321'];
     }
 
-    public function tearDown()
+    protected function tearDown()
     {
         parent::tearDown();
         $this->builder = null;
