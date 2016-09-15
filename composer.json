@@ -52,7 +52,7 @@
         "psr-4": {"Ramsey\\Uuid\\": "src/"}
     },
     "autoload-dev": {
-        "psr-4": {"Ramsey\\Uuid\\Test\\": "tests/src/"}
+        "psr-4": {"Ramsey\\Uuid\\Test\\": "tests/"}
     },
     "replace": {
         "rhumsaa/uuid": "self.version"
