@@ -1270,7 +1270,7 @@ class UuidTest extends TestCase
 
         $featureSet->setTimeProvider($timeOfDay);
 
-        Uuid::setFactory(new UuidFactory($featureSet));;
+        Uuid::setFactory(new UuidFactory($featureSet));
         $uuidB = Uuid::uuid1(0x00007ffffffe, 0x1669);
 
         $this->assertEquals('1419d680-d292-1165-9669-00007ffffffe', (string)$uuidB);
