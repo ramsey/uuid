@@ -187,6 +187,7 @@ class UuidFactory implements UuidFactoryInterface
 
     public function fromString($uuid)
     {
+        $uuid = strtolower($uuid);
         return $this->codec->decode($uuid);
     }
 
