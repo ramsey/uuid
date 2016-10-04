@@ -38,7 +38,8 @@
         "apigen/apigen": "^4.1",
         "mockery/mockery": "^0.9.4",
         "goaop/framework": "1.0.0-alpha.2",
-        "codeception/aspect-mock": "1.0.0"
+        "codeception/aspect-mock": "1.0.0",
+        "php-mock/php-mock-phpunit": "^1.1"
     },
     "suggest": {
         "ircmaxell/random-lib": "Provides RandomLib for use with the RandomLibAdapter",
