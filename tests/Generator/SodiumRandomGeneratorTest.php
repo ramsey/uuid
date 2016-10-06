@@ -57,5 +57,4 @@ class SodiumRandomGeneratorTest extends TestCase
         $generator = new SodiumRandomGenerator();
         $generator->generate(10);
     }
-
 }
