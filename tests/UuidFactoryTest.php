@@ -50,21 +50,29 @@ class UuidFactoryTest extends TestCase
         $featureSet->method('getTimeGenerator')->willReturn($timeGenerator);
 
         $uuidFactory = new UuidFactory($featureSet);
-        $this->assertEquals($codec,
+        $this->assertEquals(
+            $codec,
             $uuidFactory->getCodec(),
-            'getCodec did not return CodecInterface from FeatureSet');
+            'getCodec did not return CodecInterface from FeatureSet'
+        );
 
-        $this->assertEquals($nodeProvider,
+        $this->assertEquals(
+            $nodeProvider,
             $uuidFactory->getNodeProvider(),
-            'getNodeProvider did not return NodeProviderInterface from FeatureSet');
+            'getNodeProvider did not return NodeProviderInterface from FeatureSet'
+        );
 
-        $this->assertEquals($randomGenerator,
+        $this->assertEquals(
+            $randomGenerator,
             $uuidFactory->getRandomGenerator(),
-            'getRandomGenerator did not return RandomGeneratorInterface from FeatureSet');
+            'getRandomGenerator did not return RandomGeneratorInterface from FeatureSet'
+        );
 
-        $this->assertEquals($timeGenerator,
+        $this->assertEquals(
+            $timeGenerator,
             $uuidFactory->getTimeGenerator(),
-            'getTimeGenerator did not return TimeGeneratorInterface from FeatureSet');
+            'getTimeGenerator did not return TimeGeneratorInterface from FeatureSet'
+        );
     }
 
     public function testSettersSetValueForGetters()
