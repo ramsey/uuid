@@ -94,6 +94,5 @@ class UuidFactoryTest extends TestCase
         $uuidBuilder = $this->getMock('Ramsey\Uuid\Builder\UuidBuilderInterface');
         $uuidFactory->setUuidBuilder($uuidBuilder);
         $this->assertEquals($uuidBuilder, $uuidFactory->getUuidBuilder());
-
     }
 }
