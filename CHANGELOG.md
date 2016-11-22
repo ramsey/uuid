@@ -1,5 +1,11 @@
 # ramsey/uuid Changelog
 
+## 3.5.2
+
+_Released: 2016-11-22_
+
+  * Improved test coverage.
+
 ## 3.5.1
 
 _Released: 2016-10-02_
