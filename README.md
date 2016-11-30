@@ -38,7 +38,7 @@ composer require ramsey/uuid
 
 While we have made significant internal changes to the library, we have made every effort to ensure a seamless upgrade path from the 2.x series of this library to 3.x.
 
-One major breaking change is the transition from the `Rhumsaa` root namespace to `Ramsey`. In most cases, all you will need is to change the namespace to `Ramsey` in your code, and everything will "just work."
+One major breaking change is the transition from the `Rhumsaa` root namespace to `Ramsey`. In most cases, all you will need is to change the namespace to `Ramsey` in your code, and everything will "just work".
 
 Here are full details on the breaking changes to the public API of this library:
 
