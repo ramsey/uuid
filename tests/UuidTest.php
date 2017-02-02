@@ -1894,4 +1894,78 @@ class UuidTest extends TestCase
         $unserializedUuid = unserialize($serialized);
         $this->assertTrue($uuid->equals($unserializedUuid));
     }
+
+    /**
+     * @expectedException InvalidArgumentException
+     * @expectedExceptionMessage Invalid UUID string:
+     */
+    public function testUuid3WithEmptyNamespace()
+    {
+        $uuid = Uuid::uuid3('', '');
+    }
+
+    public function testUuid3WithEmptyName()
+    {
+        $uuid = Uuid::uuid3(Uuid::NIL, '');
+
+        $this->assertEquals('4ae71336-e44b-39bf-b9d2-752e234818a5', $uuid->toString());
+    }
+
+    public function testUuid3WithNullName()
+    {
+        $uuid = Uuid::uuid3(Uuid::NIL, null);
+
+        $this->assertEquals('4ae71336-e44b-39bf-b9d2-752e234818a5', $uuid->toString());
+    }
+
+    public function testUuid3WithFalseName()
+    {
+        $uuid = Uuid::uuid3(Uuid::NIL, false);
+
+        $this->assertEquals('4ae71336-e44b-39bf-b9d2-752e234818a5', $uuid->toString());
+    }
+
+    public function testUuid3WithZeroName()
+    {
+        $uuid = Uuid::uuid3(Uuid::NIL, '0');
+
+        $this->assertEquals('19826852-5007-3022-a72a-212f66e9fac3', $uuid->toString());
+    }
+
+    /**
+     * @expectedException InvalidArgumentException
+     * @expectedExceptionMessage Invalid UUID string:
+     */
+    public function testUuid5WithEmptyNamespace()
+    {
+        $uuid = Uuid::uuid5('', '');
+    }
+
+    public function testUuid5WithEmptyName()
+    {
+        $uuid = Uuid::uuid5(Uuid::NIL, '');
+
+        $this->assertEquals('e129f27c-5103-5c5c-844b-cdf0a15e160d', $uuid->toString());
+    }
+
+    public function testUuid5WithNullName()
+    {
+        $uuid = Uuid::uuid5(Uuid::NIL, null);
+
+        $this->assertEquals('e129f27c-5103-5c5c-844b-cdf0a15e160d', $uuid->toString());
+    }
+
+    public function testUuid5WithFalseName()
+    {
+        $uuid = Uuid::uuid5(Uuid::NIL, false);
+
+        $this->assertEquals('e129f27c-5103-5c5c-844b-cdf0a15e160d', $uuid->toString());
+    }
+
+    public function testUuid5WithZeroName()
+    {
+        $uuid = Uuid::uuid5(Uuid::NIL, '0');
+
+        $this->assertEquals('b6c54489-38a0-5f50-a60a-fd8d76219cae', $uuid->toString());
+    }
 }
