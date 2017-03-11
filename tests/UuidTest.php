@@ -80,7 +80,7 @@ class UuidTest extends TestCase
     }
 
     /**
-     * @expectedException InvalidArgumentException
+     * @expectedException \Ramsey\Uuid\Exception\InvalidUuidStringException
      * @expectedExceptionMessage Invalid UUID string:
      */
     public function testFromStringWithInvalidUuidString()
