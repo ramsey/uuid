@@ -16,6 +16,7 @@ namespace Ramsey\Uuid\Codec;
 
 use InvalidArgumentException;
 use Ramsey\Uuid\Builder\UuidBuilderInterface;
+use Ramsey\Uuid\Exception\InvalidUuidStringException;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
@@ -139,7 +140,7 @@ class StringCodec implements CodecInterface
         $nameParsed = implode('-', $components);
 
         if (!Uuid::isValid($nameParsed)) {
-            throw new InvalidArgumentException('Invalid UUID string: ' . $encodedUuid);
+            throw new InvalidUuidStringException('Invalid UUID string: ' . $encodedUuid);
         }
 
         return $components;
