@@ -1,5 +1,13 @@
 # ramsey/uuid Changelog
 
+## 3.6.0
+
+_Released: 2017-03-18_
+
+  * Add `InvalidUuidStringException`, thrown when attempting to decode an invalid string UUID; this does not introduce any BC issues, since the new exception inherits from the previously used `InvalidArgumentException` [#162](https://github.com/ramsey/uuid/pull/162)
+  * Improve memory usage when generating large quantities of UUIDs (use `str_pad()` and `dechex()` instead of `sprintf()`) [#160](https://github.com/ramsey/uuid/pull/160)
+  * Minor test and documentation updates
+
 ## 3.5.2
 
 _Released: 2016-11-22_
