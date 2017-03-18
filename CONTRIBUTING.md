@@ -56,9 +56,7 @@ When you do begin working on your feature, here are some guidelines to consider:
 The following tests must pass before we will accept a pull request. If any of these do not pass, it will result in a complete build failure. Before you can run these, be sure to `composer install`.
 
 ```
-./vendor/bin/parallel-lint src tests
-./vendor/bin/phpcs src tests --standard=psr2 -sp
-./vendor/bin/phpunit --verbose
+composer test
 ```
 
 ### Locally Test With Emulated MIPS Architecture

@@ -63,5 +63,16 @@
         "branch-alias": {
             "dev-master": "3.x-dev"
         }
+    },
+    "scripts": {
+        "lint": "parallel-lint src tests",
+        "phpunit": "phpunit --verbose --colors=always",
+        "phpcs": "phpcs src tests --standard=psr2 -sp --colors",
+        "test": [
+            "@lint",
+            "@phpunit",
+            "@phpcs"
+        ],
+        "build-docs": "apigen generate --source='src' --destination='build/apidocs' --template-theme='bootstrap' --deprecated --todo"
     }
 }

@@ -77,7 +77,7 @@ The [latest class API documentation][apidocs] is available online.
 This project uses [ApiGen](http://apigen.org/) to generate this documentation. To generate the documentation on your own, install dev dependencies and run the following command from the root of the project:
 
 ```
-./vendor/bin/apigen generate --source="src" --destination="build/apidocs" --title="ramsey/uuid" --template-theme="bootstrap" --deprecated --todo
+composer build-docs
 ```
 
 This will generate documentation in the `build/apidocs/` folder.
