@@ -2,12 +2,10 @@
 
 _NOTICE: Formerly known as `rhumsaa/uuid`, The package and namespace names have changed to `ramsey/uuid` and `Ramsey\Uuid`, respectively._
 
-[![Gitter Chat][badge-gitter]][gitter]
 [![Source Code][badge-source]][source]
 [![Latest Version][badge-release]][release]
 [![Software License][badge-license]][license]
 [![Build Status][badge-build]][build]
-[![Scrutinizer][badge-quality]][quality]
 [![Coverage Status][badge-coverage]][coverage]
 [![Total Downloads][badge-downloads]][downloads]
 
@@ -146,20 +144,16 @@ The ramsey/uuid library is copyright © [Ben Ramsey](https://benramsey.com/) and
 [wiki-cookbook]: https://github.com/ramsey/uuid/wiki/Ramsey%5CUuid-Cookbook
 [contributing]: https://github.com/ramsey/uuid/blob/master/CONTRIBUTING.md
 
-[badge-gitter]: https://img.shields.io/badge/gitter-join_chat-brightgreen.svg?style=flat-square
 [badge-source]: https://img.shields.io/badge/source-ramsey/uuid-blue.svg?style=flat-square
 [badge-release]: https://img.shields.io/packagist/v/ramsey/uuid.svg?style=flat-square
 [badge-license]: https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square
 [badge-build]: https://img.shields.io/travis/ramsey/uuid/master.svg?style=flat-square
-[badge-quality]: https://img.shields.io/scrutinizer/g/ramsey/uuid/master.svg?style=flat-square
 [badge-coverage]: https://img.shields.io/coveralls/ramsey/uuid/master.svg?style=flat-square
 [badge-downloads]: https://img.shields.io/packagist/dt/ramsey/uuid.svg?style=flat-square
 
-[gitter]: https://gitter.im/ramsey/uuid
 [source]: https://github.com/ramsey/uuid
 [release]: https://packagist.org/packages/ramsey/uuid
 [license]: https://github.com/ramsey/uuid/blob/master/LICENSE
 [build]: https://travis-ci.org/ramsey/uuid
-[quality]: https://scrutinizer-ci.com/g/ramsey/uuid/
 [coverage]: https://coveralls.io/r/ramsey/uuid?branch=master
 [downloads]: https://packagist.org/packages/ramsey/uuid
