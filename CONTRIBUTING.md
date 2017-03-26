@@ -14,7 +14,6 @@ This project adheres to a [Contributor Code of Conduct](https://github.com/ramse
 
 You can find help and discussion in the following places:
 
-* Gitter chat: <https://gitter.im/ramsey/uuid>
 * GitHub Issues: <https://github.com/ramsey/uuid/issues>
 * Wiki: <https://github.com/ramsey/uuid/wiki>
 
