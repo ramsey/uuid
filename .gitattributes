@@ -3,4 +3,4 @@
 /.travis.yml      export-ignore
 /phpunit.xml.dist export-ignore
 /tests            export-ignore
-/util             export-ignore
+/tools            export-ignore
