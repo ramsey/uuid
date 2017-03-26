@@ -1,5 +1,11 @@
 # ramsey/uuid Changelog
 
+## 3.6.1
+
+_Released: 2017-03-26_
+
+  * Optimize UUID string decoding [#164](https://github.com/ramsey/uuid/pull/164)
+
 ## 3.6.0
 
 _Released: 2017-03-18_
