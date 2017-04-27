@@ -1419,7 +1419,7 @@ class UuidTest extends TestCase
     public function testIsValidNoDashes()
     {
         $valid = Uuid::isValid('af6f8cb0c57d11e19b210800200c9a66');
-        $this->assertFalse($valid);
+        $this->assertTrue($valid);
     }
 
     /**

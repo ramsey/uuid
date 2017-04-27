@@ -96,6 +96,11 @@ class Uuid implements UuidInterface
     const VALID_PATTERN = '^[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}$';
 
     /**
+     * Regular expression pattern to add dashes to a hex string
+     */
+    const STRING_SEGMENTS = '(\w{8})(\w{4})(\w{4})(\w{4})(\w{12})';
+
+    /**
      * The factory to use when creating UUIDs.
      * @var UuidFactoryInterface
      */
@@ -629,11 +634,30 @@ class Uuid implements UuidInterface
             return true;
         }
 
+        if (strlen($uuid) === 32) {
+            $uuid = preg_replace('/' . self::STRING_SEGMENTS . '/', '$1-$2-$3-$4-$5', $uuid);
+        }
+
         if (!preg_match('/' . self::VALID_PATTERN . '/', $uuid)) {
             return false;
         }
 
         return true;
+    }
+
+    /**
+     * Simple test to see if string could be a 32 char hex
+     *
+     * @param  string $uuid The string UUID to test
+     * @return boolean
+     */
+    private static function looksLikeHex($uuid)
+    {
+        if (strlen($uuid) === 32) {
+            return true;
+        }
+
+        return false;
     }
 
     /**
