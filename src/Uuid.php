@@ -629,11 +629,34 @@ class Uuid implements UuidInterface
             return true;
         }
 
+        if (self::looksLikeHex($uuid)) {
+            try {
+                $uuid = self::fromString($uuid);
+            } catch (\InvalidArgumentException $e) {
+                return false;
+            }
+        }
+
         if (!preg_match('/' . self::VALID_PATTERN . '/', $uuid)) {
             return false;
         }
 
         return true;
+    }
+
+    /**
+     * Simple test to see if string could be a 32 char hex
+     * 
+     * @param  string $uuid The string UUID to test
+     * @return boolean
+     */
+    private static function looksLikeHex($uuid)
+    {
+        if (strlen($uuid) === 32) {
+            return true;
+        }
+
+        return false;
     }
 
     /**
