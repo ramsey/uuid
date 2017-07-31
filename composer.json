@@ -25,8 +25,8 @@
         "source": "https://github.com/ramsey/uuid"
     },
     "require": {
-        "php": ">=5.6",
-        "paragonie/random_compat": "^1.0|^2.0"
+        "php": "^5.6 || ^7.0",
+        "paragonie/random_compat": "^1.0 || ^2.0"
     },
     "require-dev": {
         "ext-gmp": "*",
@@ -38,10 +38,10 @@
         "satooshi/php-coveralls": "^0.6.1",
         "apigen/apigen": "^4.1",
         "mockery/mockery": "^0.9.4",
-        "goaop/framework": "1.0.0-alpha.2 | ^1.0 | ^2.1",
+        "goaop/framework": "1.0.0-alpha.2 || ^1.0 || ^2.1",
         "doctrine/annotations": "~1.2.0",
-        "codeception/aspect-mock": "^1.0 | ^2.0",
-        "php-mock/php-mock-phpunit": "^0.3|^1.1"
+        "codeception/aspect-mock": "^1.0 || ^2.0",
+        "php-mock/php-mock-phpunit": "^0.3 || ^1.1"
     },
     "suggest": {
         "ircmaxell/random-lib": "Provides RandomLib for use with the RandomLibAdapter",
