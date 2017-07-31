@@ -14,7 +14,6 @@ This project adheres to a [Contributor Code of Conduct](https://github.com/ramse
 
 You can find help and discussion in the following places:
 
-* Gitter chat: <https://gitter.im/ramsey/uuid>
 * GitHub Issues: <https://github.com/ramsey/uuid/issues>
 * Wiki: <https://github.com/ramsey/uuid/wiki>
 
@@ -56,14 +55,12 @@ When you do begin working on your feature, here are some guidelines to consider:
 The following tests must pass before we will accept a pull request. If any of these do not pass, it will result in a complete build failure. Before you can run these, be sure to `composer install`.
 
 ```
-./vendor/bin/parallel-lint src tests
-./vendor/bin/phpcs src tests --standard=psr2 -sp
-./vendor/bin/phpunit --verbose
+composer test
 ```
 
 ### Locally Test With Emulated MIPS Architecture
 
-The following commands use [Vagrant](https://www.vagrantup.com/) to start an Ubuntu VM, install necessary dependencies, and then run the `util/run-tests.sh` script that will download a Docker image emulating the MIPS architecture. This is especially helpful for testing UUID generation in a big-endian environment.
+The following commands use [Vagrant](https://www.vagrantup.com/) to start an Ubuntu VM, install necessary dependencies, and then run the `tools/run-tests.sh` script that will download a Docker image emulating the MIPS architecture. This is especially helpful for testing UUID generation in a big-endian environment.
 
 ```
 vagrant init ubuntu/trusty64
@@ -74,5 +71,5 @@ cd /vagrant
 curl -sS https://getcomposer.org/installer | php
 php composer.phar install --no-interaction --prefer-dist
 mkdir -p build/logs
-ARCH=mips PHP_VERSION=5.6.14 TRAVIS_BUILD_DIR=/vagrant ./util/run-tests.sh
+ARCH=mips PHP_VERSION=5.6.14 TRAVIS_BUILD_DIR=/vagrant ./tools/run-tests.sh
 ```

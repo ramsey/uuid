@@ -3,16 +3,16 @@
 namespace Ramsey\Uuid\Test\Codec;
 
 use Ramsey\Uuid\Builder\UuidBuilderInterface;
-use Ramsey\Uuid\Codec\StringCodec;
+use Ramsey\Uuid\Codec\GuidStringCodec;
 use Ramsey\Uuid\Test\TestCase;
 use Ramsey\Uuid\UuidInterface;
 
 /**
- * Class StringCodecTest
+ * Class GuidStringCodecTest
  * @package Ramsey\Uuid\Test\Codec
- * @covers Ramsey\Uuid\Codec\StringCodec
+ * @covers Ramsey\Uuid\Codec\GuidStringCodec
  */
-class StringCodecTest extends TestCase
+class GuidStringCodecTest extends TestCase
 {
 
     /** @var UuidBuilderInterface */
@@ -21,14 +21,12 @@ class StringCodecTest extends TestCase
     private $uuid;
     /** @var array */
     private $fields;
-    /** @var string */
-    private $uuidString = '12345678-1234-abcd-abef-1234abcd4321';
 
-    public function setUp()
+    protected function setUp()
     {
         parent::setUp();
-        $this->builder = $this->createMock('\Ramsey\Uuid\Builder\UuidBuilderInterface');
-        $this->uuid = $this->createMock('\Ramsey\Uuid\UuidInterface');
+        $this->builder = $this->createMock(UuidBuilderInterface::class);
+        $this->uuid = $this->createMock(UuidInterface::class);
         $this->fields = ['time_low' => '12345678',
             'time_mid' => '1234',
             'time_hi_and_version' => 'abcd',
@@ -37,12 +35,12 @@ class StringCodecTest extends TestCase
             'node' => '1234abcd4321'];
     }
 
-    public function tearDown()
+    protected function tearDown()
     {
         parent::tearDown();
         $this->builder = null;
-        $this->uuid = null;
         $this->fields = null;
+        $this->uuid = null;
     }
 
     public function testEncodeUsesFieldsArray()
@@ -50,80 +48,88 @@ class StringCodecTest extends TestCase
         $this->uuid->expects($this->once())
             ->method('getFieldsHex')
             ->willReturn($this->fields);
-        $codec = new StringCodec($this->builder);
+        $codec = new GuidStringCodec($this->builder);
         $codec->encode($this->uuid);
     }
 
     public function testEncodeReturnsFormattedString()
     {
+        $this->skipIfBigEndianHost();
         $this->uuid->method('getFieldsHex')
             ->willReturn($this->fields);
-        $codec = new StringCodec($this->builder);
+        $codec = new GuidStringCodec($this->builder);
         $result = $codec->encode($this->uuid);
-        $this->assertEquals($this->uuidString, $result);
+        $this->assertEquals('78563412-3412-cdab-abef-1234abcd4321', $result);
     }
 
-    public function testEncodeBinaryUsesHexadecimalValue()
+    public function testEncodeReturnsFormattedStringOnBigEndian()
+    {
+        $this->skipIfLittleEndianHost();
+        $this->uuid->method('getFieldsHex')
+            ->willReturn($this->fields);
+        $codec = new GuidStringCodec($this->builder);
+        $result = $codec->encode($this->uuid);
+        $this->assertEquals('12345678-1234-abcd-abef-1234abcd4321', $result);
+    }
+
+
+    public function testEncodeBinaryUsesFieldsArray()
     {
         $this->uuid->expects($this->once())
-            ->method('getHex')
-            ->willReturn('123456781234abcdabef1234abcd4321');
-        $codec = new StringCodec($this->builder);
+            ->method('getFieldsHex')
+            ->willReturn($this->fields);
+        $codec = new GuidStringCodec($this->builder);
         $codec->encodeBinary($this->uuid);
     }
 
     public function testEncodeBinaryReturnsBinaryString()
     {
         $expected = hex2bin('123456781234abcdabef1234abcd4321');
-        $this->uuid->method('getHex')
-            ->willReturn('123456781234abcdabef1234abcd4321');
-        $codec = new StringCodec($this->builder);
+        $this->uuid->method('getFieldsHex')
+            ->willReturn($this->fields);
+        $codec = new GuidStringCodec($this->builder);
         $result = $codec->encodeBinary($this->uuid);
         $this->assertEquals($expected, $result);
     }
 
     public function testDecodeUsesBuilderOnFields()
     {
-        $string = 'uuid:12345678-1234-abcd-abef-1234abcd4321';
+        $this->skipIfBigEndianHost();
+        $string = 'uuid:78563412-3412-cdab-abef-1234abcd4321';
         $this->builder->expects($this->once())
             ->method('build')
-            ->with($this->isInstanceOf(StringCodec::class), $this->fields);
-        $codec = new StringCodec($this->builder);
+            ->with($this->isInstanceOf(GuidStringCodec::class), $this->fields);
+        $codec = new GuidStringCodec($this->builder);
         $codec->decode($string);
     }
 
-    public function testDecodeThrowsExceptionOnInvalidUuid()
+    public function testDecodeUsesBuilderOnFieldsOnBigEndian()
     {
-        $string = 'invalid-uuid';
-        $this->setExpectedException(\InvalidArgumentException::class);
-        $codec = new StringCodec($this->builder);
+        $this->skipIfLittleEndianHost();
+        $string = 'uuid:12345678-1234-abcd-abef-1234abcd4321';
+        $this->builder->expects($this->once())
+            ->method('build')
+            ->with($this->isInstanceOf(GuidStringCodec::class), $this->fields);
+        $codec = new GuidStringCodec($this->builder);
         $codec->decode($string);
     }
 
     public function testDecodeReturnsUuidFromBuilder()
     {
-        $string = 'uuid:12345678-1234-abcd-abef-1234abcd4321';
+        $string = 'uuid:78563412-3412-cdab-abef-1234abcd4321';
         $this->builder->method('build')
             ->willReturn($this->uuid);
-        $codec = new StringCodec($this->builder);
+
+        $codec = new GuidStringCodec($this->builder);
         $result = $codec->decode($string);
         $this->assertEquals($this->uuid, $result);
-    }
-
-    public function testDecodeBytesThrowsExceptionWhenBytesStringNotSixteenCharacters()
-    {
-        $string = '61';
-        $bytes = pack('H*', $string);
-        $codec = new StringCodec($this->builder);
-        $this->setExpectedException('InvalidArgumentException', '$bytes string should contain 16 characters.');
-        $codec->decodeBytes($bytes);
     }
 
     public function testDecodeBytesReturnsUuid()
     {
         $string = '123456781234abcdabef1234abcd4321';
         $bytes = pack('H*', $string);
-        $codec = new StringCodec($this->builder);
+        $codec = new GuidStringCodec($this->builder);
         $this->builder->method('build')
             ->willReturn($this->uuid);
         $result = $codec->decodeBytes($bytes);

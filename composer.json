@@ -38,8 +38,10 @@
         "satooshi/php-coveralls": "^0.6.1",
         "apigen/apigen": "^4.1",
         "mockery/mockery": "^0.9.4",
-        "goaop/framework": "1.0.0-alpha.2",
-        "codeception/aspect-mock": "1.0.0"
+        "goaop/framework": "1.0.0-alpha.2 | ^1.0 | ^2.1",
+        "doctrine/annotations": "~1.2.0",
+        "codeception/aspect-mock": "^1.0 | ^2.0",
+        "php-mock/php-mock-phpunit": "^0.3|^1.1"
     },
     "suggest": {
         "ircmaxell/random-lib": "Provides RandomLib for use with the RandomLibAdapter",
@@ -54,7 +56,7 @@
         "psr-4": {"Ramsey\\Uuid\\": "src/"}
     },
     "autoload-dev": {
-        "psr-4": {"Ramsey\\Uuid\\Test\\": "tests/src/"}
+        "psr-4": {"Ramsey\\Uuid\\Test\\": "tests/"}
     },
     "replace": {
         "rhumsaa/uuid": "self.version"
@@ -63,5 +65,16 @@
         "branch-alias": {
             "dev-master": "3.x-dev"
         }
+    },
+    "scripts": {
+        "lint": "parallel-lint src tests",
+        "phpunit": "phpunit --verbose --colors=always",
+        "phpcs": "phpcs src tests --standard=psr2 -sp --colors",
+        "test": [
+            "@lint",
+            "@phpunit",
+            "@phpcs"
+        ],
+        "build-docs": "apigen generate --source='src' --destination='build/apidocs' --template-theme='bootstrap' --deprecated --todo"
     }
 }

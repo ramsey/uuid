@@ -2,6 +2,7 @@
 
 namespace Ramsey\Uuid\Test\Generator;
 
+use phpmock\phpunit\PHPMock;
 use Ramsey\Uuid\Test\TestCase;
 use Ramsey\Uuid\Generator\SodiumRandomGenerator;
 use Ramsey\Uuid\Uuid;
@@ -9,7 +10,9 @@ use Ramsey\Uuid\UuidFactory;
 
 class SodiumRandomGeneratorTest extends TestCase
 {
-    public function setUp()
+    use PHPMock;
+
+    protected function skipIfLibsodiumExtensionNotLoaded()
     {
         if (!extension_loaded('libsodium')) {
             $this->markTestSkipped(
@@ -20,6 +23,7 @@ class SodiumRandomGeneratorTest extends TestCase
 
     public function testGenerateReturnsBytes()
     {
+        $this->skipIfLibsodiumExtensionNotLoaded();
         $generator = new SodiumRandomGenerator();
 
         $bytes = $generator->generate(16);
@@ -30,6 +34,7 @@ class SodiumRandomGeneratorTest extends TestCase
 
     public function testFactoryUsesSodiumRandomGenerator()
     {
+        $this->skipIfLibsodiumExtensionNotLoaded();
         $uuidFactory = new UuidFactory();
         $uuidFactory->setRandomGenerator(new SodiumRandomGenerator());
         Uuid::setFactory($uuidFactory);
@@ -40,5 +45,18 @@ class SodiumRandomGeneratorTest extends TestCase
             SodiumRandomGenerator::class,
             $uuid->getFactory()->getRandomGenerator()
         );
+    }
+
+    /**
+     * @runInSeparateProcess
+     * @preserveGlobalState disabled
+     */
+    public function testGenerateUsesSodiumLibrary()
+    {
+        $randomBytesFunc = $this->getFunctionMock('Sodium', 'randombytes_buf');
+        $randomBytesFunc->expects($this->once())
+            ->with(10);
+        $generator = new SodiumRandomGenerator();
+        $generator->generate(10);
     }
 }

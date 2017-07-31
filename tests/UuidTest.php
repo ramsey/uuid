@@ -82,7 +82,7 @@ class UuidTest extends TestCase
     }
 
     /**
-     * @expectedException InvalidArgumentException
+     * @expectedException \Ramsey\Uuid\Exception\InvalidUuidStringException
      * @expectedExceptionMessage Invalid UUID string:
      */
     public function testFromStringWithInvalidUuidString()
@@ -844,7 +844,7 @@ class UuidTest extends TestCase
             $this->assertEquals(Uuid::RFC_4122, $uobj->getVariant());
             $this->assertEquals(3, $uobj->getVersion());
             $this->assertEquals(Uuid::fromString($ustr), $uobj);
-            $this->assertEquals((string) $uobj, $ustr);
+            $this->assertEquals((string)$uobj, $ustr);
         }
     }
 
@@ -869,7 +869,7 @@ class UuidTest extends TestCase
             ->method('generate')
             ->willReturnCallback(function ($length) {
 
-            // Makes first fields of UUIDs equal
+                // Makes first fields of UUIDs equal
                 return str_pad('', $length, '0');
             });
 
@@ -881,7 +881,7 @@ class UuidTest extends TestCase
 
         $previous = $factory->uuid4();
 
-        for ($i = 0; $i < 1000; $i ++) {
+        for ($i = 0; $i < 1000; $i++) {
             usleep(10);
             $uuid = $factory->uuid4();
             $this->assertGreaterThan($previous->toString(), $uuid->toString());
@@ -913,7 +913,7 @@ class UuidTest extends TestCase
 
         $previous = $factory->uuid4();
 
-        for ($i = 0; $i < 1000; $i ++) {
+        for ($i = 0; $i < 1000; $i++) {
             usleep(10);
             $uuid = $factory->uuid4();
             $this->assertGreaterThan($previous->toString(), $uuid->toString());
@@ -989,7 +989,7 @@ class UuidTest extends TestCase
             $this->assertEquals(Uuid::RFC_4122, $uobj->getVariant());
             $this->assertEquals(5, $uobj->getVersion());
             $this->assertEquals(Uuid::fromString($ustr), $uobj);
-            $this->assertEquals((string) $uobj, $ustr);
+            $this->assertEquals((string)$uobj, $ustr);
         }
     }
 
@@ -1019,6 +1019,28 @@ class UuidTest extends TestCase
         $this->assertEquals(1, $uuid4->compareTo($uuid3));
         $this->assertEquals(-1, $uuid5->compareTo($uuid3));
         $this->assertEquals(1, $uuid3->compareto($uuid5));
+    }
+
+    public function testCompareToReturnsZeroWhenDifferentCases()
+    {
+        $uuidString = 'ff6f8cb0-c57d-11e1-9b21-0800200c9a66';
+        // $uuid1 and $uuid2 are identical
+        $uuid1 = Uuid::fromString($uuidString);
+        $uuid2 = Uuid::fromString(strtoupper($uuidString));
+
+        $this->assertEquals(0, $uuid1->compareTo($uuid2));
+        $this->assertEquals(0, $uuid2->compareTo($uuid1));
+    }
+
+    public function testEqualsReturnsTrueWhenDifferentCases()
+    {
+        $uuidString = 'ff6f8cb0-c57d-11e1-9b21-0800200c9a66';
+        // $uuid1 and $uuid2 are identical
+        $uuid1 = Uuid::fromString($uuidString);
+        $uuid2 = Uuid::fromString(strtoupper($uuidString));
+
+        $this->assertTrue($uuid1->equals($uuid2));
+        $this->assertTrue($uuid2->equals($uuid1));
     }
 
     /**
@@ -1053,7 +1075,7 @@ class UuidTest extends TestCase
         Uuid::setFactory(new UuidFactory($featureSet));
         $uuidA = Uuid::uuid1(0x00007ffffffe, 0x1669);
 
-        $this->assertEquals('c4dbe7e2-097f-11e2-9669-00007ffffffe', (string) $uuidA);
+        $this->assertEquals('c4dbe7e2-097f-11e2-9669-00007ffffffe', (string)$uuidA);
         $this->assertEquals('c4dbe7e2', $uuidA->getTimeLowHex());
         $this->assertEquals('097f', $uuidA->getTimeMidHex());
         $this->assertEquals('11e2', $uuidA->getTimeHiAndVersionHex());
@@ -1062,7 +1084,7 @@ class UuidTest extends TestCase
         $timeOfDay->setUsec(0);
         $uuidB = Uuid::uuid1(0x00007ffffffe, 0x1669);
 
-        $this->assertEquals('c4b18100-097f-11e2-9669-00007ffffffe', (string) $uuidB);
+        $this->assertEquals('c4b18100-097f-11e2-9669-00007ffffffe', (string)$uuidB);
         $this->assertEquals('c4b18100', $uuidB->getTimeLowHex());
         $this->assertEquals('097f', $uuidB->getTimeMidHex());
         $this->assertEquals('11e2', $uuidB->getTimeHiAndVersionHex());
@@ -1071,7 +1093,7 @@ class UuidTest extends TestCase
         $timeOfDay->setUsec(999999);
         $uuidC = Uuid::uuid1(0x00007ffffffe, 0x1669);
 
-        $this->assertEquals('c54a1776-097f-11e2-9669-00007ffffffe', (string) $uuidC);
+        $this->assertEquals('c54a1776-097f-11e2-9669-00007ffffffe', (string)$uuidC);
         $this->assertEquals('c54a1776', $uuidC->getTimeLowHex());
         $this->assertEquals('097f', $uuidC->getTimeMidHex());
         $this->assertEquals('11e2', $uuidC->getTimeHiAndVersionHex());
@@ -1143,7 +1165,7 @@ class UuidTest extends TestCase
         // For usec = 277885
         $uuidA = Uuid::uuid1(0x00007ffffffe, 0x1669);
 
-        $this->assertEquals('c4dbe7e2-097f-11e2-9669-00007ffffffe', (string) $uuidA);
+        $this->assertEquals('c4dbe7e2-097f-11e2-9669-00007ffffffe', (string)$uuidA);
         $this->assertEquals('c4dbe7e2', $uuidA->getTimeLowHex());
         $this->assertEquals('097f', $uuidA->getTimeMidHex());
         $this->assertEquals('11e2', $uuidA->getTimeHiAndVersionHex());
@@ -1152,7 +1174,7 @@ class UuidTest extends TestCase
         $timeOfDay->setUsec(0);
         $uuidB = Uuid::uuid1(0x00007ffffffe, 0x1669);
 
-        $this->assertEquals('c4b18100-097f-11e2-9669-00007ffffffe', (string) $uuidB);
+        $this->assertEquals('c4b18100-097f-11e2-9669-00007ffffffe', (string)$uuidB);
         $this->assertEquals('c4b18100', $uuidB->getTimeLowHex());
         $this->assertEquals('097f', $uuidB->getTimeMidHex());
         $this->assertEquals('11e2', $uuidB->getTimeHiAndVersionHex());
@@ -1161,7 +1183,7 @@ class UuidTest extends TestCase
         $timeOfDay->setUsec(999999);
         $uuidC = Uuid::uuid1(0x00007ffffffe, 0x1669);
 
-        $this->assertEquals('c54a1776-097f-11e2-9669-00007ffffffe', (string) $uuidC);
+        $this->assertEquals('c54a1776-097f-11e2-9669-00007ffffffe', (string)$uuidC);
         $this->assertEquals('c54a1776', $uuidC->getTimeLowHex());
         $this->assertEquals('097f', $uuidC->getTimeMidHex());
         $this->assertEquals('11e2', $uuidC->getTimeHiAndVersionHex());
@@ -1187,7 +1209,7 @@ class UuidTest extends TestCase
         Uuid::setFactory(new UuidFactory($featureSet));
         $uuidA = Uuid::uuid1(0x00007ffffffe, 0x1669);
 
-        $this->assertEquals('ff9785f6-ffff-1fff-9669-00007ffffffe', (string) $uuidA);
+        $this->assertEquals('ff9785f6-ffff-1fff-9669-00007ffffffe', (string)$uuidA);
         $this->assertEquals('ff9785f6', $uuidA->getTimeLowHex());
         $this->assertEquals('ffff', $uuidA->getTimeMidHex());
         $this->assertEquals('1fff', $uuidA->getTimeHiAndVersionHex());
@@ -1205,7 +1227,7 @@ class UuidTest extends TestCase
         Uuid::setFactory(new UuidFactory($featureSet));
         $uuidB = Uuid::uuid1(0x00007ffffffe, 0x1669);
 
-        $this->assertEquals('00000000-0000-1000-9669-00007ffffffe', (string) $uuidB);
+        $this->assertEquals('00000000-0000-1000-9669-00007ffffffe', (string)$uuidB);
         $this->assertEquals('00000000', $uuidB->getTimeLowHex());
         $this->assertEquals('0000', $uuidB->getTimeMidHex());
         $this->assertEquals('1000', $uuidB->getTimeHiAndVersionHex());
@@ -1237,7 +1259,7 @@ class UuidTest extends TestCase
 
         $uuidA = Uuid::uuid1(0x00007ffffffe, 0x1669);
 
-        $this->assertEquals('ff9785f6-ffff-1fff-9669-00007ffffffe', (string) $uuidA);
+        $this->assertEquals('ff9785f6-ffff-1fff-9669-00007ffffffe', (string)$uuidA);
         $this->assertEquals('ff9785f6', $uuidA->getTimeLowHex());
         $this->assertEquals('ffff', $uuidA->getTimeMidHex());
         $this->assertEquals('1fff', $uuidA->getTimeHiAndVersionHex());
@@ -1256,7 +1278,7 @@ class UuidTest extends TestCase
 
         $uuidB = Uuid::uuid1(0x00007ffffffe, 0x1669);
 
-        $this->assertEquals('00000000-0000-1000-9669-00007ffffffe', (string) $uuidB);
+        $this->assertEquals('00000000-0000-1000-9669-00007ffffffe', (string)$uuidB);
         $this->assertEquals('00000000', $uuidB->getTimeLowHex());
         $this->assertEquals('0000', $uuidB->getTimeMidHex());
         $this->assertEquals('1000', $uuidB->getTimeHiAndVersionHex());
@@ -1334,7 +1356,7 @@ class UuidTest extends TestCase
 
         $uuidA = Uuid::uuid1(0x00007ffffffe, 0x1669);
 
-        $this->assertEquals('13813ff6-6912-11fe-9669-00007ffffffe', (string) $uuidA);
+        $this->assertEquals('13813ff6-6912-11fe-9669-00007ffffffe', (string)$uuidA);
         $this->assertEquals('13813ff6', $uuidA->getTimeLowHex());
         $this->assertEquals('6912', $uuidA->getTimeMidHex());
         $this->assertEquals('11fe', $uuidA->getTimeHiAndVersionHex());
@@ -1353,7 +1375,7 @@ class UuidTest extends TestCase
 
         $uuidB = Uuid::uuid1(0x00007ffffffe, 0x1669);
 
-        $this->assertEquals('1419d680-d292-1165-9669-00007ffffffe', (string) $uuidB);
+        $this->assertEquals('1419d680-d292-1165-9669-00007ffffffe', (string)$uuidB);
         $this->assertEquals('1419d680', $uuidB->getTimeLowHex());
         $this->assertEquals('d292', $uuidB->getTimeMidHex());
         $this->assertEquals('1165', $uuidB->getTimeHiAndVersionHex());
@@ -1429,7 +1451,7 @@ class UuidTest extends TestCase
 
         $uuidA = Uuid::uuid1(0x00007ffffffe, 0x1669);
 
-        $this->assertEquals('13813ff6-6912-11fe-9669-00007ffffffe', (string) $uuidA);
+        $this->assertEquals('13813ff6-6912-11fe-9669-00007ffffffe', (string)$uuidA);
         $this->assertEquals('13813ff6', $uuidA->getTimeLowHex());
         $this->assertEquals('6912', $uuidA->getTimeMidHex());
         $this->assertEquals('11fe', $uuidA->getTimeHiAndVersionHex());
@@ -1445,10 +1467,9 @@ class UuidTest extends TestCase
         $featureSet->setTimeProvider($timeOfDay);
 
         Uuid::setFactory(new UuidFactory($featureSet));
-        ;
         $uuidB = Uuid::uuid1(0x00007ffffffe, 0x1669);
 
-        $this->assertEquals('1419d680-d292-1165-9669-00007ffffffe', (string) $uuidB);
+        $this->assertEquals('1419d680-d292-1165-9669-00007ffffffe', (string)$uuidB);
         $this->assertEquals('1419d680', $uuidB->getTimeLowHex());
         $this->assertEquals('d292', $uuidB->getTimeMidHex());
         $this->assertEquals('1165', $uuidB->getTimeHiAndVersionHex());
@@ -1494,7 +1515,7 @@ class UuidTest extends TestCase
                 $this->assertTrue(
                     $uuid32->equals($uuid64),
                     'Breaks at ' . gmdate('r', $currentTime)
-                        . "; 32-bit: {$uuid32->toString()}, 64-bit: {$uuid64->toString()}"
+                    . "; 32-bit: {$uuid32->toString()}, 64-bit: {$uuid64->toString()}"
                 );
 
                 // Assert that the time matches
@@ -2031,7 +2052,7 @@ class UuidTest extends TestCase
                 Uuid::fromInteger($test['int']),
             );
             foreach ($uuids as $uuid) {
-                $this->assertEquals($test['string'], (string) $uuid);
+                $this->assertEquals($test['string'], (string)$uuid);
                 $this->assertEquals($test['hex'], $uuid->getHex());
                 $this->assertEquals(base64_decode($test['bytes']), $uuid->getBytes());
                 if ($this->hasGmp() || $this->hasMoontoastMath()) {
@@ -2082,5 +2103,79 @@ class UuidTest extends TestCase
         $serialized = serialize($uuid);
         $unserializedUuid = unserialize($serialized);
         $this->assertTrue($uuid->equals($unserializedUuid));
+    }
+
+    /**
+     * @expectedException InvalidArgumentException
+     * @expectedExceptionMessage Invalid UUID string:
+     */
+    public function testUuid3WithEmptyNamespace()
+    {
+        $uuid = Uuid::uuid3('', '');
+    }
+
+    public function testUuid3WithEmptyName()
+    {
+        $uuid = Uuid::uuid3(Uuid::NIL, '');
+
+        $this->assertEquals('4ae71336-e44b-39bf-b9d2-752e234818a5', $uuid->toString());
+    }
+
+    public function testUuid3WithNullName()
+    {
+        $uuid = Uuid::uuid3(Uuid::NIL, null);
+
+        $this->assertEquals('4ae71336-e44b-39bf-b9d2-752e234818a5', $uuid->toString());
+    }
+
+    public function testUuid3WithFalseName()
+    {
+        $uuid = Uuid::uuid3(Uuid::NIL, false);
+
+        $this->assertEquals('4ae71336-e44b-39bf-b9d2-752e234818a5', $uuid->toString());
+    }
+
+    public function testUuid3WithZeroName()
+    {
+        $uuid = Uuid::uuid3(Uuid::NIL, '0');
+
+        $this->assertEquals('19826852-5007-3022-a72a-212f66e9fac3', $uuid->toString());
+    }
+
+    /**
+     * @expectedException InvalidArgumentException
+     * @expectedExceptionMessage Invalid UUID string:
+     */
+    public function testUuid5WithEmptyNamespace()
+    {
+        $uuid = Uuid::uuid5('', '');
+    }
+
+    public function testUuid5WithEmptyName()
+    {
+        $uuid = Uuid::uuid5(Uuid::NIL, '');
+
+        $this->assertEquals('e129f27c-5103-5c5c-844b-cdf0a15e160d', $uuid->toString());
+    }
+
+    public function testUuid5WithNullName()
+    {
+        $uuid = Uuid::uuid5(Uuid::NIL, null);
+
+        $this->assertEquals('e129f27c-5103-5c5c-844b-cdf0a15e160d', $uuid->toString());
+    }
+
+    public function testUuid5WithFalseName()
+    {
+        $uuid = Uuid::uuid5(Uuid::NIL, false);
+
+        $this->assertEquals('e129f27c-5103-5c5c-844b-cdf0a15e160d', $uuid->toString());
+    }
+
+    public function testUuid5WithZeroName()
+    {
+        $uuid = Uuid::uuid5(Uuid::NIL, '0');
+
+        $this->assertEquals('b6c54489-38a0-5f50-a60a-fd8d76219cae', $uuid->toString());
     }
 }

@@ -16,6 +16,7 @@ namespace Ramsey\Uuid\Codec;
 
 use InvalidArgumentException;
 use Ramsey\Uuid\Builder\UuidBuilderInterface;
+use Ramsey\Uuid\Exception\InvalidUuidStringException;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
@@ -139,7 +140,7 @@ class StringCodec implements CodecInterface
         $nameParsed = implode('-', $components);
 
         if (!Uuid::isValid($nameParsed)) {
-            throw new InvalidArgumentException('Invalid UUID string: ' . $encodedUuid);
+            throw new InvalidUuidStringException('Invalid UUID string: ' . $encodedUuid);
         }
 
         return $components;
@@ -155,12 +156,12 @@ class StringCodec implements CodecInterface
     protected function getFields(array $components)
     {
         return array(
-            'time_low' => sprintf('%08s', $components[0]),
-            'time_mid' => sprintf('%04s', $components[1]),
-            'time_hi_and_version' => sprintf('%04s', $components[2]),
-            'clock_seq_hi_and_reserved' => sprintf('%02s', substr($components[3], 0, 2)),
-            'clock_seq_low' => sprintf('%02s', substr($components[3], 2)),
-            'node' => sprintf('%012s', $components[4])
+            'time_low' => str_pad($components[0], 8, '0', STR_PAD_LEFT),
+            'time_mid' => str_pad($components[1], 4, '0', STR_PAD_LEFT),
+            'time_hi_and_version' => str_pad($components[2], 4, '0', STR_PAD_LEFT),
+            'clock_seq_hi_and_reserved' => str_pad(substr($components[3], 0, 2), 2, '0', STR_PAD_LEFT),
+            'clock_seq_low' => str_pad(substr($components[3], 2), 2, '0', STR_PAD_LEFT),
+            'node' => str_pad($components[4], 12, '0', STR_PAD_LEFT)
         );
     }
 }

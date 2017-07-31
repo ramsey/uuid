@@ -29,7 +29,7 @@ class DefaultTimeGeneratorTest extends TestCase
     private $clockSeq = 4066;
 
 
-    public function setUp()
+    protected function setUp()
     {
         parent::setUp();
         $this->timeProvider = $this->createMock(TimeProviderInterface::class);
@@ -39,7 +39,7 @@ class DefaultTimeGeneratorTest extends TestCase
         $this->calculatedTime = ["low" => "83cb98e0", "mid" => "98e0", "hi" => "03cb"];
     }
 
-    public function tearDown()
+    protected function tearDown()
     {
         parent::tearDown();
         $this->timeProvider = null;

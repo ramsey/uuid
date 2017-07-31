@@ -4,7 +4,7 @@
          backupGlobals="false">
     <testsuites>
         <testsuite>
-            <directory>./tests/src</directory>
+            <directory>./tests</directory>
         </testsuite>
     </testsuites>
     <filter>

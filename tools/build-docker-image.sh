@@ -17,11 +17,11 @@
 #     sudo apt-get install docker.io
 #     sudo docker login
 #     cd /vagrant
-#     sudo ./util/build-docker-image.sh 5.6.14 mips mips wheezy
+#     sudo ./tools/build-docker-image.sh 5.6.14 mips mips wheezy
 #
 # or (for 64-bit, standard Debian):
 #
-#     sudo ./util/build-docker-image.sh 5.6.14 x86_64 amd64 wheezy
+#     sudo ./tools/build-docker-image.sh 5.6.14 x86_64 amd64 wheezy
 #
 
 if [ $EUID -ne 0 ]; then

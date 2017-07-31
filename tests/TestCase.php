@@ -6,7 +6,7 @@ use Mockery;
 
 class TestCase extends \PHPUnit_Framework_TestCase
 {
-    public function tearDown()
+    protected function tearDown()
     {
         parent::tearDown();
         if (!self::isHhvm()) {
