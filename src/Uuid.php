@@ -14,10 +14,11 @@
 
 namespace Ramsey\Uuid;
 
-use Ramsey\Uuid\Converter\NumberConverterInterface;
 use Ramsey\Uuid\Codec\CodecInterface;
+use Ramsey\Uuid\Converter\NumberConverterInterface;
 use Ramsey\Uuid\Converter\TimeConverterInterface;
 use Ramsey\Uuid\Exception\UnsupportedOperationException;
+use Ramsey\Uuid\Validator\Validator;
 
 /**
  * Represents a universally unique identifier (UUID), according to RFC 4122.
@@ -90,11 +91,6 @@ class Uuid implements UuidInterface
      * @link http://tools.ietf.org/html/rfc4122#section-4.1.1
      */
     const RESERVED_FUTURE = 7;
-
-    /**
-     * Regular expression pattern for matching a valid UUID of any variant.
-     */
-    const VALID_PATTERN = '^[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}$';
 
     /**
      * The factory to use when creating UUIDs.
@@ -633,17 +629,7 @@ class Uuid implements UuidInterface
      */
     public static function isValid($uuid)
     {
-        $uuid = str_replace(array('urn:', 'uuid:', '{', '}'), '', $uuid);
-
-        if ($uuid == self::NIL) {
-            return true;
-        }
-
-        if (!preg_match('/' . self::VALID_PATTERN . '/', $uuid)) {
-            return false;
-        }
-
-        return true;
+        return self::getFactory()->getValidator()->validate($uuid);
     }
 
     /**

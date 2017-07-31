@@ -5,11 +5,13 @@ namespace Ramsey\Uuid\Test;
 use Ramsey\Uuid\Codec\TimestampFirstCombCodec;
 use Ramsey\Uuid\Codec\TimestampLastCombCodec;
 use Ramsey\Uuid\FeatureSet;
-use Ramsey\Uuid\Provider\Time\FixedTimeProvider;
 use Ramsey\Uuid\Generator\CombGenerator;
 use Ramsey\Uuid\Generator\RandomGeneratorFactory;
+use Ramsey\Uuid\Provider\Time\FixedTimeProvider;
+use Ramsey\Uuid\Provider\Time\SystemTimeProvider;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidFactory;
+use Ramsey\Uuid\Validator\Validator;
 
 class UuidTest extends TestCase
 {
@@ -1569,91 +1571,21 @@ class UuidTest extends TestCase
     }
 
     /**
+     * This method should respond to the result of the factory
      */
-    public function testIsValidGoodVersion1()
+    public function testIsValid()
     {
-        $valid = Uuid::isValid('ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
-        $this->assertTrue($valid);
-    }
+        $argument = uniqid('passed argument ');
 
-    /**
-     */
-    public function testIsValidGoodVersion2()
-    {
-        $valid = Uuid::isValid('ff6f8cb0-c57d-21e1-9b21-0800200c9a66');
-        $this->assertTrue($valid);
-    }
+        $validator = $this->getMockBuilder('Ramsey\Uuid\Validator\ValidatorInterface')->getMock();
+        $validator->expects($this->once())->method('validate')->with($argument)->willReturn(true);
+        $factory = Uuid::getFactory();
+        $factory->setValidator($validator);
 
-    /**
-     */
-    public function testIsValidGoodVersion3()
-    {
-        $valid = Uuid::isValid('ff6f8cb0-c57d-31e1-9b21-0800200c9a66');
-        $this->assertTrue($valid);
-    }
+        $this->assertTrue(Uuid::isValid($argument));
 
-    /**
-     */
-    public function testIsValidGoodVersion4()
-    {
-        $valid = Uuid::isValid('ff6f8cb0-c57d-41e1-9b21-0800200c9a66');
-        $this->assertTrue($valid);
-    }
-
-    /**
-     */
-    public function testIsValidGoodVersion5()
-    {
-        $valid = Uuid::isValid('ff6f8cb0-c57d-51e1-9b21-0800200c9a66');
-        $this->assertTrue($valid);
-    }
-
-    /**
-     */
-    public function testIsValidGoodUpperCase()
-    {
-        $valid = Uuid::isValid('FF6F8CB0-C57D-11E1-9B21-0800200C9A66');
-        $this->assertTrue($valid);
-    }
-
-    /**
-     */
-    public function testIsValidBadHex()
-    {
-        $valid = Uuid::isValid('zf6f8cb0-c57d-11e1-9b21-0800200c9a66');
-        $this->assertFalse($valid);
-    }
-
-    /**
-     */
-    public function testIsValidTooShort1()
-    {
-        $valid = Uuid::isValid('3f6f8cb0-c57d-11e1-9b21-0800200c9a6');
-        $this->assertFalse($valid);
-    }
-
-    /**
-     */
-    public function testIsValidTooShort2()
-    {
-        $valid = Uuid::isValid('af6f8cb-c57d-11e1-9b21-0800200c9a66');
-        $this->assertFalse($valid);
-    }
-
-    /**
-     */
-    public function testIsValidNoDashes()
-    {
-        $valid = Uuid::isValid('af6f8cb0c57d11e19b210800200c9a66');
-        $this->assertFalse($valid);
-    }
-
-    /**
-     */
-    public function testIsValidTooLong()
-    {
-        $valid = Uuid::isValid('ff6f8cb0-c57da-51e1-9b21-0800200c9a66');
-        $this->assertFalse($valid);
+        // reset the static validator
+        $factory->setValidator(new Validator);
     }
 
     /**
