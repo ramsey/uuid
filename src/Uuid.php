@@ -101,6 +101,11 @@ class Uuid implements UuidInterface
     const UUID_TYPE_TIME = 1;
 
     /**
+     * Version 2 (identifier-based) UUID object constant identifier
+     */
+    const UUID_TYPE_IDENTIFIER = 2;
+
+    /**
      * Version 3 (name-based and hashed with MD5) UUID object constant identifier
      */
     const UUID_TYPE_HASH_MD5 = 3;
