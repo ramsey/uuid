@@ -1968,4 +1968,49 @@ class UuidTest extends TestCase
 
         $this->assertEquals('b6c54489-38a0-5f50-a60a-fd8d76219cae', $uuid->toString());
     }
+
+    /**
+     * @depends testGetVersionForVersion1
+     */
+    public function testUuidVersionConstantForVersion1()
+    {
+        $uuid = Uuid::fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
+        $this->assertEquals($uuid->getVersion(), UUID_TYPE_TIME);
+    }
+
+    /**
+     * @depends testGetVersionForVersion2
+     */
+    public function testUuidVersionConstantForVersion2()
+    {
+        $uuid = Uuid::fromString('6fa459ea-ee8a-2ca4-894e-db77e160355e');
+        $this->assertEquals($uuid->getVersion(), UUID_TYPE_IDENTIFIER);
+    }
+
+    /**
+     * @depends testGetVersionForVersion3
+     */
+    public function testUuidVersionConstantForVersion3()
+    {
+        $uuid = Uuid::fromString('6fa459ea-ee8a-3ca4-894e-db77e160355e');
+        $this->assertEquals($uuid->getVersion(), UUID_TYPE_HASH_MD5);
+    }
+
+    /**
+     * @depends testGetVersionForVersion4
+     */
+    public function testUuidVersionConstantForVersion4()
+    {
+        $uuid = Uuid::fromString('6fabf0bc-603a-42f2-925b-d9f779bd0032');
+        $this->assertEquals($uuid->getVersion(), UUID_TYPE_RANDOM);
+    }
+
+    /**
+     * @depends testGetVersionForVersion5
+     */
+    public function testUuidVersionConstantForVersion5()
+    {
+        $uuid = Uuid::fromString('886313e1-3b8a-5372-9b90-0c9aee199e5d');
+        $this->assertEquals($uuid->getVersion(), UUID_TYPE_HASH_SHA1);
+    }
 }
