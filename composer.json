@@ -51,7 +51,8 @@
         "ramsey/uuid-console": "A console application for generating UUIDs with ramsey/uuid"
     },
     "autoload": {
-        "psr-4": {"Ramsey\\Uuid\\": "src/"}
+        "psr-4": {"Ramsey\\Uuid\\": "src/"},
+        "files": ["src/Versions.php"]
     },
     "autoload-dev": {
         "psr-4": {"Ramsey\\Uuid\\Test\\": "tests/"}
