@@ -10,6 +10,7 @@ use Ramsey\Uuid\Generator\CombGenerator;
 use Ramsey\Uuid\Generator\RandomGeneratorFactory;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidFactory;
+use Ramsey\Uuid\UuidVersionEnum;
 
 class UuidTest extends TestCase
 {
@@ -1975,7 +1976,8 @@ class UuidTest extends TestCase
     public function testUuidVersionConstantForVersion1()
     {
         $uuid = Uuid::fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
-        $this->assertEquals($uuid->getVersion(), UUID::UUID_TYPE_TIME);
+        $this->assertEquals($uuid->getVersion(), UuidVersionEnum::UUID_TYPE_TIME());
+        $this->assertEquals($uuid->getVersion(), UuidVersionEnum::UUID_TYPE_TIME);
     }
 
     /**
@@ -1984,7 +1986,8 @@ class UuidTest extends TestCase
     public function testUuidVersionConstantForVersion2()
     {
         $uuid = Uuid::fromString('6fa459ea-ee8a-2ca4-894e-db77e160355e');
-        $this->assertEquals($uuid->getVersion(), UUID::UUID_TYPE_IDENTIFIER);
+        $this->assertEquals($uuid->getVersion(), UuidVersionEnum::UUID_TYPE_IDENTIFIER());
+        $this->assertEquals($uuid->getVersion(), UuidVersionEnum::UUID_TYPE_IDENTIFIER);
     }
 
     /**
@@ -1993,7 +1996,8 @@ class UuidTest extends TestCase
     public function testUuidVersionConstantForVersion3()
     {
         $uuid = Uuid::fromString('6fa459ea-ee8a-3ca4-894e-db77e160355e');
-        $this->assertEquals($uuid->getVersion(), UUID::UUID_TYPE_HASH_MD5);
+        $this->assertEquals($uuid->getVersion(), UuidVersionEnum::UUID_TYPE_HASH_MD5());
+        $this->assertEquals($uuid->getVersion(), UuidVersionEnum::UUID_TYPE_HASH_MD5);
     }
 
     /**
@@ -2002,7 +2006,8 @@ class UuidTest extends TestCase
     public function testUuidVersionConstantForVersion4()
     {
         $uuid = Uuid::fromString('6fabf0bc-603a-42f2-925b-d9f779bd0032');
-        $this->assertEquals($uuid->getVersion(), UUID::UUID_TYPE_RANDOM);
+        $this->assertEquals($uuid->getVersion(), UuidVersionEnum::UUID_TYPE_RANDOM());
+        $this->assertEquals($uuid->getVersion(), UuidVersionEnum::UUID_TYPE_RANDOM);
     }
 
     /**
@@ -2011,6 +2016,7 @@ class UuidTest extends TestCase
     public function testUuidVersionConstantForVersion5()
     {
         $uuid = Uuid::fromString('886313e1-3b8a-5372-9b90-0c9aee199e5d');
-        $this->assertEquals($uuid->getVersion(), UUID::UUID_TYPE_HASH_SHA1);
+        $this->assertEquals($uuid->getVersion(), UuidVersionEnum::UUID_TYPE_HASH_SHA1());
+        $this->assertEquals($uuid->getVersion(), UuidVersionEnum::UUID_TYPE_HASH_SHA1);
     }
 }
