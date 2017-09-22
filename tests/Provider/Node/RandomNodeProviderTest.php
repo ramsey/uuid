@@ -8,11 +8,13 @@ use AspectMock\Test as AspectMock;
 
 class RandomNodeProviderTest extends TestCase
 {
-    private $num = 16532480;
-    private $node = 'fc4400fc4400';
+    private $num;
+    private $node = '38a675685d50';
 
     protected function setUp()
     {
+        $this->num = pack('H*', base_convert(decbin(3892974093781), 2, 16));
+
         $this->skipIfHhvm();
         parent::setUp();
     }
@@ -27,12 +29,12 @@ class RandomNodeProviderTest extends TestCase
      * @runInSeparateProcess
      * @preserveGlobalState disabled
      */
-    public function testGetNodeUsesMtRand()
+    public function testGetNodeUsesRandomBytes()
     {
-        $mtRand = AspectMock::func('Ramsey\Uuid\Provider\Node', 'mt_rand', $this->num);
+        $randomBytes = AspectMock::func('Ramsey\Uuid\Provider\Node', 'random_bytes', $this->num);
         $provider = new RandomNodeProvider();
         $provider->getNode();
-        $mtRand->verifyInvokedMultipleTimes(2, [0, 0xffffff]);
+        $randomBytes->verifyInvoked(6);
     }
 
     /**
@@ -41,11 +43,11 @@ class RandomNodeProviderTest extends TestCase
      */
     public function testGetNodeFormatsRandomNumbersIntoHexString()
     {
-        AspectMock::func('Ramsey\Uuid\Provider\Node', 'mt_rand', $this->num);
-        $sprintf = AspectMock::func('Ramsey\Uuid\Provider\Node', 'sprintf', $this->node);
+        AspectMock::func('Ramsey\Uuid\Provider\Node', 'random_bytes', $this->num);
+        $bin2Hex = AspectMock::func('Ramsey\Uuid\Provider\Node', 'bin2hex', $this->node);
         $provider = new RandomNodeProvider();
         $provider->getNode();
-        $sprintf->verifyInvoked(['%06x%06x', $this->num, $this->num]);
+        $bin2Hex->verifyInvoked($this->num);
     }
 
     /**
@@ -54,8 +56,8 @@ class RandomNodeProviderTest extends TestCase
      */
     public function testGetNodeReturnsHexString()
     {
-        AspectMock::func('Ramsey\Uuid\Provider\Node', 'mt_rand', $this->num);
-        AspectMock::func('Ramsey\Uuid\Provider\Node', 'sprintf', $this->node);
+        AspectMock::func('Ramsey\Uuid\Provider\Node', 'random_bytes', $this->num);
+        AspectMock::func('Ramsey\Uuid\Provider\Node', 'bin2hex', $this->node);
         $provider = new RandomNodeProvider();
         $this->assertEquals($this->node, $provider->getNode());
     }
