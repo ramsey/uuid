@@ -31,6 +31,11 @@ class RandomNodeProvider implements NodeProviderInterface
      */
     public function getNode()
     {
-        return sprintf('%06x%06x', mt_rand(0, 0xffffff), mt_rand(0, 0xffffff));
+        $node = hexdec(bin2hex(random_bytes(6)));
+
+        // Set the multicast bit; see RFC 4122, section 4.5.
+        $node = $node | 0x010000000000;
+
+        return str_pad(dechex($node), 12, '0', STR_PAD_LEFT);
     }
 }
