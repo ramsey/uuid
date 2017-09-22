@@ -92,4 +92,11 @@ class RandomNodeProviderTest extends TestCase
         $this->assertSame($expectedNode, $provider->getNode());
         $hexDec->verifyInvoked($expectedBytesHex);
     }
+
+    public function testGetNodeAlwaysSetsMulticastBit()
+    {
+        $provider = new RandomNodeProvider();
+
+        $this->assertSame('010000000000', sprintf('%012x', hexdec($provider->getNode()) & 0x010000000000));
+    }
 }
