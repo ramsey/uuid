@@ -8,13 +8,8 @@ use AspectMock\Test as AspectMock;
 
 class RandomNodeProviderTest extends TestCase
 {
-    private $num;
-    private $node = '38a675685d50';
-
     protected function setUp()
     {
-        $this->num = pack('H*', base_convert(decbin(3892974093781), 2, 16));
-
         $this->skipIfHhvm();
         parent::setUp();
     }
@@ -31,7 +26,9 @@ class RandomNodeProviderTest extends TestCase
      */
     public function testGetNodeUsesRandomBytes()
     {
-        $randomBytes = AspectMock::func('Ramsey\Uuid\Provider\Node', 'random_bytes', $this->num);
+        $bytes = pack('H*', base_convert(decbin(3892974093781), 2, 16));
+
+        $randomBytes = AspectMock::func('Ramsey\Uuid\Provider\Node', 'random_bytes', $bytes);
         $provider = new RandomNodeProvider();
         $provider->getNode();
         $randomBytes->verifyInvoked(6);
@@ -41,24 +38,39 @@ class RandomNodeProviderTest extends TestCase
      * @runInSeparateProcess
      * @preserveGlobalState disabled
      */
-    public function testGetNodeFormatsRandomNumbersIntoHexString()
+    public function testGetNodeSetsMulticastBit()
     {
-        AspectMock::func('Ramsey\Uuid\Provider\Node', 'random_bytes', $this->num);
-        $bin2Hex = AspectMock::func('Ramsey\Uuid\Provider\Node', 'bin2hex', $this->node);
+        $bytes = pack('H*', base_convert(decbin(3892974093781), 2, 16));
+        $expectedBytesHex = '38a675685d50';
+        $decimal = 62287585500496;
+        $expectedNode = '39a675685d50';
+
+        AspectMock::func('Ramsey\Uuid\Provider\Node', 'random_bytes', $bytes);
+        $hexDec = AspectMock::func('Ramsey\Uuid\Provider\Node', 'hexdec', $decimal);
         $provider = new RandomNodeProvider();
-        $provider->getNode();
-        $bin2Hex->verifyInvoked($this->num);
+
+        $this->assertSame($expectedNode, $provider->getNode());
+        $hexDec->verifyInvoked($expectedBytesHex);
     }
 
     /**
      * @runInSeparateProcess
      * @preserveGlobalState disabled
      */
-    public function testGetNodeReturnsHexString()
+    public function testGetNodeAlreadyHasMulticastBit()
     {
-        AspectMock::func('Ramsey\Uuid\Provider\Node', 'random_bytes', $this->num);
-        AspectMock::func('Ramsey\Uuid\Provider\Node', 'bin2hex', $this->node);
+        $bytes = pack('H*', base_convert(decbin(4492974093781), 2, 16));
+        $expectedBytesHex = '4161a1ff5d50';
+        $decimal = 71887585500496;
+
+        // We expect the same hex value for the node.
+        $expectedNode = $expectedBytesHex;
+
+        AspectMock::func('Ramsey\Uuid\Provider\Node', 'random_bytes', $bytes);
+        $hexDec = AspectMock::func('Ramsey\Uuid\Provider\Node', 'hexdec', $decimal);
         $provider = new RandomNodeProvider();
-        $this->assertEquals($this->node, $provider->getNode());
+
+        $this->assertSame($expectedNode, $provider->getNode());
+        $hexDec->verifyInvoked($expectedBytesHex);
     }
 }
