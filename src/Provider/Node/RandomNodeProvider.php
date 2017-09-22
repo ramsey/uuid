@@ -36,6 +36,6 @@ class RandomNodeProvider implements NodeProviderInterface
         // Set the multicast bit; see RFC 4122, section 4.5.
         $node = $node | 0x010000000000;
 
-        return sprintf('%012x', $node);
+        return str_pad(dechex($node), 12, '0', STR_PAD_LEFT);
     }
 }
