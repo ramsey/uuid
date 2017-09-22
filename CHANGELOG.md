@@ -1,5 +1,10 @@
 # ramsey/uuid Changelog
 
+## 3.7.1
+
+  * Use `random_bytes()` when generating random nodes
+  * Set the multicast bit for random nodes, according to RFC 4122, §4.5, [#170](https://github.com/ramsey/uuid/pull/170), [#171](https://github.com/ramsey/uuid/pull/171), [#182](https://github.com/ramsey/uuid/pull/182)
+
 ## 3.7.0
 
 _Released: 2017-08-04_
