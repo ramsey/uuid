@@ -73,4 +73,23 @@ class RandomNodeProviderTest extends TestCase
         $this->assertSame($expectedNode, $provider->getNode());
         $hexDec->verifyInvoked($expectedBytesHex);
     }
+
+    /**
+     * @runInSeparateProcess
+     * @preserveGlobalState disabled
+     */
+    public function testGetNodeSetsMulticastBitForLowNodeValue()
+    {
+        $bytes = pack('H*', base_convert(decbin(1), 2, 16));
+        $expectedBytesHex = '10';
+        $decimal = 16;
+        $expectedNode = '010000000010';
+
+        AspectMock::func('Ramsey\Uuid\Provider\Node', 'random_bytes', $bytes);
+        $hexDec = AspectMock::func('Ramsey\Uuid\Provider\Node', 'hexdec', $decimal);
+        $provider = new RandomNodeProvider();
+
+        $this->assertSame($expectedNode, $provider->getNode());
+        $hexDec->verifyInvoked($expectedBytesHex);
+    }
 }
