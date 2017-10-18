@@ -39,11 +39,11 @@ class SystemNodeProvider implements NodeProviderInterface
         $matches = array();
 
         // first try a  linux specific way
-
         $node = $this->getsysfs();
+
         // Search the ifconfig output for all MAC addresses and return
         // the first one found
-        if ($node !== false) {
+        if ($node === false) {
             if (preg_match_all($pattern, $this->getIfconfig(), $matches, PREG_PATTERN_ORDER)) {
                 $node = $matches[1][0];
             }
@@ -86,6 +86,7 @@ class SystemNodeProvider implements NodeProviderInterface
      */
     protected function getsysfs()
     {
+        $mac = false;
         if (strtoupper(php_uname('s')) === "LINUX") {
             // get all the macadresses of all systems
             $macs = array_map(
