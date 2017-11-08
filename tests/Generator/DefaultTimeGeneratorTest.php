@@ -99,6 +99,8 @@ class DefaultTimeGeneratorTest extends TestCase
      */
     public function testGenerateAppliesVersionAndVariant()
     {
+        $expectedBytes = hex2bin('83cb98e098e003cb8fe2122f80ca9e06');
+
         $this->timeProvider->method('currentTime')
             ->willReturn($this->currentTime);
         $this->timeConverter->method('calculateTime')
@@ -118,7 +120,8 @@ class DefaultTimeGeneratorTest extends TestCase
             $this->timeConverter,
             $this->timeProvider
         );
-        $defaultTimeGenerator->generate($this->nodeId, $this->clockSeq);
+
+        $this->assertSame($expectedBytes, $defaultTimeGenerator->generate($this->nodeId, $this->clockSeq));
     }
 
     /**
@@ -166,6 +169,8 @@ class DefaultTimeGeneratorTest extends TestCase
      */
     public function testGenerateUsesRandomSequenceWhenClockSeqNull()
     {
+        $expectedBytes = hex2bin('0000000000001000a596122f80ca9e06');
+
         $this->skipIfHhvm();
         $mt_rand = AspectMock::func('Ramsey\Uuid\Generator', 'mt_rand', 9622);
         $defaultTimeGenerator = new DefaultTimeGenerator(
@@ -173,7 +178,8 @@ class DefaultTimeGeneratorTest extends TestCase
             $this->timeConverter,
             $this->timeProvider
         );
-        $defaultTimeGenerator->generate($this->nodeId);
+
+        $this->assertSame($expectedBytes, $defaultTimeGenerator->generate($this->nodeId));
         $mt_rand->verifyInvokedOnce([0, 16384]);
     }
 }

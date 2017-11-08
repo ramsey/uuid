@@ -2,6 +2,7 @@
 
 namespace Ramsey\Uuid\Test\Generator;
 
+use PHPUnit\Framework\Error\Error as PHPUnitError;
 use Ramsey\Uuid\Converter\NumberConverterInterface;
 use Ramsey\Uuid\Generator\CombGenerator;
 use Ramsey\Uuid\Generator\RandomGeneratorInterface;
@@ -75,10 +76,11 @@ class CombGeneratorTest extends TestCase
      */
     public function testGenerateWithLessThanTimestampBytesThrowsException($length)
     {
-        $this->setExpectedException('InvalidArgumentException');
         $randomGenerator = $this->createMock(RandomGeneratorInterface::class);
         $converter = $this->createMock(NumberConverterInterface::class);
         $generator = new CombGenerator($randomGenerator, $converter);
+
+        $this->expectException(\InvalidArgumentException::class);
         $generator->generate($length);
     }
 
@@ -87,10 +89,11 @@ class CombGeneratorTest extends TestCase
      */
     public function testGenerateWithOddNumberOverTimestampBytesCausesError()
     {
-        $this->setExpectedException('PHPUnit_Framework_Error');
         $randomGenerator = $this->createMock(RandomGeneratorInterface::class);
         $converter = $this->createMock(NumberConverterInterface::class);
         $generator = new CombGenerator($randomGenerator, $converter);
+
+        $this->expectException(PHPUnitError::class);
         $generator->generate(7);
     }
 }

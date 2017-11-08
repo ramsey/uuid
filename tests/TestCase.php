@@ -3,8 +3,9 @@ namespace Ramsey\Uuid\Test;
 
 use AspectMock\Test as AspectMock;
 use Mockery;
+use PHPUnit\Framework\TestCase as PHPUnitTestCase;
 
-class TestCase extends \PHPUnit_Framework_TestCase
+class TestCase extends PHPUnitTestCase
 {
     protected function tearDown()
     {

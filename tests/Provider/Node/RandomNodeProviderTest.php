@@ -26,12 +26,16 @@ class RandomNodeProviderTest extends TestCase
      */
     public function testGetNodeUsesRandomBytes()
     {
-        $bytes = pack('H*', base_convert(decbin(3892974093781), 2, 16));
+        $hexNode = '38a675685d5';
+        $bytes = pack('H*', $hexNode);
+        $expectedNode = '39a675685d50';
 
         $randomBytes = AspectMock::func('Ramsey\Uuid\Provider\Node', 'random_bytes', $bytes);
         $provider = new RandomNodeProvider();
-        $provider->getNode();
-        $randomBytes->verifyInvoked(6);
+        $node = $provider->getNode();
+
+        $this->assertSame($expectedNode, $node);
+        $randomBytes->verifyInvoked([6]);
     }
 
     /**
@@ -50,7 +54,7 @@ class RandomNodeProviderTest extends TestCase
         $provider = new RandomNodeProvider();
 
         $this->assertSame($expectedNode, $provider->getNode());
-        $hexDec->verifyInvoked($expectedBytesHex);
+        $hexDec->verifyInvoked([$expectedBytesHex]);
     }
 
     /**
@@ -71,7 +75,7 @@ class RandomNodeProviderTest extends TestCase
         $provider = new RandomNodeProvider();
 
         $this->assertSame($expectedNode, $provider->getNode());
-        $hexDec->verifyInvoked($expectedBytesHex);
+        $hexDec->verifyInvoked([$expectedBytesHex]);
     }
 
     /**
@@ -90,7 +94,7 @@ class RandomNodeProviderTest extends TestCase
         $provider = new RandomNodeProvider();
 
         $this->assertSame($expectedNode, $provider->getNode());
-        $hexDec->verifyInvoked($expectedBytesHex);
+        $hexDec->verifyInvoked([$expectedBytesHex]);
     }
 
     public function testGetNodeAlwaysSetsMulticastBit()
