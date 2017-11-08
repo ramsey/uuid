@@ -20,7 +20,7 @@ class TimestampLastCombCodecTest extends TestCase
      */
     private $builderMock;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->builderMock = $this->getMockBuilder(UuidBuilderInterface::class)->getMock();
         $this->codec = new TimestampLastCombCodec($this->builderMock);

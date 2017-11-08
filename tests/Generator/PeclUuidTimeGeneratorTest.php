@@ -11,11 +11,9 @@ use AspectMock\Test as AspectMock;
  */
 class PeclUuidTimeGeneratorTest extends PeclUuidTestCase
 {
-
     /**
-     * This test is just to check collaboration with the PECL UUID extension - not to check
-     * the correctness of the methods defined in that extension.
-     * So we are just checking that the UUID methods are called with the right parameters.
+     * @runInSeparateProcess
+     * @preserveGlobalState disabled
      */
     public function testGenerateCreatesUuidUsingPeclUuidMethods()
     {
@@ -23,8 +21,9 @@ class PeclUuidTimeGeneratorTest extends PeclUuidTestCase
         $parse = AspectMock::func('Ramsey\Uuid\Generator', 'uuid_parse', $this->uuidBinary);
 
         $generator = new PeclUuidTimeGenerator;
-        $generator->generate();
+        $uuid = $generator->generate();
 
+        $this->assertEquals($this->uuidBinary, $uuid);
         $create->verifyInvoked([UUID_TYPE_TIME]);
         $parse->verifyInvoked([$this->uuidString]);
     }
@@ -35,10 +34,13 @@ class PeclUuidTimeGeneratorTest extends PeclUuidTestCase
      */
     public function testGenerateReturnsUuidString()
     {
-        AspectMock::func('Ramsey\Uuid\Generator', 'uuid_create', $this->uuidString);
-        AspectMock::func('Ramsey\Uuid\Generator', 'uuid_parse', $this->uuidBinary);
+        $create = AspectMock::func('Ramsey\Uuid\Generator', 'uuid_create', $this->uuidString);
+        $parse = AspectMock::func('Ramsey\Uuid\Generator', 'uuid_parse', $this->uuidBinary);
         $generator = new PeclUuidTimeGenerator;
         $uuid = $generator->generate();
+
         $this->assertEquals($this->uuidBinary, $uuid);
+        $create->verifyInvoked([UUID_TYPE_TIME]);
+        $parse->verifyInvoked([$this->uuidString]);
     }
 }

@@ -8,7 +8,7 @@ use AspectMock\Test as AspectMock;
 
 class RandomNodeProviderTest extends TestCase
 {
-    protected function tearDown()
+    protected function tearDown(): void
     {
         parent::tearDown();
         AspectMock::clean();
@@ -21,10 +21,13 @@ class RandomNodeProviderTest extends TestCase
     public function testGetNodeUsesRandomBytes()
     {
         $bytes = hex2bin('38a675685d50');
+        $expectedNode = '39a675685d50';
 
         $randomBytes = AspectMock::func('Ramsey\Uuid\Provider\Node', 'random_bytes', $bytes);
         $provider = new RandomNodeProvider();
-        $provider->getNode();
+        $node = $provider->getNode();
+
+        $this->assertSame($expectedNode, $node);
         $randomBytes->verifyInvoked([6]);
     }
 
@@ -39,10 +42,11 @@ class RandomNodeProviderTest extends TestCase
         // Expected node has the multicast bit set, and it wasn't set in the bytes.
         $expectedNode = '39a675685d50';
 
-        AspectMock::func('Ramsey\Uuid\Provider\Node', 'random_bytes', $bytes);
+        $randomBytes = AspectMock::func('Ramsey\Uuid\Provider\Node', 'random_bytes', $bytes);
         $provider = new RandomNodeProvider();
 
         $this->assertSame($expectedNode, $provider->getNode());
+        $randomBytes->verifyInvoked([6]);
     }
 
     /**
@@ -57,10 +61,11 @@ class RandomNodeProviderTest extends TestCase
         // We expect the same hex value for the node.
         $expectedNode = $bytesHex;
 
-        AspectMock::func('Ramsey\Uuid\Provider\Node', 'random_bytes', $bytes);
+        $randomBytes = AspectMock::func('Ramsey\Uuid\Provider\Node', 'random_bytes', $bytes);
         $provider = new RandomNodeProvider();
 
         $this->assertSame($expectedNode, $provider->getNode());
+        $randomBytes->verifyInvoked([6]);
     }
 
     /**
@@ -72,10 +77,11 @@ class RandomNodeProviderTest extends TestCase
         $bytes = hex2bin('100000000001');
         $expectedNode = '110000000001';
 
-        AspectMock::func('Ramsey\Uuid\Provider\Node', 'random_bytes', $bytes);
+        $randomBytes = AspectMock::func('Ramsey\Uuid\Provider\Node', 'random_bytes', $bytes);
         $provider = new RandomNodeProvider();
 
         $this->assertSame($expectedNode, $provider->getNode());
+        $randomBytes->verifyInvoked([6]);
     }
 
     public function testGetNodeAlwaysSetsMulticastBit()

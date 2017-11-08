@@ -22,7 +22,7 @@ class GuidStringCodecTest extends TestCase
     /** @var array */
     private $fields;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->builder = $this->getMockBuilder(UuidBuilderInterface::class)->getMock();
@@ -35,7 +35,7 @@ class GuidStringCodecTest extends TestCase
             'node' => '1234abcd4321'];
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         parent::tearDown();
         $this->builder = null;

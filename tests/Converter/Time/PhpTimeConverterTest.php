@@ -2,15 +2,15 @@
 
 namespace Ramsey\Uuid\Test\Converter;
 
-use PHPUnit_Framework_TestCase;
 use Ramsey\Uuid\Converter\Time\PhpTimeConverter;
+use Ramsey\Uuid\Test\TestCase;
 
 /**
  * Class PhpTimeConverterTest
  * @package Ramsey\Uuid\Test\Converter
  * @covers Ramsey\Uuid\Converter\Time\PhpTimeConverter
  */
-class PhpTimeConverterTest extends PHPUnit_Framework_TestCase
+class PhpTimeConverterTest extends TestCase
 {
 
     public function testCalculateTimeReturnsArrayOfTimeSegments()
