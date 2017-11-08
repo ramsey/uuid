@@ -1,45 +1,34 @@
 {
     "name": "ramsey/uuid",
-    "description": "Formerly rhumsaa/uuid. A PHP 5.4+ library for generating RFC 4122 version 1, 3, 4, and 5 universally unique identifiers (UUID).",
+    "description": "A PHP 7 library for generating RFC 4122 version 1, 3, 4, and 5 universally unique identifiers (UUID).",
     "type": "library",
-    "keywords": ["uuid", "identifier", "guid"],
+    "keywords": [
+        "uuid",
+        "identifier",
+        "guid"
+    ],
     "homepage": "https://github.com/ramsey/uuid",
     "license": "MIT",
-    "authors": [
-        {
-            "name": "Ben Ramsey",
-            "email": "ben@benramsey.com",
-            "homepage": "https://benramsey.com"
-        },
-        {
-            "name": "Marijn Huizendveld",
-            "email": "marijn.huizendveld@gmail.com"
-        },
-        {
-            "name": "Thibaud Fabre",
-            "email": "thibaud@aztech.io"
-        }
-    ],
     "support": {
         "issues": "https://github.com/ramsey/uuid/issues",
-        "source": "https://github.com/ramsey/uuid"
+        "rss": "https://packagist.org/feeds/package.ramsey/uuid.rss"
     },
     "require": {
-        "php": ">=5.6",
-        "paragonie/random_compat": "^1.0|^2.0"
+        "php": "^7.0",
+        "paragonie/random_compat": "^2.0"
     },
     "require-dev": {
         "ext-gmp": "*",
-        "moontoast/math": "^1.1",
+        "codeception/aspect-mock": "~2.0.0",
+        "doctrine/annotations": "^1.2",
+        "goaop/framework": "^2.1",
         "ircmaxell/random-lib": "^1.1",
-        "phpunit/phpunit": "^5.4",
-        "squizlabs/php_codesniffer": "^2.3",
         "jakub-onderka/php-parallel-lint": "^0.9.0",
-        "mockery/mockery": "^0.9.9",
-        "goaop/framework": "1.0.0-alpha.2 | ^1.0 | ^2.1",
-        "doctrine/annotations": "~1.2.0",
-        "codeception/aspect-mock": "^1.0 | ~2.0.0",
-        "php-mock/php-mock-phpunit": "^0.3|^1.1"
+        "mockery/mockery": "^1.0",
+        "moontoast/math": "^1.1",
+        "php-mock/php-mock-phpunit": "^2.0",
+        "phpunit/phpunit": "^6.0",
+        "squizlabs/php_codesniffer": "^3.0"
     },
     "suggest": {
         "ircmaxell/random-lib": "Provides RandomLib for use with the RandomLibAdapter",
@@ -51,17 +40,18 @@
         "ramsey/uuid-console": "A console application for generating UUIDs with ramsey/uuid"
     },
     "autoload": {
-        "psr-4": {"Ramsey\\Uuid\\": "src/"}
+        "psr-4": {
+            "Ramsey\\Uuid\\": "src/"
+        }
     },
     "autoload-dev": {
-        "psr-4": {"Ramsey\\Uuid\\Test\\": "tests/"}
-    },
-    "replace": {
-        "rhumsaa/uuid": "self.version"
+        "psr-4": {
+            "Ramsey\\Uuid\\Test\\": "tests/"
+        }
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "3.x-dev"
+            "dev-master": "4.x-dev"
         }
     },
     "scripts": {
@@ -73,5 +63,8 @@
             "@phpunit",
             "@phpcs"
         ]
+    },
+    "config": {
+        "sort-packages": true
     }
 }

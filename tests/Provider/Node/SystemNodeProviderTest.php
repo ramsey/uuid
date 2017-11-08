@@ -137,10 +137,10 @@ class SystemNodeProviderTest extends TestCase
     public function osCommandDataProvider()
     {
         return [
-            'windows' => ['Windows', 'ipconfig /all 2>&1'],
-            'mac' => ['Darwhat', 'ifconfig 2>&1'],
-            'linux' => ['Linux', 'netstat -ie 2>&1'],
-            'anything_else' => ['someotherxyz', 'netstat -ie 2>&1']
+            'windows' => ['Windows', 'ipconfig /all 2>&1', 'ipconfig-all.txt'],
+            'mac' => ['Darwhat', 'ifconfig 2>&1', 'ifconfig.txt'],
+            'linux' => ['Linux', 'netstat -ie 2>&1', 'netstat-ie.txt'],
+            'anything_else' => ['someotherxyz', 'netstat -ie 2>&1', 'netstat-ie.txt']
         ];
     }
 
@@ -150,12 +150,22 @@ class SystemNodeProviderTest extends TestCase
      * @dataProvider osCommandDataProvider
      * @param $os
      * @param $command
+     * @param $filename
      */
-    public function testGetNodeGetsNetworkInterfaceConfig($os, $command)
+    public function testGetNodeGetsNetworkInterfaceConfig($os, $command, $filename)
     {
         $this->skipIfHhvm();
+
+        $commandOutput = file_get_contents(dirname(__FILE__) . '/' . $filename);
+
         AspectMock::func('Ramsey\Uuid\Provider\Node', 'php_uname', $os);
-        $passthru = AspectMock::func('Ramsey\Uuid\Provider\Node', 'passthru', 'whatever');
+        $passthru = AspectMock::func(
+            'Ramsey\Uuid\Provider\Node',
+            'passthru',
+            function () use ($commandOutput) {
+                echo $commandOutput;
+            }
+        );
 
         $provider = $this->getMockBuilder(SystemNodeProvider::class)
             ->setMethods(['getSysfs'])
@@ -165,7 +175,7 @@ class SystemNodeProviderTest extends TestCase
             ->method('getSysfs')
             ->willReturn(false);
 
-        $provider->getNode();
+        $this->assertSame('09001290e3e5', $provider->getNode());
         $passthru->verifyInvokedOnce([$command]);
     }
 
