@@ -20,13 +20,13 @@ class TimestampLastCombCodecTest extends TestCase
 
     protected function setUp()
     {
-        $this->builderMock = $this->getMock('Ramsey\Uuid\Builder\UuidBuilderInterface');
+        $this->builderMock = $this->getMockBuilder('Ramsey\Uuid\Builder\UuidBuilderInterface')->getMock();
         $this->codec = new TimestampLastCombCodec($this->builderMock);
     }
 
     public function testEncoding()
     {
-        $uuidMock = $this->getMock('Ramsey\Uuid\UuidInterface');
+        $uuidMock = $this->getMockBuilder('Ramsey\Uuid\UuidInterface')->getMock();
         $uuidMock->expects($this->any())
             ->method('getFieldsHex')
             ->willReturn(array('0800200c', '9a66', '11e1', '9b', '21', 'ff6f8cb0c57d'));
@@ -37,7 +37,7 @@ class TimestampLastCombCodecTest extends TestCase
 
     public function testBinaryEncoding()
     {
-        $uuidMock = $this->getMock('Ramsey\Uuid\UuidInterface');
+        $uuidMock = $this->getMockBuilder('Ramsey\Uuid\UuidInterface')->getMock();
         $uuidMock->expects($this->any())
             ->method('getHex')
             ->willReturn('0800200c9a6611e19b21ff6f8cb0c57d');

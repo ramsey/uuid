@@ -810,7 +810,7 @@ class UuidTest extends TestCase
      */
     public function testUuid4TimestampLastComb()
     {
-        $mock = $this->getMock('Ramsey\Uuid\Generator\RandomGeneratorInterface');
+        $mock = $this->getMockBuilder('Ramsey\Uuid\Generator\RandomGeneratorInterface')->getMock();
         $mock->expects($this->any())
             ->method('generate')
             ->willReturnCallback(function ($length) {
@@ -842,7 +842,7 @@ class UuidTest extends TestCase
      */
     public function testUuid4TimestampFirstComb()
     {
-        $mock = $this->getMock('Ramsey\Uuid\Generator\RandomGeneratorInterface');
+        $mock = $this->getMockBuilder('Ramsey\Uuid\Generator\RandomGeneratorInterface')->getMock();
         $mock->expects($this->any())
             ->method('generate')
             ->willReturnCallback(function ($length) {
