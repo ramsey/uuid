@@ -28,7 +28,7 @@ class SodiumRandomGeneratorTest extends TestCase
 
         $bytes = $generator->generate(16);
 
-        $this->assertInternalType('string', $bytes);
+        $this->assertIsString('string', $bytes);
         $this->assertEquals(16, strlen($bytes));
     }
 

@@ -29,7 +29,7 @@ class DefaultTimeGeneratorTest extends TestCase
     private $clockSeq = 4066;
 
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->timeProvider = $this->getMockBuilder(TimeProviderInterface::class)->getMock();
@@ -39,7 +39,7 @@ class DefaultTimeGeneratorTest extends TestCase
         $this->calculatedTime = ["low" => "83cb98e0", "mid" => "98e0", "hi" => "03cb"];
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         parent::tearDown();
         $this->timeProvider = null;
@@ -107,6 +107,8 @@ class DefaultTimeGeneratorTest extends TestCase
      */
     public function testGenerateAppliesVersionAndVariant()
     {
+        $expectedBytes = hex2bin('83cb98e098e003cb8fe2122f80ca9e06');
+
         $this->timeProvider->method('currentTime')
             ->willReturn($this->currentTime);
         $this->timeConverter->method('calculateTime')
@@ -126,7 +128,8 @@ class DefaultTimeGeneratorTest extends TestCase
             $this->timeConverter,
             $this->timeProvider
         );
-        $defaultTimeGenerator->generate($this->nodeId, $this->clockSeq);
+
+        $this->assertSame($expectedBytes, $defaultTimeGenerator->generate($this->nodeId, $this->clockSeq));
     }
 
     /**

@@ -7,7 +7,7 @@ use PHPUnit\Framework\TestCase as PhpUnitTestCase;
 
 class TestCase extends PhpUnitTestCase
 {
-    protected function tearDown()
+    protected function tearDown(): void
     {
         parent::tearDown();
         AspectMock::clean();

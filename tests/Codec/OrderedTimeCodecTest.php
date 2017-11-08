@@ -26,7 +26,7 @@ class OrderedTimeCodecTest extends TestCase
     /** @var string */
     private $optimizedHex = '11d8eebc58e0a7d796690800200c9a66';
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->builder = $this->getMockBuilder(UuidBuilderInterface::class)->getMock();
@@ -39,7 +39,7 @@ class OrderedTimeCodecTest extends TestCase
             'node' => '0800200c9a66'];
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         parent::tearDown();
         $this->builder = null;
@@ -89,7 +89,9 @@ class OrderedTimeCodecTest extends TestCase
         $string = '61';
         $bytes = pack('H*', $string);
         $codec = new OrderedTimeCodec($this->builder);
-        $this->setExpectedException('InvalidArgumentException', '$bytes string should contain 16 characters.');
+
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('$bytes string should contain 16 characters.');
         $codec->decodeBytes($bytes);
     }
 

@@ -4,13 +4,6 @@ namespace Ramsey\Uuid\Test\Generator;
 
 use Ramsey\Uuid\Test\TestCase;
 
-if (!defined('UUID_TYPE_TIME')) {
-    define('UUID_TYPE_TIME', 1);
-}
-if (!defined('UUID_TYPE_RANDOM')) {
-    define('UUID_TYPE_RANDOM', 4);
-}
-
 class PeclUuidTestCase extends TestCase
 {
     protected $uuidString = 'b08c6fff-7dc5-e111-9b21-0800200c9a66';
