@@ -26,7 +26,8 @@ class SystemTimeProviderTest extends TestCase
         $timestamp = ['sec' => 1458844556, 'usec' => 200997];
         $func = AspectMock::func('Ramsey\Uuid\Provider\Time', 'gettimeofday', $timestamp);
         $provider = new SystemTimeProvider();
-        $provider->currentTime();
+
+        $this->assertSame($timestamp, $provider->currentTime());
         $func->verifyInvokedOnce();
     }
 }

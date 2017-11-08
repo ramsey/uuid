@@ -24,7 +24,7 @@ class StringCodecTest extends TestCase
     /** @var string */
     private $uuidString = '12345678-1234-abcd-abef-1234abcd4321';
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->builder = $this->getMockBuilder(UuidBuilderInterface::class)->getMock();
@@ -37,7 +37,7 @@ class StringCodecTest extends TestCase
             'node' => '1234abcd4321'];
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         parent::tearDown();
         $this->builder = null;
@@ -95,8 +95,9 @@ class StringCodecTest extends TestCase
     public function testDecodeThrowsExceptionOnInvalidUuid()
     {
         $string = 'invalid-uuid';
-        $this->setExpectedException(\InvalidArgumentException::class);
         $codec = new StringCodec($this->builder);
+
+        $this->expectException(\InvalidArgumentException::class);
         $codec->decode($string);
     }
 
@@ -115,7 +116,9 @@ class StringCodecTest extends TestCase
         $string = '61';
         $bytes = pack('H*', $string);
         $codec = new StringCodec($this->builder);
-        $this->setExpectedException('InvalidArgumentException', '$bytes string should contain 16 characters.');
+
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('$bytes string should contain 16 characters.');
         $codec->decodeBytes($bytes);
     }
 

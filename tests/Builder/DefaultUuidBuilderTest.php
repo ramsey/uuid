@@ -2,10 +2,10 @@
 
 namespace Ramsey\Uuid\Test\Builder;
 
-use PHPUnit_Framework_TestCase;
 use Ramsey\Uuid\Builder\DefaultUuidBuilder;
 use Ramsey\Uuid\Codec\CodecInterface;
 use Ramsey\Uuid\Converter\NumberConverterInterface;
+use Ramsey\Uuid\Test\TestCase;
 use Ramsey\Uuid\Uuid;
 
 /**
@@ -13,7 +13,7 @@ use Ramsey\Uuid\Uuid;
  * @package Ramsey\Uuid\Test\Builder
  * @covers Ramsey\Uuid\Builder\DefaultUuidBuilder
  */
-class DefaultUuidBuilderTest extends PHPUnit_Framework_TestCase
+class DefaultUuidBuilderTest extends TestCase
 {
 
     public function testBuildCreatesUuid()

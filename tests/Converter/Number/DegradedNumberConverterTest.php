@@ -2,8 +2,9 @@
 
 namespace Ramsey\Uuid\Test\Converter\Number;
 
-use Ramsey\Uuid\Test\TestCase;
 use Ramsey\Uuid\Converter\Number\DegradedNumberConverter;
+use Ramsey\Uuid\Exception\UnsatisfiedDependencyException;
+use Ramsey\Uuid\Test\TestCase;
 
 /**
  * Class DegradedNumberConverterTest
@@ -12,22 +13,20 @@ use Ramsey\Uuid\Converter\Number\DegradedNumberConverter;
  */
 class DegradedNumberConverterTest extends TestCase
 {
-    /**
-     * @expectedException Ramsey\Uuid\Exception\UnsatisfiedDependencyException
-     */
     public function testConvertingFromHexThrowsException()
     {
         $converter = new DegradedNumberConverter();
 
+        $this->expectException(UnsatisfiedDependencyException::class);
+
         $converter->fromHex('ffff');
     }
 
-    /**
-     * @expectedException Ramsey\Uuid\Exception\UnsatisfiedDependencyException
-     */
     public function testConvertingToHexThrowsException()
     {
         $converter = new DegradedNumberConverter();
+
+        $this->expectException(UnsatisfiedDependencyException::class);
 
         $converter->toHex(0);
     }

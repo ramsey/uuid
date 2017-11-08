@@ -2,10 +2,14 @@
 
 namespace Ramsey\Uuid\Test;
 
+use InvalidArgumentException;
 use Ramsey\Uuid\Codec\TimestampFirstCombCodec;
 use Ramsey\Uuid\Codec\TimestampLastCombCodec;
 use Ramsey\Uuid\Converter\Number\DegradedNumberConverter;
 use Ramsey\Uuid\DegradedUuid;
+use Ramsey\Uuid\Exception\InvalidUuidStringException;
+use Ramsey\Uuid\Exception\UnsatisfiedDependencyException;
+use Ramsey\Uuid\Exception\UnsupportedOperationException;
 use Ramsey\Uuid\FeatureSet;
 use Ramsey\Uuid\Provider\Time\FixedTimeProvider;
 use Ramsey\Uuid\Generator\CombGenerator;
@@ -17,7 +21,7 @@ use stdClass;
 
 class UuidTest extends TestCase
 {
-    protected function setUp()
+    protected function setUp(): void
     {
         Uuid::setFactory(new UuidFactory());
     }
@@ -74,8 +78,6 @@ class UuidTest extends TestCase
         $this->assertEquals(bin2hex($uuid->getBytes()), bin2hex($guid->getBytes()));
     }
 
-    /**
-     */
     public function testFromStringWithCurlyBraces()
     {
         $uuid = Uuid::fromString('{ff6f8cb0-c57d-11e1-9b21-0800200c9a66}');
@@ -83,21 +85,19 @@ class UuidTest extends TestCase
         $this->assertEquals('ff6f8cb0-c57d-11e1-9b21-0800200c9a66', $uuid->toString());
     }
 
-    /**
-     * @expectedException Ramsey\Uuid\Exception\InvalidUuidStringException
-     * @expectedExceptionMessage Invalid UUID string:
-     */
     public function testFromStringWithInvalidUuidString()
     {
+        $this->expectException(InvalidUuidStringException::class);
+        $this->expectExceptionMessage('Invalid UUID string:');
+
         $uuid = Uuid::fromString('ff6f8cb0-c57d-11e1-9b21');
     }
 
-    /**
-     * @expectedException Ramsey\Uuid\Exception\InvalidUuidStringException
-     * @expectedExceptionMessage Invalid UUID string:
-     */
     public function testFromStringWithTrailingNewLine()
     {
+        $this->expectException(InvalidUuidStringException::class);
+        $this->expectExceptionMessage('Invalid UUID string:');
+
         Uuid::fromString("d0d5f586-21d1-470c-8088-55c8857728dc\n");
     }
 
@@ -220,9 +220,6 @@ class UuidTest extends TestCase
         $this->assertEquals('1582-10-15T00:00:00+00:00', $uuid->getDateTime()->format('c'));
     }
 
-    /**
-     * @expectedException Ramsey\Uuid\Exception\UnsatisfiedDependencyException
-     */
     public function testGetDateTimeThrownException()
     {
         Uuid::setFactory(new UuidFactory(new FeatureSet(false, true, true)));
@@ -232,17 +229,19 @@ class UuidTest extends TestCase
         $this->assertInstanceOf(DegradedUuid::class, $uuid);
         $this->assertInstanceOf(DegradedNumberConverter::class, $uuid->getNumberConverter());
 
+        $this->expectException(UnsatisfiedDependencyException::class);
+
         $date = $uuid->getDateTime();
     }
 
-    /**
-     * @expectedException Ramsey\Uuid\Exception\UnsupportedOperationException
-     * @expectedExceptionMessage Not a time-based UUID
-     */
     public function testGetDateTimeFromNonVersion1Uuid()
     {
         // Using a version 4 UUID to test
         $uuid = Uuid::fromString('bf17b594-41f2-474f-bf70-4c90220f75de');
+
+        $this->expectException(UnsupportedOperationException::class);
+        $this->expectExceptionMessage('Not a time-based UUID');
+
         $date = $uuid->getDateTime();
     }
 
@@ -266,14 +265,14 @@ class UuidTest extends TestCase
         $this->assertEquals($fields, $uuid->getFields());
     }
 
-    /**
-     * @expectedException Ramsey\Uuid\Exception\UnsatisfiedDependencyException
-     */
     public function testGetFields32Bit()
     {
         Uuid::setFactory(new UuidFactory(new FeatureSet(false, true)));
 
         $uuid = Uuid::fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
+
+        $this->expectException(UnsatisfiedDependencyException::class);
+
         $fields = $uuid->getFields();
     }
 
@@ -306,14 +305,14 @@ class UuidTest extends TestCase
         $this->assertEquals('11178224546741000806', $uuid->getLeastSignificantBits()->getValue());
     }
 
-    /**
-     * @expectedException Ramsey\Uuid\Exception\UnsatisfiedDependencyException
-     */
     public function testGetLeastSignificantBitsException()
     {
         Uuid::setFactory(new UuidFactory(new FeatureSet(false, false, true)));
 
         $uuid = Uuid::fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
+
+        $this->expectException(UnsatisfiedDependencyException::class);
+
         $bn = $uuid->getLeastSignificantBits();
     }
 
@@ -336,14 +335,14 @@ class UuidTest extends TestCase
         $this->assertEquals('18406084892941947361', $uuid->getMostSignificantBits()->getValue());
     }
 
-    /**
-     * @expectedException Ramsey\Uuid\Exception\UnsatisfiedDependencyException
-     */
     public function testGetMostSignificantBitsException()
     {
         Uuid::setFactory(new UuidFactory(new FeatureSet(false, false, true)));
 
         $uuid = Uuid::fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
+
+        $this->expectException(UnsatisfiedDependencyException::class);
+
         $bn = $uuid->getMostSignificantBits();
     }
 
@@ -365,14 +364,14 @@ class UuidTest extends TestCase
         $this->assertEquals(8796630719078, $uuid->getNode());
     }
 
-    /**
-     * @expectedException Ramsey\Uuid\Exception\UnsatisfiedDependencyException
-     */
     public function testGetNode32Bit()
     {
         Uuid::setFactory(new UuidFactory(new FeatureSet(false, true)));
 
         $uuid = Uuid::fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
+
+        $this->expectException(UnsatisfiedDependencyException::class);
+
         $node = $uuid->getNode();
     }
 
@@ -410,14 +409,14 @@ class UuidTest extends TestCase
         $this->assertEquals(4285500592, $uuid->getTimeLow());
     }
 
-    /**
-     * @expectedException Ramsey\Uuid\Exception\UnsatisfiedDependencyException
-     */
     public function testGetTimeLow32Bit()
     {
         Uuid::setFactory(new UuidFactory(new FeatureSet(false, true)));
 
         $uuid = Uuid::fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
+
+        $this->expectException(UnsatisfiedDependencyException::class);
+
         $timeLow = $uuid->getTimeLow();
     }
 
@@ -473,36 +472,36 @@ class UuidTest extends TestCase
         $this->assertEquals('00001540901e600', $uuid->getTimestampHex());
     }
 
-    /**
-     * @expectedException Ramsey\Uuid\Exception\UnsupportedOperationException
-     * @expectedExceptionMessage Not a time-based UUID
-     */
     public function testGetTimestampFromNonVersion1Uuid()
     {
         // Using a version 4 UUID to test
         $uuid = Uuid::fromString('bf17b594-41f2-474f-bf70-4c90220f75de');
+
+        $this->expectException(UnsupportedOperationException::class);
+        $this->expectExceptionMessage('Not a time-based UUID');
+
         $ts = $uuid->getTimestamp();
     }
 
-    /**
-     * @expectedException Ramsey\Uuid\Exception\UnsupportedOperationException
-     * @expectedExceptionMessage Not a time-based UUID
-     */
     public function testGetTimestampHexFromNonVersion1Uuid()
     {
         // Using a version 4 UUID to test
         $uuid = Uuid::fromString('bf17b594-41f2-474f-bf70-4c90220f75de');
+
+        $this->expectException(UnsupportedOperationException::class);
+        $this->expectExceptionMessage('Not a time-based UUID');
+
         $ts = $uuid->getTimestampHex();
     }
 
-    /**
-     * @expectedException Ramsey\Uuid\Exception\UnsatisfiedDependencyException
-     */
     public function testGetTimestamp32Bit()
     {
         Uuid::setFactory(new UuidFactory(new FeatureSet(false, true)));
 
         $uuid = Uuid::fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
+
+        $this->expectException(UnsatisfiedDependencyException::class);
+
         $ts = $uuid->getTimestamp();
     }
 
@@ -716,30 +715,27 @@ class UuidTest extends TestCase
         }
     }
 
-    /**
-     * @expectedException InvalidArgumentException
-     * @expectedExceptionMessage Invalid node value
-     */
     public function testUuid1WithOutOfBoundsNode()
     {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Invalid node value');
+
         $uuid = Uuid::uuid1(9223372036854775808);
     }
 
-    /**
-     * @expectedException InvalidArgumentException
-     * @expectedExceptionMessage Invalid node value
-     */
     public function testUuid1WithNonHexadecimalNode()
     {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Invalid node value');
+
         $uuid = Uuid::uuid1('db77e160355g');
     }
 
-    /**
-     * @expectedException InvalidArgumentException
-     * @expectedExceptionMessage Invalid node value
-     */
     public function testUuid1WithNon48bitNumber()
     {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Invalid node value');
+
         $uuid = Uuid::uuid1('db77e160355ef');
     }
 
@@ -1345,12 +1341,11 @@ class UuidTest extends TestCase
         }
     }
 
-    /**
-     * @expectedException Ramsey\Uuid\Exception\UnsatisfiedDependencyException
-     */
     public function testCalculateUuidTimeThrownException()
     {
         Uuid::setFactory(new UuidFactory(new FeatureSet(false, true, true)));
+
+        $this->expectException(UnsatisfiedDependencyException::class);
 
         $uuid = Uuid::uuid1(0x00007ffffffe, 0x1669);
     }
@@ -1511,19 +1506,17 @@ class UuidTest extends TestCase
         $this->assertEquals($guid->toString(), $parsedGuid->toString());
     }
 
-    /**
-     * @expectedException InvalidArgumentException
-     */
     public function testFromBytesArgumentTooShort()
     {
+        $this->expectException(InvalidArgumentException::class);
+
         Uuid::fromBytes('thisisveryshort');
     }
 
-    /**
-     * @expectedException InvalidArgumentException
-     */
     public function testFromBytesArgumentTooLong()
     {
+        $this->expectException(InvalidArgumentException::class);
+
         Uuid::fromBytes('thisisabittoolong');
     }
 
@@ -1570,12 +1563,12 @@ class UuidTest extends TestCase
                 'bytes' => 'AAAAAAAAAAAAAAAAAAAAAA==',
                 'int' => '0',
                 'fields' => [
-                    'time_low' => '0',
-                    'time_mid' => '0',
-                    'time_hi_and_version' => '0',
-                    'clock_seq_hi_and_reserved' => '0',
-                    'clock_seq_low' => '0',
-                    'node' => '0',
+                    'time_low' => '00000000',
+                    'time_mid' => '0000',
+                    'time_hi_and_version' => '0000',
+                    'clock_seq_hi_and_reserved' => '00',
+                    'clock_seq_low' => '00',
+                    'node' => '000000000000',
                 ],
                 'urn' => 'urn:uuid:00000000-0000-0000-0000-000000000000',
                 'time' => '0',
@@ -1590,11 +1583,11 @@ class UuidTest extends TestCase
                 'bytes' => 'AAECAwQFBgcICQoLDA0ODw==',
                 'int' => '5233100606242806050955395731361295',
                 'fields' => [
-                    'time_low' => '10203',
-                    'time_mid' => '405',
-                    'time_hi_and_version' => '607',
-                    'clock_seq_hi_and_reserved' => '8',
-                    'clock_seq_low' => '9',
+                    'time_low' => '00010203',
+                    'time_mid' => '0405',
+                    'time_hi_and_version' => '0607',
+                    'clock_seq_hi_and_reserved' => '08',
+                    'clock_seq_low' => '09',
                     'node' => '0a0b0c0d0e0f',
                 ],
                 'urn' => 'urn:uuid:00010203-0405-0607-0809-0a0b0c0d0e0f',
@@ -1879,14 +1872,14 @@ class UuidTest extends TestCase
         }
     }
 
-    /**
-     * @expectedException Ramsey\Uuid\Exception\UnsatisfiedDependencyException
-     */
     public function testGetInteger()
     {
         Uuid::setFactory(new UuidFactory(new FeatureSet(false, false, true)));
 
-        $uuid = Uuid::uuid1();
+        $uuid = Uuid::uuid4();
+
+        $this->expectException(UnsatisfiedDependencyException::class);
+
         $uuid->getInteger();
     }
 
@@ -1908,12 +1901,11 @@ class UuidTest extends TestCase
         $this->assertTrue($uuid->equals($unserializedUuid));
     }
 
-    /**
-     * @expectedException InvalidArgumentException
-     * @expectedExceptionMessage Invalid UUID string:
-     */
     public function testUuid3WithEmptyNamespace()
     {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Invalid UUID string:');
+
         $uuid = Uuid::uuid3('', '');
     }
 
@@ -1945,12 +1937,11 @@ class UuidTest extends TestCase
         $this->assertEquals('19826852-5007-3022-a72a-212f66e9fac3', $uuid->toString());
     }
 
-    /**
-     * @expectedException InvalidArgumentException
-     * @expectedExceptionMessage Invalid UUID string:
-     */
     public function testUuid5WithEmptyNamespace()
     {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Invalid UUID string:');
+
         $uuid = Uuid::uuid5('', '');
     }
 

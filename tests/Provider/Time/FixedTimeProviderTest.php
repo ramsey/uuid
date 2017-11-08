@@ -10,7 +10,7 @@ class FixedTimeProviderTest extends TestCase
 
     public function testConstructorRequiresSecAndUsec()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->expectException(\InvalidArgumentException::class);
         $provider = new FixedTimeProvider([]);
     }
 
