@@ -39,7 +39,7 @@
         "mockery/mockery": "^0.9.4",
         "goaop/framework": "1.0.0-alpha.2 | ^1.0 | ^2.1",
         "doctrine/annotations": "~1.2.0",
-        "codeception/aspect-mock": "^1.0 | ^2.0",
+        "codeception/aspect-mock": "^1.0 | ~2.0.0",
         "php-mock/php-mock-phpunit": "^0.3|^1.1"
     },
     "suggest": {
