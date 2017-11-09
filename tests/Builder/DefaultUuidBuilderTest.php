@@ -19,10 +19,10 @@ class DefaultUuidBuilderTest extends TestCase
 
     public function testBuildCreatesUuid()
     {
-        $numberConverter = $this->createMock(NumberConverterInterface::class);
-        $timeConverter = $this->createMock(TimeConverterInterface::class);
+        $numberConverter = $this->getMockBuilder(NumberConverterInterface::class)->getMock();
+        $timeConverter = $this->getMockBuilder(TimeConverterInterface::class)->getMock();
         $builder = new DefaultUuidBuilder($numberConverter, $timeConverter);
-        $codec = $this->createMock(CodecInterface::class);
+        $codec = $this->getMockBuilder(CodecInterface::class)->getMock();
 
         $fields = [
             'time_low' => '754cd475',

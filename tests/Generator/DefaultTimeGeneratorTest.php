@@ -28,13 +28,12 @@ class DefaultTimeGeneratorTest extends TestCase
     /** @var int */
     private $clockSeq = 4066;
 
-
     protected function setUp()
     {
         parent::setUp();
-        $this->timeProvider = $this->createMock(TimeProviderInterface::class);
-        $this->nodeProvider = $this->createMock(NodeProviderInterface::class);
-        $this->timeConverter = $this->createMock(TimeConverterInterface::class);
+        $this->timeProvider = $this->getMockBuilder(TimeProviderInterface::class)->getMock();
+        $this->nodeProvider = $this->getMockBuilder(NodeProviderInterface::class)->getMock();
+        $this->timeConverter = $this->getMockBuilder(TimeConverterInterface::class)->getMock();
         $this->currentTime = ["sec" => 1458733431, "usec" => 877449];
         $this->calculatedTime = ["low" => "83cb98e0", "mid" => "98e0", "hi" => "03cb"];
     }

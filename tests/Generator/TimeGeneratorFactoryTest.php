@@ -18,9 +18,9 @@ class TimeGeneratorFactoryTest extends TestCase
 {
     public function testGeneratorReturnsNewGenerator()
     {
-        $timeProvider = $this->createMock(TimeProviderInterface::class);
-        $nodeProvider = $this->createMock(NodeProviderInterface::class);
-        $timeConverter = $this->createMock(TimeConverterInterface::class);
+        $timeProvider = $this->getMockBuilder(TimeProviderInterface::class)->getMock();
+        $nodeProvider = $this->getMockBuilder(NodeProviderInterface::class)->getMock();
+        $timeConverter = $this->getMockBuilder(TimeConverterInterface::class)->getMock();
 
         $factory = new TimeGeneratorFactory($nodeProvider, $timeConverter, $timeProvider);
         $generator = $factory->getGenerator();

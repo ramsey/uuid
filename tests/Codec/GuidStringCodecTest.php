@@ -25,8 +25,8 @@ class GuidStringCodecTest extends TestCase
     protected function setUp()
     {
         parent::setUp();
-        $this->builder = $this->createMock(UuidBuilderInterface::class);
-        $this->uuid = $this->createMock(UuidInterface::class);
+        $this->builder = $this->getMockBuilder(UuidBuilderInterface::class)->getMock();
+        $this->uuid = $this->getMockBuilder(UuidInterface::class)->getMock();
         $this->fields = ['time_low' => '12345678',
             'time_mid' => '1234',
             'time_hi_and_version' => 'abcd',
