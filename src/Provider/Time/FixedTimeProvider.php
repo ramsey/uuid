@@ -33,7 +33,7 @@ class FixedTimeProvider implements TimeProviderInterface
     /**
      * Constructs a `FixedTimeProvider` using the provided `$timestamp`
      *
-     * @param int[] Array containing `sec` and `usec` components of a timestamp
+     * @param int[] $timestamp Array containing `sec` and `usec` components of a timestamp
      * @throws InvalidArgumentException if the `$timestamp` does not contain `sec` or `usec` components
      */
     public function __construct(array $timestamp)

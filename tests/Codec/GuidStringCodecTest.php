@@ -2,6 +2,7 @@
 
 namespace Ramsey\Uuid\Test\Codec;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use Ramsey\Uuid\Builder\UuidBuilderInterface;
 use Ramsey\Uuid\Codec\GuidStringCodec;
 use Ramsey\Uuid\Test\TestCase;
@@ -14,11 +15,12 @@ use Ramsey\Uuid\UuidInterface;
  */
 class GuidStringCodecTest extends TestCase
 {
-
-    /** @var UuidBuilderInterface */
+    /** @var UuidBuilderInterface&MockObject */
     private $builder;
-    /** @var UuidInterface */
+
+    /** @var UuidInterface&MockObject */
     private $uuid;
+
     /** @var array */
     private $fields;
 
