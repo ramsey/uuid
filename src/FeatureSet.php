@@ -95,7 +95,7 @@ class FeatureSet
 
     /**
      * The time converter to use for converting timestamps extracted from UUIDs to unix timestamps
-     * @var TimeConverterInterface
+     * @var \Ramsey\Uuid\Converter\TimeConverterInterface
      */
     protected $timeConverter;
 
@@ -330,7 +330,7 @@ class FeatureSet
      * Determines which time converter to use and returns the configured
      * time converter for this environment
      *
-     * @return TimeConverterInterface
+     * @return \Ramsey\Uuid\Converter\TimeConverterInterface
      */
     protected function buildTimeConverter()
     {
