@@ -13,12 +13,6 @@ use AspectMock\Test as AspectMock;
  */
 class RandomBytesGeneratorTest extends TestCase
 {
-    protected function setUp()
-    {
-        $this->skipIfHhvm();
-        parent::setUp();
-    }
-
     public function lengthAndHexDataProvider()
     {
         return [
