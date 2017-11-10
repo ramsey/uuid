@@ -27,7 +27,7 @@ before_script:
 
 script:
   - ./vendor/bin/parallel-lint src tests
-  - ./vendor/bin/phpunit --verbose --coverage-clover build/logs/clover.xml
+  - travis_wait ./vendor/bin/phpunit --verbose --coverage-clover build/logs/clover.xml
   - ./vendor/bin/phpcs src tests --standard=psr2 -sp
 
 after_success:
