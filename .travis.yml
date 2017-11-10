@@ -25,6 +25,7 @@ before_script:
 
 script:
   - ./vendor/bin/parallel-lint src tests
+  - composer run phpstan
   - ./vendor/bin/phpunit --verbose --coverage-clover build/logs/clover.xml
   - ./vendor/bin/phpcs src tests --standard=psr2 -sp
 

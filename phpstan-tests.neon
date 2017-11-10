@@ -1,0 +1,4 @@
+parameters:
+    ignoreErrors:
+        - '#Function uuid_create not found#'
+        - '#Function uuid_parse not found#'

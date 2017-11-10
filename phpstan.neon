@@ -1,0 +1,5 @@
+parameters:
+    ignoreErrors:
+        - '#Function uuid_create not found#'
+        - '#Function uuid_parse not found#'
+        - '#Function Sodium\\randombytes_buf not found#'
