@@ -134,8 +134,6 @@ class SystemNodeProviderTest extends TestCase
      */
     public function testGetNodeGetsNetworkInterfaceConfig($os, $command, $filename)
     {
-        $this->skipIfHhvm();
-
         $commandOutput = file_get_contents(dirname(__FILE__) . '/' . $filename);
 
         AspectMock::func('Ramsey\Uuid\Provider\Node', 'php_uname', $os);
