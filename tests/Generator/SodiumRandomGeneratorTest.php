@@ -39,11 +39,11 @@ class SodiumRandomGeneratorTest extends TestCase
         $uuidFactory->setRandomGenerator(new SodiumRandomGenerator());
         Uuid::setFactory($uuidFactory);
 
-        $uuid = Uuid::uuid4();
-
+        /** @var UuidFactory $actualUuidFactory */
+        $actualUuidFactory = Uuid::getFactory();
         $this->assertInstanceOf(
             SodiumRandomGenerator::class,
-            $uuid->getFactory()->getRandomGenerator()
+            $actualUuidFactory->getRandomGenerator()
         );
     }
 }

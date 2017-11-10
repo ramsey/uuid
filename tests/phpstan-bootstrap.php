@@ -7,6 +7,7 @@ if (!function_exists('uuid_create')) {
      */
     function uuid_create($type = 0)
     {
+        return '';
     }
 }
 
@@ -17,6 +18,7 @@ if (!function_exists('uuid_parse')) {
      */
     function uuid_parse($uuid)
     {
+        return '';
     }
 }
 
