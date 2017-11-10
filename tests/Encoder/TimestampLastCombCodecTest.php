@@ -1,7 +1,7 @@
 <?php
 namespace Ramsey\Uuid\Test\Encoder;
 
-use PHPUnit_Framework_MockObject_MockObject;
+use PHPUnit\Framework\MockObject\MockObject;
 use Ramsey\Uuid\Builder\UuidBuilderInterface;
 use Ramsey\Uuid\Codec\CodecInterface;
 use Ramsey\Uuid\Codec\TimestampLastCombCodec;
@@ -16,7 +16,7 @@ class TimestampLastCombCodecTest extends TestCase
     private $codec;
 
     /**
-     * @var PHPUnit_Framework_MockObject_MockObject
+     * @var MockObject
      */
     private $builderMock;
 

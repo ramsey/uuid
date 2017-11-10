@@ -2,32 +2,38 @@
 
 namespace Ramsey\Uuid\Test\Generator;
 
+use AspectMock\Test as AspectMock;
+use Mockery;
+use PHPUnit\Framework\MockObject\MockObject;
 use Ramsey\Uuid\BinaryUtils;
 use Ramsey\Uuid\Converter\TimeConverterInterface;
 use Ramsey\Uuid\Generator\DefaultTimeGenerator;
 use Ramsey\Uuid\Provider\NodeProviderInterface;
 use Ramsey\Uuid\Provider\TimeProviderInterface;
 use Ramsey\Uuid\Test\TestCase;
-use Mockery;
-use AspectMock\Test as AspectMock;
 
 class DefaultTimeGeneratorTest extends TestCase
 {
-    /** @var  TimeProviderInterface */
+    /** @var TimeProviderInterface&MockObject */
     private $timeProvider;
-    /** @var  NodeProviderInterface */
+
+    /** @var NodeProviderInterface&MockObject */
     private $nodeProvider;
-    /** @var  TimeConverterInterface */
+
+    /** @var TimeConverterInterface&MockObject */
     private $timeConverter;
+
     /** @var string */
     private $nodeId = '122f80ca9e06';
+
     /** @var int[] */
     private $currentTime;
+
     /** @var string[] */
     private $calculatedTime;
+
     /** @var int */
     private $clockSeq = 4066;
-
 
     protected function setUp(): void
     {

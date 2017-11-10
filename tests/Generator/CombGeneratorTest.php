@@ -73,7 +73,7 @@ class CombGeneratorTest extends TestCase
 
     /**
      * @dataProvider lengthLessThanSix
-     * @param $length
+     * @param int $length
      * @throws \Exception
      */
     public function testGenerateWithLessThanTimestampBytesThrowsException($length)

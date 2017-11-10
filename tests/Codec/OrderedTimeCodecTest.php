@@ -2,6 +2,7 @@
 
 namespace Ramsey\Uuid\Test\Codec;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use Ramsey\Uuid\Builder\UuidBuilderInterface;
 use Ramsey\Uuid\Codec\OrderedTimeCodec;
 use Ramsey\Uuid\Test\TestCase;
@@ -15,14 +16,18 @@ use Ramsey\Uuid\UuidInterface;
 class OrderedTimeCodecTest extends TestCase
 {
 
-    /** @var UuidBuilderInterface */
+    /** @var UuidBuilderInterface&MockObject */
     private $builder;
-    /** @var UuidInterface */
+
+    /** @var UuidInterface&MockObject */
     private $uuid;
+
     /** @var array */
     private $fields;
+
     /** @var string */
     private $uuidString = '58e0a7d7-eebc-11d8-9669-0800200c9a66';
+
     /** @var string */
     private $optimizedHex = '11d8eebc58e0a7d796690800200c9a66';
 

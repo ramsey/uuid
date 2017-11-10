@@ -26,8 +26,8 @@ class OpenSslGeneratorTest extends TestCase
      * @dataProvider lengthAndHexDataProvider
      * @runInSeparateProcess
      * @preserveGlobalState disabled
-     * @param $length
-     * @param $hex
+     * @param int $length
+     * @param string $hex
      */
     public function testGenerateUsesOpenSsl($length, $hex)
     {
@@ -43,8 +43,8 @@ class OpenSslGeneratorTest extends TestCase
      * @dataProvider lengthAndHexDataProvider
      * @runInSeparateProcess
      * @preserveGlobalState disabled
-     * @param $length
-     * @param $hex
+     * @param int $length
+     * @param string $hex
      */
     public function testGenerateReturnsRandomBytes($length, $hex)
     {

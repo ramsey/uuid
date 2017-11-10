@@ -1,0 +1,6 @@
+parameters:
+    ignoreErrors:
+        - '#Function uuid_create not found#'
+        - '#Function uuid_parse not found#'
+        - '#Constant UUID_TYPE_TIME not found#'
+        - '#Constant UUID_TYPE_RANDOM not found#'

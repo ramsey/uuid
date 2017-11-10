@@ -267,8 +267,8 @@ class SystemNodeProviderTest extends TestCase
      *
      * @dataProvider provideCommandPerOs
      *
-     * @param $os
-     * @param $command
+     * @param string $os
+     * @param string $command
      */
     public function testGetNodeGetsNetworkInterfaceConfig($os, $command)
     {
@@ -369,8 +369,8 @@ class SystemNodeProviderTest extends TestCase
      *
      * @dataProvider provideCommandPerOs
      *
-     * @param $os
-     * @param $command
+     * @param string $os
+     * @param string $command
      */
     public function testCallGetsysfsOnLinux($os, $command)
     {
