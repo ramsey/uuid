@@ -1,9 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<phpunit bootstrap="./tests/bootstrap.php"
-         colors="true"
-         backupGlobals="false">
+
+<!-- https://phpunit.de/manual/current/en/appendixes.configuration.html -->
+<phpunit
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="http://schema.phpunit.de/6.4/phpunit.xsd"
+    bootstrap="./tests/bootstrap.php"
+    colors="true"
+>
     <testsuites>
-        <testsuite>
+        <testsuite name="ramsey/uuid test suite">
             <directory>./tests</directory>
         </testsuite>
     </testsuites>
