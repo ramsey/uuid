@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<phpunit bootstrap="./tests/bootstrap.php" colors="true" verbose="true" backupGlobals="false">
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/8.5/phpunit.xsd"
+        bootstrap="./tests/bootstrap.php"
+        colors="true"
+        verbose="true">
     <testsuites>
-        <testsuite>
+        <testsuite name="ramsey/uuid test suite">
             <directory>./tests</directory>
         </testsuite>
     </testsuites>
