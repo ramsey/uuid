@@ -18,19 +18,19 @@ class CombGeneratorTest extends TestCase
     {
         $length = 10;
         $expectedLength = ($length - $this->timestampBytes);
-        $randomGenerator = $this->getMock('Ramsey\Uuid\Generator\RandomGeneratorInterface');
+        $randomGenerator = $this->getMockBuilder('Ramsey\Uuid\Generator\RandomGeneratorInterface')->getMock();
         $randomGenerator->expects($this->once())
             ->method('generate')
             ->with($expectedLength);
-        $converter = $this->getMock('Ramsey\Uuid\Converter\NumberConverterInterface');
+        $converter = $this->getMockBuilder('Ramsey\Uuid\Converter\NumberConverterInterface')->getMock();
         $generator = new CombGenerator($randomGenerator, $converter);
         $generator->generate($length);
     }
 
     public function testGenerateCalculatesPaddedHexStringFromCurrentTimestamp()
     {
-        $randomGenerator = $this->getMock('Ramsey\Uuid\Generator\RandomGeneratorInterface');
-        $converter = $this->getMock('Ramsey\Uuid\Converter\NumberConverterInterface');
+        $randomGenerator = $this->getMockBuilder('Ramsey\Uuid\Generator\RandomGeneratorInterface')->getMock();
+        $converter = $this->getMockBuilder('Ramsey\Uuid\Converter\NumberConverterInterface')->getMock();
         $converter->expects($this->once())
             ->method('toHex')
             ->with($this->isType('string'));
@@ -44,12 +44,12 @@ class CombGeneratorTest extends TestCase
         $hash = dechex(1234567891);
         $timeHash = dechex(1458147405);
 
-        $randomGenerator = $this->getMock('Ramsey\Uuid\Generator\RandomGeneratorInterface');
+        $randomGenerator = $this->getMockBuilder('Ramsey\Uuid\Generator\RandomGeneratorInterface')->getMock();
         $randomGenerator->method('generate')
             ->with(($length - $this->timestampBytes))
             ->willReturn($hash);
 
-        $converter = $this->getMock('Ramsey\Uuid\Converter\NumberConverterInterface');
+        $converter = $this->getMockBuilder('Ramsey\Uuid\Converter\NumberConverterInterface')->getMock();
         $converter->method('toHex')
             ->with($this->isType('string'))
             ->willReturn($timeHash);
@@ -74,8 +74,8 @@ class CombGeneratorTest extends TestCase
     public function testGenerateWithLessThanTimestampBytesThrowsException($length)
     {
         $this->setExpectedException('InvalidArgumentException');
-        $randomGenerator = $this->getMock('Ramsey\Uuid\Generator\RandomGeneratorInterface');
-        $converter = $this->getMock('Ramsey\Uuid\Converter\NumberConverterInterface');
+        $randomGenerator = $this->getMockBuilder('Ramsey\Uuid\Generator\RandomGeneratorInterface')->getMock();
+        $converter = $this->getMockBuilder('Ramsey\Uuid\Converter\NumberConverterInterface')->getMock();
         $generator = new CombGenerator($randomGenerator, $converter);
         $generator->generate($length);
     }
@@ -86,8 +86,8 @@ class CombGeneratorTest extends TestCase
     public function testGenerateWithOddNumberOverTimestampBytesCausesError()
     {
         $this->setExpectedException('PHPUnit_Framework_Error');
-        $randomGenerator = $this->getMock('Ramsey\Uuid\Generator\RandomGeneratorInterface');
-        $converter = $this->getMock('Ramsey\Uuid\Converter\NumberConverterInterface');
+        $randomGenerator = $this->getMockBuilder('Ramsey\Uuid\Generator\RandomGeneratorInterface')->getMock();
+        $converter = $this->getMockBuilder('Ramsey\Uuid\Converter\NumberConverterInterface')->getMock();
         $generator = new CombGenerator($randomGenerator, $converter);
         $generator->generate(7);
     }
