@@ -45,9 +45,7 @@ class DefaultTimeGeneratorTest extends TestCase
         $this->nodeProvider = null;
         $this->timeConverter = null;
         Mockery::close();
-        if (!self::isHhvm()) {
-            AspectMock::clean();
-        }
+        AspectMock::clean();
     }
 
     public function testGenerateUsesNodeProviderWhenNodeIsNull()
@@ -165,7 +163,6 @@ class DefaultTimeGeneratorTest extends TestCase
      */
     public function testGenerateUsesRandomSequenceWhenClockSeqNull()
     {
-        $this->skipIfHhvm();
         $mt_rand = AspectMock::func('Ramsey\Uuid\Generator', 'random_int', 9622);
         $defaultTimeGenerator = new DefaultTimeGenerator(
             $this->nodeProvider,

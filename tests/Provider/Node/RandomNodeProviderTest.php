@@ -8,12 +8,6 @@ use AspectMock\Test as AspectMock;
 
 class RandomNodeProviderTest extends TestCase
 {
-    protected function setUp()
-    {
-        $this->skipIfHhvm();
-        parent::setUp();
-    }
-
     protected function tearDown()
     {
         parent::tearDown();

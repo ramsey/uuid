@@ -268,8 +268,6 @@ class SystemNodeProviderTest extends TestCase
      */
     public function testGetNodeGetsNetworkInterfaceConfig($os, $command)
     {
-        $this->skipIfHhvm();
-
         /*/ Arrange /*/
         $this->arrangeMockFunctions(
             'whatever',
