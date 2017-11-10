@@ -25,8 +25,7 @@
         "source": "https://github.com/ramsey/uuid"
     },
     "require": {
-        "php": "^7.0",
-        "paragonie/random_compat": "^2.0"
+        "php": "^7.0"
     },
     "require-dev": {
         "ext-gmp": "*",
