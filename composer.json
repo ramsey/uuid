@@ -12,7 +12,6 @@
     "require": {
         "php": "^7.2 | ^8",
         "ext-json": "*",
-        "paragonie/random_compat": "^1 | ^2 | 9.99.99",
         "symfony/polyfill-ctype": "^1.8"
     },
     "require-dev": {
