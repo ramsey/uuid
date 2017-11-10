@@ -14,6 +14,7 @@ class SystemNodeProviderTest extends TestCase
      */
     public function testGetNodeReturnsSystemNodeFromMacAddress()
     {
+        /** @var SystemNodeProvider|\PHPUnit_Framework_MockObject_MockObject $provider */
         $provider = $this->getMockBuilder(SystemNodeProvider::class)
             ->setMethods(['getIfconfig','getSysfs'])
             ->getMock();
@@ -47,12 +48,13 @@ class SystemNodeProviderTest extends TestCase
      * @runInSeparateProcess
      * @preserveGlobalState disabled
      * @dataProvider notationalFormatsDataProvider
-     * @param $formatted
-     * @param $expected
+     * @param string $formatted
+     * @param string $expected
      */
     public function testGetNodeReturnsNodeStrippedOfNotationalFormatting($formatted, $expected)
     {
         //Using a stub to provide data for the protected method that gets the node
+        /** @var SystemNodeProvider|\PHPUnit_Framework_MockObject_MockObject $provider */
         $provider = $this->getMockBuilder(SystemNodeProvider::class)
             ->setMethods(['getIfconfig','getSysfs'])
             ->getMock();
@@ -74,6 +76,7 @@ class SystemNodeProviderTest extends TestCase
     public function testGetNodeReturnsFirstMacAddressFound()
     {
         //Using a stub to provide data for the protected method that gets the node
+        /** @var SystemNodeProvider|\PHPUnit_Framework_MockObject_MockObject $provider */
         $provider = $this->getMockBuilder(SystemNodeProvider::class)
             ->setMethods(['getIfconfig','getSysfs'])
             ->getMock();
@@ -96,6 +99,7 @@ class SystemNodeProviderTest extends TestCase
      */
     public function testGetNodeReturnsFalseWhenNodeIsNotFound()
     {
+        /** @var SystemNodeProvider|\PHPUnit_Framework_MockObject_MockObject $provider */
         $provider = $this->getMockBuilder(SystemNodeProvider::class)
             ->setMethods(['getIfconfig','getSysfs'])
             ->getMock();
@@ -118,6 +122,7 @@ class SystemNodeProviderTest extends TestCase
      */
     public function testGetNodeWillNotExecuteSystemCallIfFailedFirstTime()
     {
+        /** @var SystemNodeProvider|\PHPUnit_Framework_MockObject_MockObject $provider */
         $provider = $this->getMockBuilder(SystemNodeProvider::class)
             ->setMethods(['getIfconfig','getSysfs'])
             ->getMock();
@@ -148,9 +153,9 @@ class SystemNodeProviderTest extends TestCase
      * @runInSeparateProcess
      * @preserveGlobalState disabled
      * @dataProvider osCommandDataProvider
-     * @param $os
-     * @param $command
-     * @param $filename
+     * @param string $os
+     * @param string $command
+     * @param string $filename
      */
     public function testGetNodeGetsNetworkInterfaceConfig($os, $command, $filename)
     {
@@ -167,6 +172,7 @@ class SystemNodeProviderTest extends TestCase
             }
         );
 
+        /** @var SystemNodeProvider|\PHPUnit_Framework_MockObject_MockObject $provider */
         $provider = $this->getMockBuilder(SystemNodeProvider::class)
             ->setMethods(['getSysfs'])
             ->getMock();
@@ -186,6 +192,7 @@ class SystemNodeProviderTest extends TestCase
     public function testGetNodeReturnsSameNodeUponSubsequentCalls()
     {
         //Using a stub to provide data for the protected method that gets the node
+        /** @var SystemNodeProvider|\PHPUnit_Framework_MockObject_MockObject $provider */
         $provider = $this->getMockBuilder(SystemNodeProvider::class)
             ->setMethods(['getIfconfig'])
             ->getMock();
@@ -204,6 +211,7 @@ class SystemNodeProviderTest extends TestCase
     public function testSubsequentCallsToGetNodeDoNotRecallIfconfig()
     {
         //Using a mock to verify the provider only gets the node from ifconfig one time
+        /** @var SystemNodeProvider|\PHPUnit_Framework_MockObject_MockObject $provider */
         $provider = $this->getMockBuilder(SystemNodeProvider::class)
             ->setMethods(['getIfconfig','getSysfs'])
             ->getMock();
@@ -221,8 +229,7 @@ class SystemNodeProviderTest extends TestCase
      * @runInSeparateProcess
      * @preserveGlobalState disabled
      * @dataProvider osCommandDataProvider
-     * @param $os
-     * @param $command
+     * @param string $os
      */
     public function testCallGetsysfsOnLinux($os)
     {
@@ -232,7 +239,8 @@ class SystemNodeProviderTest extends TestCase
             'data://text/plain,01:02:03:04:05:06',
         ]);
 
-        $provider = \Mockery::mock('Ramsey\Uuid\Provider\Node\SystemNodeProvider');
+        /** @var SystemNodeProvider|\Mockery\MockInterface $provider */
+        $provider = \Mockery::mock(SystemNodeProvider::class);
         $provider->shouldAllowMockingProtectedMethods();
         $provider->shouldReceive('getNode')->passthru();
 
@@ -256,7 +264,8 @@ class SystemNodeProviderTest extends TestCase
         AspectMock::func('Ramsey\Uuid\Provider\Node', 'php_uname', 'Linux');
         AspectMock::func('Ramsey\Uuid\Provider\Node', 'glob', false);
 
-        $provider = \Mockery::mock('Ramsey\Uuid\Provider\Node\SystemNodeProvider');
+        /** @var SystemNodeProvider|\Mockery\MockInterface $provider */
+        $provider = \Mockery::mock(SystemNodeProvider::class);
         $provider->shouldAllowMockingProtectedMethods();
         $provider->shouldReceive('getNode')->passthru();
         $provider->shouldReceive('getSysfs')->passthru();
@@ -275,7 +284,8 @@ class SystemNodeProviderTest extends TestCase
         AspectMock::func('Ramsey\Uuid\Provider\Node', 'php_uname', 'Linux');
         AspectMock::func('Ramsey\Uuid\Provider\Node', 'glob', []);
 
-        $provider = \Mockery::mock('Ramsey\Uuid\Provider\Node\SystemNodeProvider');
+        /** @var SystemNodeProvider|\Mockery\MockInterface $provider */
+        $provider = \Mockery::mock(SystemNodeProvider::class);
         $provider->shouldAllowMockingProtectedMethods();
         $provider->shouldReceive('getNode')->passthru();
         $provider->shouldReceive('getSysfs')->passthru();

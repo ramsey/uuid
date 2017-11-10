@@ -26,6 +26,8 @@
         "mockery/mockery": "^1.0",
         "moontoast/math": "^1.1",
         "php-mock/php-mock-phpunit": "^2.0",
+        "phpstan/phpstan-phpunit": "0.9.2",
+        "phpstan/phpstan-shim": "0.9.1",
         "phpunit/phpunit": "^6.4",
         "squizlabs/php_codesniffer": "^3.0"
     },
@@ -57,8 +59,13 @@
         "lint": "parallel-lint src tests",
         "phpunit": "phpunit --verbose --colors=always",
         "phpcs": "phpcs src tests --standard=psr2 -sp --colors",
+        "phpstan": [
+            "phpstan analyse -c phpstan.neon src --level 2 --no-progress",
+            "phpstan analyse -c phpstan-tests.neon tests --level 2 --no-progress"
+        ],
         "test": [
             "@lint",
+            "@phpstan",
             "@phpunit",
             "@phpcs"
         ]

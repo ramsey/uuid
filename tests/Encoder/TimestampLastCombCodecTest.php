@@ -16,7 +16,7 @@ class TimestampLastCombCodecTest extends TestCase
     private $codec;
 
     /**
-     * @var PHPUnit_Framework_MockObject_MockObject
+     * @var \PHPUnit_Framework_MockObject_MockObject
      */
     private $builderMock;
 

@@ -13,11 +13,11 @@ use AspectMock\Test as AspectMock;
 
 class DefaultTimeGeneratorTest extends TestCase
 {
-    /** @var  TimeProviderInterface */
+    /** @var  TimeProviderInterface|\PHPUnit_Framework_MockObject_MockObject */
     private $timeProvider;
-    /** @var  NodeProviderInterface */
+    /** @var  NodeProviderInterface|\PHPUnit_Framework_MockObject_MockObject */
     private $nodeProvider;
-    /** @var  TimeConverterInterface */
+    /** @var  TimeConverterInterface|\PHPUnit_Framework_MockObject_MockObject */
     private $timeConverter;
     /** @var string */
     private $nodeId = '122f80ca9e06';

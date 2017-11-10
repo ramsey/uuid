@@ -10,7 +10,7 @@ class BinaryUtils
     /**
      * Applies the RFC 4122 variant field to the `clock_seq_hi_and_reserved` field
      *
-     * @param $clockSeqHi
+     * @param int $clockSeqHi
      * @return int The high field of the clock sequence multiplexed with the variant
      * @link http://tools.ietf.org/html/rfc4122#section-4.1.1
      */
