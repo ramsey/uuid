@@ -206,4 +206,34 @@ class SystemNodeProviderTest extends TestCase
         $provider->getNode();
         $provider->getNode();
     }
+
+    /**
+     * @runInSeparateProcess
+     * @preserveGlobalState disabled
+     * @dataProvider osCommandDataProvider
+     * @param $os
+     * @param $command
+     */
+    public function testCallGetsysfsOnLinux($os)
+    {
+        AspectMock::func('Ramsey\Uuid\Provider\Node', 'php_uname', $os);
+
+        //Using a mock to verify the provider only gets the node from ifconfig one time
+        $provider = $this->getMockBuilder('Ramsey\Uuid\Provider\Node\SystemNodeProvider')
+            ->setMethods(['getIfconfig'])
+            ->getMock();
+
+        if($os === 'Linux') {
+            $provider->expects($this->never())
+                ->method('getIfconfig');
+        } else {
+            $provider->expects($this->any())
+                ->method('getsysfs')
+                ->willReturn(false);
+            $provider->expects($this->once())
+                ->method('getIfconfig')
+                ->willReturn(PHP_EOL . '01-02-03-04-05-06' . PHP_EOL);
+        }
+        $node = $provider->getNode();
+    }
 }
