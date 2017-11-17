@@ -217,6 +217,10 @@ class SystemNodeProviderTest extends TestCase
     public function testCallGetsysfsOnLinux($os)
     {
         AspectMock::func('Ramsey\Uuid\Provider\Node', 'php_uname', $os);
+        AspectMock::func('Ramsey\Uuid\Provider\Node', 'glob', [
+            'data://text/plain,00:00:00:00:00:00',
+            'data://text/plain,01:02:03:04:05:06',
+        ]);
 
         //Using a mock to verify the provider only gets the node from ifconfig one time
         $provider = $this->getMockBuilder('Ramsey\Uuid\Provider\Node\SystemNodeProvider')
@@ -235,5 +239,6 @@ class SystemNodeProviderTest extends TestCase
                 ->willReturn(PHP_EOL . '01-02-03-04-05-06' . PHP_EOL);
         }
         $node = $provider->getNode();
+        $this->assertEquals('010203040506', $node);
     }
 }
