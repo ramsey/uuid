@@ -223,7 +223,7 @@ class SystemNodeProviderTest extends TestCase
             ->setMethods(['getIfconfig'])
             ->getMock();
 
-        if($os === 'Linux') {
+        if ($os === 'Linux') {
             $provider->expects($this->never())
                 ->method('getIfconfig');
         } else {
