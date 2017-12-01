@@ -15,8 +15,12 @@ class SystemNodeProviderTest extends TestCase
     public function testGetNodeReturnsSystemNodeFromMacAddress()
     {
         $provider = $this->getMockBuilder('Ramsey\Uuid\Provider\Node\SystemNodeProvider')
-            ->setMethods(['getIfconfig'])
+            ->setMethods(['getIfconfig','getsysfs'])
             ->getMock();
+
+        $provider->expects($this->once())
+            ->method('getsysfs')
+            ->willReturn(false);
 
         $provider->expects($this->once())
             ->method('getIfconfig')
@@ -50,10 +54,14 @@ class SystemNodeProviderTest extends TestCase
     {
         //Using a stub to provide data for the protected method that gets the node
         $provider = $this->getMockBuilder('Ramsey\Uuid\Provider\Node\SystemNodeProvider')
-            ->setMethods(['getIfconfig'])
+            ->setMethods(['getIfconfig','getsysfs'])
             ->getMock();
         $provider->method('getIfconfig')
             ->willReturn(PHP_EOL . $formatted . PHP_EOL);
+
+        $provider->expects($this->once())
+            ->method('getsysfs')
+            ->willReturn(false);
 
         $node = $provider->getNode();
         $this->assertEquals($expected, $node);
@@ -67,12 +75,16 @@ class SystemNodeProviderTest extends TestCase
     {
         //Using a stub to provide data for the protected method that gets the node
         $provider = $this->getMockBuilder('Ramsey\Uuid\Provider\Node\SystemNodeProvider')
-            ->setMethods(['getIfconfig'])
+            ->setMethods(['getIfconfig','getsysfs'])
             ->getMock();
         $provider->method('getIfconfig')
             ->willReturn(PHP_EOL . 'AA-BB-CC-DD-EE-FF' . PHP_EOL .
                 '00-11-22-33-44-55' . PHP_EOL .
                 'FF-11-EE-22-DD-33' . PHP_EOL);
+
+        $provider->expects($this->once())
+            ->method('getsysfs')
+            ->willReturn(false);
 
         $node = $provider->getNode();
         $this->assertEquals('AABBCCDDEEFF', $node);
@@ -85,12 +97,16 @@ class SystemNodeProviderTest extends TestCase
     public function testGetNodeReturnsFalseWhenNodeIsNotFound()
     {
         $provider = $this->getMockBuilder('Ramsey\Uuid\Provider\Node\SystemNodeProvider')
-            ->setMethods(['getIfconfig'])
+            ->setMethods(['getIfconfig','getsysfs'])
             ->getMock();
 
         $provider->expects($this->once())
             ->method('getIfconfig')
             ->willReturn('some string that does not match the mac address');
+
+        $provider->expects($this->once())
+            ->method('getsysfs')
+            ->willReturn(false);
 
         $node = $provider->getNode();
         $this->assertFalse($node);
@@ -103,12 +119,16 @@ class SystemNodeProviderTest extends TestCase
     public function testGetNodeWillNotExecuteSystemCallIfFailedFirstTime()
     {
         $provider = $this->getMockBuilder('Ramsey\Uuid\Provider\Node\SystemNodeProvider')
-            ->setMethods(['getIfconfig'])
+            ->setMethods(['getIfconfig','getsysfs'])
             ->getMock();
 
         $provider->expects($this->once())
             ->method('getIfconfig')
             ->willReturn('some string that does not match the mac address');
+
+        $provider->expects($this->once())
+            ->method('getsysfs')
+            ->willReturn(false);
 
         $provider->getNode();
         $provider->getNode();
@@ -137,7 +157,14 @@ class SystemNodeProviderTest extends TestCase
         AspectMock::func('Ramsey\Uuid\Provider\Node', 'php_uname', $os);
         $passthru = AspectMock::func('Ramsey\Uuid\Provider\Node', 'passthru', 'whatever');
 
-        $provider = new SystemNodeProvider();
+        $provider = $this->getMockBuilder('Ramsey\Uuid\Provider\Node\SystemNodeProvider')
+            ->setMethods(['getsysfs'])
+            ->getMock();
+
+        $provider->expects($this->once())
+            ->method('getsysfs')
+            ->willReturn(false);
+
         $provider->getNode();
         $passthru->verifyInvokedOnce([$command]);
     }
@@ -168,12 +195,50 @@ class SystemNodeProviderTest extends TestCase
     {
         //Using a mock to verify the provider only gets the node from ifconfig one time
         $provider = $this->getMockBuilder('Ramsey\Uuid\Provider\Node\SystemNodeProvider')
-            ->setMethods(['getIfconfig'])
+            ->setMethods(['getIfconfig','getsysfs'])
             ->getMock();
         $provider->expects($this->once())
             ->method('getIfconfig')
             ->willReturn(PHP_EOL . 'AA-BB-CC-DD-EE-FF' . PHP_EOL);
+        $provider->expects($this->once())
+            ->method('getsysfs')
+            ->willReturn(false);
         $provider->getNode();
         $provider->getNode();
+    }
+
+    /**
+     * @runInSeparateProcess
+     * @preserveGlobalState disabled
+     * @dataProvider osCommandDataProvider
+     * @param $os
+     * @param $command
+     */
+    public function testCallGetsysfsOnLinux($os)
+    {
+        AspectMock::func('Ramsey\Uuid\Provider\Node', 'php_uname', $os);
+        AspectMock::func('Ramsey\Uuid\Provider\Node', 'glob', [
+            'data://text/plain,00:00:00:00:00:00',
+            'data://text/plain,01:02:03:04:05:06',
+        ]);
+
+        //Using a mock to verify the provider only gets the node from ifconfig one time
+        $provider = $this->getMockBuilder('Ramsey\Uuid\Provider\Node\SystemNodeProvider')
+            ->setMethods(['getIfconfig'])
+            ->getMock();
+
+        if ($os === 'Linux') {
+            $provider->expects($this->never())
+                ->method('getIfconfig');
+        } else {
+            $provider->expects($this->any())
+                ->method('getsysfs')
+                ->willReturn(false);
+            $provider->expects($this->once())
+                ->method('getIfconfig')
+                ->willReturn(PHP_EOL . '01-02-03-04-05-06' . PHP_EOL);
+        }
+        $node = $provider->getNode();
+        $this->assertEquals('010203040506', $node);
     }
 }

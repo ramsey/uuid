@@ -38,14 +38,19 @@ class SystemNodeProvider implements NodeProviderInterface
         $pattern = '/[^:]([0-9A-Fa-f]{2}([:-])[0-9A-Fa-f]{2}(\2[0-9A-Fa-f]{2}){4})[^:]/';
         $matches = array();
 
+        // first try a  linux specific way
+        $node = $this->getsysfs();
+
         // Search the ifconfig output for all MAC addresses and return
         // the first one found
-        $node = false;
-        if (preg_match_all($pattern, $this->getIfconfig(), $matches, PREG_PATTERN_ORDER)) {
-            $node = $matches[1][0];
+        if ($node === false) {
+            if (preg_match_all($pattern, $this->getIfconfig(), $matches, PREG_PATTERN_ORDER)) {
+                $node = $matches[1][0];
+            }
+        }
+        if ($node !== false) {
             $node = str_replace([':', '-'], '', $node);
         }
-
         return $node;
     }
 
@@ -72,5 +77,36 @@ class SystemNodeProvider implements NodeProviderInterface
         }
 
         return ob_get_clean();
+    }
+
+    /**
+     * Returns mac address from the first system interface via the sysfs interface
+     *
+     * @return string|bool
+     */
+    protected function getsysfs()
+    {
+        $mac = false;
+        if (strtoupper(php_uname('s')) === "LINUX") {
+            // get all the macadresses of all systems
+            $macs = array_map(
+                'file_get_contents',
+                glob('/sys/class/net/*/address', GLOB_NOSORT)
+            );
+
+            $macs = array_map('trim', $macs);
+
+            // remove invalid entries
+            $macs = array_filter($macs, function ($mac) {
+                return
+                    // localhost adapter
+                    $mac !== '00:00:00:00:00:00' &&
+                    // must match  mac adress
+                    preg_match('/^([0-9a-f]{2}:){5}[0-9a-f]{2}$/i', $mac);
+            });
+
+            $mac = reset($macs);
+        }
+        return $mac;
     }
 }
