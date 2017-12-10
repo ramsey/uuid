@@ -31,7 +31,7 @@ class SystemNodeProviderTest extends TestCase
         $this->assertTrue(ctype_xdigit($node), 'Node should be a hexadecimal string. Actual node: ' . $node);
         $length = strlen($node);
         $lengthError = 'Node should be 12 characters. Actual length: ' . $length . PHP_EOL . ' Actual node: ' . $node;
-        $this->assertTrue(($length === 12), $lengthError);
+        $this->assertSame(12, $length, $lengthError);
     }
 
 
