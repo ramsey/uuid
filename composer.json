@@ -69,8 +69,8 @@
         "phpunit": "phpunit --verbose --colors=always",
         "phpcs": "phpcs src tests --standard=psr2 -sp --colors",
         "phpstan": [
-            "@php vendor/phpstan/phpstan-shim/phpstan.phar analyse -c phpstan.neon src --level 0 --no-progress",
-            "@php vendor/phpstan/phpstan-shim/phpstan.phar analyse -c phpstan-tests.neon tests --level 0 --no-progress"
+            "@php vendor/phpstan/phpstan-shim/phpstan.phar analyse -c phpstan.neon src --level 1 --no-progress",
+            "@php vendor/phpstan/phpstan-shim/phpstan.phar analyse -c phpstan-tests.neon tests --level 1 --no-progress"
         ],
         "test": [
             "@lint",
