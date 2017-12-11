@@ -4,10 +4,13 @@ namespace Ramsey\Uuid\Test;
 
 use Ramsey\Uuid\Codec\TimestampFirstCombCodec;
 use Ramsey\Uuid\Codec\TimestampLastCombCodec;
+use Ramsey\Uuid\Converter\Number\DegradedNumberConverter;
+use Ramsey\Uuid\DegradedUuid;
 use Ramsey\Uuid\FeatureSet;
 use Ramsey\Uuid\Provider\Time\FixedTimeProvider;
 use Ramsey\Uuid\Generator\CombGenerator;
 use Ramsey\Uuid\Generator\RandomGeneratorFactory;
+use Ramsey\Uuid\Generator\RandomGeneratorInterface;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidFactory;
 use stdClass;
@@ -226,8 +229,8 @@ class UuidTest extends TestCase
 
         $uuid = Uuid::fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
 
-        $this->assertInstanceOf('Ramsey\Uuid\DegradedUuid', $uuid);
-        $this->assertInstanceOf('Ramsey\Uuid\Converter\Number\DegradedNumberConverter', $uuid->getNumberConverter());
+        $this->assertInstanceOf(DegradedUuid::class, $uuid);
+        $this->assertInstanceOf(DegradedNumberConverter::class, $uuid->getNumberConverter());
 
         $date = $uuid->getDateTime();
     }
@@ -809,7 +812,7 @@ class UuidTest extends TestCase
     public function testUuid4()
     {
         $uuid = Uuid::uuid4();
-        $this->assertInstanceOf('Ramsey\Uuid\Uuid', $uuid);
+        $this->assertInstanceOf(Uuid::class, $uuid);
         $this->assertEquals(2, $uuid->getVariant());
         $this->assertEquals(4, $uuid->getVersion());
     }
@@ -820,7 +823,7 @@ class UuidTest extends TestCase
      */
     public function testUuid4TimestampLastComb()
     {
-        $mock = $this->getMockBuilder('Ramsey\Uuid\Generator\RandomGeneratorInterface')->getMock();
+        $mock = $this->getMockBuilder(RandomGeneratorInterface::class)->getMock();
         $mock->expects($this->any())
             ->method('generate')
             ->willReturnCallback(function ($length) {
@@ -852,7 +855,7 @@ class UuidTest extends TestCase
      */
     public function testUuid4TimestampFirstComb()
     {
-        $mock = $this->getMockBuilder('Ramsey\Uuid\Generator\RandomGeneratorInterface')->getMock();
+        $mock = $this->getMockBuilder(RandomGeneratorInterface::class)->getMock();
         $mock->expects($this->any())
             ->method('generate')
             ->willReturnCallback(function ($length) {
@@ -1444,8 +1447,8 @@ class UuidTest extends TestCase
      */
     public function testUsingNilAsValidUuid()
     {
-        $this->assertInstanceOf('Ramsey\Uuid\Uuid', Uuid::uuid3(Uuid::NIL, 'randomtext'));
-        $this->assertInstanceOf('Ramsey\Uuid\Uuid', Uuid::uuid5(Uuid::NIL, 'randomtext'));
+        $this->assertInstanceOf(Uuid::class, Uuid::uuid3(Uuid::NIL, 'randomtext'));
+        $this->assertInstanceOf(Uuid::class, Uuid::uuid5(Uuid::NIL, 'randomtext'));
     }
 
     /**
