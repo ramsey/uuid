@@ -3,6 +3,7 @@
 namespace Ramsey\Uuid\Test\Validator;
 
 use Ramsey\Uuid\Test\TestCase;
+use Ramsey\Uuid\Validator\Validator;
 
 /**
  * @coversDefaultClass Ramsey\Uuid\Validator\Validator
@@ -14,7 +15,7 @@ class ValidatorTest extends TestCase
     public function setUp()
     {
         // Disable calls to the constructor, but do not override any methods
-        $this->validator = $this->getMockBuilder('Ramsey\Uuid\Validator\Validator')
+        $this->validator = $this->getMockBuilder(Validator::class)
             ->disableOriginalConstructor()
             ->setMethods(null)
             ->getMock();

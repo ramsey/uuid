@@ -4,6 +4,12 @@ namespace Ramsey\Uuid\Test;
 
 use Ramsey\Uuid\FeatureSet;
 use Ramsey\Uuid\UuidFactory;
+use Ramsey\Uuid\Codec\CodecInterface;
+use Ramsey\Uuid\Generator\RandomGeneratorInterface;
+use Ramsey\Uuid\Provider\NodeProviderInterface;
+use Ramsey\Uuid\Generator\TimeGeneratorInterface;
+use Ramsey\Uuid\Converter\NumberConverterInterface;
+use Ramsey\Uuid\Builder\UuidBuilderInterface;
 
 class UuidFactoryTest extends TestCase
 {
@@ -38,12 +44,12 @@ class UuidFactoryTest extends TestCase
 
     public function testGettersReturnValueFromFeatureSet()
     {
-        $codec = $this->getMockBuilder('Ramsey\Uuid\Codec\CodecInterface')->getMock();
-        $nodeProvider = $this->getMockBuilder('Ramsey\Uuid\Provider\NodeProviderInterface')->getMock();
-        $randomGenerator = $this->getMockBuilder('Ramsey\Uuid\Generator\RandomGeneratorInterface')->getMock();
-        $timeGenerator = $this->getMockBuilder('Ramsey\Uuid\Generator\TimeGeneratorInterface')->getMock();
+        $codec = $this->getMockBuilder(CodecInterface::class)->getMock();
+        $nodeProvider = $this->getMockBuilder(NodeProviderInterface::class)->getMock();
+        $randomGenerator = $this->getMockBuilder(RandomGeneratorInterface::class)->getMock();
+        $timeGenerator = $this->getMockBuilder(TimeGeneratorInterface::class)->getMock();
 
-        $featureSet = $this->getMockBuilder('Ramsey\Uuid\FeatureSet')->getMock();
+        $featureSet = $this->getMockBuilder(FeatureSet::class)->getMock();
         $featureSet->method('getCodec')->willReturn($codec);
         $featureSet->method('getNodeProvider')->willReturn($nodeProvider);
         $featureSet->method('getRandomGenerator')->willReturn($randomGenerator);
@@ -79,19 +85,19 @@ class UuidFactoryTest extends TestCase
     {
         $uuidFactory = new UuidFactory();
 
-        $codec = $this->getMockBuilder('Ramsey\Uuid\Codec\CodecInterface')->getMock();
+        $codec = $this->getMockBuilder(CodecInterface::class)->getMock();
         $uuidFactory->setCodec($codec);
         $this->assertEquals($codec, $uuidFactory->getCodec());
 
-        $timeGenerator = $this->getMockBuilder('Ramsey\Uuid\Generator\TimeGeneratorInterface')->getMock();
+        $timeGenerator = $this->getMockBuilder(TimeGeneratorInterface::class)->getMock();
         $uuidFactory->setTimeGenerator($timeGenerator);
         $this->assertEquals($timeGenerator, $uuidFactory->getTimeGenerator());
 
-        $numberConverter = $this->getMockBuilder('Ramsey\Uuid\Converter\NumberConverterInterface')->getMock();
+        $numberConverter = $this->getMockBuilder(NumberConverterInterface::class)->getMock();
         $uuidFactory->setNumberConverter($numberConverter);
         $this->assertEquals($numberConverter, $uuidFactory->getNumberConverter());
 
-        $uuidBuilder = $this->getMockBuilder('Ramsey\Uuid\Builder\UuidBuilderInterface')->getMock();
+        $uuidBuilder = $this->getMockBuilder(UuidBuilderInterface::class)->getMock();
         $uuidFactory->setUuidBuilder($uuidBuilder);
         $this->assertEquals($uuidBuilder, $uuidFactory->getUuidBuilder());
     }
