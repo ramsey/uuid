@@ -14,6 +14,7 @@ class SystemNodeProviderTest extends TestCase
      */
     public function testGetNodeReturnsSystemNodeFromMacAddress()
     {
+        /** @var \Ramsey\Uuid\Provider\Node\SystemNodeProvider|\PHPUnit_Framework_MockObject_MockObject $provider */
         $provider = $this->getMockBuilder('Ramsey\Uuid\Provider\Node\SystemNodeProvider')
             ->setMethods(['getIfconfig'])
             ->getMock();
@@ -43,12 +44,13 @@ class SystemNodeProviderTest extends TestCase
      * @runInSeparateProcess
      * @preserveGlobalState disabled
      * @dataProvider notationalFormatsDataProvider
-     * @param $formatted
-     * @param $expected
+     * @param string $formatted
+     * @param string $expected
      */
     public function testGetNodeReturnsNodeStrippedOfNotationalFormatting($formatted, $expected)
     {
         //Using a stub to provide data for the protected method that gets the node
+        /** @var \Ramsey\Uuid\Provider\Node\SystemNodeProvider|\PHPUnit_Framework_MockObject_MockObject $provider */
         $provider = $this->getMockBuilder(SystemNodeProvider::class)
             ->setMethods(['getIfconfig'])
             ->getMock();
@@ -66,6 +68,7 @@ class SystemNodeProviderTest extends TestCase
     public function testGetNodeReturnsFirstMacAddressFound()
     {
         //Using a stub to provide data for the protected method that gets the node
+        /** @var \Ramsey\Uuid\Provider\Node\SystemNodeProvider|\PHPUnit_Framework_MockObject_MockObject $provider */
         $provider = $this->getMockBuilder(SystemNodeProvider::class)
             ->setMethods(['getIfconfig'])
             ->getMock();
@@ -84,6 +87,7 @@ class SystemNodeProviderTest extends TestCase
      */
     public function testGetNodeReturnsFalseWhenNodeIsNotFound()
     {
+        /** @var \Ramsey\Uuid\Provider\Node\SystemNodeProvider|\PHPUnit_Framework_MockObject_MockObject $provider */
         $provider = $this->getMockBuilder('Ramsey\Uuid\Provider\Node\SystemNodeProvider')
             ->setMethods(['getIfconfig'])
             ->getMock();
@@ -102,6 +106,7 @@ class SystemNodeProviderTest extends TestCase
      */
     public function testGetNodeWillNotExecuteSystemCallIfFailedFirstTime()
     {
+        /** @var \Ramsey\Uuid\Provider\Node\SystemNodeProvider|\PHPUnit_Framework_MockObject_MockObject $provider */
         $provider = $this->getMockBuilder('Ramsey\Uuid\Provider\Node\SystemNodeProvider')
             ->setMethods(['getIfconfig'])
             ->getMock();
@@ -128,9 +133,9 @@ class SystemNodeProviderTest extends TestCase
      * @runInSeparateProcess
      * @preserveGlobalState disabled
      * @dataProvider osCommandDataProvider
-     * @param $os
-     * @param $command
-     * @param $filename
+     * @param string $os
+     * @param string $command
+     * @param string $filename
      */
     public function testGetNodeGetsNetworkInterfaceConfig($os, $command, $filename)
     {
@@ -158,6 +163,7 @@ class SystemNodeProviderTest extends TestCase
     public function testGetNodeReturnsSameNodeUponSubsequentCalls()
     {
         //Using a stub to provide data for the protected method that gets the node
+        /** @var \Ramsey\Uuid\Provider\Node\SystemNodeProvider|\PHPUnit_Framework_MockObject_MockObject $provider */
         $provider = $this->getMockBuilder(SystemNodeProvider::class)
             ->setMethods(['getIfconfig'])
             ->getMock();
@@ -176,6 +182,7 @@ class SystemNodeProviderTest extends TestCase
     public function testSubsequentCallsToGetNodeDoNotRecallIfconfig()
     {
         //Using a mock to verify the provider only gets the node from ifconfig one time
+        /** @var \Ramsey\Uuid\Provider\Node\SystemNodeProvider|\PHPUnit_Framework_MockObject_MockObject $provider */
         $provider = $this->getMockBuilder(SystemNodeProvider::class)
             ->setMethods(['getIfconfig'])
             ->getMock();
