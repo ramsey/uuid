@@ -29,8 +29,8 @@ class OrderedTimeCodecTest extends TestCase
     protected function setUp()
     {
         parent::setUp();
-        $this->builder = $this->getMockBuilder('Ramsey\Uuid\Builder\UuidBuilderInterface')->getMock();
-        $this->uuid = $this->getMockBuilder('Ramsey\Uuid\UuidInterface')->getMock();
+        $this->builder = $this->getMockBuilder(UuidBuilderInterface::class)->getMock();
+        $this->uuid = $this->getMockBuilder(UuidInterface::class)->getMock();
         $this->fields = ['time_low' => '58e0a7d7',
             'time_mid' => 'eebc',
             'time_hi_and_version' => '11d8',
