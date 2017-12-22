@@ -244,6 +244,7 @@ class Uuid implements UuidInterface
      */
     public function unserialize($serialized)
     {
+        /** @var \Ramsey\Uuid\Uuid $uuid */
         $uuid = self::fromString($serialized);
         $this->codec = $uuid->codec;
         $this->numberConverter = $uuid->getNumberConverter();

@@ -58,7 +58,7 @@ class GmpTimeConverter implements TimeConverterInterface
      */
     public function convertTime($timestamp)
     {
-        if (!$timestamp instanceof GMP) {
+        if (!$timestamp instanceof \GMP) {
             $timestamp = gmp_init($timestamp);
         }
 

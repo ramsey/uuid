@@ -15,9 +15,9 @@ use Ramsey\Uuid\UuidInterface;
 class OrderedTimeCodecTest extends TestCase
 {
 
-    /** @var UuidBuilderInterface */
+    /** @var UuidBuilderInterface|\PHPUnit_Framework_MockObject_MockObject */
     private $builder;
-    /** @var UuidInterface */
+    /** @var UuidInterface|\PHPUnit_Framework_MockObject_MockObject */
     private $uuid;
     /** @var array */
     private $fields;
