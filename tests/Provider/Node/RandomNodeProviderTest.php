@@ -26,6 +26,8 @@ class RandomNodeProviderTest extends TestCase
      */
     public function testGetNodeUsesRandomBytes()
     {
+        $this->skip64BitTest();
+
         $hexNode = '38a675685d5';
         $bytes = pack('H*', $hexNode);
         $expectedNode = '39a675685d50';
@@ -44,6 +46,8 @@ class RandomNodeProviderTest extends TestCase
      */
     public function testGetNodeSetsMulticastBit()
     {
+        $this->skip64BitTest();
+
         $bytes = pack('H*', base_convert(decbin(3892974093781), 2, 16));
         $expectedBytesHex = '38a675685d50';
         $decimal = 62287585500496;
@@ -63,6 +67,8 @@ class RandomNodeProviderTest extends TestCase
      */
     public function testGetNodeAlreadyHasMulticastBit()
     {
+        $this->skip64BitTest();
+
         $bytes = pack('H*', base_convert(decbin(4492974093781), 2, 16));
         $expectedBytesHex = '4161a1ff5d50';
         $decimal = 71887585500496;
@@ -84,6 +90,8 @@ class RandomNodeProviderTest extends TestCase
      */
     public function testGetNodeSetsMulticastBitForLowNodeValue()
     {
+        $this->skip64BitTest();
+
         $bytes = pack('H*', base_convert(decbin(1), 2, 16));
         $expectedBytesHex = '10';
         $decimal = 16;
@@ -99,6 +107,8 @@ class RandomNodeProviderTest extends TestCase
 
     public function testGetNodeAlwaysSetsMulticastBit()
     {
+        $this->skip64BitTest();
+
         $provider = new RandomNodeProvider();
 
         $this->assertSame('010000000000', sprintf('%012x', hexdec($provider->getNode()) & 0x010000000000));
