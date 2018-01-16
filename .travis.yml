@@ -20,6 +20,7 @@ before_install:
   - travis_retry composer self-update
 
 install:
+  - travis_retry composer require --no-update satooshi/php-coveralls:^1.0
   - travis_retry composer install --no-interaction --prefer-dist
 
 before_script:
