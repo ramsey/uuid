@@ -35,7 +35,6 @@
         "squizlabs/php_codesniffer": "^2.3",
         "jakub-onderka/php-parallel-lint": "^0.9.0",
         "satooshi/php-coveralls": "^0.6.1",
-        "apigen/apigen": "^4.1",
         "mockery/mockery": "^1.0",
         "goaop/framework": "1.0.0-alpha.2 | ^1.0 | ^2.1",
         "doctrine/annotations": "~1.2.0",
@@ -73,7 +72,6 @@
             "@lint",
             "@phpunit",
             "@phpcs"
-        ],
-        "build-docs": "apigen generate --source='src' --destination='build/apidocs' --template-theme='bootstrap' --deprecated --todo"
+        ]
     }
 }
