@@ -222,23 +222,56 @@ class SystemNodeProviderTest extends TestCase
             'data://text/plain,01:02:03:04:05:06',
         ]);
 
-        //Using a mock to verify the provider only gets the node from ifconfig one time
-        $provider = $this->getMockBuilder('Ramsey\Uuid\Provider\Node\SystemNodeProvider')
-            ->setMethods(['getIfconfig'])
-            ->getMock();
+        $provider = \Mockery::mock(SystemNodeProvider::class);
+        $provider->shouldAllowMockingProtectedMethods();
+        $provider->shouldReceive('getNode')->passthru();
 
         if ($os === 'Linux') {
-            $provider->expects($this->never())
-                ->method('getIfconfig');
+            $provider->expects()->getIfconfig()->never();
+            $provider->shouldReceive('getsysfs')->passthru();
         } else {
-            $provider->expects($this->any())
-                ->method('getsysfs')
-                ->willReturn(false);
-            $provider->expects($this->once())
-                ->method('getIfconfig')
-                ->willReturn(PHP_EOL . '01-02-03-04-05-06' . PHP_EOL);
+            $provider->expects()->getIfconfig()->andReturn(PHP_EOL . '01-02-03-04-05-06' . PHP_EOL);
+            $provider->expects()->getsysfs()->andReturnFalse();
         }
-        $node = $provider->getNode();
-        $this->assertEquals('010203040506', $node);
+
+        $this->assertEquals('010203040506', $provider->getNode());
+    }
+
+    /**
+     * @runInSeparateProcess
+     * @preserveGlobalState disabled
+     */
+    public function testCallGetsysfsOnLinuxWhenGlobReturnsFalse()
+    {
+        AspectMock::func('Ramsey\Uuid\Provider\Node', 'php_uname', 'Linux');
+        AspectMock::func('Ramsey\Uuid\Provider\Node', 'glob', false);
+
+        $provider = \Mockery::mock(SystemNodeProvider::class);
+        $provider->shouldAllowMockingProtectedMethods();
+        $provider->shouldReceive('getNode')->passthru();
+        $provider->shouldReceive('getsysfs')->passthru();
+
+        $provider->expects()->getIfconfig()->andReturn(PHP_EOL . '01-02-03-04-05-06' . PHP_EOL);
+
+        $this->assertEquals('010203040506', $provider->getNode());
+    }
+
+    /**
+     * @runInSeparateProcess
+     * @preserveGlobalState disabled
+     */
+    public function testCallGetsysfsOnLinuxWhenGlobReturnsEmptyArray()
+    {
+        AspectMock::func('Ramsey\Uuid\Provider\Node', 'php_uname', 'Linux');
+        AspectMock::func('Ramsey\Uuid\Provider\Node', 'glob', []);
+
+        $provider = \Mockery::mock(SystemNodeProvider::class);
+        $provider->shouldAllowMockingProtectedMethods();
+        $provider->shouldReceive('getNode')->passthru();
+        $provider->shouldReceive('getsysfs')->passthru();
+
+        $provider->expects()->getIfconfig()->andReturn(PHP_EOL . '01-02-03-04-05-06' . PHP_EOL);
+
+        $this->assertEquals('010203040506', $provider->getNode());
     }
 }

@@ -88,10 +88,15 @@ class SystemNodeProvider implements NodeProviderInterface
     {
         $mac = false;
         if (strtoupper(php_uname('s')) === "LINUX") {
-            // get all the macadresses of all systems
+            $addressPaths = glob('/sys/class/net/*/address', GLOB_NOSORT);
+
+            if (empty($addressPaths)) {
+                return false;
+            }
+
             $macs = array_map(
                 'file_get_contents',
-                glob('/sys/class/net/*/address', GLOB_NOSORT)
+                $addressPaths
             );
 
             $macs = array_map('trim', $macs);
