@@ -4,6 +4,5 @@
 .vagrant/
 build
 composer.lock
-docs
 phpunit.xml
 vendor
