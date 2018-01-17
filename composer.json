@@ -34,12 +34,11 @@
         "phpunit/phpunit": "^4.7|^5.0",
         "squizlabs/php_codesniffer": "^2.3",
         "jakub-onderka/php-parallel-lint": "^0.9.0",
-        "mockery/mockery": "^1.0",
+        "mockery/mockery": "^0.9.9",
         "goaop/framework": "1.0.0-alpha.2 | ^1.0 | ^2.1",
         "doctrine/annotations": "~1.2.0",
         "codeception/aspect-mock": "^1.0 | ~2.0.0",
-        "php-mock/php-mock-phpunit": "^0.3|^1.1",
-        "hamcrest/hamcrest-php": "^2.0"
+        "php-mock/php-mock-phpunit": "^0.3|^1.1"
     },
     "suggest": {
         "ircmaxell/random-lib": "Provides RandomLib for use with the RandomLibAdapter",

@@ -227,11 +227,11 @@ class SystemNodeProviderTest extends TestCase
         $provider->shouldReceive('getNode')->passthru();
 
         if ($os === 'Linux') {
-            $provider->expects()->getIfconfig()->never();
+            $provider->shouldReceive('getIfconfig')->never();
             $provider->shouldReceive('getSysfs')->passthru();
         } else {
-            $provider->expects()->getIfconfig()->andReturn(PHP_EOL . '01-02-03-04-05-06' . PHP_EOL);
-            $provider->expects()->getSysfs()->andReturnFalse();
+            $provider->shouldReceive('getIfconfig')->once()->andReturn(PHP_EOL . '01-02-03-04-05-06' . PHP_EOL);
+            $provider->shouldReceive('getSysfs')->once()->andReturn(false);
         }
 
         $this->assertEquals('010203040506', $provider->getNode());
@@ -251,7 +251,7 @@ class SystemNodeProviderTest extends TestCase
         $provider->shouldReceive('getNode')->passthru();
         $provider->shouldReceive('getSysfs')->passthru();
 
-        $provider->expects()->getIfconfig()->andReturn(PHP_EOL . '01-02-03-04-05-06' . PHP_EOL);
+        $provider->shouldReceive('getIfconfig')->once()->andReturn(PHP_EOL . '01-02-03-04-05-06' . PHP_EOL);
 
         $this->assertEquals('010203040506', $provider->getNode());
     }
@@ -270,7 +270,7 @@ class SystemNodeProviderTest extends TestCase
         $provider->shouldReceive('getNode')->passthru();
         $provider->shouldReceive('getSysfs')->passthru();
 
-        $provider->expects()->getIfconfig()->andReturn(PHP_EOL . '01-02-03-04-05-06' . PHP_EOL);
+        $provider->shouldReceive('getIfconfig')->once()->andReturn(PHP_EOL . '01-02-03-04-05-06' . PHP_EOL);
 
         $this->assertEquals('010203040506', $provider->getNode());
     }
