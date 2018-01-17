@@ -60,6 +60,13 @@ interface UuidFactoryInterface
     public function uuid5($ns, $name);
 
     /**
+     * Generate a sequential COMB UUID (COMBined timestamp/GUID).
+     *
+     * @return UuidInterface
+     */
+    public function comb();
+
+    /**
      * Creates a UUID from a byte string.
      *
      * @param string $bytes A 16-byte string representation of a UUID
