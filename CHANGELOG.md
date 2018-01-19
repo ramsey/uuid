@@ -2,7 +2,7 @@
 
 ## 3.7.3
 
-_Released: 2018-01-16_
+_Released: 2018-01-19_
 
   * In rare cases, when using `glob()` to find `/sys/class/net/*/address` files on Linux, `glob()` encountered errors, returning `false` instead of an empty array, causing `array_map()` to emit warnings since its second parameter was not an array; this release gracefully handles cases where `glob()` returns `false` [#203](https://github.com/ramsey/uuid/issues/203)
 
