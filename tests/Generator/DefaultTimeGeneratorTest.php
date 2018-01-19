@@ -166,7 +166,7 @@ class DefaultTimeGeneratorTest extends TestCase
     public function testGenerateUsesRandomSequenceWhenClockSeqNull()
     {
         $this->skipIfHhvm();
-        $mt_rand = AspectMock::func('Ramsey\Uuid\Generator', 'mt_rand', 9622);
+        $mt_rand = AspectMock::func('Ramsey\Uuid\Generator', 'random_int', 9622);
         $defaultTimeGenerator = new DefaultTimeGenerator(
             $this->nodeProvider,
             $this->timeConverter,
