@@ -173,6 +173,6 @@ class DefaultTimeGeneratorTest extends TestCase
             $this->timeProvider
         );
         $defaultTimeGenerator->generate($this->nodeId);
-        $mt_rand->verifyInvokedOnce([0, 16384]);
+        $mt_rand->verifyInvokedOnce([0, 0x3fff]);
     }
 }
