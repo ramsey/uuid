@@ -169,6 +169,7 @@ class Uuid implements UuidInterface
      * $namespaceMd5Uuid  = Uuid::uuid3(Uuid::NAMESPACE_URL, 'http://php.net/');
      * $randomUuid        = Uuid::uuid4();
      * $namespaceSha1Uuid = Uuid::uuid5(Uuid::NAMESPACE_URL, 'http://php.net/');
+     * $combUuid          = Uuid::timestampFirstComb();
      * ```
      *
      * @param array $fields An array of fields from which to construct a UUID;
@@ -696,6 +697,7 @@ class Uuid implements UuidInterface
      */
     public static function uuid4()
     {
+
         return self::getFactory()->uuid4();
     }
 
@@ -710,5 +712,15 @@ class Uuid implements UuidInterface
     public static function uuid5($ns, $name)
     {
         return self::getFactory()->uuid5($ns, $name);
+    }
+
+    /**
+     * Generate a sequential COMB UUID (COMBined timestamp/GUID).
+     *
+     * @return UuidInterface
+     */
+    public static function timestampFirstComb()
+    {
+        return self::getFactory()->timestampFirstComb();
     }
 }

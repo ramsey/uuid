@@ -14,7 +14,9 @@
 
 namespace Ramsey\Uuid;
 
+use Ramsey\Uuid\Codec\TimestampFirstCombCodec;
 use Ramsey\Uuid\Converter\NumberConverterInterface;
+use Ramsey\Uuid\Generator\CombGenerator;
 use Ramsey\Uuid\Provider\NodeProviderInterface;
 use Ramsey\Uuid\Generator\RandomGeneratorInterface;
 use Ramsey\Uuid\Generator\TimeGeneratorInterface;
@@ -227,6 +229,23 @@ class UuidFactory implements UuidFactoryInterface
     public function uuid5($ns, $name)
     {
         return $this->uuidFromNsAndName($ns, $name, 5, 'sha1');
+    }
+
+    public function timestampFirstComb()
+    {
+        $currentCodec = $this->getCodec();
+        $combGenerator = new CombGenerator($this->getRandomGenerator(), $this->getNumberConverter());
+        $combCodec = new TimestampFirstCombCodec($this->getUuidBuilder());
+
+        $hex = bin2hex($combGenerator->generate(16));
+
+        $this->setCodec($combCodec);
+
+        $combUuid = $this->uuidFromHashedName($hex, 4);
+
+        $this->setCodec($currentCodec);
+
+        return $combUuid;
     }
 
     /**
