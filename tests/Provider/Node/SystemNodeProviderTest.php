@@ -222,7 +222,7 @@ class SystemNodeProviderTest extends TestCase
             'data://text/plain,01:02:03:04:05:06',
         ]);
 
-        $provider = \Mockery::mock(SystemNodeProvider::class);
+        $provider = \Mockery::mock('Ramsey\Uuid\Provider\Node\SystemNodeProvider');
         $provider->shouldAllowMockingProtectedMethods();
         $provider->shouldReceive('getNode')->passthru();
 
@@ -246,7 +246,7 @@ class SystemNodeProviderTest extends TestCase
         AspectMock::func('Ramsey\Uuid\Provider\Node', 'php_uname', 'Linux');
         AspectMock::func('Ramsey\Uuid\Provider\Node', 'glob', false);
 
-        $provider = \Mockery::mock(SystemNodeProvider::class);
+        $provider = \Mockery::mock('Ramsey\Uuid\Provider\Node\SystemNodeProvider');
         $provider->shouldAllowMockingProtectedMethods();
         $provider->shouldReceive('getNode')->passthru();
         $provider->shouldReceive('getSysfs')->passthru();
@@ -265,7 +265,7 @@ class SystemNodeProviderTest extends TestCase
         AspectMock::func('Ramsey\Uuid\Provider\Node', 'php_uname', 'Linux');
         AspectMock::func('Ramsey\Uuid\Provider\Node', 'glob', []);
 
-        $provider = \Mockery::mock(SystemNodeProvider::class);
+        $provider = \Mockery::mock('Ramsey\Uuid\Provider\Node\SystemNodeProvider');
         $provider->shouldAllowMockingProtectedMethods();
         $provider->shouldReceive('getNode')->passthru();
         $provider->shouldReceive('getSysfs')->passthru();
