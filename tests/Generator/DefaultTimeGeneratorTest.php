@@ -28,7 +28,6 @@ class DefaultTimeGeneratorTest extends TestCase
     /** @var int */
     private $clockSeq = 4066;
 
-
     protected function setUp()
     {
         parent::setUp();
