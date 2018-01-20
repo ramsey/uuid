@@ -24,7 +24,6 @@ use Ramsey\Uuid\Converter\NumberConverterInterface;
 use Ramsey\Uuid\Converter\Number\GmpConverter;
 use Ramsey\Uuid\Converter\Number\BigNumberConverter;
 use Ramsey\Uuid\Converter\Number\DegradedNumberConverter;
-use Ramsey\Uuid\Converter\TimeConverterInterface;
 use Ramsey\Uuid\Converter\Time\GmpTimeConverter;
 use Ramsey\Uuid\Converter\Time\BigNumberTimeConverter;
 use Ramsey\Uuid\Converter\Time\DegradedTimeConverter;
