@@ -26,7 +26,7 @@ class FixedTimeProviderTest extends TestCase
         $timestamp = ['sec' => 1458844556, 'usec' => 200997];
         $provider = new FixedTimeProvider($timestamp);
 
-        $newTimestamp = ['sec' => 1050804050, 'usec' => '30192'];
+        $newTimestamp = ['sec' => 1050804050, 'usec' => 30192];
         $provider->setSec($newTimestamp['sec']);
         $provider->setUsec($newTimestamp['usec']);
 

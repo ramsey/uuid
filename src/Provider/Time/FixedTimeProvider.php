@@ -49,6 +49,7 @@ class FixedTimeProvider implements TimeProviderInterface
      * Sets the `usec` component of the timestamp
      *
      * @param int $value The `usec` value to set
+     * @return void
      */
     public function setUsec($value)
     {
@@ -59,6 +60,7 @@ class FixedTimeProvider implements TimeProviderInterface
      * Sets the `sec` component of the timestamp
      *
      * @param int $value The `sec` value to set
+     * @return void
      */
     public function setSec($value)
     {

@@ -38,19 +38,25 @@ class SystemNodeProvider implements NodeProviderInterface
         $pattern = '/[^:]([0-9A-Fa-f]{2}([:-])[0-9A-Fa-f]{2}(\2[0-9A-Fa-f]{2}){4})[^:]/';
         $matches = [];
 
-        // first try a  linux specific way
+        // first try a linux specific way
         $node = $this->getSysfs();
 
         // Search the ifconfig output for all MAC addresses and return
         // the first one found
         if ($node === false) {
             if (preg_match_all($pattern, $this->getIfconfig(), $matches, PREG_PATTERN_ORDER)) {
-                $node = $matches[1][0];
+                $node = $matches[1][0] ?? false;
             }
         }
+
         if ($node !== false) {
             $node = str_replace([':', '-'], '', $node);
+
+            if (is_array($node)) {
+                $node = $node[0] ?? false;
+            }
         }
+
         return $node;
     }
 
@@ -62,7 +68,7 @@ class SystemNodeProvider implements NodeProviderInterface
      */
     protected function getIfconfig()
     {
-        if (strpos(strtolower(ini_get('disable_functions')), 'passthru') !== false) {
+        if (strpos(strtolower((string) ini_get('disable_functions')), 'passthru') !== false) {
             return '';
         }
 
@@ -83,7 +89,7 @@ class SystemNodeProvider implements NodeProviderInterface
                 break;
         }
 
-        return ob_get_clean();
+        return (string) ob_get_clean();
     }
 
     /**
@@ -112,12 +118,13 @@ class SystemNodeProvider implements NodeProviderInterface
             $macs = array_map('trim', $macs);
 
             // remove invalid entries
-            $macs = array_filter($macs, function ($mac) {
-                return
+            $macs = array_filter($macs, function ($address) {
+                return (
                     // localhost adapter
-                    $mac !== '00:00:00:00:00:00' &&
-                    // must match  mac adress
-                    preg_match('/^([0-9a-f]{2}:){5}[0-9a-f]{2}$/i', $mac);
+                    $address !== '00:00:00:00:00:00'
+                    // must match mac address
+                    && preg_match('/^([0-9a-f]{2}:){5}[0-9a-f]{2}$/i', $address)
+                );
             });
 
             $mac = reset($macs);

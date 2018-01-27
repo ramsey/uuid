@@ -43,7 +43,7 @@ class FallbackNodeProvider implements NodeProviderInterface
      * Returns the system node ID by iterating over an array of node providers
      * and returning the first non-empty value found
      *
-     * @return string System node ID as a hexadecimal string
+     * @return string|null System node ID as a hexadecimal string
      * @throws Exception
      */
     public function getNode()

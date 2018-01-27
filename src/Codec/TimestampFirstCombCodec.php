@@ -52,7 +52,7 @@ class TimestampFirstCombCodec extends StringCodec
     {
         $stringEncoding = $this->encode($uuid);
 
-        return hex2bin(str_replace('-', '', $stringEncoding));
+        return (string) hex2bin(str_replace('-', '', $stringEncoding));
     }
 
     /**

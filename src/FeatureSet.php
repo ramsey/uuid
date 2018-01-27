@@ -193,6 +193,7 @@ class FeatureSet
      * Sets the time provider for use in this environment
      *
      * @param TimeProviderInterface $timeProvider
+     * @return void
      */
     public function setTimeProvider(TimeProviderInterface $timeProvider)
     {

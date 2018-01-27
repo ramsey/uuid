@@ -85,6 +85,7 @@ class UuidFactory implements UuidFactoryInterface
      * Sets the UUID coder-decoder used by this factory
      *
      * @param CodecInterface $codec
+     * @return void
      */
     public function setCodec(CodecInterface $codec)
     {
@@ -125,6 +126,7 @@ class UuidFactory implements UuidFactoryInterface
      * Sets the time-based UUID generator this factory will use to generate version 1 UUIDs
      *
      * @param TimeGeneratorInterface $generator
+     * @return void
      */
     public function setTimeGenerator(TimeGeneratorInterface $generator)
     {
@@ -145,6 +147,7 @@ class UuidFactory implements UuidFactoryInterface
      * Sets the random UUID generator this factory will use to generate version 4 UUIDs
      *
      * @param RandomGeneratorInterface $generator
+     * @return void
      */
     public function setRandomGenerator(RandomGeneratorInterface $generator)
     {
@@ -155,6 +158,7 @@ class UuidFactory implements UuidFactoryInterface
      * Sets the number converter this factory will use
      *
      * @param NumberConverterInterface $converter
+     * @return void
      */
     public function setNumberConverter(NumberConverterInterface $converter)
     {
@@ -175,6 +179,7 @@ class UuidFactory implements UuidFactoryInterface
      * Sets the UUID builder this factory will use when creating `Uuid` instances
      *
      * @param UuidBuilderInterface $builder
+     * @return void
      */
     public function setUuidBuilder(UuidBuilderInterface $builder)
     {
@@ -272,7 +277,7 @@ class UuidFactory implements UuidFactoryInterface
      * @param string|UuidInterface $ns The UUID namespace to use
      * @param string $name The string to hash together with the namespace
      * @param int $version The version of UUID to create (3 or 5)
-     * @param string $hashFunction The hash function to use when hashing together
+     * @param callable $hashFunction The hash function to use when hashing together
      *     the namespace and name
      * @return UuidInterface
      * @throws InvalidUuidStringException
@@ -299,7 +304,7 @@ class UuidFactory implements UuidFactoryInterface
     protected function uuidFromHashedName($hash, $version)
     {
         $timeHi = BinaryUtils::applyVersion(substr($hash, 12, 4), $version);
-        $clockSeqHi = BinaryUtils::applyVariant(hexdec(substr($hash, 16, 2)));
+        $clockSeqHi = BinaryUtils::applyVariant((int) hexdec(substr($hash, 16, 2)));
 
         $fields = [
             'time_low' => substr($hash, 0, 8),

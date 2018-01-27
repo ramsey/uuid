@@ -40,9 +40,7 @@ class GuidStringCodecTest extends TestCase
     protected function tearDown(): void
     {
         parent::tearDown();
-        $this->builder = null;
-        $this->fields = null;
-        $this->uuid = null;
+        unset($this->builder, $this->fields, $this->uuid);
     }
 
     public function testEncodeUsesFieldsArray()
