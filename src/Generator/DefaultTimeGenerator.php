@@ -109,7 +109,7 @@ class DefaultTimeGenerator implements TimeGeneratorInterface
      * Uses the node provider given when constructing this instance to get
      * the node ID (usually a MAC address)
      *
-     * @param string|int $node A node value that may be used to override the node provider
+     * @param string|int|null $node A node value that may be used to override the node provider
      * @return string Hexadecimal representation of the node ID
      */
     protected function getValidNode($node)
