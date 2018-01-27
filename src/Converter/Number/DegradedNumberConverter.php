@@ -28,7 +28,7 @@ class DegradedNumberConverter implements NumberConverterInterface
      * Throws an `UnsatisfiedDependencyException`
      *
      * @param string $hex The hexadecimal string representation to convert
-     * @return void
+     * @return mixed
      * @throws UnsatisfiedDependencyException
      */
     public function fromHex($hex)
@@ -44,7 +44,7 @@ class DegradedNumberConverter implements NumberConverterInterface
      * Throws an `UnsatisfiedDependencyException`
      *
      * @param mixed $integer An integer representation to convert
-     * @return void
+     * @return string
      * @throws UnsatisfiedDependencyException
      */
     public function toHex($integer)

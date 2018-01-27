@@ -25,7 +25,7 @@ class PhpTimeConverterTest extends TestCase
         ];
 
         $converter = new PhpTimeConverter();
-        $returned = $converter->calculateTime($seconds, $microSeconds);
+        $returned = $converter->calculateTime((string) $seconds, (string) $microSeconds);
         $this->assertEquals($expectedArray, $returned);
     }
 }

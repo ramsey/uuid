@@ -68,8 +68,8 @@
         "lint": "parallel-lint src tests",
         "phpcs": "phpcs src tests --standard=psr2 -sp --colors",
         "phpstan": [
-            "phpstan analyse -c phpstan.neon src --level 2 --no-progress",
-            "phpstan analyse -c phpstan-tests.neon tests --level 2 --no-progress"
+            "phpstan analyse -c phpstan.neon src --level max --no-progress",
+            "phpstan analyse -c phpstan-tests.neon tests --level 5 --no-progress"
         ],
         "phpunit": "phpunit --verbose --colors=always",
         "phpunit-coverage": "phpunit --verbose --colors=always --coverage-html build/coverage",

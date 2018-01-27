@@ -40,13 +40,13 @@ class RandomLibAdapter implements RandomGeneratorInterface
      */
     public function __construct(Generator $generator = null)
     {
-        $this->generator = $generator;
-
-        if ($this->generator === null) {
+        if ($generator === null) {
             $factory = new Factory();
 
-            $this->generator = $factory->getHighStrengthGenerator();
+            $generator = $factory->getHighStrengthGenerator();
         }
+
+        $this->generator = $generator;
     }
 
     /**

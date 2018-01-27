@@ -74,7 +74,7 @@ class CombGenerator implements RandomGeneratorInterface
 
         $lsbTime = str_pad($this->converter->toHex($this->timestamp()), self::TIMESTAMP_BYTES * 2, '0', STR_PAD_LEFT);
 
-        return hex2bin(str_pad(bin2hex($hash), $length - self::TIMESTAMP_BYTES, '0') . $lsbTime);
+        return (string) hex2bin(str_pad(bin2hex($hash), $length - self::TIMESTAMP_BYTES, '0') . $lsbTime);
     }
 
     /**

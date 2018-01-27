@@ -50,6 +50,7 @@ class DegradedUuid extends Uuid
      * For degraded UUIDs, throws an `UnsatisfiedDependencyException` when
      * called on a 32-bit system
      *
+     * @return array
      * @throws UnsatisfiedDependencyException if called on a 32-bit system
      */
     public function getFields()
@@ -65,6 +66,7 @@ class DegradedUuid extends Uuid
      * For degraded UUIDs, throws an `UnsatisfiedDependencyException` when
      * called on a 32-bit system
      *
+     * @return int
      * @throws UnsatisfiedDependencyException if called on a 32-bit system
      */
     public function getNode()
@@ -81,6 +83,7 @@ class DegradedUuid extends Uuid
      * For degraded UUIDs, throws an `UnsatisfiedDependencyException` when
      * called on a 32-bit system
      *
+     * @return int
      * @throws UnsatisfiedDependencyException if called on a 32-bit system
      */
     public function getTimeLow()
@@ -97,6 +100,7 @@ class DegradedUuid extends Uuid
      * For degraded UUIDs, throws an `UnsatisfiedDependencyException` when
      * called on a 32-bit system
      *
+     * @return int
      * @throws UnsatisfiedDependencyException if called on a 32-bit system
      * @throws UnsupportedOperationException If this UUID is not a version 1 UUID
      */

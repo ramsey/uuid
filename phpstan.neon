@@ -1,3 +1,17 @@
 parameters:
+    checkMissingIterableValueType: false
     autoload_files:
         - tests/phpstan-bootstrap.php
+    ignoreErrors:
+        -
+            message: "#^Negated boolean expression is always false\\.$#"
+            count: 1
+            path: src/Uuid.php
+        -
+            message: '#^Comparison operation "<" between int<6, max> and 0 is always false\.$#'
+            count: 1
+            path: src/Generator/CombGenerator.php
+        -
+            message: '#^Comparison operation ">" between 6 and 0 is always true\.$#'
+            count: 1
+            path: src/Generator/CombGenerator.php
