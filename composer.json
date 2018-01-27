@@ -60,7 +60,7 @@
         "phpunit": "phpunit --verbose --colors=always",
         "phpcs": "phpcs src tests --standard=psr2 -sp --colors",
         "phpstan": [
-            "phpstan analyse -c phpstan.neon src --level 4 --no-progress",
+            "phpstan analyse -c phpstan.neon src --level 5 --no-progress",
             "phpstan analyse -c phpstan-tests.neon tests --level 2 --no-progress"
         ],
         "test": [
