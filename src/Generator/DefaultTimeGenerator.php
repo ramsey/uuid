@@ -85,7 +85,7 @@ class DefaultTimeGenerator implements TimeGeneratorInterface
         // Create a 60-bit time value as a count of 100-nanosecond intervals
         // since 00:00:00.00, 15 October 1582
         $timeOfDay = $this->timeProvider->currentTime();
-        $uuidTime = $this->timeConverter->calculateTime($timeOfDay['sec'], $timeOfDay['usec']);
+        $uuidTime = $this->timeConverter->calculateTime((string) $timeOfDay['sec'], (string) $timeOfDay['usec']);
 
         $timeHi = BinaryUtils::applyVersion($uuidTime['hi'], 1);
         $clockSeqHi = BinaryUtils::applyVariant($clockSeq >> 8);
