@@ -233,8 +233,9 @@ class Uuid implements UuidInterface
      * Re-constructs the object from its serialized form.
      *
      * @param string $serialized
-     * @link http://php.net/manual/en/class.serializable.php
+     * @return void
      * @throws InvalidUuidStringException
+     * @link http://php.net/manual/en/class.serializable.php
      */
     public function unserialize($serialized)
     {
@@ -288,7 +289,7 @@ class Uuid implements UuidInterface
      */
     public function getClockSeqHiAndReserved()
     {
-        return hexdec($this->getClockSeqHiAndReservedHex());
+        return (int) hexdec($this->getClockSeqHiAndReservedHex());
     }
 
     public function getClockSeqHiAndReservedHex()
@@ -303,7 +304,7 @@ class Uuid implements UuidInterface
      */
     public function getClockSeqLow()
     {
-        return hexdec($this->getClockSeqLowHex());
+        return (int) hexdec($this->getClockSeqLowHex());
     }
 
     public function getClockSeqLowHex()
@@ -473,7 +474,7 @@ class Uuid implements UuidInterface
      */
     public function getNode()
     {
-        return hexdec($this->getNodeHex());
+        return (int) hexdec($this->getNodeHex());
     }
 
     public function getNodeHex()
@@ -489,7 +490,7 @@ class Uuid implements UuidInterface
      */
     public function getTimeHiAndVersion()
     {
-        return hexdec($this->getTimeHiAndVersionHex());
+        return (int) hexdec($this->getTimeHiAndVersionHex());
     }
 
     public function getTimeHiAndVersionHex()
@@ -504,7 +505,7 @@ class Uuid implements UuidInterface
      */
     public function getTimeLow()
     {
-        return hexdec($this->getTimeLowHex());
+        return (int) hexdec($this->getTimeLowHex());
     }
 
     public function getTimeLowHex()
@@ -519,7 +520,7 @@ class Uuid implements UuidInterface
      */
     public function getTimeMid()
     {
-        return hexdec($this->getTimeMidHex());
+        return (int) hexdec($this->getTimeMidHex());
     }
 
     public function getTimeMidHex()
@@ -549,7 +550,7 @@ class Uuid implements UuidInterface
             throw new UnsupportedOperationException('Not a time-based UUID');
         }
 
-        return hexdec($this->getTimestampHex());
+        return (int) hexdec($this->getTimestampHex());
     }
 
     /**
@@ -625,6 +626,7 @@ class Uuid implements UuidInterface
      * Sets the factory used to create UUIDs.
      *
      * @param UuidFactoryInterface $factory
+     * @return void
      */
     public static function setFactory(UuidFactoryInterface $factory)
     {

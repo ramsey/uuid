@@ -650,12 +650,12 @@ class UuidTest extends TestCase
         // Check with a recent date
         $uuid = Uuid::fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
         $this->assertEquals('ff6f8cb0-c57d-11e1-9b21-0800200c9a66', $uuid->toString());
-        $this->assertEquals('ff6f8cb0-c57d-11e1-9b21-0800200c9a66', sprintf('%s', $uuid));
+        $this->assertEquals('ff6f8cb0-c57d-11e1-9b21-0800200c9a66', sprintf('%s', (string) $uuid));
 
         // Check with an old date
         $uuid = Uuid::fromString('0901e600-0154-1000-9b21-0800200c9a66');
         $this->assertEquals('0901e600-0154-1000-9b21-0800200c9a66', $uuid->toString());
-        $this->assertEquals('0901e600-0154-1000-9b21-0800200c9a66', sprintf('%s', $uuid));
+        $this->assertEquals('0901e600-0154-1000-9b21-0800200c9a66', sprintf('%s', (string) $uuid));
     }
 
     /**
@@ -746,7 +746,7 @@ class UuidTest extends TestCase
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Invalid node value');
 
-        $uuid = Uuid::uuid1(9223372036854775808);
+        $uuid = Uuid::uuid1('9223372036854775808');
     }
 
     public function testUuid1WithNonHexadecimalNode()
@@ -1034,7 +1034,6 @@ class UuidTest extends TestCase
 
         $this->assertTrue($uuid1->equals($uuid2));
         $this->assertFalse($uuid1->equals($uuid3));
-        $this->assertFalse($uuid1->equals(null));
         $this->assertFalse($uuid1->equals(new stdClass()));
     }
 
@@ -1942,20 +1941,6 @@ class UuidTest extends TestCase
         $this->assertEquals('4ae71336-e44b-39bf-b9d2-752e234818a5', $uuid->toString());
     }
 
-    public function testUuid3WithNullName()
-    {
-        $uuid = Uuid::uuid3(Uuid::NIL, null);
-
-        $this->assertEquals('4ae71336-e44b-39bf-b9d2-752e234818a5', $uuid->toString());
-    }
-
-    public function testUuid3WithFalseName()
-    {
-        $uuid = Uuid::uuid3(Uuid::NIL, false);
-
-        $this->assertEquals('4ae71336-e44b-39bf-b9d2-752e234818a5', $uuid->toString());
-    }
-
     public function testUuid3WithZeroName()
     {
         $uuid = Uuid::uuid3(Uuid::NIL, '0');
@@ -1974,20 +1959,6 @@ class UuidTest extends TestCase
     public function testUuid5WithEmptyName()
     {
         $uuid = Uuid::uuid5(Uuid::NIL, '');
-
-        $this->assertEquals('e129f27c-5103-5c5c-844b-cdf0a15e160d', $uuid->toString());
-    }
-
-    public function testUuid5WithNullName()
-    {
-        $uuid = Uuid::uuid5(Uuid::NIL, null);
-
-        $this->assertEquals('e129f27c-5103-5c5c-844b-cdf0a15e160d', $uuid->toString());
-    }
-
-    public function testUuid5WithFalseName()
-    {
-        $uuid = Uuid::uuid5(Uuid::NIL, false);
 
         $this->assertEquals('e129f27c-5103-5c5c-844b-cdf0a15e160d', $uuid->toString());
     }
