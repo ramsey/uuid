@@ -41,9 +41,7 @@ class DefaultTimeGeneratorTest extends TestCase
     protected function tearDown()
     {
         parent::tearDown();
-        $this->timeProvider = null;
-        $this->nodeProvider = null;
-        $this->timeConverter = null;
+        unset($this->timeProvider, $this->nodeProvider, $this->timeConverter);
         Mockery::close();
         AspectMock::clean();
     }

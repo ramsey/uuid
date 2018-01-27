@@ -40,9 +40,7 @@ class StringCodecTest extends TestCase
     protected function tearDown()
     {
         parent::tearDown();
-        $this->builder = null;
-        $this->uuid = null;
-        $this->fields = null;
+        unset($this->builder, $this->uuid, $this->fields);
     }
 
     public function testEncodeUsesFieldsArray()
