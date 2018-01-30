@@ -34,15 +34,6 @@ class SystemNodeProviderTest extends TestCase
         $this->assertSame(12, $length, $lengthError);
     }
 
-
-    public function notationalFormatsDataProvider()
-    {
-        return [
-            ['01-23-45-67-89-ab', '0123456789ab'],
-            ['01:23:45:67:89:ab', '0123456789ab']
-        ];
-    }
-
     /**
      * @runInSeparateProcess
      * @preserveGlobalState disabled
@@ -132,16 +123,6 @@ class SystemNodeProviderTest extends TestCase
 
         $provider->getNode();
         $provider->getNode();
-    }
-
-    public function osCommandDataProvider()
-    {
-        return [
-            'windows' => ['Windows', 'ipconfig /all 2>&1'],
-            'mac' => ['Darwhat', 'ifconfig 2>&1'],
-            'linux' => ['Linux', 'netstat -ie 2>&1'],
-            'anything_else' => ['someotherxyz', 'netstat -ie 2>&1']
-        ];
     }
 
     /**
@@ -273,5 +254,23 @@ class SystemNodeProviderTest extends TestCase
         $provider->shouldReceive('getIfconfig')->once()->andReturn(PHP_EOL . '01-02-03-04-05-06' . PHP_EOL);
 
         $this->assertEquals('010203040506', $provider->getNode());
+    }
+
+    public function notationalFormatsDataProvider()
+    {
+        return [
+            ['01-23-45-67-89-ab', '0123456789ab'],
+            ['01:23:45:67:89:ab', '0123456789ab']
+        ];
+    }
+
+    public function osCommandDataProvider()
+    {
+        return [
+            'windows' => ['Windows', 'ipconfig /all 2>&1'],
+            'mac' => ['Darwhat', 'ifconfig 2>&1'],
+            'linux' => ['Linux', 'netstat -ie 2>&1'],
+            'anything_else' => ['someotherxyz', 'netstat -ie 2>&1']
+        ];
     }
 }
