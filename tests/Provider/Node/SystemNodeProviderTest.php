@@ -30,11 +30,6 @@ use AspectMock\Test as AspectMock;
  * should be run should ALWAYS be specified.
  *
  * This will make the tests more verbose but also more bullet-proof.
- *
- * This class mostly tests happy-path (success scenario) and leaves various
- * sad-path (failure scenarios) untested.
- *
- * @TODO: Add tests for failure scenario's
  */
 class SystemNodeProviderTest extends TestCase
 {
@@ -119,7 +114,7 @@ class SystemNodeProviderTest extends TestCase
      * @runInSeparateProcess
      * @preserveGlobalState disabled
      *
-     * @dataProvider notationalFormatsDataProvider
+     * @dataProvider provideNotationalFormats
      *
      * @param string $formatted
      * @param string $expected
@@ -148,7 +143,7 @@ class SystemNodeProviderTest extends TestCase
      * @runInSeparateProcess
      * @preserveGlobalState disabled
      *
-     * @dataProvider invalidNotationalFormatsDataProvider
+     * @dataProvider provideInvalidNotationalFormats
      *
      * @param string $formatted
      */
@@ -249,7 +244,7 @@ class SystemNodeProviderTest extends TestCase
      * @runInSeparateProcess
      * @preserveGlobalState disabled
      *
-     * @dataProvider osCommandDataProvider
+     * @dataProvider provideCommandPerOs
      *
      * @param $os
      * @param $command
@@ -335,7 +330,7 @@ class SystemNodeProviderTest extends TestCase
      * @runInSeparateProcess
      * @preserveGlobalState disabled
      *
-     * @dataProvider osCommandDataProvider
+     * @dataProvider provideCommandPerOs
      *
      * @param $os
      * @param $command
@@ -422,7 +417,12 @@ class SystemNodeProviderTest extends TestCase
         $this->assertEquals('010203040506', $node);
     }
 
-    public function notationalFormatsDataProvider()
+    /**
+     * Provides mac addresses that the class under test should strip notational format from
+     *
+     * @return array[]
+     */
+    public function provideNotationalFormats()
     {
         return [
             ['01-23-45-67-89-ab', '0123456789ab'],
@@ -430,7 +430,12 @@ class SystemNodeProviderTest extends TestCase
         ];
     }
 
-    public function osCommandDataProvider()
+    /**
+     * Provides the command that should be executed per supported OS
+     *
+     * @return array[]
+     */
+    public function provideCommandPerOs()
     {
         return [
             'windows' => ['Windows', 'ipconfig /all 2>&1'],
@@ -696,7 +701,7 @@ TXT
      *
      * @return array[]
      */
-    public function invalidNotationalFormatsDataProvider()
+    public function provideInvalidNotationalFormats()
     {
         return [
             ['01:23-45-67-89-ab'],
