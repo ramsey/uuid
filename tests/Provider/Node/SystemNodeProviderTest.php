@@ -2,12 +2,59 @@
 
 namespace Ramsey\Uuid\Test\Provider\Node;
 
+use AspectMock\Proxy\FuncProxy;
 use Ramsey\Uuid\Provider\Node\SystemNodeProvider;
 use Ramsey\Uuid\Test\TestCase;
 use AspectMock\Test as AspectMock;
 
+/**
+ * Tests for the SystemNodeProvider class
+ *
+ * The class under test make use of various native functions who's output is
+ * dictated by which environment PHP runs on. Instead of having to run these
+ * tests on each of these environments, the related functions are mocked (using
+ * AspectMock). The following functions are concerned:
+ *
+ * - glob
+ * - php_uname
+ * - passthru
+ * - file_get_contents
+ *
+ * On Linux systems `glob` would normally provide one or more paths were mac
+ * address can be retrieved (using `file_get_contents`). On non-linux systems,
+ * or when the `glob` fails, `passthru` is used to read the mac address from the
+ * command for the relevant environment as provided by `php_uname`.
+ *
+ * Please note that, in order to have robust tests, (the output of) these
+ * functions should ALWAYS be mocked and the amount of times each function
+ * should be run should ALWAYS be specified.
+ *
+ * This will make the tests more verbose but also more bullet-proof.
+ *
+ * This class mostly tests happy-path (success scenario) and leaves various
+ * sad-path (failure scenarios) untested.
+ *
+ * @TODO: Add tests for failure scenario's
+ * @TODO: Replace mock of the class-under-test with an actual object instance
+ */
 class SystemNodeProviderTest extends TestCase
 {
+    const MOCK_GLOB = 'glob';
+    const MOCK_UNAME = 'php_uname';
+    const MOCK_PASSTHRU = 'passthru';
+    const MOCK_FILE_GET_CONTENTS = 'file_get_contents';
+    const PROVIDER_NAMESPACE = 'Ramsey\\Uuid\\Provider\\Node';
+
+    /**
+     * @var FuncProxy[]
+     */
+    private $functionProxies = [
+        self::MOCK_FILE_GET_CONTENTS => null,
+        self::MOCK_GLOB => null,
+        self::MOCK_PASSTHRU => null,
+        self::MOCK_UNAME => null,
+    ];
+
     /**
      * @runInSeparateProcess
      * @preserveGlobalState disabled
@@ -272,5 +319,65 @@ class SystemNodeProviderTest extends TestCase
             'linux' => ['Linux', 'netstat -ie 2>&1'],
             'anything_else' => ['someotherxyz', 'netstat -ie 2>&1']
         ];
+    }
+
+    /**
+     * Replaces the return value for functions with the given value or callback.
+     *
+     * @param mixed| callback $fileGetContentsBody
+     * @param mixed| callback $globBody
+     * @param mixed| callback $passthruBody
+     * @param mixed| callback $unameBody
+     */
+    private function arrangeMockFunctions($fileGetContentsBody, $globBody, $passthruBody, $unameBody)
+    {
+        $mockFunction = [
+            self::MOCK_FILE_GET_CONTENTS => $fileGetContentsBody,
+            self::MOCK_GLOB => $globBody,
+            self::MOCK_PASSTHRU => $passthruBody,
+            self::MOCK_UNAME => $unameBody,
+        ];
+
+        array_walk($mockFunction, function ($body, $key) {
+            $this->functionProxies[$key] = AspectMock::func(self::PROVIDER_NAMESPACE, $key, $body);
+        });
+    }
+
+    /**
+     * Verifies that each function was called exactly once for each assert given.
+     *
+     * Provide a NULL to assert a function is never called.
+     *
+     * @param array|callable|null $fileGetContentsAssert
+     * @param array|callable|null $globBodyAssert
+     * @param array|callable|null $passthruBodyAssert
+     * @param array|callable|null $unameBodyAssert
+     */
+    private function assertMockFunctions($fileGetContentsAssert, $globBodyAssert, $passthruBodyAssert, $unameBodyAssert)
+    {
+        $mockFunctionAsserts = [
+            self::MOCK_FILE_GET_CONTENTS => $fileGetContentsAssert,
+            self::MOCK_GLOB => $globBodyAssert,
+            self::MOCK_PASSTHRU => $passthruBodyAssert,
+            self::MOCK_UNAME => $unameBodyAssert,
+        ];
+
+        array_walk($mockFunctionAsserts,  function ($asserts, $key) {
+            if ($asserts === null) {
+                $this->functionProxies[$key]->verifyNeverInvoked();
+            } elseif(is_array($asserts)) {
+                foreach ($asserts as $assert) {
+                    $this->functionProxies[$key]->verifyInvokedOnce($assert);
+                }
+            } elseif(is_callable($asserts)) {
+                $this->functionProxies[$key]->verifyInvokedOnce($asserts);
+            } else {
+                $error = vsprintf(
+                    'Given parameter for %s must be an array, a callback or NULL, "%s" given.',
+                    [$key, gettype($asserts)]
+                );
+                throw new \InvalidArgumentException($error);
+            }
+        });
     }
 }
