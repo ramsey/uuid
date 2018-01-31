@@ -58,7 +58,7 @@ class SystemNodeProviderTest extends TestCase
         $this->arrangeMockFunctions(
             null,
             null,
-            function () {echo PHP_EOL . 'AA-BB-CC-DD-EE-FF' . PHP_EOL;},
+            function () {echo "\nAA-BB-CC-DD-EE-FF\n";},
             'NOT LINUX'
         );
 
@@ -92,7 +92,7 @@ class SystemNodeProviderTest extends TestCase
         $this->arrangeMockFunctions(
             null,
             null,
-            function () use ($formatted) {echo PHP_EOL . $formatted . PHP_EOL;},
+            function () use ($formatted) {echo "\n{$formatted}\n";},
             'NOT LINUX'
         );
 
@@ -117,10 +117,7 @@ class SystemNodeProviderTest extends TestCase
             null,
             null,
             function () {
-                echo PHP_EOL . 'AA-BB-CC-DD-EE-FF' . PHP_EOL .
-                    '00-11-22-33-44-55' . PHP_EOL .
-                    'FF-11-EE-22-DD-33' . PHP_EOL
-                ;
+                echo "\nAA-BB-CC-DD-EE-FF\n00-11-22-33-44-55\nFF-11-EE-22-DD-33\n";
             },
             'NOT LINUX'
         );
@@ -228,7 +225,7 @@ class SystemNodeProviderTest extends TestCase
         $this->arrangeMockFunctions(
             null,
             null,
-            function () {echo PHP_EOL . 'AA-BB-CC-DD-EE-FF' . PHP_EOL;},
+            function () {echo "\nAA-BB-CC-DD-EE-FF\n";},
             'NOT LINUX'
         );
 
@@ -253,7 +250,7 @@ class SystemNodeProviderTest extends TestCase
         $this->arrangeMockFunctions(
             null,
             null,
-            function () {echo PHP_EOL . 'AA-BB-CC-DD-EE-FF' . PHP_EOL;},
+            function () {echo "\nAA-BB-CC-DD-EE-FF\n";},
             'NOT LINUX'
         );
 
@@ -286,7 +283,7 @@ class SystemNodeProviderTest extends TestCase
                 return array_shift($macs);
             },
             ['mock address path 1', 'mock address path 2'],
-            function () {echo PHP_EOL . '01-02-03-04-05-06' . PHP_EOL;},
+            function () {echo "\n01-02-03-04-05-06\n";},
             $os
         );
 
@@ -321,7 +318,7 @@ class SystemNodeProviderTest extends TestCase
         $this->arrangeMockFunctions(
             null,
             false,
-            function () {echo PHP_EOL . '01-02-03-04-05-06' . PHP_EOL;},
+            function () {echo "\n01-02-03-04-05-06\n";},
             'Linux'
         );
 
@@ -345,7 +342,7 @@ class SystemNodeProviderTest extends TestCase
         $this->arrangeMockFunctions(
             null,
             [],
-            function () {echo PHP_EOL . '01-02-03-04-05-06' . PHP_EOL;},
+            function () {echo "\n01-02-03-04-05-06\n";},
             'Linux'
         );
 
