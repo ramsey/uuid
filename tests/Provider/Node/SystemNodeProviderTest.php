@@ -352,7 +352,7 @@ class SystemNodeProviderTest extends TestCase
         /*/ Arrange /*/
         $this->arrangeMockFunctions(
             function () {
-                static $macs = ["\n00:00:00:00:00:00\n", "\n01:02:03:04:05:06\n"];
+                static $macs = ["00:00:00:00:00:00\n", "01:02:03:04:05:06\n"];
                 return array_shift($macs);
             },
             ['mock address path 1', 'mock address path 2'],
@@ -731,7 +731,7 @@ TXT
 
             /*/ Incorrect variations that are also accepted /*/
             'Local host'                   => ["\n00:00:00:00:00:00\n",    '000000000000'],
-            'Too long -- extra character'  => ["\nAAA-BB-CC-DD-EE-FF\n",   'AABBCCDDEEFF'],
+            'Too long -- extra character'  => ["\nABC-01-23-45-67-89\n",   'BC0123456789'],
             'Too long -- extra tuple'      => ["\n01-AA-BB-CC-DD-EE-FF\n", '01AABBCCDDEE'],
         ];
     }
