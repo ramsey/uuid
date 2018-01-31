@@ -35,7 +35,6 @@ use AspectMock\Test as AspectMock;
  * sad-path (failure scenarios) untested.
  *
  * @TODO: Add tests for failure scenario's
- * @TODO: Replace mock of the class-under-test with an actual object instance
  */
 class SystemNodeProviderTest extends TestCase
 {
@@ -43,17 +42,11 @@ class SystemNodeProviderTest extends TestCase
     const MOCK_UNAME = 'php_uname';
     const MOCK_PASSTHRU = 'passthru';
     const MOCK_FILE_GET_CONTENTS = 'file_get_contents';
+
     const PROVIDER_NAMESPACE = 'Ramsey\\Uuid\\Provider\\Node';
 
-    /**
-     * @var FuncProxy[]
-     */
-    private $functionProxies = [
-        self::MOCK_FILE_GET_CONTENTS => null,
-        self::MOCK_GLOB => null,
-        self::MOCK_PASSTHRU => null,
-        self::MOCK_UNAME => null,
-    ];
+    /** @var FuncProxy[] */
+    private $functionProxies = [];
 
     /**
      * @runInSeparateProcess
@@ -61,19 +54,22 @@ class SystemNodeProviderTest extends TestCase
      */
     public function testGetNodeReturnsSystemNodeFromMacAddress()
     {
-        $provider = $this->getMockBuilder('Ramsey\Uuid\Provider\Node\SystemNodeProvider')
-            ->setMethods(['getIfconfig','getSysfs'])
-            ->getMock();
+        /*/ Arrange mocks for native functions /*/
+        $this->arrangeMockFunctions(
+            null,
+            null,
+            function () {echo PHP_EOL . 'AA-BB-CC-DD-EE-FF' . PHP_EOL;},
+            'NOT LINUX'
+        );
 
-        $provider->expects($this->once())
-            ->method('getSysfs')
-            ->willReturn(false);
-
-        $provider->expects($this->once())
-            ->method('getIfconfig')
-            ->willReturn(PHP_EOL . 'AA-BB-CC-DD-EE-FF' . PHP_EOL);
-
+        /*/ Act upon the system under test/*/
+        $provider = new SystemNodeProvider();
         $node = $provider->getNode();
+
+        /*/ Assert the result match expectations /*/
+        $this->assertMockFunctions(null, null, ['netstat -ie 2>&1'], [['a'], ['s']]);
+
+        $this->assertSame('AABBCCDDEEFF', $node);
 
         $this->assertTrue(ctype_xdigit($node), 'Node should be a hexadecimal string. Actual node: ' . $node);
         $length = strlen($node);
@@ -84,24 +80,29 @@ class SystemNodeProviderTest extends TestCase
     /**
      * @runInSeparateProcess
      * @preserveGlobalState disabled
+     *
      * @dataProvider notationalFormatsDataProvider
+     *
      * @param $formatted
      * @param $expected
      */
     public function testGetNodeReturnsNodeStrippedOfNotationalFormatting($formatted, $expected)
     {
-        //Using a stub to provide data for the protected method that gets the node
-        $provider = $this->getMockBuilder('Ramsey\Uuid\Provider\Node\SystemNodeProvider')
-            ->setMethods(['getIfconfig','getSysfs'])
-            ->getMock();
-        $provider->method('getIfconfig')
-            ->willReturn(PHP_EOL . $formatted . PHP_EOL);
+        /*/ Arrange /*/
+        $this->arrangeMockFunctions(
+            null,
+            null,
+            function () use ($formatted) {echo PHP_EOL . $formatted . PHP_EOL;},
+            'NOT LINUX'
+        );
 
-        $provider->expects($this->once())
-            ->method('getSysfs')
-            ->willReturn(false);
-
+        /*/ Act /*/
+        $provider = new SystemNodeProvider();
         $node = $provider->getNode();
+
+        /*/ Assert /*/
+        $this->assertMockFunctions(null, null, ['netstat -ie 2>&1'], [['a'], ['s']]);
+
         $this->assertEquals($expected, $node);
     }
 
@@ -111,20 +112,26 @@ class SystemNodeProviderTest extends TestCase
      */
     public function testGetNodeReturnsFirstMacAddressFound()
     {
-        //Using a stub to provide data for the protected method that gets the node
-        $provider = $this->getMockBuilder('Ramsey\Uuid\Provider\Node\SystemNodeProvider')
-            ->setMethods(['getIfconfig','getSysfs'])
-            ->getMock();
-        $provider->method('getIfconfig')
-            ->willReturn(PHP_EOL . 'AA-BB-CC-DD-EE-FF' . PHP_EOL .
-                '00-11-22-33-44-55' . PHP_EOL .
-                'FF-11-EE-22-DD-33' . PHP_EOL);
+        /*/ Arrange /*/
+        $this->arrangeMockFunctions(
+            null,
+            null,
+            function () {
+                echo PHP_EOL . 'AA-BB-CC-DD-EE-FF' . PHP_EOL .
+                    '00-11-22-33-44-55' . PHP_EOL .
+                    'FF-11-EE-22-DD-33' . PHP_EOL
+                ;
+            },
+            'NOT LINUX'
+        );
 
-        $provider->expects($this->once())
-            ->method('getSysfs')
-            ->willReturn(false);
-
+        /*/ Act /*/
+        $provider = new SystemNodeProvider();
         $node = $provider->getNode();
+
+        /*/ Assert /*/
+        $this->assertMockFunctions(null, null, ['netstat -ie 2>&1'], [['a'], ['s']]);
+
         $this->assertEquals('AABBCCDDEEFF', $node);
     }
 
@@ -134,19 +141,21 @@ class SystemNodeProviderTest extends TestCase
      */
     public function testGetNodeReturnsFalseWhenNodeIsNotFound()
     {
-        $provider = $this->getMockBuilder('Ramsey\Uuid\Provider\Node\SystemNodeProvider')
-            ->setMethods(['getIfconfig','getSysfs'])
-            ->getMock();
+        /*/ Arrange /*/
+        $this->arrangeMockFunctions(
+            null,
+            null,
+            function () {echo 'some string that does not match the mac address';},
+            'NOT LINUX'
+        );
 
-        $provider->expects($this->once())
-            ->method('getIfconfig')
-            ->willReturn('some string that does not match the mac address');
-
-        $provider->expects($this->once())
-            ->method('getSysfs')
-            ->willReturn(false);
-
+        /*/ Act /*/
+        $provider = new SystemNodeProvider();
         $node = $provider->getNode();
+
+        /*/ Assert /*/
+        $this->assertMockFunctions(null, null, ['netstat -ie 2>&1'], [['a'], ['s']]);
+
         $this->assertFalse($node);
     }
 
@@ -156,45 +165,57 @@ class SystemNodeProviderTest extends TestCase
      */
     public function testGetNodeWillNotExecuteSystemCallIfFailedFirstTime()
     {
-        $provider = $this->getMockBuilder('Ramsey\Uuid\Provider\Node\SystemNodeProvider')
-            ->setMethods(['getIfconfig','getSysfs'])
-            ->getMock();
+        /*/ Arrange /*/
+        $this->arrangeMockFunctions(
+            null,
+            null,
+            function () {echo 'some string that does not match the mac address';},
+            'NOT LINUX'
+        );
 
-        $provider->expects($this->once())
-            ->method('getIfconfig')
-            ->willReturn('some string that does not match the mac address');
-
-        $provider->expects($this->once())
-            ->method('getSysfs')
-            ->willReturn(false);
-
+        /*/ Act /*/
+        $provider = new SystemNodeProvider();
         $provider->getNode();
         $provider->getNode();
+
+        /*/ Assert /*/
+        $this->assertMockFunctions(null, null, ['netstat -ie 2>&1'], [['a'], ['s']]);
     }
 
     /**
      * @runInSeparateProcess
      * @preserveGlobalState disabled
+     *
      * @dataProvider osCommandDataProvider
+     *
      * @param $os
      * @param $command
      */
     public function testGetNodeGetsNetworkInterfaceConfig($os, $command)
     {
         $this->skipIfHhvm();
-        AspectMock::func('Ramsey\Uuid\Provider\Node', 'php_uname', $os);
-        $passthru = AspectMock::func('Ramsey\Uuid\Provider\Node', 'passthru', 'whatever');
 
-        $provider = $this->getMockBuilder('Ramsey\Uuid\Provider\Node\SystemNodeProvider')
-            ->setMethods(['getSysfs'])
-            ->getMock();
+        /*/ Arrange /*/
+        $this->arrangeMockFunctions(
+            'whatever',
+            ['mock address path'],
+            'whatever',
+            $os
+        );
 
-        $provider->expects($this->once())
-            ->method('getSysfs')
-            ->willReturn(false);
 
+        /*/ Act /*/
+        $provider = new SystemNodeProvider();
         $provider->getNode();
-        $passthru->verifyInvokedOnce([$command]);
+
+        /*/ Assert /*/
+        $globBodyAssert = null;
+        $fileGetContentsAssert = null;
+        if ($os === 'Linux') {
+            $globBodyAssert = ['/sys/class/net/*/address'];
+            $fileGetContentsAssert = ['mock address path'];
+        }
+        $this->assertMockFunctions($fileGetContentsAssert, $globBodyAssert, [$command], [['a'], ['s']]);
     }
 
     /**
@@ -203,15 +224,22 @@ class SystemNodeProviderTest extends TestCase
      */
     public function testGetNodeReturnsSameNodeUponSubsequentCalls()
     {
-        //Using a stub to provide data for the protected method that gets the node
-        $provider = $this->getMockBuilder('Ramsey\Uuid\Provider\Node\SystemNodeProvider')
-            ->setMethods(['getIfconfig'])
-            ->getMock();
-        $provider->method('getIfconfig')
-            ->willReturn(PHP_EOL . 'AA-BB-CC-DD-EE-FF' . PHP_EOL);
+        /*/ Arrange /*/
+        $this->arrangeMockFunctions(
+            null,
+            null,
+            function () {echo PHP_EOL . 'AA-BB-CC-DD-EE-FF' . PHP_EOL;},
+            'NOT LINUX'
+        );
 
+        /*/ Act /*/
+        $provider = new SystemNodeProvider();
         $node = $provider->getNode();
         $node2 = $provider->getNode();
+
+        /*/ Assert /*/
+        $this->assertMockFunctions(null, null, ['netstat -ie 2>&1'], [['a'], ['s']]);
+
         $this->assertEquals($node, $node2);
     }
 
@@ -221,48 +249,66 @@ class SystemNodeProviderTest extends TestCase
      */
     public function testSubsequentCallsToGetNodeDoNotRecallIfconfig()
     {
-        //Using a mock to verify the provider only gets the node from ifconfig one time
-        $provider = $this->getMockBuilder('Ramsey\Uuid\Provider\Node\SystemNodeProvider')
-            ->setMethods(['getIfconfig','getSysfs'])
-            ->getMock();
-        $provider->expects($this->once())
-            ->method('getIfconfig')
-            ->willReturn(PHP_EOL . 'AA-BB-CC-DD-EE-FF' . PHP_EOL);
-        $provider->expects($this->once())
-            ->method('getSysfs')
-            ->willReturn(false);
-        $provider->getNode();
-        $provider->getNode();
+        /*/ Arrange /*/
+        $this->arrangeMockFunctions(
+            null,
+            null,
+            function () {echo PHP_EOL . 'AA-BB-CC-DD-EE-FF' . PHP_EOL;},
+            'NOT LINUX'
+        );
+
+        /*/ Act /*/
+        $provider = new SystemNodeProvider();
+        $node = $provider->getNode();
+        $node2 = $provider->getNode();
+
+        /*/ Assert /*/
+        $this->assertMockFunctions(null, null, ['netstat -ie 2>&1'], [['a'], ['s']]);
+
+        $this->assertEquals($node, $node2);
     }
 
     /**
      * @runInSeparateProcess
      * @preserveGlobalState disabled
+     *
      * @dataProvider osCommandDataProvider
+     *
      * @param $os
      * @param $command
      */
-    public function testCallGetsysfsOnLinux($os)
+    public function testCallGetsysfsOnLinux($os, $command)
     {
-        AspectMock::func('Ramsey\Uuid\Provider\Node', 'php_uname', $os);
-        AspectMock::func('Ramsey\Uuid\Provider\Node', 'glob', [
-            'data://text/plain,00:00:00:00:00:00',
-            'data://text/plain,01:02:03:04:05:06',
-        ]);
+        /*/ Arrange /*/
+        $this->arrangeMockFunctions(
+            function () {
+                static $macs = ["\n00:00:00:00:00:00\n", "\n01:02:03:04:05:06\n"];
+                return array_shift($macs);
+            },
+            ['mock address path 1', 'mock address path 2'],
+            function () {echo PHP_EOL . '01-02-03-04-05-06' . PHP_EOL;},
+            $os
+        );
 
-        $provider = \Mockery::mock('Ramsey\Uuid\Provider\Node\SystemNodeProvider');
-        $provider->shouldAllowMockingProtectedMethods();
-        $provider->shouldReceive('getNode')->passthru();
+        /*/ Act /*/
+        $provider = new SystemNodeProvider();
+        $node = $provider->getNode();
+
+        /*/ Assert /*/
+        $fileGetContentsAssert = null;
+        $globBodyAssert = null;
+        $passthruBodyAssert = [$command];
+        $unameBodyAssert = [['a'], ['s']];
 
         if ($os === 'Linux') {
-            $provider->shouldReceive('getIfconfig')->never();
-            $provider->shouldReceive('getSysfs')->passthru();
-        } else {
-            $provider->shouldReceive('getIfconfig')->once()->andReturn(PHP_EOL . '01-02-03-04-05-06' . PHP_EOL);
-            $provider->shouldReceive('getSysfs')->once()->andReturn(false);
+            $fileGetContentsAssert = [['mock address path 1'], ['mock address path 2']];
+            $globBodyAssert = ['/sys/class/net/*/address'];
+            $passthruBodyAssert = null;
+            $unameBodyAssert = ['s'];
         }
+        $this->assertMockFunctions($fileGetContentsAssert, $globBodyAssert, $passthruBodyAssert, $unameBodyAssert);
 
-        $this->assertEquals('010203040506', $provider->getNode());
+        $this->assertEquals('010203040506', $node);
     }
 
     /**
@@ -271,17 +317,22 @@ class SystemNodeProviderTest extends TestCase
      */
     public function testCallGetsysfsOnLinuxWhenGlobReturnsFalse()
     {
-        AspectMock::func('Ramsey\Uuid\Provider\Node', 'php_uname', 'Linux');
-        AspectMock::func('Ramsey\Uuid\Provider\Node', 'glob', false);
+        /*/ Arrange /*/
+        $this->arrangeMockFunctions(
+            null,
+            false,
+            function () {echo PHP_EOL . '01-02-03-04-05-06' . PHP_EOL;},
+            'Linux'
+        );
 
-        $provider = \Mockery::mock('Ramsey\Uuid\Provider\Node\SystemNodeProvider');
-        $provider->shouldAllowMockingProtectedMethods();
-        $provider->shouldReceive('getNode')->passthru();
-        $provider->shouldReceive('getSysfs')->passthru();
+        /*/ Act /*/
+        $provider = new SystemNodeProvider();
+        $node = $provider->getNode();
 
-        $provider->shouldReceive('getIfconfig')->once()->andReturn(PHP_EOL . '01-02-03-04-05-06' . PHP_EOL);
+        /*/ Assert /*/
+        $this->assertMockFunctions(null, ['/sys/class/net/*/address'], ['netstat -ie 2>&1'], [['a'], ['s']]);
 
-        $this->assertEquals('010203040506', $provider->getNode());
+        $this->assertEquals('010203040506', $node);
     }
 
     /**
@@ -290,17 +341,22 @@ class SystemNodeProviderTest extends TestCase
      */
     public function testCallGetsysfsOnLinuxWhenGlobReturnsEmptyArray()
     {
-        AspectMock::func('Ramsey\Uuid\Provider\Node', 'php_uname', 'Linux');
-        AspectMock::func('Ramsey\Uuid\Provider\Node', 'glob', []);
+        /*/ Arrange /*/
+        $this->arrangeMockFunctions(
+            null,
+            [],
+            function () {echo PHP_EOL . '01-02-03-04-05-06' . PHP_EOL;},
+            'Linux'
+        );
 
-        $provider = \Mockery::mock('Ramsey\Uuid\Provider\Node\SystemNodeProvider');
-        $provider->shouldAllowMockingProtectedMethods();
-        $provider->shouldReceive('getNode')->passthru();
-        $provider->shouldReceive('getSysfs')->passthru();
+        /*/ Act /*/
+        $provider = new SystemNodeProvider();
+        $node = $provider->getNode();
 
-        $provider->shouldReceive('getIfconfig')->once()->andReturn(PHP_EOL . '01-02-03-04-05-06' . PHP_EOL);
+        /*/ Assert /*/
+        $this->assertMockFunctions(null, ['/sys/class/net/*/address'], ['netstat -ie 2>&1'], [['a'], ['s']]);
 
-        $this->assertEquals('010203040506', $provider->getNode());
+        $this->assertEquals('010203040506', $node);
     }
 
     public function notationalFormatsDataProvider()
@@ -324,10 +380,10 @@ class SystemNodeProviderTest extends TestCase
     /**
      * Replaces the return value for functions with the given value or callback.
      *
-     * @param mixed| callback $fileGetContentsBody
-     * @param mixed| callback $globBody
-     * @param mixed| callback $passthruBody
-     * @param mixed| callback $unameBody
+     * @param callback|mixed|null $fileGetContentsBody
+     * @param callback|mixed|null $globBody
+     * @param callback|mixed|null $passthruBody
+     * @param callback|mixed|null $unameBody
      */
     private function arrangeMockFunctions($fileGetContentsBody, $globBody, $passthruBody, $unameBody)
     {
