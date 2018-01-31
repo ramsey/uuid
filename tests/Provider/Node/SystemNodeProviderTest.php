@@ -54,8 +54,8 @@ class SystemNodeProviderTest extends TestCase
      *
      * @dataProvider provideValidNetStatOutput
      *
-     * @param $netstatOutput
-     * @param $expected
+     * @param string $netstatOutput
+     * @param string $expected
      */
     public function testGetNodeReturnsSystemNodeFromMacAddress($netstatOutput, $expected)
     {
@@ -87,10 +87,42 @@ class SystemNodeProviderTest extends TestCase
      * @runInSeparateProcess
      * @preserveGlobalState disabled
      *
+     * @dataProvider provideInvalidNetStatOutput
+     *
+     * @param string $netstatOutput
+     */
+    public function testGetNodeShouldNotReturnsSystemNodeForInvalidMacAddress($netstatOutput)
+    {
+        /*/ Arrange mocks for native functions /*/
+        $mockFileGetContents = AspectMock::func(self::PROVIDER_NAMESPACE, self::MOCK_FILE_GET_CONTENTS, null);
+        $mockGlob = AspectMock::func(self::PROVIDER_NAMESPACE, self::MOCK_GLOB, null);
+        $mockPassthru = AspectMock::func(self::PROVIDER_NAMESPACE, self::MOCK_PASSTHRU, function () use ($netstatOutput) {
+            echo $netstatOutput;
+        });
+        $mockUname = AspectMock::func(self::PROVIDER_NAMESPACE, self::MOCK_UNAME, 'NOT LINUX');
+
+        /*/ Act upon the system under test/*/
+        $provider = new SystemNodeProvider();
+        $actual = $provider->getNode();
+
+        /*/ Assert the result match expectations /*/
+        $mockFileGetContents->verifyNeverInvoked();
+        $mockGlob->verifyNeverInvoked();
+        $mockPassthru->verifyInvokedOnce('netstat -ie 2>&1');
+        $mockUname->verifyInvokedOnce(['s']);
+        $mockUname->verifyInvokedOnce(['a']);
+
+        $this->assertFalse($actual);
+    }
+
+    /**
+     * @runInSeparateProcess
+     * @preserveGlobalState disabled
+     *
      * @dataProvider notationalFormatsDataProvider
      *
-     * @param $formatted
-     * @param $expected
+     * @param string $formatted
+     * @param string $expected
      */
     public function testGetNodeReturnsNodeStrippedOfNotationalFormatting($formatted, $expected)
     {
@@ -110,6 +142,34 @@ class SystemNodeProviderTest extends TestCase
         $this->assertMockFunctions(null, null, ['netstat -ie 2>&1'], [['a'], ['s']]);
 
         $this->assertEquals($expected, $node);
+    }
+
+    /**
+     * @runInSeparateProcess
+     * @preserveGlobalState disabled
+     *
+     * @dataProvider invalidNotationalFormatsDataProvider
+     *
+     * @param string $formatted
+     */
+    public function testGetNodeDoesNotAcceptIncorrectNotationalFormatting($formatted)
+    {
+        /*/ Arrange /*/
+        $this->arrangeMockFunctions(
+            null,
+            null,
+            function () use ($formatted) {echo "\n{$formatted}\n";},
+            'NOT LINUX'
+        );
+
+        /*/ Act /*/
+        $provider = new SystemNodeProvider();
+        $node = $provider->getNode();
+
+        /*/ Assert /*/
+        $this->assertMockFunctions(null, null, ['netstat -ie 2>&1'], [['a'], ['s']]);
+
+        $this->assertEquals(false, $node);
     }
 
     /**
@@ -606,6 +666,47 @@ TXT
             'Local host'                   => ["\n00:00:00:00:00:00\n",    '000000000000'],
             'Too long -- extra character'  => ["\nAAA-BB-CC-DD-EE-FF\n",   'AABBCCDDEEFF'],
             'Too long -- extra tuple'      => ["\n01-AA-BB-CC-DD-EE-FF\n", '01AABBCCDDEE'],
+        ];
+    }
+
+    /**
+     * Values that are NOT parsed to a mac address by the class under test
+     *
+     * @return array[]
+     */
+    public function provideInvalidNetStatOutput()
+    {
+        return [
+            'Not an octal value'                              => ["The program 'netstat' is currently not installed. You can install it by typing:\nsudo apt install net-tools\n"],
+            'One character too short'                         => ["\nA-BB-CC-DD-EE-FF\n"],
+            'One tuple too short'                             => ["\nBB-CC-DD-EE-FF\n"],
+            'With colon, with linebreak, without space'       => ["\n:AA-BB-CC-DD-EE-FF\n"],
+            'With colon, without linebreak, with space'       => [' : AA-BB-CC-DD-EE-FF'],
+            'With colon, without linebreak, without space'    => [':AA-BB-CC-DD-EE-FF'],
+            'Without colon, without linebreak, without space' => ['AA-BB-CC-DD-EE-FF'],
+            'Without leading linebreak'                       => ["AA-BB-CC-DD-EE-FF\n"],
+            'Without leading whitespace'                      => ['AA-BB-CC-DD-EE-FF '],
+            'Without trailing linebreak'                      => ["\nAA-BB-CC-DD-EE-FF"],
+            'Without trailing whitespace'                     => [' AA-BB-CC-DD-EE-FF'],
+        ];
+    }
+
+    /**
+     * Provides notations that the class under test should NOT attempt to strip
+     *
+     * @return array[]
+     */
+    public function invalidNotationalFormatsDataProvider()
+    {
+        return [
+            ['01:23-45-67-89-ab'],
+            ['01:23:45-67-89-ab'],
+            ['01:23:45:67-89-ab'],
+            ['01:23:45:67:89-ab'],
+            ['01-23:45:67:89:ab'],
+            ['01-23-45:67:89:ab'],
+            ['01-23-45-67:89:ab'],
+            ['01-23-45-67-89:ab'],
         ];
     }
 }
