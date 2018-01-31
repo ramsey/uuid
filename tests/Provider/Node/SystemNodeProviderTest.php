@@ -418,35 +418,6 @@ class SystemNodeProviderTest extends TestCase
     }
 
     /**
-     * Provides mac addresses that the class under test should strip notational format from
-     *
-     * @return array[]
-     */
-    public function provideNotationalFormats()
-    {
-        return [
-            ['01-23-45-67-89-ab', '0123456789ab'],
-            ['01:23:45:67:89:ab', '0123456789ab']
-        ];
-    }
-
-    /**
-     * Provides the command that should be executed per supported OS
-     *
-     * @return array[]
-     */
-    public function provideCommandPerOs()
-    {
-        return [
-            'windows' => ['Windows', 'ipconfig /all 2>&1'],
-            'mac' => ['Darwhat', 'ifconfig 2>&1'],
-            'linux' => ['Linux', 'netstat -ie 2>&1'],
-            'anything_else' => ['someotherxyz', 'netstat -ie 2>&1'],
-            'Linux when `glob` fails' => ['LIN', 'netstat -ie 2>&1'],
-        ];
-    }
-
-    /**
      * Replaces the return value for functions with the given value or callback.
      *
      * @param callback|mixed|null $fileGetContentsBody
@@ -504,6 +475,76 @@ class SystemNodeProviderTest extends TestCase
                 throw new \InvalidArgumentException($error);
             }
         });
+    }
+
+    /**
+     * Provides the command that should be executed per supported OS
+     *
+     * @return array[]
+     */
+    public function provideCommandPerOs()
+    {
+        return [
+            'windows' => ['Windows', 'ipconfig /all 2>&1'],
+            'mac' => ['Darwhat', 'ifconfig 2>&1'],
+            'linux' => ['Linux', 'netstat -ie 2>&1'],
+            'anything_else' => ['someotherxyz', 'netstat -ie 2>&1'],
+            'Linux when `glob` fails' => ['LIN', 'netstat -ie 2>&1'],
+        ];
+    }
+
+    /**
+     * Values that are NOT parsed to a mac address by the class under test
+     *
+     * @return array[]
+     */
+    public function provideInvalidNetStatOutput()
+    {
+        return [
+            'Not an octal value'                              => ["The program 'netstat' is currently not installed. You can install it by typing:\nsudo apt install net-tools\n"],
+            'One character too short'                         => ["\nA-BB-CC-DD-EE-FF\n"],
+            'One tuple too short'                             => ["\nBB-CC-DD-EE-FF\n"],
+            'With colon, with linebreak, without space'       => ["\n:AA-BB-CC-DD-EE-FF\n"],
+            'With colon, without linebreak, with space'       => [' : AA-BB-CC-DD-EE-FF'],
+            'With colon, without linebreak, without space'    => [':AA-BB-CC-DD-EE-FF'],
+            'Without colon, without linebreak, without space' => ['AA-BB-CC-DD-EE-FF'],
+            'Without leading linebreak'                       => ["AA-BB-CC-DD-EE-FF\n"],
+            'Without leading whitespace'                      => ['AA-BB-CC-DD-EE-FF '],
+            'Without trailing linebreak'                      => ["\nAA-BB-CC-DD-EE-FF"],
+            'Without trailing whitespace'                     => [' AA-BB-CC-DD-EE-FF'],
+        ];
+    }
+
+    /**
+     * Provides notations that the class under test should NOT attempt to strip
+     *
+     * @return array[]
+     */
+    public function provideInvalidNotationalFormats()
+    {
+        return [
+            ['01:23-45-67-89-ab'],
+            ['01:23:45-67-89-ab'],
+            ['01:23:45:67-89-ab'],
+            ['01:23:45:67:89-ab'],
+            ['01-23:45:67:89:ab'],
+            ['01-23-45:67:89:ab'],
+            ['01-23-45-67:89:ab'],
+            ['01-23-45-67-89:ab'],
+        ];
+    }
+
+    /**
+     * Provides mac addresses that the class under test should strip notational format from
+     *
+     * @return array[]
+     */
+    public function provideNotationalFormats()
+    {
+        return [
+            ['01-23-45-67-89-ab', '0123456789ab'],
+            ['01:23:45:67:89:ab', '0123456789ab']
+        ];
     }
 
     /**
@@ -671,47 +712,6 @@ TXT
             'Local host'                   => ["\n00:00:00:00:00:00\n",    '000000000000'],
             'Too long -- extra character'  => ["\nAAA-BB-CC-DD-EE-FF\n",   'AABBCCDDEEFF'],
             'Too long -- extra tuple'      => ["\n01-AA-BB-CC-DD-EE-FF\n", '01AABBCCDDEE'],
-        ];
-    }
-
-    /**
-     * Values that are NOT parsed to a mac address by the class under test
-     *
-     * @return array[]
-     */
-    public function provideInvalidNetStatOutput()
-    {
-        return [
-            'Not an octal value'                              => ["The program 'netstat' is currently not installed. You can install it by typing:\nsudo apt install net-tools\n"],
-            'One character too short'                         => ["\nA-BB-CC-DD-EE-FF\n"],
-            'One tuple too short'                             => ["\nBB-CC-DD-EE-FF\n"],
-            'With colon, with linebreak, without space'       => ["\n:AA-BB-CC-DD-EE-FF\n"],
-            'With colon, without linebreak, with space'       => [' : AA-BB-CC-DD-EE-FF'],
-            'With colon, without linebreak, without space'    => [':AA-BB-CC-DD-EE-FF'],
-            'Without colon, without linebreak, without space' => ['AA-BB-CC-DD-EE-FF'],
-            'Without leading linebreak'                       => ["AA-BB-CC-DD-EE-FF\n"],
-            'Without leading whitespace'                      => ['AA-BB-CC-DD-EE-FF '],
-            'Without trailing linebreak'                      => ["\nAA-BB-CC-DD-EE-FF"],
-            'Without trailing whitespace'                     => [' AA-BB-CC-DD-EE-FF'],
-        ];
-    }
-
-    /**
-     * Provides notations that the class under test should NOT attempt to strip
-     *
-     * @return array[]
-     */
-    public function provideInvalidNotationalFormats()
-    {
-        return [
-            ['01:23-45-67-89-ab'],
-            ['01:23:45-67-89-ab'],
-            ['01:23:45:67-89-ab'],
-            ['01:23:45:67:89-ab'],
-            ['01-23:45:67:89:ab'],
-            ['01-23-45:67:89:ab'],
-            ['01-23-45-67:89:ab'],
-            ['01-23-45-67-89:ab'],
         ];
     }
 }
