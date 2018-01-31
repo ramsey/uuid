@@ -58,7 +58,9 @@ class SystemNodeProviderTest extends TestCase
         $this->arrangeMockFunctions(
             null,
             null,
-            function () use ($netstatOutput) {echo $netstatOutput;},
+            function () use ($netstatOutput) {
+                echo $netstatOutput;
+            },
             'NOT LINUX'
         );
 
@@ -92,7 +94,9 @@ class SystemNodeProviderTest extends TestCase
         $this->arrangeMockFunctions(
             null,
             null,
-            function () use ($netstatOutput) {echo $netstatOutput;},
+            function () use ($netstatOutput) {
+                echo $netstatOutput;
+            },
             'NOT LINUX'
         );
 
@@ -121,7 +125,9 @@ class SystemNodeProviderTest extends TestCase
         $this->arrangeMockFunctions(
             null,
             null,
-            function () use ($formatted) {echo "\n{$formatted}\n";},
+            function () use ($formatted) {
+                echo "\n{$formatted}\n";
+            },
             'NOT LINUX'
         );
 
@@ -149,7 +155,9 @@ class SystemNodeProviderTest extends TestCase
         $this->arrangeMockFunctions(
             null,
             null,
-            function () use ($formatted) {echo "\n{$formatted}\n";},
+            function () use ($formatted) {
+                echo "\n{$formatted}\n";
+            },
             'NOT LINUX'
         );
 
@@ -199,7 +207,9 @@ class SystemNodeProviderTest extends TestCase
         $this->arrangeMockFunctions(
             null,
             null,
-            function () {echo 'some string that does not match the mac address';},
+            function () {
+                echo 'some string that does not match the mac address';
+            },
             'NOT LINUX'
         );
 
@@ -223,7 +233,9 @@ class SystemNodeProviderTest extends TestCase
         $this->arrangeMockFunctions(
             null,
             null,
-            function () {echo 'some string that does not match the mac address';},
+            function () {
+                echo 'some string that does not match the mac address';
+            },
             'NOT LINUX'
         );
 
@@ -282,7 +294,9 @@ class SystemNodeProviderTest extends TestCase
         $this->arrangeMockFunctions(
             null,
             null,
-            function () {echo "\nAA-BB-CC-DD-EE-FF\n";},
+            function () {
+                echo "\nAA-BB-CC-DD-EE-FF\n";
+            },
             'NOT LINUX'
         );
 
@@ -307,7 +321,9 @@ class SystemNodeProviderTest extends TestCase
         $this->arrangeMockFunctions(
             null,
             null,
-            function () {echo "\nAA-BB-CC-DD-EE-FF\n";},
+            function () {
+                echo "\nAA-BB-CC-DD-EE-FF\n";
+            },
             'NOT LINUX'
         );
 
@@ -340,7 +356,9 @@ class SystemNodeProviderTest extends TestCase
                 return array_shift($macs);
             },
             ['mock address path 1', 'mock address path 2'],
-            function () {echo "\n01-02-03-04-05-06\n";},
+            function () {
+                echo "\n01-02-03-04-05-06\n";
+            },
             $os
         );
 
@@ -375,7 +393,9 @@ class SystemNodeProviderTest extends TestCase
         $this->arrangeMockFunctions(
             null,
             false,
-            function () {echo "\n01-02-03-04-05-06\n";},
+            function () {
+                echo "\n01-02-03-04-05-06\n";
+            },
             'Linux'
         );
 
@@ -399,7 +419,9 @@ class SystemNodeProviderTest extends TestCase
         $this->arrangeMockFunctions(
             null,
             [],
-            function () {echo "\n01-02-03-04-05-06\n";},
+            function () {
+                echo "\n01-02-03-04-05-06\n";
+            },
             'Linux'
         );
 
@@ -454,14 +476,14 @@ class SystemNodeProviderTest extends TestCase
             self::MOCK_UNAME => $unameBodyAssert,
         ];
 
-        array_walk($mockFunctionAsserts,  function ($asserts, $key) {
+        array_walk($mockFunctionAsserts, function ($asserts, $key) {
             if ($asserts === null) {
                 $this->functionProxies[$key]->verifyNeverInvoked();
-            } elseif(is_array($asserts)) {
+            } elseif (is_array($asserts)) {
                 foreach ($asserts as $assert) {
                     $this->functionProxies[$key]->verifyInvokedOnce($assert);
                 }
-            } elseif(is_callable($asserts)) {
+            } elseif (is_callable($asserts)) {
                 $this->functionProxies[$key]->verifyInvokedOnce($asserts);
             } else {
                 $error = vsprintf(
@@ -497,7 +519,10 @@ class SystemNodeProviderTest extends TestCase
     public function provideInvalidNetStatOutput()
     {
         return [
-            'Not an octal value'                              => ["The program 'netstat' is currently not installed. You can install it by typing:\nsudo apt install net-tools\n"],
+            'Not an octal value'                              => [
+                "The program 'netstat' is currently not installed.' .
+                ' You can install it by typing:\nsudo apt install net-tools\n"
+            ],
             'One character too short'                         => ["\nA-BB-CC-DD-EE-FF\n"],
             'One tuple too short'                             => ["\nBB-CC-DD-EE-FF\n"],
             'With colon, with linebreak, without space'       => ["\n:AA-BB-CC-DD-EE-FF\n"],
