@@ -88,26 +88,22 @@ class SystemNodeProviderTest extends TestCase
      */
     public function testGetNodeShouldNotReturnsSystemNodeForInvalidMacAddress($netstatOutput)
     {
-        /*/ Arrange mocks for native functions /*/
-        $mockFileGetContents = AspectMock::func(self::PROVIDER_NAMESPACE, self::MOCK_FILE_GET_CONTENTS, null);
-        $mockGlob = AspectMock::func(self::PROVIDER_NAMESPACE, self::MOCK_GLOB, null);
-        $mockPassthru = AspectMock::func(self::PROVIDER_NAMESPACE, self::MOCK_PASSTHRU, function () use ($netstatOutput) {
-            echo $netstatOutput;
-        });
-        $mockUname = AspectMock::func(self::PROVIDER_NAMESPACE, self::MOCK_UNAME, 'NOT LINUX');
+        /*/ Arrange /*/
+        $this->arrangeMockFunctions(
+            null,
+            null,
+            function () use ($netstatOutput) {echo $netstatOutput;},
+            'NOT LINUX'
+        );
 
-        /*/ Act upon the system under test/*/
+        /*/ Act /*/
         $provider = new SystemNodeProvider();
-        $actual = $provider->getNode();
+        $node = $provider->getNode();
 
-        /*/ Assert the result match expectations /*/
-        $mockFileGetContents->verifyNeverInvoked();
-        $mockGlob->verifyNeverInvoked();
-        $mockPassthru->verifyInvokedOnce('netstat -ie 2>&1');
-        $mockUname->verifyInvokedOnce(['s']);
-        $mockUname->verifyInvokedOnce(['a']);
+        /*/ Assert /*/
+        $this->assertMockFunctions(null, null, ['netstat -ie 2>&1'], [['a'], ['s']]);
 
-        $this->assertFalse($actual);
+        $this->assertFalse($node);
     }
 
     /**
