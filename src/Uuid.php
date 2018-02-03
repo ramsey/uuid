@@ -697,7 +697,6 @@ class Uuid implements UuidInterface
      */
     public static function uuid4()
     {
-
         return self::getFactory()->uuid4();
     }
 
