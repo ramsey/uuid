@@ -70,6 +70,9 @@ class SystemNodeProvider implements NodeProviderInterface
             case 'DAR':
                 passthru('ifconfig 2>&1');
                 break;
+            case 'FRE':
+                passthru('netstat -i -f link 2>&1');
+                break;
             case 'LIN':
             default:
                 passthru('netstat -ie 2>&1');

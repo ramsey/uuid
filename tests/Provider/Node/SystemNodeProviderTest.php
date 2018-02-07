@@ -140,6 +140,7 @@ class SystemNodeProviderTest extends TestCase
             'windows' => ['Windows', 'ipconfig /all 2>&1'],
             'mac' => ['Darwhat', 'ifconfig 2>&1'],
             'linux' => ['Linux', 'netstat -ie 2>&1'],
+            'freebsd' => ['FreeBSD', 'netstat -i -f link 2>&1'],
             'anything_else' => ['someotherxyz', 'netstat -ie 2>&1']
         ];
     }
