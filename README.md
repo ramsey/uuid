@@ -11,7 +11,7 @@ changed to `ramsey/uuid` and `Ramsey\Uuid`, respectively.*
 [![Coverage Status][badge-coverage]][coverage]
 [![Total Downloads][badge-downloads]][downloads]
 
-ramsey/uuid is a PHP 5.4+ library for generating and working with
+ramsey/uuid is a PHP 7+ library for generating and working with
 [RFC 4122][rfc4122] version 1, 3, 4, and 5 universally unique identifiers
 (UUID).
 
