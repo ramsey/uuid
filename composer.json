@@ -26,7 +26,8 @@
     },
     "require": {
         "php": "^5.4 || ^7.0",
-        "paragonie/random_compat": "^1.0|^2.0"
+        "paragonie/random_compat": "^1.0|^2.0",
+        "backendtea/ctype-compat": "^0.1.0"
     },
     "require-dev": {
         "moontoast/math": "^1.1",
