@@ -654,7 +654,7 @@ class Uuid implements UuidInterface
             return true;
         }
 
-        if (!preg_match('/' . self::VALID_PATTERN . '/', $uuid)) {
+        if (!preg_match('/' . self::VALID_PATTERN . '/D', $uuid)) {
             return false;
         }
 

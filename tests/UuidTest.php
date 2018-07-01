@@ -89,6 +89,15 @@ class UuidTest extends TestCase
     }
 
     /**
+     * @expectedException \Ramsey\Uuid\Exception\InvalidUuidStringException
+     * @expectedExceptionMessage Invalid UUID string:
+     */
+    public function testFromStringWithTrailingNewLine()
+    {
+        Uuid::fromString("d0d5f586-21d1-470c-8088-55c8857728dc\n");
+    }
+
+    /**
      */
     public function testFromStringWithUrn()
     {
