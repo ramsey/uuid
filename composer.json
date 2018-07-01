@@ -1,6 +1,6 @@
 {
     "name": "ramsey/uuid",
-    "description": "A PHP 7 library for generating RFC 4122 version 1, 3, 4, and 5 universally unique identifiers (UUID).",
+    "description": "A PHP 7+ library for generating RFC 4122 version 1, 3, 4, and 5 universally unique identifiers (UUID).",
     "type": "library",
     "keywords": [
         "uuid",
@@ -20,7 +20,7 @@
         "ext-gmp": "*",
         "codeception/aspect-mock": "~2.0.0",
         "doctrine/annotations": "^1.2",
-        "goaop/framework": "^2.1",
+        "goaop/framework": "^2.1 <2.2",
         "paragonie/random-lib": "^2.0",
         "jakub-onderka/php-parallel-lint": "^0.9.0",
         "mockery/mockery": "^1.0",

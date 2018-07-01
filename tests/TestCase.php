@@ -10,9 +10,7 @@ class TestCase extends PHPUnitTestCase
     protected function tearDown()
     {
         parent::tearDown();
-        if (!self::isHhvm()) {
-            AspectMock::clean();
-        }
+        AspectMock::clean();
         Mockery::close();
     }
 
@@ -74,17 +72,5 @@ class TestCase extends PHPUnitTestCase
     public static function isLittleEndianSystem()
     {
         return current(unpack('v', pack('S', 0x00FF))) === 0x00FF;
-    }
-
-    protected function skipIfHhvm()
-    {
-        if (self::isHhvm()) {
-            $this->markTestSkipped('Skipping test that cannot run on HHVM');
-        }
-    }
-
-    protected static function isHhvm()
-    {
-        return defined('HHVM_VERSION');
     }
 }

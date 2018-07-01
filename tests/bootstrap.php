@@ -27,10 +27,8 @@ if (!defined('UUID_TYPE_RANDOM')) {
     define('UUID_TYPE_RANDOM', 4);
 }
 
-if (!defined('HHVM_VERSION')) {
-    $kernel = \AspectMock\Kernel::getInstance();
-    $kernel->init([
-        'debug' => true,
-        'includePaths' => [__DIR__ . '/../src']
-    ]);
-}
+$kernel = \AspectMock\Kernel::getInstance();
+$kernel->init([
+    'debug' => true,
+    'includePaths' => [__DIR__ . '/../src']
+]);

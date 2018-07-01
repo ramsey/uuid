@@ -28,7 +28,6 @@ class DefaultTimeGeneratorTest extends TestCase
     /** @var int */
     private $clockSeq = 4066;
 
-
     protected function setUp()
     {
         parent::setUp();
@@ -46,9 +45,7 @@ class DefaultTimeGeneratorTest extends TestCase
         $this->nodeProvider = null;
         $this->timeConverter = null;
         Mockery::close();
-        if (!self::isHhvm()) {
-            AspectMock::clean();
-        }
+        AspectMock::clean();
     }
 
     public function testGenerateUsesNodeProviderWhenNodeIsNull()
@@ -171,7 +168,6 @@ class DefaultTimeGeneratorTest extends TestCase
     {
         $expectedBytes = hex2bin('0000000000001000a596122f80ca9e06');
 
-        $this->skipIfHhvm();
         $mt_rand = AspectMock::func('Ramsey\Uuid\Generator', 'random_int', 9622);
         $defaultTimeGenerator = new DefaultTimeGenerator(
             $this->nodeProvider,
