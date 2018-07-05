@@ -948,6 +948,14 @@ class UuidTest extends TestCase
         }
     }
 
+    public function testTimestampFirstComb()
+    {
+        $uuid = Uuid::timestampFirstComb();
+        $this->assertInstanceOf('Ramsey\Uuid\Uuid', $uuid);
+        $this->assertEquals(2, $uuid->getVariant());
+        $this->assertEquals(4, $uuid->getVersion());
+    }
+
     /**
      */
     public function testCompareTo()
