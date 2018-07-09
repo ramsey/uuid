@@ -60,6 +60,7 @@ class GuidStringCodec extends StringCodec
      *
      * @param string $encodedUuid
      * @return UuidInterface
+     * @throws \Ramsey\Uuid\Exception\InvalidUuidStringException
      */
     public function decode($encodedUuid)
     {
@@ -75,6 +76,7 @@ class GuidStringCodec extends StringCodec
      *
      * @param string $bytes
      * @return UuidInterface
+     * @throws \Ramsey\Uuid\Exception\InvalidUuidStringException
      */
     public function decodeBytes($bytes)
     {

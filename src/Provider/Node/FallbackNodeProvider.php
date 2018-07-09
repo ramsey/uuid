@@ -43,6 +43,7 @@ class FallbackNodeProvider implements NodeProviderInterface
      * and returning the first non-empty value found
      *
      * @return string System node ID as a hexadecimal string
+     * @throws \Exception
      */
     public function getNode()
     {
