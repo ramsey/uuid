@@ -246,6 +246,8 @@ class SystemNodeProviderTest extends TestCase
 
         /*/ Assert /*/
         $this->assertMockFunctions(null, null, ['netstat -ie 2>&1'], [['a'], ['s']]);
+
+        $this->assertInstanceOf(SystemNodeProvider::class, $provider);
     }
 
     /**
@@ -254,13 +256,11 @@ class SystemNodeProviderTest extends TestCase
      *
      * @dataProvider provideCommandPerOs
      *
-     * @param $os
-     * @param $command
+     * @param string $os
+     * @param string $command
      */
-    public function testGetNodeGetsNetworkInterfaceConfig($os, $command, $filename)
+    public function testGetNodeGetsNetworkInterfaceConfig($os, $command)
     {
-        $this->skipIfHhvm();
-
         /*/ Arrange /*/
         $this->arrangeMockFunctions(
             'whatever',
@@ -268,7 +268,6 @@ class SystemNodeProviderTest extends TestCase
             'whatever',
             $os
         );
-
 
         /*/ Act /*/
         $provider = new SystemNodeProvider();
@@ -282,6 +281,8 @@ class SystemNodeProviderTest extends TestCase
             $fileGetContentsAssert = ['mock address path'];
         }
         $this->assertMockFunctions($fileGetContentsAssert, $globBodyAssert, [$command], [['a'], ['s']]);
+
+        $this->assertInstanceOf(SystemNodeProvider::class, $provider);
     }
 
     /**
@@ -344,8 +345,8 @@ class SystemNodeProviderTest extends TestCase
      *
      * @dataProvider provideCommandPerOs
      *
-     * @param $os
-     * @param $command
+     * @param string $os
+     * @param string $command
      */
     public function testCallGetsysfsOnLinux($os, $command)
     {
