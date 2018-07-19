@@ -14,7 +14,8 @@
         "rss": "https://packagist.org/feeds/package.ramsey/uuid.rss"
     },
     "require": {
-        "php": "^7.0"
+        "php": "^7.0",
+        "symfony/polyfill-ctype": "^1.8"
     },
     "require-dev": {
         "ext-gmp": "*",
