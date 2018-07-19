@@ -60,8 +60,8 @@
         "phpunit": "phpunit --verbose --colors=always",
         "phpcs": "phpcs src tests --standard=psr2 -sp --colors",
         "phpstan": [
-            "phpstan analyse -c phpstan.neon src --level 2 --no-progress",
-            "phpstan analyse -c phpstan-tests.neon tests --level 2 --no-progress"
+            "phpstan analyse -c phpstan.neon src --level max --no-progress",
+            "phpstan analyse -c phpstan-tests.neon tests --level 4 --no-progress"
         ],
         "test": [
             "@lint",
