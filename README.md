@@ -1,7 +1,5 @@
 # ramsey/uuid
 
-_NOTICE: Formerly known as `rhumsaa/uuid`, The package and namespace names have changed to `ramsey/uuid` and `Ramsey\Uuid`, respectively._
-
 [![Source Code][badge-source]][source]
 [![Latest Version][badge-release]][release]
 [![Software License][badge-license]][license]
@@ -9,7 +7,7 @@ _NOTICE: Formerly known as `rhumsaa/uuid`, The package and namespace names have 
 [![Coverage Status][badge-coverage]][coverage]
 [![Total Downloads][badge-downloads]][downloads]
 
-ramsey/uuid is a PHP 5.4+ library for generating and working with [RFC 4122][rfc4122] version 1, 3, 4, and 5 universally unique identifiers (UUID).
+ramsey/uuid is a PHP 7.2+ library for generating and working with [RFC 4122][rfc4122] version 1, 3, 4, and 5 universally unique identifiers (UUID).
 
 This project adheres to a [Contributor Code of Conduct][conduct]. By participating in this project and its community, you are expected to uphold this code.
 
@@ -30,6 +28,11 @@ The preferred method of installation is via [Packagist][] and [Composer][]. Run 
 ```bash
 composer require ramsey/uuid
 ```
+
+
+## Upgrading from 3.x to 4.x
+
+TODO
 
 
 ## Upgrading from 2.x to 3.x
@@ -65,7 +68,7 @@ After doing so, you will have the latest ramsey/uuid package in the 2.x series, 
 
 ## Requirements
 
-Some methods in this library have requirements due to integer size restrictions on 32-bit and 64-bit builds of PHP. A 64-bit build of PHP and the [Moontoast\Math][] library are recommended. However, this library is designed to work on 32-bit builds of PHP without Moontoast\Math, with some degraded functionality. Please check the API documentation for more information.
+Some methods in this library have requirements due to integer size restrictions on 32-bit and 64-bit builds of PHP. A 64-bit build of PHP and either the [GMP PHP-extension][ext-gmp] or the [Moontoast\Math][] library are recommended. However, this library is designed to work on 32-bit builds of PHP without GMP or Moontoast\Math, with some degraded functionality. Please check the API documentation for more information.
 
 If a particular requirement is not present, then an `UnsatisfiedDependencyException` is thrown, allowing one to catch a bad call in an environment where the call is not supported and gracefully degrade.
 
@@ -73,14 +76,6 @@ If a particular requirement is not present, then an `UnsatisfiedDependencyExcept
 ## API documentation
 
 The [latest class API documentation][apidocs] is available online.
-
-This project uses [ApiGen](http://apigen.org/) to generate this documentation. To generate the documentation on your own, install dev dependencies and run the following command from the root of the project:
-
-```
-composer build-docs
-```
-
-This will generate documentation in the `build/apidocs/` folder.
 
 
 ## Examples
@@ -140,6 +135,7 @@ The ramsey/uuid library is copyright © [Ben Ramsey](https://benramsey.com/) and
 [packagist]: https://packagist.org/packages/ramsey/uuid
 [composer]: http://getcomposer.org/
 [moontoast\math]: https://packagist.org/packages/moontoast/math
+[ext-gmp]: http://php.net/manual/en/book.gmp.php
 [apidocs]: http://docs.benramsey.com/ramsey-uuid/latest/
 [wiki-cookbook]: https://github.com/ramsey/uuid/wiki/Ramsey%5CUuid-Cookbook
 [contributing]: https://github.com/ramsey/uuid/blob/master/CONTRIBUTING.md

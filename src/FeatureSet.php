@@ -14,30 +14,33 @@
 
 namespace Ramsey\Uuid;
 
-use Ramsey\Uuid\Converter\TimeConverterInterface;
-use Ramsey\Uuid\Generator\PeclUuidTimeGenerator;
-use Ramsey\Uuid\Provider\Node\FallbackNodeProvider;
-use Ramsey\Uuid\Provider\Node\RandomNodeProvider;
-use Ramsey\Uuid\Provider\Node\SystemNodeProvider;
+use Ramsey\Uuid\Builder\DefaultUuidBuilder;
+use Ramsey\Uuid\Builder\DegradedUuidBuilder;
+use Ramsey\Uuid\Builder\UuidBuilderInterface;
+use Ramsey\Uuid\Codec\CodecInterface;
+use Ramsey\Uuid\Codec\GuidStringCodec;
+use Ramsey\Uuid\Codec\StringCodec;
 use Ramsey\Uuid\Converter\NumberConverterInterface;
+use Ramsey\Uuid\Converter\Number\GmpConverter;
 use Ramsey\Uuid\Converter\Number\BigNumberConverter;
 use Ramsey\Uuid\Converter\Number\DegradedNumberConverter;
+use Ramsey\Uuid\Converter\Time\GmpTimeConverter;
 use Ramsey\Uuid\Converter\Time\BigNumberTimeConverter;
 use Ramsey\Uuid\Converter\Time\DegradedTimeConverter;
 use Ramsey\Uuid\Converter\Time\PhpTimeConverter;
-use Ramsey\Uuid\Provider\Time\SystemTimeProvider;
-use Ramsey\Uuid\Builder\UuidBuilderInterface;
-use Ramsey\Uuid\Builder\DefaultUuidBuilder;
-use Ramsey\Uuid\Codec\CodecInterface;
-use Ramsey\Uuid\Codec\StringCodec;
-use Ramsey\Uuid\Codec\GuidStringCodec;
-use Ramsey\Uuid\Builder\DegradedUuidBuilder;
+use Ramsey\Uuid\Generator\PeclUuidTimeGenerator;
 use Ramsey\Uuid\Generator\RandomGeneratorFactory;
 use Ramsey\Uuid\Generator\RandomGeneratorInterface;
 use Ramsey\Uuid\Generator\TimeGeneratorFactory;
 use Ramsey\Uuid\Generator\TimeGeneratorInterface;
-use Ramsey\Uuid\Provider\TimeProviderInterface;
 use Ramsey\Uuid\Provider\NodeProviderInterface;
+use Ramsey\Uuid\Provider\Node\FallbackNodeProvider;
+use Ramsey\Uuid\Provider\Node\RandomNodeProvider;
+use Ramsey\Uuid\Provider\Node\SystemNodeProvider;
+use Ramsey\Uuid\Provider\TimeProviderInterface;
+use Ramsey\Uuid\Provider\Time\SystemTimeProvider;
+use Ramsey\Uuid\Validator\Validator;
+use Ramsey\Uuid\Validator\ValidatorInterface;
 
 /**
  * FeatureSet detects and exposes available features in the current environment
@@ -49,6 +52,11 @@ class FeatureSet
      * @var bool
      */
     private $disableBigNumber = false;
+
+    /**
+     * @var bool
+     */
+    private $disableGmp = false;
 
     /**
      * @var bool
@@ -86,6 +94,12 @@ class FeatureSet
     private $numberConverter;
 
     /**
+     * The time converter to use for converting timestamps extracted from UUIDs to unix timestamps
+     * @var \Ramsey\Uuid\Converter\TimeConverterInterface
+     */
+    protected $timeConverter;
+
+    /**
      * @var RandomGeneratorInterface
      */
     private $randomGenerator;
@@ -94,6 +108,11 @@ class FeatureSet
      * @var TimeGeneratorInterface
      */
     private $timeGenerator;
+
+    /**
+     * @var ValidatorInterface
+     */
+    private $validator;
 
     /**
      * Constructs a `FeatureSet` for use by a `UuidFactory` to determine or set
@@ -108,25 +127,31 @@ class FeatureSet
      *     the system host ID (primarily for testing purposes)
      * @param bool $enablePecl Whether to enable the use of the `PeclUuidTimeGenerator`
      *     to generate version 1 UUIDs
+     * @param bool $forceNoGmp Whether to disable the use of the GMP PHP-extension
+     *     (primarily for testing purposes)
      */
     public function __construct(
         $useGuids = false,
         $force32Bit = false,
         $forceNoBigNumber = false,
         $ignoreSystemNode = false,
-        $enablePecl = false
+        $enablePecl = false,
+        $forceNoGmp = false
     ) {
         $this->disableBigNumber = $forceNoBigNumber;
+        $this->disableGmp = $forceNoGmp;
         $this->disable64Bit = $force32Bit;
         $this->ignoreSystemNode = $ignoreSystemNode;
         $this->enablePecl = $enablePecl;
 
         $this->numberConverter = $this->buildNumberConverter();
+        $this->timeConverter = $this->buildTimeConverter();
         $this->builder = $this->buildUuidBuilder();
         $this->codec = $this->buildCodec($useGuids);
         $this->nodeProvider = $this->buildNodeProvider();
         $this->randomGenerator = $this->buildRandomGenerator();
         $this->setTimeProvider(new SystemTimeProvider());
+        $this->validator = new Validator;
     }
 
     /**
@@ -190,6 +215,16 @@ class FeatureSet
     }
 
     /**
+     * Returns the validator to use for this environment
+     *
+     * @return ValidatorInterface
+     */
+    public function getValidator()
+    {
+        return $this->validator;
+    }
+
+    /**
      * Sets the time provider for use in this environment
      *
      * @param TimeProviderInterface $timeProvider
@@ -197,6 +232,16 @@ class FeatureSet
     public function setTimeProvider(TimeProviderInterface $timeProvider)
     {
         $this->timeGenerator = $this->buildTimeGenerator($timeProvider);
+    }
+
+    /**
+     * Set the validator to use in this environment
+     *
+     * @param ValidatorInterface $validator
+     */
+    public function setValidator(ValidatorInterface $validator)
+    {
+        $this->validator = $validator;
     }
 
     /**
@@ -241,7 +286,9 @@ class FeatureSet
      */
     protected function buildNumberConverter()
     {
-        if ($this->hasBigNumber()) {
+        if ($this->hasGmp()) {
+            return new GmpConverter();
+        } elseif ($this->hasBigNumber()) {
             return new BigNumberConverter();
         }
 
@@ -274,7 +321,7 @@ class FeatureSet
 
         return (new TimeGeneratorFactory(
             $this->nodeProvider,
-            $this->buildTimeConverter(),
+            $this->timeConverter,
             $timeProvider
         ))->getGenerator();
     }
@@ -283,12 +330,14 @@ class FeatureSet
      * Determines which time converter to use and returns the configured
      * time converter for this environment
      *
-     * @return TimeConverterInterface
+     * @return \Ramsey\Uuid\Converter\TimeConverterInterface
      */
     protected function buildTimeConverter()
     {
         if ($this->is64BitSystem()) {
             return new PhpTimeConverter();
+        } elseif ($this->hasGmp()) {
+            return new GmpTimeConverter();
         } elseif ($this->hasBigNumber()) {
             return new BigNumberTimeConverter();
         }
@@ -305,10 +354,10 @@ class FeatureSet
     protected function buildUuidBuilder()
     {
         if ($this->is64BitSystem()) {
-            return new DefaultUuidBuilder($this->numberConverter);
+            return new DefaultUuidBuilder($this->numberConverter, $this->timeConverter);
         }
 
-        return new DegradedUuidBuilder($this->numberConverter);
+        return new DegradedUuidBuilder($this->numberConverter, $this->timeConverter);
     }
 
     /**
@@ -319,6 +368,16 @@ class FeatureSet
     protected function hasBigNumber()
     {
         return class_exists('Moontoast\Math\BigNumber') && !$this->disableBigNumber;
+    }
+
+    /**
+     * Returns true if the system has the GMP PHP-extension
+     *
+     * @return bool
+     */
+    protected function hasGmp()
+    {
+        return extension_loaded('gmp') && !$this->disableGmp;
     }
 
     /**

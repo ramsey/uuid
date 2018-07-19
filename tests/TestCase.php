@@ -3,16 +3,14 @@ namespace Ramsey\Uuid\Test;
 
 use AspectMock\Test as AspectMock;
 use Mockery;
-use PHPUnit\Framework\TestCase as PhpUnitTestCase;
+use PHPUnit\Framework\TestCase as PHPUnitTestCase;
 
-class TestCase extends PhpUnitTestCase
+class TestCase extends PHPUnitTestCase
 {
     protected function tearDown()
     {
         parent::tearDown();
-        if (!self::isHhvm()) {
-            AspectMock::clean();
-        }
+        AspectMock::clean();
         Mockery::close();
     }
 
@@ -34,9 +32,23 @@ class TestCase extends PhpUnitTestCase
         }
     }
 
+    protected function skipIfNoGmp()
+    {
+        if (!$this->hasGmp()) {
+            $this->markTestSkipped(
+                'Skipping test that requires GMP.'
+            );
+        }
+    }
+
     protected function hasMoontoastMath()
     {
         return class_exists('Moontoast\\Math\\BigNumber');
+    }
+
+    protected function hasGmp()
+    {
+        return extension_loaded('gmp');
     }
 
     protected function skipIfLittleEndianHost()
@@ -60,17 +72,5 @@ class TestCase extends PhpUnitTestCase
     public static function isLittleEndianSystem()
     {
         return current(unpack('v', pack('S', 0x00FF))) === 0x00FF;
-    }
-
-    protected function skipIfHhvm()
-    {
-        if (self::isHhvm()) {
-            $this->markTestSkipped('Skipping test that cannot run on HHVM');
-        }
-    }
-
-    protected static function isHhvm()
-    {
-        return defined('HHVM_VERSION');
     }
 }

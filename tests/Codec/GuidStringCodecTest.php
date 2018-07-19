@@ -15,9 +15,9 @@ use Ramsey\Uuid\UuidInterface;
 class GuidStringCodecTest extends TestCase
 {
 
-    /** @var UuidBuilderInterface */
+    /** @var UuidBuilderInterface|\PHPUnit_Framework_MockObject_MockObject */
     private $builder;
-    /** @var UuidInterface */
+    /** @var UuidInterface|\PHPUnit_Framework_MockObject_MockObject */
     private $uuid;
     /** @var array */
     private $fields;
@@ -25,8 +25,8 @@ class GuidStringCodecTest extends TestCase
     protected function setUp()
     {
         parent::setUp();
-        $this->builder = $this->getMockBuilder('Ramsey\Uuid\Builder\UuidBuilderInterface')->getMock();
-        $this->uuid = $this->getMockBuilder('Ramsey\Uuid\UuidInterface')->getMock();
+        $this->builder = $this->getMockBuilder(UuidBuilderInterface::class)->getMock();
+        $this->uuid = $this->getMockBuilder(UuidInterface::class)->getMock();
         $this->fields = ['time_low' => '12345678',
             'time_mid' => '1234',
             'time_hi_and_version' => 'abcd',
@@ -38,9 +38,7 @@ class GuidStringCodecTest extends TestCase
     protected function tearDown()
     {
         parent::tearDown();
-        $this->builder = null;
-        $this->fields = null;
-        $this->uuid = null;
+        unset($this->builder, $this->fields, $this->uuid);
     }
 
     public function testEncodeUsesFieldsArray()
@@ -98,7 +96,7 @@ class GuidStringCodecTest extends TestCase
         $string = 'uuid:78563412-3412-cdab-abef-1234abcd4321';
         $this->builder->expects($this->once())
             ->method('build')
-            ->with($this->isInstanceOf('Ramsey\Uuid\Codec\GuidStringCodec'), $this->fields);
+            ->with($this->isInstanceOf(GuidStringCodec::class), $this->fields);
         $codec = new GuidStringCodec($this->builder);
         $codec->decode($string);
     }
@@ -109,7 +107,7 @@ class GuidStringCodecTest extends TestCase
         $string = 'uuid:12345678-1234-abcd-abef-1234abcd4321';
         $this->builder->expects($this->once())
             ->method('build')
-            ->with($this->isInstanceOf('Ramsey\Uuid\Codec\GuidStringCodec'), $this->fields);
+            ->with($this->isInstanceOf(GuidStringCodec::class), $this->fields);
         $codec = new GuidStringCodec($this->builder);
         $codec->decode($string);
     }

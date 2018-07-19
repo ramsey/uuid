@@ -2,7 +2,10 @@
 
 namespace Ramsey\Uuid\Test\Generator;
 
+use PHPUnit\Framework\Error\Error as PHPUnitError;
+use Ramsey\Uuid\Converter\NumberConverterInterface;
 use Ramsey\Uuid\Generator\CombGenerator;
+use Ramsey\Uuid\Generator\RandomGeneratorInterface;
 use Ramsey\Uuid\Test\TestCase;
 
 /**
@@ -18,19 +21,19 @@ class CombGeneratorTest extends TestCase
     {
         $length = 10;
         $expectedLength = ($length - $this->timestampBytes);
-        $randomGenerator = $this->getMockBuilder('Ramsey\Uuid\Generator\RandomGeneratorInterface')->getMock();
+        $randomGenerator = $this->getMockBuilder(RandomGeneratorInterface::class)->getMock();
         $randomGenerator->expects($this->once())
             ->method('generate')
             ->with($expectedLength);
-        $converter = $this->getMockBuilder('Ramsey\Uuid\Converter\NumberConverterInterface')->getMock();
+        $converter = $this->getMockBuilder(NumberConverterInterface::class)->getMock();
         $generator = new CombGenerator($randomGenerator, $converter);
         $generator->generate($length);
     }
 
     public function testGenerateCalculatesPaddedHexStringFromCurrentTimestamp()
     {
-        $randomGenerator = $this->getMockBuilder('Ramsey\Uuid\Generator\RandomGeneratorInterface')->getMock();
-        $converter = $this->getMockBuilder('Ramsey\Uuid\Converter\NumberConverterInterface')->getMock();
+        $randomGenerator = $this->getMockBuilder(RandomGeneratorInterface::class)->getMock();
+        $converter = $this->getMockBuilder(NumberConverterInterface::class)->getMock();
         $converter->expects($this->once())
             ->method('toHex')
             ->with($this->isType('string'));
@@ -44,12 +47,12 @@ class CombGeneratorTest extends TestCase
         $hash = dechex(1234567891);
         $timeHash = dechex(1458147405);
 
-        $randomGenerator = $this->getMockBuilder('Ramsey\Uuid\Generator\RandomGeneratorInterface')->getMock();
+        $randomGenerator = $this->getMockBuilder(RandomGeneratorInterface::class)->getMock();
         $randomGenerator->method('generate')
             ->with(($length - $this->timestampBytes))
             ->willReturn($hash);
 
-        $converter = $this->getMockBuilder('Ramsey\Uuid\Converter\NumberConverterInterface')->getMock();
+        $converter = $this->getMockBuilder(NumberConverterInterface::class)->getMock();
         $converter->method('toHex')
             ->with($this->isType('string'))
             ->willReturn($timeHash);
@@ -73,10 +76,11 @@ class CombGeneratorTest extends TestCase
      */
     public function testGenerateWithLessThanTimestampBytesThrowsException($length)
     {
-        $this->setExpectedException('InvalidArgumentException');
-        $randomGenerator = $this->getMockBuilder('Ramsey\Uuid\Generator\RandomGeneratorInterface')->getMock();
-        $converter = $this->getMockBuilder('Ramsey\Uuid\Converter\NumberConverterInterface')->getMock();
+        $randomGenerator = $this->getMockBuilder(RandomGeneratorInterface::class)->getMock();
+        $converter = $this->getMockBuilder(NumberConverterInterface::class)->getMock();
         $generator = new CombGenerator($randomGenerator, $converter);
+
+        $this->expectException(\InvalidArgumentException::class);
         $generator->generate($length);
     }
 
@@ -85,10 +89,11 @@ class CombGeneratorTest extends TestCase
      */
     public function testGenerateWithOddNumberOverTimestampBytesCausesError()
     {
-        $this->setExpectedException('PHPUnit_Framework_Error');
-        $randomGenerator = $this->getMockBuilder('Ramsey\Uuid\Generator\RandomGeneratorInterface')->getMock();
-        $converter = $this->getMockBuilder('Ramsey\Uuid\Converter\NumberConverterInterface')->getMock();
+        $randomGenerator = $this->getMockBuilder(RandomGeneratorInterface::class)->getMock();
+        $converter = $this->getMockBuilder(NumberConverterInterface::class)->getMock();
         $generator = new CombGenerator($randomGenerator, $converter);
+
+        $this->expectException(PHPUnitError::class);
         $generator->generate(7);
     }
 }

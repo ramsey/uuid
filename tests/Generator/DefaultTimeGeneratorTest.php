@@ -2,6 +2,7 @@
 
 namespace Ramsey\Uuid\Test\Generator;
 
+use Ramsey\Uuid\BinaryUtils;
 use Ramsey\Uuid\Converter\TimeConverterInterface;
 use Ramsey\Uuid\Generator\DefaultTimeGenerator;
 use Ramsey\Uuid\Provider\NodeProviderInterface;
@@ -12,11 +13,11 @@ use AspectMock\Test as AspectMock;
 
 class DefaultTimeGeneratorTest extends TestCase
 {
-    /** @var  TimeProviderInterface */
+    /** @var  TimeProviderInterface|\PHPUnit_Framework_MockObject_MockObject */
     private $timeProvider;
-    /** @var  NodeProviderInterface */
+    /** @var  NodeProviderInterface|\PHPUnit_Framework_MockObject_MockObject */
     private $nodeProvider;
-    /** @var  TimeConverterInterface */
+    /** @var  TimeConverterInterface|\PHPUnit_Framework_MockObject_MockObject */
     private $timeConverter;
     /** @var string */
     private $nodeId = '122f80ca9e06';
@@ -27,13 +28,12 @@ class DefaultTimeGeneratorTest extends TestCase
     /** @var int */
     private $clockSeq = 4066;
 
-
     protected function setUp()
     {
         parent::setUp();
-        $this->timeProvider = $this->getMockBuilder('Ramsey\Uuid\Provider\TimeProviderInterface')->getMock();
-        $this->nodeProvider = $this->getMockBuilder('Ramsey\Uuid\Provider\NodeProviderInterface')->getMock();
-        $this->timeConverter = $this->getMockBuilder('Ramsey\Uuid\Converter\TimeConverterInterface')->getMock();
+        $this->timeProvider = $this->getMockBuilder(TimeProviderInterface::class)->getMock();
+        $this->nodeProvider = $this->getMockBuilder(NodeProviderInterface::class)->getMock();
+        $this->timeConverter = $this->getMockBuilder(TimeConverterInterface::class)->getMock();
         $this->currentTime = ["sec" => 1458733431, "usec" => 877449];
         $this->calculatedTime = ["low" => "83cb98e0", "mid" => "98e0", "hi" => "03cb"];
     }
@@ -41,13 +41,9 @@ class DefaultTimeGeneratorTest extends TestCase
     protected function tearDown()
     {
         parent::tearDown();
-        $this->timeProvider = null;
-        $this->nodeProvider = null;
-        $this->timeConverter = null;
+        unset($this->timeProvider, $this->nodeProvider, $this->timeConverter);
         Mockery::close();
-        if (!self::isHhvm()) {
-            AspectMock::clean();
-        }
+        AspectMock::clean();
     }
 
     public function testGenerateUsesNodeProviderWhenNodeIsNull()
@@ -98,12 +94,14 @@ class DefaultTimeGeneratorTest extends TestCase
      */
     public function testGenerateAppliesVersionAndVariant()
     {
+        $expectedBytes = hex2bin('83cb98e098e003cb8fe2122f80ca9e06');
+
         $this->timeProvider->method('currentTime')
             ->willReturn($this->currentTime);
         $this->timeConverter->method('calculateTime')
             ->with($this->currentTime['sec'], $this->currentTime['usec'])
             ->willReturn($this->calculatedTime);
-        $binaryUtils = Mockery::mock('alias:Ramsey\Uuid\BinaryUtils');
+        $binaryUtils = Mockery::mock('alias:'.BinaryUtils::class);
         $binaryUtils->shouldReceive('applyVersion')
             ->with($this->calculatedTime['hi'], 1)
             ->andReturn(971);
@@ -117,7 +115,8 @@ class DefaultTimeGeneratorTest extends TestCase
             $this->timeConverter,
             $this->timeProvider
         );
-        $defaultTimeGenerator->generate($this->nodeId, $this->clockSeq);
+
+        $this->assertSame($expectedBytes, $defaultTimeGenerator->generate($this->nodeId, $this->clockSeq));
     }
 
     /**
@@ -128,7 +127,7 @@ class DefaultTimeGeneratorTest extends TestCase
     {
         $this->timeProvider->method('currentTime')->willReturn($this->currentTime);
         $this->timeConverter->method('calculateTime')->willReturn($this->calculatedTime);
-        $binaryUtils = Mockery::mock('alias:Ramsey\Uuid\BinaryUtils');
+        $binaryUtils = Mockery::mock('alias:'.BinaryUtils::class);
         $binaryUtils->shouldReceive('applyVersion')->andReturn(971);
         $binaryUtils->shouldReceive('applyVariant')->andReturn(143);
 
@@ -165,14 +164,16 @@ class DefaultTimeGeneratorTest extends TestCase
      */
     public function testGenerateUsesRandomSequenceWhenClockSeqNull()
     {
-        $this->skipIfHhvm();
+        $expectedBytes = hex2bin('0000000000001000a596122f80ca9e06');
+
         $mt_rand = AspectMock::func('Ramsey\Uuid\Generator', 'random_int', 9622);
         $defaultTimeGenerator = new DefaultTimeGenerator(
             $this->nodeProvider,
             $this->timeConverter,
             $this->timeProvider
         );
-        $defaultTimeGenerator->generate($this->nodeId);
+
+        $this->assertSame($expectedBytes, $defaultTimeGenerator->generate($this->nodeId));
         $mt_rand->verifyInvokedOnce([0, 0x3fff]);
     }
 }

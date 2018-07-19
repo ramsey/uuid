@@ -13,12 +13,6 @@ use AspectMock\Test as AspectMock;
  */
 class OpenSslGeneratorTest extends TestCase
 {
-    protected function setUp()
-    {
-        $this->skipIfHhvm();
-        parent::setUp();
-    }
-
     public function lengthAndHexDataProvider()
     {
         return [
@@ -38,8 +32,8 @@ class OpenSslGeneratorTest extends TestCase
         $bytes = hex2bin($hex);
         $openSsl = AspectMock::func('Ramsey\Uuid\Generator', 'openssl_random_pseudo_bytes', $bytes);
         $generator = new OpenSslGenerator();
-        $generator->generate($length);
 
+        $this->assertSame($bytes, $generator->generate($length));
         $openSsl->verifyInvokedOnce([$length]);
     }
 

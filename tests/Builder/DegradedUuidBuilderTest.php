@@ -3,20 +3,26 @@
 namespace Ramsey\Uuid\Test\Builder;
 
 use Ramsey\Uuid\Builder\DegradedUuidBuilder;
+use Ramsey\Uuid\Codec\CodecInterface;
+use Ramsey\Uuid\Converter\NumberConverterInterface;
+use Ramsey\Uuid\Converter\TimeConverterInterface;
+use Ramsey\Uuid\DegradedUuid;
+use Ramsey\Uuid\Test\TestCase;
 
 /**
  * Class DegradedUuidBuilderTest
  * @package Ramsey\Uuid\Test\Builder
  * @covers Ramsey\Uuid\Builder\DegradedUuidBuilder
  */
-class DegradedUuidBuilderTest extends \PHPUnit_Framework_TestCase
+class DegradedUuidBuilderTest extends TestCase
 {
 
     public function testBuildCreatesUuid()
     {
-        $converter = $this->getMockBuilder('Ramsey\Uuid\Converter\NumberConverterInterface')->getMock();
-        $builder = new DegradedUuidBuilder($converter);
-        $codec = $this->getMockBuilder('Ramsey\Uuid\Codec\CodecInterface')->getMock();
+        $numberConverter = $this->getMockBuilder(NumberConverterInterface::class)->getMock();
+        $timeConverter = $this->getMockBuilder(TimeConverterInterface::class)->getMock();
+        $builder = new DegradedUuidBuilder($numberConverter, $timeConverter);
+        $codec = $this->getMockBuilder(CodecInterface::class)->getMock();
 
         $fields = [
             'time_low' => '754cd475',
@@ -28,6 +34,6 @@ class DegradedUuidBuilderTest extends \PHPUnit_Framework_TestCase
         ];
 
         $result = $builder->build($codec, $fields);
-        $this->assertInstanceOf('Ramsey\Uuid\DegradedUuid', $result);
+        $this->assertInstanceOf(DegradedUuid::class, $result);
     }
 }

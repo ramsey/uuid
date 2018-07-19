@@ -14,12 +14,19 @@
 
 namespace Ramsey\Uuid;
 
+use Ramsey\Uuid\Validator\ValidatorInterface;
+
 /**
  * UuidFactoryInterface defines common functionality all `UuidFactory` instances
  * must implement
  */
 interface UuidFactoryInterface
 {
+    /**
+     * @return ValidatorInterface
+     */
+    public function getValidator();
+
     /**
      * Generate a version 1 UUID from a host ID, sequence number, and the current time.
      *

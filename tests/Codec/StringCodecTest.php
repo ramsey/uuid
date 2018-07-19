@@ -15,9 +15,9 @@ use Ramsey\Uuid\UuidInterface;
 class StringCodecTest extends TestCase
 {
 
-    /** @var UuidBuilderInterface */
+    /** @var UuidBuilderInterface|\PHPUnit_Framework_MockObject_MockObject */
     private $builder;
-    /** @var UuidInterface */
+    /** @var UuidInterface|\PHPUnit_Framework_MockObject_MockObject */
     private $uuid;
     /** @var array */
     private $fields;
@@ -27,8 +27,8 @@ class StringCodecTest extends TestCase
     protected function setUp()
     {
         parent::setUp();
-        $this->builder = $this->getMockBuilder('Ramsey\Uuid\Builder\UuidBuilderInterface')->getMock();
-        $this->uuid = $this->getMockBuilder('Ramsey\Uuid\UuidInterface')->getMock();
+        $this->builder = $this->getMockBuilder(UuidBuilderInterface::class)->getMock();
+        $this->uuid = $this->getMockBuilder(UuidInterface::class)->getMock();
         $this->fields = ['time_low' => '12345678',
             'time_mid' => '1234',
             'time_hi_and_version' => 'abcd',
@@ -40,9 +40,7 @@ class StringCodecTest extends TestCase
     protected function tearDown()
     {
         parent::tearDown();
-        $this->builder = null;
-        $this->uuid = null;
-        $this->fields = null;
+        unset($this->builder, $this->uuid, $this->fields);
     }
 
     public function testEncodeUsesFieldsArray()
@@ -87,7 +85,7 @@ class StringCodecTest extends TestCase
         $string = 'uuid:12345678-1234-abcd-abef-1234abcd4321';
         $this->builder->expects($this->once())
             ->method('build')
-            ->with($this->isInstanceOf('Ramsey\Uuid\Codec\StringCodec'), $this->fields);
+            ->with($this->isInstanceOf(StringCodec::class), $this->fields);
         $codec = new StringCodec($this->builder);
         $codec->decode($string);
     }
@@ -95,8 +93,9 @@ class StringCodecTest extends TestCase
     public function testDecodeThrowsExceptionOnInvalidUuid()
     {
         $string = 'invalid-uuid';
-        $this->setExpectedException('\InvalidArgumentException');
         $codec = new StringCodec($this->builder);
+
+        $this->expectException(\InvalidArgumentException::class);
         $codec->decode($string);
     }
 
@@ -115,7 +114,9 @@ class StringCodecTest extends TestCase
         $string = '61';
         $bytes = pack('H*', $string);
         $codec = new StringCodec($this->builder);
-        $this->setExpectedException('InvalidArgumentException', '$bytes string should contain 16 characters.');
+
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('$bytes string should contain 16 characters.');
         $codec->decodeBytes($bytes);
     }
 

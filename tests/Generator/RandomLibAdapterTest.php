@@ -5,6 +5,7 @@ namespace Ramsey\Uuid\Test\Generator;
 use Ramsey\Uuid\Generator\RandomLibAdapter;
 use Ramsey\Uuid\Test\TestCase;
 use Mockery;
+use RandomLib\Generator;
 
 /**
  * Class RandomLibAdapterTest
@@ -19,14 +20,15 @@ class RandomLibAdapterTest extends TestCase
      */
     public function testAdapterWithGeneratorDoesNotCreateGenerator()
     {
-        $factory = Mockery::mock('overload:RandomLib\Factory');
+        $factory = Mockery::mock('overload:'.\RandomLib\Factory::class);
         $factory->shouldNotReceive('getMediumStrengthGenerator')
             ->getMock();
 
-        $generator = $this->getMockBuilder('RandomLib\Generator')
+        $generator = $this->getMockBuilder(Generator::class)
             ->disableOriginalConstructor()
             ->getMock();
-        new RandomLibAdapter($generator);
+
+        $this->assertInstanceOf(RandomLibAdapter::class, new RandomLibAdapter($generator));
     }
 
     /**
@@ -35,18 +37,18 @@ class RandomLibAdapterTest extends TestCase
      */
     public function testAdapterWithoutGeneratorGreatesGenerator()
     {
-        $factory = Mockery::mock('overload:RandomLib\Factory');
+        $factory = Mockery::mock('overload:'.\RandomLib\Factory::class);
         $factory->shouldReceive('getMediumStrengthGenerator')
             ->once()
             ->getMock();
 
-        new RandomLibAdapter();
+        $this->assertInstanceOf(RandomLibAdapter::class, new RandomLibAdapter());
     }
 
     public function testGenerateUsesGenerator()
     {
         $length = 10;
-        $generator = $this->getMockBuilder('RandomLib\Generator')
+        $generator = $this->getMockBuilder(Generator::class)
             ->disableOriginalConstructor()
             ->getMock();
         $generator->expects($this->once())
@@ -59,7 +61,7 @@ class RandomLibAdapterTest extends TestCase
 
     public function testGenerateReturnsString()
     {
-        $generator = $this->getMockBuilder('RandomLib\Generator')
+        $generator = $this->getMockBuilder(Generator::class)
             ->disableOriginalConstructor()
             ->getMock();
         $generator->expects($this->once())
