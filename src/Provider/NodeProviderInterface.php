@@ -24,6 +24,7 @@ interface NodeProviderInterface
      * Returns the system node ID
      *
      * @return string System node ID as a hexadecimal string
+     * @throws \Exception if it was not possible to gather sufficient entropy
      */
     public function getNode();
 }
