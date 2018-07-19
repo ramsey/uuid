@@ -1,7 +1,7 @@
 {
     "name": "ramsey/uuid",
     "type": "library",
-    "description": "A PHP 7+ library for generating RFC 4122 version 1, 3, 4, and 5 universally unique identifiers (UUID).",
+    "description": "A PHP 7.2+ library for generating RFC 4122 version 1, 3, 4, and 5 universally unique identifiers (UUID).",
     "keywords": [
         "uuid",
         "identifier",
