@@ -1,7 +1,7 @@
 {
     "name": "ramsey/uuid",
-    "description": "A PHP 7.2+ library for generating RFC 4122 version 1, 3, 4, and 5 universally unique identifiers (UUID).",
     "type": "library",
+    "description": "A PHP 7.2+ library for generating RFC 4122 version 1, 3, 4, and 5 universally unique identifiers (UUID).",
     "keywords": [
         "uuid",
         "identifier",
@@ -9,10 +9,6 @@
     ],
     "homepage": "https://github.com/ramsey/uuid",
     "license": "MIT",
-    "support": {
-        "issues": "https://github.com/ramsey/uuid/issues",
-        "rss": "https://packagist.org/feeds/package.ramsey/uuid.rss"
-    },
     "require": {
         "php": "^7.2",
         "symfony/polyfill-ctype": "^1.8"
@@ -33,13 +29,21 @@
         "squizlabs/php_codesniffer": "^3.0"
     },
     "suggest": {
-        "paragonie/random-lib": "Provides RandomLib for use with the RandomLibAdapter",
+        "ext-gmp": "Provides support for converting UUID to 128-bit integer (in string form).",
         "ext-libsodium": "Provides the PECL libsodium extension for use with the SodiumRandomGenerator",
         "ext-uuid": "Provides the PECL UUID extension for use with the PeclUuidTimeGenerator and PeclUuidRandomGenerator",
-        "ext-gmp": "Provides support for converting UUID to 128-bit integer (in string form).",
         "moontoast/math": "Provides support for converting UUID to 128-bit integer (in string form).",
-        "ramsey/uuid-doctrine": "Allows the use of Ramsey\\Uuid\\Uuid as Doctrine field type.",
-        "ramsey/uuid-console": "A console application for generating UUIDs with ramsey/uuid"
+        "paragonie/random-lib": "Provides RandomLib for use with the RandomLibAdapter",
+        "ramsey/uuid-console": "A console application for generating UUIDs with ramsey/uuid",
+        "ramsey/uuid-doctrine": "Allows the use of Ramsey\\Uuid\\Uuid as Doctrine field type."
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "4.x-dev"
+        }
     },
     "autoload": {
         "psr-4": {
@@ -51,19 +55,14 @@
             "Ramsey\\Uuid\\Test\\": "tests/"
         }
     },
-    "extra": {
-        "branch-alias": {
-            "dev-master": "4.x-dev"
-        }
-    },
     "scripts": {
         "lint": "parallel-lint src tests",
-        "phpunit": "phpunit --verbose --colors=always",
         "phpcs": "phpcs src tests --standard=psr2 -sp --colors",
         "phpstan": [
             "phpstan analyse -c phpstan.neon src --level max --no-progress",
             "phpstan analyse -c phpstan-tests.neon tests --level 4 --no-progress"
         ],
+        "phpunit": "phpunit --verbose --colors=always",
         "test": [
             "@lint",
             "@phpstan",
@@ -71,7 +70,8 @@
             "@phpcs"
         ]
     },
-    "config": {
-        "sort-packages": true
+    "support": {
+        "issues": "https://github.com/ramsey/uuid/issues",
+        "rss": "https://packagist.org/feeds/package.ramsey/uuid.rss"
     }
 }
