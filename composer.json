@@ -21,7 +21,7 @@
         "codeception/aspect-mock": "~2.0.0",
         "doctrine/annotations": "^1.2",
         "goaop/framework": "^2.1 <2.2",
-        "ircmaxell/random-lib": "^1.1",
+        "paragonie/random-lib": "^2.0",
         "jakub-onderka/php-parallel-lint": "^0.9.0",
         "mockery/mockery": "^1.0",
         "moontoast/math": "^1.1",
