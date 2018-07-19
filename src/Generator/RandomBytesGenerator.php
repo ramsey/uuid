@@ -28,6 +28,7 @@ class RandomBytesGenerator implements RandomGeneratorInterface
      *
      * @param integer $length The number of bytes of random binary data to generate
      * @return string A binary string
+     * @throws \Exception if it was not possible to gather sufficient entropy
      */
     public function generate($length)
     {

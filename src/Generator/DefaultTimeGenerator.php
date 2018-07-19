@@ -72,6 +72,10 @@ class DefaultTimeGenerator implements TimeGeneratorInterface
      *     could arise when the clock is set backwards in time or if the node ID
      *     changes.
      * @return string A binary string
+     * @throws \Ramsey\Uuid\Exception\UnsatisfiedDependencyException if called on a 32-bit system and
+     *     `Moontoast\Math\BigNumber` is not present
+     * @throws \InvalidArgumentException
+     * @throws \Exception if it was not possible to gather sufficient entropy
      */
     public function generate($node = null, $clockSeq = null)
     {
@@ -85,7 +89,7 @@ class DefaultTimeGenerator implements TimeGeneratorInterface
         // Create a 60-bit time value as a count of 100-nanosecond intervals
         // since 00:00:00.00, 15 October 1582
         $timeOfDay = $this->timeProvider->currentTime();
-        $uuidTime = $this->timeConverter->calculateTime($timeOfDay['sec'], $timeOfDay['usec']);
+        $uuidTime = $this->timeConverter->calculateTime((string) $timeOfDay['sec'], (string) $timeOfDay['usec']);
 
         $timeHi = BinaryUtils::applyVersion($uuidTime['hi'], 1);
         $clockSeqHi = BinaryUtils::applyVariant($clockSeq >> 8);
@@ -109,8 +113,10 @@ class DefaultTimeGenerator implements TimeGeneratorInterface
      * Uses the node provider given when constructing this instance to get
      * the node ID (usually a MAC address)
      *
-     * @param string|int $node A node value that may be used to override the node provider
+     * @param string|int|null $node A node value that may be used to override the node provider
      * @return string Hexadecimal representation of the node ID
+     * @throws \InvalidArgumentException
+     * @throws \Exception
      */
     protected function getValidNode($node)
     {

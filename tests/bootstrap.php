@@ -30,5 +30,6 @@ if (!defined('UUID_TYPE_RANDOM')) {
 $kernel = \AspectMock\Kernel::getInstance();
 $kernel->init([
     'debug' => true,
+    'cacheDir' => sys_get_temp_dir(),
     'includePaths' => [__DIR__ . '/../src']
 ]);
