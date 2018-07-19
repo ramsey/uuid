@@ -1,5 +1,15 @@
 # ramsey/uuid Changelog
 
+## 3.8.0
+
+_Released: 2018-07-19_
+
+  * Add support for determining MAC address on FreeBSD systems ([#212](https://github.com/ramsey/uuid/pull/212))
+  * Add a polyfill for PHP ctype functions to support systems where the ctype functions are not part of the PHP build ([#223](https://github.com/ramsey/uuid/pull/223))
+  * Improve validation to disallow UUIDs with a trailing newline character ([#225](https://github.com/ramsey/uuid/pull/225))
+  * Add annotations for thrown exceptions for improved IDE hinting ([#232](https://github.com/ramsey/uuid/pull/232))
+  * Improve documentation, testing, and project metadata (i.e. `.gitattributes`, etc.)
+
 ## 3.7.3
 
 _Released: 2018-01-19_
