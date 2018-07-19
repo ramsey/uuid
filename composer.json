@@ -42,6 +42,7 @@
         "squizlabs/php_codesniffer": "^2.3"
     },
     "suggest": {
+        "ext-ctype": "Provides support for PHP Ctype functions",
         "ircmaxell/random-lib": "Provides RandomLib for use with the RandomLibAdapter",
         "ext-libsodium": "Provides the PECL libsodium extension for use with the SodiumRandomGenerator",
         "ext-uuid": "Provides the PECL UUID extension for use with the PeclUuidTimeGenerator and PeclUuidRandomGenerator",
