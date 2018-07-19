@@ -62,6 +62,10 @@ class SystemNodeProvider implements NodeProviderInterface
      */
     protected function getIfconfig()
     {
+        if (strpos(strtolower(ini_get('disable_functions')), 'passthru') !== false) {
+            return '';
+        }
+
         ob_start();
         switch (strtoupper(substr(php_uname('a'), 0, 3))) {
             case 'WIN':

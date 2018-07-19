@@ -29,6 +29,7 @@
         "squizlabs/php_codesniffer": "^3.0"
     },
     "suggest": {
+        "ext-ctype": "Provides support for PHP Ctype functions",
         "ext-gmp": "Provides support for converting UUID to 128-bit integer (in string form).",
         "ext-libsodium": "Provides the PECL libsodium extension for use with the SodiumRandomGenerator",
         "ext-uuid": "Provides the PECL UUID extension for use with the PeclUuidTimeGenerator and PeclUuidRandomGenerator",
