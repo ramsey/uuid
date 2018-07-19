@@ -506,6 +506,7 @@ class SystemNodeProviderTest extends TestCase
             'windows' => ['Windows', 'ipconfig /all 2>&1'],
             'mac' => ['Darwhat', 'ifconfig 2>&1'],
             'linux' => ['Linux', 'netstat -ie 2>&1'],
+            'freebsd' => ['FreeBSD', 'netstat -i -f link 2>&1'],
             'anything_else' => ['someotherxyz', 'netstat -ie 2>&1'],
             'Linux when `glob` fails' => ['LIN', 'netstat -ie 2>&1'],
         ];
@@ -712,6 +713,13 @@ TXT
                    Autoconfiguration Enabled . . . . : Yes
 TXT
                 , '080027B842C6'],
+            'Full output - FreeBSD' => [<<<'TXT'
+                Name    Mtu Network       Address              Ipkts Ierrs Idrop    Opkts Oerrs  Coll
+                em0    1500 <Link#1>      08:00:27:71:a1:00    65514     0     0    42918     0     0
+                em1    1500 <Link#2>      08:00:27:d0:60:a0     1199     0     0      535     0     0
+                lo0   16384 <Link#3>      lo0                      4     0     0        4     0     0
+TXT
+                , '08002771a100'],
 
             /*/ The single line that is relevant /*/
             'Linux  - single line'  => ["\ndocker0   Link encap:Ethernet  HWaddr 01:23:45:67:89:ab\n", '0123456789ab'],
