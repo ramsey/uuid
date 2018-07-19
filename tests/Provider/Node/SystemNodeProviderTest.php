@@ -290,7 +290,13 @@ class SystemNodeProviderTest extends TestCase
             $globBodyAssert = ['/sys/class/net/*/address'];
             $fileGetContentsAssert = ['mock address path'];
         }
-        $this->assertMockFunctions($fileGetContentsAssert, $globBodyAssert, [$command], [['a'], ['s']], ['disable_functions']);
+        $this->assertMockFunctions(
+            $fileGetContentsAssert,
+            $globBodyAssert,
+            [$command],
+            [['a'], ['s']],
+            ['disable_functions']
+        );
 
         $this->assertInstanceOf(SystemNodeProvider::class, $provider);
     }
@@ -394,7 +400,13 @@ class SystemNodeProviderTest extends TestCase
             $unameBodyAssert = ['s'];
             $iniGetDisableFunctionsAssert = null;
         }
-        $this->assertMockFunctions($fileGetContentsAssert, $globBodyAssert, $passthruBodyAssert, $unameBodyAssert, $iniGetDisableFunctionsAssert);
+        $this->assertMockFunctions(
+            $fileGetContentsAssert,
+            $globBodyAssert,
+            $passthruBodyAssert,
+            $unameBodyAssert,
+            $iniGetDisableFunctionsAssert
+        );
 
         $this->assertEquals('010203040506', $node);
     }
@@ -421,7 +433,13 @@ class SystemNodeProviderTest extends TestCase
         $node = $provider->getNode();
 
         /*/ Assert /*/
-        $this->assertMockFunctions(null, ['/sys/class/net/*/address'], ['netstat -ie 2>&1'], [['a'], ['s']], ['disabled_functions']);
+        $this->assertMockFunctions(
+            null,
+            ['/sys/class/net/*/address'],
+            ['netstat -ie 2>&1'],
+            [['a'], ['s']],
+            ['disabled_functions']
+        );
 
         $this->assertEquals('010203040506', $node);
     }
@@ -448,7 +466,13 @@ class SystemNodeProviderTest extends TestCase
         $node = $provider->getNode();
 
         /*/ Assert /*/
-        $this->assertMockFunctions(null, ['/sys/class/net/*/address'], ['netstat -ie 2>&1'], [['a'], ['s']], ['disabled_functions']);
+        $this->assertMockFunctions(
+            null,
+            ['/sys/class/net/*/address'],
+            ['netstat -ie 2>&1'],
+            [['a'], ['s']],
+            ['disabled_functions']
+        );
 
         $this->assertEquals('010203040506', $node);
     }
@@ -473,7 +497,13 @@ class SystemNodeProviderTest extends TestCase
         $node = $provider->getNode();
 
         /*/ Assert /*/
-        $this->assertMockFunctions(null, null, null, [['s']], ['disabled_functions']);
+        $this->assertMockFunctions(
+            null,
+            null,
+            null,
+            [['s']],
+            ['disabled_functions']
+        );
 
         $this->assertFalse($node);
     }
