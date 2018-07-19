@@ -4,4 +4,4 @@ parameters:
         - '#Function uuid_parse not found#'
         - '#Constant UUID_TYPE_TIME not found#'
         - '#Constant UUID_TYPE_RANDOM not found#'
-        - '#does not accept PHPUnit_Framework_MockObject_MockObject#'
+        - '#does not accept PHPUnit\\Framework\\MockObject\\MockObject#'
