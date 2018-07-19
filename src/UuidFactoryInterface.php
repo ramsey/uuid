@@ -23,12 +23,16 @@ interface UuidFactoryInterface
     /**
      * Generate a version 1 UUID from a host ID, sequence number, and the current time.
      *
-     * @param int|string $node A 48-bit number representing the hardware address
+     * @param int|string|null $node A 48-bit number representing the hardware address
      *     This number may be represented as an integer or a hexadecimal string.
-     * @param int $clockSeq A 14-bit number used to help avoid duplicates that
+     * @param int|null $clockSeq A 14-bit number used to help avoid duplicates that
      *     could arise when the clock is set backwards in time or if the node ID
      *     changes.
      * @return UuidInterface
+     * @throws \Ramsey\Uuid\Exception\UnsatisfiedDependencyException if called on a 32-bit system and
+     *     `Moontoast\Math\BigNumber` is not present
+     * @throws \InvalidArgumentException
+     * @throws \Exception if it was not possible to gather sufficient entropy
      */
     public function uuid1($node = null, $clockSeq = null);
 
@@ -39,6 +43,7 @@ interface UuidFactoryInterface
      * @param string $ns The UUID namespace in which to create the named UUID
      * @param string $name The name to create a UUID for
      * @return UuidInterface
+     * @throws \Ramsey\Uuid\Exception\InvalidUuidStringException
      */
     public function uuid3($ns, $name);
 
@@ -46,6 +51,9 @@ interface UuidFactoryInterface
      * Generate a version 4 (random) UUID.
      *
      * @return UuidInterface
+     * @throws \Ramsey\Uuid\Exception\UnsatisfiedDependencyException if `Moontoast\Math\BigNumber` is not present
+     * @throws \InvalidArgumentException
+     * @throws \Exception
      */
     public function uuid4();
 
@@ -56,6 +64,7 @@ interface UuidFactoryInterface
      * @param string $ns The UUID namespace in which to create the named UUID
      * @param string $name The name to create a UUID for
      * @return UuidInterface
+     * @throws \Ramsey\Uuid\Exception\InvalidUuidStringException
      */
     public function uuid5($ns, $name);
 
@@ -64,6 +73,8 @@ interface UuidFactoryInterface
      *
      * @param string $bytes A 16-byte string representation of a UUID
      * @return UuidInterface
+     * @throws \Ramsey\Uuid\Exception\InvalidUuidStringException
+     * @throws \InvalidArgumentException if string has not 16 characters
      */
     public function fromBytes($bytes);
 
@@ -72,6 +83,7 @@ interface UuidFactoryInterface
      *
      * @param string $uuid A string representation of a UUID
      * @return UuidInterface
+     * @throws \Ramsey\Uuid\Exception\InvalidUuidStringException
      */
     public function fromString($uuid);
 
@@ -84,6 +96,8 @@ interface UuidFactoryInterface
      * @param mixed $integer The integer to use when creating a `Uuid` from an
      *     integer; may be of any type understood by the configured number converter
      * @return UuidInterface
+     * @throws \Ramsey\Uuid\Exception\UnsatisfiedDependencyException if `Moontoast\Math\BigNumber` is not present
+     * @throws \Ramsey\Uuid\Exception\InvalidUuidStringException
      */
     public function fromInteger($integer);
 }
