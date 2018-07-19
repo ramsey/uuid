@@ -1,7 +1,5 @@
 # ramsey/uuid
 
-_NOTICE: Formerly known as `rhumsaa/uuid`, The package and namespace names have changed to `ramsey/uuid` and `Ramsey\Uuid`, respectively._
-
 [![Source Code][badge-source]][source]
 [![Latest Version][badge-release]][release]
 [![Software License][badge-license]][license]
@@ -9,7 +7,7 @@ _NOTICE: Formerly known as `rhumsaa/uuid`, The package and namespace names have 
 [![Coverage Status][badge-coverage]][coverage]
 [![Total Downloads][badge-downloads]][downloads]
 
-ramsey/uuid is a PHP 7+ library for generating and working with [RFC 4122][rfc4122] version 1, 3, 4, and 5 universally unique identifiers (UUID).
+ramsey/uuid is a PHP 7.2+ library for generating and working with [RFC 4122][rfc4122] version 1, 3, 4, and 5 universally unique identifiers (UUID).
 
 This project adheres to a [Contributor Code of Conduct][conduct]. By participating in this project and its community, you are expected to uphold this code.
 
@@ -30,6 +28,11 @@ The preferred method of installation is via [Packagist][] and [Composer][]. Run 
 ```bash
 composer require ramsey/uuid
 ```
+
+
+## Upgrading from 3.x to 4.x
+
+TODO
 
 
 ## Upgrading from 2.x to 3.x
