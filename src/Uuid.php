@@ -18,7 +18,6 @@ use Ramsey\Uuid\Codec\CodecInterface;
 use Ramsey\Uuid\Converter\NumberConverterInterface;
 use Ramsey\Uuid\Converter\TimeConverterInterface;
 use Ramsey\Uuid\Exception\UnsupportedOperationException;
-use Ramsey\Uuid\Validator\Validator;
 
 /**
  * Represents a universally unique identifier (UUID), according to RFC 4122.
