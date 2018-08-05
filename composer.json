@@ -11,6 +11,7 @@
     "license": "MIT",
     "require": {
         "php": "^7.2",
+        "ext-json": "*",
         "symfony/polyfill-ctype": "^1.8"
     },
     "require-dev": {
