@@ -268,6 +268,10 @@ interface UuidInterface extends JsonSerializable, Serializable
     /**
      * Converts this UUID into a string representation.
      *
+     * @deprecated In ramsey/uuid 4.0.0, this method will be replaced with the
+     *     __toString() magic method, which is currently available in the
+     *     Uuid concrete class. The new recommendation is to cast Uuid objects
+     *     to string, rather than calling `toString()`.
      * @return string
      */
     public function toString();
