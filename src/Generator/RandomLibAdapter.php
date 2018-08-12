@@ -33,7 +33,7 @@ class RandomLibAdapter implements RandomGeneratorInterface
     /**
      * Constructs a `RandomLibAdapter` using a `RandomLib\Generator`
      *
-     * By default, if no `Generator` is passed in, this creates a medium-strength
+     * By default, if no `Generator` is passed in, this creates a high-strength
      * generator to use when generating random binary data.
      *
      * @param Generator $generator An paragonie/random-lib `Generator`
@@ -43,7 +43,7 @@ class RandomLibAdapter implements RandomGeneratorInterface
         if ($generator === null) {
             $factory = new Factory();
 
-            $generator = $factory->getMediumStrengthGenerator();
+            $generator = $factory->getHighStrengthGenerator();
         }
 
         $this->generator = $generator;
