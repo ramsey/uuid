@@ -19,7 +19,7 @@ class UuidFactoryTest extends TestCase
 
         $uuid = $factory->fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
 
-        $this->assertEquals('ff6f8cb0-c57d-11e1-9b21-0800200c9a66', $uuid->toString());
+        $this->assertEquals('ff6f8cb0-c57d-11e1-9b21-0800200c9a66', (string) $uuid);
     }
 
     public function testParsesGuidCorrectly()
@@ -28,7 +28,7 @@ class UuidFactoryTest extends TestCase
 
         $uuid = $factory->fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
 
-        $this->assertEquals('ff6f8cb0-c57d-11e1-9b21-0800200c9a66', $uuid->toString());
+        $this->assertEquals('ff6f8cb0-c57d-11e1-9b21-0800200c9a66', (string) $uuid);
     }
 
     public function testFromStringParsesUuidInLowercase()
@@ -39,7 +39,7 @@ class UuidFactoryTest extends TestCase
 
         $uuid = $factory->fromString($uuidUpper);
 
-        $this->assertEquals($uuidString, $uuid->toString());
+        $this->assertEquals($uuidString, (string) $uuid);
     }
 
     public function testGettersReturnValueFromFeatureSet()

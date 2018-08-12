@@ -270,5 +270,5 @@ interface UuidInterface extends JsonSerializable, Serializable
      *
      * @return string
      */
-    public function toString();
+    public function __toString();
 }

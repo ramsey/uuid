@@ -30,7 +30,7 @@ class UuidTest extends TestCase
     {
         $uuid = Uuid::fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
         $this->assertInstanceOf('\Ramsey\Uuid\Uuid', $uuid);
-        $this->assertEquals('ff6f8cb0-c57d-11e1-9b21-0800200c9a66', $uuid->toString());
+        $this->assertEquals('ff6f8cb0-c57d-11e1-9b21-0800200c9a66', (string) $uuid);
     }
 
     /**
@@ -48,7 +48,7 @@ class UuidTest extends TestCase
 
         $this->assertInstanceOf('\Ramsey\Uuid\Uuid', $guid);
         // UUID's and GUID's share the same textual representation
-        $this->assertEquals($uuid->toString(), $guid->toString());
+        $this->assertEquals((string) $uuid, (string) $guid);
         // But not the same binary representation (this assertion is valid on little endian hosts
         // only)
         $this->assertNotEquals(bin2hex($uuid->getBytes()), bin2hex($guid->getBytes()));
@@ -70,7 +70,7 @@ class UuidTest extends TestCase
 
         $this->assertInstanceOf('\Ramsey\Uuid\Uuid', $guid);
         // UUID's and GUID's share the same textual representation
-        $this->assertEquals($uuid->toString(), $guid->toString());
+        $this->assertEquals((string) $uuid, (string) $guid);
         // But not the same binary representation (this assertion is valid on little endian hosts
         // only)
         $this->assertEquals(bin2hex($uuid->getBytes()), bin2hex($guid->getBytes()));
@@ -82,7 +82,7 @@ class UuidTest extends TestCase
     {
         $uuid = Uuid::fromString('{ff6f8cb0-c57d-11e1-9b21-0800200c9a66}');
         $this->assertInstanceOf('\Ramsey\Uuid\Uuid', $uuid);
-        $this->assertEquals('ff6f8cb0-c57d-11e1-9b21-0800200c9a66', $uuid->toString());
+        $this->assertEquals('ff6f8cb0-c57d-11e1-9b21-0800200c9a66', (string) $uuid);
     }
 
     /**
@@ -109,7 +109,7 @@ class UuidTest extends TestCase
     {
         $uuid = Uuid::fromString('urn:uuid:ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
         $this->assertInstanceOf('\Ramsey\Uuid\Uuid', $uuid);
-        $this->assertEquals('ff6f8cb0-c57d-11e1-9b21-0800200c9a66', $uuid->toString());
+        $this->assertEquals('ff6f8cb0-c57d-11e1-9b21-0800200c9a66', (string) $uuid);
     }
 
     /**
@@ -706,12 +706,12 @@ class UuidTest extends TestCase
     {
         // Check with a recent date
         $uuid = Uuid::fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
-        $this->assertEquals('ff6f8cb0-c57d-11e1-9b21-0800200c9a66', $uuid->toString());
+        $this->assertEquals('ff6f8cb0-c57d-11e1-9b21-0800200c9a66', (string) $uuid);
         $this->assertEquals('ff6f8cb0-c57d-11e1-9b21-0800200c9a66', sprintf('%s', $uuid));
 
         // Check with an old date
         $uuid = Uuid::fromString('0901e600-0154-1000-9b21-0800200c9a66');
-        $this->assertEquals('0901e600-0154-1000-9b21-0800200c9a66', $uuid->toString());
+        $this->assertEquals('0901e600-0154-1000-9b21-0800200c9a66', (string) $uuid);
         $this->assertEquals('0901e600-0154-1000-9b21-0800200c9a66', sprintf('%s', $uuid));
     }
 
@@ -740,7 +740,7 @@ class UuidTest extends TestCase
         $this->assertEquals(1, $uuid->getVersion());
         $this->assertEquals(5737, $uuid->getClockSequence());
         $this->assertEquals(8796630719078, $uuid->getNode());
-        $this->assertEquals('9669-0800200c9a66', substr($uuid->toString(), 19));
+        $this->assertEquals('9669-0800200c9a66', substr((string) $uuid, 19));
     }
 
     /**
@@ -791,7 +791,7 @@ class UuidTest extends TestCase
         $this->assertEquals(1, $uuid->getVersion());
         $this->assertEquals(5737, $uuid->getClockSequence());
         $this->assertEquals('00007fffffff', $uuid->getNodeHex());
-        $this->assertEquals('9669-00007fffffff', substr($uuid->toString(), 19));
+        $this->assertEquals('9669-00007fffffff', substr((string) $uuid, 19));
 
         if (PHP_INT_SIZE == 8) {
             $this->assertEquals(2147483647, $uuid->getNode());
@@ -846,7 +846,7 @@ class UuidTest extends TestCase
     {
         $nsUuid = Uuid::fromString(Uuid::NAMESPACE_DNS);
         $uuid = Uuid::uuid3($nsUuid, 'python.org');
-        $this->assertEquals('6fa459ea-ee8a-3ca4-894e-db77e160355e', $uuid->toString());
+        $this->assertEquals('6fa459ea-ee8a-3ca4-894e-db77e160355e', (string) $uuid);
         $this->assertEquals(2, $uuid->getVariant());
         $this->assertEquals(3, $uuid->getVersion());
     }
@@ -860,7 +860,7 @@ class UuidTest extends TestCase
     public function testUuid3WithNamespaceAsUuidString()
     {
         $uuid = Uuid::uuid3(Uuid::NAMESPACE_DNS, 'python.org');
-        $this->assertEquals('6fa459ea-ee8a-3ca4-894e-db77e160355e', $uuid->toString());
+        $this->assertEquals('6fa459ea-ee8a-3ca4-894e-db77e160355e', (string) $uuid);
         $this->assertEquals(2, $uuid->getVariant());
         $this->assertEquals(3, $uuid->getVersion());
     }
@@ -925,7 +925,7 @@ class UuidTest extends TestCase
         for ($i = 0; $i < 1000; $i++) {
             usleep(10);
             $uuid = $factory->uuid4();
-            $this->assertGreaterThan($previous->toString(), $uuid->toString());
+            $this->assertGreaterThan((string) $previous, (string) $uuid);
 
             $previous = $uuid;
         }
@@ -957,7 +957,7 @@ class UuidTest extends TestCase
         for ($i = 0; $i < 1000; $i++) {
             usleep(10);
             $uuid = $factory->uuid4();
-            $this->assertGreaterThan($previous->toString(), $uuid->toString());
+            $this->assertGreaterThan((string) $previous, (string) $uuid);
 
             $previous = $uuid;
         }
@@ -991,7 +991,7 @@ class UuidTest extends TestCase
     {
         $nsUuid = Uuid::fromString(Uuid::NAMESPACE_DNS);
         $uuid = Uuid::uuid5($nsUuid, 'python.org');
-        $this->assertEquals('886313e1-3b8a-5372-9b90-0c9aee199e5d', $uuid->toString());
+        $this->assertEquals('886313e1-3b8a-5372-9b90-0c9aee199e5d', (string) $uuid);
         $this->assertEquals(2, $uuid->getVariant());
         $this->assertEquals(5, $uuid->getVersion());
     }
@@ -1005,7 +1005,7 @@ class UuidTest extends TestCase
     public function testUuid5WithNamespaceAsUuidString()
     {
         $uuid = Uuid::uuid5(Uuid::NAMESPACE_DNS, 'python.org');
-        $this->assertEquals('886313e1-3b8a-5372-9b90-0c9aee199e5d', $uuid->toString());
+        $this->assertEquals('886313e1-3b8a-5372-9b90-0c9aee199e5d', (string) $uuid);
         $this->assertEquals(2, $uuid->getVariant());
         $this->assertEquals(5, $uuid->getVersion());
     }
@@ -1556,7 +1556,7 @@ class UuidTest extends TestCase
                 $this->assertTrue(
                     $uuid32->equals($uuid64),
                     'Breaks at ' . gmdate('r', $currentTime)
-                        . "; 32-bit: {$uuid32->toString()}, 64-bit: {$uuid64->toString()}"
+                    . '; 32-bit: ' . (string) $uuid32 . ', 64-bit: ' . (string) $uuid64
                 );
 
                 // Assert that the time matches
@@ -1609,7 +1609,7 @@ class UuidTest extends TestCase
                 $this->assertTrue(
                     $uuid32->equals($uuid64),
                     'Breaks at ' . gmdate('r', $currentTime)
-                    . "; 32-bit: {$uuid32->toString()}, 64-bit: {$uuid64->toString()}"
+                    . '; 32-bit: ' . (string) $uuid32 . ', 64-bit: ' . (string) $uuid64
                 );
 
                 // Assert that the time matches
@@ -1685,7 +1685,7 @@ class UuidTest extends TestCase
         $guid = $guidFactory->fromBytes($bytes);
 
         // First three fields should be reversed
-        $this->assertEquals('b08c6fff-7dc5-e111-9b21-0800200c9a66', $guid->toString());
+        $this->assertEquals('b08c6fff-7dc5-e111-9b21-0800200c9a66', (string) $guid);
 
         // Check that parsing LE bytes as LE preserves fields
         $guid = $guidFactory->fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
@@ -1693,7 +1693,7 @@ class UuidTest extends TestCase
 
         $parsedGuid = $guidFactory->fromBytes($bytes);
 
-        $this->assertEquals($guid->toString(), $parsedGuid->toString());
+        $this->assertEquals((string) $guid, (string) $parsedGuid);
     }
 
     public function testFromGuidBytesOnBigEndianHost()
@@ -1709,14 +1709,14 @@ class UuidTest extends TestCase
         $guid = $guidFactory->fromBytes($bytes);
 
         // UUIDs and GUIDs should have the same binary representation on BE hosts
-        $this->assertEquals($uuid->toString(), $guid->toString());
+        $this->assertEquals((string) $uuid, (string) $guid);
 
         $guid = $guidFactory->fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
         $bytes = $guid->getBytes();
 
         $parsedGuid = $guidFactory->fromBytes($bytes);
 
-        $this->assertEquals($guid->toString(), $parsedGuid->toString());
+        $this->assertEquals((string) $guid, (string) $parsedGuid);
     }
 
     /**
@@ -2136,7 +2136,7 @@ class UuidTest extends TestCase
     {
         $uuid = Uuid::uuid1();
 
-        $this->assertEquals('"' . $uuid->toString() . '"', json_encode($uuid));
+        $this->assertEquals('"' . (string) $uuid . '"', json_encode($uuid));
     }
 
     public function testSerialize()
@@ -2160,28 +2160,28 @@ class UuidTest extends TestCase
     {
         $uuid = Uuid::uuid3(Uuid::NIL, '');
 
-        $this->assertEquals('4ae71336-e44b-39bf-b9d2-752e234818a5', $uuid->toString());
+        $this->assertEquals('4ae71336-e44b-39bf-b9d2-752e234818a5', (string) $uuid);
     }
 
     public function testUuid3WithNullName()
     {
         $uuid = Uuid::uuid3(Uuid::NIL, null);
 
-        $this->assertEquals('4ae71336-e44b-39bf-b9d2-752e234818a5', $uuid->toString());
+        $this->assertEquals('4ae71336-e44b-39bf-b9d2-752e234818a5', (string) $uuid);
     }
 
     public function testUuid3WithFalseName()
     {
         $uuid = Uuid::uuid3(Uuid::NIL, false);
 
-        $this->assertEquals('4ae71336-e44b-39bf-b9d2-752e234818a5', $uuid->toString());
+        $this->assertEquals('4ae71336-e44b-39bf-b9d2-752e234818a5', (string) $uuid);
     }
 
     public function testUuid3WithZeroName()
     {
         $uuid = Uuid::uuid3(Uuid::NIL, '0');
 
-        $this->assertEquals('19826852-5007-3022-a72a-212f66e9fac3', $uuid->toString());
+        $this->assertEquals('19826852-5007-3022-a72a-212f66e9fac3', (string) $uuid);
     }
 
     /**
@@ -2197,28 +2197,28 @@ class UuidTest extends TestCase
     {
         $uuid = Uuid::uuid5(Uuid::NIL, '');
 
-        $this->assertEquals('e129f27c-5103-5c5c-844b-cdf0a15e160d', $uuid->toString());
+        $this->assertEquals('e129f27c-5103-5c5c-844b-cdf0a15e160d', (string) $uuid);
     }
 
     public function testUuid5WithNullName()
     {
         $uuid = Uuid::uuid5(Uuid::NIL, null);
 
-        $this->assertEquals('e129f27c-5103-5c5c-844b-cdf0a15e160d', $uuid->toString());
+        $this->assertEquals('e129f27c-5103-5c5c-844b-cdf0a15e160d', (string) $uuid);
     }
 
     public function testUuid5WithFalseName()
     {
         $uuid = Uuid::uuid5(Uuid::NIL, false);
 
-        $this->assertEquals('e129f27c-5103-5c5c-844b-cdf0a15e160d', $uuid->toString());
+        $this->assertEquals('e129f27c-5103-5c5c-844b-cdf0a15e160d', (string) $uuid);
     }
 
     public function testUuid5WithZeroName()
     {
         $uuid = Uuid::uuid5(Uuid::NIL, '0');
 
-        $this->assertEquals('b6c54489-38a0-5f50-a60a-fd8d76219cae', $uuid->toString());
+        $this->assertEquals('b6c54489-38a0-5f50-a60a-fd8d76219cae', (string) $uuid);
     }
 
     /**

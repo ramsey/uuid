@@ -203,7 +203,7 @@ class Uuid implements UuidInterface
      */
     public function __toString()
     {
-        return $this->toString();
+        return $this->codec->encode($this);
     }
 
     /**
@@ -215,7 +215,7 @@ class Uuid implements UuidInterface
      */
     public function jsonSerialize()
     {
-        return $this->toString();
+        return (string) $this;
     }
 
     /**
@@ -227,7 +227,7 @@ class Uuid implements UuidInterface
      */
     public function serialize()
     {
-        return $this->toString();
+        return (string) $this;
     }
 
     /**
@@ -391,7 +391,7 @@ class Uuid implements UuidInterface
 
     public function getHex()
     {
-        return str_replace('-', '', $this->toString());
+        return str_replace('-', '', (string) $this);
     }
 
     /**
@@ -568,7 +568,7 @@ class Uuid implements UuidInterface
 
     public function getUrn()
     {
-        return 'urn:uuid:' . $this->toString();
+        return 'urn:uuid:' . (string) $this;
     }
 
     public function getVariant()
@@ -594,11 +594,6 @@ class Uuid implements UuidInterface
         }
 
         return null;
-    }
-
-    public function toString()
-    {
-        return $this->codec->encode($this);
     }
 
     /**
