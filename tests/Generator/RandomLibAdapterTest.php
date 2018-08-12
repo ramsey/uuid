@@ -20,7 +20,7 @@ class RandomLibAdapterTest extends TestCase
     public function testAdapterWithGeneratorDoesNotCreateGenerator()
     {
         $factory = Mockery::mock('overload:RandomLib\Factory');
-        $factory->shouldNotReceive('getMediumStrengthGenerator')
+        $factory->shouldNotReceive('getHighStrengthGenerator')
             ->getMock();
 
         $generator = $this->getMockBuilder('RandomLib\Generator')
@@ -36,7 +36,7 @@ class RandomLibAdapterTest extends TestCase
     public function testAdapterWithoutGeneratorGreatesGenerator()
     {
         $factory = Mockery::mock('overload:RandomLib\Factory');
-        $factory->shouldReceive('getMediumStrengthGenerator')
+        $factory->shouldReceive('getHighStrengthGenerator')
             ->once()
             ->getMock();
 
