@@ -266,9 +266,16 @@ interface UuidInterface extends JsonSerializable, Serializable
     public function getVersion();
 
     /**
-     * Converts this UUID into a string representation.
+     * Returns a string representation of this UUID.
      *
      * @return string
      */
     public function toString();
+
+    /**
+     * Allows casting this UUID to a string representation.
+     *
+     * @return string
+     */
+    public function __toString();
 }

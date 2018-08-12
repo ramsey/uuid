@@ -1,5 +1,3 @@
 parameters:
     autoload_files:
         - tests/phpstan-bootstrap.php
-    ignoreErrors:
-        - '#Cannot cast Ramsey\\Uuid\\UuidInterface to string.#'
