@@ -6,6 +6,7 @@
 [![Build Status][badge-build]][build]
 [![Coverage Status][badge-coverage]][coverage]
 [![Total Downloads][badge-downloads]][downloads]
+[![Donate][badge-liberapay]][donate]
 
 ramsey/uuid is a PHP 7.2+ library for generating and working with [RFC 4122][rfc4122] version 1, 3, 4, and 5 universally unique identifiers (UUID).
 
@@ -146,6 +147,7 @@ The ramsey/uuid library is copyright © [Ben Ramsey](https://benramsey.com/) and
 [badge-build]: https://img.shields.io/travis/ramsey/uuid/master.svg?style=flat-square
 [badge-coverage]: https://img.shields.io/coveralls/ramsey/uuid/master.svg?style=flat-square
 [badge-downloads]: https://img.shields.io/packagist/dt/ramsey/uuid.svg?style=flat-square
+[badge-liberapay]: http://img.shields.io/liberapay/patrons/ramsey.svg?logo=liberapay&style=flat-square
 
 [source]: https://github.com/ramsey/uuid
 [release]: https://packagist.org/packages/ramsey/uuid
@@ -153,3 +155,4 @@ The ramsey/uuid library is copyright © [Ben Ramsey](https://benramsey.com/) and
 [build]: https://travis-ci.org/ramsey/uuid
 [coverage]: https://coveralls.io/r/ramsey/uuid?branch=master
 [downloads]: https://packagist.org/packages/ramsey/uuid
+[donate]: https://liberapay.com/ramsey/donate
