@@ -44,11 +44,11 @@ class GmpTimeConverter implements TimeConverterInterface
 
         $uuidTimeHex = sprintf('%016s', gmp_strval($uuidTime, 16));
 
-        return array(
+        return [
             'low' => substr($uuidTimeHex, 8),
             'mid' => substr($uuidTimeHex, 4, 4),
             'hi' => substr($uuidTimeHex, 0, 4),
-        );
+        ];
     }
 
     /**
