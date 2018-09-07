@@ -36,7 +36,7 @@ class SystemNodeProvider implements NodeProviderInterface
         }
 
         $pattern = '/[^:]([0-9A-Fa-f]{2}([:-])[0-9A-Fa-f]{2}(\2[0-9A-Fa-f]{2}){4})[^:]/';
-        $matches = array();
+        $matches = [];
 
         // first try a  linux specific way
         $node = $this->getSysfs();
