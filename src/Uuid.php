@@ -140,14 +140,14 @@ class Uuid implements UuidInterface
      * @var array
      * @see UuidInterface::getFieldsHex()
      */
-    protected $fields = array(
+    protected $fields = [
         'time_low' => '00000000',
         'time_mid' => '0000',
         'time_hi_and_version' => '0000',
         'clock_seq_hi_and_reserved' => '00',
         'clock_seq_low' => '00',
         'node' => '000000000000',
-    );
+    ];
 
     /**
      * The number converter to use for converting hex values to/from integers.
@@ -368,14 +368,14 @@ class Uuid implements UuidInterface
      */
     public function getFields()
     {
-        return array(
+        return [
             'time_low' => $this->getTimeLow(),
             'time_mid' => $this->getTimeMid(),
             'time_hi_and_version' => $this->getTimeHiAndVersion(),
             'clock_seq_hi_and_reserved' => $this->getClockSeqHiAndReserved(),
             'clock_seq_low' => $this->getClockSeqLow(),
             'node' => $this->getNode(),
-        );
+        ];
     }
 
     public function getFieldsHex()

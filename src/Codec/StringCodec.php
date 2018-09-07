@@ -121,24 +121,24 @@ class StringCodec implements CodecInterface
      */
     protected function extractComponents($encodedUuid)
     {
-        $nameParsed = str_replace(array(
+        $nameParsed = str_replace([
             'urn:',
             'uuid:',
             '{',
             '}',
             '-'
-        ), '', $encodedUuid);
+        ], '', $encodedUuid);
 
         // We have stripped out the dashes and are breaking up the string using
         // substr(). In this way, we can accept a full hex value that doesn't
         // contain dashes.
-        $components = array(
+        $components = [
             substr($nameParsed, 0, 8),
             substr($nameParsed, 8, 4),
             substr($nameParsed, 12, 4),
             substr($nameParsed, 16, 4),
             substr($nameParsed, 20)
-        );
+        ];
 
         $nameParsed = implode('-', $components);
 
@@ -158,13 +158,13 @@ class StringCodec implements CodecInterface
      */
     protected function getFields(array $components)
     {
-        return array(
+        return [
             'time_low' => str_pad($components[0], 8, '0', STR_PAD_LEFT),
             'time_mid' => str_pad($components[1], 4, '0', STR_PAD_LEFT),
             'time_hi_and_version' => str_pad($components[2], 4, '0', STR_PAD_LEFT),
             'clock_seq_hi_and_reserved' => str_pad(substr($components[3], 0, 2), 2, '0', STR_PAD_LEFT),
             'clock_seq_low' => str_pad(substr($components[3], 2), 2, '0', STR_PAD_LEFT),
             'node' => str_pad($components[4], 12, '0', STR_PAD_LEFT)
-        );
+        ];
     }
 }

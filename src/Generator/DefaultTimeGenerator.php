@@ -96,14 +96,14 @@ class DefaultTimeGenerator implements TimeGeneratorInterface
 
         $hex = vsprintf(
             '%08s%04s%04s%02s%02s%012s',
-            array(
+            [
                 $uuidTime['low'],
                 $uuidTime['mid'],
                 sprintf('%04x', $timeHi),
                 sprintf('%02x', $clockSeqHi),
                 sprintf('%02x', $clockSeq & 0xff),
                 $node,
-            )
+            ]
         );
 
         return hex2bin($hex);
