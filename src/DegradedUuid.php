@@ -36,7 +36,7 @@ class DegradedUuid extends Uuid
         $time = $this->numberConverter->fromHex($this->getTimestampHex());
         $unixTime = $this->timeConverter->convertTime($time);
 
-        return new \DateTime("@{$unixTime}");
+        return new \DateTimeImmutable("@{$unixTime}");
     }
 
     /**
