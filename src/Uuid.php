@@ -14,7 +14,7 @@
 
 namespace Ramsey\Uuid;
 
-use DateTime;
+use DateTimeImmutable;
 use Exception;
 use InvalidArgumentException;
 use Ramsey\Uuid\Codec\CodecInterface;
@@ -360,7 +360,7 @@ class Uuid implements UuidInterface
 
         $unixTime = $this->timeConverter->convertTime($this->getTimestamp());
 
-        return new DateTime("@{$unixTime}");
+        return new DateTimeImmutable("@{$unixTime}");
     }
 
     /**

@@ -14,7 +14,7 @@
 
 namespace Ramsey\Uuid;
 
-use DateTime;
+use DateTimeImmutable;
 use Moontoast\Math\BigNumber;
 use Ramsey\Uuid\Exception\UnsatisfiedDependencyException;
 use Ramsey\Uuid\Exception\UnsupportedOperationException;
@@ -38,7 +38,7 @@ class DegradedUuid extends Uuid
         $time = $this->numberConverter->fromHex($this->getTimestampHex());
         $unixTime = $this->timeConverter->convertTime($time);
 
-        return new DateTime("@{$unixTime}");
+        return new DateTimeImmutable("@{$unixTime}");
     }
 
     /**
