@@ -14,7 +14,7 @@
 
 namespace Ramsey\Uuid;
 
-use DateTime;
+use DateTimeInterface;
 use JsonSerializable;
 use Ramsey\Uuid\Converter\NumberConverterInterface;
 use Ramsey\Uuid\Exception\UnsatisfiedDependencyException;
@@ -118,14 +118,14 @@ interface UuidInterface extends JsonSerializable, Serializable
     public function getClockSequenceHex();
 
     /**
-     * Returns a PHP `DateTime` object representing the timestamp associated
-     * with this UUID.
+     * Returns a PHP object that implements `DateTimeInterface` representing
+     * the timestamp associated with this UUID.
      *
      * The timestamp value is only meaningful in a time-based UUID, which
      * has version type 1. If this UUID is not a time-based UUID then
      * this method throws `UnsupportedOperationException`.
      *
-     * @return DateTime A PHP DateTime representation of the date
+     * @return DateTimeInterface A PHP DateTimeImmutable representation of the date
      * @throws UnsupportedOperationException If this UUID is not a version 1 UUID
      * @throws UnsatisfiedDependencyException if called in a 32-bit system and
      *     `Moontoast\Math\BigNumber` is not present
