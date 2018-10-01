@@ -8,7 +8,6 @@ use Ramsey\Uuid\FeatureSet;
 use Ramsey\Uuid\Generator\CombGenerator;
 use Ramsey\Uuid\Generator\RandomGeneratorFactory;
 use Ramsey\Uuid\Provider\Time\FixedTimeProvider;
-use Ramsey\Uuid\Provider\Time\SystemTimeProvider;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidFactory;
 use Ramsey\Uuid\Validator\Validator;
@@ -16,6 +15,7 @@ use Ramsey\Uuid\Generator\RandomGeneratorInterface;
 use Ramsey\Uuid\Validator\ValidatorInterface;
 use Ramsey\Uuid\DegradedUuid;
 use Ramsey\Uuid\Converter\Number\DegradedNumberConverter;
+use Moontoast\Math\BigNumber;
 
 class UuidTest extends TestCase
 {
@@ -29,7 +29,7 @@ class UuidTest extends TestCase
     public function testFromString()
     {
         $uuid = Uuid::fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
-        $this->assertInstanceOf('\Ramsey\Uuid\Uuid', $uuid);
+        $this->assertInstanceOf(Uuid::class, $uuid);
         $this->assertEquals('ff6f8cb0-c57d-11e1-9b21-0800200c9a66', (string) $uuid);
     }
 
@@ -46,7 +46,7 @@ class UuidTest extends TestCase
 
         $guid = Uuid::fromString('b08c6fff-7dc5-e111-9b21-0800200c9a66');
 
-        $this->assertInstanceOf('\Ramsey\Uuid\Uuid', $guid);
+        $this->assertInstanceOf(Uuid::class, $guid);
         // UUID's and GUID's share the same textual representation
         $this->assertEquals((string) $uuid, (string) $guid);
         // But not the same binary representation (this assertion is valid on little endian hosts
@@ -68,7 +68,7 @@ class UuidTest extends TestCase
 
         $guid = Uuid::fromString('b08c6fff-7dc5-e111-9b21-0800200c9a66');
 
-        $this->assertInstanceOf('\Ramsey\Uuid\Uuid', $guid);
+        $this->assertInstanceOf(Uuid::class, $guid);
         // UUID's and GUID's share the same textual representation
         $this->assertEquals((string) $uuid, (string) $guid);
         // But not the same binary representation (this assertion is valid on little endian hosts
@@ -81,7 +81,7 @@ class UuidTest extends TestCase
     public function testFromStringWithCurlyBraces()
     {
         $uuid = Uuid::fromString('{ff6f8cb0-c57d-11e1-9b21-0800200c9a66}');
-        $this->assertInstanceOf('\Ramsey\Uuid\Uuid', $uuid);
+        $this->assertInstanceOf(Uuid::class, $uuid);
         $this->assertEquals('ff6f8cb0-c57d-11e1-9b21-0800200c9a66', (string) $uuid);
     }
 
@@ -91,7 +91,7 @@ class UuidTest extends TestCase
      */
     public function testFromStringWithInvalidUuidString()
     {
-        $uuid = Uuid::fromString('ff6f8cb0-c57d-11e1-9b21');
+        Uuid::fromString('ff6f8cb0-c57d-11e1-9b21');
     }
 
     /**
@@ -108,7 +108,7 @@ class UuidTest extends TestCase
     public function testFromStringWithUrn()
     {
         $uuid = Uuid::fromString('urn:uuid:ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
-        $this->assertInstanceOf('\Ramsey\Uuid\Uuid', $uuid);
+        $this->assertInstanceOf(Uuid::class, $uuid);
         $this->assertEquals('ff6f8cb0-c57d-11e1-9b21-0800200c9a66', (string) $uuid);
     }
 
@@ -117,7 +117,7 @@ class UuidTest extends TestCase
     public function testGetBytes()
     {
         $uuid = Uuid::fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
-        $this->assertEquals(16, strlen($uuid->getBytes()));
+        $this->assertEquals(16, \strlen($uuid->getBytes()));
         $this->assertEquals('/2+MsMV9EeGbIQgAIAyaZg==', base64_encode($uuid->getBytes()));
     }
 
@@ -181,22 +181,22 @@ class UuidTest extends TestCase
     {
         // Check a recent date
         $uuid = Uuid::fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
-        $this->assertInstanceOf('\DateTime', $uuid->getDateTime());
+        $this->assertInstanceOf(\DateTimeInterface::class, $uuid->getDateTime());
         $this->assertEquals('2012-07-04T02:14:34+00:00', $uuid->getDateTime()->format('c'));
 
         // Check an old date
         $uuid = Uuid::fromString('0901e600-0154-1000-9b21-0800200c9a66');
-        $this->assertInstanceOf('\DateTime', $uuid->getDateTime());
+        $this->assertInstanceOf(\DateTimeInterface::class, $uuid->getDateTime());
         $this->assertEquals('1582-10-16T16:34:04+00:00', $uuid->getDateTime()->format('c'));
 
         // Check a future date
         $uuid = Uuid::fromString('ff9785f6-ffff-1fff-9669-00007ffffffe');
-        $this->assertInstanceOf('\DateTime', $uuid->getDateTime());
+        $this->assertInstanceOf(\DateTimeInterface::class, $uuid->getDateTime());
         $this->assertEquals('5236-03-31T21:21:00+00:00', $uuid->getDateTime()->format('c'));
 
         // Check the oldest date
         $uuid = Uuid::fromString('00000000-0000-1000-9669-00007ffffffe');
-        $this->assertInstanceOf('\DateTime', $uuid->getDateTime());
+        $this->assertInstanceOf(\DateTimeInterface::class, $uuid->getDateTime());
         $this->assertEquals('1582-10-15T00:00:00+00:00', $uuid->getDateTime()->format('c'));
     }
 
@@ -209,22 +209,22 @@ class UuidTest extends TestCase
 
         // Check a recent date
         $uuid = Uuid::fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
-        $this->assertInstanceOf('\DateTime', $uuid->getDateTime());
+        $this->assertInstanceOf(\DateTimeInterface::class, $uuid->getDateTime());
         $this->assertEquals('2012-07-04T02:14:34+00:00', $uuid->getDateTime()->format('c'));
 
         // Check an old date
         $uuid = Uuid::fromString('0901e600-0154-1000-9b21-0800200c9a66');
-        $this->assertInstanceOf('\DateTime', $uuid->getDateTime());
+        $this->assertInstanceOf(\DateTimeInterface::class, $uuid->getDateTime());
         $this->assertEquals('1582-10-16T16:34:04+00:00', $uuid->getDateTime()->format('c'));
 
         // Check a future date
         $uuid = Uuid::fromString('ff9785f6-ffff-1fff-9669-00007ffffffe');
-        $this->assertInstanceOf('\DateTime', $uuid->getDateTime());
+        $this->assertInstanceOf(\DateTimeInterface::class, $uuid->getDateTime());
         $this->assertEquals('5236-03-31T21:21:00+00:00', $uuid->getDateTime()->format('c'));
 
         // Check the oldest date
         $uuid = Uuid::fromString('00000000-0000-1000-9669-00007ffffffe');
-        $this->assertInstanceOf('\DateTime', $uuid->getDateTime());
+        $this->assertInstanceOf(\DateTimeInterface::class, $uuid->getDateTime());
         $this->assertEquals('1582-10-15T00:00:00+00:00', $uuid->getDateTime()->format('c'));
     }
 
@@ -237,22 +237,22 @@ class UuidTest extends TestCase
 
         // Check a recent date
         $uuid = Uuid::fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
-        $this->assertInstanceOf('\DateTime', $uuid->getDateTime());
+        $this->assertInstanceOf(\DateTimeInterface::class, $uuid->getDateTime());
         $this->assertEquals('2012-07-04T02:14:34+00:00', $uuid->getDateTime()->format('c'));
 
         // Check an old date
         $uuid = Uuid::fromString('0901e600-0154-1000-9b21-0800200c9a66');
-        $this->assertInstanceOf('\DateTime', $uuid->getDateTime());
+        $this->assertInstanceOf(\DateTimeInterface::class, $uuid->getDateTime());
         $this->assertEquals('1582-10-16T16:34:04+00:00', $uuid->getDateTime()->format('c'));
 
         // Check a future date
         $uuid = Uuid::fromString('ff9785f6-ffff-1fff-9669-00007ffffffe');
-        $this->assertInstanceOf('\DateTime', $uuid->getDateTime());
+        $this->assertInstanceOf(\DateTimeInterface::class, $uuid->getDateTime());
         $this->assertEquals('5236-03-31T21:21:00+00:00', $uuid->getDateTime()->format('c'));
 
         // Check the oldest date
         $uuid = Uuid::fromString('00000000-0000-1000-9669-00007ffffffe');
-        $this->assertInstanceOf('\DateTime', $uuid->getDateTime());
+        $this->assertInstanceOf(\DateTimeInterface::class, $uuid->getDateTime());
         $this->assertEquals('1582-10-15T00:00:00+00:00', $uuid->getDateTime()->format('c'));
     }
 
@@ -268,7 +268,7 @@ class UuidTest extends TestCase
         $this->assertInstanceOf(DegradedUuid::class, $uuid);
         $this->assertInstanceOf(DegradedNumberConverter::class, $uuid->getNumberConverter());
 
-        $date = $uuid->getDateTime();
+        $uuid->getDateTime();
     }
 
     /**
@@ -279,7 +279,7 @@ class UuidTest extends TestCase
     {
         // Using a version 4 UUID to test
         $uuid = Uuid::fromString('bf17b594-41f2-474f-bf70-4c90220f75de');
-        $date = $uuid->getDateTime();
+        $uuid->getDateTime();
     }
 
     /**
@@ -312,7 +312,7 @@ class UuidTest extends TestCase
 
         /** @var Uuid $uuid */
         $uuid = Uuid::fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
-        $fields = $uuid->getFields();
+        $uuid->getFields();
     }
 
     /**
@@ -342,7 +342,7 @@ class UuidTest extends TestCase
 
         /** @var Uuid $uuid */
         $uuid = Uuid::fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
-        $this->assertInstanceOf('Moontoast\Math\BigNumber', $uuid->getLeastSignificantBits());
+        $this->assertInstanceOf(BigNumber::class, $uuid->getLeastSignificantBits());
         $this->assertEquals('11178224546741000806', $uuid->getLeastSignificantBits()->getValue());
     }
 
@@ -367,7 +367,7 @@ class UuidTest extends TestCase
 
         /** @var Uuid $uuid */
         $uuid = Uuid::fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
-        $bn = $uuid->getLeastSignificantBits();
+        $uuid->getLeastSignificantBits();
     }
 
     /**
@@ -387,7 +387,7 @@ class UuidTest extends TestCase
 
         /** @var Uuid $uuid */
         $uuid = Uuid::fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
-        $this->assertInstanceOf('Moontoast\Math\BigNumber', $uuid->getMostSignificantBits());
+        $this->assertInstanceOf(BigNumber::class, $uuid->getMostSignificantBits());
         $this->assertEquals('18406084892941947361', $uuid->getMostSignificantBits()->getValue());
     }
 
@@ -443,7 +443,7 @@ class UuidTest extends TestCase
 
         /** @var Uuid $uuid */
         $uuid = Uuid::fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
-        $node = $uuid->getNode();
+        $uuid->getNode();
     }
 
     /**
@@ -491,7 +491,7 @@ class UuidTest extends TestCase
 
         /** @var Uuid $uuid */
         $uuid = Uuid::fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
-        $timeLow = $uuid->getTimeLow();
+        $uuid->getTimeLow();
     }
 
     /**
@@ -558,7 +558,7 @@ class UuidTest extends TestCase
         // Using a version 4 UUID to test
         /** @var Uuid $uuid */
         $uuid = Uuid::fromString('bf17b594-41f2-474f-bf70-4c90220f75de');
-        $ts = $uuid->getTimestamp();
+        $uuid->getTimestamp();
     }
 
     /**
@@ -569,7 +569,7 @@ class UuidTest extends TestCase
     {
         // Using a version 4 UUID to test
         $uuid = Uuid::fromString('bf17b594-41f2-474f-bf70-4c90220f75de');
-        $ts = $uuid->getTimestampHex();
+        $uuid->getTimestampHex();
     }
 
     /**
@@ -581,7 +581,7 @@ class UuidTest extends TestCase
 
         /** @var Uuid $uuid */
         $uuid = Uuid::fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
-        $ts = $uuid->getTimestamp();
+        $uuid->getTimestamp();
     }
 
     /**
@@ -720,8 +720,8 @@ class UuidTest extends TestCase
     public function testUuid1()
     {
         $uuid = Uuid::uuid1();
-        $this->assertInstanceOf('\Ramsey\Uuid\Uuid', $uuid);
-        $this->assertInstanceOf('\DateTime', $uuid->getDateTime());
+        $this->assertInstanceOf(Uuid::class, $uuid);
+        $this->assertInstanceOf(\DateTimeInterface::class, $uuid->getDateTime());
         $this->assertEquals(2, $uuid->getVariant());
         $this->assertEquals(1, $uuid->getVersion());
     }
@@ -734,8 +734,8 @@ class UuidTest extends TestCase
 
         /** @var Uuid $uuid */
         $uuid = Uuid::uuid1(0x0800200c9a66, 0x1669);
-        $this->assertInstanceOf('\Ramsey\Uuid\Uuid', $uuid);
-        $this->assertInstanceOf('\DateTime', $uuid->getDateTime());
+        $this->assertInstanceOf(Uuid::class, $uuid);
+        $this->assertInstanceOf(\DateTimeInterface::class, $uuid->getDateTime());
         $this->assertEquals(2, $uuid->getVariant());
         $this->assertEquals(1, $uuid->getVersion());
         $this->assertEquals(5737, $uuid->getClockSequence());
@@ -750,8 +750,8 @@ class UuidTest extends TestCase
         /** @var Uuid $uuid */
         $uuid = Uuid::uuid1('7160355e');
 
-        $this->assertInstanceOf('\Ramsey\Uuid\Uuid', $uuid);
-        $this->assertInstanceOf('\DateTime', $uuid->getDateTime());
+        $this->assertInstanceOf(Uuid::class, $uuid);
+        $this->assertInstanceOf(\DateTimeInterface::class, $uuid->getDateTime());
         $this->assertEquals(2, $uuid->getVariant());
         $this->assertEquals(1, $uuid->getVersion());
         $this->assertEquals('00007160355e', $uuid->getNodeHex());
@@ -768,8 +768,8 @@ class UuidTest extends TestCase
         /** @var Uuid $uuid */
         $uuid = Uuid::uuid1('71B0aD5e');
 
-        $this->assertInstanceOf('\Ramsey\Uuid\Uuid', $uuid);
-        $this->assertInstanceOf('\DateTime', $uuid->getDateTime());
+        $this->assertInstanceOf(Uuid::class, $uuid);
+        $this->assertInstanceOf(\DateTimeInterface::class, $uuid->getDateTime());
         $this->assertEquals(2, $uuid->getVariant());
         $this->assertEquals(1, $uuid->getVersion());
         $this->assertEquals('000071b0ad5e', $uuid->getNodeHex());
@@ -785,8 +785,8 @@ class UuidTest extends TestCase
     {
         /** @var Uuid $uuid */
         $uuid = Uuid::uuid1(0x7fffffff, 0x1669);
-        $this->assertInstanceOf('\Ramsey\Uuid\Uuid', $uuid);
-        $this->assertInstanceOf('\DateTime', $uuid->getDateTime());
+        $this->assertInstanceOf(Uuid::class, $uuid);
+        $this->assertInstanceOf(\DateTimeInterface::class, $uuid->getDateTime());
         $this->assertEquals(2, $uuid->getVariant());
         $this->assertEquals(1, $uuid->getVersion());
         $this->assertEquals(5737, $uuid->getClockSequence());
@@ -799,30 +799,30 @@ class UuidTest extends TestCase
     }
 
     /**
-     * @expectedException InvalidArgumentException
+     * @expectedException \InvalidArgumentException
      * @expectedExceptionMessage Invalid node value
      */
     public function testUuid1WithOutOfBoundsNode()
     {
-        $uuid = Uuid::uuid1(9223372036854775808);
+        Uuid::uuid1(9223372036854775808);
     }
 
     /**
-     * @expectedException InvalidArgumentException
+     * @expectedException \InvalidArgumentException
      * @expectedExceptionMessage Invalid node value
      */
     public function testUuid1WithNonHexadecimalNode()
     {
-        $uuid = Uuid::uuid1('db77e160355g');
+        Uuid::uuid1('db77e160355g');
     }
 
     /**
-     * @expectedException InvalidArgumentException
+     * @expectedException \InvalidArgumentException
      * @expectedExceptionMessage Invalid node value
      */
     public function testUuid1WithNon48bitNumber()
     {
-        $uuid = Uuid::uuid1('db77e160355ef');
+        Uuid::uuid1('db77e160355ef');
     }
 
     public function testUuid1WithRandomNode()
@@ -830,8 +830,8 @@ class UuidTest extends TestCase
         Uuid::setFactory(new UuidFactory(new FeatureSet(false, false, false, true)));
 
         $uuid = Uuid::uuid1();
-        $this->assertInstanceOf('\Ramsey\Uuid\Uuid', $uuid);
-        $this->assertInstanceOf('\DateTime', $uuid->getDateTime());
+        $this->assertInstanceOf(Uuid::class, $uuid);
+        $this->assertInstanceOf(\DateTimeInterface::class, $uuid->getDateTime());
         $this->assertEquals(2, $uuid->getVariant());
         $this->assertEquals(1, $uuid->getVersion());
     }
@@ -901,7 +901,6 @@ class UuidTest extends TestCase
 
     /**
      * Tests that generated UUID's using timestamp last COMB are sequential
-     * @return string
      */
     public function testUuid4TimestampLastComb()
     {
@@ -933,7 +932,6 @@ class UuidTest extends TestCase
 
     /**
      * Tests that generated UUID's using timestamp first COMB are sequential
-     * @return string
      */
     public function testUuid4TimestampFirstComb()
     {
@@ -1629,7 +1627,7 @@ class UuidTest extends TestCase
     {
         Uuid::setFactory(new UuidFactory(new FeatureSet(false, true, true, false, false, true)));
 
-        $uuid = Uuid::uuid1(0x00007ffffffe, 0x1669);
+        Uuid::uuid1(0x00007ffffffe, 0x1669);
     }
 
     /**
@@ -1720,7 +1718,7 @@ class UuidTest extends TestCase
     }
 
     /**
-     * @expectedException InvalidArgumentException
+     * @expectedException \InvalidArgumentException
      */
     public function testFromBytesArgumentTooShort()
     {
@@ -1728,7 +1726,7 @@ class UuidTest extends TestCase
     }
 
     /**
-     * @expectedException InvalidArgumentException
+     * @expectedException \InvalidArgumentException
      */
     public function testFromBytesArgumentTooLong()
     {
@@ -2148,12 +2146,12 @@ class UuidTest extends TestCase
     }
 
     /**
-     * @expectedException InvalidArgumentException
+     * @expectedException \InvalidArgumentException
      * @expectedExceptionMessage Invalid UUID string:
      */
     public function testUuid3WithEmptyNamespace()
     {
-        $uuid = Uuid::uuid3('', '');
+        Uuid::uuid3('', '');
     }
 
     public function testUuid3WithEmptyName()
@@ -2185,12 +2183,12 @@ class UuidTest extends TestCase
     }
 
     /**
-     * @expectedException InvalidArgumentException
+     * @expectedException \InvalidArgumentException
      * @expectedExceptionMessage Invalid UUID string:
      */
     public function testUuid5WithEmptyNamespace()
     {
-        $uuid = Uuid::uuid5('', '');
+        Uuid::uuid5('', '');
     }
 
     public function testUuid5WithEmptyName()

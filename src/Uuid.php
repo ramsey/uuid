@@ -351,7 +351,7 @@ class Uuid implements UuidInterface
 
         $unixTime = $this->timeConverter->convertTime($this->getTimestamp());
 
-        return new \DateTime("@{$unixTime}");
+        return new \DateTimeImmutable("@{$unixTime}");
     }
 
     /**
