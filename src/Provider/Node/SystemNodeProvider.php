@@ -62,7 +62,7 @@ class SystemNodeProvider implements NodeProviderInterface
      */
     protected function getIfconfig()
     {
-        if (strpos(strtolower(ini_get('disable_functions')), 'passthru') !== false) {
+        if (preg_match('(passthru|php_uname)', strtolower(ini_get('disable_functions'))) > 0) {
             return '';
         }
 
@@ -94,6 +94,10 @@ class SystemNodeProvider implements NodeProviderInterface
     protected function getSysfs()
     {
         $mac = false;
+
+        if (strpos(strtolower(ini_get('disable_functions')), 'php_uname') !== false) {
+            return false;
+        }
 
         if (strtoupper(php_uname('s')) === 'LINUX') {
             $addressPaths = glob('/sys/class/net/*/address', GLOB_NOSORT);

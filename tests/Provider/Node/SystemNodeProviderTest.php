@@ -509,6 +509,37 @@ class SystemNodeProviderTest extends TestCase
     }
 
     /**
+     * @runInSeparateProcess
+     * @preserveGlobalState disabled
+     */
+    public function testGetNodeReturnsFalseWhenPhpUnameIsDisabled()
+    {
+        /*/ Arrange /*/
+        $this->arrangeMockFunctions(
+            null,
+            null,
+            null,
+            'NOT LINUX',
+            'PHP_UNAME,some_other_function'
+        );
+
+        /*/ Act /*/
+        $provider = new SystemNodeProvider();
+        $node = $provider->getNode();
+
+        /*/ Assert /*/
+        $this->assertMockFunctions(
+            null,
+            null,
+            null,
+            [['s']],
+            ['disabled_functions']
+        );
+
+        $this->assertFalse($node);
+    }
+
+    /**
      * Replaces the return value for functions with the given value or callback.
      *
      * @param callback|mixed|null $fileGetContentsBody
