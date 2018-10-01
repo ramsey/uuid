@@ -266,6 +266,14 @@ interface UuidInterface extends JsonSerializable, Serializable
     public function getVersion();
 
     /**
+     * Check if a string is a valid UUID.
+     *
+     * @param string $uuid The string UUID to test
+     * @return boolean
+     */
+    public static function isValid($uuid);
+    
+    /**
      * Converts this UUID into a string representation.
      *
      * @return string
