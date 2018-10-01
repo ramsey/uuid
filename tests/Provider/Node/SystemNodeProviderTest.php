@@ -396,7 +396,7 @@ class SystemNodeProviderTest extends TestCase
             $globBodyAssert = ['/sys/class/net/*/address'];
             $passthruBodyAssert = null;
             $unameBodyAssert = ['s'];
-            $iniGetDisableFunctionsAssert = null;
+            $iniGetDisableFunctionsAssert = ['nothing disabled'];
         }
         $this->assertMockFunctions(
             $fileGetContentsAssert,
@@ -507,6 +507,37 @@ class SystemNodeProviderTest extends TestCase
     }
 
     /**
+     * @runInSeparateProcess
+     * @preserveGlobalState disabled
+     */
+    public function testGetNodeReturnsFalseWhenPhpUnameIsDisabled()
+    {
+        /*/ Arrange /*/
+        $this->arrangeMockFunctions(
+            null,
+            null,
+            null,
+            'NOT LINUX',
+            'PHP_UNAME,some_other_function'
+        );
+
+        /*/ Act /*/
+        $provider = new SystemNodeProvider();
+        $node = $provider->getNode();
+
+        /*/ Assert /*/
+        $this->assertMockFunctions(
+            null,
+            null,
+            null,
+            null,
+            ['disabled_functions']
+        );
+
+        $this->assertFalse($node);
+    }
+
+    /**
      * Replaces the return value for functions with the given value or callback.
      *
      * @param callback|mixed|null $fileGetContentsBody
@@ -566,10 +597,10 @@ class SystemNodeProviderTest extends TestCase
                 $this->functionProxies[$key]->verifyNeverInvoked();
             } elseif (is_array($asserts)) {
                 foreach ($asserts as $assert) {
-                    $this->functionProxies[$key]->verifyInvokedOnce($assert);
+                    $this->functionProxies[$key]->verifyInvoked($assert);
                 }
             } elseif (is_callable($asserts)) {
-                $this->functionProxies[$key]->verifyInvokedOnce($asserts);
+                $this->functionProxies[$key]->verifyInvoked($asserts);
             } else {
                 $error = vsprintf(
                     'Given parameter for %s must be an array, a callback or NULL, "%s" given.',
