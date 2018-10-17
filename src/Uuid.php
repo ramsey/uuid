@@ -34,6 +34,14 @@ use Ramsey\Uuid\Exception\UnsupportedOperationException;
  * @link http://en.wikipedia.org/wiki/Universally_unique_identifier
  * @link http://docs.python.org/3/library/uuid.html
  * @link http://docs.oracle.com/javase/6/docs/api/java/util/UUID.html
+ *
+ * @method static UuidInterface uuid1(int|string|null $node = null, int|null $clockSeq = null)
+ * @method static UuidInterface uuid3(string $ns, string $name)
+ * @method static UuidInterface uuid4()
+ * @method static UuidInterface uuid5(string $ns, string $name)
+ * @method static UuidInterface fromBytes(string $bytes)
+ * @method static UuidInterface fromString(string $uuid)
+ * @method static UuidInterface fromInteger(mixed $integer)
  */
 class Uuid implements UuidInterface
 {
@@ -621,44 +629,6 @@ class Uuid implements UuidInterface
     }
 
     /**
-     * Creates a UUID from a byte string.
-     *
-     * @param string $bytes
-     * @return UuidInterface
-     * @throws \Ramsey\Uuid\Exception\InvalidUuidStringException
-     * @throws \InvalidArgumentException
-     */
-    public static function fromBytes($bytes)
-    {
-        return self::getFactory()->fromBytes($bytes);
-    }
-
-    /**
-     * Creates a UUID from the string standard representation.
-     *
-     * @param string $name A string that specifies a UUID
-     * @return UuidInterface
-     * @throws \Ramsey\Uuid\Exception\InvalidUuidStringException
-     */
-    public static function fromString($name)
-    {
-        return self::getFactory()->fromString($name);
-    }
-
-    /**
-     * Creates a UUID from a 128-bit integer string.
-     *
-     * @param string $integer String representation of 128-bit integer
-     * @return UuidInterface
-     * @throws \Ramsey\Uuid\Exception\UnsatisfiedDependencyException if `Moontoast\Math\BigNumber` is not present
-     * @throws \Ramsey\Uuid\Exception\InvalidUuidStringException
-     */
-    public static function fromInteger($integer)
-    {
-        return self::getFactory()->fromInteger($integer);
-    }
-
-    /**
      * Check if a string is a valid UUID.
      *
      * @param string $uuid The string UUID to test
@@ -670,62 +640,14 @@ class Uuid implements UuidInterface
     }
 
     /**
-     * Generate a version 1 UUID from a host ID, sequence number, and the current time.
+     * Handle Factory direct calls
      *
-     * @param int|string $node A 48-bit number representing the hardware address
-     *     This number may be represented as an integer or a hexadecimal string.
-     * @param int $clockSeq A 14-bit number used to help avoid duplicates that
-     *     could arise when the clock is set backwards in time or if the node ID
-     *     changes.
-     * @return UuidInterface
-     * @throws \Ramsey\Uuid\Exception\UnsatisfiedDependencyException if called on a 32-bit system and
-     *     `Moontoast\Math\BigNumber` is not present
-     * @throws \InvalidArgumentException
-     * @throws \Exception if it was not possible to gather sufficient entropy
+     * @param string $method
+     * @param array  $arguments
+     * @return mixed
      */
-    public static function uuid1($node = null, $clockSeq = null)
+    public static function __callStatic($method, $arguments)
     {
-        return self::getFactory()->uuid1($node, $clockSeq);
-    }
-
-    /**
-     * Generate a version 3 UUID based on the MD5 hash of a namespace identifier
-     * (which is a UUID) and a name (which is a string).
-     *
-     * @param string $ns The UUID namespace in which to create the named UUID
-     * @param string $name The name to create a UUID for
-     * @return UuidInterface
-     * @throws \Ramsey\Uuid\Exception\InvalidUuidStringException
-     */
-    public static function uuid3($ns, $name)
-    {
-        return self::getFactory()->uuid3($ns, $name);
-    }
-
-    /**
-     * Generate a version 4 (random) UUID.
-     *
-     * @return UuidInterface
-     * @throws \Ramsey\Uuid\Exception\UnsatisfiedDependencyException if `Moontoast\Math\BigNumber` is not present
-     * @throws \InvalidArgumentException
-     * @throws \Exception
-     */
-    public static function uuid4()
-    {
-        return self::getFactory()->uuid4();
-    }
-
-    /**
-     * Generate a version 5 UUID based on the SHA-1 hash of a namespace
-     * identifier (which is a UUID) and a name (which is a string).
-     *
-     * @param string $ns The UUID namespace in which to create the named UUID
-     * @param string $name The name to create a UUID for
-     * @return UuidInterface
-     * @throws \Ramsey\Uuid\Exception\InvalidUuidStringException
-     */
-    public static function uuid5($ns, $name)
-    {
-        return self::getFactory()->uuid5($ns, $name);
+        return call_user_func_array([self::getFactory(), $method], $arguments);
     }
 }
