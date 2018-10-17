@@ -2263,4 +2263,17 @@ class UuidTest extends TestCase
         $uuid = Uuid::fromString('886313e1-3b8a-5372-9b90-0c9aee199e5d');
         $this->assertEquals($uuid->getVersion(), Uuid::UUID_TYPE_HASH_SHA1);
     }
+
+    public function testDefaultFactoryInstance()
+    {
+        $uuid = Uuid::uuid4(); // just to get the uuid instance so we can access factory and reset it
+
+        $reflection = new \ReflectionClass($uuid);
+        $factoryProperty = $reflection->getProperty('factory');
+        $factoryProperty->setAccessible(true);
+        $factoryProperty->setValue(null, null);
+        $factoryProperty->setAccessible(false);
+
+        $this->assertInstanceOf(UuidFactory::class, Uuid::getFactory());
+    }
 }
