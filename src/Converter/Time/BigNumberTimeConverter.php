@@ -43,7 +43,8 @@ class BigNumberTimeConverter implements TimeConverterInterface
         $usec = new BigNumber($microSeconds);
         $usec->multiply('10');
 
-        $uuidTime->add($sec)
+        $uuidTime
+            ->add($sec)
             ->add($usec)
             ->add('122192928000000000');
 

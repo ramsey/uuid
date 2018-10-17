@@ -248,28 +248,32 @@ class Uuid implements UuidInterface
 
     public function compareTo(UuidInterface $other)
     {
-        $comparison = 0;
-
         if ($this->getMostSignificantBitsHex() < $other->getMostSignificantBitsHex()) {
-            $comparison = -1;
-        } elseif ($this->getMostSignificantBitsHex() > $other->getMostSignificantBitsHex()) {
-            $comparison = 1;
-        } elseif ($this->getLeastSignificantBitsHex() < $other->getLeastSignificantBitsHex()) {
-            $comparison = -1;
-        } elseif ($this->getLeastSignificantBitsHex() > $other->getLeastSignificantBitsHex()) {
-            $comparison = 1;
+            return -1;
         }
 
-        return $comparison;
+        if ($this->getMostSignificantBitsHex() > $other->getMostSignificantBitsHex()) {
+            return 1;
+        }
+
+        if ($this->getLeastSignificantBitsHex() < $other->getLeastSignificantBitsHex()) {
+            return -1;
+        }
+
+        if ($this->getLeastSignificantBitsHex() > $other->getLeastSignificantBitsHex()) {
+            return 1;
+        }
+
+        return 0;
     }
 
     public function equals($other)
     {
-        if (!($other instanceof UuidInterface)) {
+        if (!$other instanceof UuidInterface) {
             return false;
         }
 
-        return ($this->compareTo($other) == 0);
+        return $this->compareTo($other) == 0;
     }
 
     public function getBytes()
@@ -326,8 +330,7 @@ class Uuid implements UuidInterface
      */
     public function getClockSequence()
     {
-        return (($this->getClockSeqHiAndReserved() & 0x3f) << 8)
-            | $this->getClockSeqLow();
+        return ($this->getClockSeqHiAndReserved() & 0x3f) << 8 | $this->getClockSeqLow();
     }
 
     public function getClockSequenceHex()
@@ -574,17 +577,20 @@ class Uuid implements UuidInterface
     public function getVariant()
     {
         $clockSeq = $this->getClockSeqHiAndReserved();
+
         if (0 === ($clockSeq & 0x80)) {
-            $variant = self::RESERVED_NCS;
-        } elseif (0 === ($clockSeq & 0x40)) {
-            $variant = self::RFC_4122;
-        } elseif (0 === ($clockSeq & 0x20)) {
-            $variant = self::RESERVED_MICROSOFT;
-        } else {
-            $variant = self::RESERVED_FUTURE;
+            return self::RESERVED_NCS;
         }
 
-        return $variant;
+        if (0 === ($clockSeq & 0x40)) {
+            return self::RFC_4122;
+        }
+
+        if (0 === ($clockSeq & 0x20)) {
+            return self::RESERVED_MICROSOFT;
+        }
+
+        return self::RESERVED_FUTURE;
     }
 
     public function getVersion()
