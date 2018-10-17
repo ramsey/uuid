@@ -291,7 +291,9 @@ class FeatureSet
     {
         if ($this->hasGmp()) {
             return new GmpConverter();
-        } elseif ($this->hasBigNumber()) {
+        }
+
+        if ($this->hasBigNumber()) {
             return new BigNumberConverter();
         }
 
@@ -339,9 +341,13 @@ class FeatureSet
     {
         if ($this->is64BitSystem()) {
             return new PhpTimeConverter();
-        } elseif ($this->hasGmp()) {
+        }
+
+        if ($this->hasGmp()) {
             return new GmpTimeConverter();
-        } elseif ($this->hasBigNumber()) {
+        }
+
+        if ($this->hasBigNumber()) {
             return new BigNumberTimeConverter();
         }
 
