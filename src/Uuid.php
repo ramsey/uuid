@@ -35,7 +35,7 @@ use Ramsey\Uuid\Exception\UnsupportedOperationException;
  * @link http://docs.python.org/3/library/uuid.html
  * @link http://docs.oracle.com/javase/6/docs/api/java/util/UUID.html
  */
-class Uuid implements UuidInterface
+final class Uuid implements UuidInterface
 {
     /**
      * When this namespace is specified, the name string is a fully-qualified domain name.
