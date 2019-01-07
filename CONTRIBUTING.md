@@ -2,6 +2,8 @@
 
 Contributions are welcome. We accept pull requests on [GitHub](https://github.com/ramsey/uuid).
 
+You can triage issues which may include reproducing bug reports or asking for vital information, such as version numbers or reproduction instructions. If you would like to start triaging issues, one easy way to get started is to [subscribe to ramsey/uuid on CodeTriage](https://codetriage.com/ramsey/uuid).
+
 This project adheres to a [Contributor Code of Conduct](https://github.com/ramsey/uuid/blob/master/CODE_OF_CONDUCT.md). By participating in this project and its community, you are expected to uphold this code.
 
 ## Team members
