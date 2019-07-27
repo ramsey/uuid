@@ -62,7 +62,10 @@
     "autoload": {
         "psr-4": {
             "Ramsey\\Uuid\\": "src/"
-        }
+        },
+        "files": [
+            "src/functions.php"
+        ]
     },
     "autoload-dev": {
         "psr-4": {
