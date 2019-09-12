@@ -393,7 +393,7 @@ class Uuid implements UuidInterface
     }
 
     /**
-     * @inheritDoc
+     * @return string[]
      */
     public function getFieldsHex(): array
     {

@@ -24,10 +24,7 @@ use Ramsey\Uuid\Provider\NodeProviderInterface;
  */
 class RandomNodeProvider implements NodeProviderInterface
 {
-    /**
-     * @inheritDoc
-     */
-    public function getNode()
+    public function getNode(): string
     {
         try {
             $nodeBytes = random_bytes(6);
