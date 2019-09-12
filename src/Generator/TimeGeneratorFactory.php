@@ -61,7 +61,7 @@ class TimeGeneratorFactory
      *
      * @return TimeGeneratorInterface
      */
-    public function getGenerator()
+    public function getGenerator(): TimeGeneratorInterface
     {
         return new DefaultTimeGenerator(
             $this->nodeProvider,

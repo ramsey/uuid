@@ -15,6 +15,7 @@
 namespace Ramsey\Uuid;
 
 use DateTimeImmutable;
+use DateTimeInterface;
 use Moontoast\Math\BigNumber;
 use Ramsey\Uuid\Exception\UnsatisfiedDependencyException;
 use Ramsey\Uuid\Exception\UnsupportedOperationException;
@@ -29,7 +30,7 @@ class DegradedUuid extends Uuid
     /**
      * @inheritdoc
      */
-    public function getDateTime()
+    public function getDateTime(): DateTimeInterface
     {
         if ($this->getVersion() != 1) {
             throw new UnsupportedOperationException('Not a time-based UUID');
@@ -48,7 +49,7 @@ class DegradedUuid extends Uuid
      * @return array
      * @throws UnsatisfiedDependencyException if called on a 32-bit system
      */
-    public function getFields()
+    public function getFields(): array
     {
         throw new UnsatisfiedDependencyException(
             'Cannot call ' . __METHOD__ . ' on a 32-bit system, since some '
@@ -64,7 +65,7 @@ class DegradedUuid extends Uuid
      * @return int
      * @throws UnsatisfiedDependencyException if called on a 32-bit system
      */
-    public function getNode()
+    public function getNode(): int
     {
         throw new UnsatisfiedDependencyException(
             'Cannot call ' . __METHOD__ . ' on a 32-bit system, since node '
@@ -81,7 +82,7 @@ class DegradedUuid extends Uuid
      * @return int
      * @throws UnsatisfiedDependencyException if called on a 32-bit system
      */
-    public function getTimeLow()
+    public function getTimeLow(): int
     {
         throw new UnsatisfiedDependencyException(
             'Cannot call ' . __METHOD__ . ' on a 32-bit system, since time_low '
@@ -99,7 +100,7 @@ class DegradedUuid extends Uuid
      * @throws UnsatisfiedDependencyException if called on a 32-bit system
      * @throws UnsupportedOperationException If this UUID is not a version 1 UUID
      */
-    public function getTimestamp()
+    public function getTimestamp(): int
     {
         if ($this->getVersion() != 1) {
             throw new UnsupportedOperationException('Not a time-based UUID');

@@ -83,7 +83,7 @@ class UuidFactory implements UuidFactoryInterface
      *
      * @return CodecInterface
      */
-    public function getCodec()
+    public function getCodec(): CodecInterface
     {
         return $this->codec;
     }
@@ -104,7 +104,7 @@ class UuidFactory implements UuidFactoryInterface
      *
      * @return NodeProviderInterface
      */
-    public function getNodeProvider()
+    public function getNodeProvider(): NodeProviderInterface
     {
         return $this->nodeProvider;
     }
@@ -114,7 +114,7 @@ class UuidFactory implements UuidFactoryInterface
      *
      * @return RandomGeneratorInterface
      */
-    public function getRandomGenerator()
+    public function getRandomGenerator(): RandomGeneratorInterface
     {
         return $this->randomGenerator;
     }
@@ -124,7 +124,7 @@ class UuidFactory implements UuidFactoryInterface
      *
      * @return TimeGeneratorInterface
      */
-    public function getTimeGenerator()
+    public function getTimeGenerator(): TimeGeneratorInterface
     {
         return $this->timeGenerator;
     }
@@ -145,7 +145,7 @@ class UuidFactory implements UuidFactoryInterface
      *
      * @return NumberConverterInterface
      */
-    public function getNumberConverter()
+    public function getNumberConverter(): NumberConverterInterface
     {
         return $this->numberConverter;
     }
@@ -177,7 +177,7 @@ class UuidFactory implements UuidFactoryInterface
      *
      * @return UuidBuilderInterface $builder
      */
-    public function getUuidBuilder()
+    public function getUuidBuilder(): UuidBuilderInterface
     {
         return $this->uuidBuilder;
     }
@@ -196,7 +196,7 @@ class UuidFactory implements UuidFactoryInterface
     /**
      * @return ValidatorInterface
      */
-    public function getValidator()
+    public function getValidator(): ValidatorInterface
     {
         return $this->validator;
     }
@@ -210,7 +210,10 @@ class UuidFactory implements UuidFactoryInterface
         $this->validator = $validator;
     }
 
-    public function fromBytes($bytes)
+    /**
+     * @inheritdoc
+     */
+    public function fromBytes(string $bytes): UuidInterface
     {
         return $this->codec->decodeBytes($bytes);
     }
@@ -218,7 +221,7 @@ class UuidFactory implements UuidFactoryInterface
     /**
      * @inheritdoc
      */
-    public function fromString($uuid)
+    public function fromString(string $uuid): UuidInterface
     {
         $uuid = strtolower($uuid);
         return $this->codec->decode($uuid);
@@ -227,7 +230,7 @@ class UuidFactory implements UuidFactoryInterface
     /**
      * @inheritdoc
      */
-    public function fromInteger($integer)
+    public function fromInteger($integer): UuidInterface
     {
         $hex = $this->numberConverter->toHex($integer);
         $hex = str_pad($hex, 32, '0', STR_PAD_LEFT);
@@ -238,7 +241,7 @@ class UuidFactory implements UuidFactoryInterface
     /**
      * @inheritdoc
      */
-    public function uuid1($node = null, $clockSeq = null)
+    public function uuid1($node = null, ?int $clockSeq = null): UuidInterface
     {
         $bytes = $this->timeGenerator->generate($node, $clockSeq);
         $hex = bin2hex($bytes);
@@ -249,7 +252,7 @@ class UuidFactory implements UuidFactoryInterface
     /**
      * @inheritdoc
      */
-    public function uuid3($ns, $name)
+    public function uuid3($ns, string $name): UuidInterface
     {
         return $this->uuidFromNsAndName($ns, $name, 3, 'md5');
     }
@@ -257,14 +260,14 @@ class UuidFactory implements UuidFactoryInterface
     /**
      * @inheritdoc
      */
-    public function uuid4()
+    public function uuid4(): UuidInterface
     {
         $bytes = $this->randomGenerator->generate(16);
 
         // When converting the bytes to hex, it turns into a 32-character
         // hexadecimal string that looks a lot like an MD5 hash, so at this
         // point, we can just pass it to uuidFromHashedName.
-        $hex = bin2hex($bytes);
+        $hex = bin2hex((string) $bytes);
 
         return $this->uuidFromHashedName($hex, 4);
     }
@@ -272,7 +275,7 @@ class UuidFactory implements UuidFactoryInterface
     /**
      * @inheritdoc
      */
-    public function uuid5($ns, $name)
+    public function uuid5($ns, string $name): UuidInterface
     {
         return $this->uuidFromNsAndName($ns, $name, 5, 'sha1');
     }
@@ -287,7 +290,7 @@ class UuidFactory implements UuidFactoryInterface
      *     see {@see \Ramsey\Uuid\UuidInterface::getFieldsHex()} for array structure.
      * @return UuidInterface
      */
-    public function uuid(array $fields)
+    public function uuid(array $fields): UuidInterface
     {
         return $this->uuidBuilder->build($this->codec, $fields);
     }
@@ -303,7 +306,7 @@ class UuidFactory implements UuidFactoryInterface
      * @return UuidInterface
      * @throws InvalidUuidStringException
      */
-    protected function uuidFromNsAndName($ns, $name, $version, $hashFunction)
+    protected function uuidFromNsAndName($ns, string $name, int $version, callable $hashFunction): UuidInterface
     {
         if (!($ns instanceof UuidInterface)) {
             $ns = $this->codec->decode($ns);
@@ -322,7 +325,7 @@ class UuidFactory implements UuidFactoryInterface
      * @param int $version The UUID version to set for this hash (1, 3, 4, or 5)
      * @return UuidInterface
      */
-    protected function uuidFromHashedName($hash, $version)
+    protected function uuidFromHashedName(string $hash, int $version): UuidInterface
     {
         $timeHi = BinaryUtils::applyVersion(substr($hash, 12, 4), $version);
         $clockSeqHi = BinaryUtils::applyVariant((int) hexdec(substr($hash, 16, 2)));

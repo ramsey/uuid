@@ -29,7 +29,7 @@ interface CodecInterface
      * @param UuidInterface $uuid
      * @return string Hexadecimal string representation of a UUID
      */
-    public function encode(UuidInterface $uuid);
+    public function encode(UuidInterface $uuid): string;
 
     /**
      * Encodes a UuidInterface as a binary representation of a UUID
@@ -37,7 +37,7 @@ interface CodecInterface
      * @param UuidInterface $uuid
      * @return string Binary string representation of a UUID
      */
-    public function encodeBinary(UuidInterface $uuid);
+    public function encodeBinary(UuidInterface $uuid): string;
 
     /**
      * Decodes a string representation of a UUID into a UuidInterface object instance
@@ -46,7 +46,7 @@ interface CodecInterface
      * @return UuidInterface
      * @throws InvalidUuidStringException
      */
-    public function decode($encodedUuid);
+    public function decode(string $encodedUuid): UuidInterface;
 
     /**
      * Decodes a binary representation of a UUID into a UuidInterface object instance
@@ -56,5 +56,5 @@ interface CodecInterface
      * @throws InvalidUuidStringException
      * @throws InvalidArgumentException if string has not 16 characters
      */
-    public function decodeBytes($bytes);
+    public function decodeBytes(string $bytes): UuidInterface;
 }

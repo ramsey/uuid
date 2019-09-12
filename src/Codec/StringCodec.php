@@ -48,7 +48,7 @@ class StringCodec implements CodecInterface
      * @param UuidInterface $uuid
      * @return string Hexadecimal string representation of a UUID
      */
-    public function encode(UuidInterface $uuid)
+    public function encode(UuidInterface $uuid): string
     {
         $fields = array_values($uuid->getFieldsHex());
 
@@ -64,7 +64,7 @@ class StringCodec implements CodecInterface
      * @param UuidInterface $uuid
      * @return string Binary string representation of a UUID
      */
-    public function encodeBinary(UuidInterface $uuid)
+    public function encodeBinary(UuidInterface $uuid): string
     {
         return (string) hex2bin($uuid->getHex());
     }
@@ -76,7 +76,7 @@ class StringCodec implements CodecInterface
      * @return UuidInterface
      * @throws InvalidUuidStringException
      */
-    public function decode($encodedUuid)
+    public function decode(string $encodedUuid): UuidInterface
     {
         $components = $this->extractComponents($encodedUuid);
         $fields = $this->getFields($components);
@@ -91,7 +91,7 @@ class StringCodec implements CodecInterface
      * @return UuidInterface
      * @throws InvalidArgumentException if string has not 16 characters
      */
-    public function decodeBytes($bytes)
+    public function decodeBytes(string $bytes): UuidInterface
     {
         if (strlen($bytes) !== 16) {
             throw new InvalidArgumentException('$bytes string should contain 16 characters.');
