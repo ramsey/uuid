@@ -29,7 +29,7 @@ interface UuidFactoryInterface
     /**
      * @return ValidatorInterface
      */
-    public function getValidator();
+    public function getValidator(): ValidatorInterface;
 
     /**
      * Generate a version 1 UUID from a host ID, sequence number, and the current time.
@@ -45,7 +45,7 @@ interface UuidFactoryInterface
      * @throws InvalidArgumentException
      * @throws Exception if it was not possible to gather sufficient entropy
      */
-    public function uuid1($node = null, $clockSeq = null);
+    public function uuid1($node = null, ?int $clockSeq = null): UuidInterface;
 
     /**
      * Generate a version 3 UUID based on the MD5 hash of a namespace identifier
@@ -56,7 +56,7 @@ interface UuidFactoryInterface
      * @return UuidInterface
      * @throws InvalidUuidStringException
      */
-    public function uuid3($ns, $name);
+    public function uuid3($ns, string $name): UuidInterface;
 
     /**
      * Generate a version 4 (random) UUID.
@@ -66,7 +66,7 @@ interface UuidFactoryInterface
      * @throws InvalidArgumentException
      * @throws Exception
      */
-    public function uuid4();
+    public function uuid4(): UuidInterface;
 
     /**
      * Generate a version 5 UUID based on the SHA-1 hash of a namespace
@@ -77,7 +77,7 @@ interface UuidFactoryInterface
      * @return UuidInterface
      * @throws InvalidUuidStringException
      */
-    public function uuid5($ns, $name);
+    public function uuid5($ns, string $name): UuidInterface;
 
     /**
      * Creates a UUID from a byte string.
@@ -87,7 +87,7 @@ interface UuidFactoryInterface
      * @throws InvalidUuidStringException
      * @throws InvalidArgumentException if string has not 16 characters
      */
-    public function fromBytes($bytes);
+    public function fromBytes(string $bytes): UuidInterface;
 
     /**
      * Creates a UUID from the string standard representation
@@ -96,7 +96,7 @@ interface UuidFactoryInterface
      * @return UuidInterface
      * @throws InvalidUuidStringException
      */
-    public function fromString($uuid);
+    public function fromString(string $uuid): UuidInterface;
 
     /**
      * Creates a `Uuid` from an integer representation
@@ -110,5 +110,5 @@ interface UuidFactoryInterface
      * @throws UnsatisfiedDependencyException if `Moontoast\Math\BigNumber` is not present
      * @throws InvalidUuidStringException
      */
-    public function fromInteger($integer);
+    public function fromInteger($integer): UuidInterface;
 }

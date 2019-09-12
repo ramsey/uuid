@@ -54,13 +54,13 @@ class CombGenerator implements RandomGeneratorInterface
     /**
      * Generates a string of binary data of the specified length
      *
-     * @param integer $length The number of bytes of random binary data to generate
+     * @param int $length The number of bytes of random binary data to generate
      * @return string A binary string
      * @throws UnsatisfiedDependencyException if `Moontoast\Math\BigNumber` is not present
      * @throws InvalidArgumentException if length is not a positive integer
      * @throws Exception
      */
-    public function generate($length)
+    public function generate(int $length): string
     {
         if ($length < self::TIMESTAMP_BYTES || $length < 0) {
             throw new InvalidArgumentException('Length must be a positive integer.');
@@ -74,7 +74,7 @@ class CombGenerator implements RandomGeneratorInterface
 
         $lsbTime = str_pad($this->converter->toHex($this->timestamp()), self::TIMESTAMP_BYTES * 2, '0', STR_PAD_LEFT);
 
-        return (string) hex2bin(str_pad(bin2hex($hash), $length - self::TIMESTAMP_BYTES, '0') . $lsbTime);
+        return (string) hex2bin(str_pad(bin2hex((string) $hash), $length - self::TIMESTAMP_BYTES, '0') . $lsbTime);
     }
 
     /**
@@ -82,7 +82,7 @@ class CombGenerator implements RandomGeneratorInterface
      *
      * @return string
      */
-    private function timestamp()
+    private function timestamp(): string
     {
         $time = explode(' ', microtime(false));
 

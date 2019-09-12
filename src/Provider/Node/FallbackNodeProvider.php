@@ -46,7 +46,7 @@ class FallbackNodeProvider implements NodeProviderInterface
      * @return string|null System node ID as a hexadecimal string
      * @throws Exception
      */
-    public function getNode()
+    public function getNode(): ?string
     {
         foreach ($this->nodeProviders as $provider) {
             if ($node = $provider->getNode()) {

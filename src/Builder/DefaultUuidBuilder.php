@@ -18,6 +18,7 @@ use Ramsey\Uuid\Codec\CodecInterface;
 use Ramsey\Uuid\Converter\NumberConverterInterface;
 use Ramsey\Uuid\Converter\TimeConverterInterface;
 use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 
 /**
  * DefaultUuidBuilder is the default UUID builder for ramsey/uuid; it builds
@@ -57,7 +58,7 @@ class DefaultUuidBuilder implements UuidBuilderInterface
      *     see {@see \Ramsey\Uuid\UuidInterface::getFieldsHex()} for array structure.
      * @return Uuid
      */
-    public function build(CodecInterface $codec, array $fields)
+    public function build(CodecInterface $codec, array $fields): UuidInterface
     {
         return new Uuid($fields, $this->numberConverter, $codec, $this->timeConverter);
     }

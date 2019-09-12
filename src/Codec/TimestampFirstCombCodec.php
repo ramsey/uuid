@@ -29,7 +29,7 @@ class TimestampFirstCombCodec extends StringCodec
      *
      * @return string Hexadecimal string representation of a GUID
      */
-    public function encode(UuidInterface $uuid)
+    public function encode(UuidInterface $uuid): string
     {
         $sixPieceComponents = array_values($uuid->getFieldsHex());
 
@@ -48,7 +48,7 @@ class TimestampFirstCombCodec extends StringCodec
      *
      * @return string Binary string representation of timestamp first COMB UUID
      */
-    public function encodeBinary(UuidInterface $uuid)
+    public function encodeBinary(UuidInterface $uuid): string
     {
         $stringEncoding = $this->encode($uuid);
 
@@ -63,7 +63,7 @@ class TimestampFirstCombCodec extends StringCodec
      * @return UuidInterface
      * @throws InvalidUuidStringException
      */
-    public function decode($encodedUuid)
+    public function decode(string $encodedUuid): UuidInterface
     {
         $fivePieceComponents = $this->extractComponents($encodedUuid);
 
@@ -80,7 +80,7 @@ class TimestampFirstCombCodec extends StringCodec
      * @return UuidInterface
      * @throws InvalidUuidStringException
      */
-    public function decodeBytes($bytes)
+    public function decodeBytes(string $bytes): UuidInterface
     {
         return $this->decode(bin2hex($bytes));
     }
