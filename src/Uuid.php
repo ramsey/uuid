@@ -569,6 +569,9 @@ class Uuid implements UuidInterface
         return (int) hexdec($this->getTimestampHex());
     }
 
+    /**
+     * @inheritdoc
+     */
     public function getTimestampHex(): string
     {
         if ($this->getVersion() !== 1) {

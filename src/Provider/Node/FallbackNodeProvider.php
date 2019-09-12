@@ -38,7 +38,7 @@ class FallbackNodeProvider implements NodeProviderInterface
     /**
      * @inheritDoc
      */
-    public function getNode()
+    public function getNode(): ?string
     {
         foreach ($this->nodeProviders as $provider) {
             if ($node = $provider->getNode()) {
