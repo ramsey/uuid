@@ -29,7 +29,7 @@ class PeclUuidTimeGenerator implements TimeGeneratorInterface
      * @param int $clockSeq Not used in this context
      * @return string A binary string
      */
-    public function generate($node = null, $clockSeq = null)
+    public function generate($node = null, int $clockSeq = null): string
     {
         $uuid = uuid_create(UUID_TYPE_TIME);
 

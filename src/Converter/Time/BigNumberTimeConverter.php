@@ -33,7 +33,7 @@ class BigNumberTimeConverter implements TimeConverterInterface
      * @return string[] An array containing `low`, `mid`, and `high` keys
      * @link http://tools.ietf.org/html/rfc4122#section-4.2.2
      */
-    public function calculateTime($seconds, $microSeconds)
+    public function calculateTime(string $seconds, string $microSeconds): array
     {
         $uuidTime = new BigNumber('0');
 
@@ -61,7 +61,7 @@ class BigNumberTimeConverter implements TimeConverterInterface
      * @param mixed $timestamp - an integer, string or a Moontoast\Bignumber object
      * @return string
      */
-    public function convertTime($timestamp)
+    public function convertTime($timestamp): string
     {
         $ts = new BigNumber($timestamp, 20);
         $ts->subtract('122192928000000000');

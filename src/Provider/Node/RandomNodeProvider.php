@@ -30,7 +30,7 @@ class RandomNodeProvider implements NodeProviderInterface
      * @return string System node ID as a hexadecimal string
      * @throws \Exception if it was not possible to gather sufficient entropy
      */
-    public function getNode()
+    public function getNode(): string
     {
         $node = hexdec(bin2hex(random_bytes(6)));
 

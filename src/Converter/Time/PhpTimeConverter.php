@@ -32,7 +32,7 @@ class PhpTimeConverter implements TimeConverterInterface
      * @return string[] An array containing `low`, `mid`, and `high` keys
      * @link http://tools.ietf.org/html/rfc4122#section-4.2.2
      */
-    public function calculateTime($seconds, $microSeconds)
+    public function calculateTime(string $seconds, string $microSeconds): array
     {
         // 0x01b21dd213814000 is the number of 100-ns intervals between the
         // UUID epoch 1582-10-15 00:00:00 and the Unix epoch 1970-01-01 00:00:00.
@@ -50,7 +50,7 @@ class PhpTimeConverter implements TimeConverterInterface
      * @param int|string $timestamp
      * @return string
      */
-    public function convertTime($timestamp)
+    public function convertTime($timestamp): string
     {
         $unixTime = ($timestamp - 0x01b21dd213814000) / 1e7;
         return number_format($unixTime, 0, '', '');

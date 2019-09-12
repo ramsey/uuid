@@ -31,7 +31,7 @@ class DegradedNumberConverter implements NumberConverterInterface
      * @return void
      * @throws UnsatisfiedDependencyException
      */
-    public function fromHex($hex)
+    public function fromHex(string $hex)
     {
         throw new UnsatisfiedDependencyException(
             'Cannot call ' . __METHOD__ . ' without support for large '
@@ -44,10 +44,10 @@ class DegradedNumberConverter implements NumberConverterInterface
      * Throws an `UnsatisfiedDependencyException`
      *
      * @param mixed $integer An integer representation to convert
-     * @return void
+     * @return string
      * @throws UnsatisfiedDependencyException
      */
-    public function toHex($integer)
+    public function toHex($integer): string
     {
         throw new UnsatisfiedDependencyException(
             'Cannot call ' . __METHOD__ . ' without support for large '

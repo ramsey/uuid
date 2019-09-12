@@ -31,7 +31,7 @@ interface TimeConverterInterface
      *     `Moontoast\Math\BigNumber` is not present
      * @link http://tools.ietf.org/html/rfc4122#section-4.2.2
      */
-    public function calculateTime($seconds, $microSeconds);
+    public function calculateTime(string $seconds, string $microSeconds): array;
 
 
     /**
@@ -39,5 +39,5 @@ interface TimeConverterInterface
      * @param mixed $timestamp - an integer, string or object representation of a timestamp
      * @return string
      */
-    public function convertTime($timestamp);
+    public function convertTime($timestamp): string;
 }

@@ -25,7 +25,7 @@ class SystemNodeProvider implements NodeProviderInterface
     /**
      * Returns the system node ID
      *
-     * @return string|false System node ID as a hexadecimal string, or false if it is not found
+     * @return string|null|false System node ID as a hexadecimal string, or false if it is not found
      */
     public function getNode()
     {
@@ -60,7 +60,7 @@ class SystemNodeProvider implements NodeProviderInterface
      * @codeCoverageIgnore
      * @return string
      */
-    protected function getIfconfig()
+    protected function getIfconfig(): string
     {
         if (strpos(strtolower(ini_get('disable_functions')), 'passthru') !== false) {
             return '';

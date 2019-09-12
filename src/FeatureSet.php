@@ -28,6 +28,7 @@ use Ramsey\Uuid\Converter\Time\GmpTimeConverter;
 use Ramsey\Uuid\Converter\Time\BigNumberTimeConverter;
 use Ramsey\Uuid\Converter\Time\DegradedTimeConverter;
 use Ramsey\Uuid\Converter\Time\PhpTimeConverter;
+use Ramsey\Uuid\Converter\TimeConverterInterface;
 use Ramsey\Uuid\Generator\PeclUuidTimeGenerator;
 use Ramsey\Uuid\Generator\RandomGeneratorFactory;
 use Ramsey\Uuid\Generator\RandomGeneratorInterface;
@@ -159,7 +160,7 @@ class FeatureSet
      *
      * @return UuidBuilderInterface
      */
-    public function getBuilder()
+    public function getBuilder(): UuidBuilderInterface
     {
         return $this->builder;
     }
@@ -169,7 +170,7 @@ class FeatureSet
      *
      * @return CodecInterface
      */
-    public function getCodec()
+    public function getCodec(): CodecInterface
     {
         return $this->codec;
     }
@@ -179,7 +180,7 @@ class FeatureSet
      *
      * @return NodeProviderInterface
      */
-    public function getNodeProvider()
+    public function getNodeProvider(): NodeProviderInterface
     {
         return $this->nodeProvider;
     }
@@ -189,7 +190,7 @@ class FeatureSet
      *
      * @return NumberConverterInterface
      */
-    public function getNumberConverter()
+    public function getNumberConverter(): NumberConverterInterface
     {
         return $this->numberConverter;
     }
@@ -199,7 +200,7 @@ class FeatureSet
      *
      * @return RandomGeneratorInterface
      */
-    public function getRandomGenerator()
+    public function getRandomGenerator(): RandomGeneratorInterface
     {
         return $this->randomGenerator;
     }
@@ -209,7 +210,7 @@ class FeatureSet
      *
      * @return TimeGeneratorInterface
      */
-    public function getTimeGenerator()
+    public function getTimeGenerator(): TimeGeneratorInterface
     {
         return $this->timeGenerator;
     }
@@ -219,7 +220,7 @@ class FeatureSet
      *
      * @return ValidatorInterface
      */
-    public function getValidator()
+    public function getValidator(): ValidatorInterface
     {
         return $this->validator;
     }
@@ -251,7 +252,7 @@ class FeatureSet
      * @param bool $useGuids Whether to build UUIDs using the `GuidStringCodec`
      * @return CodecInterface
      */
-    protected function buildCodec($useGuids = false)
+    protected function buildCodec(bool $useGuids = false): CodecInterface
     {
         if ($useGuids) {
             return new GuidStringCodec($this->builder);
@@ -266,7 +267,7 @@ class FeatureSet
      *
      * @return NodeProviderInterface
      */
-    protected function buildNodeProvider()
+    protected function buildNodeProvider(): NodeProviderInterface
     {
         if ($this->ignoreSystemNode) {
             return new RandomNodeProvider();
@@ -284,7 +285,7 @@ class FeatureSet
      *
      * @return NumberConverterInterface
      */
-    protected function buildNumberConverter()
+    protected function buildNumberConverter(): NumberConverterInterface
     {
         if ($this->hasGmp()) {
             return new GmpConverter();
@@ -301,7 +302,7 @@ class FeatureSet
      *
      * @return RandomGeneratorInterface
      */
-    protected function buildRandomGenerator()
+    protected function buildRandomGenerator(): RandomGeneratorInterface
     {
         return (new RandomGeneratorFactory())->getGenerator();
     }
@@ -313,7 +314,7 @@ class FeatureSet
      * @param TimeProviderInterface $timeProvider
      * @return TimeGeneratorInterface
      */
-    protected function buildTimeGenerator(TimeProviderInterface $timeProvider)
+    protected function buildTimeGenerator(TimeProviderInterface $timeProvider): TimeGeneratorInterface
     {
         if ($this->enablePecl) {
             return new PeclUuidTimeGenerator();
@@ -330,9 +331,9 @@ class FeatureSet
      * Determines which time converter to use and returns the configured
      * time converter for this environment
      *
-     * @return \Ramsey\Uuid\Converter\TimeConverterInterface
+     * @return TimeConverterInterface
      */
-    protected function buildTimeConverter()
+    protected function buildTimeConverter(): TimeConverterInterface
     {
         if ($this->is64BitSystem()) {
             return new PhpTimeConverter();
@@ -351,7 +352,7 @@ class FeatureSet
      *
      * @return UuidBuilderInterface
      */
-    protected function buildUuidBuilder()
+    protected function buildUuidBuilder(): UuidBuilderInterface
     {
         if ($this->is64BitSystem()) {
             return new DefaultUuidBuilder($this->numberConverter, $this->timeConverter);
@@ -365,7 +366,7 @@ class FeatureSet
      *
      * @return bool
      */
-    protected function hasBigNumber()
+    protected function hasBigNumber(): bool
     {
         return class_exists('Moontoast\Math\BigNumber') && !$this->disableBigNumber;
     }
@@ -375,7 +376,7 @@ class FeatureSet
      *
      * @return bool
      */
-    protected function hasGmp()
+    protected function hasGmp(): bool
     {
         return extension_loaded('gmp') && !$this->disableGmp;
     }
@@ -385,7 +386,7 @@ class FeatureSet
      *
      * @return bool
      */
-    protected function is64BitSystem()
+    protected function is64BitSystem(): bool
     {
         return PHP_INT_SIZE == 8 && !$this->disable64Bit;
     }

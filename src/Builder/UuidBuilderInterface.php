@@ -30,5 +30,5 @@ interface UuidBuilderInterface
      *     see {@see \Ramsey\Uuid\UuidInterface::getFieldsHex()} for array structure.
      * @return UuidInterface
      */
-    public function build(CodecInterface $codec, array $fields);
+    public function build(CodecInterface $codec, array $fields): UuidInterface;
 }

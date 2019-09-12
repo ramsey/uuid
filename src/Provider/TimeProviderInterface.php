@@ -25,5 +25,5 @@ interface TimeProviderInterface
      *
      * @return int[] Array guaranteed to contain `sec` and `usec` components of a timestamp
      */
-    public function currentTime();
+    public function currentTime(): array;
 }

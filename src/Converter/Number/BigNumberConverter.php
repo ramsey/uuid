@@ -29,7 +29,7 @@ class BigNumberConverter implements NumberConverterInterface
      * @param string $hex The hexadecimal string representation to convert
      * @return BigNumber
      */
-    public function fromHex($hex)
+    public function fromHex(string $hex): BigNumber
     {
         $number = BigNumber::convertToBase10($hex, 16);
 
@@ -43,7 +43,7 @@ class BigNumberConverter implements NumberConverterInterface
      * @param int|string|BigNumber $integer An integer or `Moontoast\Math\BigNumber`
      * @return string Hexadecimal string
      */
-    public function toHex($integer)
+    public function toHex($integer): string
     {
         if (!$integer instanceof BigNumber) {
             $integer = new BigNumber($integer);

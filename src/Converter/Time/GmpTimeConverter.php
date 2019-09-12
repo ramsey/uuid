@@ -31,7 +31,7 @@ class GmpTimeConverter implements TimeConverterInterface
      * @return string[] An array containing `low`, `mid`, and `high` keys
      * @link http://tools.ietf.org/html/rfc4122#section-4.2.2
      */
-    public function calculateTime($seconds, $microSeconds)
+    public function calculateTime(string $seconds, string $microSeconds): array
     {
         $sec = gmp_init($seconds);
         $sec = gmp_mul($sec, gmp_init(10000000));
@@ -56,7 +56,7 @@ class GmpTimeConverter implements TimeConverterInterface
      * @param mixed $timestamp - an integer, string or a GMP object
      * @return string
      */
-    public function convertTime($timestamp)
+    public function convertTime($timestamp): string
     {
         if (!$timestamp instanceof \GMP) {
             $timestamp = gmp_init($timestamp);

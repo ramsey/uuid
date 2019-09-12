@@ -30,7 +30,7 @@ interface NumberConverterInterface
      * @return mixed
      * @throws \Ramsey\Uuid\Exception\UnsatisfiedDependencyException if `Moontoast\Math\BigNumber` is not present
      */
-    public function fromHex($hex);
+    public function fromHex(string $hex);
 
     /**
      * Converts an integer representation into a hexadecimal string representation
@@ -42,5 +42,5 @@ interface NumberConverterInterface
      * @return string Hexadecimal string
      * @throws \Ramsey\Uuid\Exception\UnsatisfiedDependencyException if `Moontoast\Math\BigNumber` is not present
      */
-    public function toHex($integer);
+    public function toHex($integer): string;
 }

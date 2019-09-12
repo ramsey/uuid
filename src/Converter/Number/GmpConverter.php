@@ -28,7 +28,7 @@ class GmpConverter implements NumberConverterInterface
      * @param string $hex The hexadecimal string representation to convert
      * @return string Decimal string
      */
-    public function fromHex($hex)
+    public function fromHex(string $hex): string
     {
         $number = gmp_init('0x'.$hex);
 
@@ -41,7 +41,7 @@ class GmpConverter implements NumberConverterInterface
      * @param int|string $integer An integer or decimal string representation
      * @return string Hexadecimal string
      */
-    public function toHex($integer)
+    public function toHex($integer): string
     {
         $number = gmp_init($integer);
 

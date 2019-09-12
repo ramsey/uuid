@@ -29,7 +29,7 @@ class GuidStringCodec extends StringCodec
      * @param UuidInterface $uuid
      * @return string Hexadecimal string representation of a GUID
      */
-    public function encode(UuidInterface $uuid)
+    public function encode(UuidInterface $uuid): string
     {
         $components = array_values($uuid->getFieldsHex());
 
@@ -48,7 +48,7 @@ class GuidStringCodec extends StringCodec
      * @param UuidInterface $uuid
      * @return string Binary string representation of a GUID
      */
-    public function encodeBinary(UuidInterface $uuid)
+    public function encodeBinary(UuidInterface $uuid): string
     {
         $components = array_values($uuid->getFieldsHex());
 
@@ -62,7 +62,7 @@ class GuidStringCodec extends StringCodec
      * @return UuidInterface
      * @throws \Ramsey\Uuid\Exception\InvalidUuidStringException
      */
-    public function decode($encodedUuid)
+    public function decode(string $encodedUuid): UuidInterface
     {
         $components = $this->extractComponents($encodedUuid);
 
@@ -78,7 +78,7 @@ class GuidStringCodec extends StringCodec
      * @return UuidInterface
      * @throws \Ramsey\Uuid\Exception\InvalidUuidStringException
      */
-    public function decodeBytes($bytes)
+    public function decodeBytes(string $bytes): UuidInterface
     {
         // Specifically call parent::decode to preserve correct byte order
         return parent::decode(bin2hex($bytes));

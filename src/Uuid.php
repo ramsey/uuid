@@ -201,7 +201,7 @@ class Uuid implements UuidInterface
      * @return string
      * @link http://www.php.net/manual/en/language.oop5.magic.php#object.tostring
      */
-    public function __toString()
+    public function __toString(): string
     {
         return $this->codec->encode($this);
     }
@@ -213,7 +213,7 @@ class Uuid implements UuidInterface
      * @return string
      * @link http://php.net/manual/en/class.jsonserializable.php
      */
-    public function jsonSerialize()
+    public function jsonSerialize(): string
     {
         return (string) $this;
     }
@@ -225,7 +225,7 @@ class Uuid implements UuidInterface
      * @return string
      * @link http://php.net/manual/en/class.serializable.php
      */
-    public function serialize()
+    public function serialize(): string
     {
         return (string) $this;
     }
@@ -246,7 +246,7 @@ class Uuid implements UuidInterface
         $this->fields = $uuid->fields;
     }
 
-    public function compareTo(UuidInterface $other)
+    public function compareTo(UuidInterface $other): int
     {
         $comparison = 0;
 
@@ -263,7 +263,7 @@ class Uuid implements UuidInterface
         return $comparison;
     }
 
-    public function equals($other)
+    public function equals(?object $other): bool
     {
         if (!($other instanceof UuidInterface)) {
             return false;
@@ -272,7 +272,7 @@ class Uuid implements UuidInterface
         return ($this->compareTo($other) == 0);
     }
 
-    public function getBytes()
+    public function getBytes(): string
     {
         return $this->codec->encodeBinary($this);
     }
@@ -283,12 +283,12 @@ class Uuid implements UuidInterface
      *
      * @return int Unsigned 8-bit integer value of clock_seq_hi_and_reserved
      */
-    public function getClockSeqHiAndReserved()
+    public function getClockSeqHiAndReserved(): int
     {
         return hexdec($this->getClockSeqHiAndReservedHex());
     }
 
-    public function getClockSeqHiAndReservedHex()
+    public function getClockSeqHiAndReservedHex(): string
     {
         return $this->fields['clock_seq_hi_and_reserved'];
     }
@@ -298,12 +298,12 @@ class Uuid implements UuidInterface
      *
      * @return int Unsigned 8-bit integer value of clock_seq_low
      */
-    public function getClockSeqLow()
+    public function getClockSeqLow(): int
     {
         return hexdec($this->getClockSeqLowHex());
     }
 
-    public function getClockSeqLowHex()
+    public function getClockSeqLowHex(): string
     {
         return $this->fields['clock_seq_low'];
     }
@@ -324,18 +324,18 @@ class Uuid implements UuidInterface
      * @return int Unsigned 14-bit integer value of clock sequence
      * @link http://tools.ietf.org/html/rfc4122#section-4.1.5
      */
-    public function getClockSequence()
+    public function getClockSequence(): int
     {
         return (($this->getClockSeqHiAndReserved() & 0x3f) << 8)
             | $this->getClockSeqLow();
     }
 
-    public function getClockSequenceHex()
+    public function getClockSequenceHex(): string
     {
         return sprintf('%04x', $this->getClockSequence());
     }
 
-    public function getNumberConverter()
+    public function getNumberConverter(): NumberConverterInterface
     {
         return $this->numberConverter;
     }
@@ -343,7 +343,7 @@ class Uuid implements UuidInterface
     /**
      * @inheritdoc
      */
-    public function getDateTime()
+    public function getDateTime(): \DateTimeImmutable
     {
         if ($this->getVersion() != 1) {
             throw new UnsupportedOperationException('Not a time-based UUID');
@@ -372,7 +372,7 @@ class Uuid implements UuidInterface
      * @return array The UUID fields represented as integer values
      * @link http://tools.ietf.org/html/rfc4122#section-4.1.2
      */
-    public function getFields()
+    public function getFields(): array
     {
         return [
             'time_low' => $this->getTimeLow(),
@@ -384,12 +384,12 @@ class Uuid implements UuidInterface
         ];
     }
 
-    public function getFieldsHex()
+    public function getFieldsHex(): array
     {
         return $this->fields;
     }
 
-    public function getHex()
+    public function getHex(): string
     {
         return str_replace('-', '', (string) $this);
     }
@@ -413,7 +413,7 @@ class Uuid implements UuidInterface
         return $this->numberConverter->fromHex($this->getLeastSignificantBitsHex());
     }
 
-    public function getLeastSignificantBitsHex()
+    public function getLeastSignificantBitsHex(): string
     {
         return sprintf(
             '%02s%02s%012s',
@@ -434,7 +434,7 @@ class Uuid implements UuidInterface
         return $this->numberConverter->fromHex($this->getMostSignificantBitsHex());
     }
 
-    public function getMostSignificantBitsHex()
+    public function getMostSignificantBitsHex(): string
     {
         return sprintf(
             '%08s%04s%04s',
@@ -468,12 +468,12 @@ class Uuid implements UuidInterface
      * @return int Unsigned 48-bit integer value of node
      * @link http://tools.ietf.org/html/rfc4122#section-4.1.6
      */
-    public function getNode()
+    public function getNode(): int
     {
         return hexdec($this->getNodeHex());
     }
 
-    public function getNodeHex()
+    public function getNodeHex(): string
     {
         return $this->fields['node'];
     }
@@ -484,12 +484,12 @@ class Uuid implements UuidInterface
      *
      * @return int Unsigned 16-bit integer value of time_hi_and_version
      */
-    public function getTimeHiAndVersion()
+    public function getTimeHiAndVersion(): int
     {
         return hexdec($this->getTimeHiAndVersionHex());
     }
 
-    public function getTimeHiAndVersionHex()
+    public function getTimeHiAndVersionHex(): string
     {
         return $this->fields['time_hi_and_version'];
     }
@@ -499,12 +499,12 @@ class Uuid implements UuidInterface
      *
      * @return int Unsigned 32-bit integer value of time_low
      */
-    public function getTimeLow()
+    public function getTimeLow(): int
     {
         return hexdec($this->getTimeLowHex());
     }
 
-    public function getTimeLowHex()
+    public function getTimeLowHex(): string
     {
         return $this->fields['time_low'];
     }
@@ -514,12 +514,12 @@ class Uuid implements UuidInterface
      *
      * @return int Unsigned 16-bit integer value of time_mid
      */
-    public function getTimeMid()
+    public function getTimeMid(): int
     {
         return hexdec($this->getTimeMidHex());
     }
 
-    public function getTimeMidHex()
+    public function getTimeMidHex(): string
     {
         return $this->fields['time_mid'];
     }
@@ -540,7 +540,7 @@ class Uuid implements UuidInterface
      * @throws UnsupportedOperationException If this UUID is not a version 1 UUID
      * @link http://tools.ietf.org/html/rfc4122#section-4.1.4
      */
-    public function getTimestamp()
+    public function getTimestamp(): int
     {
         if ($this->getVersion() != 1) {
             throw new UnsupportedOperationException('Not a time-based UUID');
@@ -552,7 +552,7 @@ class Uuid implements UuidInterface
     /**
      * @inheritdoc
      */
-    public function getTimestampHex()
+    public function getTimestampHex(): string
     {
         if ($this->getVersion() != 1) {
             throw new UnsupportedOperationException('Not a time-based UUID');
@@ -566,12 +566,12 @@ class Uuid implements UuidInterface
         );
     }
 
-    public function getUrn()
+    public function getUrn(): string
     {
         return 'urn:uuid:' . (string) $this;
     }
 
-    public function getVariant()
+    public function getVariant(): int
     {
         $clockSeq = $this->getClockSeqHiAndReserved();
         if (0 === ($clockSeq & 0x80)) {
@@ -587,7 +587,7 @@ class Uuid implements UuidInterface
         return $variant;
     }
 
-    public function getVersion()
+    public function getVersion(): ?int
     {
         if ($this->getVariant() == self::RFC_4122) {
             return (int) (($this->getTimeHiAndVersion() >> 12) & 0x0f);
@@ -601,7 +601,7 @@ class Uuid implements UuidInterface
      *
      * @return UuidFactoryInterface
      */
-    public static function getFactory()
+    public static function getFactory(): UuidFactoryInterface
     {
         if (!self::$factory) {
             self::$factory = new UuidFactory();
@@ -628,7 +628,7 @@ class Uuid implements UuidInterface
      * @throws \Ramsey\Uuid\Exception\InvalidUuidStringException
      * @throws \InvalidArgumentException
      */
-    public static function fromBytes($bytes)
+    public static function fromBytes(string $bytes): UuidInterface
     {
         return self::getFactory()->fromBytes($bytes);
     }
@@ -640,7 +640,7 @@ class Uuid implements UuidInterface
      * @return UuidInterface
      * @throws \Ramsey\Uuid\Exception\InvalidUuidStringException
      */
-    public static function fromString($name)
+    public static function fromString(string $name): UuidInterface
     {
         return self::getFactory()->fromString($name);
     }
@@ -653,7 +653,7 @@ class Uuid implements UuidInterface
      * @throws \Ramsey\Uuid\Exception\UnsatisfiedDependencyException if `Moontoast\Math\BigNumber` is not present
      * @throws \Ramsey\Uuid\Exception\InvalidUuidStringException
      */
-    public static function fromInteger($integer)
+    public static function fromInteger(string $integer): UuidInterface
     {
         return self::getFactory()->fromInteger($integer);
     }
@@ -664,7 +664,7 @@ class Uuid implements UuidInterface
      * @param string $uuid The string UUID to test
      * @return boolean
      */
-    public static function isValid($uuid)
+    public static function isValid(string $uuid): bool
     {
         return self::getFactory()->getValidator()->validate($uuid);
     }
@@ -683,7 +683,7 @@ class Uuid implements UuidInterface
      * @throws \InvalidArgumentException
      * @throws \Exception if it was not possible to gather sufficient entropy
      */
-    public static function uuid1($node = null, $clockSeq = null)
+    public static function uuid1($node = null, ?int $clockSeq = null): UuidInterface
     {
         return self::getFactory()->uuid1($node, $clockSeq);
     }
@@ -693,11 +693,11 @@ class Uuid implements UuidInterface
      * (which is a UUID) and a name (which is a string).
      *
      * @param string $ns The UUID namespace in which to create the named UUID
-     * @param string $name The name to create a UUID for
+     * @param string|null $name The name to create a UUID for
      * @return UuidInterface
      * @throws \Ramsey\Uuid\Exception\InvalidUuidStringException
      */
-    public static function uuid3($ns, $name)
+    public static function uuid3(string $ns, ?string $name): UuidInterface
     {
         return self::getFactory()->uuid3($ns, $name);
     }
@@ -710,7 +710,7 @@ class Uuid implements UuidInterface
      * @throws \InvalidArgumentException
      * @throws \Exception
      */
-    public static function uuid4()
+    public static function uuid4(): UuidInterface
     {
         return self::getFactory()->uuid4();
     }
@@ -720,11 +720,11 @@ class Uuid implements UuidInterface
      * identifier (which is a UUID) and a name (which is a string).
      *
      * @param string $ns The UUID namespace in which to create the named UUID
-     * @param string $name The name to create a UUID for
+     * @param string|null $name The name to create a UUID for
      * @return UuidInterface
      * @throws \Ramsey\Uuid\Exception\InvalidUuidStringException
      */
-    public static function uuid5($ns, $name)
+    public static function uuid5(string $ns, ?string $name): UuidInterface
     {
         return self::getFactory()->uuid5($ns, $name);
     }

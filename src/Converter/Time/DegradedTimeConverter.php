@@ -29,10 +29,10 @@ class DegradedTimeConverter implements TimeConverterInterface
      *
      * @param string $seconds
      * @param string $microSeconds
-     * @return void
+     * @return array
      * @throws UnsatisfiedDependencyException if called on a 32-bit system and `Moontoast\Math\BigNumber` is not present
      */
-    public function calculateTime($seconds, $microSeconds)
+    public function calculateTime(string $seconds, string $microSeconds): array
     {
         throw new UnsatisfiedDependencyException(
             'When calling ' . __METHOD__ . ' on a 32-bit system, '
@@ -45,9 +45,9 @@ class DegradedTimeConverter implements TimeConverterInterface
      *
      * @param mixed $timestamp
      * @throws UnsatisfiedDependencyException
-     * @return void
+     * @return string
      */
-    public function convertTime($timestamp)
+    public function convertTime($timestamp): string
     {
         throw new UnsatisfiedDependencyException(
             'When calling ' . __METHOD__ . ' on a 32-bit system, '
