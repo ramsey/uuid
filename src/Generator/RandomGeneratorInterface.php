@@ -27,11 +27,11 @@ interface RandomGeneratorInterface
     /**
      * Generates a string of random binary data of the specified length
      *
-     * @param integer $length The number of bytes of random binary data to generate
-     * @return string A binary string
+     * @param int $length The number of bytes of random binary data to generate
+     * @return string|null A binary string
      * @throws UnsatisfiedDependencyException if `Moontoast\Math\BigNumber` is not present
      * @throws InvalidArgumentException
      * @throws Exception if it was not possible to gather sufficient entropy
      */
-    public function generate($length);
+    public function generate(int $length): ?string;
 }

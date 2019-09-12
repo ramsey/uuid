@@ -33,7 +33,7 @@ class Validator implements ValidatorInterface
      * @param string $uuid
      * @return bool Returns TRUE if the string was validated as a valid UUID or FALSE on failure
      */
-    public function validate($uuid)
+    public function validate($uuid): bool
     {
         $uuid = str_replace(['urn:', 'uuid:', '{', '}'], '', $uuid);
 

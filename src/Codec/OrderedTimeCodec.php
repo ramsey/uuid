@@ -29,7 +29,7 @@ class OrderedTimeCodec extends StringCodec
      * @param UuidInterface $uuid
      * @return string Binary string representation of a UUID
      */
-    public function encodeBinary(UuidInterface $uuid)
+    public function encodeBinary(UuidInterface $uuid): string
     {
         $fields = $uuid->getFieldsHex();
 
@@ -52,7 +52,7 @@ class OrderedTimeCodec extends StringCodec
      * @return UuidInterface
      * @throws InvalidArgumentException if string has not 16 characters
      */
-    public function decodeBytes($bytes)
+    public function decodeBytes(string $bytes): UuidInterface
     {
         if (strlen($bytes) !== 16) {
             throw new InvalidArgumentException('$bytes string should contain 16 characters.');

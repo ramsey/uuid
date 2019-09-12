@@ -39,5 +39,5 @@ interface TimeGeneratorInterface
      * @throws InvalidArgumentException
      * @throws Exception if it was not possible to gather sufficient entropy
      */
-    public function generate($node = null, $clockSeq = null);
+    public function generate($node = null, int $clockSeq = null): string;
 }

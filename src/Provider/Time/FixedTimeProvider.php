@@ -51,7 +51,7 @@ class FixedTimeProvider implements TimeProviderInterface
      * @param int $value The `usec` value to set
      * @return void
      */
-    public function setUsec($value)
+    public function setUsec(int $value)
     {
         $this->fixedTime['usec'] = $value;
     }
@@ -62,7 +62,7 @@ class FixedTimeProvider implements TimeProviderInterface
      * @param int $value The `sec` value to set
      * @return void
      */
-    public function setSec($value)
+    public function setSec(int $value)
     {
         $this->fixedTime['sec'] = $value;
     }
@@ -72,7 +72,7 @@ class FixedTimeProvider implements TimeProviderInterface
      *
      * @return int[] Array containing `sec` and `usec` components of a timestamp
      */
-    public function currentTime()
+    public function currentTime(): array
     {
         return $this->fixedTime;
     }

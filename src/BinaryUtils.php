@@ -14,7 +14,7 @@ class BinaryUtils
      * @return int The high field of the clock sequence multiplexed with the variant
      * @link http://tools.ietf.org/html/rfc4122#section-4.1.1
      */
-    public static function applyVariant($clockSeqHi)
+    public static function applyVariant($clockSeqHi): int
     {
         // Set the variant to RFC 4122
         $clockSeqHi = $clockSeqHi & 0x3f;
@@ -27,11 +27,11 @@ class BinaryUtils
      * Applies the RFC 4122 version number to the `time_hi_and_version` field
      *
      * @param string $timeHi
-     * @param integer $version
+     * @param int $version
      * @return int The high field of the timestamp multiplexed with the version number
      * @link http://tools.ietf.org/html/rfc4122#section-4.1.3
      */
-    public static function applyVersion($timeHi, $version)
+    public static function applyVersion(string $timeHi, int $version): int
     {
         $timeHi = hexdec($timeHi) & 0x0fff;
         $timeHi |= $version << 12;
