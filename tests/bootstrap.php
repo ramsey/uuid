@@ -3,27 +3,8 @@
 
 use AspectMock\Kernel;
 
-include __DIR__ . '/../vendor/autoload.php'; // composer autoload
-
-if (!function_exists('uuid_create')) {
-    // Create stub of method so AspectMock can mock this function
-    // if it doesn't exist in PHP.
-    function uuid_create($type) {}
-}
-
-if (!function_exists('uuid_parse')) {
-    // Create stub of method so AspectMock can mock this function
-    // if it doesn't exist in PHP.
-    function uuid_parse($uuid) {}
-}
-
-if (!defined('UUID_TYPE_TIME')) {
-    define('UUID_TYPE_TIME', 1);
-}
-
-if (!defined('UUID_TYPE_RANDOM')) {
-    define('UUID_TYPE_RANDOM', 4);
-}
+require_once __DIR__ . '/../vendor/autoload.php'; // composer autoload
+require_once __DIR__ . '/phpstan-bootstrap.php';
 
 $kernel = Kernel::getInstance();
 $kernel->init([
