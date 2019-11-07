@@ -635,6 +635,21 @@ class UuidTest extends TestCase
 
     /**
      */
+    public function testTypeCastingToString()
+    {
+        // Check with a recent date
+        $uuid = Uuid::fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
+        $this->assertEquals('ff6f8cb0-c57d-11e1-9b21-0800200c9a66', (string) $uuid);
+        $this->assertEquals('ff6f8cb0-c57d-11e1-9b21-0800200c9a66', sprintf('%s', $uuid));
+
+        // Check with an old date
+        $uuid = Uuid::fromString('0901e600-0154-1000-9b21-0800200c9a66');
+        $this->assertEquals('0901e600-0154-1000-9b21-0800200c9a66', (string) $uuid);
+        $this->assertEquals('0901e600-0154-1000-9b21-0800200c9a66', sprintf('%s', $uuid));
+    }
+
+    /**
+     */
     public function testUuid1()
     {
         $uuid = Uuid::uuid1();
