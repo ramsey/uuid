@@ -42,12 +42,12 @@ class GmpTimeConverter implements TimeConverterInterface
         $uuidTime = gmp_add($sec, $usec);
         $uuidTime = gmp_add($uuidTime, gmp_init('122192928000000000'));
 
-        $uuidTimeHex = sprintf('%016s', gmp_strval($uuidTime, 16));
+        $uuidTimeHex = \sprintf('%016s', gmp_strval($uuidTime, 16));
 
         return [
-            'low' => substr($uuidTimeHex, 8),
-            'mid' => substr($uuidTimeHex, 4, 4),
-            'hi' => substr($uuidTimeHex, 0, 4),
+            'low' => \substr($uuidTimeHex, 8),
+            'mid' => \substr($uuidTimeHex, 4, 4),
+            'hi' => \substr($uuidTimeHex, 0, 4),
         ];
     }
 

@@ -216,7 +216,7 @@ class UuidFactory implements UuidFactoryInterface
      */
     public function fromString($uuid)
     {
-        $uuid = strtolower($uuid);
+        $uuid = \strtolower($uuid);
         return $this->codec->decode($uuid);
     }
 
@@ -226,7 +226,7 @@ class UuidFactory implements UuidFactoryInterface
     public function fromInteger($integer)
     {
         $hex = $this->numberConverter->toHex($integer);
-        $hex = str_pad($hex, 32, '0', STR_PAD_LEFT);
+        $hex = \str_pad($hex, 32, '0', STR_PAD_LEFT);
 
         return $this->fromString($hex);
     }
@@ -237,7 +237,7 @@ class UuidFactory implements UuidFactoryInterface
     public function uuid1($node = null, $clockSeq = null)
     {
         $bytes = $this->timeGenerator->generate($node, $clockSeq);
-        $hex = bin2hex($bytes);
+        $hex = \bin2hex($bytes);
 
         return $this->uuidFromHashedName($hex, 1);
     }
@@ -260,7 +260,7 @@ class UuidFactory implements UuidFactoryInterface
         // When converting the bytes to hex, it turns into a 32-character
         // hexadecimal string that looks a lot like an MD5 hash, so at this
         // point, we can just pass it to uuidFromHashedName.
-        $hex = bin2hex($bytes);
+        $hex = \bin2hex($bytes);
 
         return $this->uuidFromHashedName($hex, 4);
     }
@@ -305,7 +305,7 @@ class UuidFactory implements UuidFactoryInterface
             $ns = $this->codec->decode($ns);
         }
 
-        $hash = call_user_func($hashFunction, ($ns->getBytes() . $name));
+        $hash = \call_user_func($hashFunction, ($ns->getBytes() . $name));
 
         return $this->uuidFromHashedName($hash, $version);
     }
@@ -320,16 +320,16 @@ class UuidFactory implements UuidFactoryInterface
      */
     protected function uuidFromHashedName($hash, $version)
     {
-        $timeHi = BinaryUtils::applyVersion(substr($hash, 12, 4), $version);
-        $clockSeqHi = BinaryUtils::applyVariant(hexdec(substr($hash, 16, 2)));
+        $timeHi = BinaryUtils::applyVersion(\substr($hash, 12, 4), $version);
+        $clockSeqHi = BinaryUtils::applyVariant(\hexdec(\substr($hash, 16, 2)));
 
         $fields = [
-            'time_low' => substr($hash, 0, 8),
-            'time_mid' => substr($hash, 8, 4),
-            'time_hi_and_version' => str_pad(dechex($timeHi), 4, '0', STR_PAD_LEFT),
-            'clock_seq_hi_and_reserved' => str_pad(dechex($clockSeqHi), 2, '0', STR_PAD_LEFT),
-            'clock_seq_low' => substr($hash, 18, 2),
-            'node' => substr($hash, 20, 12),
+            'time_low' => \substr($hash, 0, 8),
+            'time_mid' => \substr($hash, 8, 4),
+            'time_hi_and_version' => \str_pad(\dechex($timeHi), 4, '0', STR_PAD_LEFT),
+            'clock_seq_hi_and_reserved' => \str_pad(\dechex($clockSeqHi), 2, '0', STR_PAD_LEFT),
+            'clock_seq_low' => \substr($hash, 18, 2),
+            'node' => \substr($hash, 20, 12),
         ];
 
         return $this->uuid($fields);

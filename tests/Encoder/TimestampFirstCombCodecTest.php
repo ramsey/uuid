@@ -45,7 +45,7 @@ class TimestampFirstCombCodecTest extends TestCase
             ->willReturn(array('ff6f8cb0', 'c57d', '11e1', '9b', '21', '0800200c9a66'));
         $encodedUuid = $this->codec->encodeBinary($uuidMock);
 
-        $this->assertSame(hex2bin('0800200c9a6611e19b21ff6f8cb0c57d'), $encodedUuid);
+        $this->assertSame(\hex2bin('0800200c9a6611e19b21ff6f8cb0c57d'), $encodedUuid);
     }
 
     public function testDecoding()
@@ -81,6 +81,6 @@ class TimestampFirstCombCodecTest extends TestCase
                     'node' => '0800200c9a66'
                 )
             );
-        $this->codec->decodeBytes(hex2bin('0800200c9a6611e19b21ff6f8cb0c57d'));
+        $this->codec->decodeBytes(\hex2bin('0800200c9a6611e19b21ff6f8cb0c57d'));
     }
 }

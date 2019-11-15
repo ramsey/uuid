@@ -285,7 +285,7 @@ class Uuid implements UuidInterface
      */
     public function getClockSeqHiAndReserved()
     {
-        return hexdec($this->getClockSeqHiAndReservedHex());
+        return \hexdec($this->getClockSeqHiAndReservedHex());
     }
 
     public function getClockSeqHiAndReservedHex()
@@ -300,7 +300,7 @@ class Uuid implements UuidInterface
      */
     public function getClockSeqLow()
     {
-        return hexdec($this->getClockSeqLowHex());
+        return \hexdec($this->getClockSeqLowHex());
     }
 
     public function getClockSeqLowHex()
@@ -332,7 +332,7 @@ class Uuid implements UuidInterface
 
     public function getClockSequenceHex()
     {
-        return sprintf('%04x', $this->getClockSequence());
+        return \sprintf('%04x', $this->getClockSequence());
     }
 
     public function getNumberConverter()
@@ -391,7 +391,7 @@ class Uuid implements UuidInterface
 
     public function getHex()
     {
-        return str_replace('-', '', (string) $this);
+        return \str_replace('-', '', (string) $this);
     }
 
     /**
@@ -415,7 +415,7 @@ class Uuid implements UuidInterface
 
     public function getLeastSignificantBitsHex()
     {
-        return sprintf(
+        return \sprintf(
             '%02s%02s%012s',
             $this->fields['clock_seq_hi_and_reserved'],
             $this->fields['clock_seq_low'],
@@ -436,7 +436,7 @@ class Uuid implements UuidInterface
 
     public function getMostSignificantBitsHex()
     {
-        return sprintf(
+        return \sprintf(
             '%08s%04s%04s',
             $this->fields['time_low'],
             $this->fields['time_mid'],
@@ -470,7 +470,7 @@ class Uuid implements UuidInterface
      */
     public function getNode()
     {
-        return hexdec($this->getNodeHex());
+        return \hexdec($this->getNodeHex());
     }
 
     public function getNodeHex()
@@ -486,7 +486,7 @@ class Uuid implements UuidInterface
      */
     public function getTimeHiAndVersion()
     {
-        return hexdec($this->getTimeHiAndVersionHex());
+        return \hexdec($this->getTimeHiAndVersionHex());
     }
 
     public function getTimeHiAndVersionHex()
@@ -501,7 +501,7 @@ class Uuid implements UuidInterface
      */
     public function getTimeLow()
     {
-        return hexdec($this->getTimeLowHex());
+        return \hexdec($this->getTimeLowHex());
     }
 
     public function getTimeLowHex()
@@ -516,7 +516,7 @@ class Uuid implements UuidInterface
      */
     public function getTimeMid()
     {
-        return hexdec($this->getTimeMidHex());
+        return \hexdec($this->getTimeMidHex());
     }
 
     public function getTimeMidHex()
@@ -546,7 +546,7 @@ class Uuid implements UuidInterface
             throw new UnsupportedOperationException('Not a time-based UUID');
         }
 
-        return hexdec($this->getTimestampHex());
+        return \hexdec($this->getTimestampHex());
     }
 
     /**
@@ -558,7 +558,7 @@ class Uuid implements UuidInterface
             throw new UnsupportedOperationException('Not a time-based UUID');
         }
 
-        return sprintf(
+        return \sprintf(
             '%03x%04s%08s',
             ($this->getTimeHiAndVersion() & 0x0fff),
             $this->fields['time_mid'],

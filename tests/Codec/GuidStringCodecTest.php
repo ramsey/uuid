@@ -82,7 +82,7 @@ class GuidStringCodecTest extends TestCase
 
     public function testEncodeBinaryReturnsBinaryString()
     {
-        $expected = hex2bin('123456781234abcdabef1234abcd4321');
+        $expected = \hex2bin('123456781234abcdabef1234abcd4321');
         $this->uuid->method('getFieldsHex')
             ->willReturn($this->fields);
         $codec = new GuidStringCodec($this->builder);
@@ -126,7 +126,7 @@ class GuidStringCodecTest extends TestCase
     public function testDecodeBytesReturnsUuid()
     {
         $string = '123456781234abcdabef1234abcd4321';
-        $bytes = pack('H*', $string);
+        $bytes = \pack('H*', $string);
         $codec = new GuidStringCodec($this->builder);
         $this->builder->method('build')
             ->willReturn($this->uuid);

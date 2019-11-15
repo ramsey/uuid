@@ -43,12 +43,12 @@ class TestCase extends PHPUnitTestCase
 
     protected function hasMoontoastMath()
     {
-        return class_exists('Moontoast\\Math\\BigNumber');
+        return \class_exists('Moontoast\\Math\\BigNumber');
     }
 
     protected function hasGmp()
     {
-        return extension_loaded('gmp');
+        return \extension_loaded('gmp');
     }
 
     protected function skipIfLittleEndianHost()
@@ -71,6 +71,6 @@ class TestCase extends PHPUnitTestCase
 
     public static function isLittleEndianSystem()
     {
-        return current(unpack('v', pack('S', 0x00FF))) === 0x00FF;
+        return \current(\unpack('v', \pack('S', 0x00FF))) === 0x00FF;
     }
 }

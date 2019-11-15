@@ -5,7 +5,7 @@ use Sami\RemoteRepository\GitHubRemoteRepository;
 use Sami\Version\GitVersionCollection;
 use Symfony\Component\Finder\Finder;
 
-$projectRoot = realpath(__DIR__ . '/..');
+$projectRoot = \realpath(__DIR__ . '/..');
 $source = $projectRoot . '/src';
 
 $iterator = Finder::create()

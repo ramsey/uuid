@@ -94,7 +94,7 @@ class DefaultTimeGeneratorTest extends TestCase
      */
     public function testGenerateAppliesVersionAndVariant()
     {
-        $expectedBytes = hex2bin('83cb98e098e003cb8fe2122f80ca9e06');
+        $expectedBytes = \hex2bin('83cb98e098e003cb8fe2122f80ca9e06');
 
         $this->timeProvider->method('currentTime')
             ->willReturn($this->currentTime);
@@ -154,7 +154,7 @@ class DefaultTimeGeneratorTest extends TestCase
          * $hex = vsprintf('%08s%04s%04s%02s%02s%012s', $values);
          */
         $hex = '83cb98e098e003cb8fe2122f80ca9e06';
-        $binary = hex2bin($hex);
+        $binary = \hex2bin($hex);
         $this->assertEquals($binary, $result);
     }
 
@@ -164,7 +164,7 @@ class DefaultTimeGeneratorTest extends TestCase
      */
     public function testGenerateUsesRandomSequenceWhenClockSeqNull()
     {
-        $expectedBytes = hex2bin('0000000000001000a596122f80ca9e06');
+        $expectedBytes = \hex2bin('0000000000001000a596122f80ca9e06');
 
         $mt_rand = AspectMock::func('Ramsey\Uuid\Generator', 'random_int', 9622);
         $defaultTimeGenerator = new DefaultTimeGenerator(

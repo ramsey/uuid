@@ -74,7 +74,7 @@ class OrderedTimeCodecTest extends TestCase
 
     public function testEncodeBinaryReturnsBinaryString()
     {
-        $expected = hex2bin($this->optimizedHex);
+        $expected = \hex2bin($this->optimizedHex);
         $this->uuid->method('getFieldsHex')
             ->willReturn($this->fields);
         $codec = new OrderedTimeCodec($this->builder);
@@ -85,7 +85,7 @@ class OrderedTimeCodecTest extends TestCase
     public function testDecodeBytesThrowsExceptionWhenBytesStringNotSixteenCharacters()
     {
         $string = '61';
-        $bytes = pack('H*', $string);
+        $bytes = \pack('H*', $string);
         $codec = new OrderedTimeCodec($this->builder);
 
         $this->expectException(\InvalidArgumentException::class);
@@ -105,7 +105,7 @@ class OrderedTimeCodecTest extends TestCase
 
     public function testDecodeBytesRearrangesFields()
     {
-        $bytes = pack('H*', $this->optimizedHex);
+        $bytes = \pack('H*', $this->optimizedHex);
         $codec = new OrderedTimeCodec($this->builder);
         $this->builder->method('build')->with($this->anything(), $this->equalTo($this->fields))
             ->willReturn($this->uuid);

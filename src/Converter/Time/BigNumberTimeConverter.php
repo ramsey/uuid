@@ -47,12 +47,12 @@ class BigNumberTimeConverter implements TimeConverterInterface
             ->add($usec)
             ->add('122192928000000000');
 
-        $uuidTimeHex = sprintf('%016s', $uuidTime->convertToBase(16));
+        $uuidTimeHex = \sprintf('%016s', $uuidTime->convertToBase(16));
 
         return [
-            'low' => substr($uuidTimeHex, 8),
-            'mid' => substr($uuidTimeHex, 4, 4),
-            'hi' => substr($uuidTimeHex, 0, 4),
+            'low' => \substr($uuidTimeHex, 8),
+            'mid' => \substr($uuidTimeHex, 4, 4),
+            'hi' => \substr($uuidTimeHex, 0, 4),
         ];
     }
 

@@ -34,7 +34,7 @@ class BinaryUtils
      */
     public static function applyVersion($timeHi, $version)
     {
-        $timeHi = hexdec($timeHi) & 0x0fff;
+        $timeHi = \hexdec($timeHi) & 0x0fff;
         $timeHi &= ~(0xf000);
         $timeHi |= $version << 12;
 

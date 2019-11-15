@@ -83,7 +83,7 @@ class DefaultTimeGenerator implements TimeGeneratorInterface
 
         if ($clockSeq === null) {
             // Not using "stable storage"; see RFC 4122, Section 4.2.1.1
-            $clockSeq = random_int(0, 0x3fff);
+            $clockSeq = \random_int(0, 0x3fff);
         }
 
         // Create a 60-bit time value as a count of 100-nanosecond intervals
@@ -94,19 +94,19 @@ class DefaultTimeGenerator implements TimeGeneratorInterface
         $timeHi = BinaryUtils::applyVersion($uuidTime['hi'], 1);
         $clockSeqHi = BinaryUtils::applyVariant($clockSeq >> 8);
 
-        $hex = vsprintf(
+        $hex = \vsprintf(
             '%08s%04s%04s%02s%02s%012s',
             [
                 $uuidTime['low'],
                 $uuidTime['mid'],
-                sprintf('%04x', $timeHi),
-                sprintf('%02x', $clockSeqHi),
-                sprintf('%02x', $clockSeq & 0xff),
+                \sprintf('%04x', $timeHi),
+                \sprintf('%02x', $clockSeqHi),
+                \sprintf('%02x', $clockSeq & 0xff),
                 $node,
             ]
         );
 
-        return hex2bin($hex);
+        return \hex2bin($hex);
     }
 
     /**
@@ -125,14 +125,14 @@ class DefaultTimeGenerator implements TimeGeneratorInterface
         }
 
         // Convert the node to hex, if it is still an integer
-        if (is_int($node)) {
-            $node = sprintf('%012x', $node);
+        if (\is_int($node)) {
+            $node = \sprintf('%012x', $node);
         }
 
-        if (!ctype_xdigit($node) || strlen($node) > 12) {
+        if (!\ctype_xdigit($node) || \strlen($node) > 12) {
             throw new \InvalidArgumentException('Invalid node value');
         }
 
-        return strtolower(sprintf('%012s', $node));
+        return \strtolower(\sprintf('%012s', $node));
     }
 }

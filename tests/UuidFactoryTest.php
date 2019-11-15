@@ -34,7 +34,7 @@ class UuidFactoryTest extends TestCase
     public function testFromStringParsesUuidInLowercase()
     {
         $uuidString = 'ff6f8cb0-c57d-11e1-9b21-0800200c9a66';
-        $uuidUpper = strtoupper($uuidString);
+        $uuidUpper = \strtoupper($uuidString);
         $factory = new UuidFactory(new FeatureSet(true));
 
         $uuid = $factory->fromString($uuidUpper);

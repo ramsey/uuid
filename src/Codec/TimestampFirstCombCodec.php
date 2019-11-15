@@ -30,11 +30,11 @@ class TimestampFirstCombCodec extends StringCodec
      */
     public function encode(UuidInterface $uuid)
     {
-        $sixPieceComponents = array_values($uuid->getFieldsHex());
+        $sixPieceComponents = \array_values($uuid->getFieldsHex());
 
         $this->swapTimestampAndRandomBits($sixPieceComponents);
 
-        return vsprintf(
+        return \vsprintf(
             '%08s-%04s-%04s-%02s%02s-%012s',
             $sixPieceComponents
         );
@@ -51,7 +51,7 @@ class TimestampFirstCombCodec extends StringCodec
     {
         $stringEncoding = $this->encode($uuid);
 
-        return hex2bin(str_replace('-', '', $stringEncoding));
+        return \hex2bin(\str_replace('-', '', $stringEncoding));
     }
 
     /**
@@ -81,7 +81,7 @@ class TimestampFirstCombCodec extends StringCodec
      */
     public function decodeBytes($bytes)
     {
-        return $this->decode(bin2hex($bytes));
+        return $this->decode(\bin2hex($bytes));
     }
 
     /**
@@ -94,14 +94,14 @@ class TimestampFirstCombCodec extends StringCodec
     protected function swapTimestampAndRandomBits(array &$components)
     {
         $last48Bits = $components[4];
-        if (count($components) == 6) {
+        if (\count($components) == 6) {
             $last48Bits = $components[5];
             $components[5] = $components[0] . $components[1];
         } else {
             $components[4] = $components[0] . $components[1];
         }
 
-        $components[0] = substr($last48Bits, 0, 8);
-        $components[1] = substr($last48Bits, 8, 4);
+        $components[0] = \substr($last48Bits, 0, 8);
+        $components[1] = \substr($last48Bits, 8, 4);
     }
 }

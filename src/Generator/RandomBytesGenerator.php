@@ -32,6 +32,6 @@ class RandomBytesGenerator implements RandomGeneratorInterface
      */
     public function generate($length)
     {
-        return random_bytes($length);
+        return \random_bytes($length);
     }
 }

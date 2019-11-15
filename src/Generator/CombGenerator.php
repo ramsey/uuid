@@ -69,9 +69,9 @@ class CombGenerator implements RandomGeneratorInterface
             $hash = $this->randomGenerator->generate($length - self::TIMESTAMP_BYTES);
         }
 
-        $lsbTime = str_pad($this->converter->toHex($this->timestamp()), self::TIMESTAMP_BYTES * 2, '0', STR_PAD_LEFT);
+        $lsbTime = \str_pad($this->converter->toHex($this->timestamp()), self::TIMESTAMP_BYTES * 2, '0', STR_PAD_LEFT);
 
-        return hex2bin(str_pad(bin2hex($hash), $length - self::TIMESTAMP_BYTES, '0') . $lsbTime);
+        return \hex2bin(\str_pad(\bin2hex($hash), $length - self::TIMESTAMP_BYTES, '0') . $lsbTime);
     }
 
     /**
@@ -81,8 +81,8 @@ class CombGenerator implements RandomGeneratorInterface
      */
     private function timestamp()
     {
-        $time = explode(' ', microtime(false));
+        $time = \explode(' ', \microtime(false));
 
-        return $time[1] . substr($time[0], 2, 5);
+        return $time[1] . \substr($time[0], 2, 5);
     }
 }

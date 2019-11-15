@@ -50,9 +50,9 @@ class StringCodec implements CodecInterface
      */
     public function encode(UuidInterface $uuid)
     {
-        $fields = array_values($uuid->getFieldsHex());
+        $fields = \array_values($uuid->getFieldsHex());
 
-        return vsprintf(
+        return \vsprintf(
             '%08s-%04s-%04s-%02s%02s-%012s',
             $fields
         );
@@ -66,7 +66,7 @@ class StringCodec implements CodecInterface
      */
     public function encodeBinary(UuidInterface $uuid)
     {
-        return hex2bin($uuid->getHex());
+        return \hex2bin($uuid->getHex());
     }
 
     /**
@@ -93,11 +93,11 @@ class StringCodec implements CodecInterface
      */
     public function decodeBytes($bytes)
     {
-        if (strlen($bytes) !== 16) {
+        if (\strlen($bytes) !== 16) {
             throw new InvalidArgumentException('$bytes string should contain 16 characters.');
         }
 
-        $hexUuid = unpack('H*', $bytes);
+        $hexUuid = \unpack('H*', $bytes);
 
         return $this->decode($hexUuid[1]);
     }
@@ -121,7 +121,7 @@ class StringCodec implements CodecInterface
      */
     protected function extractComponents($encodedUuid)
     {
-        $nameParsed = str_replace([
+        $nameParsed = \str_replace([
             'urn:',
             'uuid:',
             '{',
@@ -133,14 +133,14 @@ class StringCodec implements CodecInterface
         // substr(). In this way, we can accept a full hex value that doesn't
         // contain dashes.
         $components = [
-            substr($nameParsed, 0, 8),
-            substr($nameParsed, 8, 4),
-            substr($nameParsed, 12, 4),
-            substr($nameParsed, 16, 4),
-            substr($nameParsed, 20)
+            \substr($nameParsed, 0, 8),
+            \substr($nameParsed, 8, 4),
+            \substr($nameParsed, 12, 4),
+            \substr($nameParsed, 16, 4),
+            \substr($nameParsed, 20)
         ];
 
-        $nameParsed = implode('-', $components);
+        $nameParsed = \implode('-', $components);
 
         if (!Uuid::isValid($nameParsed)) {
             throw new InvalidUuidStringException('Invalid UUID string: ' . $encodedUuid);
@@ -159,12 +159,12 @@ class StringCodec implements CodecInterface
     protected function getFields(array $components)
     {
         return [
-            'time_low' => str_pad($components[0], 8, '0', STR_PAD_LEFT),
-            'time_mid' => str_pad($components[1], 4, '0', STR_PAD_LEFT),
-            'time_hi_and_version' => str_pad($components[2], 4, '0', STR_PAD_LEFT),
-            'clock_seq_hi_and_reserved' => str_pad(substr($components[3], 0, 2), 2, '0', STR_PAD_LEFT),
-            'clock_seq_low' => str_pad(substr($components[3], 2), 2, '0', STR_PAD_LEFT),
-            'node' => str_pad($components[4], 12, '0', STR_PAD_LEFT)
+            'time_low' => \str_pad($components[0], 8, '0', STR_PAD_LEFT),
+            'time_mid' => \str_pad($components[1], 4, '0', STR_PAD_LEFT),
+            'time_hi_and_version' => \str_pad($components[2], 4, '0', STR_PAD_LEFT),
+            'clock_seq_hi_and_reserved' => \str_pad(\substr($components[3], 0, 2), 2, '0', STR_PAD_LEFT),
+            'clock_seq_low' => \str_pad(\substr($components[3], 2), 2, '0', STR_PAD_LEFT),
+            'node' => \str_pad($components[4], 12, '0', STR_PAD_LEFT)
         ];
     }
 }

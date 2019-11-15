@@ -19,9 +19,9 @@ class PhpTimeConverterTest extends TestCase
         $microSeconds = 3;
         $calculatedTime = ($seconds * 10000000) + ($microSeconds * 10) + 0x01b21dd213814000;
         $expectedArray = [
-            'low' => sprintf('%08x', $calculatedTime & 0xffffffff),
-            'mid' => sprintf('%04x', ($calculatedTime >> 32) & 0xffff),
-            'hi' => sprintf('%04x', ($calculatedTime >> 48) & 0x0fff)
+            'low' => \sprintf('%08x', $calculatedTime & 0xffffffff),
+            'mid' => \sprintf('%04x', ($calculatedTime >> 32) & 0xffff),
+            'hi' => \sprintf('%04x', ($calculatedTime >> 48) & 0x0fff)
         ];
 
         $converter = new PhpTimeConverter();

@@ -28,6 +28,6 @@ class SystemTimeProvider implements TimeProviderInterface
      */
     public function currentTime()
     {
-        return gettimeofday();
+        return \gettimeofday();
     }
 }

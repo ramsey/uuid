@@ -39,9 +39,9 @@ class PhpTimeConverter implements TimeConverterInterface
         $uuidTime = ($seconds * 10000000) + ($microSeconds * 10) + 0x01b21dd213814000;
 
         return [
-            'low' => sprintf('%08x', $uuidTime & 0xffffffff),
-            'mid' => sprintf('%04x', ($uuidTime >> 32) & 0xffff),
-            'hi' => sprintf('%04x', ($uuidTime >> 48) & 0x0fff),
+            'low' => \sprintf('%08x', $uuidTime & 0xffffffff),
+            'mid' => \sprintf('%04x', ($uuidTime >> 32) & 0xffff),
+            'hi' => \sprintf('%04x', ($uuidTime >> 48) & 0x0fff),
         ];
     }
 
@@ -53,6 +53,6 @@ class PhpTimeConverter implements TimeConverterInterface
     public function convertTime($timestamp)
     {
         $unixTime = ($timestamp - 0x01b21dd213814000) / 1e7;
-        return number_format($unixTime, 0, '', '');
+        return \number_format($unixTime, 0, '', '');
     }
 }

@@ -31,12 +31,12 @@ class GuidStringCodec extends StringCodec
      */
     public function encode(UuidInterface $uuid)
     {
-        $components = array_values($uuid->getFieldsHex());
+        $components = \array_values($uuid->getFieldsHex());
 
         // Swap byte-order on the first three fields
         $this->swapFields($components);
 
-        return vsprintf(
+        return \vsprintf(
             '%08s-%04s-%04s-%02s%02s-%012s',
             $components
         );
@@ -50,9 +50,9 @@ class GuidStringCodec extends StringCodec
      */
     public function encodeBinary(UuidInterface $uuid)
     {
-        $components = array_values($uuid->getFieldsHex());
+        $components = \array_values($uuid->getFieldsHex());
 
-        return hex2bin(implode('', $components));
+        return \hex2bin(\implode('', $components));
     }
 
     /**
@@ -81,7 +81,7 @@ class GuidStringCodec extends StringCodec
     public function decodeBytes($bytes)
     {
         // Specifically call parent::decode to preserve correct byte order
-        return parent::decode(bin2hex($bytes));
+        return parent::decode(\bin2hex($bytes));
     }
 
     /**
@@ -92,11 +92,11 @@ class GuidStringCodec extends StringCodec
      */
     protected function swapFields(array &$components)
     {
-        $hex = unpack('H*', pack('L', hexdec($components[0])));
+        $hex = \unpack('H*', \pack('L', \hexdec($components[0])));
         $components[0] = $hex[1];
-        $hex = unpack('H*', pack('S', hexdec($components[1])));
+        $hex = \unpack('H*', \pack('S', \hexdec($components[1])));
         $components[1] = $hex[1];
-        $hex = unpack('H*', pack('S', hexdec($components[2])));
+        $hex = \unpack('H*', \pack('S', \hexdec($components[2])));
         $components[2] = $hex[1];
     }
 }

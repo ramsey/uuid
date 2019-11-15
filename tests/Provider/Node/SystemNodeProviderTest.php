@@ -76,9 +76,9 @@ class SystemNodeProviderTest extends TestCase
 
         $this->assertSame($expected, $node);
 
-        $message = vsprintf(
+        $message = \vsprintf(
             'Node should be a hexadecimal string of 12 characters. Actual node: %s (length: %s)',
-            [$node, strlen($node),]
+            [$node, \strlen($node),]
         );
         $this->assertRegExp('/^[A-Fa-f0-9]{12}$/', $node, $message);
     }
@@ -372,7 +372,7 @@ class SystemNodeProviderTest extends TestCase
         $this->arrangeMockFunctions(
             function () {
                 static $macs = ["00:00:00:00:00:00\n", "01:02:03:04:05:06\n"];
-                return array_shift($macs);
+                return \array_shift($macs);
             },
             ['mock address path 1', 'mock address path 2'],
             function () {
@@ -532,7 +532,7 @@ class SystemNodeProviderTest extends TestCase
             self::MOCK_INI_GET => $iniGetDisableFunctionsBody,
         ];
 
-        array_walk($mockFunction, function ($body, $key) {
+        \array_walk($mockFunction, function ($body, $key) {
             $this->functionProxies[$key] = AspectMock::func(self::PROVIDER_NAMESPACE, $key, $body);
         });
     }
@@ -563,19 +563,19 @@ class SystemNodeProviderTest extends TestCase
             self::MOCK_INI_GET => $iniGetDisableFunctionsAssert,
         ];
 
-        array_walk($mockFunctionAsserts, function ($asserts, $key) {
+        \array_walk($mockFunctionAsserts, function ($asserts, $key) {
             if ($asserts === null) {
                 $this->functionProxies[$key]->verifyNeverInvoked();
-            } elseif (is_array($asserts)) {
+            } elseif (\is_array($asserts)) {
                 foreach ($asserts as $assert) {
                     $this->functionProxies[$key]->verifyInvokedOnce($assert);
                 }
-            } elseif (is_callable($asserts)) {
+            } elseif (\is_callable($asserts)) {
                 $this->functionProxies[$key]->verifyInvokedOnce($asserts);
             } else {
-                $error = vsprintf(
+                $error = \vsprintf(
                     'Given parameter for %s must be an array, a callback or NULL, "%s" given.',
-                    [$key, gettype($asserts)]
+                    [$key, \gettype($asserts)]
                 );
                 throw new \InvalidArgumentException($error);
             }

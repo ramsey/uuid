@@ -42,7 +42,7 @@ class OrderedTimeCodec extends StringCodec
             $fields['node'],
         ];
 
-        return hex2bin(implode('', $optimized));
+        return \hex2bin(\implode('', $optimized));
     }
 
     /**
@@ -54,14 +54,14 @@ class OrderedTimeCodec extends StringCodec
      */
     public function decodeBytes($bytes)
     {
-        if (strlen($bytes) !== 16) {
+        if (\strlen($bytes) !== 16) {
             throw new InvalidArgumentException('$bytes string should contain 16 characters.');
         }
 
-        $hex = unpack('H*', $bytes)[1];
+        $hex = \unpack('H*', $bytes)[1];
 
         // Rearrange the fields to their original order
-        $hex = substr($hex, 8, 4) . substr($hex, 12, 4) . substr($hex, 4, 4) . substr($hex, 0, 4) . substr($hex, 16);
+        $hex = \substr($hex, 8, 4) . \substr($hex, 12, 4) . \substr($hex, 4, 4) . \substr($hex, 0, 4) . \substr($hex, 16);
 
         return $this->decode($hex);
     }

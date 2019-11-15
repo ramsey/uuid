@@ -44,8 +44,8 @@ class CombGeneratorTest extends TestCase
     public function testGenerateReturnsBinaryStringCreatedFromGeneratorAndConverter()
     {
         $length = 20;
-        $hash = dechex(1234567891);
-        $timeHash = dechex(1458147405);
+        $hash = \dechex(1234567891);
+        $timeHash = \dechex(1458147405);
 
         $randomGenerator = $this->getMockBuilder(RandomGeneratorInterface::class)->getMock();
         $randomGenerator->method('generate')
@@ -57,8 +57,8 @@ class CombGeneratorTest extends TestCase
             ->with($this->isType('string'))
             ->willReturn($timeHash);
 
-        $time = str_pad($timeHash, 12, '0', STR_PAD_LEFT);
-        $expected = hex2bin(str_pad(bin2hex($hash), $length - $this->timestampBytes, '0')) . hex2bin($time);
+        $time = \str_pad($timeHash, 12, '0', STR_PAD_LEFT);
+        $expected = \hex2bin(\str_pad(\bin2hex($hash), $length - $this->timestampBytes, '0')) . \hex2bin($time);
 
         $generator = new CombGenerator($randomGenerator, $converter);
         $returned = $generator->generate($length);

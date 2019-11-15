@@ -367,7 +367,7 @@ class FeatureSet
      */
     protected function hasBigNumber()
     {
-        return class_exists('Moontoast\Math\BigNumber') && !$this->disableBigNumber;
+        return \class_exists('Moontoast\Math\BigNumber') && !$this->disableBigNumber;
     }
 
     /**
@@ -377,7 +377,7 @@ class FeatureSet
      */
     protected function hasGmp()
     {
-        return extension_loaded('gmp') && !$this->disableGmp;
+        return \extension_loaded('gmp') && !$this->disableGmp;
     }
 
     /**

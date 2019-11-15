@@ -72,7 +72,7 @@ class StringCodecTest extends TestCase
 
     public function testEncodeBinaryReturnsBinaryString()
     {
-        $expected = hex2bin('123456781234abcdabef1234abcd4321');
+        $expected = \hex2bin('123456781234abcdabef1234abcd4321');
         $this->uuid->method('getHex')
             ->willReturn('123456781234abcdabef1234abcd4321');
         $codec = new StringCodec($this->builder);
@@ -112,7 +112,7 @@ class StringCodecTest extends TestCase
     public function testDecodeBytesThrowsExceptionWhenBytesStringNotSixteenCharacters()
     {
         $string = '61';
-        $bytes = pack('H*', $string);
+        $bytes = \pack('H*', $string);
         $codec = new StringCodec($this->builder);
 
         $this->expectException(\InvalidArgumentException::class);
@@ -123,7 +123,7 @@ class StringCodecTest extends TestCase
     public function testDecodeBytesReturnsUuid()
     {
         $string = '123456781234abcdabef1234abcd4321';
-        $bytes = pack('H*', $string);
+        $bytes = \pack('H*', $string);
         $codec = new StringCodec($this->builder);
         $this->builder->method('build')
             ->willReturn($this->uuid);

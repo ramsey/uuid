@@ -31,7 +31,7 @@ class RandomBytesGeneratorTest extends TestCase
      */
     public function testGenerateUsesOpenSsl($length, $hex)
     {
-        $bytes = hex2bin($hex);
+        $bytes = \hex2bin($hex);
         $openSsl = AspectMock::func('Ramsey\Uuid\Generator', 'random_bytes', $bytes);
         $generator = new RandomBytesGenerator();
 
@@ -48,7 +48,7 @@ class RandomBytesGeneratorTest extends TestCase
      */
     public function testGenerateReturnsRandomBytes($length, $hex)
     {
-        $bytes = hex2bin($hex);
+        $bytes = \hex2bin($hex);
         AspectMock::func('Ramsey\Uuid\Generator', 'random_bytes', $bytes);
         $generator = new RandomBytesGenerator();
         $this->assertEquals($bytes, $generator->generate($length));
