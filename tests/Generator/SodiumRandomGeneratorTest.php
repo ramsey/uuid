@@ -44,17 +44,4 @@ class SodiumRandomGeneratorTest extends TestCase
             $uuid->getFactory()->getRandomGenerator()
         );
     }
-
-    /**
-     * @runInSeparateProcess
-     * @preserveGlobalState disabled
-     */
-    public function testGenerateUsesSodiumLibrary()
-    {
-        $randomBytesFunc = $this->getFunctionMock('Sodium', 'randombytes_buf');
-        $randomBytesFunc->expects($this->once())
-            ->with(10);
-        $generator = new SodiumRandomGenerator();
-        $generator->generate(10);
-    }
 }
