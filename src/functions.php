@@ -31,7 +31,8 @@ use Ramsey\Uuid\Exception\UnsatisfiedDependencyException;
  * @throws InvalidArgumentException
  * @throws Exception if it was not possible to gather sufficient entropy
  */
-function v1($node = null, $clockSeq = null) {
+function v1($node = null, $clockSeq = null)
+{
     return Uuid::uuid1($node, $clockSeq)->toString();
 }
 
@@ -44,7 +45,8 @@ function v1($node = null, $clockSeq = null) {
  * @return string
  * @throws InvalidUuidStringException
  */
-function v3($ns, $name) {
+function v3($ns, $name)
+{
     return Uuid::uuid3($ns, $name)->toString();
 }
 
@@ -56,7 +58,8 @@ function v3($ns, $name) {
  * @throws InvalidArgumentException
  * @throws Exception
  */
-function v4() {
+function v4()
+{
     return Uuid::uuid4()->toString();
 }
 
@@ -69,6 +72,7 @@ function v4() {
  * @return string
  * @throws InvalidUuidStringException
  */
-function v5($ns, $name) {
+function v5($ns, $name)
+{
     return Uuid::uuid5($ns, $name)->toString();
 }
