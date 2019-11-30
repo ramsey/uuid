@@ -21,21 +21,21 @@
         }
     ],
     "require": {
-        "php": "^5.4 || ^7.0",
+        "php": "^5.4 | ^7.0",
         "ext-json": "*",
-        "paragonie/random_compat": "^1.0|^2.0|9.99.99",
+        "paragonie/random_compat": "^1.0 | ^2.0 | 9.99.99",
         "symfony/polyfill-ctype": "^1.8"
     },
     "require-dev": {
-        "codeception/aspect-mock": "^1.0 | ~2.0.0",
-        "doctrine/annotations": "~1.2.0",
-        "goaop/framework": "1.0.0-alpha.2 | ^1.0 | ~2.1.0",
+        "codeception/aspect-mock": "^1.0 | ^2.0",
+        "doctrine/annotations": "^1.2",
+        "goaop/framework": "1.0.0-alpha.2 | ^1.0 | ^2.1",
         "jakub-onderka/php-parallel-lint": "^0.9.0",
         "mockery/mockery": "^0.9.9",
         "moontoast/math": "^1.1",
         "paragonie/random-lib": "^2.0",
-        "php-mock/php-mock-phpunit": "^0.3|^1.1",
-        "phpunit/phpunit": "^4.7|^5.0|^6.5",
+        "php-mock/php-mock-phpunit": "^0.3 | ^1.1",
+        "phpunit/phpunit": "^4.8 | ^5.4 | ^6.5",
         "squizlabs/php_codesniffer": "^2.3"
     },
     "suggest": {
