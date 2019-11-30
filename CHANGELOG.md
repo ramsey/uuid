@@ -10,6 +10,21 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Added
 
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+### Security
+
+
+## [3.9.0] - 2019-11-30
+
+### Added
+
 * Add function API as convenience. The functions are available in the
   `Ramsey\Uuid` namespace.
   * `v1(int|string|null $node = null, int|null $clockSeq = null): string`
@@ -31,15 +46,11 @@ These will be removed in version ramsey/uuid version 4.0.0:
 * `MtRandGenerator`, `OpenSslGenerator`, and `SodiumRandomGenerator` are
   deprecated in favor of using the default `RandomBytesGenerator`.
 
-### Removed
-
 ### Fixed
 
 * Set `ext-json` as a required dependency in `composer.json`.
 * Use `PHP_OS` instead of `php_uname()` when determining the system OS, for
   cases when `php_uname()` is disabled for security reasons.
-
-### Security
 
 
 ## [3.8.0] - 2018-07-19
@@ -348,6 +359,8 @@ versions leading up to this release.*
 
 ## [2.9.0] - 2016-03-22
 
+### Security
+
 * Drop the use of OpenSSL as a fallback and use [paragonie/random_compat] to
   support `RandomBytesGenerator` in versions of PHP earlier than 7.0;
   this addresses and fixes the [collision issue]
@@ -552,14 +565,15 @@ versions leading up to this release.*
 [comb sequential uuids]: http://www.informit.com/articles/article.aspx?p=25862&seqNum=7
 [paragonie/random_compat]: https://github.com/paragonie/random_compat
 [collision issue]: https://github.com/ramsey/uuid/issues/80
-[contributor code of conduct]: https://github.com/ramsey/uuid/blob/master/CODE_OF_CONDUCT.md
+[contributor code of conduct]: https://github.com/ramsey/uuid/blob/master/.github/CODE_OF_CONDUCT.md
 [pecl libsodium extension]: http://pecl.php.net/package/libsodium
 [ircmaxell/random-lib]: https://github.com/ircmaxell/RandomLib
 [doctrine field type]: http://doctrine-dbal.readthedocs.org/en/latest/reference/types.html
 [ramsey/uuid-doctrine]: https://github.com/ramsey/uuid-doctrine
 [ramsey/uuid-console]: https://github.com/ramsey/uuid-console
 
-[unreleased]: https://github.com/ramsey/uuid/compare/3.8.0...HEAD
+[unreleased]: https://github.com/ramsey/uuid/compare/3.9.0...HEAD
+[3.9.0]: https://github.com/ramsey/uuid/compare/3.8.0...3.9.0
 [3.8.0]: https://github.com/ramsey/uuid/compare/3.7.3...3.8.0
 [3.7.3]: https://github.com/ramsey/uuid/compare/3.7.2...3.7.3
 [3.7.2]: https://github.com/ramsey/uuid/compare/3.7.1...3.7.2
