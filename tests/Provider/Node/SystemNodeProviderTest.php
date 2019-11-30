@@ -72,7 +72,7 @@ class SystemNodeProviderTest extends TestCase
         $node = $provider->getNode();
 
         /*/ Assert the result match expectations /*/
-        $this->assertMockFunctions(null, null, ['netstat -ie 2>&1'], [['a'], ['s']], ['disabled_functions']);
+        $this->assertMockFunctions(null, null, ['netstat -ie 2>&1'], [['a'], ['s']], ['disable_functions']);
 
         $this->assertSame($expected, $node);
 
@@ -109,7 +109,7 @@ class SystemNodeProviderTest extends TestCase
         $node = $provider->getNode();
 
         /*/ Assert /*/
-        $this->assertMockFunctions(null, null, ['netstat -ie 2>&1'], [['a'], ['s']], ['disabled_functions']);
+        $this->assertMockFunctions(null, null, ['netstat -ie 2>&1'], [['a'], ['s']], ['disable_functions']);
 
         $this->assertFalse($node);
     }
@@ -141,7 +141,7 @@ class SystemNodeProviderTest extends TestCase
         $node = $provider->getNode();
 
         /*/ Assert /*/
-        $this->assertMockFunctions(null, null, ['netstat -ie 2>&1'], [['a'], ['s']], ['disabled_functions']);
+        $this->assertMockFunctions(null, null, ['netstat -ie 2>&1'], [['a'], ['s']], ['disable_functions']);
 
         $this->assertEquals($expected, $node);
     }
@@ -172,7 +172,7 @@ class SystemNodeProviderTest extends TestCase
         $node = $provider->getNode();
 
         /*/ Assert /*/
-        $this->assertMockFunctions(null, null, ['netstat -ie 2>&1'], [['a'], ['s']], ['disabled_functions']);
+        $this->assertMockFunctions(null, null, ['netstat -ie 2>&1'], [['a'], ['s']], ['disable_functions']);
 
         $this->assertEquals(false, $node);
     }
@@ -199,7 +199,7 @@ class SystemNodeProviderTest extends TestCase
         $node = $provider->getNode();
 
         /*/ Assert /*/
-        $this->assertMockFunctions(null, null, ['netstat -ie 2>&1'], [['a'], ['s']], ['disabled_functions']);
+        $this->assertMockFunctions(null, null, ['netstat -ie 2>&1'], [['a'], ['s']], ['disable_functions']);
 
         $this->assertEquals('AABBCCDDEEFF', $node);
     }
@@ -226,7 +226,7 @@ class SystemNodeProviderTest extends TestCase
         $node = $provider->getNode();
 
         /*/ Assert /*/
-        $this->assertMockFunctions(null, null, ['netstat -ie 2>&1'], [['a'], ['s']], ['disabled_functions']);
+        $this->assertMockFunctions(null, null, ['netstat -ie 2>&1'], [['a'], ['s']], ['disable_functions']);
 
         $this->assertFalse($node);
     }
@@ -254,7 +254,7 @@ class SystemNodeProviderTest extends TestCase
         $provider->getNode();
 
         /*/ Assert /*/
-        $this->assertMockFunctions(null, null, ['netstat -ie 2>&1'], [['a'], ['s']], ['disabled_functions']);
+        $this->assertMockFunctions(null, null, ['netstat -ie 2>&1'], [['a'], ['s']], ['disable_functions']);
     }
 
     /**
@@ -320,7 +320,7 @@ class SystemNodeProviderTest extends TestCase
         $node2 = $provider->getNode();
 
         /*/ Assert /*/
-        $this->assertMockFunctions(null, null, ['netstat -ie 2>&1'], [['a'], ['s']], ['disabled_functions']);
+        $this->assertMockFunctions(null, null, ['netstat -ie 2>&1'], [['a'], ['s']], ['disable_functions']);
 
         $this->assertEquals($node, $node2);
     }
@@ -348,7 +348,7 @@ class SystemNodeProviderTest extends TestCase
         $node2 = $provider->getNode();
 
         /*/ Assert /*/
-        $this->assertMockFunctions(null, null, ['netstat -ie 2>&1'], [['a'], ['s']], ['disabled_functions']);
+        $this->assertMockFunctions(null, null, ['netstat -ie 2>&1'], [['a'], ['s']], ['disable_functions']);
 
         $this->assertEquals($node, $node2);
     }
@@ -434,7 +434,7 @@ class SystemNodeProviderTest extends TestCase
             ['/sys/class/net/*/address'],
             ['netstat -ie 2>&1'],
             [['a'], ['s']],
-            ['disabled_functions']
+            ['disable_functions']
         );
 
         $this->assertEquals('010203040506', $node);
@@ -467,7 +467,7 @@ class SystemNodeProviderTest extends TestCase
             ['/sys/class/net/*/address'],
             ['netstat -ie 2>&1'],
             [['a'], ['s']],
-            ['disabled_functions']
+            ['disable_functions']
         );
 
         $this->assertEquals('010203040506', $node);
@@ -498,7 +498,7 @@ class SystemNodeProviderTest extends TestCase
             null,
             null,
             [['s']],
-            ['disabled_functions']
+            ['disable_functions']
         );
 
         $this->assertFalse($node);
@@ -564,6 +564,9 @@ class SystemNodeProviderTest extends TestCase
                 $this->functionProxies[$key]->verifyNeverInvoked();
             } elseif (is_array($asserts)) {
                 foreach ($asserts as $assert) {
+                    if (!is_array($assert)) {
+                        $assert = [$assert];
+                    }
                     $this->functionProxies[$key]->verifyInvokedOnce($assert);
                 }
             } elseif (is_callable($asserts)) {

@@ -25,8 +25,8 @@ class PeclUuidTimeGeneratorTest extends PeclUuidTestCase
         $generator = new PeclUuidTimeGenerator;
         $generator->generate();
 
-        $create->verifyInvoked(UUID_TYPE_TIME);
-        $parse->verifyInvoked($this->uuidString);
+        $create->verifyInvoked([UUID_TYPE_TIME]);
+        $parse->verifyInvoked([$this->uuidString]);
     }
 
     /**
