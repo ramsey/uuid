@@ -590,14 +590,6 @@ class Uuid implements UuidInterface
         return null;
     }
 
-    /**
-     * {@inheritdoc}
-     *
-     * @deprecated In ramsey/uuid 4.0.0, this method will be replaced with the
-     *     __toString() magic method, which is already available on this class.
-     *     The new recommendation is to cast Uuid objects to string, rather than
-     *     calling `toString()`.
-     */
     public function toString()
     {
         return $this->codec->encode($this);
