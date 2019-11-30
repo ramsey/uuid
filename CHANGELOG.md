@@ -10,13 +10,34 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Added
 
+* Add function API as convenience. The functions are available in the
+  `Ramsey\Uuid` namespace.
+  * `v1(int|string|null $node = null, int|null $clockSeq = null): string`
+  * `v3(string|UuidInterface $ns, string $name): string`
+  * `v4(): string`
+  * `v5(string|UuidInterface $ns, string $name): string`
+
 ### Changed
 
+* Use paragonie/random-lib instead of ircmaxell/random-lib. This is a
+  non-breaking change.
+* Use a high-strength generator by default, when using `RandomLibAdapter`. This
+  is a non-breaking change.
+
 ### Deprecated
+
+These will be removed in version ramsey/uuid version 4.0.0:
+
+* `MtRandGenerator`, `OpenSslGenerator`, and `SodiumRandomGenerator` are
+  deprecated in favor of using the default `RandomBytesGenerator`.
 
 ### Removed
 
 ### Fixed
+
+* Set `ext-json` as a required dependency in `composer.json`.
+* Use `PHP_OS` instead of `php_uname()` when determining the system OS, for
+  cases when `php_uname()` is disabled for security reasons.
 
 ### Security
 
