@@ -1,27 +1,38 @@
 language: php
+os: linux
 
-php:
-  - 5.4
-  - 5.5
-  - 5.6
-  - 7.0
-  - 7.1
-  - 7.2
-  - 7.3
-  - nightly
-
-matrix:
+jobs:
   fast_finish: true
+  include:
+    - php: 5.4
+      dist: trusty
+    - php: 5.5
+      dist: trusty
+    - php: 5.6
+    - php: 7.0
+    - php: 7.1
+    - php: 7.2
+    - php: 7.3
+    - php: 7.4
+    - php: nightly
   allow_failures:
+    - php: 7.4
     - php: nightly
 
-sudo: false
+addons:
+  apt:
+    update: true
+    packages:
+      - libsodium-dev
+      - uuid-dev
 
 before_install:
+  - yes '' | pecl install -f libsodium-1.0.7
+  - yes '' | pecl install -f uuid-1.0.4
   - travis_retry composer self-update
 
 install:
-  - travis_retry composer require --no-update php-coveralls/php-coveralls:^2.1
+  - travis_retry composer require --no-update "php-coveralls/php-coveralls:^1 | ^2"
   - travis_retry composer install --no-interaction --prefer-dist
 
 before_script:
@@ -33,4 +44,4 @@ script:
   - ./vendor/bin/phpcs src tests --standard=psr2 -sp
 
 after_success:
-  - travis_retry php vendor/bin/coveralls
+  - travis_retry ./resources/scripts/php-coveralls.sh
