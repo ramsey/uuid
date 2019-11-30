@@ -21,7 +21,7 @@ before_install:
   - travis_retry composer self-update
 
 install:
-  - travis_retry composer require --no-update php-coveralls/php-coveralls:^2.1
+  - travis_retry composer require --no-update "php-coveralls/php-coveralls:^1 | ^2"
   - travis_retry composer install --no-interaction --prefer-dist
 
 before_script:
@@ -33,4 +33,4 @@ script:
   - ./vendor/bin/phpcs src tests --standard=psr2 -sp
 
 after_success:
-  - travis_retry php vendor/bin/coveralls
+  - [ -f vendor/bin/php-coveralls ] && travis_retry php vendor/bin/php-coveralls || travis_retry php vendor/bin/coveralls
