@@ -39,7 +39,7 @@ function v1($node = null, $clockSeq = null) {
  * Generate a version 3 UUID based on the MD5 hash of a namespace identifier
  * (which is a UUID) and a name (which is a string).
  *
- * @param string $ns The UUID namespace in which to create the named UUID
+ * @param string|UuidInterface $ns The UUID namespace in which to create the named UUID
  * @param string $name The name to create a UUID for
  * @return string
  * @throws InvalidUuidStringException
@@ -64,7 +64,7 @@ function v4() {
  * Generate a version 5 UUID based on the SHA-1 hash of a namespace
  * identifier (which is a UUID) and a name (which is a string).
  *
- * @param string $ns The UUID namespace in which to create the named UUID
+ * @param string|UuidInterface $ns The UUID namespace in which to create the named UUID
  * @param string $name The name to create a UUID for
  * @return string
  * @throws InvalidUuidStringException

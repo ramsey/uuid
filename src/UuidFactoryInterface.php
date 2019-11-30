@@ -45,7 +45,7 @@ interface UuidFactoryInterface
      * Generate a version 3 UUID based on the MD5 hash of a namespace identifier
      * (which is a UUID) and a name (which is a string).
      *
-     * @param string $ns The UUID namespace in which to create the named UUID
+     * @param string|UuidInterface $ns The UUID namespace in which to create the named UUID
      * @param string $name The name to create a UUID for
      * @return UuidInterface
      * @throws InvalidUuidStringException
@@ -66,7 +66,7 @@ interface UuidFactoryInterface
      * Generate a version 5 UUID based on the SHA-1 hash of a namespace
      * identifier (which is a UUID) and a name (which is a string).
      *
-     * @param string $ns The UUID namespace in which to create the named UUID
+     * @param string|UuidInterface $ns The UUID namespace in which to create the named UUID
      * @param string $name The name to create a UUID for
      * @return UuidInterface
      * @throws InvalidUuidStringException
