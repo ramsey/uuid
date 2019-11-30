@@ -25,6 +25,7 @@ class MtRandGeneratorTest extends TestCase
 
     /**
      * @dataProvider lengthDataProvider
+     * @param $length
      */
     public function testGenerateReturnsStringOfGivenLength($length)
     {

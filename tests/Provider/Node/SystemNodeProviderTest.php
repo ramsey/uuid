@@ -3,6 +3,7 @@
 namespace Ramsey\Uuid\Test\Provider\Node;
 
 use AspectMock\Proxy\FuncProxy;
+use InvalidArgumentException;
 use Ramsey\Uuid\Provider\Node\SystemNodeProvider;
 use Ramsey\Uuid\Test\TestCase;
 use AspectMock\Test as AspectMock;
@@ -574,7 +575,7 @@ class SystemNodeProviderTest extends TestCase
                     'Given parameter for %s must be an array or NULL, "%s" given.',
                     [$key, gettype($asserts)]
                 );
-                throw new \InvalidArgumentException($error);
+                throw new InvalidArgumentException($error);
             }
         });
     }

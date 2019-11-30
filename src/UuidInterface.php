@@ -137,7 +137,7 @@ interface UuidInterface extends JsonSerializable, Serializable
      * representation.
      *
      * @return mixed Converted representation of the unsigned 128-bit integer value
-     * @throws \Ramsey\Uuid\Exception\UnsatisfiedDependencyException if `Moontoast\Math\BigNumber` is not present
+     * @throws UnsatisfiedDependencyException if `Moontoast\Math\BigNumber` is not present
      */
     public function getInteger();
 

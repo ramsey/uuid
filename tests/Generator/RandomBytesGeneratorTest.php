@@ -28,6 +28,7 @@ class RandomBytesGeneratorTest extends TestCase
      * @preserveGlobalState disabled
      * @param int $length
      * @param string $hex
+     * @throws \Exception
      */
     public function testGenerateUsesOpenSsl($length, $hex)
     {
@@ -45,6 +46,7 @@ class RandomBytesGeneratorTest extends TestCase
      * @preserveGlobalState disabled
      * @param int $length
      * @param string $hex
+     * @throws \Exception
      */
     public function testGenerateReturnsRandomBytes($length, $hex)
     {

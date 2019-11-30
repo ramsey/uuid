@@ -29,7 +29,7 @@ class TimestampLastCombCodecTest extends TestCase
         $uuidMock = $this->getMockBuilder('Ramsey\Uuid\UuidInterface')->getMock();
         $uuidMock->expects($this->any())
             ->method('getFieldsHex')
-            ->willReturn(array('0800200c', '9a66', '11e1', '9b', '21', 'ff6f8cb0c57d'));
+            ->willReturn(['0800200c', '9a66', '11e1', '9b', '21', 'ff6f8cb0c57d']);
         $encodedUuid = $this->codec->encode($uuidMock);
 
         $this->assertSame('0800200c-9a66-11e1-9b21-ff6f8cb0c57d', $encodedUuid);
@@ -52,14 +52,14 @@ class TimestampLastCombCodecTest extends TestCase
             ->method('build')
             ->with(
                 $this->codec,
-                array(
+                [
                     'time_low' => '0800200c',
                     'time_mid' => '9a66',
                     'time_hi_and_version' => '11e1',
                     'clock_seq_hi_and_reserved' => '9b',
                     'clock_seq_low' => '21',
                     'node' => 'ff6f8cb0c57d'
-                )
+                ]
             );
         $this->codec->decode('0800200c-9a66-11e1-9b21-ff6f8cb0c57d');
     }
@@ -70,14 +70,14 @@ class TimestampLastCombCodecTest extends TestCase
             ->method('build')
             ->with(
                 $this->codec,
-                array(
+                [
                     'time_low' => '0800200c',
                     'time_mid' => '9a66',
                     'time_hi_and_version' => '11e1',
                     'clock_seq_hi_and_reserved' => '9b',
                     'clock_seq_low' => '21',
                     'node' => 'ff6f8cb0c57d'
-                )
+                ]
             );
         $this->codec->decodeBytes(hex2bin('0800200c9a6611e19b21ff6f8cb0c57d'));
     }

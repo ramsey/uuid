@@ -15,6 +15,7 @@
 namespace Ramsey\Uuid;
 
 use Ramsey\Uuid\Converter\NumberConverterInterface;
+use Ramsey\Uuid\Exception\InvalidUuidStringException;
 use Ramsey\Uuid\Provider\NodeProviderInterface;
 use Ramsey\Uuid\Generator\RandomGeneratorInterface;
 use Ramsey\Uuid\Generator\TimeGeneratorInterface;
@@ -274,7 +275,7 @@ class UuidFactory implements UuidFactoryInterface
      * @param string $hashFunction The hash function to use when hashing together
      *     the namespace and name
      * @return UuidInterface
-     * @throws \Ramsey\Uuid\Exception\InvalidUuidStringException
+     * @throws InvalidUuidStringException
      */
     protected function uuidFromNsAndName($ns, $name, $version, $hashFunction)
     {

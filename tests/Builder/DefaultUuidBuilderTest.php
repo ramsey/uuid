@@ -2,6 +2,7 @@
 
 namespace Ramsey\Uuid\Test\Builder;
 
+use PHPUnit_Framework_TestCase;
 use Ramsey\Uuid\Builder\DefaultUuidBuilder;
 
 /**
@@ -9,7 +10,7 @@ use Ramsey\Uuid\Builder\DefaultUuidBuilder;
  * @package Ramsey\Uuid\Test\Builder
  * @covers Ramsey\Uuid\Builder\DefaultUuidBuilder
  */
-class DefaultUuidBuilderTest extends \PHPUnit_Framework_TestCase
+class DefaultUuidBuilderTest extends PHPUnit_Framework_TestCase
 {
 
     public function testBuildCreatesUuid()

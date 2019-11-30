@@ -41,6 +41,7 @@
     "suggest": {
         "ext-ctype": "Provides support for PHP Ctype functions",
         "ext-libsodium": "Provides the PECL libsodium extension for use with the SodiumRandomGenerator",
+        "ext-openssl": "Provides the OpenSSL extension for use with the OpenSslGenerator",
         "ext-uuid": "Provides the PECL UUID extension for use with the PeclUuidTimeGenerator and PeclUuidRandomGenerator",
         "moontoast/math": "Provides support for converting UUID to 128-bit integer (in string form).",
         "ramsey/uuid-console": "A console application for generating UUIDs with ramsey/uuid",

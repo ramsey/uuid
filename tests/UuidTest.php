@@ -10,6 +10,7 @@ use Ramsey\Uuid\Generator\CombGenerator;
 use Ramsey\Uuid\Generator\RandomGeneratorFactory;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidFactory;
+use stdClass;
 
 class UuidTest extends TestCase
 {
@@ -80,7 +81,7 @@ class UuidTest extends TestCase
     }
 
     /**
-     * @expectedException \Ramsey\Uuid\Exception\InvalidUuidStringException
+     * @expectedException Ramsey\Uuid\Exception\InvalidUuidStringException
      * @expectedExceptionMessage Invalid UUID string:
      */
     public function testFromStringWithInvalidUuidString()
@@ -89,7 +90,7 @@ class UuidTest extends TestCase
     }
 
     /**
-     * @expectedException \Ramsey\Uuid\Exception\InvalidUuidStringException
+     * @expectedException Ramsey\Uuid\Exception\InvalidUuidStringException
      * @expectedExceptionMessage Invalid UUID string:
      */
     public function testFromStringWithTrailingNewLine()
@@ -217,7 +218,7 @@ class UuidTest extends TestCase
     }
 
     /**
-     * @expectedException \Ramsey\Uuid\Exception\UnsatisfiedDependencyException
+     * @expectedException Ramsey\Uuid\Exception\UnsatisfiedDependencyException
      */
     public function testGetDateTimeThrownException()
     {
@@ -232,7 +233,7 @@ class UuidTest extends TestCase
     }
 
     /**
-     * @expectedException \Ramsey\Uuid\Exception\UnsupportedOperationException
+     * @expectedException Ramsey\Uuid\Exception\UnsupportedOperationException
      * @expectedExceptionMessage Not a time-based UUID
      */
     public function testGetDateTimeFromNonVersion1Uuid()
@@ -248,14 +249,14 @@ class UuidTest extends TestCase
     {
         $this->skip64BitTest();
 
-        $fields = array(
+        $fields = [
             'time_low' => 4285500592,
             'time_mid' => 50557,
             'time_hi_and_version' => 4577,
             'clock_seq_hi_and_reserved' => 155,
             'clock_seq_low' => 33,
             'node' => 8796630719078,
-        );
+        ];
 
         $uuid = Uuid::fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
 
@@ -263,7 +264,7 @@ class UuidTest extends TestCase
     }
 
     /**
-     * @expectedException \Ramsey\Uuid\Exception\UnsatisfiedDependencyException
+     * @expectedException Ramsey\Uuid\Exception\UnsatisfiedDependencyException
      */
     public function testGetFields32Bit()
     {
@@ -277,14 +278,14 @@ class UuidTest extends TestCase
      */
     public function testGetFieldsHex()
     {
-        $fields = array(
+        $fields = [
             'time_low' => 'ff6f8cb0',
             'time_mid' => 'c57d',
             'time_hi_and_version' => '11e1',
             'clock_seq_hi_and_reserved' => '9b',
             'clock_seq_low' => '21',
             'node' => '0800200c9a66',
-        );
+        ];
 
         $uuid = Uuid::fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
 
@@ -303,7 +304,7 @@ class UuidTest extends TestCase
     }
 
     /**
-     * @expectedException \Ramsey\Uuid\Exception\UnsatisfiedDependencyException
+     * @expectedException Ramsey\Uuid\Exception\UnsatisfiedDependencyException
      */
     public function testGetLeastSignificantBitsException()
     {
@@ -333,7 +334,7 @@ class UuidTest extends TestCase
     }
 
     /**
-     * @expectedException \Ramsey\Uuid\Exception\UnsatisfiedDependencyException
+     * @expectedException Ramsey\Uuid\Exception\UnsatisfiedDependencyException
      */
     public function testGetMostSignificantBitsException()
     {
@@ -362,7 +363,7 @@ class UuidTest extends TestCase
     }
 
     /**
-     * @expectedException \Ramsey\Uuid\Exception\UnsatisfiedDependencyException
+     * @expectedException Ramsey\Uuid\Exception\UnsatisfiedDependencyException
      */
     public function testGetNode32Bit()
     {
@@ -407,7 +408,7 @@ class UuidTest extends TestCase
     }
 
     /**
-     * @expectedException \Ramsey\Uuid\Exception\UnsatisfiedDependencyException
+     * @expectedException Ramsey\Uuid\Exception\UnsatisfiedDependencyException
      */
     public function testGetTimeLow32Bit()
     {
@@ -470,7 +471,7 @@ class UuidTest extends TestCase
     }
 
     /**
-     * @expectedException \Ramsey\Uuid\Exception\UnsupportedOperationException
+     * @expectedException Ramsey\Uuid\Exception\UnsupportedOperationException
      * @expectedExceptionMessage Not a time-based UUID
      */
     public function testGetTimestampFromNonVersion1Uuid()
@@ -481,7 +482,7 @@ class UuidTest extends TestCase
     }
 
     /**
-     * @expectedException \Ramsey\Uuid\Exception\UnsupportedOperationException
+     * @expectedException Ramsey\Uuid\Exception\UnsupportedOperationException
      * @expectedExceptionMessage Not a time-based UUID
      */
     public function testGetTimestampHexFromNonVersion1Uuid()
@@ -492,7 +493,7 @@ class UuidTest extends TestCase
     }
 
     /**
-     * @expectedException \Ramsey\Uuid\Exception\UnsatisfiedDependencyException
+     * @expectedException Ramsey\Uuid\Exception\UnsatisfiedDependencyException
      */
     public function testGetTimestamp32Bit()
     {
@@ -788,12 +789,12 @@ class UuidTest extends TestCase
      */
     public function testUuid3WithKnownUuids()
     {
-        $uuids = array(
+        $uuids = [
             '6fa459ea-ee8a-3ca4-894e-db77e160355e' => Uuid::uuid3(Uuid::NAMESPACE_DNS, 'python.org'),
             '9fe8e8c4-aaa8-32a9-a55c-4535a88b748d' => Uuid::uuid3(Uuid::NAMESPACE_URL, 'http://python.org/'),
             'dd1a1cef-13d5-368a-ad82-eca71acd4cd1' => Uuid::uuid3(Uuid::NAMESPACE_OID, '1.3.6.1'),
             '658d3002-db6b-3040-a1d1-8ddd7d189a4d' => Uuid::uuid3(Uuid::NAMESPACE_X500, 'c=ca'),
-        );
+        ];
 
         foreach ($uuids as $ustr => $uobj) {
             $this->assertEquals(Uuid::RFC_4122, $uobj->getVariant());
@@ -815,7 +816,7 @@ class UuidTest extends TestCase
 
     /**
      * Tests that generated UUID's using timestamp last COMB are sequential
-     * @return string
+     * @throws \Exception
      */
     public function testUuid4TimestampLastComb()
     {
@@ -847,7 +848,7 @@ class UuidTest extends TestCase
 
     /**
      * Tests that generated UUID's using timestamp first COMB are sequential
-     * @return string
+     * @throws \Exception
      */
     public function testUuid4TimestampFirstComb()
     {
@@ -933,12 +934,12 @@ class UuidTest extends TestCase
      */
     public function testUuid5WithKnownUuids()
     {
-        $uuids = array(
+        $uuids = [
             '886313e1-3b8a-5372-9b90-0c9aee199e5d' => Uuid::uuid5(Uuid::NAMESPACE_DNS, 'python.org'),
             '4c565f0d-3f5a-5890-b41b-20cf47701c5e' => Uuid::uuid5(Uuid::NAMESPACE_URL, 'http://python.org/'),
             '1447fa61-5277-5fef-a9b3-fbc6e44f4af3' => Uuid::uuid5(Uuid::NAMESPACE_OID, '1.3.6.1'),
             'cc957dd1-a972-5349-98cd-874190002798' => Uuid::uuid5(Uuid::NAMESPACE_X500, 'c=ca'),
-        );
+        ];
 
         foreach ($uuids as $ustr => $uobj) {
             $this->assertEquals(Uuid::RFC_4122, $uobj->getVariant());
@@ -1009,19 +1010,19 @@ class UuidTest extends TestCase
         $this->assertTrue($uuid1->equals($uuid2));
         $this->assertFalse($uuid1->equals($uuid3));
         $this->assertFalse($uuid1->equals(null));
-        $this->assertFalse($uuid1->equals(new \stdClass()));
+        $this->assertFalse($uuid1->equals(new stdClass()));
     }
 
     /**
      */
     public function testCalculateUuidTime()
     {
-        $timeOfDay = new FixedTimeProvider(array(
+        $timeOfDay = new FixedTimeProvider([
             'sec' => 1348845514,
             'usec' => 277885,
             'minuteswest' => 0,
             'dsttime' => 0,
-        ));
+        ]);
 
         $featureSet = new FeatureSet();
         $featureSet->setTimeProvider($timeOfDay);
@@ -1060,12 +1061,12 @@ class UuidTest extends TestCase
     {
         $this->skipIfNoMoontoastMath();
 
-        $timeOfDay = new FixedTimeProvider(array(
+        $timeOfDay = new FixedTimeProvider([
             'sec' => 1348845514,
             'usec' => 277885,
             'minuteswest' => 0,
             'dsttime' => 0,
-        ));
+        ]);
 
         $featureSet = new FeatureSet(false, true);
         $featureSet->setTimeProvider($timeOfDay);
@@ -1106,12 +1107,12 @@ class UuidTest extends TestCase
         $this->skip64BitTest();
 
         // 5235-03-31T21:20:59+00:00
-        $timeOfDay = new FixedTimeProvider(array(
+        $timeOfDay = new FixedTimeProvider([
             'sec' => 103072857659,
             'usec' => 999999,
             'minuteswest' => 0,
             'dsttime' => 0,
-        ));
+        ]);
 
         $featureSet = new FeatureSet();
         $featureSet->setTimeProvider($timeOfDay);
@@ -1125,12 +1126,12 @@ class UuidTest extends TestCase
         $this->assertEquals('1fff', $uuidA->getTimeHiAndVersionHex());
 
         // 1582-10-15T00:00:00+00:00
-        $timeOfDay = new FixedTimeProvider(array(
+        $timeOfDay = new FixedTimeProvider([
             'sec' => -12219292800,
             'usec' => 0,
             'minuteswest' => 0,
             'dsttime' => 0,
-        ));
+        ]);
 
         $featureSet->setTimeProvider($timeOfDay);
 
@@ -1156,12 +1157,12 @@ class UuidTest extends TestCase
         $featureSet = new FeatureSet(false, true);
 
         // 5235-03-31T21:20:59+00:00
-        $timeOfDay = new FixedTimeProvider(array(
+        $timeOfDay = new FixedTimeProvider([
             'sec' => 103072857659,
             'usec' => 999999,
             'minuteswest' => 0,
             'dsttime' => 0,
-        ));
+        ]);
 
         $featureSet->setTimeProvider($timeOfDay);
 
@@ -1175,12 +1176,12 @@ class UuidTest extends TestCase
         $this->assertEquals('1fff', $uuidA->getTimeHiAndVersionHex());
 
         // 1582-10-15T00:00:00+00:00
-        $timeOfDay = new FixedTimeProvider(array(
+        $timeOfDay = new FixedTimeProvider([
             'sec' => -12219292800,
             'usec' => 0,
             'minuteswest' => 0,
             'dsttime' => 0,
-        ));
+        ]);
 
         $featureSet->setTimeProvider($timeOfDay);
 
@@ -1201,12 +1202,12 @@ class UuidTest extends TestCase
         $this->skipIfNoMoontoastMath();
 
         // 2038-01-19T03:14:07+00:00
-        $timeOfDay = new FixedTimeProvider(array(
+        $timeOfDay = new FixedTimeProvider([
             'sec' => 2147483647,
             'usec' => 999999,
             'minuteswest' => 0,
             'dsttime' => 0,
-        ));
+        ]);
 
         $featureSet = new FeatureSet(false, true);
         $featureSet->setTimeProvider($timeOfDay);
@@ -1221,12 +1222,12 @@ class UuidTest extends TestCase
         $this->assertEquals('11fe', $uuidA->getTimeHiAndVersionHex());
 
         // 1901-12-13T20:45:53+00:00
-        $timeOfDay = new FixedTimeProvider(array(
+        $timeOfDay = new FixedTimeProvider([
             'sec' => -2147483647,
             'usec' => 0,
             'minuteswest' => 0,
             'dsttime' => 0,
-        ));
+        ]);
 
         $featureSet->setTimeProvider($timeOfDay);
 
@@ -1250,12 +1251,12 @@ class UuidTest extends TestCase
         $this->skip64BitTest();
 
         // 2038-01-19T03:14:07+00:00
-        $timeOfDay = new FixedTimeProvider(array(
+        $timeOfDay = new FixedTimeProvider([
             'sec' => 2147483647,
             'usec' => 999999,
             'minuteswest' => 0,
             'dsttime' => 0,
-        ));
+        ]);
 
         $featureSet = new FeatureSet();
         $featureSet->setTimeProvider($timeOfDay);
@@ -1270,12 +1271,12 @@ class UuidTest extends TestCase
         $this->assertEquals('11fe', $uuidA->getTimeHiAndVersionHex());
 
         // 1901-12-13T20:45:53+00:00
-        $timeOfDay = new FixedTimeProvider(array(
+        $timeOfDay = new FixedTimeProvider([
             'sec' => -2147483647,
             'usec' => 0,
             'minuteswest' => 0,
             'dsttime' => 0,
-        ));
+        ]);
 
         $featureSet->setTimeProvider($timeOfDay);
 
@@ -1300,12 +1301,12 @@ class UuidTest extends TestCase
         $currentTime = strtotime('2012-12-11T00:00:00+00:00');
         $endTime = $currentTime + 3600;
 
-        $timeOfDay = new FixedTimeProvider(array(
+        $timeOfDay = new FixedTimeProvider([
             'sec' => $currentTime,
             'usec' => 0,
             'minuteswest' => 0,
             'dsttime' => 0,
-        ));
+        ]);
 
         $smallIntFeatureSet = new FeatureSet(false, true);
         $smallIntFeatureSet->setTimeProvider($timeOfDay);
@@ -1318,7 +1319,7 @@ class UuidTest extends TestCase
         $factory = new UuidFactory($featureSet);
 
         while ($currentTime <= $endTime) {
-            foreach (array(0, 50000, 250000, 500000, 750000, 999999) as $usec) {
+            foreach ([0, 50000, 250000, 500000, 750000, 999999] as $usec) {
                 $timeOfDay->setSec($currentTime);
                 $timeOfDay->setUsec($usec);
 
@@ -1342,7 +1343,7 @@ class UuidTest extends TestCase
     }
 
     /**
-     * @expectedException \Ramsey\Uuid\Exception\UnsatisfiedDependencyException
+     * @expectedException Ramsey\Uuid\Exception\UnsatisfiedDependencyException
      */
     public function testCalculateUuidTimeThrownException()
     {
@@ -1558,298 +1559,298 @@ class UuidTest extends TestCase
     public function testUuidPassesPythonTests()
     {
         // This array is taken directly from the Python tests, more or less
-        $tests = array(
-            array(
+        $tests = [
+            [
                 'string' => '00000000-0000-0000-0000-000000000000',
                 'curly' => '{00000000-0000-0000-0000-000000000000}',
                 'hex' => '00000000000000000000000000000000',
                 'bytes' => 'AAAAAAAAAAAAAAAAAAAAAA==',
                 'int' => '0',
-                'fields' => array(
+                'fields' => [
                     'time_low' => '0',
                     'time_mid' => '0',
                     'time_hi_and_version' => '0',
                     'clock_seq_hi_and_reserved' => '0',
                     'clock_seq_low' => '0',
                     'node' => '0',
-                ),
+                ],
                 'urn' => 'urn:uuid:00000000-0000-0000-0000-000000000000',
                 'time' => '0',
                 'clock_seq' => '0000',
                 'variant' => Uuid::RESERVED_NCS,
                 'version' => null,
-            ),
-            array(
+            ],
+            [
                 'string' => '00010203-0405-0607-0809-0a0b0c0d0e0f',
                 'curly' => '{00010203-0405-0607-0809-0a0b0c0d0e0f}',
                 'hex' => '000102030405060708090a0b0c0d0e0f',
                 'bytes' => 'AAECAwQFBgcICQoLDA0ODw==',
                 'int' => '5233100606242806050955395731361295',
-                'fields' => array(
+                'fields' => [
                     'time_low' => '10203',
                     'time_mid' => '405',
                     'time_hi_and_version' => '607',
                     'clock_seq_hi_and_reserved' => '8',
                     'clock_seq_low' => '9',
                     'node' => '0a0b0c0d0e0f',
-                ),
+                ],
                 'urn' => 'urn:uuid:00010203-0405-0607-0809-0a0b0c0d0e0f',
                 'time' => '607040500010203',
                 'clock_seq' => '0809',
                 'variant' => Uuid::RESERVED_NCS,
                 'version' => null,
-            ),
-            array(
+            ],
+            [
                 'string' => '02d9e6d5-9467-382e-8f9b-9300a64ac3cd',
                 'curly' => '{02d9e6d5-9467-382e-8f9b-9300a64ac3cd}',
                 'hex' => '02d9e6d59467382e8f9b9300a64ac3cd',
                 'bytes' => 'Atnm1ZRnOC6Pm5MApkrDzQ==',
                 'int' => '3789866285607910888100818383505376205',
-                'fields' => array(
+                'fields' => [
                     'time_low' => '02d9e6d5',
                     'time_mid' => '9467',
                     'time_hi_and_version' => '382e',
                     'clock_seq_hi_and_reserved' => '8f',
                     'clock_seq_low' => '9b',
                     'node' => '9300a64ac3cd',
-                ),
+                ],
                 'urn' => 'urn:uuid:02d9e6d5-9467-382e-8f9b-9300a64ac3cd',
                 'time' => '82e946702d9e6d5',
                 'clock_seq' => '0f9b',
                 'variant' => Uuid::RFC_4122,
                 'version' => 3,
-            ),
-            array(
+            ],
+            [
                 'string' => '12345678-1234-5678-1234-567812345678',
                 'curly' => '{12345678-1234-5678-1234-567812345678}',
                 'hex' => '12345678123456781234567812345678',
                 'bytes' => 'EjRWeBI0VngSNFZ4EjRWeA==',
                 'int' => '24197857161011715162171839636988778104',
-                'fields' => array(
+                'fields' => [
                     'time_low' => '12345678',
                     'time_mid' => '1234',
                     'time_hi_and_version' => '5678',
                     'clock_seq_hi_and_reserved' => '12',
                     'clock_seq_low' => '34',
                     'node' => '567812345678',
-                ),
+                ],
                 'urn' => 'urn:uuid:12345678-1234-5678-1234-567812345678',
                 'time' => '678123412345678',
                 'clock_seq' => '1234',
                 'variant' => Uuid::RESERVED_NCS,
                 'version' => null,
-            ),
-            array(
+            ],
+            [
                 'string' => '6ba7b810-9dad-11d1-80b4-00c04fd430c8',
                 'curly' => '{6ba7b810-9dad-11d1-80b4-00c04fd430c8}',
                 'hex' => '6ba7b8109dad11d180b400c04fd430c8',
                 'bytes' => 'a6e4EJ2tEdGAtADAT9QwyA==',
                 'int' => '143098242404177361603877621312831893704',
-                'fields' => array(
+                'fields' => [
                     'time_low' => '6ba7b810',
                     'time_mid' => '9dad',
                     'time_hi_and_version' => '11d1',
                     'clock_seq_hi_and_reserved' => '80',
                     'clock_seq_low' => 'b4',
                     'node' => '00c04fd430c8',
-                ),
+                ],
                 'urn' => 'urn:uuid:6ba7b810-9dad-11d1-80b4-00c04fd430c8',
                 'time' => '1d19dad6ba7b810',
                 'clock_seq' => '00b4',
                 'variant' => Uuid::RFC_4122,
                 'version' => 1,
-            ),
-            array(
+            ],
+            [
                 'string' => '6ba7b811-9dad-11d1-80b4-00c04fd430c8',
                 'curly' => '{6ba7b811-9dad-11d1-80b4-00c04fd430c8}',
                 'hex' => '6ba7b8119dad11d180b400c04fd430c8',
                 'bytes' => 'a6e4EZ2tEdGAtADAT9QwyA==',
                 'int' => '143098242483405524118141958906375844040',
-                'fields' => array(
+                'fields' => [
                     'time_low' => '6ba7b811',
                     'time_mid' => '9dad',
                     'time_hi_and_version' => '11d1',
                     'clock_seq_hi_and_reserved' => '80',
                     'clock_seq_low' => 'b4',
                     'node' => '00c04fd430c8',
-                ),
+                ],
                 'urn' => 'urn:uuid:6ba7b811-9dad-11d1-80b4-00c04fd430c8',
                 'time' => '1d19dad6ba7b811',
                 'clock_seq' => '00b4',
                 'variant' => Uuid::RFC_4122,
                 'version' => 1,
-            ),
-            array(
+            ],
+            [
                 'string' => '6ba7b812-9dad-11d1-80b4-00c04fd430c8',
                 'curly' => '{6ba7b812-9dad-11d1-80b4-00c04fd430c8}',
                 'hex' => '6ba7b8129dad11d180b400c04fd430c8',
                 'bytes' => 'a6e4Ep2tEdGAtADAT9QwyA==',
                 'int' => '143098242562633686632406296499919794376',
-                'fields' => array(
+                'fields' => [
                     'time_low' => '6ba7b812',
                     'time_mid' => '9dad',
                     'time_hi_and_version' => '11d1',
                     'clock_seq_hi_and_reserved' => '80',
                     'clock_seq_low' => 'b4',
                     'node' => '00c04fd430c8',
-                ),
+                ],
                 'urn' => 'urn:uuid:6ba7b812-9dad-11d1-80b4-00c04fd430c8',
                 'time' => '1d19dad6ba7b812',
                 'clock_seq' => '00b4',
                 'variant' => Uuid::RFC_4122,
                 'version' => 1,
-            ),
-            array(
+            ],
+            [
                 'string' => '6ba7b814-9dad-11d1-80b4-00c04fd430c8',
                 'curly' => '{6ba7b814-9dad-11d1-80b4-00c04fd430c8}',
                 'hex' => '6ba7b8149dad11d180b400c04fd430c8',
                 'bytes' => 'a6e4FJ2tEdGAtADAT9QwyA==',
                 'int' => '143098242721090011660934971687007695048',
-                'fields' => array(
+                'fields' => [
                     'time_low' => '6ba7b814',
                     'time_mid' => '9dad',
                     'time_hi_and_version' => '11d1',
                     'clock_seq_hi_and_reserved' => '80',
                     'clock_seq_low' => 'b4',
                     'node' => '00c04fd430c8',
-                ),
+                ],
                 'urn' => 'urn:uuid:6ba7b814-9dad-11d1-80b4-00c04fd430c8',
                 'time' => '1d19dad6ba7b814',
                 'clock_seq' => '00b4',
                 'variant' => Uuid::RFC_4122,
                 'version' => 1,
-            ),
-            array(
+            ],
+            [
                 'string' => '7d444840-9dc0-11d1-b245-5ffdce74fad2',
                 'curly' => '{7d444840-9dc0-11d1-b245-5ffdce74fad2}',
                 'hex' => '7d4448409dc011d1b2455ffdce74fad2',
                 'bytes' => 'fURIQJ3AEdGyRV/9znT60g==',
                 'int' => '166508041112410060672666770310773930706',
-                'fields' => array(
+                'fields' => [
                     'time_low' => '7d444840',
                     'time_mid' => '9dc0',
                     'time_hi_and_version' => '11d1',
                     'clock_seq_hi_and_reserved' => 'b2',
                     'clock_seq_low' => '45',
                     'node' => '5ffdce74fad2',
-                ),
+                ],
                 'urn' => 'urn:uuid:7d444840-9dc0-11d1-b245-5ffdce74fad2',
                 'time' => '1d19dc07d444840',
                 'clock_seq' => '3245',
                 'variant' => Uuid::RFC_4122,
                 'version' => 1,
-            ),
-            array(
+            ],
+            [
                 'string' => 'e902893a-9d22-3c7e-a7b8-d6e313b71d9f',
                 'curly' => '{e902893a-9d22-3c7e-a7b8-d6e313b71d9f}',
                 'hex' => 'e902893a9d223c7ea7b8d6e313b71d9f',
                 'bytes' => '6QKJOp0iPH6nuNbjE7cdnw==',
                 'int' => '309723290945582129846206211755626405279',
-                'fields' => array(
+                'fields' => [
                     'time_low' => 'e902893a',
                     'time_mid' => '9d22',
                     'time_hi_and_version' => '3c7e',
                     'clock_seq_hi_and_reserved' => 'a7',
                     'clock_seq_low' => 'b8',
                     'node' => 'd6e313b71d9f',
-                ),
+                ],
                 'urn' => 'urn:uuid:e902893a-9d22-3c7e-a7b8-d6e313b71d9f',
                 'time' => 'c7e9d22e902893a',
                 'clock_seq' => '27b8',
                 'variant' => Uuid::RFC_4122,
                 'version' => 3,
-            ),
-            array(
+            ],
+            [
                 'string' => 'eb424026-6f54-4ef8-a4d0-bb658a1fc6cf',
                 'curly' => '{eb424026-6f54-4ef8-a4d0-bb658a1fc6cf}',
                 'hex' => 'eb4240266f544ef8a4d0bb658a1fc6cf',
                 'bytes' => '60JAJm9UTvik0Ltlih/Gzw==',
                 'int' => '312712571721458096795100956955942831823',
-                'fields' => array(
+                'fields' => [
                     'time_low' => 'eb424026',
                     'time_mid' => '6f54',
                     'time_hi_and_version' => '4ef8',
                     'clock_seq_hi_and_reserved' => 'a4',
                     'clock_seq_low' => 'd0',
                     'node' => 'bb658a1fc6cf',
-                ),
+                ],
                 'urn' => 'urn:uuid:eb424026-6f54-4ef8-a4d0-bb658a1fc6cf',
                 'time' => 'ef86f54eb424026',
                 'clock_seq' => '24d0',
                 'variant' => Uuid::RFC_4122,
                 'version' => 4,
-            ),
-            array(
+            ],
+            [
                 'string' => 'f81d4fae-7dec-11d0-a765-00a0c91e6bf6',
                 'curly' => '{f81d4fae-7dec-11d0-a765-00a0c91e6bf6}',
                 'hex' => 'f81d4fae7dec11d0a76500a0c91e6bf6',
                 'bytes' => '+B1Prn3sEdCnZQCgyR5r9g==',
                 'int' => '329800735698586629295641978511506172918',
-                'fields' => array(
+                'fields' => [
                     'time_low' => 'f81d4fae',
                     'time_mid' => '7dec',
                     'time_hi_and_version' => '11d0',
                     'clock_seq_hi_and_reserved' => 'a7',
                     'clock_seq_low' => '65',
                     'node' => '00a0c91e6bf6',
-                ),
+                ],
                 'urn' => 'urn:uuid:f81d4fae-7dec-11d0-a765-00a0c91e6bf6',
                 'time' => '1d07decf81d4fae',
                 'clock_seq' => '2765',
                 'variant' => Uuid::RFC_4122,
                 'version' => 1,
-            ),
-            array(
+            ],
+            [
                 'string' => 'fffefdfc-fffe-fffe-fffe-fffefdfcfbfa',
                 'curly' => '{fffefdfc-fffe-fffe-fffe-fffefdfcfbfa}',
                 'hex' => 'fffefdfcfffefffefffefffefdfcfbfa',
                 'bytes' => '//79/P/+//7//v/+/fz7+g==',
                 'int' => '340277133821575024845345576078114880506',
-                'fields' => array(
+                'fields' => [
                     'time_low' => 'fffefdfc',
                     'time_mid' => 'fffe',
                     'time_hi_and_version' => 'fffe',
                     'clock_seq_hi_and_reserved' => 'ff',
                     'clock_seq_low' => 'fe',
                     'node' => 'fffefdfcfbfa',
-                ),
+                ],
                 'urn' => 'urn:uuid:fffefdfc-fffe-fffe-fffe-fffefdfcfbfa',
                 'time' => 'ffefffefffefdfc',
                 'clock_seq' => '3ffe',
                 'variant' => Uuid::RESERVED_FUTURE,
                 'version' => null,
-            ),
-            array(
+            ],
+            [
                 'string' => 'ffffffff-ffff-ffff-ffff-ffffffffffff',
                 'curly' => '{ffffffff-ffff-ffff-ffff-ffffffffffff}',
                 'hex' => 'ffffffffffffffffffffffffffffffff',
                 'bytes' => '/////////////////////w==',
                 'int' => '340282366920938463463374607431768211455',
-                'fields' => array(
+                'fields' => [
                     'time_low' => 'ffffffff',
                     'time_mid' => 'ffff',
                     'time_hi_and_version' => 'ffff',
                     'clock_seq_hi_and_reserved' => 'ff',
                     'clock_seq_low' => 'ff',
                     'node' => 'ffffffffffff',
-                ),
+                ],
                 'urn' => 'urn:uuid:ffffffff-ffff-ffff-ffff-ffffffffffff',
                 'time' => 'fffffffffffffff',
                 'clock_seq' => '3fff',
                 'variant' => Uuid::RESERVED_FUTURE,
                 'version' => null,
-            ),
-        );
+            ],
+        ];
 
         foreach ($tests as $test) {
-            $uuids = array(
+            $uuids = [
                 Uuid::fromString($test['string']),
                 Uuid::fromString($test['curly']),
                 Uuid::fromString($test['hex']),
                 Uuid::fromBytes(base64_decode($test['bytes'])),
                 Uuid::fromString($test['urn']),
                 Uuid::fromInteger($test['int']),
-            );
+            ];
             foreach ($uuids as $uuid) {
                 $this->assertEquals($test['string'], (string)$uuid);
                 $this->assertEquals($test['hex'], $uuid->getHex());
@@ -1876,7 +1877,7 @@ class UuidTest extends TestCase
     }
 
     /**
-     * @expectedException \Ramsey\Uuid\Exception\UnsatisfiedDependencyException
+     * @expectedException Ramsey\Uuid\Exception\UnsatisfiedDependencyException
      */
     public function testGetInteger()
     {

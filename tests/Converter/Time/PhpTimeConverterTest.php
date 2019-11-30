@@ -2,6 +2,7 @@
 
 namespace Ramsey\Uuid\Test\Converter;
 
+use PHPUnit_Framework_TestCase;
 use Ramsey\Uuid\Converter\Time\PhpTimeConverter;
 
 /**
@@ -9,7 +10,7 @@ use Ramsey\Uuid\Converter\Time\PhpTimeConverter;
  * @package Ramsey\Uuid\Test\Converter
  * @covers Ramsey\Uuid\Converter\Time\PhpTimeConverter
  */
-class PhpTimeConverterTest extends \PHPUnit_Framework_TestCase
+class PhpTimeConverterTest extends PHPUnit_Framework_TestCase
 {
 
     public function testCalculateTimeReturnsArrayOfTimeSegments()

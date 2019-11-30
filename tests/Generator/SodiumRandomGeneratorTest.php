@@ -5,6 +5,8 @@ namespace Ramsey\Uuid\Test\Generator;
 use phpmock\phpunit\PHPMock;
 use Ramsey\Uuid\Test\TestCase;
 use Ramsey\Uuid\Generator\SodiumRandomGenerator;
+use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidFactory;
 
 class SodiumRandomGeneratorTest extends TestCase
 {
@@ -33,11 +35,11 @@ class SodiumRandomGeneratorTest extends TestCase
     public function testFactoryUsesSodiumRandomGenerator()
     {
         $this->skipIfLibsodiumExtensionNotLoaded();
-        $uuidFactory = new \Ramsey\Uuid\UuidFactory();
+        $uuidFactory = new UuidFactory();
         $uuidFactory->setRandomGenerator(new SodiumRandomGenerator());
-        \Ramsey\Uuid\Uuid::setFactory($uuidFactory);
+        Uuid::setFactory($uuidFactory);
 
-        $uuid = \Ramsey\Uuid\Uuid::uuid4();
+        $uuid = Uuid::uuid4();
 
         $this->assertInstanceOf(
             'Ramsey\Uuid\Generator\SodiumRandomGenerator',
