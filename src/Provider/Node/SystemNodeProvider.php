@@ -67,7 +67,7 @@ class SystemNodeProvider implements NodeProviderInterface
         }
 
         ob_start();
-        switch (strtoupper(substr(PHP_OS, 0, 3))) {
+        switch (strtoupper(substr(constant('PHP_OS'), 0, 3))) {
             case 'WIN':
                 passthru('ipconfig /all 2>&1');
                 break;
@@ -95,7 +95,7 @@ class SystemNodeProvider implements NodeProviderInterface
     {
         $mac = false;
 
-        if (strtoupper(PHP_OS) === 'LINUX') {
+        if (strtoupper(constant('PHP_OS')) === 'LINUX') {
             $addressPaths = glob('/sys/class/net/*/address', GLOB_NOSORT);
 
             if (empty($addressPaths)) {
