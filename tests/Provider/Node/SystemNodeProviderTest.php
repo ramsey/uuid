@@ -16,7 +16,7 @@ use AspectMock\Test as AspectMock;
  * AspectMock). The following functions are concerned:
  *
  * - glob
- * - php_uname
+ * - constant
  * - passthru
  * - file_get_contents
  * - ini_get
@@ -24,7 +24,7 @@ use AspectMock\Test as AspectMock;
  * On Linux systems `glob` would normally provide one or more paths were mac
  * address can be retrieved (using `file_get_contents`). On non-linux systems,
  * or when the `glob` fails, `passthru` is used to read the mac address from the
- * command for the relevant environment as provided by `php_uname`.
+ * command for the relevant environment as provided by `constant('PHP_OS')`.
  *
  * Please note that, in order to have robust tests, (the output of) these
  * functions should ALWAYS be mocked and the amount of times each function
@@ -35,7 +35,7 @@ use AspectMock\Test as AspectMock;
 class SystemNodeProviderTest extends TestCase
 {
     const MOCK_GLOB = 'glob';
-    const MOCK_UNAME = 'php_uname';
+    const MOCK_CONSTANT = 'constant';
     const MOCK_PASSTHRU = 'passthru';
     const MOCK_FILE_GET_CONTENTS = 'file_get_contents';
     const MOCK_INI_GET = 'ini_get';
@@ -72,7 +72,7 @@ class SystemNodeProviderTest extends TestCase
         $node = $provider->getNode();
 
         /*/ Assert the result match expectations /*/
-        $this->assertMockFunctions(null, null, ['netstat -ie 2>&1'], [['a'], ['s']], ['disable_functions']);
+        $this->assertMockFunctions(null, null, ['netstat -ie 2>&1'], ['PHP_OS'], ['disable_functions']);
 
         $this->assertSame($expected, $node);
 
@@ -109,7 +109,7 @@ class SystemNodeProviderTest extends TestCase
         $node = $provider->getNode();
 
         /*/ Assert /*/
-        $this->assertMockFunctions(null, null, ['netstat -ie 2>&1'], [['a'], ['s']], ['disable_functions']);
+        $this->assertMockFunctions(null, null, ['netstat -ie 2>&1'], ['PHP_OS'], ['disable_functions']);
 
         $this->assertFalse($node);
     }
@@ -141,7 +141,7 @@ class SystemNodeProviderTest extends TestCase
         $node = $provider->getNode();
 
         /*/ Assert /*/
-        $this->assertMockFunctions(null, null, ['netstat -ie 2>&1'], [['a'], ['s']], ['disable_functions']);
+        $this->assertMockFunctions(null, null, ['netstat -ie 2>&1'], ['PHP_OS'], ['disable_functions']);
 
         $this->assertEquals($expected, $node);
     }
@@ -172,7 +172,7 @@ class SystemNodeProviderTest extends TestCase
         $node = $provider->getNode();
 
         /*/ Assert /*/
-        $this->assertMockFunctions(null, null, ['netstat -ie 2>&1'], [['a'], ['s']], ['disable_functions']);
+        $this->assertMockFunctions(null, null, ['netstat -ie 2>&1'], ['PHP_OS'], ['disable_functions']);
 
         $this->assertEquals(false, $node);
     }
@@ -199,7 +199,7 @@ class SystemNodeProviderTest extends TestCase
         $node = $provider->getNode();
 
         /*/ Assert /*/
-        $this->assertMockFunctions(null, null, ['netstat -ie 2>&1'], [['a'], ['s']], ['disable_functions']);
+        $this->assertMockFunctions(null, null, ['netstat -ie 2>&1'], ['PHP_OS'], ['disable_functions']);
 
         $this->assertEquals('AABBCCDDEEFF', $node);
     }
@@ -226,7 +226,7 @@ class SystemNodeProviderTest extends TestCase
         $node = $provider->getNode();
 
         /*/ Assert /*/
-        $this->assertMockFunctions(null, null, ['netstat -ie 2>&1'], [['a'], ['s']], ['disable_functions']);
+        $this->assertMockFunctions(null, null, ['netstat -ie 2>&1'], ['PHP_OS'], ['disable_functions']);
 
         $this->assertFalse($node);
     }
@@ -254,7 +254,7 @@ class SystemNodeProviderTest extends TestCase
         $provider->getNode();
 
         /*/ Assert /*/
-        $this->assertMockFunctions(null, null, ['netstat -ie 2>&1'], [['a'], ['s']], ['disable_functions']);
+        $this->assertMockFunctions(null, null, ['netstat -ie 2>&1'], ['PHP_OS'], ['disable_functions']);
     }
 
     /**
@@ -292,7 +292,7 @@ class SystemNodeProviderTest extends TestCase
             $fileGetContentsAssert,
             $globBodyAssert,
             [$command],
-            [['a'], ['s']],
+            ['PHP_OS'],
             ['disable_functions']
         );
     }
@@ -320,7 +320,7 @@ class SystemNodeProviderTest extends TestCase
         $node2 = $provider->getNode();
 
         /*/ Assert /*/
-        $this->assertMockFunctions(null, null, ['netstat -ie 2>&1'], [['a'], ['s']], ['disable_functions']);
+        $this->assertMockFunctions(null, null, ['netstat -ie 2>&1'], ['PHP_OS'], ['disable_functions']);
 
         $this->assertEquals($node, $node2);
     }
@@ -348,7 +348,7 @@ class SystemNodeProviderTest extends TestCase
         $node2 = $provider->getNode();
 
         /*/ Assert /*/
-        $this->assertMockFunctions(null, null, ['netstat -ie 2>&1'], [['a'], ['s']], ['disable_functions']);
+        $this->assertMockFunctions(null, null, ['netstat -ie 2>&1'], ['PHP_OS'], ['disable_functions']);
 
         $this->assertEquals($node, $node2);
     }
@@ -386,21 +386,21 @@ class SystemNodeProviderTest extends TestCase
         $fileGetContentsAssert = null;
         $globBodyAssert = null;
         $passthruBodyAssert = [$command];
-        $unameBodyAssert = [['a'], ['s']];
+        $constantBodyAssert = ['PHP_OS'];
         $iniGetDisableFunctionsAssert = ['disable_functions'];
 
         if ($os === 'Linux') {
             $fileGetContentsAssert = [['mock address path 1'], ['mock address path 2']];
             $globBodyAssert = ['/sys/class/net/*/address'];
             $passthruBodyAssert = null;
-            $unameBodyAssert = ['s'];
+            $constantBodyAssert = ['PHP_OS'];
             $iniGetDisableFunctionsAssert = null;
         }
         $this->assertMockFunctions(
             $fileGetContentsAssert,
             $globBodyAssert,
             $passthruBodyAssert,
-            $unameBodyAssert,
+            $constantBodyAssert,
             $iniGetDisableFunctionsAssert
         );
 
@@ -433,7 +433,7 @@ class SystemNodeProviderTest extends TestCase
             null,
             ['/sys/class/net/*/address'],
             ['netstat -ie 2>&1'],
-            [['a'], ['s']],
+            ['PHP_OS'],
             ['disable_functions']
         );
 
@@ -466,7 +466,7 @@ class SystemNodeProviderTest extends TestCase
             null,
             ['/sys/class/net/*/address'],
             ['netstat -ie 2>&1'],
-            [['a'], ['s']],
+            ['PHP_OS'],
             ['disable_functions']
         );
 
@@ -497,7 +497,7 @@ class SystemNodeProviderTest extends TestCase
             null,
             null,
             null,
-            [['s']],
+            ['PHP_OS'],
             ['disable_functions']
         );
 
@@ -510,21 +510,21 @@ class SystemNodeProviderTest extends TestCase
      * @param callback|mixed|null $fileGetContentsBody
      * @param callback|mixed|null $globBody
      * @param callback|mixed|null $passthruBody
-     * @param callback|mixed|null $unameBody
+     * @param callback|mixed|null $constantBody
      * @param callback|mixed|null $iniGetDisableFunctionsBody
      */
     private function arrangeMockFunctions(
         $fileGetContentsBody,
         $globBody,
         $passthruBody,
-        $unameBody,
+        $constantBody,
         $iniGetDisableFunctionsBody
     ) {
         $mockFunction = [
             self::MOCK_FILE_GET_CONTENTS => $fileGetContentsBody,
             self::MOCK_GLOB => $globBody,
             self::MOCK_PASSTHRU => $passthruBody,
-            self::MOCK_UNAME => $unameBody,
+            self::MOCK_CONSTANT => $constantBody,
             self::MOCK_INI_GET => $iniGetDisableFunctionsBody,
         ];
 
@@ -538,24 +538,24 @@ class SystemNodeProviderTest extends TestCase
      *
      * Provide a NULL to assert a function is never called.
      *
-     * @param array|callable|null $fileGetContentsAssert
-     * @param array|callable|null $globBodyAssert
-     * @param array|callable|null $passthruBodyAssert
-     * @param array|callable|null $unameBodyAssert
-     * @param array|callable|null $iniGetDisableFunctionsAssert
+     * @param array|null $fileGetContentsAssert
+     * @param array|null $globBodyAssert
+     * @param array|null $passthruBodyAssert
+     * @param array|null $constantBodyAssert
+     * @param array|null $iniGetDisableFunctionsAssert
      */
     private function assertMockFunctions(
         $fileGetContentsAssert,
         $globBodyAssert,
         $passthruBodyAssert,
-        $unameBodyAssert,
+        $constantBodyAssert,
         $iniGetDisableFunctionsAssert
     ) {
         $mockFunctionAsserts = [
             self::MOCK_FILE_GET_CONTENTS => $fileGetContentsAssert,
             self::MOCK_GLOB => $globBodyAssert,
             self::MOCK_PASSTHRU => $passthruBodyAssert,
-            self::MOCK_UNAME => $unameBodyAssert,
+            self::MOCK_CONSTANT => $constantBodyAssert,
             self::MOCK_INI_GET => $iniGetDisableFunctionsAssert,
         ];
 
@@ -567,13 +567,11 @@ class SystemNodeProviderTest extends TestCase
                     if (!is_array($assert)) {
                         $assert = [$assert];
                     }
-                    $this->functionProxies[$key]->verifyInvokedOnce($assert);
+                    $this->functionProxies[$key]->verifyInvoked($assert);
                 }
-            } elseif (is_callable($asserts)) {
-                $this->functionProxies[$key]->verifyInvokedOnce($asserts);
             } else {
                 $error = vsprintf(
-                    'Given parameter for %s must be an array, a callback or NULL, "%s" given.',
+                    'Given parameter for %s must be an array or NULL, "%s" given.',
                     [$key, gettype($asserts)]
                 );
                 throw new \InvalidArgumentException($error);
