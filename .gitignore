@@ -1,8 +1,5 @@
-*.phar
-.DS_Store
-.idea/
-.vagrant/
-build
-composer.lock
-phpunit.xml
-vendor
+.phpunit.result.cache
+/build/
+/composer.lock
+/phpunit.xml
+/vendor/

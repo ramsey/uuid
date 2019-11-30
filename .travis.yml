@@ -33,15 +33,13 @@ before_install:
 
 install:
   - travis_retry composer require --no-update "php-coveralls/php-coveralls:^1 | ^2"
-  - travis_retry composer install --no-interaction --prefer-dist
+  - travis_retry composer install --no-interaction --prefer-dist --no-progress --no-suggest
 
 before_script:
   - mkdir -p build/logs
 
 script:
-  - ./vendor/bin/parallel-lint src tests
-  - travis_wait ./vendor/bin/phpunit --verbose --coverage-clover build/logs/clover.xml
-  - ./vendor/bin/phpcs src tests --standard=psr2 -sp
+  - travis_wait composer run-script --timeout=1200 test-ci
 
 after_success:
   - travis_retry ./resources/scripts/php-coveralls.sh

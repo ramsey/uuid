@@ -31,6 +31,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 * Disallow a trailing newline character when validating UUIDs
 * Annotate thrown exceptions for improved IDE hinting
 
+
 ## [3.7.3] - 2018-01-19
 
 ### Fixed
@@ -43,12 +44,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 * Switch to `random_int()` from `mt_rand()` for better random numbers
 
+
 ## [3.7.2] - 2018-01-13
 
 ### Fixed
 
 * Check sysfs on Linux to determine the node identifier; this provides a
   reliable way to identify the node on Docker images, etc.
+
 
 ## [3.7.1] - 2017-09-22
 
@@ -59,6 +62,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Security
 
 * Use `random_bytes()` when generating random nodes
+
 
 ## [3.7.0] - 2017-08-04
 
@@ -71,11 +75,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
     * `Uuid::UUID_TYPE_RANDOM`
     * `Uuid::UUID_TYPE_HASH_SHA1`
 
+
 ## [3.6.1] - 2017-03-26
 
 ### Fixed
 
 * Optimize UUID string decoding by using `str_pad()` instead of `sprintf()`
+
 
 ## [3.6.0] - 2017-03-18
 
@@ -90,11 +96,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 * Improve memory usage when generating large quantities of UUIDs (use `str_pad()`
   and `dechex()` instead of `sprintf()`)
 
+
 ## [3.5.2] - 2016-11-22
 
 ### Fixed
 
 * Improve test coverage
+
 
 ## [3.5.1] - 2016-10-02
 
@@ -102,6 +110,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 * Fix issue where the same UUIDs were not being treated as equal when using
   mixed cases
+
 
 ## [3.5.0] - 2016-08-02
 
@@ -115,11 +124,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 * Avoid multiple unnecessary system calls by caching failed attempt to retrieve
   system node
 
+
 ## [3.4.1] - 2016-04-23
 
 ### Fixed
 
 * Fix test that violated a PHP CodeSniffer rule, breaking the build
+
 
 ## [3.4.0] - 2016-04-23
 
@@ -130,6 +141,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   either the first 48 bits or the last 48 bits
 * Improve logic of `CombGenerator` for COMB sequential UUIDs
 
+
 ## [3.3.0] - 2016-03-22
 
 ### Security
@@ -138,12 +150,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   support `RandomBytesGenerator` in versions of PHP earlier than 7.0;
   this addresses and fixes the [collision issue]
 
+
 ## [3.2.0] - 2016-02-17
 
 ### Added
 
 * Add `SodiumRandomGenerator` to allow use of the [PECL libsodium extension] as
   a random bytes generator when creating UUIDs
+
 
 ## [3.1.0] - 2015-12-17
 
@@ -152,11 +166,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 * Implement the PHP `Serializable` interface to provide the ability to
   serialize/unserialize UUID objects
 
+
 ## [3.0.1] - 2015-10-21
 
 ### Added
 
 * Adopt the [Contributor Code of Conduct] for this project
+
 
 ## [3.0.0] - 2015-09-28
 
@@ -224,6 +240,7 @@ versions leading up to this release.*
   * String representation is always the same
 * Fix exception message for `DegradedNumberConverter::fromHex()`
 
+
 ## [3.0.0-beta1] - 2015-08-31
 
 ### Fixed
@@ -234,6 +251,7 @@ versions leading up to this release.*
   * On big endian (BE) architectures, it is the same as a GUID
   * String representation is always the same
 * Fix exception message for `DegradedNumberConverter::fromHex()`
+
 
 ## [3.0.0-alpha3] - 2015-07-28
 
@@ -249,6 +267,7 @@ versions leading up to this release.*
 * Remove `timeConverter` and `timeProvider` properties, setters, and getters in
   both `FeatureSet` and `UuidFactory` as those are now exclusively used by the
   default `TimeGenerator`
+
 
 ## [3.0.0-alpha2] - 2015-07-28
 
@@ -270,6 +289,7 @@ versions leading up to this release.*
 ### Removed
 
 * Remove `PeclUuidFactory` in favor of using pecl-uuid with generators
+
 
 ## [3.0.0-alpha1] - 2015-07-16
 
@@ -304,11 +324,13 @@ versions leading up to this release.*
 * Move `uuid` console application to [ramsey/uuid-console]
 * Remove `Uuid::VERSION` package version constant
 
+
 ## [2.9.0] - 2016-03-22
 
 * Drop the use of OpenSSL as a fallback and use [paragonie/random_compat] to
   support `RandomBytesGenerator` in versions of PHP earlier than 7.0;
   this addresses and fixes the [collision issue]
+
 
 ## [2.8.4] - 2015-12-17
 
@@ -316,17 +338,20 @@ versions leading up to this release.*
 
 * Add support for symfony/console v3 in the `uuid` CLI application
 
+
 ## [2.8.3] - 2015-08-31
 
 ### Fixed
 
 * Fix exception message in `Uuid::calculateUuidTime()`
 
+
 ## [2.8.2] - 2015-07-23
 
 ### Fixed
 
 * Ensure the release tag makes it into the rhumsaa/uuid package
+
 
 ## [2.8.1] - 2015-06-16
 
@@ -335,6 +360,7 @@ versions leading up to this release.*
 * Use `passthru()` and output buffering in `getIfconfig()`
 * Cache the system node in a static variable so that we process it only once per
   runtime
+
 
 ## [2.8.0] - 2014-11-09
 
@@ -348,11 +374,13 @@ versions leading up to this release.*
 * Improve Doctrine conversion to Uuid or string for the ramsey/uuid [Doctrine
   field type]
 
+
 ## [2.7.4] - 2014-10-29
 
 ### Fixed
 
 * Change loop in `generateBytes()` from `foreach` to `for`
+
 
 ## [2.7.3] - 2014-08-27
 
@@ -360,11 +388,13 @@ versions leading up to this release.*
 
 * Fix upper range for `mt_rand` used in version 4 UUIDs
 
+
 ## [2.7.2] - 2014-07-28
 
 ### Changed
 
 * Upgrade to PSR-4 autoloading
+
 
 ## [2.7.1] - 2014-02-19
 
@@ -373,11 +403,13 @@ versions leading up to this release.*
 * Move moontoast/math and symfony/console to require-dev
 * Support symfony/console 2.3 (LTS version)
 
+
 ## [2.7.0] - 2014-01-31
 
 ### Added
 
 * Add `Uuid::VALID_PATTERN` constant containing a UUID validation regex pattern
+
 
 ## [2.6.1] - 2014-01-27
 
@@ -385,6 +417,7 @@ versions leading up to this release.*
 
 * Fix bug where `uuid` console application could not find the Composer
   autoloader when installed in another project
+
 
 ## [2.6.0] - 2014-01-17
 
@@ -398,11 +431,13 @@ versions leading up to this release.*
 * Use `netstat` on Linux to capture the node for a version 1 UUID
 * Require moontoast/math as part of the regular package requirements
 
+
 ## [2.5.0] - 2013-10-30
 
 ### Added
 
 * Use `openssl_random_pseudo_bytes()`, if available, to generate random bytes
+
 
 ## [2.4.0] - 2013-07-29
 
@@ -411,17 +446,20 @@ versions leading up to this release.*
 * Return `null` from `Uuid::getVersion()` if the UUID isn't an RFC 4122 variant
 * Support string UUIDs without dashes passed to `Uuid::fromString()`
 
+
 ## [2.3.0] - 2013-07-16
 
 ### Added
 
 * Support creation of UUIDs from bytes with `Uuid::fromBytes()`
 
+
 ## [2.2.0] - 2013-07-04
 
 ### Added
 
 * Add `Doctrine\UuidType::requiresSQLCommentHint()` method
+
 
 ## [2.1.2] - 2013-07-03
 
@@ -430,17 +468,20 @@ versions leading up to this release.*
 * Fix cases where the system node was coming back with uppercase hexadecimal
   digits; this ensures that case in the node is converted to lowercase
 
+
 ## [2.1.1] - 2013-04-29
 
 ### Fixed
 
 * Fix bug in `Uuid::isValid()` where the NIL UUID was not reported as valid
 
+
 ## [2.1.0] - 2013-04-15
 
 ### Added
 
 * Allow checking the validity of a UUID through the `Uuid::isValid()` method
+
 
 ## [2.0.0] - 2013-02-11
 
@@ -457,11 +498,13 @@ versions leading up to this release.*
   unsupported even on 64-bit builds of PHP
 * Move `UnsupportedOperationException` to the `Exception` subnamespace
 
+
 ## [1.1.2] - 2012-11-29
 
 ### Fixed
 
 * Relax [Doctrine field type] conversion rules for UUIDs
+
 
 ## [1.1.1] - 2012-08-27
 
@@ -469,12 +512,14 @@ versions leading up to this release.*
 
 * Remove `final` keyword from `Uuid` class
 
+
 ## [1.1.0] - 2012-08-06
 
 ### Added
 
 * Support ramsey/uuid UUIDs as a Doctrine Database Abstraction Layer (DBAL)
   field mapping type
+
 
 ## [1.0.0] - 2012-07-19
 
