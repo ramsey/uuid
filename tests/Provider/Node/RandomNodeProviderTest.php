@@ -20,7 +20,7 @@ class RandomNodeProviderTest extends TestCase
      */
     public function testGetNodeUsesRandomBytes()
     {
-        $bytes = pack('H*', base_convert(decbin(3892974093781), 2, 16));
+        $bytes = hex2bin('38a675685d50');
 
         $randomBytes = AspectMock::func('Ramsey\Uuid\Provider\Node', 'random_bytes', $bytes);
         $provider = new RandomNodeProvider();
@@ -34,17 +34,15 @@ class RandomNodeProviderTest extends TestCase
      */
     public function testGetNodeSetsMulticastBit()
     {
-        $bytes = pack('H*', base_convert(decbin(3892974093781), 2, 16));
-        $expectedBytesHex = '38a675685d50';
-        $decimal = 62287585500496;
+        $bytes = hex2bin('38a675685d50');
+
+        // Expected node has the multicast bit set, and it wasn't set in the bytes.
         $expectedNode = '39a675685d50';
 
         AspectMock::func('Ramsey\Uuid\Provider\Node', 'random_bytes', $bytes);
-        $hexDec = AspectMock::func('Ramsey\Uuid\Provider\Node', 'hexdec', $decimal);
         $provider = new RandomNodeProvider();
 
         $this->assertSame($expectedNode, $provider->getNode());
-        $hexDec->verifyInvoked([$expectedBytesHex]);
     }
 
     /**
@@ -53,19 +51,16 @@ class RandomNodeProviderTest extends TestCase
      */
     public function testGetNodeAlreadyHasMulticastBit()
     {
-        $bytes = pack('H*', base_convert(decbin(4492974093781), 2, 16));
-        $expectedBytesHex = '4161a1ff5d50';
-        $decimal = 71887585500496;
+        $bytesHex = '4161a1ff5d50';
+        $bytes = hex2bin($bytesHex);
 
         // We expect the same hex value for the node.
-        $expectedNode = $expectedBytesHex;
+        $expectedNode = $bytesHex;
 
         AspectMock::func('Ramsey\Uuid\Provider\Node', 'random_bytes', $bytes);
-        $hexDec = AspectMock::func('Ramsey\Uuid\Provider\Node', 'hexdec', $decimal);
         $provider = new RandomNodeProvider();
 
         $this->assertSame($expectedNode, $provider->getNode());
-        $hexDec->verifyInvoked([$expectedBytesHex]);
     }
 
     /**
@@ -74,23 +69,37 @@ class RandomNodeProviderTest extends TestCase
      */
     public function testGetNodeSetsMulticastBitForLowNodeValue()
     {
-        $bytes = pack('H*', base_convert(decbin(1), 2, 16));
-        $expectedBytesHex = '10';
-        $decimal = 16;
-        $expectedNode = '010000000010';
+        $bytes = hex2bin('100000000001');
+        $expectedNode = '110000000001';
 
         AspectMock::func('Ramsey\Uuid\Provider\Node', 'random_bytes', $bytes);
-        $hexDec = AspectMock::func('Ramsey\Uuid\Provider\Node', 'hexdec', $decimal);
         $provider = new RandomNodeProvider();
 
         $this->assertSame($expectedNode, $provider->getNode());
-        $hexDec->verifyInvoked([$expectedBytesHex]);
     }
 
     public function testGetNodeAlwaysSetsMulticastBit()
     {
         $provider = new RandomNodeProvider();
+        $nodeHex = $provider->getNode();
 
-        $this->assertSame('010000000000', sprintf('%012x', hexdec($provider->getNode()) & 0x010000000000));
+        // Convert what we got into bytes so that we can mask out everything
+        // except the multicast bit. If the multicast bit doesn't exist, this
+        // test will fail appropriately.
+        $nodeBytes = hex2bin($nodeHex);
+
+        // Split the node bytes for math on 32-bit systems.
+        $nodeMsb = substr($nodeBytes, 0, 3);
+        $nodeLsb = substr($nodeBytes, 3);
+
+        // Only set bits that match the mask so we can see that the multicast
+        // bit is always set.
+        $nodeMsb = sprintf('%06x', hexdec(bin2hex($nodeMsb)) & 0x010000);
+        $nodeLsb = sprintf('%06x', hexdec(bin2hex($nodeLsb)) & 0x000000);
+
+        // Recombine the node bytes.
+        $node = $nodeMsb . $nodeLsb;
+
+        $this->assertSame('010000000000', $node);
     }
 }
