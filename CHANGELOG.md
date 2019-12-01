@@ -21,6 +21,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Security
 
 
+## [3.9.1] - 2019-12-01
+
+### Fixed
+
+* Fix `RandomNodeProvider` behavior on 32-bit systems. The `RandomNodeProvider`
+  was converting a 6-byte string to a a decimal number, which is a 48-bit,
+  unsigned integer. This caused problems on 32-bit systems and has now been
+  resolved.
+
+
 ## [3.9.0] - 2019-11-30
 
 ### Added
@@ -572,7 +582,8 @@ versions leading up to this release.*
 [ramsey/uuid-doctrine]: https://github.com/ramsey/uuid-doctrine
 [ramsey/uuid-console]: https://github.com/ramsey/uuid-console
 
-[unreleased]: https://github.com/ramsey/uuid/compare/3.9.0...HEAD
+[unreleased]: https://github.com/ramsey/uuid/compare/3.9.1...HEAD
+[3.9.1]: https://github.com/ramsey/uuid/compare/3.9.0...3.9.1
 [3.9.0]: https://github.com/ramsey/uuid/compare/3.8.0...3.9.0
 [3.8.0]: https://github.com/ramsey/uuid/compare/3.7.3...3.8.0
 [3.7.3]: https://github.com/ramsey/uuid/compare/3.7.2...3.7.3
