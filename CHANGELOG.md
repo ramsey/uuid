@@ -51,7 +51,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Deprecated
 
-These will be removed in version ramsey/uuid version 4.0.0:
+These will be removed in ramsey/uuid version 4.0.0:
 
 * `MtRandGenerator`, `OpenSslGenerator`, and `SodiumRandomGenerator` are
   deprecated in favor of using the default `RandomBytesGenerator`.
