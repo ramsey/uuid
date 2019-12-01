@@ -11,10 +11,25 @@ jobs:
     - php: 5.6
     - php: 7.0
     - php: 7.1
+    - php: 7.1
+      arch: s390x
     - php: 7.2
+    - php: 7.2
+      arch: s390x
     - php: 7.3
+    - php: 7.3
+      arch: s390x
     - php: 7.4
+    - php: 7.4
+      arch: s390x
     - php: nightly
+    - php: nightly
+      arch: s390x
+  exclude:
+    - php: 5.4
+      arch: s390x
+    - php: 5.5
+      arch: s390x
   allow_failures:
     - php: 7.4
     - php: nightly
@@ -27,6 +42,7 @@ addons:
       - uuid-dev
 
 before_install:
+  - ./resources/scripts/system-info.sh
   - yes '' | pecl install -f libsodium-1.0.7
   - yes '' | pecl install -f uuid-1.0.4
   - travis_retry composer self-update
