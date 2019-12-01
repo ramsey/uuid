@@ -25,11 +25,6 @@ jobs:
     - php: nightly
     - php: nightly
       arch: s390x
-  exclude:
-    - php: 5.4
-      arch: s390x
-    - php: 5.5
-      arch: s390x
   allow_failures:
     - php: 7.4
     - php: nightly
