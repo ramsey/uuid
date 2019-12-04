@@ -1,9 +1,9 @@
-#!/bin/bash
+#!/bin/sh
 
-endianness=$(echo -n I | od -to2 | awk '{ print substr($2,6,1); exit}')
+endianness=$(printf I | hexdump -o | awk '{ print substr($2,6,1); exit}')
 
 endian="Big"
-if [ $endianness -eq 1 ]; then
+if [ "${endianness}" == "1" ]; then
     endian="Little"
 fi
 
@@ -14,4 +14,6 @@ echo "$(uname -a)"
 echo
 echo "CPU mode: $(getconf LONG_BIT)-bit"
 echo "Endianness: ${endian}"
+echo
+php --version
 echo

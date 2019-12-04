@@ -1,6 +1,9 @@
 language: php
 os: linux
 
+services:
+  - docker
+
 jobs:
   fast_finish: true
   include:
@@ -16,12 +19,18 @@ jobs:
     - php: 7.2
     - php: 7.2
       arch: s390x
+    - php: 7.2
+      env: ARCH=arm32
     - php: 7.3
     - php: 7.3
       arch: s390x
+    - php: 7.3
+      env: ARCH=arm32
     - php: 7.4
     - php: 7.4
       arch: s390x
+    - php: 7.4
+      env: ARCH=arm32
     - php: nightly
     - php: nightly
       arch: s390x
@@ -36,21 +45,23 @@ addons:
       - libsodium-dev
       - uuid-dev
 
+cache:
+  directories:
+    - $HOME/.composer
+
 before_install:
-  - ./resources/scripts/system-info.sh
-  - yes '' | pecl install -f libsodium-1.0.7
-  - yes '' | pecl install -f uuid-1.0.4
-  - travis_retry composer self-update
+  - travis_retry ./resources/scripts/travis-before-install.sh
+  - ./resources/scripts/cmd-proxy.sh ./resources/scripts/system-info.sh
 
 install:
-  - travis_retry composer require --no-update "php-coveralls/php-coveralls:^1 | ^2"
-  - travis_retry composer install --no-interaction --prefer-dist --no-progress --no-suggest
+  - travis_retry ./resources/scripts/cmd-proxy.sh composer require --no-update "php-coveralls/php-coveralls:^1 | ^2"
+  - travis_retry ./resources/scripts/cmd-proxy.sh composer install --no-interaction --prefer-dist --no-progress --no-suggest
 
 before_script:
   - mkdir -p build/logs
 
 script:
-  - travis_wait composer run-script --timeout=1200 test-ci
+  - travis_wait ./resources/scripts/cmd-proxy.sh composer run-script --timeout=1200 test-ci
 
 after_success:
-  - travis_retry ./resources/scripts/php-coveralls.sh
+  - travis_retry ./resources/scripts/cmd-proxy.sh ./resources/scripts/php-coveralls.sh
