@@ -3,7 +3,7 @@
 endianness=$(printf I | hexdump -o | awk '{ print substr($2,6,1); exit}')
 
 endian="Big"
-if [ "${endianness}" == "1" ]; then
+if [ "${endianness}" = "1" ]; then
     endian="Little"
 fi
 

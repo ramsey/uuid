@@ -6,7 +6,7 @@
 
 architecture=${ARCH:-${TRAVIS_CPU_ARCH:-$(uname -m)}}
 
-if [ "${architecture}" == "arm32" ]; then
+if [ "${architecture}" = "arm32" ]; then
     exit
 fi
 

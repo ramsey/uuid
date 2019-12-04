@@ -11,7 +11,7 @@ architecture="${ARCH:-${TRAVIS_CPU_ARCH:-$(uname -m)}}"
 
 cmd_proxy=""
 
-if [ "${architecture}" == "arm32" ]; then
+if [ "${architecture}" = "arm32" ]; then
     image="benramsey/ramsey-uuid:php-${php_version}-arm32v7"
     volumes="-v ${PWD}:/app -v ${HOME}/.composer:/root/.composer"
     cmd_proxy="docker run -it --rm ${volumes} -w /app ${image}"
