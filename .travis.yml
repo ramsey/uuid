@@ -20,16 +20,19 @@ jobs:
     - php: 7.2
       arch: s390x
     - php: 7.2
+      arch: arm64
       env: ARCH=arm32
     - php: 7.3
     - php: 7.3
       arch: s390x
     - php: 7.3
+      arch: arm64
       env: ARCH=arm32
     - php: 7.4
     - php: 7.4
       arch: s390x
     - php: 7.4
+      arch: arm64
       env: ARCH=arm32
     - php: nightly
     - php: nightly
