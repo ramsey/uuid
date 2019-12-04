@@ -17,4 +17,4 @@ if [ "${architecture}" = "arm32" ]; then
     cmd_proxy="docker run -it --rm ${volumes} -w /app ${image}"
 fi
 
-$cmd_proxy $@
+$cmd_proxy "$@"
