@@ -42,6 +42,7 @@ addons:
   apt:
     update: true
     packages:
+      - bsdmainutils
       - libsodium-dev
       - uuid-dev
 
