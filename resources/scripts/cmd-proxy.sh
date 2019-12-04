@@ -5,9 +5,9 @@
 # ARCH is anything other than "arm32," then it simply executes the commands
 # on the local system, rather than in a container.
 
-php_version=${TRAVIS_PHP_VERSION:-$(php -r "echo phpversion();")}
-php_version=${php_version%.*}
-architecture=${ARCH:-${TRAVIS_CPU_ARCH:-$(uname -m)}}
+php_version="${TRAVIS_PHP_VERSION:-$(php -r "echo phpversion();")}"
+php_version="${php_version%.*}"
+architecture="${ARCH:-${TRAVIS_CPU_ARCH:-$(uname -m)}}"
 
 cmd_proxy=""
 
