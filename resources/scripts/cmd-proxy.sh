@@ -6,7 +6,12 @@
 # on the local system, rather than in a container.
 
 php_version="${TRAVIS_PHP_VERSION:-$(php -r "echo phpversion();")}"
-php_version="${php_version%.*}"
+
+dots_count=$(echo $php_version | awk -F"." '{print NF-1}')
+if [ $dots_count -ge 2 ]; then
+    php_version="${php_version%.*}"
+fi
+
 architecture="${ARCH:-${TRAVIS_CPU_ARCH:-$(uname -m)}}"
 
 cmd_proxy=""
