@@ -26,7 +26,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Fixed
 
 * Fix `RandomNodeProvider` behavior on 32-bit systems. The `RandomNodeProvider`
-  was converting a 6-byte string to a a decimal number, which is a 48-bit,
+  was converting a 6-byte string to a decimal number, which is a 48-bit,
   unsigned integer. This caused problems on 32-bit systems and has now been
   resolved.
 

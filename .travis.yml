@@ -49,10 +49,6 @@ addons:
       - libsodium-dev
       - uuid-dev
 
-cache:
-  directories:
-    - $HOME/.composer
-
 before_install:
   - travis_retry ./resources/scripts/travis-before-install.sh
   - ./resources/scripts/cmd-proxy.sh ./resources/scripts/system-info.sh
