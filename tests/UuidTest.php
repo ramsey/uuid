@@ -838,7 +838,7 @@ class UuidTest extends TestCase
         $previous = $factory->uuid4();
 
         for ($i = 0; $i < 1000; $i++) {
-            usleep(10);
+            usleep(100);
             $uuid = $factory->uuid4();
             $this->assertGreaterThan($previous->toString(), $uuid->toString());
 
