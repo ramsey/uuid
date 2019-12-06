@@ -18,8 +18,8 @@ cmd_proxy=""
 
 if [ "${architecture}" = "arm32" ]; then
     image="benramsey/ramsey-uuid:php-${php_version}-arm32v7"
-    volumes="-v ${PWD}:/app"
-    cmd_proxy="docker run --rm ${volumes} -w /app ${image}"
+    volumes="-v ${PWD}:${PWD}"
+    cmd_proxy="docker run --rm ${volumes} -w ${PWD} ${image}"
 fi
 
 $cmd_proxy "$@"
