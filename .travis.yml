@@ -61,7 +61,9 @@ before_script:
   - mkdir -p build/logs
 
 script:
-  - travis_wait ./resources/scripts/cmd-proxy.sh composer run-script --timeout=1200 test-ci
+  - ./resources/scripts/cmd-proxy.sh ./vendor/bin/parallel-lint src tests
+  - ./resources/scripts/cmd-proxy.sh ./vendor/bin/phpcs src tests --standard=psr2 -sp --colors
+  - travis_wait ./resources/scripts/cmd-proxy.sh ./vendor/bin/phpunit --verbose --coverage-clover build/logs/clover.xml
 
 after_success:
   - travis_retry ./resources/scripts/cmd-proxy.sh ./resources/scripts/php-coveralls.sh

@@ -76,17 +76,11 @@
         "lint": "parallel-lint src tests",
         "phpcs": "phpcs src tests --standard=psr2 -sp --colors",
         "phpunit": "phpunit --verbose --colors=always",
-        "phpunit-ci": "phpunit --verbose --coverage-clover build/logs/clover.xml",
         "phpunit-coverage": "phpunit --verbose --colors=always --coverage-html build/coverage",
         "test": [
             "@lint",
             "@phpcs",
             "@phpunit"
-        ],
-        "test-ci": [
-            "@lint",
-            "@phpcs",
-            "@phpunit-ci"
         ]
     },
     "support": {
