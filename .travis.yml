@@ -66,4 +66,4 @@ script:
   - travis_wait ./resources/scripts/cmd-proxy.sh ./vendor/bin/phpunit --verbose --coverage-clover build/logs/clover.xml
 
 after_success:
-  - travis_retry ./resources/scripts/cmd-proxy.sh ./resources/scripts/php-coveralls.sh
+  - travis_retry ./resources/scripts/php-coveralls.sh
