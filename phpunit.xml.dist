@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<phpunit bootstrap="./tests/bootstrap.php" colors="true" verbose="true" backupGlobals="false">
+<phpunit bootstrap="./tests/bootstrap.php" colors="true" verbose="true" backupGlobals="false" convertDeprecationsToExceptions="false">
     <testsuites>
         <testsuite>
             <directory>./tests</directory>
