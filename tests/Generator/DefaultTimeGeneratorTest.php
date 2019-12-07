@@ -53,6 +53,12 @@ class DefaultTimeGeneratorTest extends TestCase
         $this->nodeProvider->expects($this->once())
             ->method('getNode')
             ->willReturn('122f80ca9e06');
+        $this->timeProvider->method('currentTime')
+            ->willReturn($this->currentTime);
+        $this->timeConverter->expects($this->once())
+            ->method('calculateTime')
+            ->with($this->currentTime['sec'], $this->currentTime['usec'])
+            ->willReturn($this->calculatedTime);
         $defaultTimeGenerator = new DefaultTimeGenerator(
             $this->nodeProvider,
             $this->timeConverter,
@@ -66,6 +72,10 @@ class DefaultTimeGeneratorTest extends TestCase
         $this->timeProvider->expects($this->once())
             ->method('currentTime')
             ->willReturn($this->currentTime);
+        $this->timeConverter->expects($this->once())
+            ->method('calculateTime')
+            ->with($this->currentTime['sec'], $this->currentTime['usec'])
+            ->willReturn($this->calculatedTime);
         $defaultTimeGenerator = new DefaultTimeGenerator(
             $this->nodeProvider,
             $this->timeConverter,
@@ -163,13 +173,19 @@ class DefaultTimeGeneratorTest extends TestCase
      */
     public function testGenerateUsesRandomSequenceWhenClockSeqNull()
     {
-        $mt_rand = AspectMock::func('Ramsey\Uuid\Generator', 'random_int', 9622);
+        $random_int = AspectMock::func('Ramsey\Uuid\Generator', 'random_int', 9622);
+        $this->timeProvider->method('currentTime')
+            ->willReturn($this->currentTime);
+        $this->timeConverter->expects($this->once())
+            ->method('calculateTime')
+            ->with($this->currentTime['sec'], $this->currentTime['usec'])
+            ->willReturn($this->calculatedTime);
         $defaultTimeGenerator = new DefaultTimeGenerator(
             $this->nodeProvider,
             $this->timeConverter,
             $this->timeProvider
         );
         $defaultTimeGenerator->generate($this->nodeId);
-        $mt_rand->verifyInvokedOnce([0, 0x3fff]);
+        $random_int->verifyInvokedOnce([0, 0x3fff]);
     }
 }
