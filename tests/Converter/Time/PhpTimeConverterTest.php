@@ -5,15 +5,9 @@ namespace Ramsey\Uuid\Test\Converter\Time;
 use Ramsey\Uuid\Converter\Time\PhpTimeConverter;
 use Ramsey\Uuid\Test\TestCase;
 
-/**
- * Class PhpTimeConverterTest
- * @package Ramsey\Uuid\Test\Converter
- * @covers \Ramsey\Uuid\Converter\Time\PhpTimeConverter
- */
 class PhpTimeConverterTest extends TestCase
 {
-
-    public function testCalculateTimeReturnsArrayOfTimeSegments()
+    public function testCalculateTimeReturnsArrayOfTimeSegments(): void
     {
         $seconds = 5;
         $microSeconds = 3;

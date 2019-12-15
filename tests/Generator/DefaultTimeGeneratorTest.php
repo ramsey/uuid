@@ -14,25 +14,39 @@ use Ramsey\Uuid\Test\TestCase;
 
 class DefaultTimeGeneratorTest extends TestCase
 {
-    /** @var TimeProviderInterface&MockObject */
+    /**
+     * @var TimeProviderInterface & MockObject
+     */
     private $timeProvider;
 
-    /** @var NodeProviderInterface&MockObject */
+    /**
+     * @var NodeProviderInterface & MockObject
+     */
     private $nodeProvider;
 
-    /** @var TimeConverterInterface&MockObject */
+    /**
+     * @var TimeConverterInterface & MockObject
+     */
     private $timeConverter;
 
-    /** @var string */
+    /**
+     * @var string
+     */
     private $nodeId = '122f80ca9e06';
 
-    /** @var int[] */
+    /**
+     * @var int[]
+     */
     private $currentTime;
 
-    /** @var string[] */
+    /**
+     * @var string[]
+     */
     private $calculatedTime;
 
-    /** @var int */
+    /**
+     * @var int
+     */
     private $clockSeq = 4066;
 
     protected function setUp(): void
@@ -41,8 +55,8 @@ class DefaultTimeGeneratorTest extends TestCase
         $this->timeProvider = $this->getMockBuilder(TimeProviderInterface::class)->getMock();
         $this->nodeProvider = $this->getMockBuilder(NodeProviderInterface::class)->getMock();
         $this->timeConverter = $this->getMockBuilder(TimeConverterInterface::class)->getMock();
-        $this->currentTime = ["sec" => 1458733431, "usec" => 877449];
-        $this->calculatedTime = ["low" => "83cb98e0", "mid" => "98e0", "hi" => "03cb"];
+        $this->currentTime = ['sec' => 1458733431, 'usec' => 877449];
+        $this->calculatedTime = ['low' => '83cb98e0', 'mid' => '98e0', 'hi' => '03cb'];
     }
 
     protected function tearDown(): void
@@ -53,7 +67,7 @@ class DefaultTimeGeneratorTest extends TestCase
         AspectMock::clean();
     }
 
-    public function testGenerateUsesNodeProviderWhenNodeIsNull()
+    public function testGenerateUsesNodeProviderWhenNodeIsNull(): void
     {
         $this->nodeProvider->expects($this->once())
             ->method('getNode')
@@ -72,7 +86,7 @@ class DefaultTimeGeneratorTest extends TestCase
         $defaultTimeGenerator->generate(null, $this->clockSeq);
     }
 
-    public function testGenerateUsesTimeProvidersCurrentTime()
+    public function testGenerateUsesTimeProvidersCurrentTime(): void
     {
         $this->timeProvider->expects($this->once())
             ->method('currentTime')
@@ -89,7 +103,7 @@ class DefaultTimeGeneratorTest extends TestCase
         $defaultTimeGenerator->generate($this->nodeId, $this->clockSeq);
     }
 
-    public function testGenerateCalculatesTimeWithConverter()
+    public function testGenerateCalculatesTimeWithConverter(): void
     {
         $this->timeProvider->method('currentTime')
             ->willReturn($this->currentTime);
@@ -109,7 +123,7 @@ class DefaultTimeGeneratorTest extends TestCase
      * @runInSeparateProcess
      * @preserveGlobalState disabled
      */
-    public function testGenerateAppliesVersionAndVariant()
+    public function testGenerateAppliesVersionAndVariant(): void
     {
         $expectedBytes = hex2bin('83cb98e098e003cb8fe2122f80ca9e06');
 
@@ -140,7 +154,7 @@ class DefaultTimeGeneratorTest extends TestCase
      * @runInSeparateProcess
      * @preserveGlobalState disabled
      */
-    public function testGenerateReturnsBinaryStringInUuidFormat()
+    public function testGenerateReturnsBinaryStringInUuidFormat(): void
     {
         $this->timeProvider->method('currentTime')->willReturn($this->currentTime);
         $this->timeConverter->method('calculateTime')->willReturn($this->calculatedTime);
@@ -154,22 +168,27 @@ class DefaultTimeGeneratorTest extends TestCase
             $this->timeProvider
         );
         $result = $defaultTimeGenerator->generate($this->nodeId, $this->clockSeq);
-        /**
-         * // Given we use values:
-         * $low = '83cb98e0';
-         * $mid = '98e0';
-         * $timeHi = 971;
-         * $clockSeqHi = 143;
-         * $clockSeq = 4066;
-         * $node = '122f80ca9e06';
-         *
-         * $values = [$low, $mid,
-         * sprintf('%04x', $timeHi), sprintf('%02x', $clockSeqHi),
-         * sprintf('%02x', $clockSeq & 0xff), $node];
-         *
-         * // then:
-         * $hex = vsprintf('%08s%04s%04s%02s%02s%012s', $values);
-         */
+
+        // Given we use values:
+        // $low = '83cb98e0';
+        // $mid = '98e0';
+        // $timeHi = 971;
+        // $clockSeqHi = 143;
+        // $clockSeq = 4066;
+        // $node = '122f80ca9e06';
+        //
+        // $values = [
+        //     $low,
+        //     $mid,
+        //     sprintf('%04x', $timeHi),
+        //     sprintf('%02x', $clockSeqHi),
+        //     sprintf('%02x', $clockSeq & 0xff),
+        //     $node
+        // ];
+        //
+        // then:
+        // $hex = vsprintf('%08s%04s%04s%02s%02s%012s', $values);
+
         $hex = '83cb98e098e003cb8fe2122f80ca9e06';
         $binary = hex2bin($hex);
         $this->assertEquals($binary, $result);
@@ -179,7 +198,7 @@ class DefaultTimeGeneratorTest extends TestCase
      * @runInSeparateProcess
      * @preserveGlobalState disabled
      */
-    public function testGenerateUsesRandomSequenceWhenClockSeqNull()
+    public function testGenerateUsesRandomSequenceWhenClockSeqNull(): void
     {
         $random_int = AspectMock::func('Ramsey\Uuid\Generator', 'random_int', 9622);
         $this->timeProvider->method('currentTime')

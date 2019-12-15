@@ -16,7 +16,7 @@ class TimestampLastCombCodecTest extends TestCase
     private $codec;
 
     /**
-     * @var MockObject
+     * @var MockObject & UuidBuilderInterface
      */
     private $builderMock;
 
@@ -26,8 +26,9 @@ class TimestampLastCombCodecTest extends TestCase
         $this->codec = new TimestampLastCombCodec($this->builderMock);
     }
 
-    public function testEncoding()
+    public function testEncoding(): void
     {
+        /** @var MockObject & UuidInterface $uuidMock */
         $uuidMock = $this->getMockBuilder(UuidInterface::class)->getMock();
         $uuidMock->expects($this->any())
             ->method('getFieldsHex')
@@ -37,8 +38,9 @@ class TimestampLastCombCodecTest extends TestCase
         $this->assertSame('0800200c-9a66-11e1-9b21-ff6f8cb0c57d', $encodedUuid);
     }
 
-    public function testBinaryEncoding()
+    public function testBinaryEncoding(): void
     {
+        /** @var MockObject & UuidInterface $uuidMock */
         $uuidMock = $this->getMockBuilder(UuidInterface::class)->getMock();
         $uuidMock->expects($this->any())
             ->method('getHex')
@@ -48,7 +50,7 @@ class TimestampLastCombCodecTest extends TestCase
         $this->assertSame(hex2bin('0800200c9a6611e19b21ff6f8cb0c57d'), $encodedUuid);
     }
 
-    public function testDecoding()
+    public function testDecoding(): void
     {
         $this->builderMock->expects($this->exactly(1))
             ->method('build')
@@ -66,7 +68,7 @@ class TimestampLastCombCodecTest extends TestCase
         $this->codec->decode('0800200c-9a66-11e1-9b21-ff6f8cb0c57d');
     }
 
-    public function testBinaryDecoding()
+    public function testBinaryDecoding(): void
     {
         $this->builderMock->expects($this->exactly(1))
             ->method('build')
@@ -81,6 +83,6 @@ class TimestampLastCombCodecTest extends TestCase
                     'node' => 'ff6f8cb0c57d'
                 ]
             );
-        $this->codec->decodeBytes(hex2bin('0800200c9a6611e19b21ff6f8cb0c57d'));
+        $this->codec->decodeBytes((string) hex2bin('0800200c9a6611e19b21ff6f8cb0c57d'));
     }
 }

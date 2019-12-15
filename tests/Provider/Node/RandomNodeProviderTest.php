@@ -2,9 +2,9 @@
 
 namespace Ramsey\Uuid\Test\Provider\Node;
 
+use AspectMock\Test as AspectMock;
 use Ramsey\Uuid\Provider\Node\RandomNodeProvider;
 use Ramsey\Uuid\Test\TestCase;
-use AspectMock\Test as AspectMock;
 
 class RandomNodeProviderTest extends TestCase
 {
@@ -18,7 +18,7 @@ class RandomNodeProviderTest extends TestCase
      * @runInSeparateProcess
      * @preserveGlobalState disabled
      */
-    public function testGetNodeUsesRandomBytes()
+    public function testGetNodeUsesRandomBytes(): void
     {
         $bytes = hex2bin('38a675685d50');
         $expectedNode = '39a675685d50';
@@ -35,7 +35,7 @@ class RandomNodeProviderTest extends TestCase
      * @runInSeparateProcess
      * @preserveGlobalState disabled
      */
-    public function testGetNodeSetsMulticastBit()
+    public function testGetNodeSetsMulticastBit(): void
     {
         $bytes = hex2bin('38a675685d50');
 
@@ -53,7 +53,7 @@ class RandomNodeProviderTest extends TestCase
      * @runInSeparateProcess
      * @preserveGlobalState disabled
      */
-    public function testGetNodeAlreadyHasMulticastBit()
+    public function testGetNodeAlreadyHasMulticastBit(): void
     {
         $bytesHex = '4161a1ff5d50';
         $bytes = hex2bin($bytesHex);
@@ -72,7 +72,7 @@ class RandomNodeProviderTest extends TestCase
      * @runInSeparateProcess
      * @preserveGlobalState disabled
      */
-    public function testGetNodeSetsMulticastBitForLowNodeValue()
+    public function testGetNodeSetsMulticastBitForLowNodeValue(): void
     {
         $bytes = hex2bin('100000000001');
         $expectedNode = '110000000001';
@@ -84,7 +84,7 @@ class RandomNodeProviderTest extends TestCase
         $randomBytes->verifyInvoked([6]);
     }
 
-    public function testGetNodeAlwaysSetsMulticastBit()
+    public function testGetNodeAlwaysSetsMulticastBit(): void
     {
         $provider = new RandomNodeProvider();
         $nodeHex = $provider->getNode();
@@ -92,7 +92,7 @@ class RandomNodeProviderTest extends TestCase
         // Convert what we got into bytes so that we can mask out everything
         // except the multicast bit. If the multicast bit doesn't exist, this
         // test will fail appropriately.
-        $nodeBytes = hex2bin($nodeHex);
+        $nodeBytes = (string) hex2bin($nodeHex);
 
         // Split the node bytes for math on 32-bit systems.
         $nodeMsb = substr($nodeBytes, 0, 3);
