@@ -2,18 +2,19 @@
 
 namespace Ramsey\Uuid\Test;
 
-use Ramsey\Uuid\FeatureSet;
-use Ramsey\Uuid\UuidFactory;
-use Ramsey\Uuid\Codec\CodecInterface;
-use Ramsey\Uuid\Generator\RandomGeneratorInterface;
-use Ramsey\Uuid\Provider\NodeProviderInterface;
-use Ramsey\Uuid\Generator\TimeGeneratorInterface;
-use Ramsey\Uuid\Converter\NumberConverterInterface;
+use PHPUnit\Framework\MockObject\MockObject;
 use Ramsey\Uuid\Builder\UuidBuilderInterface;
+use Ramsey\Uuid\Codec\CodecInterface;
+use Ramsey\Uuid\Converter\NumberConverterInterface;
+use Ramsey\Uuid\FeatureSet;
+use Ramsey\Uuid\Generator\RandomGeneratorInterface;
+use Ramsey\Uuid\Generator\TimeGeneratorInterface;
+use Ramsey\Uuid\Provider\NodeProviderInterface;
+use Ramsey\Uuid\UuidFactory;
 
 class UuidFactoryTest extends TestCase
 {
-    public function testParsesUuidCorrectly()
+    public function testParsesUuidCorrectly(): void
     {
         $factory = new UuidFactory();
 
@@ -22,7 +23,7 @@ class UuidFactoryTest extends TestCase
         $this->assertEquals('ff6f8cb0-c57d-11e1-9b21-0800200c9a66', $uuid->toString());
     }
 
-    public function testParsesGuidCorrectly()
+    public function testParsesGuidCorrectly(): void
     {
         $factory = new UuidFactory(new FeatureSet(true));
 
@@ -31,7 +32,7 @@ class UuidFactoryTest extends TestCase
         $this->assertEquals('ff6f8cb0-c57d-11e1-9b21-0800200c9a66', $uuid->toString());
     }
 
-    public function testFromStringParsesUuidInLowercase()
+    public function testFromStringParsesUuidInLowercase(): void
     {
         $uuidString = 'ff6f8cb0-c57d-11e1-9b21-0800200c9a66';
         $uuidUpper = strtoupper($uuidString);
@@ -42,7 +43,7 @@ class UuidFactoryTest extends TestCase
         $this->assertEquals($uuidString, $uuid->toString());
     }
 
-    public function testGettersReturnValueFromFeatureSet()
+    public function testGettersReturnValueFromFeatureSet(): void
     {
         $codec = $this->getMockBuilder(CodecInterface::class)->getMock();
         $nodeProvider = $this->getMockBuilder(NodeProviderInterface::class)->getMock();
@@ -81,22 +82,26 @@ class UuidFactoryTest extends TestCase
         );
     }
 
-    public function testSettersSetValueForGetters()
+    public function testSettersSetValueForGetters(): void
     {
         $uuidFactory = new UuidFactory();
 
+        /** @var MockObject & CodecInterface $codec */
         $codec = $this->getMockBuilder(CodecInterface::class)->getMock();
         $uuidFactory->setCodec($codec);
         $this->assertEquals($codec, $uuidFactory->getCodec());
 
+        /** @var MockObject & TimeGeneratorInterface $timeGenerator */
         $timeGenerator = $this->getMockBuilder(TimeGeneratorInterface::class)->getMock();
         $uuidFactory->setTimeGenerator($timeGenerator);
         $this->assertEquals($timeGenerator, $uuidFactory->getTimeGenerator());
 
+        /** @var MockObject & NumberConverterInterface $numberConverter */
         $numberConverter = $this->getMockBuilder(NumberConverterInterface::class)->getMock();
         $uuidFactory->setNumberConverter($numberConverter);
         $this->assertEquals($numberConverter, $uuidFactory->getNumberConverter());
 
+        /** @var MockObject & UuidBuilderInterface $uuidBuilder */
         $uuidBuilder = $this->getMockBuilder(UuidBuilderInterface::class)->getMock();
         $uuidFactory->setUuidBuilder($uuidBuilder);
         $this->assertEquals($uuidBuilder, $uuidFactory->getUuidBuilder());

@@ -7,21 +7,20 @@ use Ramsey\Uuid\Test\TestCase;
 
 class FixedTimeProviderTest extends TestCase
 {
-
-    public function testConstructorRequiresSecAndUsec()
+    public function testConstructorRequiresSecAndUsec(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $provider = new FixedTimeProvider([]);
     }
 
-    public function testCurrentTimeReturnsTimestamp()
+    public function testCurrentTimeReturnsTimestamp(): void
     {
         $timestamp = ['sec' => 1458844556, 'usec' => 200997];
         $provider = new FixedTimeProvider($timestamp);
         $this->assertEquals($timestamp, $provider->currentTime());
     }
 
-    public function testCurrentTimeReturnsTimestampAfterChange()
+    public function testCurrentTimeReturnsTimestampAfterChange(): void
     {
         $timestamp = ['sec' => 1458844556, 'usec' => 200997];
         $provider = new FixedTimeProvider($timestamp);

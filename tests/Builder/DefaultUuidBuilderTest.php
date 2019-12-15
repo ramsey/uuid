@@ -2,6 +2,7 @@
 
 namespace Ramsey\Uuid\Test\Builder;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use Ramsey\Uuid\Builder\DefaultUuidBuilder;
 use Ramsey\Uuid\Codec\CodecInterface;
 use Ramsey\Uuid\Converter\NumberConverterInterface;
@@ -9,19 +10,19 @@ use Ramsey\Uuid\Converter\TimeConverterInterface;
 use Ramsey\Uuid\Test\TestCase;
 use Ramsey\Uuid\Uuid;
 
-/**
- * Class DefaultUuidBuilderTest
- * @package Ramsey\Uuid\Test\Builder
- * @covers Ramsey\Uuid\Builder\DefaultUuidBuilder
- */
 class DefaultUuidBuilderTest extends TestCase
 {
-
-    public function testBuildCreatesUuid()
+    public function testBuildCreatesUuid(): void
     {
+        /** @var MockObject & NumberConverterInterface $numberConverter */
         $numberConverter = $this->getMockBuilder(NumberConverterInterface::class)->getMock();
+
+        /** @var MockObject & TimeConverterInterface $timeConverter */
         $timeConverter = $this->getMockBuilder(TimeConverterInterface::class)->getMock();
+
         $builder = new DefaultUuidBuilder($numberConverter, $timeConverter);
+
+        /** @var MockObject & CodecInterface $codec */
         $codec = $this->getMockBuilder(CodecInterface::class)->getMock();
 
         $fields = [

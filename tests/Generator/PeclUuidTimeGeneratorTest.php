@@ -1,21 +1,17 @@
 <?php
+
 namespace Ramsey\Uuid\Test\Generator;
 
-use Ramsey\Uuid\Generator\PeclUuidTimeGenerator;
 use AspectMock\Test as AspectMock;
+use Ramsey\Uuid\Generator\PeclUuidTimeGenerator;
 
-/**
- * Class PeclUuidTimeGeneratorTest
- * @package Ramsey\Uuid\Test\Generator
- * @covers Ramsey\Uuid\Generator\PeclUuidTimeGenerator
- */
 class PeclUuidTimeGeneratorTest extends PeclUuidTestCase
 {
     /**
      * @runInSeparateProcess
      * @preserveGlobalState disabled
      */
-    public function testGenerateCreatesUuidUsingPeclUuidMethods()
+    public function testGenerateCreatesUuidUsingPeclUuidMethods(): void
     {
         $create = AspectMock::func('Ramsey\Uuid\Generator', 'uuid_create', $this->uuidString);
         $parse = AspectMock::func('Ramsey\Uuid\Generator', 'uuid_parse', $this->uuidBinary);
@@ -32,7 +28,7 @@ class PeclUuidTimeGeneratorTest extends PeclUuidTestCase
      * This test is for the return type of the generate method
      * It ensures that the generate method returns whatever value uuid_parse returns.
      */
-    public function testGenerateReturnsUuidString()
+    public function testGenerateReturnsUuidString(): void
     {
         $create = AspectMock::func('Ramsey\Uuid\Generator', 'uuid_create', $this->uuidString);
         $parse = AspectMock::func('Ramsey\Uuid\Generator', 'uuid_parse', $this->uuidBinary);

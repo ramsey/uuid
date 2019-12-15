@@ -2,28 +2,22 @@
 
 namespace Ramsey\Uuid\Test\Generator;
 
+use Mockery;
 use Ramsey\Uuid\Generator\RandomLibAdapter;
 use Ramsey\Uuid\Test\TestCase;
-use Mockery;
 use RandomLib\Factory as RandomLibFactory;
 use RandomLib\Generator;
 
-/**
- * Class RandomLibAdapterTest
- * @package Ramsey\Uuid\Test\Generator
- * @covers Ramsey\Uuid\Generator\RandomLibAdapter
- */
 class RandomLibAdapterTest extends TestCase
 {
     /**
      * @runInSeparateProcess
      * @preserveGlobalState disabled
      */
-    public function testAdapterWithGeneratorDoesNotCreateGenerator()
+    public function testAdapterWithGeneratorDoesNotCreateGenerator(): void
     {
         $factory = Mockery::mock('overload:' . RandomLibFactory::class);
-        $factory->shouldNotReceive('getHighStrengthGenerator')
-            ->getMock();
+        $factory->shouldNotReceive('getHighStrengthGenerator');
 
         $generator = $this->getMockBuilder(Generator::class)
             ->disableOriginalConstructor()
@@ -36,17 +30,15 @@ class RandomLibAdapterTest extends TestCase
      * @runInSeparateProcess
      * @preserveGlobalState disabled
      */
-    public function testAdapterWithoutGeneratorGreatesGenerator()
+    public function testAdapterWithoutGeneratorGreatesGenerator(): void
     {
         $factory = Mockery::mock('overload:' . RandomLibFactory::class);
-        $factory->shouldReceive('getHighStrengthGenerator')
-            ->once()
-            ->getMock();
+        $factory->shouldReceive('getHighStrengthGenerator')->once();
 
         $this->assertInstanceOf(RandomLibAdapter::class, new RandomLibAdapter());
     }
 
-    public function testGenerateUsesGenerator()
+    public function testGenerateUsesGenerator(): void
     {
         $length = 10;
         $generator = $this->getMockBuilder(Generator::class)
@@ -60,7 +52,7 @@ class RandomLibAdapterTest extends TestCase
         $adapter->generate($length);
     }
 
-    public function testGenerateReturnsString()
+    public function testGenerateReturnsString(): void
     {
         $generator = $this->getMockBuilder(Generator::class)
             ->disableOriginalConstructor()

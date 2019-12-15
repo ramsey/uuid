@@ -30,9 +30,7 @@ class UuidTest extends TestCase
         Uuid::setFactory(new UuidFactory());
     }
 
-    /**
-     */
-    public function testFromString()
+    public function testFromString(): void
     {
         $uuid = Uuid::fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
         $this->assertInstanceOf(Uuid::class, $uuid);
@@ -42,7 +40,7 @@ class UuidTest extends TestCase
     /**
      * Tests that UUID and GUID's have the same textual representation but not the same binary representation.
      */
-    public function testFromGuidStringOnLittleEndianHost()
+    public function testFromGuidStringOnLittleEndianHost(): void
     {
         $this->skipIfBigEndianHost();
 
@@ -64,7 +62,7 @@ class UuidTest extends TestCase
      * Tests that UUID and GUID's have the same textual representation and the same binary representation.
      * This test is only valid on big endian hosts.
      */
-    public function testFromGuidStringOnBigEndianHost()
+    public function testFromGuidStringOnBigEndianHost(): void
     {
         $this->skipIfLittleEndianHost();
 
@@ -82,14 +80,14 @@ class UuidTest extends TestCase
         $this->assertEquals(bin2hex($uuid->getBytes()), bin2hex($guid->getBytes()));
     }
 
-    public function testFromStringWithCurlyBraces()
+    public function testFromStringWithCurlyBraces(): void
     {
         $uuid = Uuid::fromString('{ff6f8cb0-c57d-11e1-9b21-0800200c9a66}');
         $this->assertInstanceOf(Uuid::class, $uuid);
         $this->assertEquals('ff6f8cb0-c57d-11e1-9b21-0800200c9a66', $uuid->toString());
     }
 
-    public function testFromStringWithInvalidUuidString()
+    public function testFromStringWithInvalidUuidString(): void
     {
         $this->expectException(InvalidUuidStringException::class);
         $this->expectExceptionMessage('Invalid UUID string:');
@@ -97,7 +95,7 @@ class UuidTest extends TestCase
         $uuid = Uuid::fromString('ff6f8cb0-c57d-11e1-9b21');
     }
 
-    public function testFromStringWithTrailingNewLine()
+    public function testFromStringWithTrailingNewLine(): void
     {
         $this->expectException(InvalidUuidStringException::class);
         $this->expectExceptionMessage('Invalid UUID string:');
@@ -105,81 +103,63 @@ class UuidTest extends TestCase
         Uuid::fromString("d0d5f586-21d1-470c-8088-55c8857728dc\n");
     }
 
-    /**
-     */
-    public function testFromStringWithUrn()
+    public function testFromStringWithUrn(): void
     {
         $uuid = Uuid::fromString('urn:uuid:ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
         $this->assertInstanceOf(Uuid::class, $uuid);
         $this->assertEquals('ff6f8cb0-c57d-11e1-9b21-0800200c9a66', $uuid->toString());
     }
 
-    /**
-     */
-    public function testGetBytes()
+    public function testGetBytes(): void
     {
         $uuid = Uuid::fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
         $this->assertEquals(16, \strlen($uuid->getBytes()));
         $this->assertEquals('/2+MsMV9EeGbIQgAIAyaZg==', base64_encode($uuid->getBytes()));
     }
 
-    /**
-     */
-    public function testGetClockSeqHiAndReserved()
+    public function testGetClockSeqHiAndReserved(): void
     {
         /** @var Uuid $uuid */
         $uuid = Uuid::fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
         $this->assertEquals(155, $uuid->getClockSeqHiAndReserved());
     }
 
-    /**
-     */
-    public function testGetClockSeqHiAndReservedHex()
+    public function testGetClockSeqHiAndReservedHex(): void
     {
         /** @var Uuid $uuid */
         $uuid = Uuid::fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
         $this->assertEquals('9b', $uuid->getClockSeqHiAndReservedHex());
     }
 
-    /**
-     */
-    public function testGetClockSeqLow()
+    public function testGetClockSeqLow(): void
     {
         /** @var Uuid $uuid */
         $uuid = Uuid::fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
         $this->assertEquals(33, $uuid->getClockSeqLow());
     }
 
-    /**
-     */
-    public function testGetClockSeqLowHex()
+    public function testGetClockSeqLowHex(): void
     {
         /** @var Uuid $uuid */
         $uuid = Uuid::fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
         $this->assertEquals('21', $uuid->getClockSeqLowHex());
     }
 
-    /**
-     */
-    public function testGetClockSequence()
+    public function testGetClockSequence(): void
     {
         /** @var Uuid $uuid */
         $uuid = Uuid::fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
         $this->assertEquals(6945, $uuid->getClockSequence());
     }
 
-    /**
-     */
-    public function testGetClockSequenceHex()
+    public function testGetClockSequenceHex(): void
     {
         /** @var Uuid $uuid */
         $uuid = Uuid::fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
         $this->assertEquals('1b21', $uuid->getClockSequenceHex());
     }
 
-    /**
-     */
-    public function testGetDateTime()
+    public function testGetDateTime(): void
     {
         // Check a recent date
         $uuid = Uuid::fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
@@ -202,9 +182,7 @@ class UuidTest extends TestCase
         $this->assertEquals('1582-10-15T00:00:00+00:00', $uuid->getDateTime()->format('c'));
     }
 
-    /**
-     */
-    public function testGetDateTime32BitMoontoast()
+    public function testGetDateTime32BitMoontoast(): void
     {
         $this->skipIfNoMoontoastMath();
         Uuid::setFactory(new UuidFactory(new FeatureSet(false, true, false, false, false, true)));
@@ -230,9 +208,7 @@ class UuidTest extends TestCase
         $this->assertEquals('1582-10-15T00:00:00+00:00', $uuid->getDateTime()->format('c'));
     }
 
-    /**
-     */
-    public function testGetDateTime32BitGmp()
+    public function testGetDateTime32BitGmp(): void
     {
         $this->skipIfNoGmp();
         Uuid::setFactory(new UuidFactory(new FeatureSet(false, true)));
@@ -258,7 +234,7 @@ class UuidTest extends TestCase
         $this->assertEquals('1582-10-15T00:00:00+00:00', $uuid->getDateTime()->format('c'));
     }
 
-    public function testGetDateTimeThrownException()
+    public function testGetDateTimeThrownException(): void
     {
         Uuid::setFactory(new UuidFactory(new FeatureSet(false, true, true, false, true, true)));
 
@@ -272,7 +248,7 @@ class UuidTest extends TestCase
         $date = $uuid->getDateTime();
     }
 
-    public function testGetDateTimeFromNonVersion1Uuid()
+    public function testGetDateTimeFromNonVersion1Uuid(): void
     {
         // Using a version 4 UUID to test
         $uuid = Uuid::fromString('bf17b594-41f2-474f-bf70-4c90220f75de');
@@ -283,9 +259,7 @@ class UuidTest extends TestCase
         $date = $uuid->getDateTime();
     }
 
-    /**
-     */
-    public function testGetFields()
+    public function testGetFields(): void
     {
         $this->skip64BitTest();
 
@@ -304,7 +278,7 @@ class UuidTest extends TestCase
         $this->assertEquals($fields, $uuid->getFields());
     }
 
-    public function testGetFields32Bit()
+    public function testGetFields32Bit(): void
     {
         Uuid::setFactory(new UuidFactory(new FeatureSet(false, true)));
 
@@ -316,9 +290,7 @@ class UuidTest extends TestCase
         $fields = $uuid->getFields();
     }
 
-    /**
-     */
-    public function testGetFieldsHex()
+    public function testGetFieldsHex(): void
     {
         $fields = [
             'time_low' => 'ff6f8cb0',
@@ -334,9 +306,7 @@ class UuidTest extends TestCase
         $this->assertEquals($fields, $uuid->getFieldsHex());
     }
 
-    /**
-     */
-    public function testGetLeastSignificantBitsMoontoast()
+    public function testGetLeastSignificantBitsMoontoast(): void
     {
         $this->skipIfNoMoontoastMath();
         Uuid::setFactory(new UuidFactory(new FeatureSet(false, false, false, false, false, true)));
@@ -347,9 +317,7 @@ class UuidTest extends TestCase
         $this->assertEquals('11178224546741000806', $uuid->getLeastSignificantBits()->getValue());
     }
 
-    /**
-     */
-    public function testGetLeastSignificantBitsGmp()
+    public function testGetLeastSignificantBitsGmp(): void
     {
         $this->skipIfNoGmp();
 
@@ -359,7 +327,7 @@ class UuidTest extends TestCase
         $this->assertEquals('11178224546741000806', $uuid->getLeastSignificantBits());
     }
 
-    public function testGetLeastSignificantBitsException()
+    public function testGetLeastSignificantBitsException(): void
     {
         Uuid::setFactory(new UuidFactory(new FeatureSet(false, false, true, false, false, true)));
 
@@ -371,17 +339,13 @@ class UuidTest extends TestCase
         $bn = $uuid->getLeastSignificantBits();
     }
 
-    /**
-     */
-    public function testGetLeastSignificantBitsHex()
+    public function testGetLeastSignificantBitsHex(): void
     {
         $uuid = Uuid::fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
         $this->assertEquals('9b210800200c9a66', $uuid->getLeastSignificantBitsHex());
     }
 
-    /**
-     */
-    public function testGetMostSignificantBitsMoontoast()
+    public function testGetMostSignificantBitsMoontoast(): void
     {
         $this->skipIfNoMoontoastMath();
         Uuid::setFactory(new UuidFactory(new FeatureSet(false, false, false, false, false, true)));
@@ -392,9 +356,7 @@ class UuidTest extends TestCase
         $this->assertEquals('18406084892941947361', $uuid->getMostSignificantBits()->getValue());
     }
 
-    /**
-     */
-    public function testGetMostSignificantBitsGmp()
+    public function testGetMostSignificantBitsGmp(): void
     {
         $this->skipIfNoGmp();
 
@@ -404,7 +366,7 @@ class UuidTest extends TestCase
         $this->assertEquals('18406084892941947361', $uuid->getMostSignificantBits());
     }
 
-    public function testGetMostSignificantBitsException()
+    public function testGetMostSignificantBitsException(): void
     {
         Uuid::setFactory(new UuidFactory(new FeatureSet(false, false, true, false, false, true)));
 
@@ -416,17 +378,13 @@ class UuidTest extends TestCase
         $bn = $uuid->getMostSignificantBits();
     }
 
-    /**
-     */
-    public function testGetMostSignificantBitsHex()
+    public function testGetMostSignificantBitsHex(): void
     {
         $uuid = Uuid::fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
         $this->assertEquals('ff6f8cb0c57d11e1', $uuid->getMostSignificantBitsHex());
     }
 
-    /**
-     */
-    public function testGetNode()
+    public function testGetNode(): void
     {
         $this->skip64BitTest();
 
@@ -435,7 +393,7 @@ class UuidTest extends TestCase
         $this->assertEquals(8796630719078, $uuid->getNode());
     }
 
-    public function testGetNode32Bit()
+    public function testGetNode32Bit(): void
     {
         Uuid::setFactory(new UuidFactory(new FeatureSet(false, true)));
 
@@ -447,34 +405,26 @@ class UuidTest extends TestCase
         $node = $uuid->getNode();
     }
 
-    /**
-     */
-    public function testGetNodeHex()
+    public function testGetNodeHex(): void
     {
         $uuid = Uuid::fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
         $this->assertEquals('0800200c9a66', $uuid->getNodeHex());
     }
 
-    /**
-     */
-    public function testGetTimeHiAndVersion()
+    public function testGetTimeHiAndVersion(): void
     {
         /** @var Uuid $uuid */
         $uuid = Uuid::fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
         $this->assertEquals(4577, $uuid->getTimeHiAndVersion());
     }
 
-    /**
-     */
-    public function testGetTimeHiAndVersionHex()
+    public function testGetTimeHiAndVersionHex(): void
     {
         $uuid = Uuid::fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
         $this->assertEquals('11e1', $uuid->getTimeHiAndVersionHex());
     }
 
-    /**
-     */
-    public function testGetTimeLow()
+    public function testGetTimeLow(): void
     {
         $this->skip64BitTest();
 
@@ -483,7 +433,7 @@ class UuidTest extends TestCase
         $this->assertEquals(4285500592, $uuid->getTimeLow());
     }
 
-    public function testGetTimeLow32Bit()
+    public function testGetTimeLow32Bit(): void
     {
         Uuid::setFactory(new UuidFactory(new FeatureSet(false, true)));
 
@@ -495,34 +445,26 @@ class UuidTest extends TestCase
         $timeLow = $uuid->getTimeLow();
     }
 
-    /**
-     */
-    public function testGetTimeLowHex()
+    public function testGetTimeLowHex(): void
     {
         $uuid = Uuid::fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
         $this->assertEquals('ff6f8cb0', $uuid->getTimeLowHex());
     }
 
-    /**
-     */
-    public function testGetTimeMid()
+    public function testGetTimeMid(): void
     {
         /** @var Uuid $uuid */
         $uuid = Uuid::fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
         $this->assertEquals(50557, $uuid->getTimeMid());
     }
 
-    /**
-     */
-    public function testGetTimeMidHex()
+    public function testGetTimeMidHex(): void
     {
         $uuid = Uuid::fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
         $this->assertEquals('c57d', $uuid->getTimeMidHex());
     }
 
-    /**
-     */
-    public function testGetTimestamp()
+    public function testGetTimestamp(): void
     {
         $this->skip64BitTest();
 
@@ -537,9 +479,7 @@ class UuidTest extends TestCase
         $this->assertEquals(1460440000000, $uuid->getTimestamp());
     }
 
-    /**
-     */
-    public function testGetTimestampHex()
+    public function testGetTimestampHex(): void
     {
         // Check for a recent date
         $uuid = Uuid::fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
@@ -550,7 +490,7 @@ class UuidTest extends TestCase
         $this->assertEquals('00001540901e600', $uuid->getTimestampHex());
     }
 
-    public function testGetTimestampFromNonVersion1Uuid()
+    public function testGetTimestampFromNonVersion1Uuid(): void
     {
         // Using a version 4 UUID to test
         /** @var Uuid $uuid */
@@ -562,7 +502,7 @@ class UuidTest extends TestCase
         $ts = $uuid->getTimestamp();
     }
 
-    public function testGetTimestampHexFromNonVersion1Uuid()
+    public function testGetTimestampHexFromNonVersion1Uuid(): void
     {
         // Using a version 4 UUID to test
         $uuid = Uuid::fromString('bf17b594-41f2-474f-bf70-4c90220f75de');
@@ -573,7 +513,7 @@ class UuidTest extends TestCase
         $ts = $uuid->getTimestampHex();
     }
 
-    public function testGetTimestamp32Bit()
+    public function testGetTimestamp32Bit(): void
     {
         Uuid::setFactory(new UuidFactory(new FeatureSet(false, true)));
 
@@ -585,17 +525,13 @@ class UuidTest extends TestCase
         $ts = $uuid->getTimestamp();
     }
 
-    /**
-     */
-    public function testGetUrn()
+    public function testGetUrn(): void
     {
         $uuid = Uuid::fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
         $this->assertEquals('urn:uuid:ff6f8cb0-c57d-11e1-9b21-0800200c9a66', $uuid->getUrn());
     }
 
-    /**
-     */
-    public function testGetVariantForReservedNcs()
+    public function testGetVariantForReservedNcs(): void
     {
         $uuid1 = Uuid::fromString('ff6f8cb0-c57d-11e1-0b21-0800200c9a66');
         $this->assertEquals(0, $uuid1->getVariant());
@@ -622,9 +558,7 @@ class UuidTest extends TestCase
         $this->assertEquals(0, $uuid8->getVariant());
     }
 
-    /**
-     */
-    public function testGetVariantForRfc4122()
+    public function testGetVariantForRfc4122(): void
     {
         $uuid1 = Uuid::fromString('ff6f8cb0-c57d-11e1-8b21-0800200c9a66');
         $this->assertEquals(2, $uuid1->getVariant());
@@ -639,9 +573,7 @@ class UuidTest extends TestCase
         $this->assertEquals(2, $uuid4->getVariant());
     }
 
-    /**
-     */
-    public function testGetVariantForReservedMicrosoft()
+    public function testGetVariantForReservedMicrosoft(): void
     {
         $uuid1 = Uuid::fromString('ff6f8cb0-c57d-11e1-cb21-0800200c9a66');
         $this->assertEquals(6, $uuid1->getVariant());
@@ -650,9 +582,7 @@ class UuidTest extends TestCase
         $this->assertEquals(6, $uuid2->getVariant());
     }
 
-    /**
-     */
-    public function testGetVariantForReservedFuture()
+    public function testGetVariantForReservedFuture(): void
     {
         $uuid1 = Uuid::fromString('ff6f8cb0-c57d-11e1-eb21-0800200c9a66');
         $this->assertEquals(7, $uuid1->getVariant());
@@ -661,49 +591,37 @@ class UuidTest extends TestCase
         $this->assertEquals(7, $uuid2->getVariant());
     }
 
-    /**
-     */
-    public function testGetVersionForVersion1()
+    public function testGetVersionForVersion1(): void
     {
         $uuid = Uuid::fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
         $this->assertEquals(1, $uuid->getVersion());
     }
 
-    /**
-     */
-    public function testGetVersionForVersion2()
+    public function testGetVersionForVersion2(): void
     {
         $uuid = Uuid::fromString('6fa459ea-ee8a-2ca4-894e-db77e160355e');
         $this->assertEquals(2, $uuid->getVersion());
     }
 
-    /**
-     */
-    public function testGetVersionForVersion3()
+    public function testGetVersionForVersion3(): void
     {
         $uuid = Uuid::fromString('6fa459ea-ee8a-3ca4-894e-db77e160355e');
         $this->assertEquals(3, $uuid->getVersion());
     }
 
-    /**
-     */
-    public function testGetVersionForVersion4()
+    public function testGetVersionForVersion4(): void
     {
         $uuid = Uuid::fromString('6fabf0bc-603a-42f2-925b-d9f779bd0032');
         $this->assertEquals(4, $uuid->getVersion());
     }
 
-    /**
-     */
-    public function testGetVersionForVersion5()
+    public function testGetVersionForVersion5(): void
     {
         $uuid = Uuid::fromString('886313e1-3b8a-5372-9b90-0c9aee199e5d');
         $this->assertEquals(5, $uuid->getVersion());
     }
 
-    /**
-     */
-    public function testToString()
+    public function testToString(): void
     {
         // Check with a recent date
         $uuid = Uuid::fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
@@ -716,9 +634,7 @@ class UuidTest extends TestCase
         $this->assertEquals('0901e600-0154-1000-9b21-0800200c9a66', sprintf('%s', (string) $uuid));
     }
 
-    /**
-     */
-    public function testUuid1()
+    public function testUuid1(): void
     {
         $uuid = Uuid::uuid1();
         $this->assertInstanceOf(Uuid::class, $uuid);
@@ -727,14 +643,12 @@ class UuidTest extends TestCase
         $this->assertEquals(1, $uuid->getVersion());
     }
 
-    /**
-     */
-    public function testUuid1WithNodeAndClockSequence()
+    public function testUuid1WithNodeAndClockSequence(): void
     {
         $this->skip64BitTest();
 
         /** @var Uuid $uuid */
-        $uuid = Uuid::uuid1(0x0800200c9a66, 0x1669);
+        $uuid = Uuid::uuid1((int) 0x0800200c9a66, 0x1669);
         $this->assertInstanceOf(Uuid::class, $uuid);
         $this->assertInstanceOf(\DateTimeInterface::class, $uuid->getDateTime());
         $this->assertEquals(2, $uuid->getVariant());
@@ -744,9 +658,7 @@ class UuidTest extends TestCase
         $this->assertEquals('9669-0800200c9a66', substr($uuid->toString(), 19));
     }
 
-    /**
-     */
-    public function testUuid1WithHexadecimalNode()
+    public function testUuid1WithHexadecimalNode(): void
     {
         /** @var Uuid $uuid */
         $uuid = Uuid::uuid1('7160355e');
@@ -762,9 +674,7 @@ class UuidTest extends TestCase
         }
     }
 
-    /**
-     */
-    public function testUuid1WithMixedCaseHexadecimalNode()
+    public function testUuid1WithMixedCaseHexadecimalNode(): void
     {
         /** @var Uuid $uuid */
         $uuid = Uuid::uuid1('71B0aD5e');
@@ -780,9 +690,7 @@ class UuidTest extends TestCase
         }
     }
 
-    /**
-     */
-    public function testUuid1WithNodeAndClockSequence32Bit()
+    public function testUuid1WithNodeAndClockSequence32Bit(): void
     {
         /** @var Uuid $uuid */
         $uuid = Uuid::uuid1(0x7fffffff, 0x1669);
@@ -799,7 +707,7 @@ class UuidTest extends TestCase
         }
     }
 
-    public function testUuid1WithOutOfBoundsNode()
+    public function testUuid1WithOutOfBoundsNode(): void
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Invalid node value');
@@ -807,7 +715,7 @@ class UuidTest extends TestCase
         $uuid = Uuid::uuid1('9223372036854775808');
     }
 
-    public function testUuid1WithNonHexadecimalNode()
+    public function testUuid1WithNonHexadecimalNode(): void
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Invalid node value');
@@ -815,7 +723,7 @@ class UuidTest extends TestCase
         $uuid = Uuid::uuid1('db77e160355g');
     }
 
-    public function testUuid1WithNon48bitNumber()
+    public function testUuid1WithNon48bitNumber(): void
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Invalid node value');
@@ -823,7 +731,7 @@ class UuidTest extends TestCase
         $uuid = Uuid::uuid1('db77e160355ef');
     }
 
-    public function testUuid1WithRandomNode()
+    public function testUuid1WithRandomNode(): void
     {
         Uuid::setFactory(new UuidFactory(new FeatureSet(false, false, false, true)));
 
@@ -840,7 +748,7 @@ class UuidTest extends TestCase
      * @see http://docs.python.org/library/uuid.html
      *
      */
-    public function testUuid3WithNamespaceAsUuidObject()
+    public function testUuid3WithNamespaceAsUuidObject(): void
     {
         $nsUuid = Uuid::fromString(Uuid::NAMESPACE_DNS);
         $uuid = Uuid::uuid3($nsUuid, 'python.org');
@@ -855,7 +763,7 @@ class UuidTest extends TestCase
      * @see http://docs.python.org/library/uuid.html
      *
      */
-    public function testUuid3WithNamespaceAsUuidString()
+    public function testUuid3WithNamespaceAsUuidString(): void
     {
         $uuid = Uuid::uuid3(Uuid::NAMESPACE_DNS, 'python.org');
         $this->assertEquals('6fa459ea-ee8a-3ca4-894e-db77e160355e', $uuid->toString());
@@ -870,7 +778,7 @@ class UuidTest extends TestCase
      * http://hg.python.org/cpython/file/2f4c4db9aee5/Lib/test/test_uuid.py
      *
      */
-    public function testUuid3WithKnownUuids()
+    public function testUuid3WithKnownUuids(): void
     {
         $uuids = [
             '6fa459ea-ee8a-3ca4-894e-db77e160355e' => Uuid::uuid3(Uuid::NAMESPACE_DNS, 'python.org'),
@@ -887,9 +795,7 @@ class UuidTest extends TestCase
         }
     }
 
-    /**
-     */
-    public function testUuid4()
+    public function testUuid4(): void
     {
         $uuid = Uuid::uuid4();
         $this->assertInstanceOf(Uuid::class, $uuid);
@@ -900,7 +806,7 @@ class UuidTest extends TestCase
     /**
      * Tests that generated UUID's using timestamp last COMB are sequential
      */
-    public function testUuid4TimestampLastComb()
+    public function testUuid4TimestampLastComb(): void
     {
         $mock = $this->getMockBuilder(RandomGeneratorInterface::class)->getMock();
         $mock->expects($this->any())
@@ -931,7 +837,7 @@ class UuidTest extends TestCase
     /**
      * Tests that generated UUID's using timestamp first COMB are sequential
      */
-    public function testUuid4TimestampFirstComb()
+    public function testUuid4TimestampFirstComb(): void
     {
         $mock = $this->getMockBuilder(RandomGeneratorInterface::class)->getMock();
         $mock->expects($this->any())
@@ -962,7 +868,7 @@ class UuidTest extends TestCase
     /**
      * Test that COMB UUID's have a version 4 flag
      */
-    public function testUuid4CombVersion()
+    public function testUuid4CombVersion(): void
     {
         $factory = new UuidFactory();
         $generator = new CombGenerator(
@@ -983,7 +889,7 @@ class UuidTest extends TestCase
      * @see http://docs.python.org/library/uuid.html
      *
      */
-    public function testUuid5WithNamespaceAsUuidObject()
+    public function testUuid5WithNamespaceAsUuidObject(): void
     {
         $nsUuid = Uuid::fromString(Uuid::NAMESPACE_DNS);
         $uuid = Uuid::uuid5($nsUuid, 'python.org');
@@ -998,7 +904,7 @@ class UuidTest extends TestCase
      * @see http://docs.python.org/library/uuid.html
      *
      */
-    public function testUuid5WithNamespaceAsUuidString()
+    public function testUuid5WithNamespaceAsUuidString(): void
     {
         $uuid = Uuid::uuid5(Uuid::NAMESPACE_DNS, 'python.org');
         $this->assertEquals('886313e1-3b8a-5372-9b90-0c9aee199e5d', $uuid->toString());
@@ -1013,7 +919,7 @@ class UuidTest extends TestCase
      * http://hg.python.org/cpython/file/2f4c4db9aee5/Lib/test/test_uuid.py
      *
      */
-    public function testUuid5WithKnownUuids()
+    public function testUuid5WithKnownUuids(): void
     {
         $uuids = [
             '886313e1-3b8a-5372-9b90-0c9aee199e5d' => Uuid::uuid5(Uuid::NAMESPACE_DNS, 'python.org'),
@@ -1030,9 +936,7 @@ class UuidTest extends TestCase
         }
     }
 
-    /**
-     */
-    public function testCompareTo()
+    public function testCompareTo(): void
     {
         // $uuid1 and $uuid2 are identical
         $uuid1 = Uuid::fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
@@ -1058,7 +962,7 @@ class UuidTest extends TestCase
         $this->assertEquals(1, $uuid3->compareTo($uuid5));
     }
 
-    public function testCompareToReturnsZeroWhenDifferentCases()
+    public function testCompareToReturnsZeroWhenDifferentCases(): void
     {
         $uuidString = 'ff6f8cb0-c57d-11e1-9b21-0800200c9a66';
         // $uuid1 and $uuid2 are identical
@@ -1069,7 +973,7 @@ class UuidTest extends TestCase
         $this->assertEquals(0, $uuid2->compareTo($uuid1));
     }
 
-    public function testEqualsReturnsTrueWhenDifferentCases()
+    public function testEqualsReturnsTrueWhenDifferentCases(): void
     {
         $uuidString = 'ff6f8cb0-c57d-11e1-9b21-0800200c9a66';
         // $uuid1 and $uuid2 are identical
@@ -1080,9 +984,7 @@ class UuidTest extends TestCase
         $this->assertTrue($uuid2->equals($uuid1));
     }
 
-    /**
-     */
-    public function testEquals()
+    public function testEquals(): void
     {
         $uuid1 = Uuid::uuid5(Uuid::NAMESPACE_DNS, 'python.org');
         $uuid2 = Uuid::uuid5(Uuid::NAMESPACE_DNS, 'python.org');
@@ -1093,9 +995,7 @@ class UuidTest extends TestCase
         $this->assertFalse($uuid1->equals(new stdClass()));
     }
 
-    /**
-     */
-    public function testCalculateUuidTime()
+    public function testCalculateUuidTime(): void
     {
         $timeOfDay = new FixedTimeProvider([
             'sec' => 1348845514,
@@ -1135,9 +1035,7 @@ class UuidTest extends TestCase
         $this->assertEquals('11e2', $uuidC->getTimeHiAndVersionHex());
     }
 
-    /**
-     */
-    public function testCalculateUuidTimeForce32BitMoontoastPath()
+    public function testCalculateUuidTimeForce32BitMoontoastPath(): void
     {
         $this->skipIfNoMoontoastMath();
 
@@ -1180,9 +1078,7 @@ class UuidTest extends TestCase
         $this->assertEquals('11e2', $uuidC->getTimeHiAndVersionHex());
     }
 
-    /**
-     */
-    public function testCalculateUuidTimeForce32BitGmpPath()
+    public function testCalculateUuidTimeForce32BitGmpPath(): void
     {
         $this->skipIfNoGmp();
 
@@ -1225,15 +1121,13 @@ class UuidTest extends TestCase
         $this->assertEquals('11e2', $uuidC->getTimeHiAndVersionHex());
     }
 
-    /**
-     */
-    public function testCalculateUuidTimeUpperLowerBounds64Bit()
+    public function testCalculateUuidTimeUpperLowerBounds64Bit(): void
     {
         $this->skip64BitTest();
 
         // 5235-03-31T21:20:59+00:00
         $timeOfDay = new FixedTimeProvider([
-            'sec' => 103072857659,
+            'sec' => (int) 103072857659,
             'usec' => 999999,
             'minuteswest' => 0,
             'dsttime' => 0,
@@ -1252,7 +1146,7 @@ class UuidTest extends TestCase
 
         // 1582-10-15T00:00:00+00:00
         $timeOfDay = new FixedTimeProvider([
-            'sec' => -12219292800,
+            'sec' => (int) -12219292800,
             'usec' => 0,
             'minuteswest' => 0,
             'dsttime' => 0,
@@ -1274,7 +1168,7 @@ class UuidTest extends TestCase
      * those generated by the 64-bit path, given the same 64-bit time values.
      *
      */
-    public function testCalculateUuidTimeUpperLowerBounds64BitThrough32BitGmpPath()
+    public function testCalculateUuidTimeUpperLowerBounds64BitThrough32BitGmpPath(): void
     {
         $this->skipIfNoGmp();
         $this->skip64BitTest();
@@ -1283,7 +1177,7 @@ class UuidTest extends TestCase
 
         // 5235-03-31T21:20:59+00:00
         $timeOfDay = new FixedTimeProvider([
-            'sec' => 103072857659,
+            'sec' => (int) 103072857659,
             'usec' => 999999,
             'minuteswest' => 0,
             'dsttime' => 0,
@@ -1302,7 +1196,7 @@ class UuidTest extends TestCase
 
         // 1582-10-15T00:00:00+00:00
         $timeOfDay = new FixedTimeProvider([
-            'sec' => -12219292800,
+            'sec' => (int) -12219292800,
             'usec' => 0,
             'minuteswest' => 0,
             'dsttime' => 0,
@@ -1325,7 +1219,7 @@ class UuidTest extends TestCase
      * those generated by the 64-bit path, given the same 64-bit time values.
      *
      */
-    public function testCalculateUuidTimeUpperLowerBounds64BitThrough32BitMoontoastPath()
+    public function testCalculateUuidTimeUpperLowerBounds64BitThrough32BitMoontoastPath(): void
     {
         $this->skipIfNoMoontoastMath();
         $this->skip64BitTest();
@@ -1334,7 +1228,7 @@ class UuidTest extends TestCase
 
         // 5235-03-31T21:20:59+00:00
         $timeOfDay = new FixedTimeProvider(array(
-            'sec' => 103072857659,
+            'sec' => (int) 103072857659,
             'usec' => 999999,
             'minuteswest' => 0,
             'dsttime' => 0,
@@ -1353,7 +1247,7 @@ class UuidTest extends TestCase
 
         // 1582-10-15T00:00:00+00:00
         $timeOfDay = new FixedTimeProvider(array(
-            'sec' => -12219292800,
+            'sec' => (int) -12219292800,
             'usec' => 0,
             'minuteswest' => 0,
             'dsttime' => 0,
@@ -1371,9 +1265,7 @@ class UuidTest extends TestCase
         $this->assertEquals('1000', $uuidB->getTimeHiAndVersionHex());
     }
 
-    /**
-     */
-    public function testCalculateUuidTimeUpperLowerBounds32BitGmp()
+    public function testCalculateUuidTimeUpperLowerBounds32BitGmp(): void
     {
         $this->skipIfNoGmp();
 
@@ -1417,9 +1309,7 @@ class UuidTest extends TestCase
         $this->assertEquals('1165', $uuidB->getTimeHiAndVersionHex());
     }
 
-    /**
-     */
-    public function testCalculateUuidTimeUpperLowerBounds32BitMoontoast()
+    public function testCalculateUuidTimeUpperLowerBounds32BitMoontoast(): void
     {
         $this->skipIfNoMoontoastMath();
 
@@ -1468,7 +1358,7 @@ class UuidTest extends TestCase
      * those generated by the 32-bit path, given the same 32-bit time values.
      *
      */
-    public function testCalculateUuidTimeUpperLowerBounds32BitThrough64BitPath()
+    public function testCalculateUuidTimeUpperLowerBounds32BitThrough64BitPath(): void
     {
         $this->skip64BitTest();
 
@@ -1515,7 +1405,7 @@ class UuidTest extends TestCase
      * Iterates over a 3600-second period and tests to ensure that, for each
      * second in the period, the 32-bit-Moontoast and 64-bit versions of the UUID match
      */
-    public function test32BitMoontoastMatch64BitForOneHourPeriod()
+    public function test32BitMoontoastMatch64BitForOneHourPeriod(): void
     {
         $this->skipIfNoMoontoastMath();
         $this->skip64BitTest();
@@ -1568,7 +1458,7 @@ class UuidTest extends TestCase
      * Iterates over a 3600-second period and tests to ensure that, for each
      * second in the period, the 32-bit-GMP and 64-bit versions of the UUID match
      */
-    public function test32BitGmpMatch64BitForOneHourPeriod()
+    public function test32BitGmpMatch64BitForOneHourPeriod(): void
     {
         $this->skipIfNoGmp();
         $this->skip64BitTest();
@@ -1617,7 +1507,7 @@ class UuidTest extends TestCase
         }
     }
 
-    public function testCalculateUuidTimeThrownException()
+    public function testCalculateUuidTimeThrownException(): void
     {
         Uuid::setFactory(new UuidFactory(new FeatureSet(false, true, true, false, false, true)));
 
@@ -1629,7 +1519,7 @@ class UuidTest extends TestCase
     /**
      * This method should respond to the result of the factory
      */
-    public function testIsValid()
+    public function testIsValid(): void
     {
         $argument = uniqid('passed argument ');
 
@@ -1647,17 +1537,13 @@ class UuidTest extends TestCase
         $factory->setValidator(new Validator);
     }
 
-    /**
-     */
-    public function testUsingNilAsValidUuid()
+    public function testUsingNilAsValidUuid(): void
     {
         $this->assertInstanceOf(Uuid::class, Uuid::uuid3(Uuid::NIL, 'randomtext'));
         $this->assertInstanceOf(Uuid::class, Uuid::uuid5(Uuid::NIL, 'randomtext'));
     }
 
-    /**
-     */
-    public function testFromBytes()
+    public function testFromBytes(): void
     {
         $uuid = Uuid::fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
         $bytes = $uuid->getBytes();
@@ -1667,7 +1553,7 @@ class UuidTest extends TestCase
         $this->assertTrue($uuid->equals($fromBytesUuid));
     }
 
-    public function testFromGuidBytesOnLittleEndianHost()
+    public function testFromGuidBytesOnLittleEndianHost(): void
     {
         $this->skipIfBigEndianHost();
 
@@ -1692,7 +1578,7 @@ class UuidTest extends TestCase
         $this->assertEquals($guid->toString(), $parsedGuid->toString());
     }
 
-    public function testFromGuidBytesOnBigEndianHost()
+    public function testFromGuidBytesOnBigEndianHost(): void
     {
         $this->skipIfLittleEndianHost();
 
@@ -1715,23 +1601,21 @@ class UuidTest extends TestCase
         $this->assertEquals($guid->toString(), $parsedGuid->toString());
     }
 
-    public function testFromBytesArgumentTooShort()
+    public function testFromBytesArgumentTooShort(): void
     {
         $this->expectException(InvalidArgumentException::class);
 
         Uuid::fromBytes('thisisveryshort');
     }
 
-    public function testFromBytesArgumentTooLong()
+    public function testFromBytesArgumentTooLong(): void
     {
         $this->expectException(InvalidArgumentException::class);
 
         Uuid::fromBytes('thisisabittoolong');
     }
 
-    /**
-     */
-    public function testFromIntegerMoontoast()
+    public function testFromIntegerMoontoast(): void
     {
         $this->skipIfNoMoontoastMath();
         Uuid::setFactory(new UuidFactory(new FeatureSet(false, false, false, false, false, true)));
@@ -1744,9 +1628,7 @@ class UuidTest extends TestCase
         $this->assertTrue($uuid->equals($fromIntegerUuid));
     }
 
-    /**
-     */
-    public function testFromIntegerStringMoontoast()
+    public function testFromIntegerStringMoontoast(): void
     {
         $this->skipIfNoMoontoastMath();
         Uuid::setFactory(new UuidFactory(new FeatureSet(false, false, false, false, false, true)));
@@ -1759,9 +1641,7 @@ class UuidTest extends TestCase
         $this->assertTrue($uuid->equals($fromIntegerUuid));
     }
 
-    /**
-     */
-    public function testFromIntegerGmp()
+    public function testFromIntegerGmp(): void
     {
         $this->skipIfNoGmp();
 
@@ -1773,7 +1653,7 @@ class UuidTest extends TestCase
         $this->assertTrue($uuid->equals($fromIntegerUuid));
     }
 
-    public function testFromIntegerException()
+    public function testFromIntegerException(): void
     {
         Uuid::setFactory(new UuidFactory(new FeatureSet(false, false, true, false, false, true)));
 
@@ -1792,7 +1672,7 @@ class UuidTest extends TestCase
      * http://hg.python.org/cpython/file/2f4c4db9aee5/Lib/test/test_uuid.py
      *
      */
-    public function testUuidPassesPythonTests()
+    public function testUuidPassesPythonTests(): void
     {
         // This array is taken directly from the Python tests, more or less
         $tests = [
@@ -2112,7 +1992,7 @@ class UuidTest extends TestCase
         }
     }
 
-    public function testGetInteger()
+    public function testGetInteger(): void
     {
         Uuid::setFactory(new UuidFactory(new FeatureSet(false, false, true, false, false, true)));
 
@@ -2126,14 +2006,14 @@ class UuidTest extends TestCase
     /**
      * @covers Ramsey\Uuid\Uuid::jsonSerialize
      */
-    public function testJsonSerialize()
+    public function testJsonSerialize(): void
     {
         $uuid = Uuid::uuid1();
 
         $this->assertEquals('"' . $uuid->toString() . '"', json_encode($uuid));
     }
 
-    public function testSerialize()
+    public function testSerialize(): void
     {
         $uuid = Uuid::uuid4();
         $serialized = serialize($uuid);
@@ -2141,7 +2021,7 @@ class UuidTest extends TestCase
         $this->assertTrue($uuid->equals($unserializedUuid));
     }
 
-    public function testUuid3WithEmptyNamespace()
+    public function testUuid3WithEmptyNamespace(): void
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Invalid UUID string:');
@@ -2149,21 +2029,21 @@ class UuidTest extends TestCase
         $uuid = Uuid::uuid3('', '');
     }
 
-    public function testUuid3WithEmptyName()
+    public function testUuid3WithEmptyName(): void
     {
         $uuid = Uuid::uuid3(Uuid::NIL, '');
 
         $this->assertEquals('4ae71336-e44b-39bf-b9d2-752e234818a5', $uuid->toString());
     }
 
-    public function testUuid3WithZeroName()
+    public function testUuid3WithZeroName(): void
     {
         $uuid = Uuid::uuid3(Uuid::NIL, '0');
 
         $this->assertEquals('19826852-5007-3022-a72a-212f66e9fac3', $uuid->toString());
     }
 
-    public function testUuid5WithEmptyNamespace()
+    public function testUuid5WithEmptyNamespace(): void
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Invalid UUID string:');
@@ -2171,14 +2051,14 @@ class UuidTest extends TestCase
         $uuid = Uuid::uuid5('', '');
     }
 
-    public function testUuid5WithEmptyName()
+    public function testUuid5WithEmptyName(): void
     {
         $uuid = Uuid::uuid5(Uuid::NIL, '');
 
         $this->assertEquals('e129f27c-5103-5c5c-844b-cdf0a15e160d', $uuid->toString());
     }
 
-    public function testUuid5WithZeroName()
+    public function testUuid5WithZeroName(): void
     {
         $uuid = Uuid::uuid5(Uuid::NIL, '0');
 
@@ -2188,7 +2068,7 @@ class UuidTest extends TestCase
     /**
      * @depends testGetVersionForVersion1
      */
-    public function testUuidVersionConstantForVersion1()
+    public function testUuidVersionConstantForVersion1(): void
     {
         $uuid = Uuid::fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
         $this->assertEquals($uuid->getVersion(), Uuid::UUID_TYPE_TIME);
@@ -2197,7 +2077,7 @@ class UuidTest extends TestCase
     /**
      * @depends testGetVersionForVersion2
      */
-    public function testUuidVersionConstantForVersion2()
+    public function testUuidVersionConstantForVersion2(): void
     {
         $uuid = Uuid::fromString('6fa459ea-ee8a-2ca4-894e-db77e160355e');
         $this->assertEquals($uuid->getVersion(), Uuid::UUID_TYPE_IDENTIFIER);
@@ -2206,7 +2086,7 @@ class UuidTest extends TestCase
     /**
      * @depends testGetVersionForVersion3
      */
-    public function testUuidVersionConstantForVersion3()
+    public function testUuidVersionConstantForVersion3(): void
     {
         $uuid = Uuid::fromString('6fa459ea-ee8a-3ca4-894e-db77e160355e');
         $this->assertEquals($uuid->getVersion(), Uuid::UUID_TYPE_HASH_MD5);
@@ -2215,7 +2095,7 @@ class UuidTest extends TestCase
     /**
      * @depends testGetVersionForVersion4
      */
-    public function testUuidVersionConstantForVersion4()
+    public function testUuidVersionConstantForVersion4(): void
     {
         $uuid = Uuid::fromString('6fabf0bc-603a-42f2-925b-d9f779bd0032');
         $this->assertEquals($uuid->getVersion(), Uuid::UUID_TYPE_RANDOM);
@@ -2224,7 +2104,7 @@ class UuidTest extends TestCase
     /**
      * @depends testGetVersionForVersion5
      */
-    public function testUuidVersionConstantForVersion5()
+    public function testUuidVersionConstantForVersion5(): void
     {
         $uuid = Uuid::fromString('886313e1-3b8a-5372-9b90-0c9aee199e5d');
         $this->assertEquals($uuid->getVersion(), Uuid::UUID_TYPE_HASH_SHA1);

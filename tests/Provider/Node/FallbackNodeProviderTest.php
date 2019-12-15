@@ -2,13 +2,13 @@
 
 namespace Ramsey\Uuid\Test\Provider\Node;
 
-use Ramsey\Uuid\Provider\Node\FallbackNodeProvider;
 use Ramsey\Uuid\Provider\NodeProviderInterface;
+use Ramsey\Uuid\Provider\Node\FallbackNodeProvider;
 use Ramsey\Uuid\Test\TestCase;
 
 class FallbackNodeProviderTest extends TestCase
 {
-    public function testGetNodeCallsGetNodeOnEachProviderUntilNodeFound()
+    public function testGetNodeCallsGetNodeOnEachProviderUntilNodeFound(): void
     {
         $providerWithNode = $this->getMockBuilder(NodeProviderInterface::class)->getMock();
         $providerWithNode->expects($this->once())
@@ -23,7 +23,7 @@ class FallbackNodeProviderTest extends TestCase
         $provider->getNode();
     }
 
-    public function testGetNodeReturnsNodeFromFirstProviderWithNode()
+    public function testGetNodeReturnsNodeFromFirstProviderWithNode(): void
     {
         $providerWithoutNode = $this->getMockBuilder(NodeProviderInterface::class)->getMock();
         $providerWithoutNode->expects($this->once())
@@ -39,10 +39,11 @@ class FallbackNodeProviderTest extends TestCase
 
         $provider = new FallbackNodeProvider([$providerWithoutNode, $providerWithNode, $anotherProviderWithoutNode]);
         $node = $provider->getNode();
+
         $this->assertEquals('57764a07f756', $node);
     }
 
-    public function testGetNodeReturnsNullWhenNoNodesFound()
+    public function testGetNodeReturnsNullWhenNoNodesFound(): void
     {
         $providerWithoutNode = $this->getMockBuilder(NodeProviderInterface::class)->getMock();
         $providerWithoutNode->method('getNode')
@@ -50,6 +51,7 @@ class FallbackNodeProviderTest extends TestCase
 
         $provider = new FallbackNodeProvider([$providerWithoutNode]);
         $node = $provider->getNode();
+
         $this->assertNull($node);
     }
 }

@@ -6,14 +6,9 @@ use Ramsey\Uuid\Converter\Number\DegradedNumberConverter;
 use Ramsey\Uuid\Exception\UnsatisfiedDependencyException;
 use Ramsey\Uuid\Test\TestCase;
 
-/**
- * Class DegradedNumberConverterTest
- * @package Ramsey\Uuid\Test\Converter\Number
- * @covers Ramsey\Uuid\Converter\Number\DegradedNumberConverter
- */
 class DegradedNumberConverterTest extends TestCase
 {
-    public function testConvertingFromHexThrowsException()
+    public function testConvertingFromHexThrowsException(): void
     {
         $converter = new DegradedNumberConverter();
 
@@ -22,7 +17,7 @@ class DegradedNumberConverterTest extends TestCase
         $converter->fromHex('ffff');
     }
 
-    public function testConvertingToHexThrowsException()
+    public function testConvertingToHexThrowsException(): void
     {
         $converter = new DegradedNumberConverter();
 
