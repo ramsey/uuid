@@ -6,13 +6,9 @@ use Ramsey\Uuid\Converter\Time\DegradedTimeConverter;
 use Ramsey\Uuid\Exception\UnsatisfiedDependencyException;
 use Ramsey\Uuid\Test\TestCase;
 
-/**
- * Class DegradedTimeConverterTest
- * @covers DegradedTimeConverter
- */
 class DegradedTimeConverterTest extends TestCase
 {
-    public function testConvertingFromHexThrowsException()
+    public function testConvertingFromHexThrowsException(): void
     {
         $converter = new DegradedTimeConverter();
 
@@ -21,7 +17,7 @@ class DegradedTimeConverterTest extends TestCase
         $converter->calculateTime('123', '123');
     }
 
-    public function testConvertingToHexThrowsException()
+    public function testConvertingToHexThrowsException(): void
     {
         $converter = new DegradedTimeConverter();
 

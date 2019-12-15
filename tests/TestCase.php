@@ -14,7 +14,7 @@ class TestCase extends PhpUnitTestCase
         Mockery::close();
     }
 
-    protected function skip64BitTest()
+    protected function skip64BitTest(): void
     {
         if (PHP_INT_SIZE == 4) {
             $this->markTestSkipped(
@@ -23,7 +23,7 @@ class TestCase extends PhpUnitTestCase
         }
     }
 
-    protected function skipIfNoMoontoastMath()
+    protected function skipIfNoMoontoastMath(): void
     {
         if (!$this->hasMoontoastMath()) {
             $this->markTestSkipped(
@@ -32,7 +32,7 @@ class TestCase extends PhpUnitTestCase
         }
     }
 
-    protected function skipIfNoGmp()
+    protected function skipIfNoGmp(): void
     {
         if (!$this->hasGmp()) {
             $this->markTestSkipped(
@@ -41,17 +41,17 @@ class TestCase extends PhpUnitTestCase
         }
     }
 
-    protected function hasMoontoastMath()
+    protected function hasMoontoastMath(): bool
     {
         return class_exists('Moontoast\\Math\\BigNumber');
     }
 
-    protected function hasGmp()
+    protected function hasGmp(): bool
     {
         return extension_loaded('gmp');
     }
 
-    protected function skipIfLittleEndianHost()
+    protected function skipIfLittleEndianHost(): void
     {
         if (self::isLittleEndianSystem()) {
             $this->markTestSkipped(
@@ -60,7 +60,7 @@ class TestCase extends PhpUnitTestCase
         }
     }
 
-    protected function skipIfBigEndianHost()
+    protected function skipIfBigEndianHost(): void
     {
         if (!self::isLittleEndianSystem()) {
             $this->markTestSkipped(
@@ -69,7 +69,7 @@ class TestCase extends PhpUnitTestCase
         }
     }
 
-    public static function isLittleEndianSystem()
+    public static function isLittleEndianSystem(): bool
     {
         return current(unpack('v', pack('S', 0x00FF))) === 0x00FF;
     }

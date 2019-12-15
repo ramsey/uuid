@@ -1,4 +1,5 @@
 <?php
+
 namespace Ramsey\Uuid\Test\Encoder;
 
 use PHPUnit\Framework\MockObject\MockObject;
@@ -16,7 +17,7 @@ class TimestampFirstCombCodecTest extends TestCase
     private $codec;
 
     /**
-     * @var MockObject
+     * @var MockObject & UuidBuilderInterface
      */
     private $builderMock;
 
@@ -26,8 +27,9 @@ class TimestampFirstCombCodecTest extends TestCase
         $this->codec = new TimestampFirstCombCodec($this->builderMock);
     }
 
-    public function testEncoding()
+    public function testEncoding(): void
     {
+        /** @var MockObject & UuidInterface $uuidMock */
         $uuidMock = $this->getMockBuilder(UuidInterface::class)->getMock();
         $uuidMock->expects($this->any())
             ->method('getFieldsHex')
@@ -37,8 +39,9 @@ class TimestampFirstCombCodecTest extends TestCase
         $this->assertSame('0800200c-9a66-11e1-9b21-ff6f8cb0c57d', $encodedUuid);
     }
 
-    public function testBinaryEncoding()
+    public function testBinaryEncoding(): void
     {
+        /** @var MockObject & UuidInterface $uuidMock */
         $uuidMock = $this->getMockBuilder(UuidInterface::class)->getMock();
         $uuidMock->expects($this->any())
             ->method('getFieldsHex')
@@ -48,7 +51,7 @@ class TimestampFirstCombCodecTest extends TestCase
         $this->assertSame(hex2bin('0800200c9a6611e19b21ff6f8cb0c57d'), $encodedUuid);
     }
 
-    public function testDecoding()
+    public function testDecoding(): void
     {
         $this->builderMock->expects($this->exactly(1))
             ->method('build')
@@ -66,7 +69,7 @@ class TimestampFirstCombCodecTest extends TestCase
         $this->codec->decode('0800200c-9a66-11e1-9b21-ff6f8cb0c57d');
     }
 
-    public function testBinaryDecoding()
+    public function testBinaryDecoding(): void
     {
         $this->builderMock->expects($this->exactly(1))
             ->method('build')
@@ -81,6 +84,6 @@ class TimestampFirstCombCodecTest extends TestCase
                     'node' => '0800200c9a66'
                 ]
             );
-        $this->codec->decodeBytes(hex2bin('0800200c9a6611e19b21ff6f8cb0c57d'));
+        $this->codec->decodeBytes((string) hex2bin('0800200c9a6611e19b21ff6f8cb0c57d'));
     }
 }

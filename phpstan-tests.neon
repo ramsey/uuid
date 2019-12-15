@@ -1,3 +1,21 @@
 parameters:
     autoload_files:
         - tests/phpstan-bootstrap.php
+    reportUnmatchedIgnoredErrors: false
+    ignoreErrors:
+        -
+            message: "#^Function uuid_create\\(\\) has no return typehint specified\\.$#"
+            count: 1
+            path: tests/phpstan-bootstrap.php
+        -
+            message: "#^Function uuid_create\\(\\) has parameter \\$uuid_type with no typehint specified\\.$#"
+            count: 1
+            path: tests/phpstan-bootstrap.php
+        -
+            message: "#^Function uuid_parse\\(\\) has no return typehint specified\\.$#"
+            count: 1
+            path: tests/phpstan-bootstrap.php
+        -
+            message: "#^Function uuid_parse\\(\\) has parameter \\$uuid with no typehint specified\\.$#"
+            count: 1
+            path: tests/phpstan-bootstrap.php

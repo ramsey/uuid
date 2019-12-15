@@ -8,27 +8,31 @@ use Ramsey\Uuid\Codec\OrderedTimeCodec;
 use Ramsey\Uuid\Test\TestCase;
 use Ramsey\Uuid\UuidInterface;
 
-/**
- * Class OrderedTimeCodecTest
- * @package Ramsey\Uuid\Test\Codec
- * @covers Ramsey\Uuid\Codec\OrderedTimeCodec
- */
 class OrderedTimeCodecTest extends TestCase
 {
-
-    /** @var UuidBuilderInterface&MockObject */
+    /**
+     * @var UuidBuilderInterface & MockObject
+     */
     private $builder;
 
-    /** @var UuidInterface&MockObject */
+    /**
+     * @var UuidInterface & MockObject
+     */
     private $uuid;
 
-    /** @var array */
+    /**
+     * @var string[]
+     */
     private $fields;
 
-    /** @var string */
+    /**
+     * @var string
+     */
     private $uuidString = '58e0a7d7-eebc-11d8-9669-0800200c9a66';
 
-    /** @var string */
+    /**
+     * @var string
+     */
     private $optimizedHex = '11d8eebc58e0a7d796690800200c9a66';
 
     protected function setUp(): void
@@ -50,7 +54,7 @@ class OrderedTimeCodecTest extends TestCase
         unset($this->builder, $this->uuid, $this->fields);
     }
 
-    public function testEncodeUsesFieldsArray()
+    public function testEncodeUsesFieldsArray(): void
     {
         $this->uuid->expects($this->once())
             ->method('getFieldsHex')
@@ -59,7 +63,7 @@ class OrderedTimeCodecTest extends TestCase
         $codec->encode($this->uuid);
     }
 
-    public function testEncodeReturnsFormattedString()
+    public function testEncodeReturnsFormattedString(): void
     {
         $this->uuid->method('getFieldsHex')
             ->willReturn($this->fields);
@@ -68,7 +72,7 @@ class OrderedTimeCodecTest extends TestCase
         $this->assertEquals($this->uuidString, $result);
     }
 
-    public function testEncodeBinaryUsesFieldsHex()
+    public function testEncodeBinaryUsesFieldsHex(): void
     {
         $this->uuid->expects($this->once())
             ->method('getFieldsHex')
@@ -77,7 +81,7 @@ class OrderedTimeCodecTest extends TestCase
         $codec->encodeBinary($this->uuid);
     }
 
-    public function testEncodeBinaryReturnsBinaryString()
+    public function testEncodeBinaryReturnsBinaryString(): void
     {
         $expected = hex2bin($this->optimizedHex);
         $this->uuid->method('getFieldsHex')
@@ -87,7 +91,7 @@ class OrderedTimeCodecTest extends TestCase
         $this->assertEquals($expected, $result);
     }
 
-    public function testDecodeBytesThrowsExceptionWhenBytesStringNotSixteenCharacters()
+    public function testDecodeBytesThrowsExceptionWhenBytesStringNotSixteenCharacters(): void
     {
         $string = '61';
         $bytes = pack('H*', $string);
@@ -98,7 +102,7 @@ class OrderedTimeCodecTest extends TestCase
         $codec->decodeBytes($bytes);
     }
 
-    public function testDecodeReturnsUuidFromBuilder()
+    public function testDecodeReturnsUuidFromBuilder(): void
     {
         $string = 'uuid:58e0a7d7-eebc-11d8-9669-0800200c9a66';
         $this->builder->method('build')
@@ -108,7 +112,7 @@ class OrderedTimeCodecTest extends TestCase
         $this->assertEquals($this->uuid, $result);
     }
 
-    public function testDecodeBytesRearrangesFields()
+    public function testDecodeBytesRearrangesFields(): void
     {
         $bytes = pack('H*', $this->optimizedHex);
         $codec = new OrderedTimeCodec($this->builder);

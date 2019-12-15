@@ -2,18 +2,17 @@
 
 namespace Ramsey\Uuid\Test\Generator;
 
+use AspectMock\Test as AspectMock;
+use Exception;
 use Ramsey\Uuid\Generator\RandomBytesGenerator;
 use Ramsey\Uuid\Test\TestCase;
-use AspectMock\Test as AspectMock;
 
-/**
- * Class RandomBytesGeneratorTest
- * @package Ramsey\Uuid\Test\Generator
- * @covers Ramsey\Uuid\Generator\RandomBytesGenerator
- */
 class RandomBytesGeneratorTest extends TestCase
 {
-    public function lengthAndHexDataProvider()
+    /**
+     * @return array[]
+     */
+    public function lengthAndHexDataProvider(): array
     {
         return [
             [6, '4f17dd046fb8'],
@@ -28,9 +27,9 @@ class RandomBytesGeneratorTest extends TestCase
      * @preserveGlobalState disabled
      * @param int $length
      * @param string $hex
-     * @throws \Exception
+     * @throws Exception
      */
-    public function testGenerateUsesOpenSsl($length, $hex)
+    public function testGenerateUsesOpenSsl($length, $hex): void
     {
         $bytes = hex2bin($hex);
         $openSsl = AspectMock::func('Ramsey\Uuid\Generator', 'random_bytes', $bytes);
@@ -46,9 +45,9 @@ class RandomBytesGeneratorTest extends TestCase
      * @preserveGlobalState disabled
      * @param int $length
      * @param string $hex
-     * @throws \Exception
+     * @throws Exception
      */
-    public function testGenerateReturnsRandomBytes($length, $hex)
+    public function testGenerateReturnsRandomBytes($length, $hex): void
     {
         $bytes = hex2bin($hex);
         AspectMock::func('Ramsey\Uuid\Generator', 'random_bytes', $bytes);

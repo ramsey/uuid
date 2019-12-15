@@ -3,12 +3,12 @@
 namespace Ramsey\Uuid\Test\Generator;
 
 use Ramsey\Uuid\Generator\RandomBytesGenerator;
-use Ramsey\Uuid\Test\TestCase;
 use Ramsey\Uuid\Generator\RandomGeneratorFactory;
+use Ramsey\Uuid\Test\TestCase;
 
 class RandomGeneratorFactoryTest extends TestCase
 {
-    public function testFactoryReturnsRandomBytesGenerator()
+    public function testFactoryReturnsRandomBytesGenerator(): void
     {
         $generator = RandomGeneratorFactory::getGenerator();
 
