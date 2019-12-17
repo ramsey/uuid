@@ -2,13 +2,13 @@
 
 namespace Ramsey\Uuid\Test\Converter\Time;
 
+use AspectMock\Test as AspectMock;
 use InvalidArgumentException;
-use Mockery;
-use Ramsey\Uuid\Converter\Time\PhpTimeConverter;
+use Ramsey\Uuid\Converter\Time\BigNumberTimeConverter;
 use Ramsey\Uuid\Exception\UnsatisfiedDependencyException;
 use Ramsey\Uuid\Test\TestCase;
 
-class PhpTimeConverterTest extends TestCase
+class BigNumberTimeConverterTest extends TestCase
 {
     public function testCalculateTimeReturnsArrayOfTimeSegments(): void
     {
@@ -24,7 +24,7 @@ class PhpTimeConverterTest extends TestCase
             'hi' => sprintf('%04x', ($calculatedTime >> 48) & 0x0fff)
         ];
 
-        $converter = new PhpTimeConverter();
+        $converter = new BigNumberTimeConverter();
         $returned = $converter->calculateTime((string) $seconds, (string) $microSeconds);
 
         $this->assertSame($expectedArray, $returned);
@@ -34,44 +34,57 @@ class PhpTimeConverterTest extends TestCase
     {
         $this->skip64BitTest();
 
-        $converter = new PhpTimeConverter();
+        $converter = new BigNumberTimeConverter();
         $returned = $converter->convertTime('135606608744910000');
 
         $this->assertSame('1341368074', $returned);
     }
 
-    public function testCalculateTimeThrowsExceptionWhenNot64BitPhp(): void
+    /**
+     * @runInSeparateProcess
+     * @preserveGlobalState disabled
+     */
+    public function testCalculateTimeThrowsExceptionWhenGmpExtensionNotPresent(): void
     {
-        /** @var Mockery\MockInterface & PhpTimeConverter $converter */
-        $converter = Mockery::mock(PhpTimeConverter::class)->makePartial();
-        $converter->shouldAllowMockingProtectedMethods();
-        $converter->shouldReceive('getPhpIntSize')->once()->andReturn(4);
+        $classExists = AspectMock::func(
+            'Ramsey\Uuid\Converter',
+            'class_exists',
+            false
+        );
+
+        $converter = new BigNumberTimeConverter();
 
         $this->expectException(UnsatisfiedDependencyException::class);
-        $this->expectExceptionMessage('The PHP build must be 64-bit to use this converter');
+        $this->expectExceptionMessage('moontoast/math must be present to use this converter');
 
         $converter->calculateTime('1234', '5678');
+        $classExists->verifyInvokedOnce(['Moontoast\Math\BigNumber']);
     }
 
-    public function testConvertTimeThrowsExceptionWhenNot64BitPhp(): void
+    /**
+     * @runInSeparateProcess
+     * @preserveGlobalState disabled
+     */
+    public function testConvertTimeThrowsExceptionWhenGmpExtensionNotPresent(): void
     {
-        /** @var Mockery\MockInterface & PhpTimeConverter $converter */
-        $converter = Mockery::mock(PhpTimeConverter::class)->makePartial();
-        $converter->shouldAllowMockingProtectedMethods();
-        $converter->shouldReceive('getPhpIntSize')->once()->andReturn(4);
+        $classExists = AspectMock::func(
+            'Ramsey\Uuid\Converter',
+            'class_exists',
+            false
+        );
+
+        $converter = new BigNumberTimeConverter();
 
         $this->expectException(UnsatisfiedDependencyException::class);
-        $this->expectExceptionMessage('The PHP build must be 64-bit to use this converter');
+        $this->expectExceptionMessage('moontoast/math must be present to use this converter');
 
         $converter->convertTime('1234');
+        $classExists->verifyInvokedOnce(['Moontoast\Math\BigNumber']);
     }
 
     public function testCalculateTimeThrowsExceptionWhenSecondsIsNotOnlyDigits(): void
     {
-        /** @var Mockery\MockInterface & PhpTimeConverter $converter */
-        $converter = Mockery::mock(PhpTimeConverter::class)->makePartial();
-        $converter->shouldAllowMockingProtectedMethods();
-        $converter->shouldReceive('getPhpIntSize')->once()->andReturn(8);
+        $converter = new BigNumberTimeConverter();
 
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('$seconds must contain only digits');
@@ -81,10 +94,7 @@ class PhpTimeConverterTest extends TestCase
 
     public function testCalculateTimeThrowsExceptionWhenMicroSecondsIsNotOnlyDigits(): void
     {
-        /** @var Mockery\MockInterface & PhpTimeConverter $converter */
-        $converter = Mockery::mock(PhpTimeConverter::class)->makePartial();
-        $converter->shouldAllowMockingProtectedMethods();
-        $converter->shouldReceive('getPhpIntSize')->once()->andReturn(8);
+        $converter = new BigNumberTimeConverter();
 
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('$microSeconds must contain only digits');
@@ -94,10 +104,7 @@ class PhpTimeConverterTest extends TestCase
 
     public function testConvertTimeThrowsExceptionWhenTimestampIsNotOnlyDigits(): void
     {
-        /** @var Mockery\MockInterface & PhpTimeConverter $converter */
-        $converter = Mockery::mock(PhpTimeConverter::class)->makePartial();
-        $converter->shouldAllowMockingProtectedMethods();
-        $converter->shouldReceive('getPhpIntSize')->once()->andReturn(8);
+        $converter = new BigNumberTimeConverter();
 
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('$timestamp must contain only digits');

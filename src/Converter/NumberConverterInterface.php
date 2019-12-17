@@ -14,6 +14,7 @@
 
 namespace Ramsey\Uuid\Converter;
 
+use InvalidArgumentException;
 use Ramsey\Uuid\Exception\UnsatisfiedDependencyException;
 
 /**
@@ -23,26 +24,29 @@ use Ramsey\Uuid\Exception\UnsatisfiedDependencyException;
 interface NumberConverterInterface
 {
     /**
-     * Converts a hexadecimal number into an integer representation of the number
+     * Converts a hexadecimal number into an string integer representation of
+     * the number
      *
-     * The integer representation returned may be an object or a string
-     * representation of the integer, depending on the implementation.
+     * The integer representation returned is a string representation of the
+     * integer, to accommodate unsigned integers greater than PHP_INT_MAX.
      *
      * @param string $hex The hexadecimal string representation to convert
-     * @return mixed
-     * @throws UnsatisfiedDependencyException if `Moontoast\Math\BigNumber` is not present
+     * @return string
+     * @throws InvalidArgumentException if $hex is not a hexadecimal string
+     * @throws UnsatisfiedDependencyException if the chosen converter is not present
      */
-    public function fromHex($hex);
+    public function fromHex(string $hex): string;
 
     /**
-     * Converts an integer representation into a hexadecimal string representation
-     * of the number
+     * Converts a string integer representation into a hexadecimal string
+     * representation of the number
      *
-     * @param mixed $integer An integer representation to convert; this may be
-     *     a true integer, a string integer, or a object representation that
-     *     this converter can understand
+     * @param string $number A string integer representation to convert; this
+     *     must be a numeric string to accommodate unsigned integers greater
+     *     than PHP_INT_MAX.
      * @return string Hexadecimal string
-     * @throws UnsatisfiedDependencyException if `Moontoast\Math\BigNumber` is not present
+     * @throws InvalidArgumentException if $integer is not an integer string
+     * @throws UnsatisfiedDependencyException if the chosen converter is not present
      */
-    public function toHex($integer);
+    public function toHex(string $number): string;
 }

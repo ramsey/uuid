@@ -14,8 +14,12 @@
 
 namespace Ramsey\Uuid\Converter\Time;
 
+use InvalidArgumentException;
 use Moontoast\Math\BigNumber;
+use Ramsey\Uuid\Converter\DependencyCheckTrait;
+use Ramsey\Uuid\Converter\NumberStringTrait;
 use Ramsey\Uuid\Converter\TimeConverterInterface;
+use Ramsey\Uuid\Exception\UnsatisfiedDependencyException;
 
 /**
  * BigNumberTimeConverter uses the moontoast/math library's `BigNumber` to
@@ -24,17 +28,26 @@ use Ramsey\Uuid\Converter\TimeConverterInterface;
  */
 class BigNumberTimeConverter implements TimeConverterInterface
 {
+    use DependencyCheckTrait;
+    use NumberStringTrait;
+
     /**
      * Uses the provided seconds and micro-seconds to calculate the time_low,
      * time_mid, and time_high fields used by RFC 4122 version 1 UUIDs
      *
      * @param string $seconds
      * @param string $microSeconds
-     * @return string[] An array containing `low`, `mid`, and `high` keys
+     * @return string[] An array guaranteed to contain `low`, `mid`, and `high` keys
+     * @throws InvalidArgumentException if $seconds or $microseconds are not integer strings
+     * @throws UnsatisfiedDependencyException if the chosen converter is not present
      * @link http://tools.ietf.org/html/rfc4122#section-4.2.2
      */
-    public function calculateTime($seconds, $microSeconds)
+    public function calculateTime(string $seconds, string $microSeconds): array
     {
+        $this->checkMoontoastMathLibrary();
+        $this->checkIntegerString($seconds, 'seconds');
+        $this->checkIntegerString($microSeconds, 'microSeconds');
+
         $uuidTime = new BigNumber('0');
 
         $sec = new BigNumber($seconds);
@@ -59,11 +72,19 @@ class BigNumberTimeConverter implements TimeConverterInterface
 
     /**
      * Converts a timestamp extracted from a UUID to a unix timestamp
-     * @param mixed $timestamp - an integer, string or a Moontoast\Bignumber object
+     *
+     * @param string $timestamp A string integer representation of a timestamp;
+     *     this must be a numeric string to accommodate unsigned integers
+     *     greater than PHP_INT_MAX.
      * @return string
+     * @throws InvalidArgumentException if $timestamp is not an integer string
+     * @throws UnsatisfiedDependencyException if the chosen converter is not present
      */
-    public function convertTime($timestamp)
+    public function convertTime(string $timestamp): string
     {
+        $this->checkMoontoastMathLibrary();
+        $this->checkIntegerString($timestamp, 'timestamp');
+
         $ts = new BigNumber($timestamp, 20);
         $ts->subtract('122192928000000000');
         $ts->divide('10000000.0');

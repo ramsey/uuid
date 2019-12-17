@@ -13,6 +13,12 @@ class DegradedNumberConverterTest extends TestCase
         $converter = new DegradedNumberConverter();
 
         $this->expectException(UnsatisfiedDependencyException::class);
+        $this->expectExceptionMessage(
+            'Cannot call fromHex using the DegradedNumberConverter; '
+            . 'please choose a converter with support for large integers; '
+            . 'refer to the ramsey/uuid wiki for more information: '
+            . 'https://github.com/ramsey/uuid/wiki'
+        );
 
         $converter->fromHex('ffff');
     }
@@ -22,7 +28,13 @@ class DegradedNumberConverterTest extends TestCase
         $converter = new DegradedNumberConverter();
 
         $this->expectException(UnsatisfiedDependencyException::class);
+        $this->expectExceptionMessage(
+            'Cannot call toHex using the DegradedNumberConverter; '
+            . 'please choose a converter with support for large integers; '
+            . 'refer to the ramsey/uuid wiki for more information: '
+            . 'https://github.com/ramsey/uuid/wiki'
+        );
 
-        $converter->toHex(0);
+        $converter->toHex('0');
     }
 }

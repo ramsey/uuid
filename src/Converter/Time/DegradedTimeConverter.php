@@ -18,40 +18,48 @@ use Ramsey\Uuid\Converter\TimeConverterInterface;
 use Ramsey\Uuid\Exception\UnsatisfiedDependencyException;
 
 /**
- * DegradedTimeConverter throws `UnsatisfiedDependencyException` exceptions
- * if attempting to use time conversion functionality in an environment that
- * does not support large integers (i.e. when moontoast/math is not available)
+ * DegradedTimeConverter is chosen if all other options for large integer
+ * support are unavailable. This exists to throw exceptions if these methods
+ * are called on systems that do not have support for large integers.
  */
 class DegradedTimeConverter implements TimeConverterInterface
 {
     /**
-     * Throws an `UnsatisfiedDependencyException`
+     * Uses the provided seconds and micro-seconds to calculate the time_low,
+     * time_mid, and time_high fields used by RFC 4122 version 1 UUIDs
      *
      * @param string $seconds
      * @param string $microSeconds
-     * @return string[]
-     * @throws UnsatisfiedDependencyException if called on a 32-bit system and `Moontoast\Math\BigNumber` is not present
+     * @return string[] An array guaranteed to contain `low`, `mid`, and `high` keys
+     * @throws UnsatisfiedDependencyException if the chosen converter is not present
+     * @link http://tools.ietf.org/html/rfc4122#section-4.2.2
      */
-    public function calculateTime($seconds, $microSeconds)
+    public function calculateTime(string $seconds, string $microSeconds): array
     {
         throw new UnsatisfiedDependencyException(
-            'When calling ' . __METHOD__ . ' on a 32-bit system, '
-            . 'Moontoast\Math\BigNumber or the GMP PHP-extension must be present.'
+            'Cannot call calculateTime using the DegradedTimeConverter; '
+            . 'please choose a converter with support for large integers; '
+            . 'refer to the ramsey/uuid wiki for more information: '
+            . 'https://github.com/ramsey/uuid/wiki'
         );
     }
 
     /**
-     * Throws an `UnsatisfiedDependencyException`
+     * Converts a timestamp extracted from a UUID to a unix timestamp
      *
-     * @param mixed $timestamp
-     * @throws UnsatisfiedDependencyException
+     * @param string $timestamp A string integer representation of a timestamp;
+     *     this must be a numeric string to accommodate unsigned integers
+     *     greater than PHP_INT_MAX.
      * @return string
+     * @throws UnsatisfiedDependencyException if the chosen converter is not present
      */
-    public function convertTime($timestamp)
+    public function convertTime(string $timestamp): string
     {
         throw new UnsatisfiedDependencyException(
-            'When calling ' . __METHOD__ . ' on a 32-bit system, '
-            . 'Moontoast\Math\BigNumber or the GMP PHP-extension must be present.'
+            'Cannot call convertTime using the DegradedTimeConverter; '
+            . 'please choose a converter with support for large integers; '
+            . 'refer to the ramsey/uuid wiki for more information: '
+            . 'https://github.com/ramsey/uuid/wiki'
         );
     }
 }
