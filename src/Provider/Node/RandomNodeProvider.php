@@ -27,7 +27,7 @@ class RandomNodeProvider implements NodeProviderInterface
     /**
      * @inheritDoc
      */
-    public function getNode(): string
+    public function getNode()
     {
         try {
             $nodeBytes = random_bytes(6);
