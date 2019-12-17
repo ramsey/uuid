@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the ramsey/uuid library
  *
@@ -7,31 +8,23 @@
  *
  * @copyright Copyright (c) Ben Ramsey <ben@benramsey.com>
  * @license http://opensource.org/licenses/MIT MIT
- * @link https://benramsey.com/projects/ramsey-uuid/ Documentation
- * @link https://packagist.org/packages/ramsey/uuid Packagist
- * @link https://github.com/ramsey/uuid GitHub
  */
+
+declare(strict_types=1);
 
 namespace Ramsey\Uuid\Generator;
 
-use Exception;
-use InvalidArgumentException;
-use Ramsey\Uuid\Exception\UnsatisfiedDependencyException;
-
 /**
- * RandomGeneratorInterface provides functionality to generate strings of random
- * binary data
+ * A random generator generates strings of random binary data
  */
 interface RandomGeneratorInterface
 {
     /**
-     * Generates a string of random binary data of the specified length
+     * Generates a string of randomized binary data
      *
      * @param int $length The number of bytes of random binary data to generate
-     * @return string|null A binary string
-     * @throws UnsatisfiedDependencyException if `Moontoast\Math\BigNumber` is not present
-     * @throws InvalidArgumentException
-     * @throws Exception if it was not possible to gather sufficient entropy
+     *
+     * @return string A binary string
      */
-    public function generate(int $length): ?string;
+    public function generate(int $length): string;
 }

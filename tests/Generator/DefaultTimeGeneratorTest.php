@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Ramsey\Uuid\Test\Generator;
 
 use AspectMock\Test as AspectMock;
@@ -132,7 +134,7 @@ class DefaultTimeGeneratorTest extends TestCase
         $this->timeConverter->method('calculateTime')
             ->with($this->currentTime['sec'], $this->currentTime['usec'])
             ->willReturn($this->calculatedTime);
-        $binaryUtils = Mockery::mock('alias:'.BinaryUtils::class);
+        $binaryUtils = Mockery::mock('alias:' . BinaryUtils::class);
         $binaryUtils->shouldReceive('applyVersion')
             ->with($this->calculatedTime['hi'], 1)
             ->andReturn(971);
@@ -158,7 +160,7 @@ class DefaultTimeGeneratorTest extends TestCase
     {
         $this->timeProvider->method('currentTime')->willReturn($this->currentTime);
         $this->timeConverter->method('calculateTime')->willReturn($this->calculatedTime);
-        $binaryUtils = Mockery::mock('alias:'.BinaryUtils::class);
+        $binaryUtils = Mockery::mock('alias:' . BinaryUtils::class);
         $binaryUtils->shouldReceive('applyVersion')->andReturn(971);
         $binaryUtils->shouldReceive('applyVariant')->andReturn(143);
 
@@ -200,7 +202,7 @@ class DefaultTimeGeneratorTest extends TestCase
      */
     public function testGenerateUsesRandomSequenceWhenClockSeqNull(): void
     {
-        $random_int = AspectMock::func('Ramsey\Uuid\Generator', 'random_int', 9622);
+        $randomInt = AspectMock::func('Ramsey\Uuid\Generator', 'random_int', 9622);
         $this->timeProvider->method('currentTime')
             ->willReturn($this->currentTime);
         $this->timeConverter->expects($this->once())
@@ -213,6 +215,6 @@ class DefaultTimeGeneratorTest extends TestCase
             $this->timeProvider
         );
         $defaultTimeGenerator->generate($this->nodeId);
-        $random_int->verifyInvokedOnce([0, 0x3fff]);
+        $randomInt->verifyInvokedOnce([0, 0x3fff]);
     }
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the ramsey/uuid library
  *
@@ -7,10 +8,9 @@
  *
  * @copyright Copyright (c) Ben Ramsey <ben@benramsey.com>
  * @license http://opensource.org/licenses/MIT MIT
- * @link https://benramsey.com/projects/ramsey-uuid/ Documentation
- * @link https://packagist.org/packages/ramsey/uuid Packagist
- * @link https://github.com/ramsey/uuid GitHub
  */
+
+declare(strict_types=1);
 
 namespace Ramsey\Uuid;
 
@@ -20,32 +20,34 @@ use Ramsey\Uuid\Builder\UuidBuilderInterface;
 use Ramsey\Uuid\Codec\CodecInterface;
 use Ramsey\Uuid\Codec\GuidStringCodec;
 use Ramsey\Uuid\Codec\StringCodec;
-use Ramsey\Uuid\Converter\NumberConverterInterface;
 use Ramsey\Uuid\Converter\Number\BigNumberConverter;
 use Ramsey\Uuid\Converter\Number\DegradedNumberConverter;
 use Ramsey\Uuid\Converter\Number\GmpConverter;
-use Ramsey\Uuid\Converter\TimeConverterInterface;
+use Ramsey\Uuid\Converter\NumberConverterInterface;
 use Ramsey\Uuid\Converter\Time\BigNumberTimeConverter;
 use Ramsey\Uuid\Converter\Time\DegradedTimeConverter;
 use Ramsey\Uuid\Converter\Time\GmpTimeConverter;
 use Ramsey\Uuid\Converter\Time\PhpTimeConverter;
+use Ramsey\Uuid\Converter\TimeConverterInterface;
 use Ramsey\Uuid\Generator\PeclUuidTimeGenerator;
 use Ramsey\Uuid\Generator\RandomGeneratorFactory;
 use Ramsey\Uuid\Generator\RandomGeneratorInterface;
 use Ramsey\Uuid\Generator\TimeGeneratorFactory;
 use Ramsey\Uuid\Generator\TimeGeneratorInterface;
-use Ramsey\Uuid\Provider\NodeProviderInterface;
 use Ramsey\Uuid\Provider\Node\FallbackNodeProvider;
 use Ramsey\Uuid\Provider\Node\RandomNodeProvider;
 use Ramsey\Uuid\Provider\Node\SystemNodeProvider;
-use Ramsey\Uuid\Provider\TimeProviderInterface;
+use Ramsey\Uuid\Provider\NodeProviderInterface;
 use Ramsey\Uuid\Provider\Time\SystemTimeProvider;
+use Ramsey\Uuid\Provider\TimeProviderInterface;
 use Ramsey\Uuid\Validator\Validator;
 use Ramsey\Uuid\Validator\ValidatorInterface;
 
 /**
  * FeatureSet detects and exposes available features in the current environment
- * (32- or 64-bit, available dependencies, etc.)
+ *
+ * A feature set is used by UuidFactory to determine the available features and
+ * capabilities of the environment.
  */
 class FeatureSet
 {
@@ -95,10 +97,9 @@ class FeatureSet
     private $numberConverter;
 
     /**
-     * The time converter to use for converting timestamps extracted from UUIDs to unix timestamps
      * @var TimeConverterInterface
      */
-    protected $timeConverter;
+    private $timeConverter;
 
     /**
      * @var RandomGeneratorInterface
@@ -116,28 +117,25 @@ class FeatureSet
     private $validator;
 
     /**
-     * Constructs a `FeatureSet` for use by a `UuidFactory` to determine or set
-     * features available to the environment
-     *
-     * @param bool $useGuids Whether to build UUIDs using the `GuidStringCodec`
-     * @param bool $force32Bit Whether to force the use of 32-bit functionality
+     * @param bool $useGuids True build UUIDs using the GuidStringCodec
+     * @param bool $force32Bit True to force the use of 32-bit functionality
      *     (primarily for testing purposes)
-     * @param bool $forceNoBigNumber Whether to disable the use of moontoast/math
-     *     `BigNumber` (primarily for testing purposes)
-     * @param bool $ignoreSystemNode Whether to disable attempts to check for
-     *     the system host ID (primarily for testing purposes)
-     * @param bool $enablePecl Whether to enable the use of the `PeclUuidTimeGenerator`
+     * @param bool $forceNoBigNumber True to disable the use of moontoast/math
+     *     (primarily for testing purposes)
+     * @param bool $ignoreSystemNode True to disable attempts to check for the
+     *     system node ID (primarily for testing purposes)
+     * @param bool $enablePecl True to enable the use of the PeclUuidTimeGenerator
      *     to generate version 1 UUIDs
-     * @param bool $forceNoGmp Whether to disable the use of the GMP PHP-extension
-     *     (primarily for testing purposes)
+     * @param bool $forceNoGmp True to disable the use of ext-gmp (primarily
+     *     for testing purposes)
      */
     public function __construct(
-        $useGuids = false,
-        $force32Bit = false,
-        $forceNoBigNumber = false,
-        $ignoreSystemNode = false,
-        $enablePecl = false,
-        $forceNoGmp = false
+        bool $useGuids = false,
+        bool $force32Bit = false,
+        bool $forceNoBigNumber = false,
+        bool $ignoreSystemNode = false,
+        bool $enablePecl = false,
+        bool $forceNoGmp = false
     ) {
         $this->disableBigNumber = $forceNoBigNumber;
         $this->disableGmp = $forceNoGmp;
@@ -152,13 +150,11 @@ class FeatureSet
         $this->nodeProvider = $this->buildNodeProvider();
         $this->randomGenerator = $this->buildRandomGenerator();
         $this->setTimeProvider(new SystemTimeProvider());
-        $this->validator = new Validator;
+        $this->validator = new Validator();
     }
 
     /**
      * Returns the builder configured for this environment
-     *
-     * @return UuidBuilderInterface
      */
     public function getBuilder(): UuidBuilderInterface
     {
@@ -166,9 +162,7 @@ class FeatureSet
     }
 
     /**
-     * Returns the UUID UUID coder-decoder configured for this environment
-     *
-     * @return CodecInterface
+     * Returns the codec configured for this environment
      */
     public function getCodec(): CodecInterface
     {
@@ -176,9 +170,7 @@ class FeatureSet
     }
 
     /**
-     * Returns the system node ID provider configured for this environment
-     *
-     * @return NodeProviderInterface
+     * Returns the node provider configured for this environment
      */
     public function getNodeProvider(): NodeProviderInterface
     {
@@ -187,8 +179,6 @@ class FeatureSet
 
     /**
      * Returns the number converter configured for this environment
-     *
-     * @return NumberConverterInterface
      */
     public function getNumberConverter(): NumberConverterInterface
     {
@@ -196,9 +186,7 @@ class FeatureSet
     }
 
     /**
-     * Returns the random UUID generator configured for this environment
-     *
-     * @return RandomGeneratorInterface
+     * Returns the random generator configured for this environment
      */
     public function getRandomGenerator(): RandomGeneratorInterface
     {
@@ -206,9 +194,7 @@ class FeatureSet
     }
 
     /**
-     * Returns the time-based UUID generator configured for this environment
-     *
-     * @return TimeGeneratorInterface
+     * Returns the time generator configured for this environment
      */
     public function getTimeGenerator(): TimeGeneratorInterface
     {
@@ -216,9 +202,7 @@ class FeatureSet
     }
 
     /**
-     * Returns the validator to use for this environment
-     *
-     * @return ValidatorInterface
+     * Returns the validator configured for this environment
      */
     public function getValidator(): ValidatorInterface
     {
@@ -226,35 +210,27 @@ class FeatureSet
     }
 
     /**
-     * Sets the time provider for use in this environment
-     *
-     * @param TimeProviderInterface $timeProvider
-     * @return void
+     * Sets the time provider to use in this environment
      */
-    public function setTimeProvider(TimeProviderInterface $timeProvider)
+    public function setTimeProvider(TimeProviderInterface $timeProvider): void
     {
         $this->timeGenerator = $this->buildTimeGenerator($timeProvider);
     }
 
     /**
      * Set the validator to use in this environment
-     *
-     * @param ValidatorInterface $validator
-     * @return void
      */
-    public function setValidator(ValidatorInterface $validator)
+    public function setValidator(ValidatorInterface $validator): void
     {
         $this->validator = $validator;
     }
 
     /**
-     * Determines which UUID coder-decoder to use and returns the configured
-     * codec for this environment
+     * Returns a codec configured for this environment
      *
-     * @param bool $useGuids Whether to build UUIDs using the `GuidStringCodec`
-     * @return CodecInterface
+     * @param bool $useGuids Whether to build UUIDs using the GuidStringCodec
      */
-    protected function buildCodec(bool $useGuids = false): CodecInterface
+    private function buildCodec(bool $useGuids = false): CodecInterface
     {
         if ($useGuids) {
             return new GuidStringCodec($this->builder);
@@ -264,12 +240,9 @@ class FeatureSet
     }
 
     /**
-     * Determines which system node ID provider to use and returns the configured
-     * system node ID provider for this environment
-     *
-     * @return NodeProviderInterface
+     * Returns a node provider configured for this environment
      */
-    protected function buildNodeProvider(): NodeProviderInterface
+    private function buildNodeProvider(): NodeProviderInterface
     {
         if ($this->ignoreSystemNode) {
             return new RandomNodeProvider();
@@ -277,17 +250,14 @@ class FeatureSet
 
         return new FallbackNodeProvider([
             new SystemNodeProvider(),
-            new RandomNodeProvider()
+            new RandomNodeProvider(),
         ]);
     }
 
     /**
-     * Determines which number converter to use and returns the configured
-     * number converter for this environment
-     *
-     * @return NumberConverterInterface
+     * Returns a number converter configured for this environment
      */
-    protected function buildNumberConverter(): NumberConverterInterface
+    private function buildNumberConverter(): NumberConverterInterface
     {
         if ($this->hasGmp()) {
             return new GmpConverter();
@@ -301,24 +271,20 @@ class FeatureSet
     }
 
     /**
-     * Determines which random UUID generator to use and returns the configured
-     * random UUID generator for this environment
-     *
-     * @return RandomGeneratorInterface
+     * Returns a random generator configured for this environment
      */
-    protected function buildRandomGenerator(): RandomGeneratorInterface
+    private function buildRandomGenerator(): RandomGeneratorInterface
     {
         return (new RandomGeneratorFactory())->getGenerator();
     }
 
     /**
-     * Determines which time-based UUID generator to use and returns the configured
-     * time-based UUID generator for this environment
+     * Returns a time generator configured for this environment
      *
-     * @param TimeProviderInterface $timeProvider
-     * @return TimeGeneratorInterface
+     * @param TimeProviderInterface $timeProvider The time provider to use with
+     *     the time generator
      */
-    protected function buildTimeGenerator(TimeProviderInterface $timeProvider): TimeGeneratorInterface
+    private function buildTimeGenerator(TimeProviderInterface $timeProvider): TimeGeneratorInterface
     {
         if ($this->enablePecl) {
             return new PeclUuidTimeGenerator();
@@ -332,12 +298,9 @@ class FeatureSet
     }
 
     /**
-     * Determines which time converter to use and returns the configured
-     * time converter for this environment
-     *
-     * @return TimeConverterInterface
+     * Returns a time converter configured for this environment
      */
-    protected function buildTimeConverter(): TimeConverterInterface
+    private function buildTimeConverter(): TimeConverterInterface
     {
         if ($this->is64BitSystem()) {
             return new PhpTimeConverter();
@@ -355,12 +318,9 @@ class FeatureSet
     }
 
     /**
-     * Determines which UUID builder to use and returns the configured UUID
-     * builder for this environment
-     *
-     * @return UuidBuilderInterface
+     * Returns a UUID builder configured for this environment
      */
-    protected function buildUuidBuilder(): UuidBuilderInterface
+    private function buildUuidBuilder(): UuidBuilderInterface
     {
         if ($this->is64BitSystem()) {
             return new DefaultUuidBuilder($this->numberConverter, $this->timeConverter);
@@ -370,32 +330,26 @@ class FeatureSet
     }
 
     /**
-     * Returns true if the system has `Moontoast\Math\BigNumber`
-     *
-     * @return bool
+     * Returns true if moontoast/math is available
      */
-    protected function hasBigNumber(): bool
+    private function hasBigNumber(): bool
     {
         return class_exists('Moontoast\Math\BigNumber') && !$this->disableBigNumber;
     }
 
     /**
-     * Returns true if the system has the GMP PHP-extension
-     *
-     * @return bool
+     * Returns true if ext-gmp is available
      */
-    protected function hasGmp(): bool
+    private function hasGmp(): bool
     {
         return extension_loaded('gmp') && !$this->disableGmp;
     }
 
     /**
-     * Returns true if the system is 64-bit, false otherwise
-     *
-     * @return bool
+     * Returns true if the PHP build is 64-bit
      */
-    protected function is64BitSystem(): bool
+    private function is64BitSystem(): bool
     {
-        return PHP_INT_SIZE == 8 && !$this->disable64Bit;
+        return PHP_INT_SIZE === 8 && !$this->disable64Bit;
     }
 }

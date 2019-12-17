@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the ramsey/uuid library
  *
@@ -7,25 +8,21 @@
  *
  * @copyright Copyright (c) Ben Ramsey <ben@benramsey.com>
  * @license http://opensource.org/licenses/MIT MIT
- * @link https://benramsey.com/projects/ramsey-uuid/ Documentation
- * @link https://packagist.org/packages/ramsey/uuid Packagist
- * @link https://github.com/ramsey/uuid GitHub
  */
+
+declare(strict_types=1);
 
 namespace Ramsey\Uuid\Generator;
 
-use Exception;
 use InvalidArgumentException;
 use Ramsey\Uuid\BinaryUtils;
 use Ramsey\Uuid\Converter\TimeConverterInterface;
-use Ramsey\Uuid\Exception\UnsatisfiedDependencyException;
 use Ramsey\Uuid\Provider\NodeProviderInterface;
 use Ramsey\Uuid\Provider\TimeProviderInterface;
 
 /**
- * DefaultTimeGenerator provides functionality to generate strings of binary
- * data for version 1 UUIDs based on a host ID, sequence number, and the current
- * time
+ * DefaultTimeGenerator generates strings of binary data based on a node ID,
+ * clock sequence, and the current time
  */
 class DefaultTimeGenerator implements TimeGeneratorInterface
 {
@@ -44,14 +41,6 @@ class DefaultTimeGenerator implements TimeGeneratorInterface
      */
     private $timeProvider;
 
-    /**
-     * Constructs a `DefaultTimeGenerator` using a node provider, time converter,
-     * and time provider
-     *
-     * @param NodeProviderInterface $nodeProvider
-     * @param TimeConverterInterface $timeConverter
-     * @param TimeProviderInterface $timeProvider
-     */
     public function __construct(
         NodeProviderInterface $nodeProvider,
         TimeConverterInterface $timeConverter,
@@ -63,34 +52,21 @@ class DefaultTimeGenerator implements TimeGeneratorInterface
     }
 
     /**
-     * Generate a version 1 UUID from a host ID, sequence number, and the current time
+     * @throws InvalidArgumentException if the parameters contain invalid values
      *
-     * If $node is not given, we will attempt to obtain the local hardware
-     * address. If $clockSeq is given, it is used as the sequence number;
-     * otherwise a random 14-bit sequence number is chosen.
-     *
-     * @param int|string $node A 48-bit number representing the hardware address
-     *     This number may be represented as an integer or a hexadecimal string.
-     * @param int $clockSeq A 14-bit number used to help avoid duplicates that
-     *     could arise when the clock is set backwards in time or if the node ID
-     *     changes.
-     * @return string A binary string
-     * @throws UnsatisfiedDependencyException if called on a 32-bit system and
-     *     `Moontoast\Math\BigNumber` is not present
-     * @throws InvalidArgumentException
-     * @throws Exception if it was not possible to gather sufficient entropy
+     * @inheritDoc
      */
-    public function generate($node = null, int $clockSeq = null): string
+    public function generate($node = null, ?int $clockSeq = null): string
     {
         $node = $this->getValidNode($node);
 
         if ($clockSeq === null) {
-            // Not using "stable storage"; see RFC 4122, Section 4.2.1.1
+            // This does not use "stable storage"; see RFC 4122, Section 4.2.1.1.
             $clockSeq = random_int(0, 0x3fff);
         }
 
         // Create a 60-bit time value as a count of 100-nanosecond intervals
-        // since 00:00:00.00, 15 October 1582
+        // since 00:00:00.00, 15 October 1582.
         $timeOfDay = $this->timeProvider->currentTime();
         $uuidTime = $this->timeConverter->calculateTime(
             (string) ($timeOfDay['sec'] ?? ''),
@@ -120,17 +96,18 @@ class DefaultTimeGenerator implements TimeGeneratorInterface
      * the node ID (usually a MAC address)
      *
      * @param string|int|null $node A node value that may be used to override the node provider
+     *
      * @return string Hexadecimal representation of the node ID
+     *
      * @throws InvalidArgumentException
-     * @throws Exception
      */
-    protected function getValidNode($node): string
+    private function getValidNode($node): string
     {
         if ($node === null) {
             $node = $this->nodeProvider->getNode();
         }
 
-        // Convert the node to hex, if it is still an integer
+        // Convert the node to hex, if it is still an integer.
         if (is_int($node)) {
             $node = sprintf('%012x', $node);
         }

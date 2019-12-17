@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the ramsey/uuid library
  *
@@ -7,27 +8,40 @@
  *
  * @copyright Copyright (c) Ben Ramsey <ben@benramsey.com>
  * @license http://opensource.org/licenses/MIT MIT
- * @link https://benramsey.com/projects/ramsey-uuid/ Documentation
- * @link https://packagist.org/packages/ramsey/uuid Packagist
- * @link https://github.com/ramsey/uuid GitHub
  */
+
+declare(strict_types=1);
+
 namespace Ramsey\Uuid\Codec;
 
 use InvalidArgumentException;
 use Ramsey\Uuid\UuidInterface;
 
 /**
- * OrderedTimeCodec optimizes the bytes to increment UUIDs when time goes by, to improve database INSERTs.
- * The string value will be unchanged from StringCodec. Only works for UUID type 1.
+ * OrderedTimeCodec encodes and decodes a UUID, optimizing the byte order for
+ * more efficient storage
+ *
+ * For binary representations of version 1 UUID, this codec may be used to
+ * reorganize the time fields, making the UUID closer to sequential when storing
+ * the bytes. According to Percona, this optimization can improve database
+ * INSERTs and SELECTs using the UUID column as a key.
+ *
+ * The string representation of the UUID will remain unchanged. Only the binary
+ * representation is reordered.
+ *
+ * **PLEASE NOTE:** Binary representations of UUIDs encoded with this codec must
+ * be decoded with this codec. Decoding using another codec can result in
+ * malformed UUIDs.
+ *
+ * @link https://www.percona.com/blog/2014/12/19/store-uuid-optimized-way/ Storing UUID Values in MySQL
  */
 class OrderedTimeCodec extends StringCodec
 {
-
     /**
-     * Encodes a UuidInterface as an optimized binary representation of a UUID
+     * Returns a binary string representation of a UUID, with the timestamp
+     * fields rearranged for optimized storage
      *
-     * @param UuidInterface $uuid
-     * @return string Binary string representation of a UUID
+     * @inheritDoc
      */
     public function encodeBinary(UuidInterface $uuid): string
     {
@@ -46,22 +60,29 @@ class OrderedTimeCodec extends StringCodec
     }
 
     /**
-     * Decodes an optimized binary representation of a UUID into a UuidInterface object instance
+     * Returns a UuidInterface derived from an ordered-time binary string
+     * representation
      *
-     * @param string $bytes
-     * @return UuidInterface
-     * @throws InvalidArgumentException if string has not 16 characters
+     * @throws InvalidArgumentException if $bytes is an invalid length
+     *
+     * @inheritDoc
      */
     public function decodeBytes(string $bytes): UuidInterface
     {
         if (strlen($bytes) !== 16) {
-            throw new InvalidArgumentException('$bytes string should contain 16 characters.');
+            throw new InvalidArgumentException(
+                '$bytes string should contain 16 characters.'
+            );
         }
 
         $hex = unpack('H*', $bytes)[1];
 
         // Rearrange the fields to their original order
-        $hex = substr($hex, 8, 4) . substr($hex, 12, 4) . substr($hex, 4, 4) . substr($hex, 0, 4) . substr($hex, 16);
+        $hex = substr($hex, 8, 4)
+            . substr($hex, 12, 4)
+            . substr($hex, 4, 4)
+            . substr($hex, 0, 4)
+            . substr($hex, 16);
 
         return $this->decode($hex);
     }

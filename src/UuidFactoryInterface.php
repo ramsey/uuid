@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the ramsey/uuid library
  *
@@ -7,17 +8,12 @@
  *
  * @copyright Copyright (c) Ben Ramsey <ben@benramsey.com>
  * @license http://opensource.org/licenses/MIT MIT
- * @link https://benramsey.com/projects/ramsey-uuid/ Documentation
- * @link https://packagist.org/packages/ramsey/uuid Packagist
- * @link https://github.com/ramsey/uuid GitHub
  */
+
+declare(strict_types=1);
 
 namespace Ramsey\Uuid;
 
-use Exception;
-use InvalidArgumentException;
-use Ramsey\Uuid\Exception\InvalidUuidStringException;
-use Ramsey\Uuid\Exception\UnsatisfiedDependencyException;
 use Ramsey\Uuid\Validator\ValidatorInterface;
 
 /**
@@ -27,88 +23,84 @@ use Ramsey\Uuid\Validator\ValidatorInterface;
 interface UuidFactoryInterface
 {
     /**
-     * @return ValidatorInterface
+     * Returns the validator to use for the factory
      */
     public function getValidator(): ValidatorInterface;
 
     /**
-     * Generate a version 1 UUID from a host ID, sequence number, and the current time.
+     * Returns a version 1 (time-based) UUID from a host ID, sequence number,
+     * and the current time
      *
-     * @param int|string|null $node A 48-bit number representing the hardware address
-     *     This number may be represented as an integer or a hexadecimal string.
-     * @param int|null $clockSeq A 14-bit number used to help avoid duplicates that
+     * @param int|string $node A 48-bit number representing the hardware address;
+     *     this number may be represented as an integer or a hexadecimal string
+     * @param int $clockSeq A 14-bit number used to help avoid duplicates that
      *     could arise when the clock is set backwards in time or if the node ID
-     *     changes.
-     * @return UuidInterface
-     * @throws UnsatisfiedDependencyException if called on a 32-bit system and
-     *     `Moontoast\Math\BigNumber` is not present
-     * @throws InvalidArgumentException
-     * @throws Exception if it was not possible to gather sufficient entropy
+     *     changes
+     *
+     * @return UuidInterface A UuidInterface instance that represents a
+     *     version 1 UUID
      */
     public function uuid1($node = null, ?int $clockSeq = null): UuidInterface;
 
     /**
-     * Generate a version 3 UUID based on the MD5 hash of a namespace identifier
-     * (which is a UUID) and a name (which is a string).
+     * Returns a version 3 (name-based) UUID based on the MD5 hash of a
+     * namespace ID and a name
      *
-     * @param string|UuidInterface $ns The UUID namespace in which to create the named UUID
-     * @param string $name The name to create a UUID for
-     * @return UuidInterface
-     * @throws InvalidUuidStringException
+     * @param string|UuidInterface $ns The namespace (must be a valid UUID)
+     * @param string $name The name to use for creating a UUID
+     *
+     * @return UuidInterface A UuidInterface instance that represents a
+     *     version 3 UUID
      */
     public function uuid3($ns, string $name): UuidInterface;
 
     /**
-     * Generate a version 4 (random) UUID.
+     * Returns a version 4 (random) UUID
      *
-     * @return UuidInterface
-     * @throws UnsatisfiedDependencyException if `Moontoast\Math\BigNumber` is not present
-     * @throws InvalidArgumentException
-     * @throws Exception
+     * @return UuidInterface A UuidInterface instance that represents a
+     *     version 4 UUID
      */
     public function uuid4(): UuidInterface;
 
     /**
-     * Generate a version 5 UUID based on the SHA-1 hash of a namespace
-     * identifier (which is a UUID) and a name (which is a string).
+     * Returns a version 5 (name-based) UUID based on the SHA-1 hash of a
+     * namespace ID and a name
      *
-     * @param string|UuidInterface $ns The UUID namespace in which to create the named UUID
-     * @param string $name The name to create a UUID for
-     * @return UuidInterface
-     * @throws InvalidUuidStringException
+     * @param string|UuidInterface $ns The namespace (must be a valid UUID)
+     * @param string $name The name to use for creating a UUID
+     *
+     * @return UuidInterface A UuidInterface instance that represents a
+     *     version 5 UUID
      */
     public function uuid5($ns, string $name): UuidInterface;
 
     /**
-     * Creates a UUID from a byte string.
+     * Creates a UUID from a byte string
      *
-     * @param string $bytes A 16-byte string representation of a UUID
-     * @return UuidInterface
-     * @throws InvalidUuidStringException
-     * @throws InvalidArgumentException if string has not 16 characters
+     * @param string $bytes A binary string
+     *
+     * @return UuidInterface A UuidInterface instance created from a binary
+     *     string representation
      */
     public function fromBytes(string $bytes): UuidInterface;
 
     /**
      * Creates a UUID from the string standard representation
      *
-     * @param string $uuid A string representation of a UUID
-     * @return UuidInterface
-     * @throws InvalidUuidStringException
+     * @param string $uuid A hexadecimal string
+     *
+     * @return UuidInterface A UuidInterface instance created from a hexadecimal
+     *     string representation
      */
     public function fromString(string $uuid): UuidInterface;
 
     /**
-     * Creates a `Uuid` from an integer representation
+     * Creates a UUID from a 128-bit integer string
      *
-     * The integer representation may be a real integer, a string integer, or
-     * an integer representation supported by a configured number converter.
+     * @param string $integer String representation of 128-bit integer
      *
-     * @param mixed $integer The integer to use when creating a `Uuid` from an
-     *     integer; may be of any type understood by the configured number converter
-     * @return UuidInterface
-     * @throws UnsatisfiedDependencyException if `Moontoast\Math\BigNumber` is not present
-     * @throws InvalidUuidStringException
+     * @return UuidInterface A UuidInterface instance created from the string
+     *     representation of a 128-bit integer
      */
-    public function fromInteger($integer): UuidInterface;
+    public function fromInteger(string $integer): UuidInterface;
 }

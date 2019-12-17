@@ -8,10 +8,9 @@
  *
  * @copyright Copyright (c) Ben Ramsey <ben@benramsey.com>
  * @license http://opensource.org/licenses/MIT MIT
- * @link https://benramsey.com/projects/ramsey-uuid/ Documentation
- * @link https://packagist.org/packages/ramsey/uuid Packagist
- * @link https://github.com/ramsey/uuid GitHub
  */
+
+declare(strict_types=1);
 
 namespace Ramsey\Uuid\Converter;
 
@@ -26,7 +25,6 @@ trait DependencyCheckTrait
      * Returns boolean true if the current build of PHP is a 64-bit build,
      * throws UnsatisfiedDependencyException otherwise
      *
-     * @return bool
      * @throws UnsatisfiedDependencyException if PHP is not 64-bit
      */
     private function check64BitPhp(): bool
@@ -44,7 +42,6 @@ trait DependencyCheckTrait
      * Returns boolean true if the GMP extension is loaded, throws
      * UnsatisfiedDependencyException otherwise
      *
-     * @return bool
      * @throws UnsatisfiedDependencyException if GMP is not loaded
      */
     private function checkGmpExtension(): bool
@@ -62,7 +59,6 @@ trait DependencyCheckTrait
      * Returns boolean true if the moontoast/math library is present, throws
      * UnsatisfiedDependencyException otherwise
      *
-     * @return bool
      * @throws UnsatisfiedDependencyException if moontoast/math is not loaded
      */
     private function checkMoontoastMathLibrary(): bool

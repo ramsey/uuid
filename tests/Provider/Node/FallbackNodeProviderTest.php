@@ -1,9 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Ramsey\Uuid\Test\Provider\Node;
 
-use Ramsey\Uuid\Provider\NodeProviderInterface;
 use Ramsey\Uuid\Provider\Node\FallbackNodeProvider;
+use Ramsey\Uuid\Provider\NodeProviderInterface;
 use Ramsey\Uuid\Test\TestCase;
 
 class FallbackNodeProviderTest extends TestCase

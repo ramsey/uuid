@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the ramsey/uuid library
  *
@@ -7,23 +8,21 @@
  *
  * @copyright Copyright (c) Ben Ramsey <ben@benramsey.com>
  * @license http://opensource.org/licenses/MIT MIT
- * @link https://benramsey.com/projects/ramsey-uuid/ Documentation
- * @link https://packagist.org/packages/ramsey/uuid Packagist
- * @link https://github.com/ramsey/uuid GitHub
  */
+
+declare(strict_types=1);
 
 namespace Ramsey\Uuid\Provider;
 
 /**
- * TimeProviderInterface provides functionality to get the time from a specific
- * type of time provider
+ * A time provider retrieves the current time
  */
 interface TimeProviderInterface
 {
     /**
      * Returns a timestamp array
      *
-     * @return int[] Array guaranteed to contain `sec` and `usec` components of a timestamp
+     * @return int[] Array containing `sec` and `usec` components of a timestamp
      */
     public function currentTime(): array;
 }
