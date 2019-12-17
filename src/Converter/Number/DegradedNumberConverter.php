@@ -18,41 +18,50 @@ use Ramsey\Uuid\Exception\UnsatisfiedDependencyException;
 use Ramsey\Uuid\Converter\NumberConverterInterface;
 
 /**
- * DegradedNumberConverter throws `UnsatisfiedDependencyException` exceptions
- * if attempting to use number conversion functionality in an environment that
- * does not support large integers (i.e. when moontoast/math is not available)
+ * DegradedNumberConverter is chosen if all other options for large integer
+ * support are unavailable. This exists to throw exceptions if these methods
+ * are called on systems that do not have support for large integers.
  */
 class DegradedNumberConverter implements NumberConverterInterface
 {
     /**
-     * Throws an `UnsatisfiedDependencyException`
+     * Converts a hexadecimal number into an string integer representation of
+     * the number
+     *
+     * The integer representation returned is a string representation of the
+     * integer, to accommodate unsigned integers greater than PHP_INT_MAX.
      *
      * @param string $hex The hexadecimal string representation to convert
-     * @return mixed
-     * @throws UnsatisfiedDependencyException
+     * @return string
+     * @throws UnsatisfiedDependencyException if the chosen converter is not present
      */
-    public function fromHex($hex)
+    public function fromHex(string $hex): string
     {
         throw new UnsatisfiedDependencyException(
-            'Cannot call ' . __METHOD__ . ' without support for large '
-            . 'integers, since integer is an unsigned '
-            . '128-bit integer; Moontoast\Math\BigNumber is required.'
+            'Cannot call fromHex using the DegradedNumberConverter; '
+            . 'please choose a converter with support for large integers; '
+            . 'refer to the ramsey/uuid wiki for more information: '
+            . 'https://github.com/ramsey/uuid/wiki'
         );
     }
 
     /**
-     * Throws an `UnsatisfiedDependencyException`
+     * Converts a string integer representation into a hexadecimal string
+     * representation of the number
      *
-     * @param mixed $integer An integer representation to convert
-     * @return string
-     * @throws UnsatisfiedDependencyException
+     * @param string $number A string integer representation to convert; this
+     *     must be a numeric string to accommodate unsigned integers greater
+     *     than PHP_INT_MAX.
+     * @return string Hexadecimal string
+     * @throws UnsatisfiedDependencyException if the chosen converter is not present
      */
-    public function toHex($integer)
+    public function toHex(string $number): string
     {
         throw new UnsatisfiedDependencyException(
-            'Cannot call ' . __METHOD__ . ' without support for large '
-            . 'integers, since integer is an unsigned '
-            . '128-bit integer; Moontoast\Math\BigNumber is required. '
+            'Cannot call toHex using the DegradedNumberConverter; '
+            . 'please choose a converter with support for large integers; '
+            . 'refer to the ramsey/uuid wiki for more information: '
+            . 'https://github.com/ramsey/uuid/wiki'
         );
     }
 }

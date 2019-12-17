@@ -303,7 +303,7 @@ class UuidTest extends TestCase
 
         $uuid = Uuid::fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
 
-        $this->assertEquals($fields, $uuid->getFieldsHex());
+        $this->assertSame($fields, $uuid->getFieldsHex());
     }
 
     public function testGetLeastSignificantBitsMoontoast(): void
@@ -313,8 +313,8 @@ class UuidTest extends TestCase
 
         /** @var Uuid $uuid */
         $uuid = Uuid::fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
-        $this->assertInstanceOf(BigNumber::class, $uuid->getLeastSignificantBits());
-        $this->assertEquals('11178224546741000806', $uuid->getLeastSignificantBits()->getValue());
+
+        $this->assertSame('11178224546741000806', $uuid->getLeastSignificantBits());
     }
 
     public function testGetLeastSignificantBitsGmp(): void
@@ -323,8 +323,8 @@ class UuidTest extends TestCase
 
         /** @var Uuid $uuid */
         $uuid = Uuid::fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
-        $this->assertIsString($uuid->getLeastSignificantBits());
-        $this->assertEquals('11178224546741000806', $uuid->getLeastSignificantBits());
+
+        $this->assertSame('11178224546741000806', $uuid->getLeastSignificantBits());
     }
 
     public function testGetLeastSignificantBitsException(): void
@@ -342,7 +342,8 @@ class UuidTest extends TestCase
     public function testGetLeastSignificantBitsHex(): void
     {
         $uuid = Uuid::fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
-        $this->assertEquals('9b210800200c9a66', $uuid->getLeastSignificantBitsHex());
+
+        $this->assertSame('9b210800200c9a66', $uuid->getLeastSignificantBitsHex());
     }
 
     public function testGetMostSignificantBitsMoontoast(): void
@@ -352,8 +353,8 @@ class UuidTest extends TestCase
 
         /** @var Uuid $uuid */
         $uuid = Uuid::fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
-        $this->assertInstanceOf(BigNumber::class, $uuid->getMostSignificantBits());
-        $this->assertEquals('18406084892941947361', $uuid->getMostSignificantBits()->getValue());
+
+        $this->assertSame('18406084892941947361', $uuid->getMostSignificantBits());
     }
 
     public function testGetMostSignificantBitsGmp(): void
@@ -1634,7 +1635,7 @@ class UuidTest extends TestCase
         Uuid::setFactory(new UuidFactory(new FeatureSet(false, false, false, false, false, true)));
 
         $uuid = Uuid::fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
-        $integer = $uuid->getInteger()->getValue();
+        $integer = $uuid->getInteger();
 
         $fromIntegerUuid = Uuid::fromInteger($integer);
 
