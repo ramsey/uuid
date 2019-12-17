@@ -40,6 +40,7 @@ class SystemNodeProviderTest extends TestCase
     const MOCK_PASSTHRU = 'passthru';
     const MOCK_FILE_GET_CONTENTS = 'file_get_contents';
     const MOCK_INI_GET = 'ini_get';
+    const MOCK_IS_READABLE = 'is_readable';
 
     const PROVIDER_NAMESPACE = 'Ramsey\\Uuid\\Provider\\Node';
 
@@ -275,7 +276,8 @@ class SystemNodeProviderTest extends TestCase
             ['mock address path'],
             'whatever',
             $os,
-            'nothing disabled'
+            'nothing disabled',
+            true
         );
 
         /*/ Act /*/
@@ -285,16 +287,19 @@ class SystemNodeProviderTest extends TestCase
         /*/ Assert /*/
         $globBodyAssert = null;
         $fileGetContentsAssert = null;
+        $isReadableAssert = null;
         if ($os === 'Linux') {
             $globBodyAssert = ['/sys/class/net/*/address'];
             $fileGetContentsAssert = ['mock address path'];
+            $isReadableAssert = $fileGetContentsAssert;
         }
         $this->assertMockFunctions(
             $fileGetContentsAssert,
             $globBodyAssert,
             [$command],
             ['PHP_OS'],
-            ['disable_functions']
+            ['disable_functions'],
+            $isReadableAssert
         );
     }
 
@@ -376,7 +381,8 @@ class SystemNodeProviderTest extends TestCase
                 echo "\n01-02-03-04-05-06\n";
             },
             $os,
-            'nothing disabled'
+            'nothing disabled',
+            true
         );
 
         /*/ Act /*/
@@ -389,6 +395,7 @@ class SystemNodeProviderTest extends TestCase
         $passthruBodyAssert = [$command];
         $constantBodyAssert = ['PHP_OS'];
         $iniGetDisableFunctionsAssert = ['disable_functions'];
+        $isReadableAssert = null;
 
         if ($os === 'Linux') {
             $fileGetContentsAssert = [['mock address path 1'], ['mock address path 2']];
@@ -396,13 +403,15 @@ class SystemNodeProviderTest extends TestCase
             $passthruBodyAssert = null;
             $constantBodyAssert = ['PHP_OS'];
             $iniGetDisableFunctionsAssert = null;
+            $isReadableAssert = $fileGetContentsAssert;
         }
         $this->assertMockFunctions(
             $fileGetContentsAssert,
             $globBodyAssert,
             $passthruBodyAssert,
             $constantBodyAssert,
-            $iniGetDisableFunctionsAssert
+            $iniGetDisableFunctionsAssert,
+            $isReadableAssert
         );
 
         $this->assertEquals('010203040506', $node);
@@ -478,6 +487,42 @@ class SystemNodeProviderTest extends TestCase
      * @runInSeparateProcess
      * @preserveGlobalState disabled
      */
+    public function testCallGetsysfsOnLinuxWhenGlobFilesAreNotReadable()
+    {
+        /*/ Arrange /*/
+        $this->arrangeMockFunctions(
+            null,
+            ['mock address path 1', 'mock address path 2'],
+            function () {
+                echo "\n01-02-03-04-05-06\n";
+            },
+            'Linux',
+            'nothing disabled',
+            false
+        );
+
+        /*/ Act /*/
+        $provider = new SystemNodeProvider();
+        $node = $provider->getNode();
+
+        /*/ Assert /*/
+        $this->assertMockFunctions(
+            null,
+            ['/sys/class/net/*/address'],
+            ['netstat -ie 2>&1'],
+            ['PHP_OS'],
+            ['disable_functions'],
+            ['mock address path 1', 'mock address path 2']
+        );
+
+        $this->assertEquals('010203040506', $node);
+    }
+
+
+    /**
+     * @runInSeparateProcess
+     * @preserveGlobalState disabled
+     */
     public function testGetNodeReturnsFalseWhenPassthruIsDisabled()
     {
         /*/ Arrange /*/
@@ -519,7 +564,8 @@ class SystemNodeProviderTest extends TestCase
         $globBody,
         $passthruBody,
         $constantBody,
-        $iniGetDisableFunctionsBody
+        $iniGetDisableFunctionsBody,
+        $isReadableBody = true
     ) {
         $mockFunction = [
             self::MOCK_FILE_GET_CONTENTS => $fileGetContentsBody,
@@ -527,6 +573,7 @@ class SystemNodeProviderTest extends TestCase
             self::MOCK_PASSTHRU => $passthruBody,
             self::MOCK_CONSTANT => $constantBody,
             self::MOCK_INI_GET => $iniGetDisableFunctionsBody,
+            self::MOCK_IS_READABLE => $isReadableBody,
         ];
 
         array_walk($mockFunction, function ($body, $key) {
@@ -544,13 +591,15 @@ class SystemNodeProviderTest extends TestCase
      * @param array|null $passthruBodyAssert
      * @param array|null $constantBodyAssert
      * @param array|null $iniGetDisableFunctionsAssert
+     * @param array|null $isReadableAssert
      */
     private function assertMockFunctions(
         $fileGetContentsAssert,
         $globBodyAssert,
         $passthruBodyAssert,
         $constantBodyAssert,
-        $iniGetDisableFunctionsAssert
+        $iniGetDisableFunctionsAssert,
+        $isReadableAssert = null
     ) {
         $mockFunctionAsserts = [
             self::MOCK_FILE_GET_CONTENTS => $fileGetContentsAssert,
@@ -558,6 +607,7 @@ class SystemNodeProviderTest extends TestCase
             self::MOCK_PASSTHRU => $passthruBodyAssert,
             self::MOCK_CONSTANT => $constantBodyAssert,
             self::MOCK_INI_GET => $iniGetDisableFunctionsAssert,
+            self::MOCK_IS_READABLE => $isReadableAssert,
         ];
 
         array_walk($mockFunctionAsserts, function ($asserts, $key) {
