@@ -17,6 +17,7 @@
     "require-dev": {
         "ext-gmp": "*",
         "codeception/aspect-mock": "^3",
+        "dealerdirect/phpcodesniffer-composer-installer": "^0.5.0",
         "doctrine/annotations": "^1.8",
         "goaop/framework": "^2",
         "jakub-onderka/php-parallel-lint": "^1",
@@ -25,10 +26,12 @@
         "paragonie/random-lib": "^2",
         "php-mock/php-mock-phpunit": "^2.5",
         "phpstan/extension-installer": "^1.0",
+        "phpstan/phpdoc-parser": "0.4.1",
         "phpstan/phpstan": "^0.12",
         "phpstan/phpstan-mockery": "^0.12",
         "phpstan/phpstan-phpunit": "^0.12",
         "phpunit/phpunit": "^8.5",
+        "slevomat/coding-standard": "^6.0",
         "squizlabs/php_codesniffer": "^3.5"
     },
     "suggest": {
@@ -68,7 +71,8 @@
     },
     "scripts": {
         "lint": "parallel-lint src tests",
-        "phpcs": "phpcs src tests --standard=psr2 -sp --colors",
+        "phpcbf": "phpcbf -vpw",
+        "phpcs": "phpcs",
         "phpstan": [
             "phpstan analyse -c phpstan.neon src --level max --no-progress",
             "phpstan analyse -c phpstan-tests.neon tests --level max --no-progress"

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the ramsey/uuid library
  *
@@ -7,31 +8,20 @@
  *
  * @copyright Copyright (c) Ben Ramsey <ben@benramsey.com>
  * @license http://opensource.org/licenses/MIT MIT
- * @link https://benramsey.com/projects/ramsey-uuid/ Documentation
- * @link https://packagist.org/packages/ramsey/uuid Packagist
- * @link https://github.com/ramsey/uuid GitHub
  */
+
+declare(strict_types=1);
 
 namespace Ramsey\Uuid\Generator;
 
-use Exception;
-
 /**
- * RandomBytesGenerator provides functionality to generate strings of random
- * binary data using `random_bytes()` function in PHP 7+ or paragonie/random_compat
+ * RandomBytesGenerator generates strings of random binary data using the
+ * built-in `random_bytes()` PHP function
  *
- * @link http://php.net/random_bytes
- * @link https://github.com/paragonie/random_compat
+ * @link http://php.net/random_bytes random_bytes()
  */
 class RandomBytesGenerator implements RandomGeneratorInterface
 {
-    /**
-     * Generates a string of random binary data of the specified length
-     *
-     * @param int $length The number of bytes of random binary data to generate
-     * @return string A binary string
-     * @throws Exception if it was not possible to gather sufficient entropy
-     */
     public function generate(int $length): string
     {
         return random_bytes($length);

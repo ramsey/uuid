@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Ramsey\Uuid\Test\Provider\Time;
 
 use Ramsey\Uuid\Provider\Time\FixedTimeProvider;

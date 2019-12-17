@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Ramsey\Uuid\Test\Codec;
 
 use PHPUnit\Framework\MockObject\MockObject;
@@ -45,7 +47,8 @@ class OrderedTimeCodecTest extends TestCase
             'time_hi_and_version' => '11d8',
             'clock_seq_hi_and_reserved' => '96',
             'clock_seq_low' => '69',
-            'node' => '0800200c9a66'];
+            'node' => '0800200c9a66',
+        ];
     }
 
     protected function tearDown(): void

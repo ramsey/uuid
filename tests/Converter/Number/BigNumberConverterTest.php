@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Ramsey\Uuid\Test\Converter\Number;
 
 use AspectMock\Test as AspectMock;

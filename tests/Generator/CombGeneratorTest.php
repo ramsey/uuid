@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Ramsey\Uuid\Test\Generator;
 
 use Exception;
@@ -21,7 +23,7 @@ class CombGeneratorTest extends TestCase
     public function testGenerateUsesRandomGeneratorWithLengthMinusTimestampBytes(): void
     {
         $length = 10;
-        $expectedLength = ($length - $this->timestampBytes);
+        $expectedLength = $length - $this->timestampBytes;
 
         /** @var MockObject & RandomGeneratorInterface $randomGenerator */
         $randomGenerator = $this->getMockBuilder(RandomGeneratorInterface::class)->getMock();
@@ -60,7 +62,7 @@ class CombGeneratorTest extends TestCase
         /** @var MockObject & RandomGeneratorInterface $randomGenerator */
         $randomGenerator = $this->getMockBuilder(RandomGeneratorInterface::class)->getMock();
         $randomGenerator->method('generate')
-            ->with(($length - $this->timestampBytes))
+            ->with($length - $this->timestampBytes)
             ->willReturn($hash);
 
         /** @var MockObject & NumberConverterInterface $converter */
@@ -79,7 +81,7 @@ class CombGeneratorTest extends TestCase
     }
 
     /**
-     * @return array[]
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingTraversableTypeHintSpecification
      */
     public function lengthLessThanSix(): array
     {
@@ -87,11 +89,11 @@ class CombGeneratorTest extends TestCase
     }
 
     /**
-     * @dataProvider lengthLessThanSix
-     * @param int $length
      * @throws Exception
+     *
+     * @dataProvider lengthLessThanSix
      */
-    public function testGenerateWithLessThanTimestampBytesThrowsException($length): void
+    public function testGenerateWithLessThanTimestampBytesThrowsException(int $length): void
     {
         /** @var MockObject & RandomGeneratorInterface $randomGenerator */
         $randomGenerator = $this->getMockBuilder(RandomGeneratorInterface::class)->getMock();

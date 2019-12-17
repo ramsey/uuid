@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Ramsey\Uuid\Test\Converter\Time;
 
 use Ramsey\Uuid\Converter\Time\DegradedTimeConverter;

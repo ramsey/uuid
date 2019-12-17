@@ -1,6 +1,7 @@
 parameters:
     autoload_files:
         - tests/phpstan-bootstrap.php
+    checkMissingIterableValueType: false
     reportUnmatchedIgnoredErrors: false
     ignoreErrors:
         -

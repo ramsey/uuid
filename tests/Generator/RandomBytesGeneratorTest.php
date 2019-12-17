@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Ramsey\Uuid\Test\Generator;
 
 use AspectMock\Test as AspectMock;
@@ -10,26 +12,25 @@ use Ramsey\Uuid\Test\TestCase;
 class RandomBytesGeneratorTest extends TestCase
 {
     /**
-     * @return array[]
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingTraversableTypeHintSpecification
      */
     public function lengthAndHexDataProvider(): array
     {
         return [
             [6, '4f17dd046fb8'],
             [10, '4d25f6fe5327cb04267a'],
-            [12, '1ea89f83bd49cacfdf119e24']
+            [12, '1ea89f83bd49cacfdf119e24'],
         ];
     }
 
     /**
+     * @throws Exception
+     *
      * @dataProvider lengthAndHexDataProvider
      * @runInSeparateProcess
      * @preserveGlobalState disabled
-     * @param int $length
-     * @param string $hex
-     * @throws Exception
      */
-    public function testGenerateUsesOpenSsl($length, $hex): void
+    public function testGenerateUsesOpenSsl(int $length, string $hex): void
     {
         $bytes = hex2bin($hex);
         $openSsl = AspectMock::func('Ramsey\Uuid\Generator', 'random_bytes', $bytes);
@@ -40,14 +41,13 @@ class RandomBytesGeneratorTest extends TestCase
     }
 
     /**
+     * @throws Exception
+     *
      * @dataProvider lengthAndHexDataProvider
      * @runInSeparateProcess
      * @preserveGlobalState disabled
-     * @param int $length
-     * @param string $hex
-     * @throws Exception
      */
-    public function testGenerateReturnsRandomBytes($length, $hex): void
+    public function testGenerateReturnsRandomBytes(int $length, string $hex): void
     {
         $bytes = hex2bin($hex);
         AspectMock::func('Ramsey\Uuid\Generator', 'random_bytes', $bytes);

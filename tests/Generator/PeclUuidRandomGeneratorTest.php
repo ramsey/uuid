@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Ramsey\Uuid\Test\Generator;
 
 use AspectMock\Test as AspectMock;
@@ -37,7 +39,7 @@ class PeclUuidRandomGeneratorTest extends PeclUuidTestCase
     {
         $create = AspectMock::func('Ramsey\Uuid\Generator', 'uuid_create', $this->uuidString);
         $parse = AspectMock::func('Ramsey\Uuid\Generator', 'uuid_parse', $this->uuidBinary);
-        $generator = new PeclUuidRandomGenerator;
+        $generator = new PeclUuidRandomGenerator();
         $uuid = $generator->generate($this->length);
 
         $this->assertEquals($this->uuidBinary, $uuid);

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Ramsey\Uuid\Test\Codec;
 
 use PHPUnit\Framework\MockObject\MockObject;
@@ -35,7 +37,8 @@ class GuidStringCodecTest extends TestCase
             'time_hi_and_version' => 'abcd',
             'clock_seq_hi_and_reserved' => 'ab',
             'clock_seq_low' => 'ef',
-            'node' => '1234abcd4321'];
+            'node' => '1234abcd4321',
+        ];
     }
 
     protected function tearDown(): void
@@ -72,7 +75,6 @@ class GuidStringCodecTest extends TestCase
         $result = $codec->encode($this->uuid);
         $this->assertEquals('12345678-1234-abcd-abef-1234abcd4321', $result);
     }
-
 
     public function testEncodeBinaryUsesFieldsArray(): void
     {

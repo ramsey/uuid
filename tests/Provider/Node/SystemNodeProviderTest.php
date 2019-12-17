@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Ramsey\Uuid\Test\Provider\Node;
 
 use AspectMock\Proxy\FuncProxy;
@@ -35,14 +37,14 @@ use Ramsey\Uuid\Test\TestCase;
  */
 class SystemNodeProviderTest extends TestCase
 {
-    const MOCK_GLOB = 'glob';
-    const MOCK_CONSTANT = 'constant';
-    const MOCK_PASSTHRU = 'passthru';
-    const MOCK_FILE_GET_CONTENTS = 'file_get_contents';
-    const MOCK_INI_GET = 'ini_get';
-    const MOCK_IS_READABLE = 'is_readable';
+    private const MOCK_GLOB = 'glob';
+    private const MOCK_CONSTANT = 'constant';
+    private const MOCK_PASSTHRU = 'passthru';
+    private const MOCK_FILE_GET_CONTENTS = 'file_get_contents';
+    private const MOCK_INI_GET = 'ini_get';
+    private const MOCK_IS_READABLE = 'is_readable';
 
-    const PROVIDER_NAMESPACE = 'Ramsey\\Uuid\\Provider\\Node';
+    private const PROVIDER_NAMESPACE = 'Ramsey\\Uuid\\Provider\\Node';
 
     /**
      * @var FuncProxy[]
@@ -52,30 +54,26 @@ class SystemNodeProviderTest extends TestCase
     /**
      * @runInSeparateProcess
      * @preserveGlobalState disabled
-     *
      * @dataProvider provideValidNetStatOutput
-     *
-     * @param string $netstatOutput
-     * @param string $expected
      */
-    public function testGetNodeReturnsSystemNodeFromMacAddress($netstatOutput, $expected): void
+    public function testGetNodeReturnsSystemNodeFromMacAddress(string $netstatOutput, string $expected): void
     {
-        /*/ Arrange mocks for native functions /*/
+        /* Arrange mocks for native functions */
         $this->arrangeMockFunctions(
             null,
             null,
-            function () use ($netstatOutput) {
+            function () use ($netstatOutput): void {
                 echo $netstatOutput;
             },
             'NOT LINUX',
             'nothing disabled'
         );
 
-        /*/ Act upon the system under test/*/
+        /* Act upon the system under test */
         $provider = new SystemNodeProvider();
         $node = $provider->getNode();
 
-        /*/ Assert the result match expectations /*/
+        /* Assert the result match expectations */
         $this->assertMockFunctions(null, null, ['netstat -ie 2>&1'], ['PHP_OS'], ['disable_functions']);
 
         $this->assertSame($expected, $node);
@@ -90,29 +88,26 @@ class SystemNodeProviderTest extends TestCase
     /**
      * @runInSeparateProcess
      * @preserveGlobalState disabled
-     *
      * @dataProvider provideInvalidNetStatOutput
-     *
-     * @param string $netstatOutput
      */
-    public function testGetNodeShouldNotReturnsSystemNodeForInvalidMacAddress($netstatOutput): void
+    public function testGetNodeShouldNotReturnsSystemNodeForInvalidMacAddress(string $netstatOutput): void
     {
-        /*/ Arrange /*/
+        /* Arrange */
         $this->arrangeMockFunctions(
             null,
             null,
-            function () use ($netstatOutput) {
+            function () use ($netstatOutput): void {
                 echo $netstatOutput;
             },
             'NOT LINUX',
             'nothing disabled'
         );
 
-        /*/ Act /*/
+        /* Act */
         $provider = new SystemNodeProvider();
         $node = $provider->getNode();
 
-        /*/ Assert /*/
+        /* Assert */
         $this->assertMockFunctions(null, null, ['netstat -ie 2>&1'], ['PHP_OS'], ['disable_functions']);
 
         $this->assertFalse($node);
@@ -121,30 +116,26 @@ class SystemNodeProviderTest extends TestCase
     /**
      * @runInSeparateProcess
      * @preserveGlobalState disabled
-     *
      * @dataProvider provideNotationalFormats
-     *
-     * @param string $formatted
-     * @param string $expected
      */
-    public function testGetNodeReturnsNodeStrippedOfNotationalFormatting($formatted, $expected): void
+    public function testGetNodeReturnsNodeStrippedOfNotationalFormatting(string $formatted, string $expected): void
     {
-        /*/ Arrange /*/
+        /* Arrange */
         $this->arrangeMockFunctions(
             null,
             null,
-            function () use ($formatted) {
+            function () use ($formatted): void {
                 echo "\n{$formatted}\n";
             },
             'NOT LINUX',
             'nothing disabled'
         );
 
-        /*/ Act /*/
+        /* Act */
         $provider = new SystemNodeProvider();
         $node = $provider->getNode();
 
-        /*/ Assert /*/
+        /* Assert */
         $this->assertMockFunctions(null, null, ['netstat -ie 2>&1'], ['PHP_OS'], ['disable_functions']);
 
         $this->assertEquals($expected, $node);
@@ -153,29 +144,26 @@ class SystemNodeProviderTest extends TestCase
     /**
      * @runInSeparateProcess
      * @preserveGlobalState disabled
-     *
      * @dataProvider provideInvalidNotationalFormats
-     *
-     * @param string $formatted
      */
-    public function testGetNodeDoesNotAcceptIncorrectNotationalFormatting($formatted): void
+    public function testGetNodeDoesNotAcceptIncorrectNotationalFormatting(string $formatted): void
     {
-        /*/ Arrange /*/
+        /* Arrange */
         $this->arrangeMockFunctions(
             null,
             null,
-            function () use ($formatted) {
+            function () use ($formatted): void {
                 echo "\n{$formatted}\n";
             },
             'NOT LINUX',
             'nothing disabled'
         );
 
-        /*/ Act /*/
+        /* Act */
         $provider = new SystemNodeProvider();
         $node = $provider->getNode();
 
-        /*/ Assert /*/
+        /* Assert */
         $this->assertMockFunctions(null, null, ['netstat -ie 2>&1'], ['PHP_OS'], ['disable_functions']);
 
         $this->assertEquals(false, $node);
@@ -187,22 +175,22 @@ class SystemNodeProviderTest extends TestCase
      */
     public function testGetNodeReturnsFirstMacAddressFound(): void
     {
-        /*/ Arrange /*/
+        /* Arrange */
         $this->arrangeMockFunctions(
             null,
             null,
-            function () {
+            function (): void {
                 echo "\nAA-BB-CC-DD-EE-FF\n00-11-22-33-44-55\nFF-11-EE-22-DD-33\n";
             },
             'NOT LINUX',
             'nothing disabled'
         );
 
-        /*/ Act /*/
+        /* Act */
         $provider = new SystemNodeProvider();
         $node = $provider->getNode();
 
-        /*/ Assert /*/
+        /* Assert */
         $this->assertMockFunctions(null, null, ['netstat -ie 2>&1'], ['PHP_OS'], ['disable_functions']);
 
         $this->assertEquals('AABBCCDDEEFF', $node);
@@ -214,22 +202,22 @@ class SystemNodeProviderTest extends TestCase
      */
     public function testGetNodeReturnsFalseWhenNodeIsNotFound(): void
     {
-        /*/ Arrange /*/
+        /* Arrange */
         $this->arrangeMockFunctions(
             null,
             null,
-            function () {
+            function (): void {
                 echo 'some string that does not match the mac address';
             },
             'NOT LINUX',
             'nothing disabled'
         );
 
-        /*/ Act /*/
+        /* Act */
         $provider = new SystemNodeProvider();
         $node = $provider->getNode();
 
-        /*/ Assert /*/
+        /* Assert */
         $this->assertMockFunctions(null, null, ['netstat -ie 2>&1'], ['PHP_OS'], ['disable_functions']);
 
         $this->assertFalse($node);
@@ -241,23 +229,23 @@ class SystemNodeProviderTest extends TestCase
      */
     public function testGetNodeWillNotExecuteSystemCallIfFailedFirstTime(): void
     {
-        /*/ Arrange /*/
+        /* Arrange */
         $this->arrangeMockFunctions(
             null,
             null,
-            function () {
+            function (): void {
                 echo 'some string that does not match the mac address';
             },
             'NOT LINUX',
             'nothing disabled'
         );
 
-        /*/ Act /*/
+        /* Act */
         $provider = new SystemNodeProvider();
         $provider->getNode();
         $node = $provider->getNode();
 
-        /*/ Assert /*/
+        /* Assert */
         $this->assertMockFunctions(null, null, ['netstat -ie 2>&1'], ['PHP_OS'], ['disable_functions']);
 
         $this->assertFalse($node);
@@ -266,15 +254,11 @@ class SystemNodeProviderTest extends TestCase
     /**
      * @runInSeparateProcess
      * @preserveGlobalState disabled
-     *
      * @dataProvider provideCommandPerOs
-     *
-     * @param string $os
-     * @param string $command
      */
-    public function testGetNodeGetsNetworkInterfaceConfig($os, $command): void
+    public function testGetNodeGetsNetworkInterfaceConfig(string $os, string $command): void
     {
-        /*/ Arrange /*/
+        /* Arrange */
         $this->arrangeMockFunctions(
             'whatever',
             ['mock address path'],
@@ -284,11 +268,11 @@ class SystemNodeProviderTest extends TestCase
             true
         );
 
-        /*/ Act /*/
+        /* Act */
         $provider = new SystemNodeProvider();
         $node = $provider->getNode();
 
-        /*/ Assert /*/
+        /* Assert */
         $globBodyAssert = null;
         $fileGetContentsAssert = null;
         $isReadableAssert = null;
@@ -315,23 +299,23 @@ class SystemNodeProviderTest extends TestCase
      */
     public function testGetNodeReturnsSameNodeUponSubsequentCalls(): void
     {
-        /*/ Arrange /*/
+        /* Arrange */
         $this->arrangeMockFunctions(
             null,
             null,
-            function () {
+            function (): void {
                 echo "\nAA-BB-CC-DD-EE-FF\n";
             },
             'NOT LINUX',
             'nothing disabled'
         );
 
-        /*/ Act /*/
+        /* Act */
         $provider = new SystemNodeProvider();
         $node = $provider->getNode();
         $node2 = $provider->getNode();
 
-        /*/ Assert /*/
+        /* Assert */
         $this->assertMockFunctions(null, null, ['netstat -ie 2>&1'], ['PHP_OS'], ['disable_functions']);
 
         $this->assertEquals($node, $node2);
@@ -343,23 +327,23 @@ class SystemNodeProviderTest extends TestCase
      */
     public function testSubsequentCallsToGetNodeDoNotRecallIfconfig(): void
     {
-        /*/ Arrange /*/
+        /* Arrange */
         $this->arrangeMockFunctions(
             null,
             null,
-            function () {
+            function (): void {
                 echo "\nAA-BB-CC-DD-EE-FF\n";
             },
             'NOT LINUX',
             'nothing disabled'
         );
 
-        /*/ Act /*/
+        /* Act */
         $provider = new SystemNodeProvider();
         $node = $provider->getNode();
         $node2 = $provider->getNode();
 
-        /*/ Assert /*/
+        /* Assert */
         $this->assertMockFunctions(null, null, ['netstat -ie 2>&1'], ['PHP_OS'], ['disable_functions']);
 
         $this->assertEquals($node, $node2);
@@ -368,22 +352,19 @@ class SystemNodeProviderTest extends TestCase
     /**
      * @runInSeparateProcess
      * @preserveGlobalState disabled
-     *
      * @dataProvider provideCommandPerOs
-     *
-     * @param string $os
-     * @param string $command
      */
-    public function testCallGetsysfsOnLinux($os, $command): void
+    public function testCallGetsysfsOnLinux(string $os, string $command): void
     {
-        /*/ Arrange /*/
+        /* Arrange */
         $this->arrangeMockFunctions(
             function () {
                 static $macs = ["00:00:00:00:00:00\n", "01:02:03:04:05:06\n"];
+
                 return array_shift($macs);
             },
             ['mock address path 1', 'mock address path 2'],
-            function () {
+            function (): void {
                 echo "\n01-02-03-04-05-06\n";
             },
             $os,
@@ -391,11 +372,11 @@ class SystemNodeProviderTest extends TestCase
             true
         );
 
-        /*/ Act /*/
+        /* Act */
         $provider = new SystemNodeProvider();
         $node = $provider->getNode();
 
-        /*/ Assert /*/
+        /* Assert */
         $fileGetContentsAssert = null;
         $globBodyAssert = null;
         $passthruBodyAssert = [$command];
@@ -429,22 +410,22 @@ class SystemNodeProviderTest extends TestCase
      */
     public function testCallGetsysfsOnLinuxWhenGlobReturnsFalse(): void
     {
-        /*/ Arrange /*/
+        /* Arrange */
         $this->arrangeMockFunctions(
             null,
             false,
-            function () {
+            function (): void {
                 echo "\n01-02-03-04-05-06\n";
             },
             'Linux',
             'nothing disabled'
         );
 
-        /*/ Act /*/
+        /* Act */
         $provider = new SystemNodeProvider();
         $node = $provider->getNode();
 
-        /*/ Assert /*/
+        /* Assert */
         $this->assertMockFunctions(
             null,
             ['/sys/class/net/*/address'],
@@ -462,22 +443,22 @@ class SystemNodeProviderTest extends TestCase
      */
     public function testCallGetsysfsOnLinuxWhenGlobReturnsEmptyArray(): void
     {
-        /*/ Arrange /*/
+        /* Arrange */
         $this->arrangeMockFunctions(
             null,
             [],
-            function () {
+            function (): void {
                 echo "\n01-02-03-04-05-06\n";
             },
             'Linux',
             'nothing disabled'
         );
 
-        /*/ Act /*/
+        /* Act */
         $provider = new SystemNodeProvider();
         $node = $provider->getNode();
 
-        /*/ Assert /*/
+        /* Assert */
         $this->assertMockFunctions(
             null,
             ['/sys/class/net/*/address'],
@@ -495,11 +476,11 @@ class SystemNodeProviderTest extends TestCase
      */
     public function testCallGetsysfsOnLinuxWhenGlobFilesAreNotReadable(): void
     {
-        /*/ Arrange /*/
+        /* Arrange */
         $this->arrangeMockFunctions(
             null,
             ['mock address path 1', 'mock address path 2'],
-            function () {
+            function (): void {
                 echo "\n01-02-03-04-05-06\n";
             },
             'Linux',
@@ -507,11 +488,11 @@ class SystemNodeProviderTest extends TestCase
             false
         );
 
-        /*/ Act /*/
+        /* Act */
         $provider = new SystemNodeProvider();
         $node = $provider->getNode();
 
-        /*/ Assert /*/
+        /* Assert */
         $this->assertMockFunctions(
             null,
             ['/sys/class/net/*/address'],
@@ -524,14 +505,13 @@ class SystemNodeProviderTest extends TestCase
         $this->assertEquals('010203040506', $node);
     }
 
-
     /**
      * @runInSeparateProcess
      * @preserveGlobalState disabled
      */
     public function testGetNodeReturnsFalseWhenPassthruIsDisabled(): void
     {
-        /*/ Arrange /*/
+        /* Arrange */
         $this->arrangeMockFunctions(
             null,
             null,
@@ -540,11 +520,11 @@ class SystemNodeProviderTest extends TestCase
             'PASSTHRU,some_other_function'
         );
 
-        /*/ Act /*/
+        /* Act */
         $provider = new SystemNodeProvider();
         $node = $provider->getNode();
 
-        /*/ Assert /*/
+        /* Assert */
         $this->assertMockFunctions(
             null,
             null,
@@ -583,7 +563,7 @@ class SystemNodeProviderTest extends TestCase
             self::MOCK_IS_READABLE => $isReadableBody,
         ];
 
-        array_walk($mockFunction, function ($body, $key) {
+        array_walk($mockFunction, function ($body, $key): void {
             $this->functionProxies[$key] = AspectMock::func(self::PROVIDER_NAMESPACE, $key, $body);
         });
     }
@@ -617,7 +597,7 @@ class SystemNodeProviderTest extends TestCase
             self::MOCK_IS_READABLE => $isReadableAssert,
         ];
 
-        array_walk($mockFunctionAsserts, function ($asserts, $key) {
+        array_walk($mockFunctionAsserts, function ($asserts, $key): void {
             if ($asserts === null) {
                 $this->functionProxies[$key]->verifyNeverInvoked();
             } elseif (is_array($asserts)) {
@@ -632,6 +612,7 @@ class SystemNodeProviderTest extends TestCase
                     'Given parameter for %s must be an array or NULL, "%s" given.',
                     [$key, gettype($asserts)]
                 );
+
                 throw new InvalidArgumentException($error);
             }
         });
@@ -640,7 +621,7 @@ class SystemNodeProviderTest extends TestCase
     /**
      * Provides the command that should be executed per supported OS
      *
-     * @return array[]
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingTraversableTypeHintSpecification
      */
     public function provideCommandPerOs(): array
     {
@@ -657,14 +638,14 @@ class SystemNodeProviderTest extends TestCase
     /**
      * Values that are NOT parsed to a mac address by the class under test
      *
-     * @return array[]
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingTraversableTypeHintSpecification
      */
     public function provideInvalidNetStatOutput(): array
     {
         return [
             'Not an octal value'                              => [
-                "The program 'netstat' is currently not installed.' .
-                ' You can install it by typing:\nsudo apt install net-tools\n"
+                "The program 'netstat' is currently not installed. " .
+                "You can install it by typing:\nsudo apt install net-tools\n",
             ],
             'One character too short'                         => ["\nA-BB-CC-DD-EE-FF\n"],
             'One tuple too short'                             => ["\nBB-CC-DD-EE-FF\n"],
@@ -682,7 +663,7 @@ class SystemNodeProviderTest extends TestCase
     /**
      * Provides notations that the class under test should NOT attempt to strip
      *
-     * @return array[]
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingTraversableTypeHintSpecification
      */
     public function provideInvalidNotationalFormats(): array
     {
@@ -701,25 +682,25 @@ class SystemNodeProviderTest extends TestCase
     /**
      * Provides mac addresses that the class under test should strip notational format from
      *
-     * @return array[]
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingTraversableTypeHintSpecification
      */
     public function provideNotationalFormats(): array
     {
         return [
             ['01-23-45-67-89-ab', '0123456789ab'],
-            ['01:23:45:67:89:ab', '0123456789ab']
+            ['01:23:45:67:89:ab', '0123456789ab'],
         ];
     }
 
     /**
      * Values that are parsed to a mac address by the class under test
      *
-     * @return array[]
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingTraversableTypeHintSpecification
      */
     public function provideValidNetStatOutput(): array
     {
         return [
-            /*/ Full output of related command /*/
+            /* Full output of related command */
             'Full output - Linux' => [<<<'TXT'
                 Kernel Interface table
                 docker0   Link encap:Ethernet  HWaddr 01:23:45:67:89:ab  
@@ -748,7 +729,8 @@ class SystemNodeProviderTest extends TestCase
                           collisions:0 txqueuelen:1000 
                           RX bytes:1094983 (1.0 MB)  TX bytes:1094983 (1.0 MB)
 TXT
-                , '0123456789ab'],
+                , '0123456789ab',
+            ],
             'Full output - MacOS' => [<<<'TXT'
                 lo0: flags=8049<UP,LOOPBACK,RUNNING,MULTICAST> mtu 16384
                     options=1203<RXCSUM,TXCSUM,TXSTATUS,SW_TIMESTAMP>
@@ -815,7 +797,8 @@ TXT
                     inet6 fe80::57c6:d692:9d41:d28f%utun0 prefixlen 64 scopeid 0xe 
                     nd6 options=201<PERFORMNUD,DAD>
 TXT
-                , '10ddb1b4e48e'],
+                , '10ddb1b4e48e',
+            ],
             'Full output - Window' => [<<<'TXT'
                 Windows IP Configuration
                 
@@ -854,32 +837,34 @@ TXT
                    DHCP Enabled. . . . . . . . . . . : No
                    Autoconfiguration Enabled . . . . : Yes
 TXT
-                , '080027B842C6'],
+                , '080027B842C6',
+            ],
             'Full output - FreeBSD' => [<<<'TXT'
                 Name    Mtu Network       Address              Ipkts Ierrs Idrop    Opkts Oerrs  Coll
                 em0    1500 <Link#1>      08:00:27:71:a1:00    65514     0     0    42918     0     0
                 em1    1500 <Link#2>      08:00:27:d0:60:a0     1199     0     0      535     0     0
                 lo0   16384 <Link#3>      lo0                      4     0     0        4     0     0
 TXT
-                , '08002771a100'],
+                , '08002771a100',
+            ],
 
-            /*/ The single line that is relevant /*/
+            /* The single line that is relevant */
             'Linux  - single line'  => ["\ndocker0   Link encap:Ethernet  HWaddr 01:23:45:67:89:ab\n", '0123456789ab'],
             'MacOS  - Single line ' => ["\nether 10:dd:b1:b4:e4:8e\n", '10ddb1b4e48e'],
             'Window - single line' => ["\nPhysical Address. . . . . . . . . : 08-00-27-B8-42-C6\n", '080027B842C6'],
 
-            /*/ Minimal subsets of the single line to show the differences /*/
+            /* Minimal subsets of the single line to show the differences */
             'with colon, with linebreak, with space'          => ["\n : AA-BB-CC-DD-EE-FF\n", 'AABBCCDDEEFF'],
             'without colon, with linebreak, with space'       => ["\n AA-BB-CC-DD-EE-FF \n",  'AABBCCDDEEFF'],
             'without colon, with linebreak, without space'    => ["\nAA-BB-CC-DD-EE-FF\n",    'AABBCCDDEEFF'],
             'without colon, without linebreak, with space'    => [' AA-BB-CC-DD-EE-FF ',      'AABBCCDDEEFF'],
 
-            /*/ Other accepted variations /*/
+            /* Other accepted variations */
             'Actual mac - 1'               => ["\n52:54:00:14:91:69\n",    '525400149169'],
             'Actual mac - 2'               => ["\n00:16:3e:a9:73:f0\n",    '00163ea973f0'],
             'FF:FF:FF:FF:FF:FF'            => ["\nFF:FF:FF:FF:FF:FF\n",    'FFFFFFFFFFFF'],
 
-            /*/ Incorrect variations that are also accepted /*/
+            /* Incorrect variations that are also accepted */
             'Local host'                   => ["\n00:00:00:00:00:00\n",    '000000000000'],
             'Too long -- extra character'  => ["\nABC-01-23-45-67-89\n",   'BC0123456789'],
             'Too long -- extra tuple'      => ["\n01-AA-BB-CC-DD-EE-FF\n", '01AABBCCDDEE'],

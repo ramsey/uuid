@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Ramsey\Uuid\Test\Builder;
 
 use PHPUnit\Framework\MockObject\MockObject;
@@ -31,7 +33,7 @@ class DefaultUuidBuilderTest extends TestCase
             'time_hi_and_version' => '5411',
             'clock_seq_hi_and_reserved' => '73',
             'clock_seq_low' => '22',
-            'node' => 'be0725c8ce01'
+            'node' => 'be0725c8ce01',
         ];
 
         $result = $builder->build($codec, $fields);

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Ramsey\Uuid\Test\Generator;
 
 use Mockery;
@@ -46,7 +48,8 @@ class RandomLibAdapterTest extends TestCase
             ->getMock();
         $generator->expects($this->once())
             ->method('generate')
-            ->with($length);
+            ->with($length)
+            ->willReturn('foo');
 
         $adapter = new RandomLibAdapter($generator);
         $adapter->generate($length);

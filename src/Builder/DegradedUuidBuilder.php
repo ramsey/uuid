@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the ramsey/uuid library
  *
@@ -7,10 +8,9 @@
  *
  * @copyright Copyright (c) Ben Ramsey <ben@benramsey.com>
  * @license http://opensource.org/licenses/MIT MIT
- * @link https://benramsey.com/projects/ramsey-uuid/ Documentation
- * @link https://packagist.org/packages/ramsey/uuid Packagist
- * @link https://github.com/ramsey/uuid GitHub
  */
+
+declare(strict_types=1);
 
 namespace Ramsey\Uuid\Builder;
 
@@ -31,34 +31,42 @@ class DegradedUuidBuilder implements UuidBuilderInterface
     private $numberConverter;
 
     /**
-     * The time converter to use for converting timestamps extracted from UUIDs to unix timestamps
      * @var TimeConverterInterface
      */
-    protected $timeConverter;
+    private $timeConverter;
 
     /**
      * Constructs the DegradedUuidBuilder
      *
-     * @param NumberConverterInterface $numberConverter The number converter to use when constructing the DegradedUuid
+     * @param NumberConverterInterface $numberConverter The number converter to
+     *     use when constructing the DegradedUuid
      * @param TimeConverterInterface $timeConverter The time converter to use
-     *     for converting timestamps extracted from a UUID to unix timestamps
+     *     for converting timestamps extracted from a UUID to Unix timestamps
      */
-    public function __construct(NumberConverterInterface $numberConverter, TimeConverterInterface $timeConverter)
-    {
+    public function __construct(
+        NumberConverterInterface $numberConverter,
+        TimeConverterInterface $timeConverter
+    ) {
         $this->numberConverter = $numberConverter;
         $this->timeConverter = $timeConverter;
     }
 
     /**
-     * Builds a DegradedUuid
+     * Builds and returns a DegradedUuid
      *
-     * @param CodecInterface $codec The codec to use for building this DegradedUuid
-     * @param array $fields An array of fields from which to construct the DegradedUuid;
+     * @param CodecInterface $codec The codec to use for building this DegradedUuid instance
+     * @param string[] $fields An array of fields from which to construct a DegradedUuid instance;
      *     see {@see \Ramsey\Uuid\UuidInterface::getFieldsHex()} for array structure.
-     * @return DegradedUuid
+     *
+     * @return DegradedUuid The DegradedUuidBuild returns an instance of Ramsey\Uuid\DegradedUuid
      */
     public function build(CodecInterface $codec, array $fields): UuidInterface
     {
-        return new DegradedUuid($fields, $this->numberConverter, $codec, $this->timeConverter);
+        return new DegradedUuid(
+            $fields,
+            $this->numberConverter,
+            $codec,
+            $this->timeConverter
+        );
     }
 }
