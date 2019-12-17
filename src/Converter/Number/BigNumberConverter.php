@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the ramsey/uuid library
  *
@@ -7,10 +8,9 @@
  *
  * @copyright Copyright (c) Ben Ramsey <ben@benramsey.com>
  * @license http://opensource.org/licenses/MIT MIT
- * @link https://benramsey.com/projects/ramsey-uuid/ Documentation
- * @link https://packagist.org/packages/ramsey/uuid Packagist
- * @link https://github.com/ramsey/uuid GitHub
  */
+
+declare(strict_types=1);
 
 namespace Ramsey\Uuid\Converter\Number;
 
@@ -31,16 +31,10 @@ class BigNumberConverter implements NumberConverterInterface
     use NumberStringTrait;
 
     /**
-     * Converts a hexadecimal number into an string integer representation of
-     * the number
-     *
-     * The integer representation returned is a string representation of the
-     * integer, to accommodate unsigned integers greater than PHP_INT_MAX.
-     *
-     * @param string $hex The hexadecimal string representation to convert
-     * @return string
      * @throws InvalidArgumentException if $hex is not a hexadecimal string
      * @throws UnsatisfiedDependencyException if the chosen converter is not present
+     *
+     * @inheritDoc
      */
     public function fromHex(string $hex): string
     {
@@ -51,15 +45,10 @@ class BigNumberConverter implements NumberConverterInterface
     }
 
     /**
-     * Converts a string integer representation into a hexadecimal string
-     * representation of the number
-     *
-     * @param string $number A string integer representation to convert; this
-     *     must be a numeric string to accommodate unsigned integers greater
-     *     than PHP_INT_MAX.
-     * @return string Hexadecimal string
      * @throws InvalidArgumentException if $integer is not an integer string
      * @throws UnsatisfiedDependencyException if the chosen converter is not present
+     *
+     * @inheritDoc
      */
     public function toHex(string $number): string
     {

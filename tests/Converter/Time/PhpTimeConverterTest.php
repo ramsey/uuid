@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Ramsey\Uuid\Test\Converter\Time;
 
 use InvalidArgumentException;
@@ -21,7 +23,7 @@ class PhpTimeConverterTest extends TestCase
         $expectedArray = [
             'low' => sprintf('%08x', $calculatedTime & 0xffffffff),
             'mid' => sprintf('%04x', ($calculatedTime >> 32) & 0xffff),
-            'hi' => sprintf('%04x', ($calculatedTime >> 48) & 0x0fff)
+            'hi' => sprintf('%04x', ($calculatedTime >> 48) & 0x0fff),
         ];
 
         $converter = new PhpTimeConverter();

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the ramsey/uuid library
  *
@@ -7,32 +8,34 @@
  *
  * @copyright Copyright (c) Ben Ramsey <ben@benramsey.com>
  * @license http://opensource.org/licenses/MIT MIT
- * @link https://benramsey.com/projects/ramsey-uuid/ Documentation
- * @link https://packagist.org/packages/ramsey/uuid Packagist
- * @link https://github.com/ramsey/uuid GitHub
  */
+
+declare(strict_types=1);
 
 namespace Ramsey\Uuid;
 
 use DateTimeImmutable;
 use DateTimeInterface;
-use Moontoast\Math\BigNumber;
 use Ramsey\Uuid\Exception\UnsatisfiedDependencyException;
 use Ramsey\Uuid\Exception\UnsupportedOperationException;
 
 /**
  * DegradedUuid represents an RFC 4122 UUID on 32-bit systems
  *
- * @see Uuid
+ * Some of the functionality of a DegradedUuid is not present or degraded, since
+ * 32-bit systems are unable to perform the necessary mathematical operations or
+ * represent the integers appropriately.
  */
 class DegradedUuid extends Uuid
 {
     /**
-     * @inheritdoc
+     * @return DateTimeImmutable An immutable instance of DateTimeInterface
+     *
+     * @throws UnsupportedOperationException if UUID is not time-based
      */
     public function getDateTime(): DateTimeInterface
     {
-        if ($this->getVersion() != 1) {
+        if ($this->getVersion() !== 1) {
             throw new UnsupportedOperationException('Not a time-based UUID');
         }
 
@@ -43,11 +46,9 @@ class DegradedUuid extends Uuid
     }
 
     /**
-     * For degraded UUIDs, throws an `UnsatisfiedDependencyException` when
-     * called on a 32-bit system
-     *
-     * @return array
      * @throws UnsatisfiedDependencyException if called on a 32-bit system
+     *
+     * @inheritDoc
      */
     public function getFields(): array
     {
@@ -59,10 +60,6 @@ class DegradedUuid extends Uuid
     }
 
     /**
-     * For degraded UUIDs, throws an `UnsatisfiedDependencyException` when
-     * called on a 32-bit system
-     *
-     * @return int
      * @throws UnsatisfiedDependencyException if called on a 32-bit system
      */
     public function getNode(): int
@@ -76,10 +73,6 @@ class DegradedUuid extends Uuid
     }
 
     /**
-     * For degraded UUIDs, throws an `UnsatisfiedDependencyException` when
-     * called on a 32-bit system
-     *
-     * @return int
      * @throws UnsatisfiedDependencyException if called on a 32-bit system
      */
     public function getTimeLow(): int
@@ -93,16 +86,12 @@ class DegradedUuid extends Uuid
     }
 
     /**
-     * For degraded UUIDs, throws an `UnsatisfiedDependencyException` when
-     * called on a 32-bit system
-     *
-     * @return int
      * @throws UnsatisfiedDependencyException if called on a 32-bit system
-     * @throws UnsupportedOperationException If this UUID is not a version 1 UUID
+     * @throws UnsupportedOperationException if UUID is not time-based
      */
     public function getTimestamp(): int
     {
-        if ($this->getVersion() != 1) {
+        if ($this->getVersion() !== 1) {
             throw new UnsupportedOperationException('Not a time-based UUID');
         }
 

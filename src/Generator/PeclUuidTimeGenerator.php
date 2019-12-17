@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the ramsey/uuid library
  *
@@ -7,29 +8,24 @@
  *
  * @copyright Copyright (c) Ben Ramsey <ben@benramsey.com>
  * @license http://opensource.org/licenses/MIT MIT
- * @link https://benramsey.com/projects/ramsey-uuid/ Documentation
- * @link https://packagist.org/packages/ramsey/uuid Packagist
- * @link https://github.com/ramsey/uuid GitHub
  */
+
+declare(strict_types=1);
 
 namespace Ramsey\Uuid\Generator;
 
 /**
- * PeclUuidTimeGenerator provides functionality to generate strings of binary
- * data for version 1 UUIDs using the PECL UUID PHP extension
+ * PeclUuidTimeGenerator generates strings of binary data for time-base UUIDs,
+ * using ext-uuid
  *
- * @link https://pecl.php.net/package/uuid
+ * @link https://pecl.php.net/package/uuid ext-uuid
  */
 class PeclUuidTimeGenerator implements TimeGeneratorInterface
 {
     /**
-     * Generate a version 1 UUID using the PECL UUID extension
-     *
-     * @param int|string $node Not used in this context
-     * @param int $clockSeq Not used in this context
-     * @return string A binary string
+     * @inheritDoc
      */
-    public function generate($node = null, int $clockSeq = null): string
+    public function generate($node = null, ?int $clockSeq = null): string
     {
         $uuid = uuid_create(UUID_TYPE_TIME);
 

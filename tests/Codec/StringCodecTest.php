@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Ramsey\Uuid\Test\Codec;
 
 use PHPUnit\Framework\MockObject\MockObject;
@@ -40,7 +42,8 @@ class StringCodecTest extends TestCase
             'time_hi_and_version' => 'abcd',
             'clock_seq_hi_and_reserved' => 'ab',
             'clock_seq_low' => 'ef',
-            'node' => '1234abcd4321'];
+            'node' => '1234abcd4321',
+        ];
     }
 
     protected function tearDown(): void

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Ramsey\Uuid\Test\Provider\Node;
 
 use AspectMock\Test as AspectMock;
@@ -92,7 +94,7 @@ class RandomNodeProviderTest extends TestCase
         // Convert what we got into bytes so that we can mask out everything
         // except the multicast bit. If the multicast bit doesn't exist, this
         // test will fail appropriately.
-        $nodeBytes = (string) hex2bin($nodeHex);
+        $nodeBytes = (string) hex2bin((string) $nodeHex);
 
         // Split the node bytes for math on 32-bit systems.
         $nodeMsb = substr($nodeBytes, 0, 3);

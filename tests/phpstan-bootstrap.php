@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * PHPStan bootstrap
+ *
+ * @codingStandardsIgnoreFile
+ */
+
 if (!function_exists('uuid_create')) {
     /**
      * @param int $type

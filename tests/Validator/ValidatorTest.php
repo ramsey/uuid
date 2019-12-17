@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Ramsey\Uuid\Test\Validator;
 
 use PHPUnit\Framework\MockObject\MockObject;
@@ -15,7 +17,7 @@ class ValidatorTest extends TestCase
 
     public function setUp(): void
     {
-        // Disable calls to the constructor, but do not override any methods
+        // Disable calls to the constructor, but do not override any methods.
         $this->validator = $this->getMockBuilder(Validator::class)
             ->disableOriginalConstructor()
             ->onlyMethods([])

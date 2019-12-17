@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the ramsey/uuid library
  *
@@ -7,10 +8,9 @@
  *
  * @copyright Copyright (c) Ben Ramsey <ben@benramsey.com>
  * @license http://opensource.org/licenses/MIT MIT
- * @link https://benramsey.com/projects/ramsey-uuid/ Documentation
- * @link https://packagist.org/packages/ramsey/uuid Packagist
- * @link https://github.com/ramsey/uuid GitHub
  */
+
+declare(strict_types=1);
 
 namespace Ramsey\Uuid\Builder;
 
@@ -21,8 +21,7 @@ use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
 /**
- * DefaultUuidBuilder is the default UUID builder for ramsey/uuid; it builds
- * instances of Uuid objects
+ * DefaultUuidBuilder builds instances of Uuid
  */
 class DefaultUuidBuilder implements UuidBuilderInterface
 {
@@ -32,34 +31,42 @@ class DefaultUuidBuilder implements UuidBuilderInterface
     private $numberConverter;
 
     /**
-     * The time converter to use for converting timestamps extracted from UUIDs to unix timestamps
      * @var TimeConverterInterface
      */
-    protected $timeConverter;
+    private $timeConverter;
 
     /**
      * Constructs the DefaultUuidBuilder
      *
-     * @param NumberConverterInterface $numberConverter The number converter to use when constructing the Uuid
+     * @param NumberConverterInterface $numberConverter The number converter to
+     *     use when constructing the Uuid
      * @param TimeConverterInterface $timeConverter The time converter to use
-     *     for converting timestamps extracted from a UUID to unix timestamps
+     *     for converting timestamps extracted from a UUID to Unix timestamps
      */
-    public function __construct(NumberConverterInterface $numberConverter, TimeConverterInterface $timeConverter)
-    {
+    public function __construct(
+        NumberConverterInterface $numberConverter,
+        TimeConverterInterface $timeConverter
+    ) {
         $this->numberConverter = $numberConverter;
         $this->timeConverter = $timeConverter;
     }
 
     /**
-     * Builds a Uuid
+     * Builds and returns a Uuid
      *
-     * @param CodecInterface $codec The codec to use for building this Uuid
-     * @param array $fields An array of fields from which to construct the Uuid;
+     * @param CodecInterface $codec The codec to use for building this Uuid instance
+     * @param string[] $fields An array of fields from which to construct a Uuid instance;
      *     see {@see \Ramsey\Uuid\UuidInterface::getFieldsHex()} for array structure.
-     * @return Uuid
+     *
+     * @return Uuid The DefaultUuidBuilder returns an instance of Ramsey\Uuid\Uuid
      */
     public function build(CodecInterface $codec, array $fields): UuidInterface
     {
-        return new Uuid($fields, $this->numberConverter, $codec, $this->timeConverter);
+        return new Uuid(
+            $fields,
+            $this->numberConverter,
+            $codec,
+            $this->timeConverter
+        );
     }
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the ramsey/uuid library
  *
@@ -7,25 +8,24 @@
  *
  * @copyright Copyright (c) Ben Ramsey <ben@benramsey.com>
  * @license http://opensource.org/licenses/MIT MIT
- * @link https://benramsey.com/projects/ramsey-uuid/ Documentation
- * @link https://packagist.org/packages/ramsey/uuid Packagist
- * @link https://github.com/ramsey/uuid GitHub
  */
+
+declare(strict_types=1);
 
 namespace Ramsey\Uuid\Provider\Node;
 
 use Ramsey\Uuid\Provider\NodeProviderInterface;
 
 /**
- * SystemNodeProvider provides functionality to get the system node ID (MAC
- * address) using external system calls
+ * SystemNodeProvider retrieves the system node ID, if possible
+ *
+ * The system node ID, or host ID, is often the same as the MAC address for a
+ * network interface on the host.
  */
 class SystemNodeProvider implements NodeProviderInterface
 {
     /**
-     * Returns the system node ID
-     *
-     * @return string|null|false System node ID as a hexadecimal string, or false if it is not found
+     * @inheritDoc
      */
     public function getNode()
     {
@@ -38,11 +38,11 @@ class SystemNodeProvider implements NodeProviderInterface
         $pattern = '/[^:]([0-9A-Fa-f]{2}([:-])[0-9A-Fa-f]{2}(\2[0-9A-Fa-f]{2}){4})[^:]/';
         $matches = [];
 
-        // first try a linux specific way
+        // First, try a Linux-specific approach.
         $node = $this->getSysfs();
 
         // Search the ifconfig output for all MAC addresses and return
-        // the first one found
+        // the first one found.
         if ($node === false) {
             if (preg_match_all($pattern, $this->getIfconfig(), $matches, PREG_PATTERN_ORDER)) {
                 $node = $matches[1][0] ?? false;
@@ -64,11 +64,12 @@ class SystemNodeProvider implements NodeProviderInterface
      * Returns the network interface configuration for the system
      *
      * @codeCoverageIgnore
-     * @return string
      */
-    protected function getIfconfig(): string
+    private function getIfconfig(): string
     {
-        if (strpos(strtolower((string) ini_get('disable_functions')), 'passthru') !== false) {
+        $disabledFunctions = strtolower((string) ini_get('disable_functions'));
+
+        if (strpos($disabledFunctions, 'passthru') !== false) {
             return '';
         }
 
@@ -76,16 +77,20 @@ class SystemNodeProvider implements NodeProviderInterface
         switch (strtoupper(substr(constant('PHP_OS'), 0, 3))) {
             case 'WIN':
                 passthru('ipconfig /all 2>&1');
+
                 break;
             case 'DAR':
                 passthru('ifconfig 2>&1');
+
                 break;
             case 'FRE':
                 passthru('netstat -i -f link 2>&1');
+
                 break;
             case 'LIN':
             default:
                 passthru('netstat -ie 2>&1');
+
                 break;
         }
 
@@ -93,7 +98,7 @@ class SystemNodeProvider implements NodeProviderInterface
     }
 
     /**
-     * Returns mac address from the first system interface via the sysfs interface
+     * Returns MAC address from the first system interface via the sysfs interface
      *
      * @return string|bool
      */
@@ -104,12 +109,12 @@ class SystemNodeProvider implements NodeProviderInterface
         if (strtoupper(constant('PHP_OS')) === 'LINUX') {
             $addressPaths = glob('/sys/class/net/*/address', GLOB_NOSORT);
 
-            if (empty($addressPaths)) {
+            if ($addressPaths === false || count($addressPaths) === 0) {
                 return false;
             }
 
             $macs = [];
-            array_walk($addressPaths, function ($addressPath) use (&$macs) {
+            array_walk($addressPaths, function ($addressPath) use (&$macs): void {
                 if (is_readable($addressPath)) {
                     $macs[] = file_get_contents($addressPath);
                 }
@@ -117,14 +122,10 @@ class SystemNodeProvider implements NodeProviderInterface
 
             $macs = array_map('trim', $macs);
 
-            // remove invalid entries
+            // Remove invalid entries.
             $macs = array_filter($macs, function ($address) {
-                return (
-                    // localhost adapter
-                    $address !== '00:00:00:00:00:00'
-                    // must match mac address
-                    && preg_match('/^([0-9a-f]{2}:){5}[0-9a-f]{2}$/i', $address)
-                );
+                return $address !== '00:00:00:00:00:00'
+                    && preg_match('/^([0-9a-f]{2}:){5}[0-9a-f]{2}$/i', $address);
             });
 
             $mac = reset($macs);

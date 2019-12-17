@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the ramsey/uuid library
  *
@@ -7,28 +8,26 @@
  *
  * @copyright Copyright (c) Ben Ramsey <ben@benramsey.com>
  * @license http://opensource.org/licenses/MIT MIT
- * @link https://benramsey.com/projects/ramsey-uuid/ Documentation
- * @link https://packagist.org/packages/ramsey/uuid Packagist
- * @link https://github.com/ramsey/uuid GitHub
  */
+
+declare(strict_types=1);
 
 namespace Ramsey\Uuid;
 
 use DateTimeInterface;
 use JsonSerializable;
 use Ramsey\Uuid\Converter\NumberConverterInterface;
-use Ramsey\Uuid\Exception\UnsatisfiedDependencyException;
-use Ramsey\Uuid\Exception\UnsupportedOperationException;
 use Serializable;
 
 /**
- * UuidInterface defines common functionality for all universally unique
- * identifiers (UUIDs)
+ * A UUID is a universally unique identifier adhering to an agreed-upon
+ * representation format and standard for generation
  */
 interface UuidInterface extends JsonSerializable, Serializable
 {
     /**
-     * Compares this UUID to the specified UUID.
+     * Returns -1, 0, or 1 if the UUID is less than, equal to, or greater than
+     * the other UUID
      *
      * The first of two UUIDs is greater than the second if the most
      * significant field in which the UUIDs differ is greater for the first
@@ -37,48 +36,39 @@ interface UuidInterface extends JsonSerializable, Serializable
      * * Q. What's the value of being able to sort UUIDs?
      * * A. Use them as keys in a B-Tree or similar mapping.
      *
-     * @param UuidInterface $other UUID to which this UUID is compared
-     * @return int -1, 0 or 1 as this UUID is less than, equal to, or greater than `$uuid`
+     * @param UuidInterface $other The UUID to compare
+     *
+     * @return int -1, 0, or 1 if the UUID is less than, equal to, or greater than $other
      */
     public function compareTo(UuidInterface $other): int;
 
     /**
-     * Compares this object to the specified object.
+     * Returns true if the UUID is equal to the provided object
      *
      * The result is true if and only if the argument is not null, is a UUID
      * object, has the same variant, and contains the same value, bit for bit,
-     * as this UUID.
-     *
-     * @param object|null $other
-     * @return bool True if `$other` is equal to this UUID
+     * as the UUID.
      */
     public function equals(?object $other): bool;
 
     /**
-     * Returns the UUID as a 16-byte string (containing the six integer fields
-     * in big-endian byte order).
-     *
-     * @return string
+     * Returns the binary string representation of the UUID
      */
     public function getBytes(): string;
 
     /**
-     * Returns the number converter to use for converting hex values to/from integers.
-     *
-     * @return NumberConverterInterface
+     * Returns the number converter to use when converting hex values to/from integers
      */
     public function getNumberConverter(): NumberConverterInterface;
 
     /**
-     * Returns the hexadecimal value of the UUID.
-     *
-     * @return string
+     * Returns the hexadecimal string representation of the UUID
      */
     public function getHex(): string;
 
     /**
-     * Returns an array of the fields of this UUID, with keys named according
-     * to the RFC 4122 names for the fields.
+     * Returns an array of the fields of the UUID, with keys named according
+     * to the RFC 4122 names for the fields
      *
      * * **time_low**: The low field of the timestamp, an unsigned 32-bit integer
      * * **time_mid**: The middle field of the timestamp, an unsigned 16-bit integer
@@ -91,72 +81,70 @@ interface UuidInterface extends JsonSerializable, Serializable
      * * **node**: The spatially unique node identifier, an unsigned 48-bit
      *   integer
      *
-     * @return array The UUID fields represented as hexadecimal values
+     * @link http://tools.ietf.org/html/rfc4122#section-4.1.2 RFC 4122, § 4.1.2: Layout and Byte Order
+     *
+     * @return string[]
      */
     public function getFieldsHex(): array;
 
     /**
      * Returns the high field of the clock sequence multiplexed with the variant
-     * (bits 65-72 of the UUID).
-     *
-     * @return string Hexadecimal value of clock_seq_hi_and_reserved
      */
     public function getClockSeqHiAndReservedHex(): string;
 
     /**
-     * Returns the low field of the clock sequence (bits 73-80 of the UUID).
-     *
-     * @return string Hexadecimal value of clock_seq_low
+     * Returns the low field of the clock sequence
      */
     public function getClockSeqLowHex(): string;
 
     /**
-     * Returns the clock sequence value associated with this UUID.
+     * Returns the full clock sequence value
      *
-     * @return string Hexadecimal value of clock sequence
+     * For UUID version 1, the clock sequence is used to help avoid
+     * duplicates that could arise when the clock is set backwards in time
+     * or if the node ID changes.
+     *
+     * For UUID version 3 or 5, the clock sequence is a 14-bit value
+     * constructed from a name as described in RFC 4122, Section 4.3.
+     *
+     * For UUID version 4, clock sequence is a randomly or pseudo-randomly
+     * generated 14-bit value as described in RFC 4122, Section 4.4.
+     *
+     * @link http://tools.ietf.org/html/rfc4122#section-4.1.5 RFC 4122, § 4.1.5: Clock Sequence
      */
     public function getClockSequenceHex(): string;
 
     /**
-     * Returns a PHP object that implements `DateTimeInterface` representing
-     * the timestamp associated with this UUID.
+     * Returns a DateTimeInterface object representing the timestamp associated
+     * with the UUID
      *
      * The timestamp value is only meaningful in a time-based UUID, which
-     * has version type 1. If this UUID is not a time-based UUID then
-     * this method throws `UnsupportedOperationException`.
+     * has version type 1.
      *
-     * @return DateTimeInterface A PHP DateTimeImmutable representation of the date
-     * @throws UnsupportedOperationException If this UUID is not a version 1 UUID
-     * @throws UnsatisfiedDependencyException if called in a 32-bit system and
-     *     `Moontoast\Math\BigNumber` is not present
+     * @return DateTimeInterface A PHP DateTimeInterface instance representing
+     *     the timestamp of a version 1 UUID
      */
     public function getDateTime(): DateTimeInterface;
 
     /**
-     * Returns the integer value of the UUID, converted to an appropriate number
-     * representation.
+     * Returns the 128-bit integer value of the UUID as a string
      *
-     * @return mixed Converted representation of the unsigned 128-bit integer value
-     * @throws UnsatisfiedDependencyException if `Moontoast\Math\BigNumber` is not present
+     * @return mixed
      */
     public function getInteger();
 
     /**
-     * Returns the least significant 64 bits of this UUID's 128 bit value.
-     *
-     * @return string Hexadecimal value of least significant bits
+     * Returns the least significant 64 bits of the UUID
      */
     public function getLeastSignificantBitsHex(): string;
 
     /**
-     * Returns the most significant 64 bits of this UUID's 128 bit value.
-     *
-     * @return string Hexadecimal value of most significant bits
+     * Returns the most significant 64 bits of the UUID
      */
     public function getMostSignificantBitsHex(): string;
 
     /**
-     * Returns the node value associated with this UUID
+     * Returns the node value
      *
      * For UUID version 1, the node field consists of an IEEE 802 MAC
      * address, usually the host address. For systems with multiple IEEE
@@ -176,79 +164,66 @@ interface UuidInterface extends JsonSerializable, Serializable
      * For UUID version 4, the node field is a randomly or pseudo-randomly
      * generated 48-bit value as described in RFC 4122, Section 4.4.
      *
-     * @return string Hexadecimal value of node
-     * @link http://tools.ietf.org/html/rfc4122#section-4.1.6
+     * @link http://tools.ietf.org/html/rfc4122#section-4.1.6 RFC 4122, § 4.1.6: Node
      */
     public function getNodeHex(): string;
 
     /**
      * Returns the high field of the timestamp multiplexed with the version
-     * number (bits 49-64 of the UUID).
-     *
-     * @return string Hexadecimal value of time_hi_and_version
      */
     public function getTimeHiAndVersionHex(): string;
 
     /**
-     * Returns the low field of the timestamp (the first 32 bits of the UUID).
-     *
-     * @return string Hexadecimal value of time_low
+     * Returns the low field of the timestamp
      */
     public function getTimeLowHex(): string;
 
     /**
-     * Returns the middle field of the timestamp (bits 33-48 of the UUID).
-     *
-     * @return string Hexadecimal value of time_mid
+     * Returns the middle field of the timestamp
      */
     public function getTimeMidHex(): string;
 
     /**
-     * Returns the timestamp value associated with this UUID.
+     * Returns the full timestamp value
      *
      * The 60 bit timestamp value is constructed from the time_low,
-     * time_mid, and time_hi fields of this UUID. The resulting
+     * time_mid, and time_hi fields of the UUID. The resulting
      * timestamp is measured in 100-nanosecond units since midnight,
      * October 15, 1582 UTC.
      *
      * The timestamp value is only meaningful in a time-based UUID, which
-     * has version type 1. If this UUID is not a time-based UUID then
-     * this method throws UnsupportedOperationException.
+     * has version type 1.
      *
-     * @return string Hexadecimal value of the timestamp
-     * @throws UnsupportedOperationException If this UUID is not a version 1 UUID
-     * @link http://tools.ietf.org/html/rfc4122#section-4.1.4
+     * @link http://tools.ietf.org/html/rfc4122#section-4.1.4 RFC 4122, § 4.1.4: Timestamp
      */
     public function getTimestampHex(): string;
 
     /**
-     * Returns the string representation of the UUID as a URN.
+     * Returns the string representation of the UUID as a URN
      *
-     * @return string
-     * @link http://en.wikipedia.org/wiki/Uniform_Resource_Name
+     * @link http://en.wikipedia.org/wiki/Uniform_Resource_Name Uniform Resource Name
      */
     public function getUrn(): string;
 
     /**
-     * Returns the variant number associated with this UUID.
+     * Returns the variant
      *
      * The variant number describes the layout of the UUID. The variant
      * number has the following meaning:
      *
      * * 0 - Reserved for NCS backward compatibility
-     * * 2 - The RFC 4122 variant (used by this class)
+     * * 2 - The RFC 4122 variant
      * * 6 - Reserved, Microsoft Corporation backward compatibility
      * * 7 - Reserved for future definition
      *
-     * @return int
-     * @link http://tools.ietf.org/html/rfc4122#section-4.1.1
+     * @link http://tools.ietf.org/html/rfc4122#section-4.1.1 RFC 4122, § 4.1.1: Variant
      */
     public function getVariant(): int;
 
     /**
-     * Returns the version number associated with this UUID.
+     * Returns the version
      *
-     * The version number describes how this UUID was generated and has the
+     * The version number describes how the UUID was generated and has the
      * following meaning:
      *
      * * 1 - Time-based UUID
@@ -257,25 +232,20 @@ interface UuidInterface extends JsonSerializable, Serializable
      * * 4 - Randomly generated UUID
      * * 5 - Name-based UUID hashed with SHA-1
      *
-     * Returns null if this UUID is not an RFC 4122 variant, since version
+     * This returns null if the UUID is not an RFC 4122 variant, since version
      * is only meaningful for this variant.
      *
-     * @return int|null
-     * @link http://tools.ietf.org/html/rfc4122#section-4.1.3
+     * @link http://tools.ietf.org/html/rfc4122#section-4.1.3 RFC 4122, § 4.1.3: Version
      */
     public function getVersion(): ?int;
 
     /**
-     * Returns a string representation of this UUID.
-     *
-     * @return string
+     * Returns a string representation of the UUID
      */
     public function toString(): string;
 
     /**
-     * Allows casting this UUID to a string representation.
-     *
-     * @return string
+     * Casts the UUID to a string representation
      */
     public function __toString(): string;
 }
