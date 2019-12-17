@@ -14,6 +14,7 @@
 
 namespace Ramsey\Uuid\Converter;
 
+use InvalidArgumentException;
 use Ramsey\Uuid\Exception\UnsatisfiedDependencyException;
 
 /**
@@ -29,17 +30,21 @@ interface TimeConverterInterface
      * @param string $seconds
      * @param string $microSeconds
      * @return string[] An array guaranteed to contain `low`, `mid`, and `high` keys
-     * @throws UnsatisfiedDependencyException if called on a 32-bit system and
-     *     `Moontoast\Math\BigNumber` is not present
+     * @throws InvalidArgumentException if $seconds or $microseconds are not integer strings
+     * @throws UnsatisfiedDependencyException if the chosen converter is not present
      * @link http://tools.ietf.org/html/rfc4122#section-4.2.2
      */
-    public function calculateTime($seconds, $microSeconds);
-
+    public function calculateTime(string $seconds, string $microSeconds): array;
 
     /**
      * Converts a timestamp extracted from a UUID to a unix timestamp
-     * @param mixed $timestamp - an integer, string or object representation of a timestamp
+     *
+     * @param string $timestamp A string integer representation of a timestamp;
+     *     this must be a numeric string to accommodate unsigned integers
+     *     greater than PHP_INT_MAX.
      * @return string
+     * @throws InvalidArgumentException if $timestamp is not an integer string
+     * @throws UnsatisfiedDependencyException if the chosen converter is not present
      */
-    public function convertTime($timestamp);
+    public function convertTime(string $timestamp): string;
 }

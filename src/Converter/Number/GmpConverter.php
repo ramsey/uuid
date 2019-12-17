@@ -14,37 +14,57 @@
 
 namespace Ramsey\Uuid\Converter\Number;
 
+use InvalidArgumentException;
+use Ramsey\Uuid\Converter\DependencyCheckTrait;
 use Ramsey\Uuid\Converter\NumberConverterInterface;
+use Ramsey\Uuid\Converter\NumberStringTrait;
+use Ramsey\Uuid\Exception\UnsatisfiedDependencyException;
 
 /**
- * BigNumberConverter converts UUIDs from hexadecimal to decimal string representations and from
- * decimal string representations or integers to hexadecimal string representations
+ * GmpConverter uses GMP to convert UUIDs from hexadecimal to decimal string
+ * representations and from decimal string representations or integers to
+ * hexadecimal string representations.
  */
 class GmpConverter implements NumberConverterInterface
 {
+    use DependencyCheckTrait;
+    use NumberStringTrait;
+
     /**
      * Converts a hexadecimal string representation into a decimal string representation
      *
      * @param string $hex The hexadecimal string representation to convert
-     * @return string Decimal string
+     * @return string
+     * @throws InvalidArgumentException if $hex is not a hexadecimal string
+     * @throws UnsatisfiedDependencyException if the chosen converter is not present
      */
-    public function fromHex($hex)
+    public function fromHex(string $hex): string
     {
-        $number = gmp_init('0x'.$hex);
+        $this->checkGmpExtension();
+        $this->checkHexadecimalString($hex, 'hex');
 
-        return gmp_strval($number);
+        $gmpNumber = gmp_init('0x' . $hex);
+
+        return gmp_strval($gmpNumber);
     }
 
     /**
      * Converts an integer or a decimal string representation into a hexadecimal string representation
      *
-     * @param int|string $integer An integer or decimal string representation
+     * @param string $number A string integer representation to convert; this
+     *     must be a numeric string to accommodate unsigned integers greater
+     *     than PHP_INT_MAX.
      * @return string Hexadecimal string
+     * @throws InvalidArgumentException if $integer is not an integer string
+     * @throws UnsatisfiedDependencyException if the chosen converter is not present
      */
-    public function toHex($integer)
+    public function toHex(string $number): string
     {
-        $number = gmp_init($integer);
+        $this->checkGmpExtension();
+        $this->checkIntegerString($number, 'number');
 
-        return gmp_strval($number, 16);
+        $gmpNumber = gmp_init($number);
+
+        return gmp_strval($gmpNumber, 16);
     }
 }
