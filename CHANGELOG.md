@@ -10,11 +10,43 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Added
 
+* Add `Validator\ValidatorInterface` and `Validator\Validator` to allow
+  flexibility in validating UUIDs/GUIDs.
+  * Add ability to change the default validator used by `Uuid` through
+    `FeatureSet::setValidator()`.
+  * Add `getValidator()` and `setValidator()` to `UuidFactory`.
+* Allow use of the [GMP extension](https://www.php.net/gmp) for number and time
+  conversion through the addition of `Converter\Number\GmpConverter` and
+  `Converter\Time\GmpTimeConverter`.
+
 ### Changed
+
+* Set minimum required PHP version to 7.2.
+* Add `__toString()` method to `UuidInterface`.
+* The `UuidInterface::getDateTime()` method now specifies `\DateTimeInterface`
+  as the return value, rather than `\DateTime`; `Uuid::getDateTime()` now
+  returns an instance of `\DateTimeImmutable` instead of `\DateTime`.
+* Add `getValidator()` method to `UuidFactoryInterface`.
+* Add `convertTime()` method to `Converter\TimeConverterInterface`.
+* Introduce `TimeConverterInterface $timeConverter` as fourth required
+  constructor parameter for `Uuid` and second required constructor parameter for
+  `Builder\DefaultUuidBuilder` and `Builder\DegradedUuidBuilder`.
+* Change methods in converter interfaces to accept and return string values
+  instead of `mixed`; this simplifies the interface and makes it consistent:
+  * `NumberConverterInterface::fromHex(string $hex): string`
+  * `NumberConverterInterface::toHex(string $number): string`
+  * `TimeConverterInterface::calculateTime(string $seconds, string $microSeconds): array`
+  * `TimeConverterInterface::convertTime(string $timestamp): string`
 
 ### Deprecated
 
 ### Removed
+
+* Remove the following bytes generators and recommend
+  `Generator\RandomBytesGenerator` as a suitable replacement:
+  * `Generator\MtRandGenerator`
+  * `Generator\OpenSslGenerator`
+  * `Generator\SodiumRandomGenerator`
 
 ### Fixed
 
