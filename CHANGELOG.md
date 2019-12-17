@@ -21,6 +21,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Security
 
 
+## [3.9.2] - 2019-12-17
+
+### Fixed
+
+* Check whether files returned by `/sys/class/net/*/address` are readable
+  before attempting to read them. This avoids a PHP warning that was being
+  emitted on hosts that do not grant permission to read these files.
+
+
 ## [3.9.1] - 2019-12-01
 
 ### Fixed
