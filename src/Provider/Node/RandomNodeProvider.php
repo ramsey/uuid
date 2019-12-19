@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace Ramsey\Uuid\Provider\Node;
 
+use Ramsey\Uuid\Exception\RandomSourceException;
 use Ramsey\Uuid\Provider\NodeProviderInterface;
 
 /**
@@ -28,7 +29,15 @@ class RandomNodeProvider implements NodeProviderInterface
      */
     public function getNode()
     {
-        $nodeBytes = random_bytes(6);
+        try {
+            $nodeBytes = random_bytes(6);
+        } catch (\Throwable $exception) {
+            throw new RandomSourceException(
+                $exception->getMessage(),
+                $exception->getCode(),
+                $exception
+            );
+        }
 
         // Split the node bytes for math on 32-bit systems.
         $nodeMsb = substr($nodeBytes, 0, 3);

@@ -14,7 +14,7 @@ declare(strict_types=1);
 
 namespace Ramsey\Uuid\Codec;
 
-use InvalidArgumentException;
+use Ramsey\Uuid\Exception\InvalidArgumentException;
 use Ramsey\Uuid\UuidInterface;
 
 /**

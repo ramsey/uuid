@@ -14,7 +14,7 @@ declare(strict_types=1);
 
 namespace Ramsey\Uuid\Provider\Time;
 
-use InvalidArgumentException;
+use Ramsey\Uuid\Exception\InvalidArgumentException;
 use Ramsey\Uuid\Provider\TimeProviderInterface;
 
 /**

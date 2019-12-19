@@ -14,9 +14,10 @@ declare(strict_types=1);
 
 namespace Ramsey\Uuid\Generator;
 
-use InvalidArgumentException;
 use Ramsey\Uuid\BinaryUtils;
 use Ramsey\Uuid\Converter\TimeConverterInterface;
+use Ramsey\Uuid\Exception\InvalidArgumentException;
+use Ramsey\Uuid\Exception\RandomSourceException;
 use Ramsey\Uuid\Provider\NodeProviderInterface;
 use Ramsey\Uuid\Provider\TimeProviderInterface;
 
@@ -53,6 +54,7 @@ class DefaultTimeGenerator implements TimeGeneratorInterface
 
     /**
      * @throws InvalidArgumentException if the parameters contain invalid values
+     * @throws RandomSourceException if random_int() throws an exception/error
      *
      * @inheritDoc
      */
@@ -61,8 +63,16 @@ class DefaultTimeGenerator implements TimeGeneratorInterface
         $node = $this->getValidNode($node);
 
         if ($clockSeq === null) {
-            // This does not use "stable storage"; see RFC 4122, Section 4.2.1.1.
-            $clockSeq = random_int(0, 0x3fff);
+            try {
+                // This does not use "stable storage"; see RFC 4122, Section 4.2.1.1.
+                $clockSeq = random_int(0, 0x3fff);
+            } catch (\Throwable $exception) {
+                throw new RandomSourceException(
+                    $exception->getMessage(),
+                    $exception->getCode(),
+                    $exception
+                );
+            }
         }
 
         // Create a 60-bit time value as a count of 100-nanosecond intervals

@@ -6,7 +6,7 @@ namespace Ramsey\Uuid\Test\Provider\Node;
 
 use AspectMock\Proxy\FuncProxy;
 use AspectMock\Test as AspectMock;
-use InvalidArgumentException;
+use Ramsey\Uuid\Exception\InvalidArgumentException;
 use Ramsey\Uuid\Provider\Node\SystemNodeProvider;
 use Ramsey\Uuid\Test\TestCase;
 

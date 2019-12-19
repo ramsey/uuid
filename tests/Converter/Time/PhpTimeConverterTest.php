@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Ramsey\Uuid\Test\Converter\Time;
 
-use InvalidArgumentException;
 use Mockery;
 use Ramsey\Uuid\Converter\Time\PhpTimeConverter;
+use Ramsey\Uuid\Exception\InvalidArgumentException;
 use Ramsey\Uuid\Exception\UnsatisfiedDependencyException;
 use Ramsey\Uuid\Test\TestCase;
 
