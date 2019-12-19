@@ -19,6 +19,7 @@ use DateTimeInterface;
 use Ramsey\Uuid\Codec\CodecInterface;
 use Ramsey\Uuid\Converter\NumberConverterInterface;
 use Ramsey\Uuid\Converter\TimeConverterInterface;
+use Ramsey\Uuid\Exception\DateTimeException;
 use Ramsey\Uuid\Exception\UnsatisfiedDependencyException;
 use Ramsey\Uuid\Exception\UnsupportedOperationException;
 
@@ -346,6 +347,7 @@ class Uuid implements UuidInterface
      * @return DateTimeImmutable An immutable instance of DateTimeInterface
      *
      * @throws UnsupportedOperationException if UUID is not time-based
+     * @throws DateTimeException if DateTime throws an exception/error
      */
     public function getDateTime(): DateTimeInterface
     {
@@ -355,7 +357,15 @@ class Uuid implements UuidInterface
 
         $unixTime = $this->timeConverter->convertTime((string) $this->getTimestamp());
 
-        return new DateTimeImmutable("@{$unixTime}");
+        try {
+            return new DateTimeImmutable("@{$unixTime}");
+        } catch (\Throwable $exception) {
+            throw new DateTimeException(
+                $exception->getMessage(),
+                $exception->getCode(),
+                $exception
+            );
+        }
     }
 
     /**
@@ -403,6 +413,8 @@ class Uuid implements UuidInterface
     }
 
     /**
+     * @throws UnsatisfiedDependencyException if large integer support is not available
+     *
      * @inheritDoc
      */
     public function getInteger()
@@ -478,6 +490,8 @@ class Uuid implements UuidInterface
      * @link http://tools.ietf.org/html/rfc4122#section-4.1.6 RFC 4122, § 4.1.6: Node
      *
      * @return int Unsigned 48-bit integer value of node
+     *
+     * @throws UnsatisfiedDependencyException if large integer support is not available
      */
     public function getNode(): int
     {
@@ -541,6 +555,7 @@ class Uuid implements UuidInterface
      *
      * @link http://tools.ietf.org/html/rfc4122#section-4.1.4 RFC 4122, § 4.1.4: Timestamp
      *
+     * @throws UnsatisfiedDependencyException if large integer support is not available
      * @throws UnsupportedOperationException if UUID is not time-based
      */
     public function getTimestamp(): int

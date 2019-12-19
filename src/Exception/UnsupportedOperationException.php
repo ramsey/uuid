@@ -14,11 +14,11 @@ declare(strict_types=1);
 
 namespace Ramsey\Uuid\Exception;
 
-use RuntimeException;
+use LogicException as PhpLogicException;
 
 /**
- * Thrown to indicate that the requested operation is not supported.
+ * Thrown to indicate that the requested operation is not supported
  */
-class UnsupportedOperationException extends RuntimeException
+class UnsupportedOperationException extends PhpLogicException
 {
 }

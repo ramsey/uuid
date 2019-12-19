@@ -14,8 +14,8 @@ declare(strict_types=1);
 
 namespace Ramsey\Uuid\Generator;
 
-use InvalidArgumentException;
 use Ramsey\Uuid\Converter\NumberConverterInterface;
+use Ramsey\Uuid\Exception\InvalidArgumentException;
 
 /**
  * CombGenerator generates COMBs (combined UUID/timestamp)

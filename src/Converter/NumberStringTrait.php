@@ -14,7 +14,7 @@ declare(strict_types=1);
 
 namespace Ramsey\Uuid\Converter;
 
-use InvalidArgumentException;
+use Ramsey\Uuid\Exception\InvalidArgumentException;
 
 /**
  * Provides shared functionality to check the values of string numbers for

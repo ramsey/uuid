@@ -14,12 +14,12 @@ declare(strict_types=1);
 
 namespace Ramsey\Uuid\Exception;
 
-use RuntimeException;
+use LogicException as PhpLogicException;
 
 /**
  * Thrown to indicate that the requested operation has dependencies that have not
- * been satisfied.
+ * been satisfied
  */
-class UnsatisfiedDependencyException extends RuntimeException
+class UnsatisfiedDependencyException extends PhpLogicException
 {
 }

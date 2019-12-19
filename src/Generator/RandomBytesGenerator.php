@@ -14,6 +14,8 @@ declare(strict_types=1);
 
 namespace Ramsey\Uuid\Generator;
 
+use Ramsey\Uuid\Exception\RandomSourceException;
+
 /**
  * RandomBytesGenerator generates strings of random binary data using the
  * built-in `random_bytes()` PHP function
@@ -22,8 +24,21 @@ namespace Ramsey\Uuid\Generator;
  */
 class RandomBytesGenerator implements RandomGeneratorInterface
 {
+    /**
+     * @throws RandomSourceException if random_bytes() throws an exception/error
+     *
+     * @inheritDoc
+     */
     public function generate(int $length): string
     {
-        return random_bytes($length);
+        try {
+            return random_bytes($length);
+        } catch (\Throwable $exception) {
+            throw new RandomSourceException(
+                $exception->getMessage(),
+                $exception->getCode(),
+                $exception
+            );
+        }
     }
 }
