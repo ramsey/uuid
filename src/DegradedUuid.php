@@ -16,6 +16,7 @@ namespace Ramsey\Uuid;
 
 use DateTimeImmutable;
 use DateTimeInterface;
+use Ramsey\Uuid\Exception\DateTimeException;
 use Ramsey\Uuid\Exception\UnsatisfiedDependencyException;
 use Ramsey\Uuid\Exception\UnsupportedOperationException;
 
@@ -31,6 +32,8 @@ class DegradedUuid extends Uuid
     /**
      * @return DateTimeImmutable An immutable instance of DateTimeInterface
      *
+     * @throws DateTimeException if DateTime throws an exception/error
+     * @throws UnsatisfiedDependencyException if large integer support is not available
      * @throws UnsupportedOperationException if UUID is not time-based
      */
     public function getDateTime(): DateTimeInterface
@@ -42,11 +45,19 @@ class DegradedUuid extends Uuid
         $time = $this->numberConverter->fromHex($this->getTimestampHex());
         $unixTime = $this->timeConverter->convertTime($time);
 
-        return new DateTimeImmutable("@{$unixTime}");
+        try {
+            return new DateTimeImmutable("@{$unixTime}");
+        } catch (\Throwable $exception) {
+            throw new DateTimeException(
+                $exception->getMessage(),
+                $exception->getCode(),
+                $exception
+            );
+        }
     }
 
     /**
-     * @throws UnsatisfiedDependencyException if called on a 32-bit system
+     * @throws UnsatisfiedDependencyException if large integer support is not available
      *
      * @inheritDoc
      */
@@ -60,7 +71,7 @@ class DegradedUuid extends Uuid
     }
 
     /**
-     * @throws UnsatisfiedDependencyException if called on a 32-bit system
+     * @throws UnsatisfiedDependencyException if large integer support is not available
      */
     public function getNode(): int
     {
@@ -73,7 +84,7 @@ class DegradedUuid extends Uuid
     }
 
     /**
-     * @throws UnsatisfiedDependencyException if called on a 32-bit system
+     * @throws UnsatisfiedDependencyException if large integer support is not available
      */
     public function getTimeLow(): int
     {
@@ -86,7 +97,7 @@ class DegradedUuid extends Uuid
     }
 
     /**
-     * @throws UnsatisfiedDependencyException if called on a 32-bit system
+     * @throws UnsatisfiedDependencyException if large integer support is not available
      * @throws UnsupportedOperationException if UUID is not time-based
      */
     public function getTimestamp(): int

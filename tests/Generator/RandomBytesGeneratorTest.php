@@ -6,6 +6,7 @@ namespace Ramsey\Uuid\Test\Generator;
 
 use AspectMock\Test as AspectMock;
 use Exception;
+use Ramsey\Uuid\Exception\RandomSourceException;
 use Ramsey\Uuid\Generator\RandomBytesGenerator;
 use Ramsey\Uuid\Test\TestCase;
 
@@ -53,5 +54,23 @@ class RandomBytesGeneratorTest extends TestCase
         AspectMock::func('Ramsey\Uuid\Generator', 'random_bytes', $bytes);
         $generator = new RandomBytesGenerator();
         $this->assertEquals($bytes, $generator->generate($length));
+    }
+
+    /**
+     * @runInSeparateProcess
+     * @preserveGlobalState disabled
+     */
+    public function testGenerateThrowsExceptionWhenExceptionThrownByRandombytes(): void
+    {
+        AspectMock::func('Ramsey\Uuid\Generator', 'random_bytes', function (): void {
+            throw new Exception('Could not gather sufficient random data');
+        });
+
+        $generator = new RandomBytesGenerator();
+
+        $this->expectException(RandomSourceException::class);
+        $this->expectExceptionMessage('Could not gather sufficient random data');
+
+        $generator->generate(16);
     }
 }

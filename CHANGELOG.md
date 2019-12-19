@@ -18,6 +18,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 * Allow use of the [GMP extension](https://www.php.net/gmp) for number and time
   conversion through the addition of `Converter\Number\GmpConverter` and
   `Converter\Time\GmpTimeConverter`.
+* Add an internal `InvalidArgumentException` that descends from the built-in
+  PHP `\InvalidArgumentException`. All places that used to throw
+  `\InvalidArgumentException` now throw `Ramsey\Uuid\Exception\InvalidArgumentException`.
+  This should not cause any BC breaks, however.
+* Add an internal `DateTimeException` that descends from the built-in PHP
+  `\RuntimeException`. `Uuid::getDateTime()` and `DegradedUuid::getDateTime()`
+  may throw this exception if `\DateTimeImmutable` throws an error or exception.
+* Add `RandomSourceException` that descends from the built-in PHP
+  `\RuntimeException`. DefaultTimeGenerator, RandomBytesGenerator, and
+  RandomNodeProvider may throw this exception if `random_bytes()` or
+  `random_int()` throw an error or exception.
 
 ### Changed
 
@@ -37,6 +48,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   * `NumberConverterInterface::toHex(string $number): string`
   * `TimeConverterInterface::calculateTime(string $seconds, string $microSeconds): array`
   * `TimeConverterInterface::convertTime(string $timestamp): string`
+* `UnsatisfiedDependencyException` and `UnsupportedOperationException` are now
+  descended from `\LogicException`. Previously, they descended from `\RuntimeException`.
 
 ### Deprecated
 

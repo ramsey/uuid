@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Ramsey\Uuid\Test\Generator;
 
 use Exception;
-use InvalidArgumentException;
 use PHPUnit\Framework\Error\Error as PHPUnitError;
 use PHPUnit\Framework\MockObject\MockObject;
 use Ramsey\Uuid\Converter\NumberConverterInterface;
+use Ramsey\Uuid\Exception\InvalidArgumentException;
 use Ramsey\Uuid\Generator\CombGenerator;
 use Ramsey\Uuid\Generator\RandomGeneratorInterface;
 use Ramsey\Uuid\Test\TestCase;

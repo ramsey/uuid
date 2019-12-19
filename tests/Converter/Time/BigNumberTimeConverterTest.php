@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Ramsey\Uuid\Test\Converter\Time;
 
 use AspectMock\Test as AspectMock;
-use InvalidArgumentException;
 use Ramsey\Uuid\Converter\Time\BigNumberTimeConverter;
+use Ramsey\Uuid\Exception\InvalidArgumentException;
 use Ramsey\Uuid\Exception\UnsatisfiedDependencyException;
 use Ramsey\Uuid\Test\TestCase;
 

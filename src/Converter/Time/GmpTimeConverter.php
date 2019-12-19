@@ -14,10 +14,10 @@ declare(strict_types=1);
 
 namespace Ramsey\Uuid\Converter\Time;
 
-use InvalidArgumentException;
 use Ramsey\Uuid\Converter\DependencyCheckTrait;
 use Ramsey\Uuid\Converter\NumberStringTrait;
 use Ramsey\Uuid\Converter\TimeConverterInterface;
+use Ramsey\Uuid\Exception\InvalidArgumentException;
 use Ramsey\Uuid\Exception\UnsatisfiedDependencyException;
 
 /**

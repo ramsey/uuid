@@ -5,10 +5,12 @@ declare(strict_types=1);
 namespace Ramsey\Uuid\Test\Generator;
 
 use AspectMock\Test as AspectMock;
+use Exception;
 use Mockery;
 use PHPUnit\Framework\MockObject\MockObject;
 use Ramsey\Uuid\BinaryUtils;
 use Ramsey\Uuid\Converter\TimeConverterInterface;
+use Ramsey\Uuid\Exception\RandomSourceException;
 use Ramsey\Uuid\Generator\DefaultTimeGenerator;
 use Ramsey\Uuid\Provider\NodeProviderInterface;
 use Ramsey\Uuid\Provider\TimeProviderInterface;
@@ -216,5 +218,27 @@ class DefaultTimeGeneratorTest extends TestCase
         );
         $defaultTimeGenerator->generate($this->nodeId);
         $randomInt->verifyInvokedOnce([0, 0x3fff]);
+    }
+
+    /**
+     * @runInSeparateProcess
+     * @preserveGlobalState disabled
+     */
+    public function testGenerateThrowsExceptionWhenExceptionThrownByRandomint(): void
+    {
+        AspectMock::func('Ramsey\Uuid\Generator', 'random_int', function (): void {
+            throw new Exception('Could not gather sufficient random data');
+        });
+
+        $defaultTimeGenerator = new DefaultTimeGenerator(
+            $this->nodeProvider,
+            $this->timeConverter,
+            $this->timeProvider
+        );
+
+        $this->expectException(RandomSourceException::class);
+        $this->expectExceptionMessage('Could not gather sufficient random data');
+
+        $defaultTimeGenerator->generate($this->nodeId);
     }
 }

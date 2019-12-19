@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Ramsey\Uuid\Test\Provider\Node;
 
 use AspectMock\Test as AspectMock;
+use Exception;
+use Ramsey\Uuid\Exception\RandomSourceException;
 use Ramsey\Uuid\Provider\Node\RandomNodeProvider;
 use Ramsey\Uuid\Test\TestCase;
 
@@ -109,5 +111,23 @@ class RandomNodeProviderTest extends TestCase
         $node = $nodeMsb . $nodeLsb;
 
         $this->assertSame('010000000000', $node);
+    }
+
+    /**
+     * @runInSeparateProcess
+     * @preserveGlobalState disabled
+     */
+    public function testGetNodeThrowsExceptionWhenExceptionThrownByRandombytes(): void
+    {
+        AspectMock::func('Ramsey\Uuid\Provider\Node', 'random_bytes', function (): void {
+            throw new Exception('Could not gather sufficient random data');
+        });
+
+        $provider = new RandomNodeProvider();
+
+        $this->expectException(RandomSourceException::class);
+        $this->expectExceptionMessage('Could not gather sufficient random data');
+
+        $provider->getNode();
     }
 }
