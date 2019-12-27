@@ -78,12 +78,14 @@
             "phpstan analyse -c phpstan.neon src --level max --no-progress",
             "phpstan analyse -c phpstan-tests.neon tests --level max --no-progress"
         ],
+        "psalm": "psalm",
         "phpunit": "phpunit --verbose --colors=always",
         "phpunit-coverage": "phpunit --verbose --colors=always --coverage-html build/coverage",
         "test": [
             "@lint",
             "@phpcs",
             "@phpstan",
+            "@psalm",
             "@phpunit"
         ]
     },
