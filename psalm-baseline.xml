@@ -144,14 +144,5 @@
     <MixedAssignment occurrences="1">
       <code>$hash</code>
     </MixedAssignment>
-    <PossiblyNullPropertyAssignmentValue occurrences="7">
-      <code>null</code>
-      <code>null</code>
-      <code>null</code>
-      <code>null</code>
-      <code>null</code>
-      <code>null</code>
-      <code>null</code>
-    </PossiblyNullPropertyAssignmentValue>
   </file>
 </files>
