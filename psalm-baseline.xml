@@ -1,13 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <files psalm-version="3.7.2@d9cae720c1af31db9ba27c2bc1fcf9b0dd092fb0">
-  <file src="src/BinaryUtils.php">
-    <InvalidReturnStatement occurrences="1">
-      <code>$timeHi</code>
-    </InvalidReturnStatement>
-    <InvalidReturnType occurrences="1">
-      <code>int</code>
-    </InvalidReturnType>
-  </file>
   <file src="src/Codec/StringCodec.php">
     <MixedArgument occurrences="1">
       <code>$hexUuid[1]</code>
