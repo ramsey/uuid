@@ -32,7 +32,8 @@
         "phpstan/phpstan-phpunit": "^0.12",
         "phpunit/phpunit": "^8.5",
         "slevomat/coding-standard": "^6.0",
-        "squizlabs/php_codesniffer": "^3.5"
+        "squizlabs/php_codesniffer": "^3.5",
+        "vimeo/psalm": "^3.7.2"
     },
     "suggest": {
         "ext-ctype": "Provides support for PHP Ctype functions",
