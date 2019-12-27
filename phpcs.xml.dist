@@ -333,7 +333,12 @@
         <properties>
             <property name="enableObjectTypeHint" value="true"/>
         </properties>
+
+        <!-- some native type hints cannot be added, because declaring them on pre-existing interfaces leads
+             to a major downstream BC break -->
+        <exclude name="SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingNativeTypeHint"/>
     </rule>
+
     <rule ref="SlevomatCodingStandard.Commenting.UselessFunctionDocComment"/>
 
     <!-- Require the return type hint to have one space (i.e. function foo(): ?int) -->
