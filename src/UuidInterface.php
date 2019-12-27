@@ -22,6 +22,8 @@ use Serializable;
 /**
  * A UUID is a universally unique identifier adhering to an agreed-upon
  * representation format and standard for generation
+ *
+ * @psalm-immutable
  */
 interface UuidInterface extends JsonSerializable, Serializable
 {
