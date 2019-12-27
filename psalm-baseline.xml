@@ -8,20 +8,6 @@
       <code>int</code>
     </InvalidReturnType>
   </file>
-  <file src="src/Codec/GuidStringCodec.php">
-    <MixedArgument occurrences="2">
-      <code>$components[1]</code>
-      <code>$components[2]</code>
-    </MixedArgument>
-    <MixedAssignment occurrences="3">
-      <code>$components[0]</code>
-      <code>$components[1]</code>
-      <code>$components[2]</code>
-    </MixedAssignment>
-    <ReferenceConstraintViolation occurrences="1">
-      <code>$components</code>
-    </ReferenceConstraintViolation>
-  </file>
   <file src="src/Codec/OrderedTimeCodec.php">
     <MixedAssignment occurrences="1">
       <code>$hex</code>
