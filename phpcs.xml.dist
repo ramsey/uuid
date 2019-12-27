@@ -12,6 +12,7 @@
 
     <!-- Source and tests must follow the coding standard. -->
     <file>./src</file>
+    <file>./static-analysis</file>
     <file>./tests</file>
 
     <!-- Arguments for the command line runner. -->
