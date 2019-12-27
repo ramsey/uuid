@@ -19,9 +19,6 @@
     </MixedArgument>
   </file>
   <file src="src/DegradedUuid.php">
-    <MissingImmutableAnnotation occurrences="1">
-      <code>DegradedUuid</code>
-    </MissingImmutableAnnotation>
     <PossiblyInvalidArgument occurrences="1">
       <code>$exception-&gt;getCode()</code>
     </PossiblyInvalidArgument>
