@@ -77,6 +77,8 @@ class OrderedTimeCodec extends StringCodec
 
         $hex = unpack('H*', $bytes)[1];
 
+        assert(is_string($hex));
+
         // Rearrange the fields to their original order
         $hex = substr($hex, 8, 4)
             . substr($hex, 12, 4)

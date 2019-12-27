@@ -23,13 +23,6 @@
     </ReferenceConstraintViolation>
   </file>
   <file src="src/Codec/OrderedTimeCodec.php">
-    <MixedArgument occurrences="5">
-      <code>$hex</code>
-      <code>$hex</code>
-      <code>$hex</code>
-      <code>$hex</code>
-      <code>$hex</code>
-    </MixedArgument>
     <MixedAssignment occurrences="1">
       <code>$hex</code>
     </MixedAssignment>
