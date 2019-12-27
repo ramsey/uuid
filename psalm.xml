@@ -5,8 +5,17 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns="https://getpsalm.org/schema/config"
     xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd"
+    errorBaseline="psalm-baseline.xml"
 >
     <projectFiles>
         <directory name="static-analysis" />
+
+        <!-- At time of writing Psalm reports 65 errors in src, but these are suppressed by being listed in the errorBaseline file
+             referenced above. Any new errors will cause a build failure. It might be a good project for someone to go through the errorBaseline
+             and delete as many issues as possible, updating the code as they go to top producing the errors. 
+
+             To see the errors in Psalm output, run psalm with the `<double-hyphen> ignore-baseline` option (literal double-hypen is not permitted in XML comment)
+             -->
+        <directory name="src" />
     </projectFiles>
 </psalm>
