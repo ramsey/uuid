@@ -42,6 +42,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 * Introduce `TimeConverterInterface $timeConverter` as fourth required
   constructor parameter for `Uuid` and second required constructor parameter for
   `Builder\DefaultUuidBuilder` and `Builder\DegradedUuidBuilder`.
+* Change `UuidInterface::getInteger()` to always return a `string` value instead
+  of `mixed`. This is a string representation of a 128-bit integer. You may then
+  use a math library of your choice (bcmath, gmp, etc.) to operate on the
+  string integer.
 * Change methods in converter interfaces to accept and return string values
   instead of `mixed`; this simplifies the interface and makes it consistent:
   * `NumberConverterInterface::fromHex(string $hex): string`
