@@ -419,7 +419,7 @@ class Uuid implements UuidInterface
      *
      * @inheritDoc
      */
-    public function getInteger()
+    public function getInteger(): string
     {
         return $this->numberConverter->fromHex($this->getHex());
     }
