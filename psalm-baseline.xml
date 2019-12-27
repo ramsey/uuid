@@ -8,11 +8,6 @@
       <code>int</code>
     </InvalidReturnType>
   </file>
-  <file src="src/Codec/OrderedTimeCodec.php">
-    <MixedAssignment occurrences="1">
-      <code>$hex</code>
-    </MixedAssignment>
-  </file>
   <file src="src/Codec/StringCodec.php">
     <MixedArgument occurrences="1">
       <code>$hexUuid[1]</code>
