@@ -649,6 +649,9 @@ class Uuid implements UuidInterface
      *
      * @return UuidInterface A UuidInterface instance created from a binary
      *     string representation
+     *
+     * @psalm-pure note: changing the internal factory is an edge case not covered by purity invariants,
+     *             but under constant factory setups, this method operates in functionally pure manners
      */
     public static function fromBytes(string $bytes): UuidInterface
     {
@@ -662,6 +665,9 @@ class Uuid implements UuidInterface
      *
      * @return UuidInterface A UuidInterface instance created from a hexadecimal
      *     string representation
+     *
+     * @psalm-pure note: changing the internal factory is an edge case not covered by purity invariants,
+     *             but under constant factory setups, this method operates in functionally pure manners
      */
     public static function fromString(string $uuid): UuidInterface
     {
@@ -675,6 +681,9 @@ class Uuid implements UuidInterface
      *
      * @return UuidInterface A UuidInterface instance created from the string
      *     representation of a 128-bit integer
+     *
+     * @psalm-pure note: changing the internal factory is an edge case not covered by purity invariants,
+     *             but under constant factory setups, this method operates in functionally pure manners
      */
     public static function fromInteger(string $integer): UuidInterface
     {
@@ -687,6 +696,9 @@ class Uuid implements UuidInterface
      * @param string $uuid A string to validate as a UUID
      *
      * @return bool True if the string is a valid UUID, false otherwise
+     *
+     * @psalm-pure note: changing the internal factory is an edge case not covered by purity invariants,
+     *             but under constant factory setups, this method operates in functionally pure manners
      */
     public static function isValid(string $uuid): bool
     {
