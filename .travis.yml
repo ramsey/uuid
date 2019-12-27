@@ -54,6 +54,7 @@ script:
   - ./resources/scripts/cmd-proxy.sh ./vendor/bin/parallel-lint src tests
   - ./resources/scripts/cmd-proxy.sh ./vendor/bin/phpcs src tests --standard=psr2 -sp --colors
   - ./resources/scripts/cmd-proxy.sh composer run phpstan
+  - ./resources/scripts/cmd-proxy.sh composer run psalm
   - travis_wait ./resources/scripts/cmd-proxy.sh ./vendor/bin/phpunit --verbose --coverage-clover build/logs/clover.xml
 
 after_success:
