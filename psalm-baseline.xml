@@ -127,9 +127,6 @@
       <code>getValidator</code>
       <code>validate</code>
     </ImpureMethodCall>
-    <MissingImmutableAnnotation occurrences="1">
-      <code>Uuid</code>
-    </MissingImmutableAnnotation>
     <PossiblyInvalidArgument occurrences="1">
       <code>$exception-&gt;getCode()</code>
     </PossiblyInvalidArgument>
