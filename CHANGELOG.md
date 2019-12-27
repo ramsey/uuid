@@ -26,8 +26,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   `\RuntimeException`. `Uuid::getDateTime()` and `DegradedUuid::getDateTime()`
   may throw this exception if `\DateTimeImmutable` throws an error or exception.
 * Add `RandomSourceException` that descends from the built-in PHP
-  `\RuntimeException`. DefaultTimeGenerator, RandomBytesGenerator, and
-  RandomNodeProvider may throw this exception if `random_bytes()` or
+  `\RuntimeException`. `DefaultTimeGenerator`, `RandomBytesGenerator`, and
+  `RandomNodeProvider` may throw this exception if `random_bytes()` or
   `random_int()` throw an error or exception.
 
 ### Changed
@@ -50,6 +50,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   * `TimeConverterInterface::convertTime(string $timestamp): string`
 * `UnsatisfiedDependencyException` and `UnsupportedOperationException` are now
   descended from `\LogicException`. Previously, they descended from `\RuntimeException`.
+* When encoding to bytes or decoding from bytes, `OrderedTimeCodec` now checks
+  whether the UUID is an RFC 4122 variant, version 1 UUID. If not, it will throw
+  an exception—`InvalidArgumentException` when using
+  `OrderedTimeCodec::encodeBinary()` and `UnsupportedOperationException` when
+  using `OrderedTimeCodec::decodeBytes()`.
 
 ### Deprecated
 
