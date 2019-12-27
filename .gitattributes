@@ -8,4 +8,5 @@ phpstan-tests.neon export-ignore
 phpstan.neon       export-ignore
 phpunit.xml.dist   export-ignore
 resources/         export-ignore
+static-analysis/   export-ignore
 tests/             export-ignore
