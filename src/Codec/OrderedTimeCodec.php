@@ -15,6 +15,8 @@ declare(strict_types=1);
 namespace Ramsey\Uuid\Codec;
 
 use Ramsey\Uuid\Exception\InvalidArgumentException;
+use Ramsey\Uuid\Exception\UnsupportedOperationException;
+use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
 /**
@@ -45,6 +47,16 @@ class OrderedTimeCodec extends StringCodec
      */
     public function encodeBinary(UuidInterface $uuid): string
     {
+        if (
+            $uuid->getVariant() !== Uuid::RFC_4122
+            || $uuid->getVersion() !== Uuid::UUID_TYPE_TIME
+        ) {
+            throw new InvalidArgumentException(
+                'Expected version 1 (time-based) UUID; received '
+                . var_export($uuid->toString(), true)
+            );
+        }
+
         $fields = $uuid->getFieldsHex();
 
         $optimized = [
@@ -88,6 +100,18 @@ class OrderedTimeCodec extends StringCodec
             . substr($hex, 0, 4)
             . substr($hex, 16);
 
-        return $this->decode($hex);
+        $uuid = $this->decode($hex);
+
+        if (
+            $uuid->getVariant() !== Uuid::RFC_4122
+            || $uuid->getVersion() !== Uuid::UUID_TYPE_TIME
+        ) {
+            throw new UnsupportedOperationException(
+                'Attempting to decode a non-time-based UUID using '
+                . 'OrderedTimeCodec'
+            );
+        }
+
+        return $uuid;
     }
 }
