@@ -129,7 +129,7 @@ interface UuidInterface extends JsonSerializable, Serializable
     /**
      * Returns the 128-bit integer value of the UUID as a string
      *
-     * @return mixed
+     * @return string
      */
     public function getInteger();
 
