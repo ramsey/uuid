@@ -4,10 +4,6 @@ parameters:
         - tests/phpstan-bootstrap.php
     ignoreErrors:
         -
-            message: "#^Negated boolean expression is always false\\.$#"
-            count: 1
-            path: src/Uuid.php
-        -
             message: '#^Comparison operation "<" between int<6, max> and 0 is always false\.$#'
             count: 1
             path: src/Generator/CombGenerator.php

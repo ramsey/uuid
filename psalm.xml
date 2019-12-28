@@ -18,4 +18,8 @@
              -->
         <directory name="src" />
     </projectFiles>
+
+    <stubs>
+        <file name="tests/phpstan-bootstrap.php" />
+    </stubs>
 </psalm>

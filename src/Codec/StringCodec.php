@@ -20,6 +20,8 @@ use Ramsey\Uuid\Exception\InvalidUuidStringException;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
+use function is_string;
+
 /**
  * StringCodec encodes and decodes RFC 4122 UUIDs
  *
@@ -84,6 +86,7 @@ class StringCodec implements CodecInterface
         }
 
         $hexUuid = unpack('H*', $bytes);
+        assert(is_string($hexUuid[1]));
 
         return $this->decode($hexUuid[1]);
     }

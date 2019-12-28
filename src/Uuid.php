@@ -34,9 +34,9 @@ use Ramsey\Uuid\Exception\UnsupportedOperationException;
  * Note that `uuid1()` may compromise privacy since it creates a UUID containing
  * the computer’s network address. `uuid4()` creates a random UUID.
  *
- * @psalm-immutable
- *
  * @link http://tools.ietf.org/html/rfc4122 RFC 4122
+ *
+ * @psalm-immutable
  */
 class Uuid implements UuidInterface
 {
@@ -142,7 +142,7 @@ class Uuid implements UuidInterface
     public const UUID_TYPE_HASH_SHA1 = 5;
 
     /**
-     * @var UuidFactoryInterface
+     * @var ?UuidFactoryInterface
      */
     private static $factory = null;
 

@@ -14,6 +14,8 @@ declare(strict_types=1);
 
 namespace Ramsey\Uuid;
 
+use function is_int;
+
 /**
  * Provides binary math utilities
  */
@@ -54,8 +56,8 @@ class BinaryUtils
         $timeHi = hexdec($timeHi) & 0x0fff;
         $timeHi |= $version << 12;
 
-        assert(\is_int($timeHi));
-        
+        assert(is_int($timeHi));
+
         return $timeHi;
     }
 }

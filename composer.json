@@ -33,7 +33,7 @@
         "phpunit/phpunit": "^8.5",
         "slevomat/coding-standard": "^6.0",
         "squizlabs/php_codesniffer": "^3.5",
-        "vimeo/psalm": "^3.7.2"
+        "vimeo/psalm": "^3.8.0"
     },
     "suggest": {
         "ext-ctype": "Provides support for PHP Ctype functions",
@@ -78,7 +78,7 @@
             "phpstan analyse -c phpstan.neon src --level max --no-progress",
             "phpstan analyse -c phpstan-tests.neon tests --level max --no-progress"
         ],
-        "psalm": "psalm",
+        "psalm": "psalm --show-info=false --shepherd",
         "phpunit": "phpunit --verbose --colors=always",
         "phpunit-coverage": "phpunit --verbose --colors=always --coverage-html build/coverage",
         "test": [
