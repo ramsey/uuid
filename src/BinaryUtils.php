@@ -54,6 +54,8 @@ class BinaryUtils
         $timeHi = hexdec($timeHi) & 0x0fff;
         $timeHi |= $version << 12;
 
+        assert(\is_int($timeHi));
+        
         return $timeHi;
     }
 }
