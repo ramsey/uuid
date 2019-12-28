@@ -78,12 +78,15 @@ class GuidStringCodec extends StringCodec
     private function swapFields(array &$components): void
     {
         $hex = unpack('H*', pack('L', hexdec($components[0])));
+        assert(is_string($hex[1]));
         $components[0] = $hex[1];
 
         $hex = unpack('H*', pack('S', hexdec($components[1])));
+        assert(is_string($hex[1]));
         $components[1] = $hex[1];
 
         $hex = unpack('H*', pack('S', hexdec($components[2])));
+        assert(is_string($hex[1]));
         $components[2] = $hex[1];
     }
 }
