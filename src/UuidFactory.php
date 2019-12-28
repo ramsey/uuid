@@ -27,37 +27,37 @@ class UuidFactory implements UuidFactoryInterface
     /**
      * @var CodecInterface
      */
-    private $codec = null;
+    private $codec;
 
     /**
      * @var NodeProviderInterface
      */
-    private $nodeProvider = null;
+    private $nodeProvider;
 
     /**
      * @var NumberConverterInterface
      */
-    private $numberConverter = null;
+    private $numberConverter;
 
     /**
      * @var RandomGeneratorInterface
      */
-    private $randomGenerator = null;
+    private $randomGenerator;
 
     /**
      * @var TimeGeneratorInterface
      */
-    private $timeGenerator = null;
+    private $timeGenerator;
 
     /**
      * @var UuidBuilderInterface
      */
-    private $uuidBuilder = null;
+    private $uuidBuilder;
 
     /**
      * @var ValidatorInterface
      */
-    private $validator = null;
+    private $validator;
 
     /**
      * @param FeatureSet $features A set of available features in the current environment
