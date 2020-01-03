@@ -27,6 +27,7 @@ use Ramsey\Uuid\Generator\RandomGeneratorInterface;
 use Ramsey\Uuid\Provider\Time\FixedTimeProvider;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidFactory;
+use Ramsey\Uuid\UuidInterface;
 use Ramsey\Uuid\Validator\Validator;
 use Ramsey\Uuid\Validator\ValidatorInterface;
 use stdClass;
@@ -520,64 +521,38 @@ class UuidTest extends TestCase
         $this->assertEquals('urn:uuid:ff6f8cb0-c57d-11e1-9b21-0800200c9a66', $uuid->getUrn());
     }
 
-    public function testGetVariantForReservedNcs(): void
+    /**
+     * @dataProvider provideVariousVariantUuids
+     */
+    public function testGetVariantForVariousVariantUuids(string $uuid, int $variant): void
     {
-        $uuid1 = Uuid::fromString('ff6f8cb0-c57d-11e1-0b21-0800200c9a66');
-        $this->assertEquals(0, $uuid1->getVariant());
-
-        $uuid2 = Uuid::fromString('ff6f8cb0-c57d-11e1-1b21-0800200c9a66');
-        $this->assertEquals(0, $uuid2->getVariant());
-
-        $uuid3 = Uuid::fromString('ff6f8cb0-c57d-11e1-2b21-0800200c9a66');
-        $this->assertEquals(0, $uuid3->getVariant());
-
-        $uuid4 = Uuid::fromString('ff6f8cb0-c57d-11e1-3b21-0800200c9a66');
-        $this->assertEquals(0, $uuid4->getVariant());
-
-        $uuid5 = Uuid::fromString('ff6f8cb0-c57d-11e1-4b21-0800200c9a66');
-        $this->assertEquals(0, $uuid5->getVariant());
-
-        $uuid6 = Uuid::fromString('ff6f8cb0-c57d-11e1-5b21-0800200c9a66');
-        $this->assertEquals(0, $uuid6->getVariant());
-
-        $uuid7 = Uuid::fromString('ff6f8cb0-c57d-11e1-6b21-0800200c9a66');
-        $this->assertEquals(0, $uuid7->getVariant());
-
-        $uuid8 = Uuid::fromString('ff6f8cb0-c57d-11e1-7b21-0800200c9a66');
-        $this->assertEquals(0, $uuid8->getVariant());
+        $uuid = Uuid::fromString($uuid);
+        $this->assertSame($variant, $uuid->getVariant());
     }
 
-    public function testGetVariantForRfc4122(): void
+    /**
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingTraversableTypeHintSpecification
+     */
+    public function provideVariousVariantUuids(): array
     {
-        $uuid1 = Uuid::fromString('ff6f8cb0-c57d-11e1-8b21-0800200c9a66');
-        $this->assertEquals(2, $uuid1->getVariant());
-
-        $uuid2 = Uuid::fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
-        $this->assertEquals(2, $uuid2->getVariant());
-
-        $uuid3 = Uuid::fromString('ff6f8cb0-c57d-11e1-ab21-0800200c9a66');
-        $this->assertEquals(2, $uuid3->getVariant());
-
-        $uuid4 = Uuid::fromString('ff6f8cb0-c57d-11e1-bb21-0800200c9a66');
-        $this->assertEquals(2, $uuid4->getVariant());
-    }
-
-    public function testGetVariantForReservedMicrosoft(): void
-    {
-        $uuid1 = Uuid::fromString('ff6f8cb0-c57d-11e1-cb21-0800200c9a66');
-        $this->assertEquals(6, $uuid1->getVariant());
-
-        $uuid2 = Uuid::fromString('ff6f8cb0-c57d-11e1-db21-0800200c9a66');
-        $this->assertEquals(6, $uuid2->getVariant());
-    }
-
-    public function testGetVariantForReservedFuture(): void
-    {
-        $uuid1 = Uuid::fromString('ff6f8cb0-c57d-11e1-eb21-0800200c9a66');
-        $this->assertEquals(7, $uuid1->getVariant());
-
-        $uuid2 = Uuid::fromString('ff6f8cb0-c57d-11e1-fb21-0800200c9a66');
-        $this->assertEquals(7, $uuid2->getVariant());
+        return [
+            ['ff6f8cb0-c57d-11e1-0b21-0800200c9a66', Uuid::RESERVED_NCS],
+            ['ff6f8cb0-c57d-11e1-1b21-0800200c9a66', Uuid::RESERVED_NCS],
+            ['ff6f8cb0-c57d-11e1-2b21-0800200c9a66', Uuid::RESERVED_NCS],
+            ['ff6f8cb0-c57d-11e1-3b21-0800200c9a66', Uuid::RESERVED_NCS],
+            ['ff6f8cb0-c57d-11e1-4b21-0800200c9a66', Uuid::RESERVED_NCS],
+            ['ff6f8cb0-c57d-11e1-5b21-0800200c9a66', Uuid::RESERVED_NCS],
+            ['ff6f8cb0-c57d-11e1-6b21-0800200c9a66', Uuid::RESERVED_NCS],
+            ['ff6f8cb0-c57d-11e1-7b21-0800200c9a66', Uuid::RESERVED_NCS],
+            ['ff6f8cb0-c57d-11e1-8b21-0800200c9a66', Uuid::RFC_4122],
+            ['ff6f8cb0-c57d-11e1-9b21-0800200c9a66', Uuid::RFC_4122],
+            ['ff6f8cb0-c57d-11e1-ab21-0800200c9a66', Uuid::RFC_4122],
+            ['ff6f8cb0-c57d-11e1-bb21-0800200c9a66', Uuid::RFC_4122],
+            ['ff6f8cb0-c57d-11e1-cb21-0800200c9a66', Uuid::RESERVED_MICROSOFT],
+            ['ff6f8cb0-c57d-11e1-db21-0800200c9a66', Uuid::RESERVED_MICROSOFT],
+            ['ff6f8cb0-c57d-11e1-eb21-0800200c9a66', Uuid::RESERVED_FUTURE],
+            ['ff6f8cb0-c57d-11e1-fb21-0800200c9a66', Uuid::RESERVED_FUTURE],
+        ];
     }
 
     public function testGetVersionForVersion1(): void
@@ -1635,13 +1610,67 @@ class UuidTest extends TestCase
      * This test ensures that Ramsey\Uuid passes the same test cases
      * as the Python UUID library.
      *
+     * @param string[] $fields
+     *
+     * @dataProvider providePythonTests
+     */
+    public function testUuidPassesPythonTests(
+        string $string,
+        string $curly,
+        string $hex,
+        string $bytes,
+        string $int,
+        array $fields,
+        string $urn,
+        string $time,
+        string $clockSeq,
+        int $variant,
+        ?int $version
+    ): void {
+        $uuids = [
+            Uuid::fromString($string),
+            Uuid::fromString($curly),
+            Uuid::fromString($hex),
+            Uuid::fromBytes(base64_decode($bytes)),
+            Uuid::fromString($urn),
+            Uuid::fromInteger($int),
+        ];
+
+        /** @var UuidInterface $uuid */
+        foreach ($uuids as $uuid) {
+            $this->assertSame($string, $uuid->toString());
+            $this->assertSame($hex, $uuid->getHex());
+            $this->assertSame(base64_decode($bytes), $uuid->getBytes());
+            if ($this->hasGmp() || $this->hasMoontoastMath()) {
+                $this->assertSame($int, (string) $uuid->getInteger());
+            }
+            $this->assertSame($fields, $uuid->getFieldsHex());
+            $this->assertSame($fields['time_low'], $uuid->getTimeLowHex());
+            $this->assertSame($fields['time_mid'], $uuid->getTimeMidHex());
+            $this->assertSame($fields['time_hi_and_version'], $uuid->getTimeHiAndVersionHex());
+            $this->assertSame($fields['clock_seq_hi_and_reserved'], $uuid->getClockSeqHiAndReservedHex());
+            $this->assertSame($fields['clock_seq_low'], $uuid->getClockSeqLowHex());
+            $this->assertSame($fields['node'], $uuid->getNodeHex());
+            $this->assertSame($urn, $uuid->getUrn());
+            if ($uuid->getVersion() === 1) {
+                $this->assertSame($time, $uuid->getTimestampHex());
+            }
+            $this->assertSame($clockSeq, $uuid->getClockSequenceHex());
+            $this->assertSame($variant, $uuid->getVariant());
+            $this->assertSame($version, $uuid->getVersion());
+        }
+    }
+
+    /**
      * Taken from the Python UUID tests in
      * http://hg.python.org/cpython/file/2f4c4db9aee5/Lib/test/test_uuid.py
+     *
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingTraversableTypeHintSpecification
      */
-    public function testUuidPassesPythonTests(): void
+    public function providePythonTests(): array
     {
-        // This array is taken directly from the Python tests, more or less
-        $tests = [
+        // This array is taken directly from the Python tests, more or less.
+        return [
             [
                 'string' => '00000000-0000-0000-0000-000000000000',
                 'curly' => '{00000000-0000-0000-0000-000000000000}',
@@ -1700,7 +1729,7 @@ class UuidTest extends TestCase
                 'time' => '82e946702d9e6d5',
                 'clock_seq' => '0f9b',
                 'variant' => Uuid::RFC_4122,
-                'version' => 3,
+                'version' => Uuid::UUID_TYPE_HASH_MD5,
             ],
             [
                 'string' => '12345678-1234-5678-1234-567812345678',
@@ -1740,7 +1769,7 @@ class UuidTest extends TestCase
                 'time' => '1d19dad6ba7b810',
                 'clock_seq' => '00b4',
                 'variant' => Uuid::RFC_4122,
-                'version' => 1,
+                'version' => Uuid::UUID_TYPE_TIME,
             ],
             [
                 'string' => '6ba7b811-9dad-11d1-80b4-00c04fd430c8',
@@ -1760,7 +1789,7 @@ class UuidTest extends TestCase
                 'time' => '1d19dad6ba7b811',
                 'clock_seq' => '00b4',
                 'variant' => Uuid::RFC_4122,
-                'version' => 1,
+                'version' => Uuid::UUID_TYPE_TIME,
             ],
             [
                 'string' => '6ba7b812-9dad-11d1-80b4-00c04fd430c8',
@@ -1780,7 +1809,7 @@ class UuidTest extends TestCase
                 'time' => '1d19dad6ba7b812',
                 'clock_seq' => '00b4',
                 'variant' => Uuid::RFC_4122,
-                'version' => 1,
+                'version' => Uuid::UUID_TYPE_TIME,
             ],
             [
                 'string' => '6ba7b814-9dad-11d1-80b4-00c04fd430c8',
@@ -1800,7 +1829,7 @@ class UuidTest extends TestCase
                 'time' => '1d19dad6ba7b814',
                 'clock_seq' => '00b4',
                 'variant' => Uuid::RFC_4122,
-                'version' => 1,
+                'version' => Uuid::UUID_TYPE_TIME,
             ],
             [
                 'string' => '7d444840-9dc0-11d1-b245-5ffdce74fad2',
@@ -1820,7 +1849,7 @@ class UuidTest extends TestCase
                 'time' => '1d19dc07d444840',
                 'clock_seq' => '3245',
                 'variant' => Uuid::RFC_4122,
-                'version' => 1,
+                'version' => Uuid::UUID_TYPE_TIME,
             ],
             [
                 'string' => 'e902893a-9d22-3c7e-a7b8-d6e313b71d9f',
@@ -1840,7 +1869,7 @@ class UuidTest extends TestCase
                 'time' => 'c7e9d22e902893a',
                 'clock_seq' => '27b8',
                 'variant' => Uuid::RFC_4122,
-                'version' => 3,
+                'version' => Uuid::UUID_TYPE_HASH_MD5,
             ],
             [
                 'string' => 'eb424026-6f54-4ef8-a4d0-bb658a1fc6cf',
@@ -1860,7 +1889,7 @@ class UuidTest extends TestCase
                 'time' => 'ef86f54eb424026',
                 'clock_seq' => '24d0',
                 'variant' => Uuid::RFC_4122,
-                'version' => 4,
+                'version' => Uuid::UUID_TYPE_RANDOM,
             ],
             [
                 'string' => 'f81d4fae-7dec-11d0-a765-00a0c91e6bf6',
@@ -1880,7 +1909,7 @@ class UuidTest extends TestCase
                 'time' => '1d07decf81d4fae',
                 'clock_seq' => '2765',
                 'variant' => Uuid::RFC_4122,
-                'version' => 1,
+                'version' => Uuid::UUID_TYPE_TIME,
             ],
             [
                 'string' => 'fffefdfc-fffe-fffe-fffe-fffefdfcfbfa',
@@ -1923,39 +1952,6 @@ class UuidTest extends TestCase
                 'version' => null,
             ],
         ];
-
-        foreach ($tests as $test) {
-            $uuids = [
-                Uuid::fromString($test['string']),
-                Uuid::fromString($test['curly']),
-                Uuid::fromString($test['hex']),
-                Uuid::fromBytes(base64_decode($test['bytes'])),
-                Uuid::fromString($test['urn']),
-                Uuid::fromInteger($test['int']),
-            ];
-            foreach ($uuids as $uuid) {
-                $this->assertEquals($test['string'], (string) $uuid);
-                $this->assertEquals($test['hex'], $uuid->getHex());
-                $this->assertEquals(base64_decode($test['bytes']), $uuid->getBytes());
-                if ($this->hasGmp() || $this->hasMoontoastMath()) {
-                    $this->assertEquals($test['int'], (string) $uuid->getInteger());
-                }
-                $this->assertEquals($test['fields'], $uuid->getFieldsHex());
-                $this->assertEquals($test['fields']['time_low'], $uuid->getTimeLowHex());
-                $this->assertEquals($test['fields']['time_mid'], $uuid->getTimeMidHex());
-                $this->assertEquals($test['fields']['time_hi_and_version'], $uuid->getTimeHiAndVersionHex());
-                $this->assertEquals($test['fields']['clock_seq_hi_and_reserved'], $uuid->getClockSeqHiAndReservedHex());
-                $this->assertEquals($test['fields']['clock_seq_low'], $uuid->getClockSeqLowHex());
-                $this->assertEquals($test['fields']['node'], $uuid->getNodeHex());
-                $this->assertEquals($test['urn'], $uuid->getUrn());
-                if ($uuid->getVersion() === 1) {
-                    $this->assertEquals($test['time'], $uuid->getTimestampHex());
-                }
-                $this->assertEquals($test['clock_seq'], $uuid->getClockSequenceHex());
-                $this->assertEquals($test['variant'], $uuid->getVariant());
-                $this->assertEquals($test['version'], $uuid->getVersion());
-            }
-        }
     }
 
     public function testGetInteger(): void
