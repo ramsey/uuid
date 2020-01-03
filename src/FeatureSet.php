@@ -34,6 +34,8 @@ use Ramsey\Uuid\Generator\RandomGeneratorFactory;
 use Ramsey\Uuid\Generator\RandomGeneratorInterface;
 use Ramsey\Uuid\Generator\TimeGeneratorFactory;
 use Ramsey\Uuid\Generator\TimeGeneratorInterface;
+use Ramsey\Uuid\Guid\DegradedGuidBuilder;
+use Ramsey\Uuid\Guid\GuidBuilder;
 use Ramsey\Uuid\Provider\Node\FallbackNodeProvider;
 use Ramsey\Uuid\Provider\Node\RandomNodeProvider;
 use Ramsey\Uuid\Provider\Node\SystemNodeProvider;
@@ -145,7 +147,7 @@ class FeatureSet
 
         $this->numberConverter = $this->buildNumberConverter();
         $this->timeConverter = $this->buildTimeConverter();
-        $this->builder = $this->buildUuidBuilder();
+        $this->builder = $this->buildUuidBuilder($useGuids);
         $this->codec = $this->buildCodec($useGuids);
         $this->nodeProvider = $this->buildNodeProvider();
         $this->randomGenerator = $this->buildRandomGenerator();
@@ -319,11 +321,21 @@ class FeatureSet
 
     /**
      * Returns a UUID builder configured for this environment
+     *
+     * @param bool $useGuids Whether to build UUIDs using the GuidStringCodec
      */
-    private function buildUuidBuilder(): UuidBuilderInterface
+    private function buildUuidBuilder(bool $useGuids = false): UuidBuilderInterface
     {
+        if ($this->is64BitSystem() && $useGuids) {
+            return new GuidBuilder($this->numberConverter, $this->timeConverter);
+        }
+
         if ($this->is64BitSystem()) {
             return new DefaultUuidBuilder($this->numberConverter, $this->timeConverter);
+        }
+
+        if ($useGuids) {
+            return new DegradedGuidBuilder($this->numberConverter, $this->timeConverter);
         }
 
         return new DegradedUuidBuilder($this->numberConverter, $this->timeConverter);

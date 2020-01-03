@@ -26,33 +26,6 @@ use Ramsey\Uuid\UuidInterface;
 class GuidStringCodec extends StringCodec
 {
     /**
-     * @psalm-pure
-     */
-    public function encode(UuidInterface $uuid): string
-    {
-        /** @var string[] $components */
-        $components = array_values($uuid->getFieldsHex());
-
-        // Swap byte-order on the first three fields.
-        $components = $this->swapFields($components);
-
-        return vsprintf(
-            '%08s-%04s-%04s-%02s%02s-%012s',
-            $components
-        );
-    }
-
-    /**
-     * @psalm-pure
-     */
-    public function encodeBinary(UuidInterface $uuid): string
-    {
-        $components = array_values($uuid->getFieldsHex());
-
-        return (string) hex2bin(implode('', $components));
-    }
-
-    /**
      * @throws InvalidUuidStringException
      *
      * @inheritDoc
@@ -61,10 +34,7 @@ class GuidStringCodec extends StringCodec
      */
     public function decode(string $encodedUuid): UuidInterface
     {
-        $components = $this->extractComponents($encodedUuid);
-
-        /** @var string[] $components */
-        $components = $this->swapFields($components);
+        $components = $this->swapBytes($this->extractComponents($encodedUuid));
 
         return $this->getBuilder()->build($this, $this->getFields($components));
     }
@@ -83,28 +53,22 @@ class GuidStringCodec extends StringCodec
     }
 
     /**
-     * Swap fields to support GUID byte order
-     *
-     * @param string[] $components An array of UUID components (the UUID exploded on its dashes)
+     * @param string[] $fields The fields that comprise this UUID
      *
      * @return string[]
      *
      * @psalm-pure
      */
-    private function swapFields(array $components): array
+    private function swapBytes(array $fields): array
     {
-        $hex = unpack('H*', pack('L', hexdec($components[0])));
-        assert(is_string($hex[1]));
-        $components[0] = $hex[1];
+        $fields = array_values($fields);
 
-        $hex = unpack('H*', pack('S', hexdec($components[1])));
-        assert(is_string($hex[1]));
-        $components[1] = $hex[1];
+        // Swap bytes to support GUID byte order.
+        $bytes = (string) hex2bin(implode('', $fields));
+        $fields[0] = bin2hex($bytes[3] . $bytes[2] . $bytes[1] . $bytes[0]);
+        $fields[1] = bin2hex($bytes[5] . $bytes[4]);
+        $fields[2] = bin2hex($bytes[7] . $bytes[6]);
 
-        $hex = unpack('H*', pack('S', hexdec($components[2])));
-        assert(is_string($hex[1]));
-        $components[2] = $hex[1];
-
-        return $components;
+        return $fields;
     }
 }

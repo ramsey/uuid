@@ -27,7 +27,6 @@ use Ramsey\Uuid\Generator\RandomGeneratorInterface;
 use Ramsey\Uuid\Provider\Time\FixedTimeProvider;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidFactory;
-use Ramsey\Uuid\UuidInterface;
 use Ramsey\Uuid\Validator\Validator;
 use Ramsey\Uuid\Validator\ValidatorInterface;
 use stdClass;
@@ -54,46 +53,19 @@ class UuidTest extends TestCase
      */
     public function testFromGuidStringOnLittleEndianHost(): void
     {
-        $this->skipIfBigEndianHost();
-
-        $uuid = Uuid::fromString('b08c6fff-7dc5-e111-9b21-0800200c9a66');
+        $uuid = Uuid::fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
 
         Uuid::setFactory(new UuidFactory(new FeatureSet(true)));
 
-        $guid = Uuid::fromString('b08c6fff-7dc5-e111-9b21-0800200c9a66');
+        $guid = Uuid::fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
 
         $this->assertInstanceOf(Uuid::class, $guid);
 
         // UUID's and GUID's share the same textual representation.
-        $this->assertEquals($uuid->toString(), $guid->toString());
+        $this->assertSame($uuid->toString(), $guid->toString());
 
-        // But not the same binary representation (this assertion is valid on
-        // little endian hosts only).
-        $this->assertNotEquals(bin2hex($uuid->getBytes()), bin2hex($guid->getBytes()));
-    }
-
-    /**
-     * Tests that UUID and GUID's have the same textual representation and the
-     * same binary representation.
-     *
-     * This test is only valid on big endian hosts.
-     */
-    public function testFromGuidStringOnBigEndianHost(): void
-    {
-        $this->skipIfLittleEndianHost();
-
-        $uuid = Uuid::fromString('b08c6fff-7dc5-e111-9b21-0800200c9a66');
-
-        Uuid::setFactory(new UuidFactory(new FeatureSet(true)));
-
-        $guid = Uuid::fromString('b08c6fff-7dc5-e111-9b21-0800200c9a66');
-
-        $this->assertInstanceOf(Uuid::class, $guid);
-        // UUID's and GUID's share the same textual representation
-        $this->assertEquals($uuid->toString(), $guid->toString());
-        // But not the same binary representation (this assertion is valid on little endian hosts
-        // only)
-        $this->assertEquals(bin2hex($uuid->getBytes()), bin2hex($guid->getBytes()));
+        // But not the same binary representation.
+        $this->assertNotSame($uuid->getBytes(), $guid->getBytes());
     }
 
     public function testFromStringWithCurlyBraces(): void
@@ -1563,52 +1535,37 @@ class UuidTest extends TestCase
         $this->assertTrue($uuid->equals($fromBytesUuid));
     }
 
-    public function testFromGuidBytesOnLittleEndianHost(): void
+    public function testGuidBytesMatchesUuidWithSameString(): void
     {
-        $this->skipIfBigEndianHost();
-
         $uuidFactory = new UuidFactory(new FeatureSet(false));
         $guidFactory = new UuidFactory(new FeatureSet(true));
 
-        // Check that parsing BE bytes as LE reverses fields
         $uuid = $uuidFactory->fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
         $bytes = $uuid->getBytes();
 
-        $guid = $guidFactory->fromBytes($bytes);
+        // Swap the order of the bytes for a GUID.
+        $guidBytes = $bytes[3] . $bytes[2] . $bytes[1] . $bytes[0];
+        $guidBytes .= $bytes[5] . $bytes[4];
+        $guidBytes .= $bytes[7] . $bytes[6];
+        $guidBytes .= substr($bytes, 8);
 
-        // First three fields should be reversed
-        $this->assertEquals('b08c6fff-7dc5-e111-9b21-0800200c9a66', $guid->toString());
+        $guid = $guidFactory->fromBytes($guidBytes);
 
-        // Check that parsing LE bytes as LE preserves fields
-        $guid = $guidFactory->fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
-        $bytes = $guid->getBytes();
-
-        $parsedGuid = $guidFactory->fromBytes($bytes);
-
-        $this->assertEquals($guid->toString(), $parsedGuid->toString());
+        $this->assertSame($uuid->toString(), $guid->toString());
+        $this->assertTrue($uuid->equals($guid));
     }
 
-    public function testFromGuidBytesOnBigEndianHost(): void
+    public function testGuidBytesProducesSameGuidString(): void
     {
-        $this->skipIfLittleEndianHost();
-
-        $uuidFactory = new UuidFactory(new FeatureSet(false));
         $guidFactory = new UuidFactory(new FeatureSet(true));
-
-        $uuid = $uuidFactory->fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
-        $bytes = $uuid->getBytes();
-
-        $guid = $guidFactory->fromBytes($bytes);
-
-        // UUIDs and GUIDs should have the same binary representation on BE hosts
-        $this->assertEquals($uuid->toString(), $guid->toString());
 
         $guid = $guidFactory->fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
         $bytes = $guid->getBytes();
 
         $parsedGuid = $guidFactory->fromBytes($bytes);
 
-        $this->assertEquals($guid->toString(), $parsedGuid->toString());
+        $this->assertSame($guid->toString(), $parsedGuid->toString());
+        $this->assertTrue($guid->equals($parsedGuid));
     }
 
     public function testFromBytesArgumentTooShort(): void

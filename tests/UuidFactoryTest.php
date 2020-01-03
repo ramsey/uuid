@@ -32,7 +32,8 @@ class UuidFactoryTest extends TestCase
 
         $uuid = $factory->fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
 
-        $this->assertEquals('ff6f8cb0-c57d-11e1-9b21-0800200c9a66', $uuid->toString());
+        $this->assertSame('ff6f8cb0-c57d-11e1-9b21-0800200c9a66', $uuid->toString());
+        $this->assertSame(hex2bin('b08c6fff7dc5e1119b210800200c9a66'), $uuid->getBytes());
     }
 
     public function testFromStringParsesUuidInLowercase(): void
