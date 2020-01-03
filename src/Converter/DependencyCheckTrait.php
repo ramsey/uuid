@@ -18,6 +18,8 @@ use Ramsey\Uuid\Exception\UnsatisfiedDependencyException;
 
 /**
  * Provides methods to check dependencies for various converters
+ *
+ * @psalm-immutable
  */
 trait DependencyCheckTrait
 {

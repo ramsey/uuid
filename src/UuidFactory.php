@@ -177,6 +177,9 @@ class UuidFactory implements UuidFactoryInterface
         $this->uuidBuilder = $builder;
     }
 
+    /**
+     * @psalm-mutation-free
+     */
     public function getValidator(): ValidatorInterface
     {
         return $this->validator;
@@ -193,11 +196,17 @@ class UuidFactory implements UuidFactoryInterface
         $this->validator = $validator;
     }
 
+    /**
+     * @psalm-pure
+     */
     public function fromBytes(string $bytes): UuidInterface
     {
         return $this->codec->decodeBytes($bytes);
     }
 
+    /**
+     * @psalm-pure
+     */
     public function fromString(string $uuid): UuidInterface
     {
         $uuid = strtolower($uuid);
@@ -205,6 +214,9 @@ class UuidFactory implements UuidFactoryInterface
         return $this->codec->decode($uuid);
     }
 
+    /**
+     * @psalm-pure
+     */
     public function fromInteger(string $integer): UuidInterface
     {
         $hex = $this->numberConverter->toHex($integer);
@@ -287,7 +299,7 @@ class UuidFactory implements UuidFactoryInterface
             $ns = $this->codec->decode($ns);
         }
 
-        $hash = call_user_func($hashFunction, $ns->getBytes() . $name);
+        $hash = (string) call_user_func($hashFunction, $ns->getBytes() . $name);
 
         return $this->uuidFromHashedName($hash, $version);
     }

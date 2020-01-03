@@ -42,6 +42,9 @@ class StringCodec implements CodecInterface
         $this->builder = $builder;
     }
 
+    /**
+     * @psalm-pure
+     */
     public function encode(UuidInterface $uuid): string
     {
         $fields = array_values($uuid->getFieldsHex());
@@ -52,6 +55,9 @@ class StringCodec implements CodecInterface
         );
     }
 
+    /**
+     * @psalm-pure
+     */
     public function encodeBinary(UuidInterface $uuid): string
     {
         return (string) hex2bin($uuid->getHex());
@@ -61,6 +67,8 @@ class StringCodec implements CodecInterface
      * @throws InvalidUuidStringException
      *
      * @inheritDoc
+     *
+     * @psalm-pure
      */
     public function decode(string $encodedUuid): UuidInterface
     {
@@ -74,6 +82,8 @@ class StringCodec implements CodecInterface
      * @throws InvalidArgumentException if $bytes is an invalid length
      *
      * @inheritDoc
+     *
+     * @psalm-pure
      */
     public function decodeBytes(string $bytes): UuidInterface
     {
@@ -85,7 +95,7 @@ class StringCodec implements CodecInterface
 
         $hexUuid = unpack('H*', $bytes);
 
-        return $this->decode($hexUuid[1]);
+        return $this->decode((string) $hexUuid[1]);
     }
 
     /**
@@ -104,6 +114,8 @@ class StringCodec implements CodecInterface
      * @return string[]
      *
      * @throws InvalidUuidStringException
+     *
+     * @psalm-pure
      */
     protected function extractComponents(string $encodedUuid): array
     {
@@ -146,6 +158,8 @@ class StringCodec implements CodecInterface
      *     the fields of an RFC 4122 UUID
      *
      * @return string[]
+     *
+     * @psalm-pure
      */
     protected function getFields(array $components): array
     {

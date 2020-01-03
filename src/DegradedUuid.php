@@ -29,7 +29,7 @@ use Ramsey\Uuid\Exception\UnsupportedOperationException;
  *
  * @psalm-immutable
  */
-class DegradedUuid extends Uuid
+class DegradedUuid extends Uuid implements UuidInterface
 {
     /**
      * @return DateTimeImmutable An immutable instance of DateTimeInterface

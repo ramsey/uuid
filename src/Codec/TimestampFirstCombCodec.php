@@ -44,11 +44,14 @@ use Ramsey\Uuid\UuidInterface;
  */
 class TimestampFirstCombCodec extends StringCodec
 {
+    /**
+     * @psalm-pure
+     */
     public function encode(UuidInterface $uuid): string
     {
         $sixPieceComponents = array_values($uuid->getFieldsHex());
 
-        $this->swapTimestampAndRandomBits($sixPieceComponents);
+        $sixPieceComponents = $this->swapTimestampAndRandomBits($sixPieceComponents);
 
         return vsprintf(
             '%08s-%04s-%04s-%02s%02s-%012s',
@@ -56,6 +59,9 @@ class TimestampFirstCombCodec extends StringCodec
         );
     }
 
+    /**
+     * @psalm-pure
+     */
     public function encodeBinary(UuidInterface $uuid): string
     {
         $stringEncoding = $this->encode($uuid);
@@ -67,12 +73,14 @@ class TimestampFirstCombCodec extends StringCodec
      * @throws InvalidUuidStringException
      *
      * @inheritDoc
+     *
+     * @psalm-pure
      */
     public function decode(string $encodedUuid): UuidInterface
     {
         $fivePieceComponents = $this->extractComponents($encodedUuid);
 
-        $this->swapTimestampAndRandomBits($fivePieceComponents);
+        $fivePieceComponents = $this->swapTimestampAndRandomBits($fivePieceComponents);
 
         return $this->getBuilder()->build($this, $this->getFields($fivePieceComponents));
     }
@@ -81,6 +89,8 @@ class TimestampFirstCombCodec extends StringCodec
      * @throws InvalidArgumentException if $bytes is an invalid length
      *
      * @inheritDoc
+     *
+     * @psalm-pure
      */
     public function decodeBytes(string $bytes): UuidInterface
     {
@@ -91,8 +101,12 @@ class TimestampFirstCombCodec extends StringCodec
      * Swaps the first 48 bits with the last 48 bits
      *
      * @param string[] $components An array of UUID components (the UUID exploded on its dashes)
+     *
+     * @return string[] The adjusted components
+     *
+     * @psalm-pure
      */
-    private function swapTimestampAndRandomBits(array &$components): void
+    private function swapTimestampAndRandomBits(array $components): array
     {
         $last48Bits = $components[4];
 
@@ -105,5 +119,7 @@ class TimestampFirstCombCodec extends StringCodec
 
         $components[0] = substr($last48Bits, 0, 8);
         $components[1] = substr($last48Bits, 8, 4);
+
+        return $components;
     }
 }

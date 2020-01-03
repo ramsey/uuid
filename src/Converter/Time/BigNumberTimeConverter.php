@@ -36,6 +36,10 @@ class BigNumberTimeConverter implements TimeConverterInterface
      * @throws UnsatisfiedDependencyException if the chosen converter is not present
      *
      * @inheritDoc
+     *
+     * @psalm-pure
+     * @psalm-suppress ImpureMethodCall The use of the external moontoast/math
+     *     library causes Psalm to complain about impure method calls.
      */
     public function calculateTime(string $seconds, string $microSeconds): array
     {
@@ -70,6 +74,10 @@ class BigNumberTimeConverter implements TimeConverterInterface
      * @throws UnsatisfiedDependencyException if the chosen converter is not present
      *
      * @inheritDoc
+     *
+     * @psalm-pure
+     * @psalm-suppress ImpureMethodCall The use of the external moontoast/math
+     *     library causes Psalm to complain about impure method calls.
      */
     public function convertTime(string $timestamp): string
     {

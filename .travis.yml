@@ -54,7 +54,7 @@ script:
   - ./resources/scripts/cmd-proxy.sh composer run lint
   - ./resources/scripts/cmd-proxy.sh composer run phpcs
   - ./resources/scripts/cmd-proxy.sh composer run phpstan
-  - ./resources/scripts/cmd-proxy.sh composer run psalm
+  - ./resources/scripts/cmd-proxy.sh ./vendor/bin/psalm --show-info=false
   - travis_wait ./resources/scripts/cmd-proxy.sh ./vendor/bin/phpunit --verbose --coverage-clover build/logs/clover.xml
 
 after_success:

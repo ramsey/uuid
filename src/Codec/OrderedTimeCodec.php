@@ -44,6 +44,7 @@ class OrderedTimeCodec extends StringCodec
      * fields rearranged for optimized storage
      *
      * @inheritDoc
+     * @psalm-pure
      */
     public function encodeBinary(UuidInterface $uuid): string
     {
@@ -78,6 +79,8 @@ class OrderedTimeCodec extends StringCodec
      * @throws InvalidArgumentException if $bytes is an invalid length
      *
      * @inheritDoc
+     *
+     * @psalm-pure
      */
     public function decodeBytes(string $bytes): UuidInterface
     {

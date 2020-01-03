@@ -28,6 +28,8 @@ class DegradedTimeConverter implements TimeConverterInterface
      * @throws UnsatisfiedDependencyException if the chosen converter is not present
      *
      * @inheritDoc
+     *
+     * @psalm-pure
      */
     public function calculateTime(string $seconds, string $microSeconds): array
     {
@@ -43,6 +45,8 @@ class DegradedTimeConverter implements TimeConverterInterface
      * @throws UnsatisfiedDependencyException if the chosen converter is not present
      *
      * @inheritDoc
+     *
+     * @psalm-pure
      */
     public function convertTime(string $timestamp): string
     {

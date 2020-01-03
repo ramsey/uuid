@@ -22,6 +22,8 @@ use Ramsey\Uuid\UuidInterface;
 
 /**
  * DegradedUuidBuilder builds instances of DegradedUuid
+ *
+ * @psalm-immutable
  */
 class DegradedUuidBuilder implements UuidBuilderInterface
 {
