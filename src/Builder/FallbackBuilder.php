@@ -41,7 +41,8 @@ class FallbackBuilder implements UuidBuilderInterface
     }
 
     /**
-     * Builds and returns a UuidInterface instance
+     * Builds and returns a UuidInterface instance using the first builder that
+     * succeeds
      *
      * @param CodecInterface $codec The codec to use for building this instance
      * @param string[] $fields An array of fields from which to construct an instance;

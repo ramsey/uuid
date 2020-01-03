@@ -136,6 +136,10 @@ final class GuidFields implements Rfc4122FieldsInterface
 
     public function getVersion(): ?int
     {
+        if ($this->isNil()) {
+            return null;
+        }
+
         $parts = unpack('n*', $this->bytes);
 
         return ((int) $parts[4] >> 4) & 0x00f;
