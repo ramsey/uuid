@@ -30,8 +30,8 @@ class DegradedUuidBuilderTest extends TestCase
         $fields = [
             'time_low' => '754cd475',
             'time_mid' => '7e58',
-            'time_hi_and_version' => '5411',
-            'clock_seq_hi_and_reserved' => '73',
+            'time_hi_and_version' => '4411',
+            'clock_seq_hi_and_reserved' => '93',
             'clock_seq_low' => '22',
             'node' => 'be0725c8ce01',
         ];
