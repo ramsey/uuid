@@ -22,6 +22,8 @@ use Ramsey\Uuid\Converter\TimeConverterInterface;
 use Ramsey\Uuid\Exception\DateTimeException;
 use Ramsey\Uuid\Exception\UnsatisfiedDependencyException;
 use Ramsey\Uuid\Exception\UnsupportedOperationException;
+use Ramsey\Uuid\Rfc4122\Rfc4122Fields;
+use Ramsey\Uuid\Rfc4122\Rfc4122FieldsInterface;
 
 /**
  * Represents a RFC 4122 universally unique identifier (UUID)
@@ -149,25 +151,14 @@ class Uuid implements UuidInterface
     /**
      * @var CodecInterface
      */
-    private $codec;
+    protected $codec;
 
     /**
      * The fields that make up this UUID
      *
-     * This is initialized to the nil value.
-     *
-     * @see UuidInterface::getFieldsHex()
-     *
-     * @var string[]
+     * @var Rfc4122FieldsInterface
      */
-    private $fields = [
-        'time_low' => '00000000',
-        'time_mid' => '0000',
-        'time_hi_and_version' => '0000',
-        'clock_seq_hi_and_reserved' => '00',
-        'clock_seq_low' => '00',
-        'node' => '000000000000',
-    ];
+    protected $fields;
 
     /**
      * @var NumberConverterInterface
@@ -210,7 +201,7 @@ class Uuid implements UuidInterface
         CodecInterface $codec,
         TimeConverterInterface $timeConverter
     ) {
-        $this->fields = $fields;
+        $this->fields = new Rfc4122Fields((string) hex2bin(implode('', $fields)));
         $this->codec = $codec;
         $this->numberConverter = $numberConverter;
         $this->timeConverter = $timeConverter;
@@ -286,7 +277,7 @@ class Uuid implements UuidInterface
 
     public function getBytes(): string
     {
-        return $this->codec->encodeBinary($this);
+        return $this->fields->getBytes();
     }
 
     /**
@@ -299,7 +290,7 @@ class Uuid implements UuidInterface
 
     public function getClockSeqHiAndReservedHex(): string
     {
-        return $this->fields['clock_seq_hi_and_reserved'];
+        return $this->fields->getClockSeqHiAndReserved();
     }
 
     /**
@@ -312,7 +303,7 @@ class Uuid implements UuidInterface
 
     public function getClockSeqLowHex(): string
     {
-        return $this->fields['clock_seq_low'];
+        return $this->fields->getClockSeqLow();
     }
 
     /**
@@ -406,7 +397,14 @@ class Uuid implements UuidInterface
      */
     public function getFieldsHex(): array
     {
-        return $this->fields;
+        return [
+            'time_low' => $this->fields->getTimeLow(),
+            'time_mid' => $this->fields->getTimeMid(),
+            'time_hi_and_version' => $this->fields->getTimeHiAndVersion(),
+            'clock_seq_hi_and_reserved' => $this->fields->getClockSeqHiAndReserved(),
+            'clock_seq_low' => $this->fields->getClockSeqLow(),
+            'node' => $this->fields->getNode(),
+        ];
     }
 
     public function getHex(): string
@@ -440,9 +438,9 @@ class Uuid implements UuidInterface
     {
         return sprintf(
             '%02s%02s%012s',
-            $this->fields['clock_seq_hi_and_reserved'],
-            $this->fields['clock_seq_low'],
-            $this->fields['node']
+            $this->fields->getClockSeqHiAndReserved(),
+            $this->fields->getClockSeqLow(),
+            $this->fields->getNode()
         );
     }
 
@@ -462,9 +460,9 @@ class Uuid implements UuidInterface
     {
         return sprintf(
             '%08s%04s%04s',
-            $this->fields['time_low'],
-            $this->fields['time_mid'],
-            $this->fields['time_hi_and_version']
+            $this->fields->getTimeLow(),
+            $this->fields->getTimeMid(),
+            $this->fields->getTimeHiAndVersion()
         );
     }
 
@@ -502,7 +500,7 @@ class Uuid implements UuidInterface
 
     public function getNodeHex(): string
     {
-        return $this->fields['node'];
+        return $this->fields->getNode();
     }
 
     /**
@@ -515,7 +513,7 @@ class Uuid implements UuidInterface
 
     public function getTimeHiAndVersionHex(): string
     {
-        return $this->fields['time_hi_and_version'];
+        return $this->fields->getTimeHiAndVersion();
     }
 
     /**
@@ -528,7 +526,7 @@ class Uuid implements UuidInterface
 
     public function getTimeLowHex(): string
     {
-        return $this->fields['time_low'];
+        return $this->fields->getTimeLow();
     }
 
     /**
@@ -541,7 +539,7 @@ class Uuid implements UuidInterface
 
     public function getTimeMidHex(): string
     {
-        return $this->fields['time_mid'];
+        return $this->fields->getTimeMid();
     }
 
     /**
@@ -578,8 +576,8 @@ class Uuid implements UuidInterface
         return sprintf(
             '%03x%04s%08s',
             ($this->getTimeHiAndVersion() & 0x0fff),
-            $this->fields['time_mid'],
-            $this->fields['time_low']
+            $this->fields->getTimeMid(),
+            $this->fields->getTimeLow()
         );
     }
 
@@ -588,32 +586,14 @@ class Uuid implements UuidInterface
         return 'urn:uuid:' . $this->toString();
     }
 
-    public function getVariant(): int
+    public function getVariant(): ?int
     {
-        $clockSeq = $this->getClockSeqHiAndReserved();
-
-        if (($clockSeq & 0x80) === 0) {
-            return self::RESERVED_NCS;
-        }
-
-        if (($clockSeq & 0x40) === 0) {
-            return self::RFC_4122;
-        }
-
-        if (($clockSeq & 0x20) === 0) {
-            return self::RESERVED_MICROSOFT;
-        }
-
-        return self::RESERVED_FUTURE;
+        return $this->fields->getVariant();
     }
 
     public function getVersion(): ?int
     {
-        if ($this->getVariant() === self::RFC_4122) {
-            return (int) (($this->getTimeHiAndVersion() >> 12) & 0x0f);
-        }
-
-        return null;
+        return $this->fields->getVersion();
     }
 
     public function toString(): string

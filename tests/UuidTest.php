@@ -27,6 +27,7 @@ use Ramsey\Uuid\Generator\RandomGeneratorInterface;
 use Ramsey\Uuid\Provider\Time\FixedTimeProvider;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidFactory;
+use Ramsey\Uuid\UuidInterface;
 use Ramsey\Uuid\Validator\Validator;
 use Ramsey\Uuid\Validator\ValidatorInterface;
 use stdClass;

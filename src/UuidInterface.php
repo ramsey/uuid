@@ -222,7 +222,7 @@ interface UuidInterface extends JsonSerializable, Serializable
      *
      * @link http://tools.ietf.org/html/rfc4122#section-4.1.1 RFC 4122, § 4.1.1: Variant
      */
-    public function getVariant(): int;
+    public function getVariant(): ?int;
 
     /**
      * Returns the version
