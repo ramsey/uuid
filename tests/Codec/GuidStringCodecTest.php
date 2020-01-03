@@ -4,9 +4,14 @@ declare(strict_types=1);
 
 namespace Ramsey\Uuid\Test\Codec;
 
+use Mockery;
 use PHPUnit\Framework\MockObject\MockObject;
 use Ramsey\Uuid\Builder\UuidBuilderInterface;
 use Ramsey\Uuid\Codec\GuidStringCodec;
+use Ramsey\Uuid\Converter\NumberConverterInterface;
+use Ramsey\Uuid\Converter\TimeConverterInterface;
+use Ramsey\Uuid\Guid\Guid;
+use Ramsey\Uuid\Guid\GuidBuilder;
 use Ramsey\Uuid\Test\TestCase;
 use Ramsey\Uuid\UuidInterface;
 
@@ -32,9 +37,10 @@ class GuidStringCodecTest extends TestCase
         parent::setUp();
         $this->builder = $this->getMockBuilder(UuidBuilderInterface::class)->getMock();
         $this->uuid = $this->getMockBuilder(UuidInterface::class)->getMock();
-        $this->fields = ['time_low' => '12345678',
+        $this->fields = [
+            'time_low' => '12345678',
             'time_mid' => '1234',
-            'time_hi_and_version' => 'abcd',
+            'time_hi_and_version' => '4bcd',
             'clock_seq_hi_and_reserved' => 'ab',
             'clock_seq_low' => 'ef',
             'node' => '1234abcd4321',
@@ -58,68 +64,54 @@ class GuidStringCodecTest extends TestCase
 
     public function testEncodeReturnsFormattedString(): void
     {
-        $this->skipIfBigEndianHost();
         $this->uuid->method('getFieldsHex')
             ->willReturn($this->fields);
         $codec = new GuidStringCodec($this->builder);
         $result = $codec->encode($this->uuid);
-        $this->assertEquals('78563412-3412-cdab-abef-1234abcd4321', $result);
+        $this->assertSame('12345678-1234-4bcd-abef-1234abcd4321', $result);
     }
 
-    public function testEncodeReturnsFormattedStringOnBigEndian(): void
+    public function testEncodeBinary(): void
     {
-        $this->skipIfLittleEndianHost();
-        $this->uuid->method('getFieldsHex')
-            ->willReturn($this->fields);
+        $expectedBytes = hex2bin('785634123412cd4babef1234abcd4321');
+
+        $fields = [
+            'time_low' => '78563412',
+            'time_mid' => '3412',
+            'time_hi_and_version' => 'cd4b',
+            'clock_seq_hi_and_reserved' => 'ab',
+            'clock_seq_low' => 'ef',
+            'node' => '1234abcd4321',
+        ];
+
         $codec = new GuidStringCodec($this->builder);
-        $result = $codec->encode($this->uuid);
-        $this->assertEquals('12345678-1234-abcd-abef-1234abcd4321', $result);
+        $numberConverter = Mockery::mock(NumberConverterInterface::class);
+        $timeConverter = Mockery::mock(TimeConverterInterface::class);
+
+        $uuid = new Guid($fields, $numberConverter, $codec, $timeConverter);
+
+        $bytes = $codec->encodeBinary($uuid);
+
+        $this->assertSame($expectedBytes, $bytes);
     }
 
-    public function testEncodeBinaryUsesFieldsArray(): void
+    public function testDecodeReturnsGuid(): void
     {
-        $this->uuid->expects($this->once())
-            ->method('getFieldsHex')
-            ->willReturn($this->fields);
-        $codec = new GuidStringCodec($this->builder);
-        $codec->encodeBinary($this->uuid);
-    }
+        $string = 'uuid:12345678-1234-4bcd-abef-1234abcd4321';
 
-    public function testEncodeBinaryReturnsBinaryString(): void
-    {
-        $expected = hex2bin('123456781234abcdabef1234abcd4321');
-        $this->uuid->method('getFieldsHex')
-            ->willReturn($this->fields);
-        $codec = new GuidStringCodec($this->builder);
-        $result = $codec->encodeBinary($this->uuid);
-        $this->assertEquals($expected, $result);
-    }
+        $numberConverter = Mockery::mock(NumberConverterInterface::class);
+        $timeConverter = Mockery::mock(TimeConverterInterface::class);
+        $builder = new GuidBuilder($numberConverter, $timeConverter);
+        $codec = new GuidStringCodec($builder);
+        $guid = $codec->decode($string);
 
-    public function testDecodeUsesBuilderOnFields(): void
-    {
-        $this->skipIfBigEndianHost();
-        $string = 'uuid:78563412-3412-cdab-abef-1234abcd4321';
-        $this->builder->expects($this->once())
-            ->method('build')
-            ->with($this->isInstanceOf(GuidStringCodec::class), $this->fields);
-        $codec = new GuidStringCodec($this->builder);
-        $codec->decode($string);
-    }
-
-    public function testDecodeUsesBuilderOnFieldsOnBigEndian(): void
-    {
-        $this->skipIfLittleEndianHost();
-        $string = 'uuid:12345678-1234-abcd-abef-1234abcd4321';
-        $this->builder->expects($this->once())
-            ->method('build')
-            ->with($this->isInstanceOf(GuidStringCodec::class), $this->fields);
-        $codec = new GuidStringCodec($this->builder);
-        $codec->decode($string);
+        $this->assertInstanceOf(Guid::class, $guid);
+        $this->assertSame('12345678-1234-4bcd-abef-1234abcd4321', $guid->toString());
     }
 
     public function testDecodeReturnsUuidFromBuilder(): void
     {
-        $string = 'uuid:78563412-3412-cdab-abef-1234abcd4321';
+        $string = 'uuid:78563412-3412-cd4b-abef-1234abcd4321';
         $this->builder->method('build')
             ->willReturn($this->uuid);
 
@@ -130,7 +122,7 @@ class GuidStringCodecTest extends TestCase
 
     public function testDecodeBytesReturnsUuid(): void
     {
-        $string = '123456781234abcdabef1234abcd4321';
+        $string = '1234567812344bcd4bef1234abcd4321';
         $bytes = pack('H*', $string);
         $codec = new GuidStringCodec($this->builder);
         $this->builder->method('build')

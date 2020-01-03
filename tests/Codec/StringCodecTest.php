@@ -70,23 +70,14 @@ class StringCodecTest extends TestCase
         $this->assertEquals($this->uuidString, $result);
     }
 
-    public function testEncodeBinaryUsesHexadecimalValue(): void
-    {
-        $this->uuid->expects($this->once())
-            ->method('getHex')
-            ->willReturn('123456781234abcdabef1234abcd4321');
-        $codec = new StringCodec($this->builder);
-        $codec->encodeBinary($this->uuid);
-    }
-
     public function testEncodeBinaryReturnsBinaryString(): void
     {
         $expected = hex2bin('123456781234abcdabef1234abcd4321');
-        $this->uuid->method('getHex')
-            ->willReturn('123456781234abcdabef1234abcd4321');
+        $this->uuid->method('getBytes')
+            ->willReturn(hex2bin('123456781234abcdabef1234abcd4321'));
         $codec = new StringCodec($this->builder);
         $result = $codec->encodeBinary($this->uuid);
-        $this->assertEquals($expected, $result);
+        $this->assertSame($expected, $result);
     }
 
     public function testDecodeUsesBuilderOnFields(): void
