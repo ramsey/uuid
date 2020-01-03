@@ -113,6 +113,7 @@ class Rfc4122FieldsTest extends TestCase
             ['ff6f8cb0-c57d-11e1-9b21-0800200c9a66', 'getTimeMid', 'c57d'],
             ['ff6f8cb0-c57d-11e1-9b21-0800200c9a66', 'getVariant', 2],
             ['ff6f8cb0-c57d-11e1-9b21-0800200c9a66', 'getVersion', 1],
+            ['ff6f8cb0-c57d-11e1-9b21-0800200c9a66', 'isNil', false],
 
             ['ff6f8cb0-c57d-41e1-ab21-0800200c9a66', 'getClockSeqHiAndReserved', 'ab'],
             ['ff6f8cb0-c57d-41e1-ab21-0800200c9a66', 'getClockSeqLow', '21'],
@@ -122,6 +123,7 @@ class Rfc4122FieldsTest extends TestCase
             ['ff6f8cb0-c57d-41e1-ab21-0800200c9a66', 'getTimeMid', 'c57d'],
             ['ff6f8cb0-c57d-41e1-ab21-0800200c9a66', 'getVariant', 2],
             ['ff6f8cb0-c57d-41e1-ab21-0800200c9a66', 'getVersion', 4],
+            ['ff6f8cb0-c57d-41e1-ab21-0800200c9a66', 'isNil', false],
 
             ['ff6f8cb0-c57d-31e1-bb21-0800200c9a66', 'getClockSeqHiAndReserved', 'bb'],
             ['ff6f8cb0-c57d-31e1-bb21-0800200c9a66', 'getClockSeqLow', '21'],
@@ -131,6 +133,7 @@ class Rfc4122FieldsTest extends TestCase
             ['ff6f8cb0-c57d-31e1-bb21-0800200c9a66', 'getTimeMid', 'c57d'],
             ['ff6f8cb0-c57d-31e1-bb21-0800200c9a66', 'getVariant', 2],
             ['ff6f8cb0-c57d-31e1-bb21-0800200c9a66', 'getVersion', 3],
+            ['ff6f8cb0-c57d-31e1-bb21-0800200c9a66', 'isNil', false],
 
             ['ff6f8cb0-c57d-51e1-8b21-0800200c9a66', 'getClockSeqHiAndReserved', '8b'],
             ['ff6f8cb0-c57d-51e1-8b21-0800200c9a66', 'getClockSeqLow', '21'],
@@ -140,6 +143,17 @@ class Rfc4122FieldsTest extends TestCase
             ['ff6f8cb0-c57d-51e1-8b21-0800200c9a66', 'getTimeMid', 'c57d'],
             ['ff6f8cb0-c57d-51e1-8b21-0800200c9a66', 'getVariant', 2],
             ['ff6f8cb0-c57d-51e1-8b21-0800200c9a66', 'getVersion', 5],
+            ['ff6f8cb0-c57d-51e1-8b21-0800200c9a66', 'isNil', false],
+
+            ['00000000-0000-0000-0000-000000000000', 'getClockSeqHiAndReserved', '00'],
+            ['00000000-0000-0000-0000-000000000000', 'getClockSeqLow', '00'],
+            ['00000000-0000-0000-0000-000000000000', 'getNode', '000000000000'],
+            ['00000000-0000-0000-0000-000000000000', 'getTimeHiAndVersion', '0000'],
+            ['00000000-0000-0000-0000-000000000000', 'getTimeLow', '00000000'],
+            ['00000000-0000-0000-0000-000000000000', 'getTimeMid', '0000'],
+            ['00000000-0000-0000-0000-000000000000', 'getVariant', 0],
+            ['00000000-0000-0000-0000-000000000000', 'getVersion', null],
+            ['00000000-0000-0000-0000-000000000000', 'isNil', true],
         ];
     }
 

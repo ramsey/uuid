@@ -123,6 +123,7 @@ class GuidFieldsTest extends TestCase
             ['b08c6fff7dc5e111cb210800200c9a66', 'getTimeMid', 'c57d'],
             ['b08c6fff7dc5e111cb210800200c9a66', 'getVariant', 6],
             ['b08c6fff7dc5e111cb210800200c9a66', 'getVersion', 1],
+            ['b08c6fff7dc5e111cb210800200c9a66', 'isNil', false],
 
             // For ff6f8cb0-c57d-41e1-db21-0800200c9a66
             ['b08c6fff7dc5e141db210800200c9a66', 'getClockSeqHiAndReserved', 'db'],
@@ -133,6 +134,7 @@ class GuidFieldsTest extends TestCase
             ['b08c6fff7dc5e141db210800200c9a66', 'getTimeMid', 'c57d'],
             ['b08c6fff7dc5e141db210800200c9a66', 'getVariant', 6],
             ['b08c6fff7dc5e141db210800200c9a66', 'getVersion', 4],
+            ['b08c6fff7dc5e141db210800200c9a66', 'isNil', false],
 
             // For ff6f8cb0-c57d-31e1-8b21-0800200c9a66
             ['b08c6fff7dc5e1318b210800200c9a66', 'getClockSeqHiAndReserved', '8b'],
@@ -143,6 +145,7 @@ class GuidFieldsTest extends TestCase
             ['b08c6fff7dc5e1318b210800200c9a66', 'getTimeMid', 'c57d'],
             ['b08c6fff7dc5e1318b210800200c9a66', 'getVariant', 2],
             ['b08c6fff7dc5e1318b210800200c9a66', 'getVersion', 3],
+            ['b08c6fff7dc5e1318b210800200c9a66', 'isNil', false],
 
             // For ff6f8cb0-c57d-51e1-9b21-0800200c9a66
             ['b08c6fff7dc5e1519b210800200c9a66', 'getClockSeqHiAndReserved', '9b'],
@@ -153,6 +156,18 @@ class GuidFieldsTest extends TestCase
             ['b08c6fff7dc5e1519b210800200c9a66', 'getTimeMid', 'c57d'],
             ['b08c6fff7dc5e1519b210800200c9a66', 'getVariant', 2],
             ['b08c6fff7dc5e1519b210800200c9a66', 'getVersion', 5],
+            ['b08c6fff7dc5e1519b210800200c9a66', 'isNil', false],
+
+            // For 00000000-0000-0000-0000-000000000000
+            ['00000000000000000000000000000000', 'getClockSeqHiAndReserved', '00'],
+            ['00000000000000000000000000000000', 'getClockSeqLow', '00'],
+            ['00000000000000000000000000000000', 'getNode', '000000000000'],
+            ['00000000000000000000000000000000', 'getTimeHiAndVersion', '0000'],
+            ['00000000000000000000000000000000', 'getTimeLow', '00000000'],
+            ['00000000000000000000000000000000', 'getTimeMid', '0000'],
+            ['00000000000000000000000000000000', 'getVariant', 0],
+            ['00000000000000000000000000000000', 'getVersion', null],
+            ['00000000000000000000000000000000', 'isNil', true],
         ];
     }
 

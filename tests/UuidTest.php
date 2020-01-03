@@ -776,7 +776,7 @@ class UuidTest extends TestCase
             ->method('generate')
             ->willReturnCallback(function ($length) {
                 // Makes first fields of UUIDs equal
-                return str_pad('', $length, '0');
+                return hex2bin(str_pad('', $length * 2, '0'));
             });
 
         $factory = new UuidFactory();
@@ -806,7 +806,7 @@ class UuidTest extends TestCase
             ->method('generate')
             ->willReturnCallback(function ($length) {
                 // Makes first fields of UUIDs equal
-                return str_pad('', $length, '0');
+                return hex2bin(str_pad('', $length * 2, '0'));
             });
 
         $factory = new UuidFactory();
