@@ -22,6 +22,8 @@ use Ramsey\Uuid\UuidInterface;
 
 /**
  * DefaultUuidBuilder builds instances of Uuid
+ *
+ * @psalm-immutable
  */
 class DefaultUuidBuilder implements UuidBuilderInterface
 {

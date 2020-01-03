@@ -28,6 +28,8 @@ interface CodecInterface
      *     string representation
      *
      * @return string Hexadecimal string representation of a UUID
+     *
+     * @psalm-pure
      */
     public function encode(UuidInterface $uuid): string;
 
@@ -38,6 +40,8 @@ interface CodecInterface
      *     representation
      *
      * @return string Binary string representation of a UUID
+     *
+     * @psalm-pure
      */
     public function encodeBinary(UuidInterface $uuid): string;
 
@@ -49,6 +53,8 @@ interface CodecInterface
      *
      * @return UuidInterface An instance of a UUID decoded from a hexadecimal
      *     string representation
+     *
+     * @psalm-pure
      */
     public function decode(string $encodedUuid): UuidInterface;
 
@@ -60,6 +66,8 @@ interface CodecInterface
      *
      * @return UuidInterface An instance of a UUID decoded from a binary string
      *     representation
+     *
+     * @psalm-pure
      */
     public function decodeBytes(string $bytes): UuidInterface;
 }

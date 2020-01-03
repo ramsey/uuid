@@ -19,6 +19,8 @@ use Ramsey\Uuid\UuidInterface;
 
 /**
  * A UUID builder builds instances of UuidInterface
+ *
+ * @psalm-immutable
  */
 interface UuidBuilderInterface
 {

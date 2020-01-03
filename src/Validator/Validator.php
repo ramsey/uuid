@@ -26,6 +26,9 @@ class Validator implements ValidatorInterface
      */
     public const VALID_PATTERN = '^[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}$';
 
+    /**
+     * @psalm-pure
+     */
     public function validate(string $uuid): bool
     {
         $uuid = str_replace(['urn:', 'uuid:', 'URN:', 'UUID:', '{', '}'], '', $uuid);

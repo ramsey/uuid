@@ -20,3 +20,7 @@ parameters:
             message: "#^Function uuid_parse\\(\\) has parameter \\$uuid with no typehint specified\\.$#"
             count: 1
             path: tests/phpstan-bootstrap.php
+        -
+            message: "#^Unreachable statement - code above always terminates\\.$#"
+            count: 3
+            path: tests/UuidTest.php

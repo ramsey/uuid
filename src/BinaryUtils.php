@@ -30,6 +30,8 @@ class BinaryUtils
      *     before the RFC 4122 variant is applied
      *
      * @return int The high field of the clock sequence multiplexed with the variant
+     *
+     * @psalm-pure
      */
     public static function applyVariant(int $clockSeqHi): int
     {
@@ -50,6 +52,8 @@ class BinaryUtils
      * @param int $version The RFC 4122 version to apply to the `time_hi` field
      *
      * @return int The high field of the timestamp multiplexed with the version number
+     *
+     * @psalm-pure
      */
     public static function applyVersion(string $timeHi, int $version): int
     {

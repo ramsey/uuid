@@ -35,6 +35,8 @@ class PhpTimeConverter implements TimeConverterInterface
      * @throws UnsatisfiedDependencyException if the chosen converter is not present
      *
      * @inheritDoc
+     *
+     * @psalm-pure
      */
     public function calculateTime(string $seconds, string $microSeconds): array
     {
@@ -46,7 +48,7 @@ class PhpTimeConverter implements TimeConverterInterface
         // UUID epoch 1582-10-15 00:00:00 and the Unix epoch 1970-01-01 00:00:00.
         $uuidTime = ((int) $seconds * 10000000) + ((int) $microSeconds * 10) + 0x01b21dd213814000;
 
-        /** @psalm-suppress MixedArgument*/
+        /** @psalm-suppress MixedArgument */
         return [
             'low' => sprintf('%08x', $uuidTime & 0xffffffff),
             'mid' => sprintf('%04x', ($uuidTime >> 32) & 0xffff),
@@ -59,6 +61,8 @@ class PhpTimeConverter implements TimeConverterInterface
      * @throws UnsatisfiedDependencyException if the chosen converter is not present
      *
      * @inheritDoc
+     *
+     * @psalm-pure
      */
     public function convertTime(string $timestamp): string
     {

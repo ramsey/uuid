@@ -35,12 +35,15 @@ class BigNumberConverter implements NumberConverterInterface
      * @throws UnsatisfiedDependencyException if the chosen converter is not present
      *
      * @inheritDoc
+     *
+     * @psalm-pure
      */
     public function fromHex(string $hex): string
     {
         $this->checkMoontoastMathLibrary();
         $this->checkHexadecimalString($hex, 'hex');
 
+        /** @psalm-suppress ImpureMethodCall */
         return BigNumber::convertToBase10($hex, 16);
     }
 
@@ -49,12 +52,15 @@ class BigNumberConverter implements NumberConverterInterface
      * @throws UnsatisfiedDependencyException if the chosen converter is not present
      *
      * @inheritDoc
+     *
+     * @psalm-pure
      */
     public function toHex(string $number): string
     {
         $this->checkMoontoastMathLibrary();
         $this->checkIntegerString($number, 'number');
 
+        /** @psalm-suppress ImpureMethodCall */
         return BigNumber::convertFromBase10($number, 16);
     }
 }

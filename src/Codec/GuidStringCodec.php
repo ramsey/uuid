@@ -25,12 +25,16 @@ use Ramsey\Uuid\UuidInterface;
  */
 class GuidStringCodec extends StringCodec
 {
+    /**
+     * @psalm-pure
+     */
     public function encode(UuidInterface $uuid): string
     {
+        /** @var string[] $components */
         $components = array_values($uuid->getFieldsHex());
 
         // Swap byte-order on the first three fields.
-        $this->swapFields($components);
+        $components = $this->swapFields($components);
 
         return vsprintf(
             '%08s-%04s-%04s-%02s%02s-%012s',
@@ -38,6 +42,9 @@ class GuidStringCodec extends StringCodec
         );
     }
 
+    /**
+     * @psalm-pure
+     */
     public function encodeBinary(UuidInterface $uuid): string
     {
         $components = array_values($uuid->getFieldsHex());
@@ -49,12 +56,15 @@ class GuidStringCodec extends StringCodec
      * @throws InvalidUuidStringException
      *
      * @inheritDoc
+     *
+     * @psalm-pure
      */
     public function decode(string $encodedUuid): UuidInterface
     {
         $components = $this->extractComponents($encodedUuid);
 
-        $this->swapFields($components);
+        /** @var string[] $components */
+        $components = $this->swapFields($components);
 
         return $this->getBuilder()->build($this, $this->getFields($components));
     }
@@ -63,6 +73,8 @@ class GuidStringCodec extends StringCodec
      * @throws InvalidArgumentException if $bytes is an invalid length
      *
      * @inheritDoc
+     *
+     * @psalm-pure
      */
     public function decodeBytes(string $bytes): UuidInterface
     {
@@ -74,8 +86,12 @@ class GuidStringCodec extends StringCodec
      * Swap fields to support GUID byte order
      *
      * @param string[] $components An array of UUID components (the UUID exploded on its dashes)
+     *
+     * @return string[]
+     *
+     * @psalm-pure
      */
-    private function swapFields(array &$components): void
+    private function swapFields(array $components): array
     {
         $hex = unpack('H*', pack('L', hexdec($components[0])));
         assert(is_string($hex[1]));
@@ -88,5 +104,7 @@ class GuidStringCodec extends StringCodec
         $hex = unpack('H*', pack('S', hexdec($components[2])));
         assert(is_string($hex[1]));
         $components[2] = $hex[1];
+
+        return $components;
     }
 }

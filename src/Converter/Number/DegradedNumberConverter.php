@@ -28,6 +28,8 @@ class DegradedNumberConverter implements NumberConverterInterface
      * @throws UnsatisfiedDependencyException if the chosen converter is not present
      *
      * @inheritDoc
+     *
+     * @psalm-pure
      */
     public function fromHex(string $hex): string
     {
@@ -43,6 +45,8 @@ class DegradedNumberConverter implements NumberConverterInterface
      * @throws UnsatisfiedDependencyException if the chosen converter is not present
      *
      * @inheritDoc
+     *
+     * @psalm-pure
      */
     public function toHex(string $number): string
     {

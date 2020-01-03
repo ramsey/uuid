@@ -24,6 +24,8 @@ interface UuidFactoryInterface
 {
     /**
      * Returns the validator to use for the factory
+     *
+     * @psalm-mutation-free
      */
     public function getValidator(): ValidatorInterface;
 
@@ -81,6 +83,8 @@ interface UuidFactoryInterface
      *
      * @return UuidInterface A UuidInterface instance created from a binary
      *     string representation
+     *
+     * @psalm-pure
      */
     public function fromBytes(string $bytes): UuidInterface;
 
@@ -91,6 +95,8 @@ interface UuidFactoryInterface
      *
      * @return UuidInterface A UuidInterface instance created from a hexadecimal
      *     string representation
+     *
+     * @psalm-pure
      */
     public function fromString(string $uuid): UuidInterface;
 
@@ -101,6 +107,8 @@ interface UuidFactoryInterface
      *
      * @return UuidInterface A UuidInterface instance created from the string
      *     representation of a 128-bit integer
+     *
+     * @psalm-pure
      */
     public function fromInteger(string $integer): UuidInterface;
 }

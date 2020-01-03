@@ -19,6 +19,8 @@ use Ramsey\Uuid\Exception\InvalidArgumentException;
 /**
  * Provides shared functionality to check the values of string numbers for
  * conversion
+ *
+ * @psalm-immutable
  */
 trait NumberStringTrait
 {

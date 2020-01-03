@@ -32,6 +32,8 @@ interface TimeConverterInterface
      *     associated with the time to calculate
      *
      * @return string[] An array guaranteed to contain `low`, `mid`, and `hi` keys
+     *
+     * @psalm-pure
      */
     public function calculateTime(string $seconds, string $microSeconds): array;
 
@@ -43,6 +45,8 @@ interface TimeConverterInterface
      *     greater than PHP_INT_MAX.
      *
      * @return string String representation of an integer
+     *
+     * @psalm-pure
      */
     public function convertTime(string $timestamp): string;
 }
