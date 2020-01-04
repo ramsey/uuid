@@ -8,14 +8,17 @@ use Mockery;
 use Ramsey\Uuid\Codec\CodecInterface;
 use Ramsey\Uuid\Converter\NumberConverterInterface;
 use Ramsey\Uuid\Converter\TimeConverterInterface;
-use Ramsey\Uuid\Nonstandard\DegradedNonstandardUuid;
-use Ramsey\Uuid\Nonstandard\DegradedNonstandardUuidBuilder;
+use Ramsey\Uuid\Nonstandard\DegradedUuid;
 use Ramsey\Uuid\Test\TestCase;
 
-class DegradedNonstandardUuidBuilderTest extends TestCase
+class DegradedUuidTest extends TestCase
 {
-    public function testBuilderBuildsDegradedNonstandardUuid(): void
+    public function testConstructorConstructsDegradedUuid(): void
     {
+        $numberConverter = Mockery::mock(NumberConverterInterface::class);
+        $codec = Mockery::mock(CodecInterface::class);
+        $timeConverter = Mockery::mock(TimeConverterInterface::class);
+
         $fields = [
             'b1484596',
             '25dc',
@@ -24,14 +27,9 @@ class DegradedNonstandardUuidBuilderTest extends TestCase
             '2e728ce88125',
         ];
 
-        $numberConverter = Mockery::mock(NumberConverterInterface::class);
-        $codec = Mockery::mock(CodecInterface::class);
-        $timeConverter = Mockery::mock(TimeConverterInterface::class);
+        $degradedNsUuid = new DegradedUuid($fields, $numberConverter, $codec, $timeConverter);
 
-        $builder = new DegradedNonstandardUuidBuilder($numberConverter, $timeConverter);
-        $degradedNsUuid = $builder->build($codec, $fields);
-
-        $this->assertInstanceOf(DegradedNonstandardUuid::class, $degradedNsUuid);
+        $this->assertInstanceOf(DegradedUuid::class, $degradedNsUuid);
         $this->assertSame($fields[0], $degradedNsUuid->getTimeLowHex());
         $this->assertSame($fields[1], $degradedNsUuid->getTimeMidHex());
         $this->assertSame($fields[2], $degradedNsUuid->getTimeHiAndVersionHex());

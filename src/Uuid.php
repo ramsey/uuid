@@ -22,8 +22,8 @@ use Ramsey\Uuid\Converter\TimeConverterInterface;
 use Ramsey\Uuid\Exception\DateTimeException;
 use Ramsey\Uuid\Exception\UnsatisfiedDependencyException;
 use Ramsey\Uuid\Exception\UnsupportedOperationException;
-use Ramsey\Uuid\Rfc4122\Rfc4122Fields;
-use Ramsey\Uuid\Rfc4122\Rfc4122FieldsInterface;
+use Ramsey\Uuid\Rfc4122\Fields;
+use Ramsey\Uuid\Rfc4122\FieldsInterface;
 
 /**
  * Represents a RFC 4122 universally unique identifier (UUID)
@@ -156,7 +156,7 @@ class Uuid implements UuidInterface
     /**
      * The fields that make up this UUID
      *
-     * @var Rfc4122FieldsInterface
+     * @var FieldsInterface
      */
     protected $fields;
 
@@ -201,7 +201,7 @@ class Uuid implements UuidInterface
         CodecInterface $codec,
         TimeConverterInterface $timeConverter
     ) {
-        $this->fields = new Rfc4122Fields((string) hex2bin(implode('', $fields)));
+        $this->fields = new Fields((string) hex2bin(implode('', $fields)));
         $this->codec = $codec;
         $this->numberConverter = $numberConverter;
         $this->timeConverter = $timeConverter;

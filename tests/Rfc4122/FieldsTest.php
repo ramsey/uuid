@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Ramsey\Uuid\Test\Rfc4122;
 
 use Ramsey\Uuid\Exception\InvalidArgumentException;
-use Ramsey\Uuid\Rfc4122\Rfc4122Fields;
+use Ramsey\Uuid\Rfc4122\Fields;
 use Ramsey\Uuid\Test\TestCase;
 
-class Rfc4122FieldsTest extends TestCase
+class FieldsTest extends TestCase
 {
     public function testConstructorThrowsExceptionIfNotSixteenByteString(): void
     {
@@ -17,7 +17,7 @@ class Rfc4122FieldsTest extends TestCase
             'The byte string must be 16 bytes long; received 6 bytes'
         );
 
-        new Rfc4122Fields('foobar');
+        new Fields('foobar');
     }
 
     /**
@@ -32,7 +32,7 @@ class Rfc4122FieldsTest extends TestCase
             'The byte string received does not conform to the RFC 4122 variant'
         );
 
-        new Rfc4122Fields($bytes);
+        new Fields($bytes);
     }
 
     /**
@@ -68,7 +68,7 @@ class Rfc4122FieldsTest extends TestCase
             'The byte string received does not contain a valid RFC 4122 version'
         );
 
-        new Rfc4122Fields($bytes);
+        new Fields($bytes);
     }
 
     /**
@@ -94,7 +94,7 @@ class Rfc4122FieldsTest extends TestCase
     public function testFieldGetterMethods(string $uuid, string $methodName, $expectedValue): void
     {
         $bytes = (string) hex2bin(str_replace('-', '', $uuid));
-        $fields = new Rfc4122Fields($bytes);
+        $fields = new Fields($bytes);
 
         $this->assertSame($expectedValue, $fields->$methodName());
     }
@@ -160,7 +160,7 @@ class Rfc4122FieldsTest extends TestCase
     public function testSerializingFields(): void
     {
         $bytes = (string) hex2bin(str_replace('-', '', 'ff6f8cb0-c57d-11e1-9b21-0800200c9a66'));
-        $fields = new Rfc4122Fields($bytes);
+        $fields = new Fields($bytes);
 
         $serializedFields = serialize($fields);
         $unserializedFields = unserialize($serializedFields);

@@ -17,20 +17,15 @@ namespace Ramsey\Uuid\Nonstandard;
 use Ramsey\Uuid\Codec\CodecInterface;
 use Ramsey\Uuid\Converter\NumberConverterInterface;
 use Ramsey\Uuid\Converter\TimeConverterInterface;
-use Ramsey\Uuid\DegradedUuid;
+use Ramsey\Uuid\Uuid as Rfc4122Uuid;
 use Ramsey\Uuid\UuidInterface;
 
 /**
- * DegradedNonstandardUuid represents a UUID on 32-bit systems that doesn't
- * conform to RFC 4122
- *
- * Some of the functionality of a DegradedNonstandardUuid is not present or
- * degraded, since 32-bit systems are unable to perform the necessary
- * mathematical operations or represent the integers appropriately.
+ * Nonstandard\Uuid is a UUID that doesn't conform to RFC 4122
  *
  * @psalm-immutable
  */
-class DegradedNonstandardUuid extends DegradedUuid implements UuidInterface
+class Uuid extends Rfc4122Uuid implements UuidInterface
 {
     /**
      * @param string[] $fields
@@ -41,7 +36,7 @@ class DegradedNonstandardUuid extends DegradedUuid implements UuidInterface
         CodecInterface $codec,
         TimeConverterInterface $timeConverter
     ) {
-        $this->fields = new NonstandardFields((string) hex2bin(implode('', $fields)));
+        $this->fields = new Fields((string) hex2bin(implode('', $fields)));
         $this->codec = $codec;
         $this->numberConverter = $numberConverter;
         $this->timeConverter = $timeConverter;

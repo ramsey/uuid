@@ -26,7 +26,7 @@ use Ramsey\Uuid\Uuid;
  *
  * @psalm-immutable
  */
-final class Rfc4122Fields implements Rfc4122FieldsInterface
+final class Fields implements FieldsInterface
 {
     use NilTrait;
     use SerializableFieldsTrait;

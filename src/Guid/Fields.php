@@ -16,8 +16,8 @@ namespace Ramsey\Uuid\Guid;
 
 use Ramsey\Uuid\Exception\InvalidArgumentException;
 use Ramsey\Uuid\Fields\SerializableFieldsTrait;
+use Ramsey\Uuid\Rfc4122\FieldsInterface;
 use Ramsey\Uuid\Rfc4122\NilTrait;
-use Ramsey\Uuid\Rfc4122\Rfc4122FieldsInterface;
 use Ramsey\Uuid\Rfc4122\VariantTrait;
 use Ramsey\Uuid\Rfc4122\VersionTrait;
 use Ramsey\Uuid\Uuid;
@@ -27,7 +27,7 @@ use Ramsey\Uuid\Uuid;
  *
  * @psalm-immutable
  */
-final class GuidFields implements Rfc4122FieldsInterface
+final class Fields implements FieldsInterface
 {
     use NilTrait;
     use SerializableFieldsTrait;

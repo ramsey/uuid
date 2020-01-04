@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Ramsey\Uuid\Test\Guid;
 
 use Ramsey\Uuid\Exception\InvalidArgumentException;
-use Ramsey\Uuid\Guid\GuidFields;
+use Ramsey\Uuid\Guid\Fields;
 use Ramsey\Uuid\Test\TestCase;
 
-class GuidFieldsTest extends TestCase
+class FieldsTest extends TestCase
 {
     public function testConstructorThrowsExceptionIfNotSixteenByteString(): void
     {
@@ -17,7 +17,7 @@ class GuidFieldsTest extends TestCase
             'The byte string must be 16 bytes long; received 6 bytes'
         );
 
-        new GuidFields('foobar');
+        new Fields('foobar');
     }
 
     /**
@@ -33,7 +33,7 @@ class GuidFieldsTest extends TestCase
             . 'Microsoft Corporation variants'
         );
 
-        new GuidFields($bytes);
+        new Fields($bytes);
     }
 
     /**
@@ -71,7 +71,7 @@ class GuidFieldsTest extends TestCase
             'The byte string received does not contain a valid version'
         );
 
-        new GuidFields($bytes);
+        new Fields($bytes);
     }
 
     /**
@@ -100,7 +100,7 @@ class GuidFieldsTest extends TestCase
     public function testFieldGetterMethods(string $bytes, string $methodName, $expectedValue): void
     {
         $bytes = (string) hex2bin($bytes);
-        $fields = new GuidFields($bytes);
+        $fields = new Fields($bytes);
 
         $this->assertSame($expectedValue, $fields->$methodName());
     }
@@ -174,7 +174,7 @@ class GuidFieldsTest extends TestCase
     public function testSerializingFields(): void
     {
         $bytes = (string) hex2bin('b08c6fff7dc5e111cb210800200c9a66');
-        $fields = new GuidFields($bytes);
+        $fields = new Fields($bytes);
 
         $serializedFields = serialize($fields);
         $unserializedFields = unserialize($serializedFields);

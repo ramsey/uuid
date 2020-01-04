@@ -14,7 +14,7 @@ declare(strict_types=1);
 
 namespace Ramsey\Uuid\Rfc4122;
 
-use Ramsey\Uuid\Fields\FieldsInterface;
+use Ramsey\Uuid\Fields\FieldsInterface as BaseFieldsInterface;
 
 /**
  * RFC 4122 defines fields for a specific variant of UUID
@@ -36,7 +36,7 @@ use Ramsey\Uuid\Fields\FieldsInterface;
  *
  * @psalm-immutable
  */
-interface Rfc4122FieldsInterface extends FieldsInterface
+interface FieldsInterface extends BaseFieldsInterface
 {
     /**
      * Returns the high field of the clock sequence multiplexed with the variant
