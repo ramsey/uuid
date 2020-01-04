@@ -40,7 +40,7 @@ class DegradedGuid extends DegradedUuid implements UuidInterface
         CodecInterface $codec,
         TimeConverterInterface $timeConverter
     ) {
-        $this->fields = new GuidFields((string) hex2bin(implode('', $fields)));
+        $this->fields = new Fields((string) hex2bin(implode('', $fields)));
         $this->codec = $codec;
         $this->numberConverter = $numberConverter;
         $this->timeConverter = $timeConverter;

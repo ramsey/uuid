@@ -21,11 +21,11 @@ use Ramsey\Uuid\Converter\TimeConverterInterface;
 use Ramsey\Uuid\UuidInterface;
 
 /**
- * DegradedNonstandardUuidBuilder builds instances of DegradedNonstandardUuid
+ * Nonstandard\UuidBuilder builds instances of Nonstandard\Uuid
  *
  * @psalm-immutable
  */
-class DegradedNonstandardUuidBuilder implements UuidBuilderInterface
+class UuidBuilder implements UuidBuilderInterface
 {
     /**
      * @var NumberConverterInterface
@@ -39,7 +39,7 @@ class DegradedNonstandardUuidBuilder implements UuidBuilderInterface
 
     /**
      * @param NumberConverterInterface $numberConverter The number converter to
-     *     use when constructing the NonstandardUuid
+     *     use when constructing the Nonstandard\Uuid
      * @param TimeConverterInterface $timeConverter The time converter to use
      *     for converting timestamps extracted from a UUID to Unix timestamps
      */
@@ -52,18 +52,18 @@ class DegradedNonstandardUuidBuilder implements UuidBuilderInterface
     }
 
     /**
-     * Builds and returns a DegradedNonstandardUuid
+     * Builds and returns a Nonstandard\Uuid
      *
      * @param CodecInterface $codec The codec to use for building this instance
      * @param string[] $fields An array of fields from which to construct an instance;
      *     see {@see \Ramsey\Uuid\UuidInterface::getFieldsHex()} for array structure.
      *
-     * @return DegradedNonstandardUuid The DegradedNonstandardUuidBuilder returns
-     *     an instance of Ramsey\Uuid\Nonstandard\DegradedNonstandardUuid
+     * @return Uuid The Nonstandard\UuidBuilder returns an instance of
+     *     Nonstandard\Uuid
      */
     public function build(CodecInterface $codec, array $fields): UuidInterface
     {
-        return new DegradedNonstandardUuid(
+        return new Uuid(
             $fields,
             $this->numberConverter,
             $codec,

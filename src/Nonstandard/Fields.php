@@ -16,14 +16,14 @@ namespace Ramsey\Uuid\Nonstandard;
 
 use Ramsey\Uuid\Exception\InvalidArgumentException;
 use Ramsey\Uuid\Fields\SerializableFieldsTrait;
-use Ramsey\Uuid\Rfc4122\Rfc4122FieldsInterface;
+use Ramsey\Uuid\Rfc4122\FieldsInterface;
 use Ramsey\Uuid\Rfc4122\VariantTrait;
 
 /**
  * Nonstandard UUID fields do not conform to the RFC 4122 standard
  *
  * Since some systems may create nonstandard UUIDs, this implements the
- * Rfc4122FieldsInterface, so that functionality of a nonstandard UUID is not
+ * Rfc4122\FieldsInterface, so that functionality of a nonstandard UUID is not
  * degraded, in the event these UUIDs are expected to contain RFC 4122 fields.
  *
  * Internally, this class represents the fields together as a 16-byte binary
@@ -31,7 +31,7 @@ use Ramsey\Uuid\Rfc4122\VariantTrait;
  *
  * @psalm-immutable
  */
-final class NonstandardFields implements Rfc4122FieldsInterface
+final class Fields implements FieldsInterface
 {
     use SerializableFieldsTrait;
     use VariantTrait;

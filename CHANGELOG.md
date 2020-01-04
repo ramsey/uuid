@@ -29,16 +29,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   `\RuntimeException`. `DefaultTimeGenerator`, `RandomBytesGenerator`, and
   `RandomNodeProvider` may throw this exception if `random_bytes()` or
   `random_int()` throw an error or exception.
-* Add `Fields\FieldsInterface` and `Rfc4122\Rfc4122FieldsInterface` to define
-  field layouts for UUID variants. The implementations `Rfc4122\Rfc4122Fields`,
-  `Guid\GuidFields`, and `Nonstandard\NonstandardFields` store the 16-byte,
+* Add `Fields\FieldsInterface` and `Rfc4122\FieldsInterface` to define
+  field layouts for UUID variants. The implementations `Rfc4122\Fields`,
+  `Guid\Fields`, and `Nonstandard\Fields` store the 16-byte,
   binary string representation of the UUID internally, and these manage
   conversion of the binary string into the hexadecimal field values.
 * Add classes to represent GUIDs and nonstandard (non-RFC 4122 variant) UUIDs:
-  `Guid\Guid` and `Nonstandard\NonstandardUuid`, as well as their degraded
+  `Guid\Guid` and `Nonstandard\Uuid`, as well as their degraded
   (32-bit) counterparts and builder classes.
 * Introduce a `Builder\FallbackBuilder`, used by `FeatureSet` to help decide
-  whether to return a `Uuid` or `Nonstandard\NonstandardUuid` when decoding a
+  whether to return a `Uuid` or `Nonstandard\Uuid` when decoding a
   UUID string or bytes.
 
 ### Changed
@@ -72,7 +72,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   using `OrderedTimeCodec::decodeBytes()`.
 * Out of the box, `Uuid::fromString()`, `Uuid::fromBytes()`, and
   `Uuid::fromInteger()` will now return either a `Uuid` or a
-  `Nonstandard\NonstandardUuid`, depending on whether the input contains an
+  `Nonstandard\Uuid`, depending on whether the input contains an
   RFC 4122 variant UUID with a valid version identifier. Both implement
   `UuidInterface`, so BC breaks should not occur if typehints use the interface.
 
