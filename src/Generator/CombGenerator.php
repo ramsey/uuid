@@ -56,7 +56,7 @@ class CombGenerator implements RandomGeneratorInterface
      *
      * @param integer $length The number of bytes of random binary data to generate
      * @return string A binary string
-     * @throws UnsatisfiedDependencyException if `Moontoast\Math\BigNumber` is not present
+     * @throws UnsatisfiedDependencyException if `Brick\Math\BigInteger` is not present
      * @throws InvalidArgumentException if length is not a positive integer
      * @throws Exception
      */

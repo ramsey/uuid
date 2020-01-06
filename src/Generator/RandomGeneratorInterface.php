@@ -29,7 +29,7 @@ interface RandomGeneratorInterface
      *
      * @param integer $length The number of bytes of random binary data to generate
      * @return string A binary string
-     * @throws UnsatisfiedDependencyException if `Moontoast\Math\BigNumber` is not present
+     * @throws UnsatisfiedDependencyException if `Moontoast\Math\BigInteger` is not present
      * @throws InvalidArgumentException
      * @throws Exception if it was not possible to gather sufficient entropy
      */

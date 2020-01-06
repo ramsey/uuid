@@ -36,7 +36,7 @@ class DegradedNumberConverter implements NumberConverterInterface
         throw new UnsatisfiedDependencyException(
             'Cannot call ' . __METHOD__ . ' without support for large '
             . 'integers, since integer is an unsigned '
-            . '128-bit integer; Moontoast\Math\BigNumber is required.'
+            . '128-bit integer; Brick\Math\BigInteger is required.'
         );
     }
 
@@ -52,7 +52,7 @@ class DegradedNumberConverter implements NumberConverterInterface
         throw new UnsatisfiedDependencyException(
             'Cannot call ' . __METHOD__ . ' without support for large '
             . 'integers, since integer is an unsigned '
-            . '128-bit integer; Moontoast\Math\BigNumber is required. '
+            . '128-bit integer; Brick\Math\BigInteger is required. '
         );
     }
 }

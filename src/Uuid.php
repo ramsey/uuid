@@ -408,7 +408,7 @@ class Uuid implements UuidInterface
      * Returns the least significant 64 bits of this UUID's 128 bit value.
      *
      * @return mixed Converted representation of the unsigned 64-bit integer value
-     * @throws UnsatisfiedDependencyException if `Moontoast\Math\BigNumber` is not present
+     * @throws UnsatisfiedDependencyException if `Brick\Math\BigInteger` is not present
      */
     public function getLeastSignificantBits()
     {
@@ -429,7 +429,7 @@ class Uuid implements UuidInterface
      * Returns the most significant 64 bits of this UUID's 128 bit value.
      *
      * @return mixed Converted representation of the unsigned 64-bit integer value
-     * @throws UnsatisfiedDependencyException if `Moontoast\Math\BigNumber` is not present
+     * @throws UnsatisfiedDependencyException if `Brick\Math\BigInteger` is not present
      */
     public function getMostSignificantBits()
     {
@@ -660,7 +660,7 @@ class Uuid implements UuidInterface
      *
      * @param string $integer String representation of 128-bit integer
      * @return UuidInterface
-     * @throws UnsatisfiedDependencyException if `Moontoast\Math\BigNumber` is not present
+     * @throws UnsatisfiedDependencyException if `Brick\Math\BigInteger` is not present
      * @throws InvalidUuidStringException
      */
     public static function fromInteger($integer)
@@ -699,7 +699,7 @@ class Uuid implements UuidInterface
      *     changes.
      * @return UuidInterface
      * @throws UnsatisfiedDependencyException if called on a 32-bit system and
-     *     `Moontoast\Math\BigNumber` is not present
+     *     `Brick\Math\BigInteger` is not present
      * @throws InvalidArgumentException
      * @throws Exception if it was not possible to gather sufficient entropy
      */
@@ -726,7 +726,7 @@ class Uuid implements UuidInterface
      * Generate a version 4 (random) UUID.
      *
      * @return UuidInterface
-     * @throws UnsatisfiedDependencyException if `Moontoast\Math\BigNumber` is not present
+     * @throws UnsatisfiedDependencyException if `Brick\Math\BigInteger` is not present
      * @throws InvalidArgumentException
      * @throws Exception
      */

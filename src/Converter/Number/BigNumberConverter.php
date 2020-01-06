@@ -14,41 +14,41 @@
 
 namespace Ramsey\Uuid\Converter\Number;
 
-use Moontoast\Math\BigNumber;
+use Brick\Math\BigInteger;
 use Ramsey\Uuid\Converter\NumberConverterInterface;
 
 /**
  * BigNumberConverter converts UUIDs from hexadecimal characters into
- * moontoast/math `BigNumber` representations of integers and vice versa
+ * brick/math `BigInteger` representations of integers and vice versa
  */
 class BigNumberConverter implements NumberConverterInterface
 {
     /**
-     * Converts a hexadecimal number into a `Moontoast\Math\BigNumber` representation
+     * Converts a hexadecimal number into a `Brick\Math\BigInteger` representation
      *
      * @param string $hex The hexadecimal string representation to convert
-     * @return BigNumber
+     * @return BigInteger
      */
     public function fromHex($hex)
     {
-        $number = BigNumber::convertToBase10($hex, 16);
+        $number = BigInteger::fromBase($hex, 16)->toBase(10);
 
-        return new BigNumber($number);
+        return BigInteger::of($number);
     }
 
     /**
-     * Converts an integer or `Moontoast\Math\BigNumber` integer representation
+     * Converts an integer or `Brick\Math\BigInteger` integer representation
      * into a hexadecimal string representation
      *
-     * @param int|string|BigNumber $integer An integer or `Moontoast\Math\BigNumber`
+     * @param int|string|BigInteger $integer An integer or `Brick\Math\BigInteger`
      * @return string Hexadecimal string
      */
     public function toHex($integer)
     {
-        if (!$integer instanceof BigNumber) {
-            $integer = new BigNumber($integer);
+        if (!$integer instanceof BigInteger) {
+            $integer = BigInteger::of($integer);
         }
 
-        return BigNumber::convertFromBase10($integer, 16);
+        return BigInteger::fromBase($integer, 10)->toBase(16);
     }
 }

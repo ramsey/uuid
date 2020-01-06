@@ -35,7 +35,7 @@ interface TimeGeneratorInterface
      *     changes.
      * @return string A binary string
      * @throws UnsatisfiedDependencyException if called on a 32-bit system and
-     *     `Moontoast\Math\BigNumber` is not present
+     *     `Brick\Math\BigInteger` is not present
      * @throws InvalidArgumentException
      * @throws Exception if it was not possible to gather sufficient entropy
      */

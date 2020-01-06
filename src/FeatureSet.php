@@ -102,8 +102,8 @@ class FeatureSet
      * @param bool $useGuids Whether to build UUIDs using the `GuidStringCodec`
      * @param bool $force32Bit Whether to force the use of 32-bit functionality
      *     (primarily for testing purposes)
-     * @param bool $forceNoBigNumber Whether to disable the use of moontoast/math
-     *     `BigNumber` (primarily for testing purposes)
+     * @param bool $forceNoBigNumber Whether to disable the use of brick/math
+     *     `BigInteger` (primarily for testing purposes)
      * @param bool $ignoreSystemNode Whether to disable attempts to check for
      *     the system host ID (primarily for testing purposes)
      * @param bool $enablePecl Whether to enable the use of the `PeclUuidTimeGenerator`
@@ -314,13 +314,13 @@ class FeatureSet
     }
 
     /**
-     * Returns true if the system has `Moontoast\Math\BigNumber`
+     * Returns true if the system has `Brick\Math\BigInteger`
      *
      * @return bool
      */
     protected function hasBigNumber()
     {
-        return class_exists('Moontoast\Math\BigNumber') && !$this->disableBigNumber;
+        return class_exists('Brick\Math\BigInteger') && !$this->disableBigNumber;
     }
 
     /**

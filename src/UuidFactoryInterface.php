@@ -35,7 +35,7 @@ interface UuidFactoryInterface
      *     changes.
      * @return UuidInterface
      * @throws UnsatisfiedDependencyException if called on a 32-bit system and
-     *     `Moontoast\Math\BigNumber` is not present
+     *     `Brick\Math\BigInteger` is not present
      * @throws InvalidArgumentException
      * @throws Exception if it was not possible to gather sufficient entropy
      */
@@ -56,7 +56,7 @@ interface UuidFactoryInterface
      * Generate a version 4 (random) UUID.
      *
      * @return UuidInterface
-     * @throws UnsatisfiedDependencyException if `Moontoast\Math\BigNumber` is not present
+     * @throws UnsatisfiedDependencyException if `Brick\Math\BigInteger` is not present
      * @throws InvalidArgumentException
      * @throws Exception
      */
@@ -101,7 +101,7 @@ interface UuidFactoryInterface
      * @param mixed $integer The integer to use when creating a `Uuid` from an
      *     integer; may be of any type understood by the configured number converter
      * @return UuidInterface
-     * @throws UnsatisfiedDependencyException if `Moontoast\Math\BigNumber` is not present
+     * @throws UnsatisfiedDependencyException if `Brick\Math\BigInteger` is not present
      * @throws InvalidUuidStringException
      */
     public function fromInteger($integer);

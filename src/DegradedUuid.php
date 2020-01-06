@@ -14,8 +14,9 @@
 
 namespace Ramsey\Uuid;
 
+use Brick\Math\RoundingMode;
 use DateTime;
-use Moontoast\Math\BigNumber;
+use Brick\Math\BigInteger;
 use Ramsey\Uuid\Exception\UnsatisfiedDependencyException;
 use Ramsey\Uuid\Exception\UnsupportedOperationException;
 
@@ -37,11 +38,10 @@ class DegradedUuid extends Uuid
 
         $time = $this->converter->fromHex($this->getTimestampHex());
 
-        $ts = new BigNumber($time, 20);
-        $ts->subtract('122192928000000000');
-        $ts->divide('10000000.0');
-        $ts->round();
-        $unixTime = $ts->getValue();
+        $ts = BigInteger::fromBase($time, 20);
+        $ts = $ts->minus('122192928000000000')
+            ->dividedBy('10000000.0', RoundingMode::FLOOR);
+        $unixTime = $ts->__toString();
 
         return new DateTime("@{$unixTime}");
     }

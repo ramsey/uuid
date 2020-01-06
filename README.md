@@ -98,8 +98,8 @@ still `Rhumsaa`.
 
 Some methods in this library have requirements due to integer size restrictions
 on 32-bit and 64-bit builds of PHP. A 64-bit build of PHP and the
-[Moontoast\Math][] library are recommended. However, this library is designed to
-work on 32-bit builds of PHP without Moontoast\Math, with some degraded
+[Brick\Math][] library are recommended. However, this library is designed to
+work on 32-bit builds of PHP without Brick\Math, with some degraded
 functionality. Please check the API documentation for more information.
 
 If a particular requirement is not present, then an
@@ -140,7 +140,7 @@ try {
 } catch (UnsatisfiedDependencyException $e) {
 
     // Some dependency was not met. Either the method cannot be called on a
-    // 32-bit system, or it can, but it relies on Moontoast\Math to be present.
+    // 32-bit system, or it can, but it relies on Brick\Math to be present.
     echo 'Caught exception: ' . $e->getMessage() . "\n";
 
 }
@@ -164,7 +164,7 @@ information.
 [javauuid]: http://docs.oracle.com/javase/6/docs/api/java/util/UUID.html
 [pyuuid]: http://docs.python.org/3/library/uuid.html
 [composer]: http://getcomposer.org/
-[moontoast\math]: https://packagist.org/packages/moontoast/math
+[brick\math]: https://packagist.org/packages/brick/math
 [wiki-cookbook]: https://github.com/ramsey/uuid/wiki/Ramsey%5CUuid-Cookbook
 [contributing.md]: https://github.com/ramsey/uuid/blob/master/.github/CONTRIBUTING.md
 

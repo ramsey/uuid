@@ -20,7 +20,7 @@ use Ramsey\Uuid\Exception\UnsatisfiedDependencyException;
 /**
  * DegradedTimeConverter throws `UnsatisfiedDependencyException` exceptions
  * if attempting to use time conversion functionality in an environment that
- * does not support large integers (i.e. when moontoast/math is not available)
+ * does not support large integers (i.e. when brick/math is not available)
  */
 class DegradedTimeConverter implements TimeConverterInterface
 {
@@ -30,13 +30,13 @@ class DegradedTimeConverter implements TimeConverterInterface
      * @param string $seconds
      * @param string $microSeconds
      * @return void
-     * @throws UnsatisfiedDependencyException if called on a 32-bit system and `Moontoast\Math\BigNumber` is not present
+     * @throws UnsatisfiedDependencyException if called on a 32-bit system and `Brick\Math\BigInteger` is not present
      */
     public function calculateTime($seconds, $microSeconds)
     {
         throw new UnsatisfiedDependencyException(
             'When calling ' . __METHOD__ . ' on a 32-bit system, '
-            . 'Moontoast\Math\BigNumber must be present.'
+            . 'Brick\Math\BigInteger must be present.'
         );
     }
 }

@@ -27,7 +27,7 @@ use Ramsey\Uuid\Exception\UnsatisfiedDependencyException;
  *     changes.
  * @return string
  * @throws UnsatisfiedDependencyException if called on a 32-bit system and
- *     `Moontoast\Math\BigNumber` is not present
+ *     `Brick\Math\BigInteger` is not present
  * @throws InvalidArgumentException
  * @throws Exception if it was not possible to gather sufficient entropy
  */
@@ -54,7 +54,7 @@ function v3($ns, $name)
  * Generate a version 4 (random) UUID.
  *
  * @return string
- * @throws UnsatisfiedDependencyException if `Moontoast\Math\BigNumber` is not present
+ * @throws UnsatisfiedDependencyException if `Brick\Math\BigInteger` is not present
  * @throws InvalidArgumentException
  * @throws Exception
  */

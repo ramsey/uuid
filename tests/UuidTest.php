@@ -1541,7 +1541,7 @@ class UuidTest extends TestCase
     public function testFromIntegerString()
     {
         $uuid = Uuid::fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
-        $integer = $uuid->getInteger()->getValue();
+        $integer = $uuid->getInteger();
 
         $fromIntegerUuid = Uuid::fromInteger($integer);
 

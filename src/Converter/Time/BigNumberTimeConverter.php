@@ -14,11 +14,11 @@
 
 namespace Ramsey\Uuid\Converter\Time;
 
-use Moontoast\Math\BigNumber;
+use Brick\Math\BigInteger;
 use Ramsey\Uuid\Converter\TimeConverterInterface;
 
 /**
- * BigNumberTimeConverter uses the moontoast/math library's `BigNumber` to
+ * BigNumberTimeConverter uses the brick/math library's `BigInteger` to
  * provide facilities for converting parts of time into representations that may
  * be used in UUIDs
  */
@@ -35,20 +35,18 @@ class BigNumberTimeConverter implements TimeConverterInterface
      */
     public function calculateTime($seconds, $microSeconds)
     {
-        $uuidTime = new BigNumber('0');
+        $uuidTime = BigInteger::of('0');
 
-        $sec = new BigNumber($seconds);
-        $sec->multiply('10000000');
+        $sec = BigInteger::of($seconds)->multipliedBy('10000000');
 
-        $usec = new BigNumber($microSeconds);
-        $usec->multiply('10');
+        $usec = BigInteger::of($microSeconds)->multipliedBy('10');
 
-        $uuidTime
-            ->add($sec)
-            ->add($usec)
-            ->add('122192928000000000');
+        $uuidTime = $uuidTime
+            ->plus($sec)
+            ->plus($usec)
+            ->plus('122192928000000000');
 
-        $uuidTimeHex = sprintf('%016s', $uuidTime->convertToBase(16));
+        $uuidTimeHex = sprintf('%016s', $uuidTime->toBase(16));
 
         return [
             'low' => substr($uuidTimeHex, 8),
