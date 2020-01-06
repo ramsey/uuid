@@ -193,7 +193,7 @@ class UuidTest extends TestCase
      */
     public function testGetDateTime32Bit()
     {
-        $this->skipIfNoMoontoastMath();
+        $this->skipIfNoBrickMath();
         Uuid::setFactory(new UuidFactory(new FeatureSet(false, true)));
 
         // Check a recent date
@@ -296,11 +296,11 @@ class UuidTest extends TestCase
      */
     public function testGetLeastSignificantBits()
     {
-        $this->skipIfNoMoontoastMath();
+        $this->skipIfNoBrickMath();
 
         $uuid = Uuid::fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
-        $this->assertInstanceOf('Moontoast\Math\BigNumber', $uuid->getLeastSignificantBits());
-        $this->assertEquals('11178224546741000806', $uuid->getLeastSignificantBits()->getValue());
+        $this->assertInstanceOf('Brick\Math\BigInteger', $uuid->getLeastSignificantBits());
+        $this->assertEquals('11178224546741000806', $uuid->getLeastSignificantBits());
     }
 
     /**
@@ -326,11 +326,11 @@ class UuidTest extends TestCase
      */
     public function testGetMostSignificantBits()
     {
-        $this->skipIfNoMoontoastMath();
+        $this->skipIfNoBrickMath();
 
         $uuid = Uuid::fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
-        $this->assertInstanceOf('Moontoast\Math\BigNumber', $uuid->getMostSignificantBits());
-        $this->assertEquals('18406084892941947361', $uuid->getMostSignificantBits()->getValue());
+        $this->assertInstanceOf('Brick\Math\BigInteger', $uuid->getMostSignificantBits());
+        $this->assertEquals('18406084892941947361', $uuid->getMostSignificantBits());
     }
 
     /**
@@ -1059,7 +1059,7 @@ class UuidTest extends TestCase
      */
     public function testCalculateUuidTimeForce32BitPath()
     {
-        $this->skipIfNoMoontoastMath();
+        $this->skipIfNoBrickMath();
 
         $timeOfDay = new FixedTimeProvider([
             'sec' => 1348845514,
@@ -1151,7 +1151,7 @@ class UuidTest extends TestCase
      */
     public function testCalculateUuidTimeUpperLowerBounds64BitThrough32BitPath()
     {
-        $this->skipIfNoMoontoastMath();
+        $this->skipIfNoBrickMath();
         $this->skip64BitTest();
 
         $featureSet = new FeatureSet(false, true);
@@ -1199,7 +1199,7 @@ class UuidTest extends TestCase
      */
     public function testCalculateUuidTimeUpperLowerBounds32Bit()
     {
-        $this->skipIfNoMoontoastMath();
+        $this->skipIfNoBrickMath();
 
         // 2038-01-19T03:14:07+00:00
         $timeOfDay = new FixedTimeProvider([
@@ -1295,7 +1295,7 @@ class UuidTest extends TestCase
      */
     public function test32BitMatch64BitForOneHourPeriod()
     {
-        $this->skipIfNoMoontoastMath();
+        $this->skipIfNoBrickMath();
         $this->skip64BitTest();
 
         $currentTime = strtotime('2012-12-11T00:00:00+00:00');
@@ -1855,7 +1855,7 @@ class UuidTest extends TestCase
                 $this->assertEquals($test['string'], (string)$uuid);
                 $this->assertEquals($test['hex'], $uuid->getHex());
                 $this->assertEquals(base64_decode($test['bytes']), $uuid->getBytes());
-                if ($this->hasMoontoastMath()) {
+                if ($this->skipIfNoBrickMath()) {
                     $this->assertEquals($test['int'], (string)$uuid->getInteger());
                 }
                 $this->assertEquals($test['fields'], $uuid->getFieldsHex());

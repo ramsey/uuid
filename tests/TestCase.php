@@ -23,18 +23,18 @@ class TestCase extends PhpUnitTestCase
         }
     }
 
-    protected function skipIfNoMoontoastMath()
+    protected function skipIfNoBrickMath()
     {
-        if (!$this->hasMoontoastMath()) {
+        if (!$this->hasBrickMath()) {
             $this->markTestSkipped(
-                'Skipping test that requires moontoast/math.'
+                'Skipping test that requires brick/math.'
             );
         }
     }
 
-    protected function hasMoontoastMath()
+    protected function hasBrickMath()
     {
-        return class_exists('Moontoast\\Math\\BigNumber');
+        return class_exists('Brick\\Math\\BigInteger');
     }
 
     protected function skipIfLittleEndianHost()
