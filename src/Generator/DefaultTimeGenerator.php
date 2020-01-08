@@ -126,6 +126,6 @@ class DefaultTimeGenerator implements TimeGeneratorInterface
             throw new InvalidArgumentException('Invalid node value');
         }
 
-        return strtolower(sprintf('%012s', $node));
+        return strtolower(sprintf('%012s', (string) $node));
     }
 }
