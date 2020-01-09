@@ -40,9 +40,10 @@ interface TimeConverterInterface
     /**
      * Converts a timestamp extracted from a UUID to a Unix timestamp
      *
-     * @param string $timestamp A string integer representation of a timestamp;
-     *     this must be a numeric string to accommodate unsigned integers
-     *     greater than PHP_INT_MAX.
+     * @param string $timestamp A string integer representation of a UUID
+     *     timestamp; a UUID timestamp is a count of 100-nanosecond intervals
+     *     since UTC 00:00:00.00, 15 October 1582; this must be a numeric string
+     *     to accommodate unsigned integers greater than PHP_INT_MAX.
      *
      * @return string String representation of an integer
      *
