@@ -164,7 +164,7 @@ class UuidTest extends TestCase
         // Check a future date
         $uuid = Uuid::fromString('ff9785f6-ffff-1fff-9669-00007ffffffe');
         $this->assertInstanceOf(DateTimeInterface::class, $uuid->getDateTime());
-        $this->assertEquals('5236-03-31T21:21:00+00:00', $uuid->getDateTime()->format('c'));
+        $this->assertEquals('5236-03-31T21:20:59+00:00', $uuid->getDateTime()->format('c'));
 
         // Check the oldest date
         $uuid = Uuid::fromString('00000000-0000-1000-9669-00007ffffffe');
@@ -855,7 +855,7 @@ class UuidTest extends TestCase
 
                 // Assert that the time matches
                 $usecAdd = BigDecimal::of($usec)->dividedBy('1000000', 14, RoundingMode::HALF_UP);
-                $testTime = BigDecimal::of($currentTime)->plus($usecAdd)->toScale(0, RoundingMode::HALF_UP);
+                $testTime = BigDecimal::of($currentTime)->plus($usecAdd)->toScale(0, RoundingMode::DOWN);
                 $this->assertEquals((string) $testTime, $uuid64->getDateTime()->getTimestamp());
                 $this->assertEquals((string) $testTime, $uuid32->getDateTime()->getTimestamp());
             }

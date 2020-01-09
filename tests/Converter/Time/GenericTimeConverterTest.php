@@ -11,6 +11,8 @@ use Ramsey\Uuid\Test\TestCase;
 class GenericTimeConverterTest extends TestCase
 {
     /**
+     * @param string[] $expected
+     *
      * @dataProvider provideCalculateTime
      */
     public function testCalculateTime(string $seconds, string $microSeconds, array $expected): void
@@ -47,6 +49,15 @@ class GenericTimeConverterTest extends TestCase
                     'hi' => '0fff',
                 ],
             ],
+            [
+                'seconds' => '1578612359',
+                'microseconds' => '521023',
+                'expected' => [
+                    'low' => '64c71df6',
+                    'mid' => '3337',
+                    'hi' => '01ea',
+                ],
+            ],
 
             // This is the earliest possible date supported by v1 UUIDs:
             // 1582-10-15 00:00:00.000000
@@ -70,7 +81,7 @@ class GenericTimeConverterTest extends TestCase
                     'mid' => 'ffff',
                     'hi' => 'ffff',
                 ],
-            ]
+            ],
         ];
     }
 
@@ -93,6 +104,19 @@ class GenericTimeConverterTest extends TestCase
     public function provideConvertTime(): array
     {
         return [
+            [
+                'uuidTimestamp' => '135606608744910000',
+                'unixTimestamp' => '1341368074',
+            ],
+            [
+                'uuidTimestamp' => '137979051595210230',
+                'unixTimestamp' => '1578612359',
+            ],
+            [
+                'uuidTimestamp' => '1152921504599999990',
+                'unixTimestamp' => '103072857659',
+            ],
+
             // This is the last possible time supported by v1 UUIDs. When
             // converted to a Unix timestamp, the microseconds are lost.
             // 60038-03-11 05:36:10.955161

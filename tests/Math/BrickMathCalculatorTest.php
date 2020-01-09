@@ -12,7 +12,7 @@ use Ramsey\Uuid\Type\IntegerValue;
 
 class BrickMathCalculatorTest extends TestCase
 {
-    public function testAdd()
+    public function testAdd(): void
     {
         $int1 = new IntegerValue(5);
         $int2 = new IntegerValue(6);
@@ -25,7 +25,7 @@ class BrickMathCalculatorTest extends TestCase
         $this->assertSame('18', $result->toString());
     }
 
-    public function testSubtract()
+    public function testSubtract(): void
     {
         $int1 = new IntegerValue(5);
         $int2 = new IntegerValue(6);
@@ -38,7 +38,7 @@ class BrickMathCalculatorTest extends TestCase
         $this->assertSame('-8', $result->toString());
     }
 
-    public function testMultiply()
+    public function testMultiply(): void
     {
         $int1 = new IntegerValue(5);
         $int2 = new IntegerValue(6);
@@ -51,7 +51,7 @@ class BrickMathCalculatorTest extends TestCase
         $this->assertSame('210', $result->toString());
     }
 
-    public function testDivide()
+    public function testDivide(): void
     {
         $int1 = new IntegerValue(1023);
         $int2 = new IntegerValue(6);
@@ -64,7 +64,7 @@ class BrickMathCalculatorTest extends TestCase
         $this->assertSame('24', $result->toString());
     }
 
-    public function testFromBase()
+    public function testFromBase(): void
     {
         $calculator = new BrickMathCalculator();
 
@@ -74,7 +74,7 @@ class BrickMathCalculatorTest extends TestCase
         $this->assertSame('1208925819614629174706175', $result->toString());
     }
 
-    public function testToBase()
+    public function testToBase(): void
     {
         $intValue = new IntegerValue('1208925819614629174706175');
         $calculator = new BrickMathCalculator();
@@ -82,7 +82,7 @@ class BrickMathCalculatorTest extends TestCase
         $this->assertSame('ffffffffffffffffffff', $calculator->toBase($intValue, 16));
     }
 
-    public function testToHexadecimal()
+    public function testToHexadecimal(): void
     {
         $intValue = new IntegerValue('1208925819614629174706175');
         $calculator = new BrickMathCalculator();

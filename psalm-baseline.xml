@@ -1,26 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<files psalm-version="3.7.2@d9cae720c1af31db9ba27c2bc1fcf9b0dd092fb0">
-  <file src="src/Codec/StringCodec.php">
-    <MixedArgument occurrences="1">
-      <code>$hexUuid[1]</code>
-    </MixedArgument>
+<files psalm-version="3.8.2@90d6b73fd8062432030ef39b7b6694b3902daa31">
+  <file src="src/Builder/DegradedUuidBuilder.php">
+    <DeprecatedClass occurrences="3">
+      <code>new DegradedTimeConverter()</code>
+      <code>DegradedUuid</code>
+    </DeprecatedClass>
   </file>
-  <file src="src/DegradedUuid.php">
-    <ImpureMethodCall occurrences="2">
-      <code>fromHex</code>
-      <code>convertTime</code>
-    </ImpureMethodCall>
-    <PossiblyInvalidArgument occurrences="1">
-      <code>$exception-&gt;getCode()</code>
-    </PossiblyInvalidArgument>
+  <file src="src/Converter/Number/DegradedNumberConverter.php">
+    <DeprecatedClass occurrences="1">
+      <code>BigNumberConverter</code>
+    </DeprecatedClass>
   </file>
-  <file src="src/Generator/DefaultTimeGenerator.php">
-    <PossiblyInvalidArgument occurrences="1">
-      <code>$exception-&gt;getCode()</code>
-    </PossiblyInvalidArgument>
-    <PossiblyNullArgument occurrences="1">
-      <code>$node</code>
-    </PossiblyNullArgument>
+  <file src="src/Converter/Time/DegradedTimeConverter.php">
+    <DeprecatedClass occurrences="1">
+      <code>BigNumberTimeConverter</code>
+    </DeprecatedClass>
+  </file>
+  <file src="src/Converter/Time/PhpTimeConverter.php">
+    <InvalidOperand occurrences="2">
+      <code>$uuidTime</code>
+      <code>$uuidTime</code>
+    </InvalidOperand>
   </file>
   <file src="src/Generator/PeclUuidRandomGenerator.php">
     <MixedAssignment occurrences="1">
@@ -32,10 +32,6 @@
     <MixedReturnStatement occurrences="1">
       <code>uuid_parse($uuid)</code>
     </MixedReturnStatement>
-    <UndefinedFunction occurrences="2">
-      <code>uuid_create(UUID_TYPE_RANDOM)</code>
-      <code>uuid_parse($uuid)</code>
-    </UndefinedFunction>
   </file>
   <file src="src/Generator/PeclUuidTimeGenerator.php">
     <MixedAssignment occurrences="1">
@@ -47,32 +43,12 @@
     <MixedReturnStatement occurrences="1">
       <code>uuid_parse($uuid)</code>
     </MixedReturnStatement>
-    <UndefinedFunction occurrences="2">
-      <code>uuid_create(UUID_TYPE_TIME)</code>
-      <code>uuid_parse($uuid)</code>
-    </UndefinedFunction>
-  </file>
-  <file src="src/Generator/RandomBytesGenerator.php">
-    <PossiblyInvalidArgument occurrences="1">
-      <code>$exception-&gt;getCode()</code>
-    </PossiblyInvalidArgument>
-  </file>
-  <file src="src/Provider/Node/RandomNodeProvider.php">
-    <PossiblyInvalidArgument occurrences="2">
-      <code>$exception-&gt;getCode()</code>
-      <code>hexdec(bin2hex($nodeMsb)) | 0x010000</code>
-    </PossiblyInvalidArgument>
   </file>
   <file src="src/Provider/Node/SystemNodeProvider.php">
-    <MissingClosureParamType occurrences="1">
-      <code>$addressPath</code>
-    </MissingClosureParamType>
-    <MixedArgument occurrences="6">
+    <MixedArgument occurrences="4">
       <code>$node</code>
       <code>constant('PHP_OS')</code>
       <code>constant('PHP_OS')</code>
-      <code>$addressPath</code>
-      <code>$addressPath</code>
       <code>$macs</code>
     </MixedArgument>
     <MixedAssignment occurrences="2">
@@ -87,39 +63,11 @@
     </TypeDoesNotContainType>
   </file>
   <file src="src/Uuid.php">
-    <DocblockTypeContradiction occurrences="1">
-      <code>self::$factory</code>
-    </DocblockTypeContradiction>
-    <ImpureMethodCall occurrences="15">
-      <code>encodeBinary</code>
-      <code>convertTime</code>
-      <code>fromHex</code>
-      <code>fromHex</code>
-      <code>fromHex</code>
-      <code>encode</code>
+    <ImpureMethodCall occurrences="4">
       <code>getFactory</code>
-      <code>fromBytes</code>
       <code>getFactory</code>
-      <code>fromString</code>
       <code>getFactory</code>
-      <code>fromInteger</code>
       <code>getFactory</code>
-      <code>getValidator</code>
-      <code>validate</code>
     </ImpureMethodCall>
-    <PossiblyInvalidArgument occurrences="1">
-      <code>$exception-&gt;getCode()</code>
-    </PossiblyInvalidArgument>
-    <PossiblyNullPropertyAssignmentValue occurrences="1">
-      <code>null</code>
-    </PossiblyNullPropertyAssignmentValue>
-  </file>
-  <file src="src/UuidFactory.php">
-    <MixedArgument occurrences="1">
-      <code>$hash</code>
-    </MixedArgument>
-    <MixedAssignment occurrences="1">
-      <code>$hash</code>
-    </MixedAssignment>
   </file>
 </files>

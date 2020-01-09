@@ -3,6 +3,8 @@ parameters:
         - tests/phpstan-bootstrap.php
     checkMissingIterableValueType: false
     reportUnmatchedIgnoredErrors: false
+    excludes_analyse:
+        - tests/ExpectedBehaviorTest.php
     ignoreErrors:
         -
             message: "#^Function uuid_create\\(\\) has no return typehint specified\\.$#"

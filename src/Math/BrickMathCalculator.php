@@ -133,6 +133,6 @@ final class BrickMathCalculator implements CalculatorInterface
      */
     private function getBrickRoundingMode(int $roundingMode): int
     {
-        return (int) self::ROUNDING_MODE_MAP[$roundingMode] ?? 0;
+        return self::ROUNDING_MODE_MAP[$roundingMode] ?? 0;
     }
 }

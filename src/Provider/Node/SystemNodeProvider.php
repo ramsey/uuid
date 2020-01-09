@@ -114,7 +114,8 @@ class SystemNodeProvider implements NodeProviderInterface
             }
 
             $macs = [];
-            array_walk($addressPaths, function ($addressPath) use (&$macs): void {
+
+            array_walk($addressPaths, function (string $addressPath) use (&$macs): void {
                 if (is_readable($addressPath)) {
                     $macs[] = file_get_contents($addressPath);
                 }
@@ -123,7 +124,7 @@ class SystemNodeProvider implements NodeProviderInterface
             $macs = array_map('trim', $macs);
 
             // Remove invalid entries.
-            $macs = array_filter($macs, function ($address) {
+            $macs = array_filter($macs, function (string $address) {
                 return $address !== '00:00:00:00:00:00'
                     && preg_match('/^([0-9a-f]{2}:){5}[0-9a-f]{2}$/i', $address);
             });

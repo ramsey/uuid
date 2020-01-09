@@ -11,11 +11,9 @@ use Ramsey\Uuid\Type\Hexadecimal;
 class HexadecimalTest extends TestCase
 {
     /**
-     * @param int|float|string $value
-     *
      * @dataProvider provideHex
      */
-    public function testHexadecimalType($value, string $expected): void
+    public function testHexadecimalType(string $value, string $expected): void
     {
         $hexadecimal = new Hexadecimal($value);
 
@@ -45,11 +43,9 @@ class HexadecimalTest extends TestCase
     }
 
     /**
-     * @param int|float|string $value
-     *
      * @dataProvider provideHexBadValues
      */
-    public function testHexadecimalTypeThrowsExceptionForBadValues($value): void
+    public function testHexadecimalTypeThrowsExceptionForBadValues(string $value): void
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage(
