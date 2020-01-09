@@ -48,6 +48,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   `Math\BrickMathCalculator`, which is the default calculator used by this
   library when math cannot be performed in native PHP due to integer size
   limitations. The calculator is configurable and may be changed, if desired.
+* Add `Converter\Number\GenericNumberConverter` and
+  `Converter\Time\GenericTimeConverter` which will use the calculator provided
+  to convert numbers and time to values for UUIDs.
 
 ### Changed
 
