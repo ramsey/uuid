@@ -40,6 +40,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 * Introduce a `Builder\FallbackBuilder`, used by `FeatureSet` to help decide
   whether to return a `Uuid` or `Nonstandard\Uuid` when decoding a
   UUID string or bytes.
+* Introduce `Type\Hexadecimal`, `Type\IntegerValue`, and `Type\Time` for
+  improved type-safety when dealing with arbitrary string values.
+* Introduce `Math\CalculatorInterface` for representing calculators to perform
+  arithmetic operations on integers.
 
 ### Changed
 
