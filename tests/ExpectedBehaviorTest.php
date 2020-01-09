@@ -1,36 +1,22 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Ramsey\Uuid\Test;
 
-use DateTimeImmutable;
-use Mockery;
 use Moontoast\Math\BigNumber;
 use Ramsey\Uuid\Builder\DegradedUuidBuilder;
 use Ramsey\Uuid\Codec\CodecInterface;
 use Ramsey\Uuid\Codec\TimestampFirstCombCodec;
 use Ramsey\Uuid\Converter\Number\DegradedNumberConverter;
-use Ramsey\Uuid\Converter\NumberConverterInterface;
 use Ramsey\Uuid\Converter\Time\DegradedTimeConverter;
 use Ramsey\Uuid\Converter\TimeConverterInterface;
 use Ramsey\Uuid\DegradedUuid;
 use Ramsey\Uuid\Generator\CombGenerator;
 use Ramsey\Uuid\Generator\DefaultTimeGenerator;
-use Ramsey\Uuid\Generator\RandomGeneratorInterface;
-use Ramsey\Uuid\Generator\TimeGeneratorInterface;
-use Ramsey\Uuid\Provider\NodeProviderInterface;
-use Ramsey\Uuid\Provider\TimeProviderInterface;
+use Ramsey\Uuid\Math\BrickMathCalculator;
+use Ramsey\Uuid\Type\Time;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidFactory;
-use Ramsey\Uuid\UuidFactoryInterface;
-use Ramsey\Uuid\UuidInterface;
 use stdClass;
-
-use function Ramsey\Uuid\v1;
-use function Ramsey\Uuid\v3;
-use function Ramsey\Uuid\v4;
-use function Ramsey\Uuid\v5;
 
 /**
  * These tests exist to ensure a seamless upgrade path from 3.x to 4.x. If any
@@ -41,26 +27,26 @@ use function Ramsey\Uuid\v5;
  * ensure that the base-level functionality that satisfies 80% of use-cases
  * does not change. The remaining 20% of use-cases should refer to the README
  * for details on the easiest path to transition from 3.x to 4.x.
+ *
+ * @codingStandardsIgnoreFile
  */
 class ExpectedBehaviorTest extends TestCase
 {
     /**
-     * @param mixed[] $args
-     *
      * @dataProvider provideStaticCreationMethods
      */
-    public function testStaticCreationMethodsAndStandardBehavior(string $method, array $args): void
+    public function testStaticCreationMethodsAndStandardBehavior($method, $args)
     {
-        $uuid = Uuid::$method(...$args);
+        $uuid = call_user_func_array(['Ramsey\Uuid\Uuid', $method], $args);
 
-        $this->assertInstanceOf(UuidInterface::class, $uuid);
+        $this->assertInstanceOf('Ramsey\Uuid\UuidInterface', $uuid);
         $this->assertIsInt($uuid->compareTo(Uuid::uuid1()));
         $this->assertNotSame(0, $uuid->compareTo(Uuid::uuid4()));
         $this->assertSame(0, $uuid->compareTo(clone $uuid));
         $this->assertFalse($uuid->equals(new stdClass()));
         $this->assertTrue($uuid->equals(clone $uuid));
         $this->assertIsString($uuid->getBytes());
-        $this->assertInstanceOf(NumberConverterInterface::class, $uuid->getNumberConverter());
+        $this->assertInstanceOf('Ramsey\Uuid\Converter\NumberConverterInterface', $uuid->getNumberConverter());
         $this->assertIsString($uuid->getHex());
         $this->assertIsArray($uuid->getFieldsHex());
         $this->assertArrayHasKey('time_low', $uuid->getFieldsHex());
@@ -135,10 +121,7 @@ class ExpectedBehaviorTest extends TestCase
         $this->assertTrue(ctype_digit((string) $uuid->getInteger()));
     }
 
-    /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingTraversableTypeHintSpecification
-     */
-    public function provideStaticCreationMethods(): array
+    public function provideStaticCreationMethods()
     {
         return [
             ['uuid1', []],
@@ -155,25 +138,21 @@ class ExpectedBehaviorTest extends TestCase
         ];
     }
 
-    public function testUuidVersion1MethodBehavior(): void
+    public function testUuidVersion1MethodBehavior()
     {
-        /** @var Uuid $uuid */
         $uuid = Uuid::uuid1('00000fffffff', 0xffff);
 
-        $this->assertInstanceOf(DateTimeImmutable::class, $uuid->getDateTime());
+        $this->assertInstanceOf('DateTimeInterface', $uuid->getDateTime());
         $this->assertSame('00000fffffff', $uuid->getNodeHex());
         $this->assertSame('3fff', $uuid->getClockSequenceHex());
         $this->assertSame('16383', (string) $uuid->getClockSequence());
     }
 
-    public function testUuidVersion1MethodBehavior64Bit(): void
+    public function testUuidVersion1MethodBehavior64Bit()
     {
-        $this->skip64BitTest();
-
-        /** @var Uuid $uuid */
         $uuid = Uuid::uuid1('ffffffffffff', 0xffff);
 
-        $this->assertInstanceOf(DateTimeImmutable::class, $uuid->getDateTime());
+        $this->assertInstanceOf('DateTimeInterface', $uuid->getDateTime());
         $this->assertSame('ffffffffffff', $uuid->getNodeHex());
         $this->assertSame('281474976710655', (string) $uuid->getNode());
         $this->assertSame('3fff', $uuid->getClockSequenceHex());
@@ -182,24 +161,15 @@ class ExpectedBehaviorTest extends TestCase
     }
 
     /**
-     * @param mixed $uuid
-     *
      * @dataProvider provideIsValid
      */
-    public function testIsValid($uuid, bool $expected): void
+    public function testIsValid($uuid, $expected)
     {
-        $this->assertSame($expected, Uuid::isValid((string) $uuid), "{$uuid} is not a valid UUID");
-        $this->assertSame(
-            $expected,
-            Uuid::isValid(strtoupper((string) $uuid)),
-            strtoupper((string) $uuid) . ' is not a valid UUID'
-        );
+        $this->assertSame($expected, Uuid::isValid($uuid), "{$uuid} is not a valid UUID");
+        $this->assertSame($expected, Uuid::isValid(strtoupper($uuid)), strtoupper($uuid) . ' is not a valid UUID');
     }
 
-    /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingTraversableTypeHintSpecification
-     */
-    public function provideIsValid(): array
+    public function provideIsValid()
     {
         return [
             // RFC 4122 UUIDs
@@ -256,7 +226,7 @@ class ExpectedBehaviorTest extends TestCase
     /**
      * @dataProvider provideFromStringInteger
      */
-    public function testSerialization(string $string): void
+    public function testSerialization($string)
     {
         $uuid = Uuid::fromString($string);
 
@@ -271,10 +241,8 @@ class ExpectedBehaviorTest extends TestCase
     /**
      * @dataProvider provideFromStringInteger
      */
-    public function testNumericReturnValues(string $string): void
+    public function testNumericReturnValues($string)
     {
-        $this->skip64BitTest();
-
         $leastSignificantBitsHex = substr(str_replace('-', '', $string), 16);
         $mostSignificantBitsHex = substr(str_replace('-', '', $string), 0, 16);
         $leastSignificantBits = BigNumber::convertToBase10($leastSignificantBitsHex, 16);
@@ -289,7 +257,6 @@ class ExpectedBehaviorTest extends TestCase
         $clockSeqHiAndReserved = (int) $components[3] >> 8;
         $clockSeqLow = (int) $components[3] & 0x00ff;
 
-        /** @var Uuid $uuid */
         $uuid = Uuid::fromString($string);
 
         $this->assertSame($components[0], (string) $uuid->getTimeLow());
@@ -306,13 +273,13 @@ class ExpectedBehaviorTest extends TestCase
     /**
      * @dataProvider provideFromStringInteger
      */
-    public function testFromBytes(string $string, ?int $version, int $variant, string $integer): void
+    public function testFromBytes($string, $version, $variant, $integer)
     {
-        $bytes = (string) hex2bin(str_replace('-', '', $string));
+        $bytes = hex2bin(str_replace('-', '', $string));
 
         $uuid = Uuid::fromBytes($bytes);
 
-        $this->assertInstanceOf(UuidInterface::class, $uuid);
+        $this->assertInstanceOf('Ramsey\Uuid\UuidInterface', $uuid);
         $this->assertSame($string, $uuid->toString());
         $this->assertSame($version, $uuid->getVersion());
         $this->assertSame($variant, $uuid->getVariant());
@@ -331,13 +298,13 @@ class ExpectedBehaviorTest extends TestCase
     /**
      * @dataProvider provideFromStringInteger
      */
-    public function testFromInteger(string $string, ?int $version, int $variant, string $integer): void
+    public function testFromInteger($string, $version, $variant, $integer)
     {
         $bytes = hex2bin(str_replace('-', '', $string));
 
         $uuid = Uuid::fromInteger($integer);
 
-        $this->assertInstanceOf(UuidInterface::class, $uuid);
+        $this->assertInstanceOf('Ramsey\Uuid\UuidInterface', $uuid);
         $this->assertSame($string, $uuid->toString());
         $this->assertSame($version, $uuid->getVersion());
         $this->assertSame($variant, $uuid->getVariant());
@@ -356,13 +323,13 @@ class ExpectedBehaviorTest extends TestCase
     /**
      * @dataProvider provideFromStringInteger
      */
-    public function testFromString(string $string, ?int $version, int $variant, string $integer): void
+    public function testFromString($string, $version, $variant, $integer)
     {
         $bytes = hex2bin(str_replace('-', '', $string));
 
         $uuid = Uuid::fromString($string);
 
-        $this->assertInstanceOf(UuidInterface::class, $uuid);
+        $this->assertInstanceOf('Ramsey\Uuid\UuidInterface', $uuid);
         $this->assertSame($string, $uuid->toString());
         $this->assertSame($version, $uuid->getVersion());
         $this->assertSame($variant, $uuid->getVariant());
@@ -378,10 +345,7 @@ class ExpectedBehaviorTest extends TestCase
         $this->assertSame($bytes, $uuid->getBytes());
     }
 
-    /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingTraversableTypeHintSpecification
-     */
-    public function provideFromStringInteger(): array
+    public function provideFromStringInteger()
     {
         return [
             ['00000000-0000-0000-0000-000000000000', null, 0, '0'],
@@ -425,11 +389,11 @@ class ExpectedBehaviorTest extends TestCase
      * @runInSeparateProcess
      * @preserveGlobalState disabled
      */
-    public function testGetSetFactory(): void
+    public function testGetSetFactory()
     {
-        $this->assertInstanceOf(UuidFactory::class, Uuid::getFactory());
+        $this->assertInstanceOf('Ramsey\Uuid\UuidFactory', Uuid::getFactory());
 
-        $factory = Mockery::mock(UuidFactory::class);
+        $factory = \Mockery::mock('Ramsey\Uuid\UuidFactory');
         Uuid::setFactory($factory);
 
         $this->assertSame($factory, Uuid::getFactory());
@@ -439,11 +403,11 @@ class ExpectedBehaviorTest extends TestCase
      * @runInSeparateProcess
      * @preserveGlobalState disabled
      */
-    public function testFactoryProvidesFunctionality(): void
+    public function testFactoryProvidesFunctionality()
     {
-        $uuid = Mockery::mock(UuidInterface::class);
+        $uuid = \Mockery::mock('Ramsey\Uuid\UuidInterface');
 
-        $factory = Mockery::mock(UuidFactoryInterface::class, [
+        $factory = \Mockery::mock('Ramsey\Uuid\UuidFactoryInterface', [
             'uuid1' => $uuid,
             'uuid3' => $uuid,
             'uuid4' => $uuid,
@@ -459,7 +423,7 @@ class ExpectedBehaviorTest extends TestCase
         $this->assertSame($uuid, Uuid::uuid3(Uuid::NAMESPACE_URL, 'https://example.com/foo'));
         $this->assertSame($uuid, Uuid::uuid4());
         $this->assertSame($uuid, Uuid::uuid5(Uuid::NAMESPACE_URL, 'https://example.com/foo'));
-        $this->assertSame($uuid, Uuid::fromBytes((string) hex2bin('ffffffffffffffffffffffffffffffff')));
+        $this->assertSame($uuid, Uuid::fromBytes(hex2bin('ffffffffffffffffffffffffffffffff')));
         $this->assertSame($uuid, Uuid::fromString('ffffffff-ffff-ffff-ffff-ffffffffffff'));
         $this->assertSame($uuid, Uuid::fromInteger('340282366920938463463374607431768211455'));
     }
@@ -468,11 +432,10 @@ class ExpectedBehaviorTest extends TestCase
      * @runInSeparateProcess
      * @preserveGlobalState disabled
      */
-    public function testUsingDegradedFeatures(): void
+    public function testUsingDegradedFeatures()
     {
         $numberConverter = new DegradedNumberConverter();
-        $timeConverter = new DegradedTimeConverter();
-        $builder = new DegradedUuidBuilder($numberConverter, $timeConverter);
+        $builder = new DegradedUuidBuilder($numberConverter);
 
         $factory = new UuidFactory();
         $factory->setNumberConverter($numberConverter);
@@ -482,20 +445,20 @@ class ExpectedBehaviorTest extends TestCase
 
         $uuid = Uuid::uuid1();
 
-        $this->assertInstanceOf(UuidInterface::class, $uuid);
-        $this->assertInstanceOf(DegradedUuid::class, $uuid);
-        $this->assertInstanceOf(DegradedNumberConverter::class, $uuid->getNumberConverter());
+        $this->assertInstanceOf('Ramsey\Uuid\UuidInterface', $uuid);
+        $this->assertInstanceOf('Ramsey\Uuid\DegradedUuid', $uuid);
+        $this->assertInstanceOf('Ramsey\Uuid\Converter\Number\DegradedNumberConverter', $uuid->getNumberConverter());
     }
 
     /**
      * @runInSeparateProcess
      * @preserveGlobalState disabled
      */
-    public function testUsingCustomCodec(): void
+    public function testUsingCustomCodec()
     {
-        $mockUuid = Mockery::mock(UuidInterface::class);
+        $mockUuid = \Mockery::mock('Ramsey\Uuid\UuidInterface');
 
-        $codec = Mockery::mock(CodecInterface::class, [
+        $codec = \Mockery::mock('Ramsey\Uuid\Codec\CodecInterface', [
             'encode' => 'abcd1234',
             'encodeBinary' => hex2bin('abcd1234'),
             'decode' => $mockUuid,
@@ -512,16 +475,16 @@ class ExpectedBehaviorTest extends TestCase
         $this->assertSame('abcd1234', $uuid->toString());
         $this->assertSame(hex2bin('abcd1234'), $uuid->getBytes());
         $this->assertSame($mockUuid, Uuid::fromString('f00ba2'));
-        $this->assertSame($mockUuid, Uuid::fromBytes((string) hex2bin('f00ba2')));
+        $this->assertSame($mockUuid, Uuid::fromBytes(hex2bin('f00ba2')));
     }
 
     /**
      * @runInSeparateProcess
      * @preserveGlobalState disabled
      */
-    public function testUsingCustomRandomGenerator(): void
+    public function testUsingCustomRandomGenerator()
     {
-        $generator = Mockery::mock(RandomGeneratorInterface::class, [
+        $generator = \Mockery::mock('Ramsey\Uuid\Generator\RandomGeneratorInterface', [
             'generate' => hex2bin('01234567abcd5432dcba0123456789ab'),
         ]);
 
@@ -539,9 +502,9 @@ class ExpectedBehaviorTest extends TestCase
      * @runInSeparateProcess
      * @preserveGlobalState disabled
      */
-    public function testUsingCustomTimeGenerator(): void
+    public function testUsingCustomTimeGenerator()
     {
-        $generator = Mockery::mock(TimeGeneratorInterface::class, [
+        $generator = \Mockery::mock('Ramsey\Uuid\Generator\TimeGeneratorInterface', [
             'generate' => hex2bin('01234567abcd5432dcba0123456789ab'),
         ]);
 
@@ -559,13 +522,13 @@ class ExpectedBehaviorTest extends TestCase
      * @runInSeparateProcess
      * @preserveGlobalState disabled
      */
-    public function testUsingDefaultTimeGeneratorWithCustomProviders(): void
+    public function testUsingDefaultTimeGeneratorWithCustomProviders()
     {
-        $nodeProvider = Mockery::mock(NodeProviderInterface::class, [
+        $nodeProvider = \Mockery::mock('Ramsey\Uuid\Provider\NodeProviderInterface', [
             'getNode' => '0123456789ab',
         ]);
 
-        $timeConverter = Mockery::mock(TimeConverterInterface::class);
+        $timeConverter = \Mockery::mock('Ramsey\Uuid\Converter\TimeConverterInterface');
         $timeConverter
             ->shouldReceive('calculateTime')
             ->andReturnUsing(function ($seconds, $microSeconds) {
@@ -576,11 +539,12 @@ class ExpectedBehaviorTest extends TestCase
                 ];
             });
 
-        $timeProvider = Mockery::mock(TimeProviderInterface::class, [
+        $timeProvider = \Mockery::mock('Ramsey\Uuid\Provider\TimeProviderInterface', [
             'currentTime' => [
                 'sec' => 1578522046,
                 'usec' => 10000,
             ],
+            'getTime' => new Time(1578522046, 10000),
         ]);
 
         $generator = new DefaultTimeGenerator($nodeProvider, $timeConverter, $timeProvider);
@@ -599,22 +563,22 @@ class ExpectedBehaviorTest extends TestCase
      * @runInSeparateProcess
      * @preserveGlobalState disabled
      */
-    public function testHelperFunctions(): void
+    public function testHelperFunctions()
     {
-        $uuid1 = Mockery::mock(UuidInterface::class, [
+        $uuid1 = \Mockery::mock('Ramsey\Uuid\UuidInterface', [
             'toString' => 'aVersion1Uuid',
         ]);
-        $uuid3 = Mockery::mock(UuidInterface::class, [
+        $uuid3 = \Mockery::mock('Ramsey\Uuid\UuidInterface', [
             'toString' => 'aVersion3Uuid',
         ]);
-        $uuid4 = Mockery::mock(UuidInterface::class, [
+        $uuid4 = \Mockery::mock('Ramsey\Uuid\UuidInterface', [
             'toString' => 'aVersion4Uuid',
         ]);
-        $uuid5 = Mockery::mock(UuidInterface::class, [
+        $uuid5 = \Mockery::mock('Ramsey\Uuid\UuidInterface', [
             'toString' => 'aVersion5Uuid',
         ]);
 
-        $factory = Mockery::mock(UuidFactoryInterface::class, [
+        $factory = \Mockery::mock('Ramsey\Uuid\UuidFactoryInterface', [
             'uuid1' => $uuid1,
             'uuid3' => $uuid3,
             'uuid4' => $uuid4,
@@ -623,10 +587,10 @@ class ExpectedBehaviorTest extends TestCase
 
         Uuid::setFactory($factory);
 
-        $this->assertSame('aVersion1Uuid', v1('ffffffffffff', 0xffff));
-        $this->assertSame('aVersion3Uuid', v3(Uuid::NAMESPACE_URL, 'https://example.com/foo'));
-        $this->assertSame('aVersion4Uuid', v4());
-        $this->assertSame('aVersion5Uuid', v5(Uuid::NAMESPACE_URL, 'https://example.com/foo'));
+        $this->assertSame('aVersion1Uuid', \Ramsey\Uuid\v1('ffffffffffff', 0xffff));
+        $this->assertSame('aVersion3Uuid', \Ramsey\Uuid\v3(Uuid::NAMESPACE_URL, 'https://example.com/foo'));
+        $this->assertSame('aVersion4Uuid', \Ramsey\Uuid\v4());
+        $this->assertSame('aVersion5Uuid', \Ramsey\Uuid\v5(Uuid::NAMESPACE_URL, 'https://example.com/foo'));
     }
 
     /**
