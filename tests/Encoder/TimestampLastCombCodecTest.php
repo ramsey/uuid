@@ -46,6 +46,9 @@ class TimestampLastCombCodecTest extends TestCase
         /** @var MockObject & UuidInterface $uuidMock */
         $uuidMock = $this->getMockBuilder(UuidInterface::class)->getMock();
         $uuidMock->expects($this->any())
+            ->method('getHex')
+            ->willReturn('0800200c9a6611e19b21ff6f8cb0c57d');
+        $uuidMock->expects($this->any())
             ->method('getBytes')
             ->willReturn(hex2bin('0800200c9a6611e19b21ff6f8cb0c57d'));
         $encodedUuid = $this->codec->encodeBinary($uuidMock);

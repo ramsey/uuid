@@ -60,7 +60,7 @@ class StringCodec implements CodecInterface
      */
     public function encodeBinary(UuidInterface $uuid): string
     {
-        return $uuid->getBytes();
+        return (string) hex2bin($uuid->getHex());
     }
 
     /**
