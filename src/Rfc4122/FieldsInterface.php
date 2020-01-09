@@ -39,6 +39,12 @@ use Ramsey\Uuid\Fields\FieldsInterface as BaseFieldsInterface;
 interface FieldsInterface extends BaseFieldsInterface
 {
     /**
+     * Returns the full 16-bit clock sequence, with the variant bits (two most
+     * significant bits) masked out
+     */
+    public function getClockSeq(): string;
+
+    /**
      * Returns the high field of the clock sequence multiplexed with the variant
      */
     public function getClockSeqHiAndReserved(): string;
@@ -67,6 +73,11 @@ interface FieldsInterface extends BaseFieldsInterface
      * Returns the middle field of the timestamp
      */
     public function getTimeMid(): string;
+
+    /**
+     * Returns the full 60-bit timestamp, without the version
+     */
+    public function getTimestamp(): string;
 
     /**
      * Returns the variant

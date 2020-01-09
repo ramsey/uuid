@@ -41,12 +41,14 @@ class FieldsTest extends TestCase
     public function fieldGetterMethodProvider(): array
     {
         return [
+            ['ff6f8cb0-c57d-91e1-0b21-0800200c9a66', 'getClockSeq', '0b21'],
             ['ff6f8cb0-c57d-91e1-0b21-0800200c9a66', 'getClockSeqHiAndReserved', '0b'],
             ['ff6f8cb0-c57d-91e1-0b21-0800200c9a66', 'getClockSeqLow', '21'],
             ['ff6f8cb0-c57d-91e1-0b21-0800200c9a66', 'getNode', '0800200c9a66'],
             ['ff6f8cb0-c57d-91e1-0b21-0800200c9a66', 'getTimeHiAndVersion', '91e1'],
             ['ff6f8cb0-c57d-91e1-0b21-0800200c9a66', 'getTimeLow', 'ff6f8cb0'],
             ['ff6f8cb0-c57d-91e1-0b21-0800200c9a66', 'getTimeMid', 'c57d'],
+            ['ff6f8cb0-c57d-91e1-0b21-0800200c9a66', 'getTimestamp', '1e1c57dff6f8cb0'],
             ['ff6f8cb0-c57d-91e1-0b21-0800200c9a66', 'getVariant', Uuid::RESERVED_NCS],
             ['ff6f8cb0-c57d-91e1-0b21-0800200c9a66', 'getVersion', null],
             ['ff6f8cb0-c57d-91e1-0b21-0800200c9a66', 'isNil', false],

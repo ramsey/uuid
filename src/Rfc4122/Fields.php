@@ -74,6 +74,13 @@ final class Fields implements FieldsInterface
         return $this->bytes;
     }
 
+    public function getClockSeq(): string
+    {
+        $clockSeq = hexdec(bin2hex(substr($this->bytes, 8, 2))) & 0x3fff;
+
+        return str_pad(dechex($clockSeq), 4, '0', STR_PAD_LEFT);
+    }
+
     public function getClockSeqHiAndReserved(): string
     {
         return bin2hex(substr($this->bytes, 8, 1));
@@ -102,6 +109,16 @@ final class Fields implements FieldsInterface
     public function getTimeMid(): string
     {
         return bin2hex(substr($this->bytes, 4, 2));
+    }
+
+    public function getTimestamp(): string
+    {
+        return sprintf(
+            '%03x%04s%08s',
+            hexdec($this->getTimeHiAndVersion()) & 0x0fff,
+            $this->getTimeMid(),
+            $this->getTimeLow()
+        );
     }
 
     public function getVersion(): ?int
