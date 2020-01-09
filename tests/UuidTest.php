@@ -511,55 +511,52 @@ class UuidTest extends TestCase
     }
 
     /**
-     * The "python.org" UUID is a known entity, so we're testing that this
-     * library generates a matching UUID for the same name.
-     *
-     * @see http://docs.python.org/library/uuid.html
-     */
-    public function testUuid3WithNamespaceAsUuidObject(): void
-    {
-        $nsUuid = Uuid::fromString(Uuid::NAMESPACE_DNS);
-        $uuid = Uuid::uuid3($nsUuid, 'python.org');
-        $this->assertEquals('6fa459ea-ee8a-3ca4-894e-db77e160355e', $uuid->toString());
-        $this->assertEquals(2, $uuid->getVariant());
-        $this->assertEquals(3, $uuid->getVersion());
-    }
-
-    /**
-     * The "python.org" UUID is a known entity, so we're testing that this
-     * library generates a matching UUID for the same name.
-     *
-     * @see http://docs.python.org/library/uuid.html
-     */
-    public function testUuid3WithNamespaceAsUuidString(): void
-    {
-        $uuid = Uuid::uuid3(Uuid::NAMESPACE_DNS, 'python.org');
-        $this->assertEquals('6fa459ea-ee8a-3ca4-894e-db77e160355e', $uuid->toString());
-        $this->assertEquals(2, $uuid->getVariant());
-        $this->assertEquals(3, $uuid->getVersion());
-    }
-
-    /**
-     * Tests more known version-3 UUIDs
+     * Tests known version-3 UUIDs
      *
      * Taken from the Python UUID tests in
      * http://hg.python.org/cpython/file/2f4c4db9aee5/Lib/test/test_uuid.py
+     *
+     * @dataProvider provideUuid3WithKnownUuids
      */
-    public function testUuid3WithKnownUuids(): void
+    public function testUuid3WithKnownUuids(string $uuid, string $ns, string $name): void
     {
-        $uuids = [
-            '6fa459ea-ee8a-3ca4-894e-db77e160355e' => Uuid::uuid3(Uuid::NAMESPACE_DNS, 'python.org'),
-            '9fe8e8c4-aaa8-32a9-a55c-4535a88b748d' => Uuid::uuid3(Uuid::NAMESPACE_URL, 'http://python.org/'),
-            'dd1a1cef-13d5-368a-ad82-eca71acd4cd1' => Uuid::uuid3(Uuid::NAMESPACE_OID, '1.3.6.1'),
-            '658d3002-db6b-3040-a1d1-8ddd7d189a4d' => Uuid::uuid3(Uuid::NAMESPACE_X500, 'c=ca'),
-        ];
+        $uobj1 = Uuid::uuid3($ns, $name);
+        $uobj2 = Uuid::uuid3(Uuid::fromString($ns), $name);
 
-        foreach ($uuids as $ustr => $uobj) {
-            $this->assertEquals(Uuid::RFC_4122, $uobj->getVariant());
-            $this->assertEquals(3, $uobj->getVersion());
-            $this->assertEquals(Uuid::fromString($ustr), $uobj);
-            $this->assertEquals((string) $uobj, $ustr);
-        }
+        $this->assertEquals(2, $uobj1->getVariant());
+        $this->assertEquals(3, $uobj1->getVersion());
+        $this->assertEquals(Uuid::fromString($uuid), $uobj1);
+        $this->assertEquals((string) $uobj1, $uuid);
+        $this->assertTrue($uobj1->equals($uobj2));
+    }
+
+    /**
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingTraversableTypeHintSpecification
+     */
+    public function provideUuid3WithKnownUuids(): array
+    {
+        return [
+            [
+                'uuid' => '6fa459ea-ee8a-3ca4-894e-db77e160355e',
+                'ns' => Uuid::NAMESPACE_DNS,
+                'name' => 'python.org',
+            ],
+            [
+                'uuid' => '9fe8e8c4-aaa8-32a9-a55c-4535a88b748d',
+                'ns' => Uuid::NAMESPACE_URL,
+                'name' => 'http://python.org/',
+            ],
+            [
+                'uuid' => 'dd1a1cef-13d5-368a-ad82-eca71acd4cd1',
+                'ns' => Uuid::NAMESPACE_OID,
+                'name' => '1.3.6.1',
+            ],
+            [
+                'uuid' => '658d3002-db6b-3040-a1d1-8ddd7d189a4d',
+                'ns' => Uuid::NAMESPACE_X500,
+                'name' => 'c=ca',
+            ],
+        ];
     }
 
     public function testUuid4(): void
@@ -649,55 +646,52 @@ class UuidTest extends TestCase
     }
 
     /**
-     * The "python.org" UUID is a known entity, so we're testing that this
-     * library generates a matching UUID for the same name.
-     *
-     * @see http://docs.python.org/library/uuid.html
-     */
-    public function testUuid5WithNamespaceAsUuidObject(): void
-    {
-        $nsUuid = Uuid::fromString(Uuid::NAMESPACE_DNS);
-        $uuid = Uuid::uuid5($nsUuid, 'python.org');
-        $this->assertEquals('886313e1-3b8a-5372-9b90-0c9aee199e5d', $uuid->toString());
-        $this->assertEquals(2, $uuid->getVariant());
-        $this->assertEquals(5, $uuid->getVersion());
-    }
-
-    /**
-     * The "python.org" UUID is a known entity, so we're testing that this
-     * library generates a matching UUID for the same name.
-     *
-     * @see http://docs.python.org/library/uuid.html
-     */
-    public function testUuid5WithNamespaceAsUuidString(): void
-    {
-        $uuid = Uuid::uuid5(Uuid::NAMESPACE_DNS, 'python.org');
-        $this->assertEquals('886313e1-3b8a-5372-9b90-0c9aee199e5d', $uuid->toString());
-        $this->assertEquals(2, $uuid->getVariant());
-        $this->assertEquals(5, $uuid->getVersion());
-    }
-
-    /**
-     * Tests more known version-5 UUIDs
+     * Tests known version-5 UUIDs
      *
      * Taken from the Python UUID tests in
      * http://hg.python.org/cpython/file/2f4c4db9aee5/Lib/test/test_uuid.py
+     *
+     * @dataProvider provideUuid5WithKnownUuids
      */
-    public function testUuid5WithKnownUuids(): void
+    public function testUuid5WithKnownUuids(string $uuid, string $ns, string $name): void
     {
-        $uuids = [
-            '886313e1-3b8a-5372-9b90-0c9aee199e5d' => Uuid::uuid5(Uuid::NAMESPACE_DNS, 'python.org'),
-            '4c565f0d-3f5a-5890-b41b-20cf47701c5e' => Uuid::uuid5(Uuid::NAMESPACE_URL, 'http://python.org/'),
-            '1447fa61-5277-5fef-a9b3-fbc6e44f4af3' => Uuid::uuid5(Uuid::NAMESPACE_OID, '1.3.6.1'),
-            'cc957dd1-a972-5349-98cd-874190002798' => Uuid::uuid5(Uuid::NAMESPACE_X500, 'c=ca'),
-        ];
+        $uobj1 = Uuid::uuid5($ns, $name);
+        $uobj2 = Uuid::uuid5(Uuid::fromString($ns), $name);
 
-        foreach ($uuids as $ustr => $uobj) {
-            $this->assertEquals(Uuid::RFC_4122, $uobj->getVariant());
-            $this->assertEquals(5, $uobj->getVersion());
-            $this->assertEquals(Uuid::fromString($ustr), $uobj);
-            $this->assertEquals((string) $uobj, $ustr);
-        }
+        $this->assertEquals(2, $uobj1->getVariant());
+        $this->assertEquals(5, $uobj1->getVersion());
+        $this->assertEquals(Uuid::fromString($uuid), $uobj1);
+        $this->assertEquals((string) $uobj1, $uuid);
+        $this->assertTrue($uobj1->equals($uobj2));
+    }
+
+    /**
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingTraversableTypeHintSpecification
+     */
+    public function provideUuid5WithKnownUuids(): array
+    {
+        return [
+            [
+                'uuid' => '886313e1-3b8a-5372-9b90-0c9aee199e5d',
+                'ns' => Uuid::NAMESPACE_DNS,
+                'name' => 'python.org',
+            ],
+            [
+                'uuid' => '4c565f0d-3f5a-5890-b41b-20cf47701c5e',
+                'ns' => Uuid::NAMESPACE_URL,
+                'name' => 'http://python.org/',
+            ],
+            [
+                'uuid' => '1447fa61-5277-5fef-a9b3-fbc6e44f4af3',
+                'ns' => Uuid::NAMESPACE_OID,
+                'name' => '1.3.6.1',
+            ],
+            [
+                'uuid' => 'cc957dd1-a972-5349-98cd-874190002798',
+                'ns' => Uuid::NAMESPACE_X500,
+                'name' => 'c=ca',
+            ],
+        ];
     }
 
     public function testCompareTo(): void
