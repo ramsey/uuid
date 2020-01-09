@@ -44,6 +44,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   improved type-safety when dealing with arbitrary string values.
 * Introduce `Math\CalculatorInterface` for representing calculators to perform
   arithmetic operations on integers.
+* Depend on [brick/math](https://github.com/brick/math) for the
+  `Math\BrickMathCalculator`, which is the default calculator used by this
+  library when math cannot be performed in native PHP due to integer size
+  limitations. The calculator is configurable and may be changed, if desired.
 
 ### Changed
 

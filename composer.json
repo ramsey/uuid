@@ -12,6 +12,7 @@
     "require": {
         "php": "^7.2 | ^8",
         "ext-json": "*",
+        "brick/math": "^0.8",
         "symfony/polyfill-ctype": "^1.8"
     },
     "require-dev": {

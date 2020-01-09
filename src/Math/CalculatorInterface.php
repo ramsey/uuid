@@ -55,16 +55,17 @@ interface CalculatorInterface
     public function multiply(IntegerValue $multiplicand, IntegerValue ...$multipliers): IntegerValue;
 
     /**
-     * Returns the quotient of all the provided parameters divided left-to-right
+     * Returns the quotient of the provided parameters divided left-to-right
      *
+     * @param int $roundingMode The RoundingMode constant to use for this operation
      * @param IntegerValue $dividend The integer to be divided
      * @param IntegerValue ...$divisors The integers to divide the dividend, in
      *     the order in which the division operations should take place
      *     (left-to-right)
      *
-     * @return IntegerValue The quotient of dividing all the provided parameters left-to-right
+     * @return IntegerValue The quotient of dividing the provided parameters left-to-right
      */
-    public function divide(IntegerValue $dividend, IntegerValue ...$divisors): IntegerValue;
+    public function divide(int $roundingMode, IntegerValue $dividend, IntegerValue ...$divisors): IntegerValue;
 
     /**
      * Converts a value from an arbitrary base to a base-10 integer value
