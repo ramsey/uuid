@@ -14,47 +14,10 @@ declare(strict_types=1);
 
 namespace Ramsey\Uuid\Converter\Number;
 
-use Ramsey\Uuid\Converter\NumberConverterInterface;
-use Ramsey\Uuid\Exception\UnsatisfiedDependencyException;
-
 /**
- * DegradedNumberConverter is chosen if all other options for large integer
- * support are unavailable. This exists to throw exceptions if these methods
- * are called on systems that do not have support for large integers.
+ * @deprecated DegradedNumberConverter is no longer necessary for converting
+ *     numbers on 32-bit systems. Transition to {@see GenericNumberConverter}.
  */
-class DegradedNumberConverter implements NumberConverterInterface
+class DegradedNumberConverter extends BigNumberConverter
 {
-    /**
-     * @throws UnsatisfiedDependencyException if the chosen converter is not present
-     *
-     * @inheritDoc
-     *
-     * @psalm-pure
-     */
-    public function fromHex(string $hex): string
-    {
-        throw new UnsatisfiedDependencyException(
-            'Cannot call fromHex using the DegradedNumberConverter; '
-            . 'please choose a converter with support for large integers; '
-            . 'refer to the ramsey/uuid wiki for more information: '
-            . 'https://github.com/ramsey/uuid/wiki'
-        );
-    }
-
-    /**
-     * @throws UnsatisfiedDependencyException if the chosen converter is not present
-     *
-     * @inheritDoc
-     *
-     * @psalm-pure
-     */
-    public function toHex(string $number): string
-    {
-        throw new UnsatisfiedDependencyException(
-            'Cannot call toHex using the DegradedNumberConverter; '
-            . 'please choose a converter with support for large integers; '
-            . 'refer to the ramsey/uuid wiki for more information: '
-            . 'https://github.com/ramsey/uuid/wiki'
-        );
-    }
 }

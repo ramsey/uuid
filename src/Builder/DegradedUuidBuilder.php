@@ -16,12 +16,14 @@ namespace Ramsey\Uuid\Builder;
 
 use Ramsey\Uuid\Codec\CodecInterface;
 use Ramsey\Uuid\Converter\NumberConverterInterface;
+use Ramsey\Uuid\Converter\Time\DegradedTimeConverter;
 use Ramsey\Uuid\Converter\TimeConverterInterface;
 use Ramsey\Uuid\DegradedUuid;
 use Ramsey\Uuid\UuidInterface;
 
 /**
- * DegradedUuidBuilder builds instances of DegradedUuid
+ * @deprecated DegradedUuid instances are no longer necessary to support 32-bit
+ *     systems. Transition to {@see DefaultUuidBuilder}.
  *
  * @psalm-immutable
  */
@@ -45,10 +47,10 @@ class DegradedUuidBuilder implements UuidBuilderInterface
      */
     public function __construct(
         NumberConverterInterface $numberConverter,
-        TimeConverterInterface $timeConverter
+        ?TimeConverterInterface $timeConverter = null
     ) {
         $this->numberConverter = $numberConverter;
-        $this->timeConverter = $timeConverter;
+        $this->timeConverter = $timeConverter ?: new DegradedTimeConverter();
     }
 
     /**

@@ -23,8 +23,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   `\InvalidArgumentException` now throw `Ramsey\Uuid\Exception\InvalidArgumentException`.
   This should not cause any BC breaks, however.
 * Add an internal `DateTimeException` that descends from the built-in PHP
-  `\RuntimeException`. `Uuid::getDateTime()` and `DegradedUuid::getDateTime()`
-  may throw this exception if `\DateTimeImmutable` throws an error or exception.
+  `\RuntimeException`. `Uuid::getDateTime()` may throw this exception if
+  `\DateTimeImmutable` throws an error or exception.
 * Add `RandomSourceException` that descends from the built-in PHP
   `\RuntimeException`. `DefaultTimeGenerator`, `RandomBytesGenerator`, and
   `RandomNodeProvider` may throw this exception if `random_bytes()` or
@@ -35,8 +35,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   binary string representation of the UUID internally, and these manage
   conversion of the binary string into the hexadecimal field values.
 * Add classes to represent GUIDs and nonstandard (non-RFC 4122 variant) UUIDs:
-  `Guid\Guid` and `Nonstandard\Uuid`, as well as their degraded
-  (32-bit) counterparts and builder classes.
+  `Guid\Guid` and `Nonstandard\Uuid`.
 * Introduce a `Builder\FallbackBuilder`, used by `FeatureSet` to help decide
   whether to return a `Uuid` or `Nonstandard\Uuid` when decoding a
   UUID string or bytes.
@@ -64,7 +63,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 * Add `getTime()` method to `Provider\TimeProviderInterface`.
 * Introduce `TimeConverterInterface $timeConverter` as fourth required
   constructor parameter for `Uuid` and second required constructor parameter for
-  `Builder\DefaultUuidBuilder` and `Builder\DegradedUuidBuilder`.
+  `Builder\DefaultUuidBuilder`.
 * Change `UuidInterface::getInteger()` to always return a `string` value instead
   of `mixed`. This is a string representation of a 128-bit integer. You may then
   use a math library of your choice (bcmath, gmp, etc.) to operate on the
@@ -89,6 +88,20 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   `UuidInterface`, so BC breaks should not occur if typehints use the interface.
 
 ### Deprecated
+
+* `Converter\Number\BigNumberConverter` is deprecated; transition to
+  `Converter\Number\GenericNumberConverter`.
+* `Converter\Time\BigNumberTimeConverter` is deprecated; transition to
+  `Converter\Time\GenericTimeConverter`.
+* `Provider\TimeProviderInterface::currentTime()` is deprecated; transition to
+  the `getTimestamp()` method on the same interface.
+* The classes for representing and generating *degraded* UUIDs are deprecated
+  and will be removed in ramsey/uuid 5.0.0. These are no longer necessary; this
+  library now behaves the same on 32-bit and 64-bit PHP.
+  * `Builder\DegradedUuidBuilder`
+  * `Converter\Number\DegradedNumberConverter`
+  * `Converter\Time\DegradedTimeConverter`
+  * `DegradedUuid`
 
 ### Removed
 
