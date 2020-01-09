@@ -26,6 +26,16 @@ use Ramsey\Uuid\UuidInterface;
 class GuidStringCodec extends StringCodec
 {
     /**
+     * @psalm-pure
+     */
+    public function encodeBinary(UuidInterface $uuid): string
+    {
+        $components = $this->swapBytes($this->extractComponents($uuid->toString()));
+
+        return (string) hex2bin(implode('', $components));
+    }
+
+    /**
      * @throws InvalidUuidStringException
      *
      * @inheritDoc

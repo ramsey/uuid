@@ -277,7 +277,7 @@ class Uuid implements UuidInterface
 
     public function getBytes(): string
     {
-        return $this->fields->getBytes();
+        return $this->codec->encodeBinary($this);
     }
 
     /**

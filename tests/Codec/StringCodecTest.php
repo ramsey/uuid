@@ -73,6 +73,8 @@ class StringCodecTest extends TestCase
     public function testEncodeBinaryReturnsBinaryString(): void
     {
         $expected = hex2bin('123456781234abcdabef1234abcd4321');
+        $this->uuid->method('getHex')
+            ->willReturn('123456781234abcdabef1234abcd4321');
         $this->uuid->method('getBytes')
             ->willReturn(hex2bin('123456781234abcdabef1234abcd4321'));
         $codec = new StringCodec($this->builder);
