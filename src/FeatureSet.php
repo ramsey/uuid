@@ -23,11 +23,9 @@ use Ramsey\Uuid\Codec\GuidStringCodec;
 use Ramsey\Uuid\Codec\StringCodec;
 use Ramsey\Uuid\Converter\Number\DegradedNumberConverter;
 use Ramsey\Uuid\Converter\Number\GenericNumberConverter;
-use Ramsey\Uuid\Converter\Number\GmpConverter;
 use Ramsey\Uuid\Converter\NumberConverterInterface;
 use Ramsey\Uuid\Converter\Time\DegradedTimeConverter;
 use Ramsey\Uuid\Converter\Time\GenericTimeConverter;
-use Ramsey\Uuid\Converter\Time\GmpTimeConverter;
 use Ramsey\Uuid\Converter\Time\PhpTimeConverter;
 use Ramsey\Uuid\Converter\TimeConverterInterface;
 use Ramsey\Uuid\Generator\PeclUuidTimeGenerator;
@@ -62,11 +60,6 @@ class FeatureSet
      * @var bool
      */
     private $disableBigNumber = false;
-
-    /**
-     * @var bool
-     */
-    private $disableGmp = false;
 
     /**
      * @var bool
@@ -138,19 +131,15 @@ class FeatureSet
      *     system node ID (primarily for testing purposes)
      * @param bool $enablePecl True to enable the use of the PeclUuidTimeGenerator
      *     to generate version 1 UUIDs
-     * @param bool $forceNoGmp True to disable the use of ext-gmp (primarily
-     *     for testing purposes)
      */
     public function __construct(
         bool $useGuids = false,
         bool $force32Bit = false,
         bool $forceNoBigNumber = false,
         bool $ignoreSystemNode = false,
-        bool $enablePecl = false,
-        bool $forceNoGmp = false
+        bool $enablePecl = false
     ) {
         $this->disableBigNumber = $forceNoBigNumber;
-        $this->disableGmp = $forceNoGmp;
         $this->disable64Bit = $force32Bit;
         $this->ignoreSystemNode = $ignoreSystemNode;
         $this->enablePecl = $enablePecl;
@@ -366,14 +355,6 @@ class FeatureSet
     private function hasBigNumber(): bool
     {
         return class_exists('Moontoast\Math\BigNumber') && !$this->disableBigNumber;
-    }
-
-    /**
-     * Returns true if ext-gmp is available
-     */
-    private function hasGmp(): bool
-    {
-        return extension_loaded('gmp') && !$this->disableGmp;
     }
 
     /**
