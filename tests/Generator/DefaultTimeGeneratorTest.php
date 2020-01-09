@@ -7,6 +7,7 @@ namespace Ramsey\Uuid\Test\Generator;
 use AspectMock\Test as AspectMock;
 use Exception;
 use Mockery;
+use Mockery\MockInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use Ramsey\Uuid\BinaryUtils;
 use Ramsey\Uuid\Converter\TimeConverterInterface;
@@ -15,11 +16,12 @@ use Ramsey\Uuid\Generator\DefaultTimeGenerator;
 use Ramsey\Uuid\Provider\NodeProviderInterface;
 use Ramsey\Uuid\Provider\TimeProviderInterface;
 use Ramsey\Uuid\Test\TestCase;
+use Ramsey\Uuid\Type\Time;
 
 class DefaultTimeGeneratorTest extends TestCase
 {
     /**
-     * @var TimeProviderInterface & MockObject
+     * @var TimeProviderInterface & MockInterface
      */
     private $timeProvider;
 
@@ -56,11 +58,15 @@ class DefaultTimeGeneratorTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->timeProvider = $this->getMockBuilder(TimeProviderInterface::class)->getMock();
         $this->nodeProvider = $this->getMockBuilder(NodeProviderInterface::class)->getMock();
         $this->timeConverter = $this->getMockBuilder(TimeConverterInterface::class)->getMock();
         $this->currentTime = ['sec' => 1458733431, 'usec' => 877449];
         $this->calculatedTime = ['low' => '83cb98e0', 'mid' => '98e0', 'hi' => '03cb'];
+
+        $time = new Time($this->currentTime['sec'], $this->currentTime['usec']);
+        $this->timeProvider = Mockery::mock(TimeProviderInterface::class, [
+            'getTime' => $time,
+        ]);
     }
 
     protected function tearDown(): void
@@ -76,8 +82,6 @@ class DefaultTimeGeneratorTest extends TestCase
         $this->nodeProvider->expects($this->once())
             ->method('getNode')
             ->willReturn('122f80ca9e06');
-        $this->timeProvider->method('currentTime')
-            ->willReturn($this->currentTime);
         $this->timeConverter->expects($this->once())
             ->method('calculateTime')
             ->with($this->currentTime['sec'], $this->currentTime['usec'])
@@ -92,9 +96,6 @@ class DefaultTimeGeneratorTest extends TestCase
 
     public function testGenerateUsesTimeProvidersCurrentTime(): void
     {
-        $this->timeProvider->expects($this->once())
-            ->method('currentTime')
-            ->willReturn($this->currentTime);
         $this->timeConverter->expects($this->once())
             ->method('calculateTime')
             ->with($this->currentTime['sec'], $this->currentTime['usec'])
@@ -109,8 +110,6 @@ class DefaultTimeGeneratorTest extends TestCase
 
     public function testGenerateCalculatesTimeWithConverter(): void
     {
-        $this->timeProvider->method('currentTime')
-            ->willReturn($this->currentTime);
         $this->timeConverter->expects($this->once())
             ->method('calculateTime')
             ->with($this->currentTime['sec'], $this->currentTime['usec'])
@@ -131,8 +130,6 @@ class DefaultTimeGeneratorTest extends TestCase
     {
         $expectedBytes = hex2bin('83cb98e098e003cb8fe2122f80ca9e06');
 
-        $this->timeProvider->method('currentTime')
-            ->willReturn($this->currentTime);
         $this->timeConverter->method('calculateTime')
             ->with($this->currentTime['sec'], $this->currentTime['usec'])
             ->willReturn($this->calculatedTime);
@@ -160,7 +157,6 @@ class DefaultTimeGeneratorTest extends TestCase
      */
     public function testGenerateReturnsBinaryStringInUuidFormat(): void
     {
-        $this->timeProvider->method('currentTime')->willReturn($this->currentTime);
         $this->timeConverter->method('calculateTime')->willReturn($this->calculatedTime);
         $binaryUtils = Mockery::mock('alias:' . BinaryUtils::class);
         $binaryUtils->shouldReceive('applyVersion')->andReturn(971);
@@ -205,8 +201,6 @@ class DefaultTimeGeneratorTest extends TestCase
     public function testGenerateUsesRandomSequenceWhenClockSeqNull(): void
     {
         $randomInt = AspectMock::func('Ramsey\Uuid\Generator', 'random_int', 9622);
-        $this->timeProvider->method('currentTime')
-            ->willReturn($this->currentTime);
         $this->timeConverter->expects($this->once())
             ->method('calculateTime')
             ->with($this->currentTime['sec'], $this->currentTime['usec'])

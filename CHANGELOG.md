@@ -61,6 +61,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   returns an instance of `\DateTimeImmutable` instead of `\DateTime`.
 * Add `getValidator()` method to `UuidFactoryInterface`.
 * Add `convertTime()` method to `Converter\TimeConverterInterface`.
+* Add `getTime()` method to `Provider\TimeProviderInterface`.
 * Introduce `TimeConverterInterface $timeConverter` as fourth required
   constructor parameter for `Uuid` and second required constructor parameter for
   `Builder\DefaultUuidBuilder` and `Builder\DegradedUuidBuilder`.
