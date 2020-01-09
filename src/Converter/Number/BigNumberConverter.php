@@ -14,53 +14,42 @@ declare(strict_types=1);
 
 namespace Ramsey\Uuid\Converter\Number;
 
-use Moontoast\Math\BigNumber;
-use Ramsey\Uuid\Converter\DependencyCheckTrait;
 use Ramsey\Uuid\Converter\NumberConverterInterface;
-use Ramsey\Uuid\Converter\NumberStringTrait;
-use Ramsey\Uuid\Exception\InvalidArgumentException;
-use Ramsey\Uuid\Exception\UnsatisfiedDependencyException;
+use Ramsey\Uuid\Math\BrickMathCalculator;
 
 /**
- * BigNumberConverter uses moontoast/math to convert UUIDs from hexadecimal
- * characters into string representations of integers and vice versa
+ * Previously used to integrate moontoast/math as a bignum arithmetic library,
+ * BigNumberConverter is deprecated in favor of ArbitraryPrecisionNumberConverter
+ *
+ * @deprecated Transition to {@see GenericNumberConverter}.
  */
 class BigNumberConverter implements NumberConverterInterface
 {
-    use DependencyCheckTrait;
-    use NumberStringTrait;
+    /**
+     * @var NumberConverterInterface
+     */
+    private $converter;
+
+    public function __construct()
+    {
+        $this->converter = new GenericNumberConverter(new BrickMathCalculator());
+    }
 
     /**
-     * @throws InvalidArgumentException if $hex is not a hexadecimal string
-     * @throws UnsatisfiedDependencyException if the chosen converter is not present
-     *
      * @inheritDoc
-     *
      * @psalm-pure
      */
     public function fromHex(string $hex): string
     {
-        $this->checkMoontoastMathLibrary();
-        $this->checkHexadecimalString($hex, 'hex');
-
-        /** @psalm-suppress ImpureMethodCall */
-        return BigNumber::convertToBase10($hex, 16);
+        return $this->converter->fromHex($hex);
     }
 
     /**
-     * @throws InvalidArgumentException if $integer is not an integer string
-     * @throws UnsatisfiedDependencyException if the chosen converter is not present
-     *
      * @inheritDoc
-     *
      * @psalm-pure
      */
     public function toHex(string $number): string
     {
-        $this->checkMoontoastMathLibrary();
-        $this->checkIntegerString($number, 'number');
-
-        /** @psalm-suppress ImpureMethodCall */
-        return BigNumber::convertFromBase10($number, 16);
+        return $this->converter->toHex($number);
     }
 }

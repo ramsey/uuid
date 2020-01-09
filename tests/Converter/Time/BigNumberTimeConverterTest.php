@@ -4,26 +4,31 @@ declare(strict_types=1);
 
 namespace Ramsey\Uuid\Test\Converter\Time;
 
-use AspectMock\Test as AspectMock;
+use Brick\Math\BigInteger;
 use Ramsey\Uuid\Converter\Time\BigNumberTimeConverter;
 use Ramsey\Uuid\Exception\InvalidArgumentException;
-use Ramsey\Uuid\Exception\UnsatisfiedDependencyException;
 use Ramsey\Uuid\Test\TestCase;
 
 class BigNumberTimeConverterTest extends TestCase
 {
     public function testCalculateTimeReturnsArrayOfTimeSegments(): void
     {
-        $this->skip64BitTest();
+        $seconds = BigInteger::of(5);
+        $microSeconds = BigInteger::of(3);
 
-        $seconds = 5;
-        $microSeconds = 3;
-        $calculatedTime = ($seconds * 10000000) + ($microSeconds * 10) + 0x01b21dd213814000;
+        $calculatedTime = BigInteger::zero()
+            ->plus($seconds->multipliedBy(10000000))
+            ->plus($microSeconds->multipliedBy(10))
+            ->plus(BigInteger::fromBase('01b21dd213814000', 16));
+
+        $maskLow = BigInteger::fromBase('ffffffff', 16);
+        $maskMid = BigInteger::fromBase('ffff', 16);
+        $maskHi = BigInteger::fromBase('0fff', 16);
 
         $expectedArray = [
-            'low' => sprintf('%08x', $calculatedTime & 0xffffffff),
-            'mid' => sprintf('%04x', ($calculatedTime >> 32) & 0xffff),
-            'hi' => sprintf('%04x', ($calculatedTime >> 48) & 0x0fff),
+            'low' => sprintf('%08s', $calculatedTime->and($maskLow)->toBase(16)),
+            'mid' => sprintf('%04s', $calculatedTime->shiftedRight(32)->and($maskMid)->toBase(16)),
+            'hi' => sprintf('%04s', $calculatedTime->shiftedRight(48)->and($maskHi)->toBase(16)),
         ];
 
         $converter = new BigNumberTimeConverter();
@@ -34,54 +39,10 @@ class BigNumberTimeConverterTest extends TestCase
 
     public function testConvertTime(): void
     {
-        $this->skip64BitTest();
-
         $converter = new BigNumberTimeConverter();
         $returned = $converter->convertTime('135606608744910000');
 
         $this->assertSame('1341368074', $returned);
-    }
-
-    /**
-     * @runInSeparateProcess
-     * @preserveGlobalState disabled
-     */
-    public function testCalculateTimeThrowsExceptionWhenGmpExtensionNotPresent(): void
-    {
-        $classExists = AspectMock::func(
-            'Ramsey\Uuid\Converter',
-            'class_exists',
-            false
-        );
-
-        $converter = new BigNumberTimeConverter();
-
-        $this->expectException(UnsatisfiedDependencyException::class);
-        $this->expectExceptionMessage('moontoast/math must be present to use this converter');
-
-        $converter->calculateTime('1234', '5678');
-        $classExists->verifyInvokedOnce(['Moontoast\Math\BigNumber']);
-    }
-
-    /**
-     * @runInSeparateProcess
-     * @preserveGlobalState disabled
-     */
-    public function testConvertTimeThrowsExceptionWhenGmpExtensionNotPresent(): void
-    {
-        $classExists = AspectMock::func(
-            'Ramsey\Uuid\Converter',
-            'class_exists',
-            false
-        );
-
-        $converter = new BigNumberTimeConverter();
-
-        $this->expectException(UnsatisfiedDependencyException::class);
-        $this->expectExceptionMessage('moontoast/math must be present to use this converter');
-
-        $converter->convertTime('1234');
-        $classExists->verifyInvokedOnce(['Moontoast\Math\BigNumber']);
     }
 
     public function testCalculateTimeThrowsExceptionWhenSecondsIsNotOnlyDigits(): void
@@ -89,7 +50,10 @@ class BigNumberTimeConverterTest extends TestCase
         $converter = new BigNumberTimeConverter();
 
         $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('$seconds must contain only digits');
+        $this->expectExceptionMessage(
+            'Value must be a signed integer or a string containing only digits '
+            . '0-9 and, optionally, a sign (+ or -)'
+        );
 
         $converter->calculateTime('12.34', '5678');
     }
@@ -99,7 +63,10 @@ class BigNumberTimeConverterTest extends TestCase
         $converter = new BigNumberTimeConverter();
 
         $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('$microSeconds must contain only digits');
+        $this->expectExceptionMessage(
+            'Value must be a signed integer or a string containing only digits '
+            . '0-9 and, optionally, a sign (+ or -)'
+        );
 
         $converter->calculateTime('1234', '56.78');
     }
@@ -109,7 +76,10 @@ class BigNumberTimeConverterTest extends TestCase
         $converter = new BigNumberTimeConverter();
 
         $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('$timestamp must contain only digits');
+        $this->expectExceptionMessage(
+            'Value must be a signed integer or a string containing only digits '
+            . '0-9 and, optionally, a sign (+ or -)'
+        );
 
         $converter->convertTime('1234.56');
     }
