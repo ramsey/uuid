@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace Ramsey\Uuid\Rfc4122;
 
 use Ramsey\Uuid\Fields\FieldsInterface as BaseFieldsInterface;
+use Ramsey\Uuid\Type\Hexadecimal;
 
 /**
  * RFC 4122 defines fields for a specific variant of UUID
@@ -42,42 +43,42 @@ interface FieldsInterface extends BaseFieldsInterface
      * Returns the full 16-bit clock sequence, with the variant bits (two most
      * significant bits) masked out
      */
-    public function getClockSeq(): string;
+    public function getClockSeq(): Hexadecimal;
 
     /**
      * Returns the high field of the clock sequence multiplexed with the variant
      */
-    public function getClockSeqHiAndReserved(): string;
+    public function getClockSeqHiAndReserved(): Hexadecimal;
 
     /**
      * Returns the low field of the clock sequence
      */
-    public function getClockSeqLow(): string;
+    public function getClockSeqLow(): Hexadecimal;
 
     /**
      * Returns the node field
      */
-    public function getNode(): string;
+    public function getNode(): Hexadecimal;
 
     /**
      * Returns the high field of the timestamp multiplexed with the version
      */
-    public function getTimeHiAndVersion(): string;
+    public function getTimeHiAndVersion(): Hexadecimal;
 
     /**
      * Returns the low field of the timestamp
      */
-    public function getTimeLow(): string;
+    public function getTimeLow(): Hexadecimal;
 
     /**
      * Returns the middle field of the timestamp
      */
-    public function getTimeMid(): string;
+    public function getTimeMid(): Hexadecimal;
 
     /**
      * Returns the full 60-bit timestamp, without the version
      */
-    public function getTimestamp(): string;
+    public function getTimestamp(): Hexadecimal;
 
     /**
      * Returns the variant

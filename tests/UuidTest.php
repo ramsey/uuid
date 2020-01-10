@@ -25,6 +25,7 @@ use Ramsey\Uuid\Generator\RandomGeneratorFactory;
 use Ramsey\Uuid\Generator\RandomGeneratorInterface;
 use Ramsey\Uuid\Guid\Guid;
 use Ramsey\Uuid\Provider\Time\FixedTimeProvider;
+use Ramsey\Uuid\Rfc4122\FieldsInterface;
 use Ramsey\Uuid\Type\Time;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidFactory;
@@ -185,19 +186,10 @@ class UuidTest extends TestCase
 
     public function testGetFields(): void
     {
-        $fields = [
-            'time_low' => '4285500592',
-            'time_mid' => '50557',
-            'time_hi_and_version' => '4577',
-            'clock_seq_hi_and_reserved' => '155',
-            'clock_seq_low' => '33',
-            'node' => '8796630719078',
-        ];
-
         /** @var Uuid $uuid */
         $uuid = Uuid::fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
 
-        $this->assertSame($fields, $uuid->getFields());
+        $this->assertInstanceOf(FieldsInterface::class, $uuid->getFields());
     }
 
     public function testGetFieldsHex(): void

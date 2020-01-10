@@ -22,8 +22,9 @@ use Ramsey\Uuid\Converter\TimeConverterInterface;
 use Ramsey\Uuid\Exception\DateTimeException;
 use Ramsey\Uuid\Exception\UnsatisfiedDependencyException;
 use Ramsey\Uuid\Exception\UnsupportedOperationException;
+use Ramsey\Uuid\Fields\FieldsInterface;
 use Ramsey\Uuid\Rfc4122\Fields;
-use Ramsey\Uuid\Rfc4122\FieldsInterface;
+use Ramsey\Uuid\Rfc4122\FieldsInterface as Rfc4122FieldsInterface;
 
 /**
  * Represents a RFC 4122 universally unique identifier (UUID)
@@ -156,7 +157,7 @@ class Uuid implements UuidInterface
     /**
      * The fields that make up this UUID
      *
-     * @var FieldsInterface
+     * @var Rfc4122FieldsInterface
      */
     protected $fields;
 
@@ -285,12 +286,12 @@ class Uuid implements UuidInterface
      */
     public function getClockSeqHiAndReserved(): string
     {
-        return $this->numberConverter->fromHex($this->fields->getClockSeqHiAndReserved());
+        return $this->numberConverter->fromHex($this->fields->getClockSeqHiAndReserved()->toString());
     }
 
     public function getClockSeqHiAndReservedHex(): string
     {
-        return $this->fields->getClockSeqHiAndReserved();
+        return $this->fields->getClockSeqHiAndReserved()->toString();
     }
 
     /**
@@ -298,12 +299,12 @@ class Uuid implements UuidInterface
      */
     public function getClockSeqLow(): string
     {
-        return $this->numberConverter->fromHex($this->fields->getClockSeqLow());
+        return $this->numberConverter->fromHex($this->fields->getClockSeqLow()->toString());
     }
 
     public function getClockSeqLowHex(): string
     {
-        return $this->fields->getClockSeqLow();
+        return $this->fields->getClockSeqLow()->toString();
     }
 
     /**
@@ -323,12 +324,12 @@ class Uuid implements UuidInterface
      */
     public function getClockSequence(): string
     {
-        return $this->numberConverter->fromHex($this->fields->getClockSeq());
+        return $this->numberConverter->fromHex($this->fields->getClockSeq()->toString());
     }
 
     public function getClockSequenceHex(): string
     {
-        return $this->fields->getClockSeq();
+        return $this->fields->getClockSeq()->toString();
     }
 
     public function getNumberConverter(): NumberConverterInterface
@@ -362,34 +363,11 @@ class Uuid implements UuidInterface
     }
 
     /**
-     * Returns an array of the fields of this UUID, with keys named according
-     * to the RFC 4122 names for the fields.
-     *
-     * * **time_low**: The low field of the timestamp, an unsigned 32-bit integer
-     * * **time_mid**: The middle field of the timestamp, an unsigned 16-bit integer
-     * * **time_hi_and_version**: The high field of the timestamp multiplexed with
-     *   the version number, an unsigned 16-bit integer
-     * * **clock_seq_hi_and_reserved**: The high field of the clock sequence
-     *   multiplexed with the variant, an unsigned 8-bit integer
-     * * **clock_seq_low**: The low field of the clock sequence, an unsigned
-     *   8-bit integer
-     * * **node**: The spatially unique node identifier, an unsigned 48-bit
-     *   integer
-     *
-     * @link http://tools.ietf.org/html/rfc4122#section-4.1.2 RFC 4122, § 4.1.2: Layout and Byte Order
-     *
-     * @return string[] The UUID fields represented as integer values
+     * Returns the fields that comprise this UUID
      */
-    public function getFields(): array
+    public function getFields(): FieldsInterface
     {
-        return [
-            'time_low' => $this->getTimeLow(),
-            'time_mid' => $this->getTimeMid(),
-            'time_hi_and_version' => $this->getTimeHiAndVersion(),
-            'clock_seq_hi_and_reserved' => $this->getClockSeqHiAndReserved(),
-            'clock_seq_low' => $this->getClockSeqLow(),
-            'node' => $this->getNode(),
-        ];
+        return $this->fields;
     }
 
     /**
@@ -398,12 +376,12 @@ class Uuid implements UuidInterface
     public function getFieldsHex(): array
     {
         return [
-            'time_low' => $this->fields->getTimeLow(),
-            'time_mid' => $this->fields->getTimeMid(),
-            'time_hi_and_version' => $this->fields->getTimeHiAndVersion(),
-            'clock_seq_hi_and_reserved' => $this->fields->getClockSeqHiAndReserved(),
-            'clock_seq_low' => $this->fields->getClockSeqLow(),
-            'node' => $this->fields->getNode(),
+            'time_low' => $this->fields->getTimeLow()->toString(),
+            'time_mid' => $this->fields->getTimeMid()->toString(),
+            'time_hi_and_version' => $this->fields->getTimeHiAndVersion()->toString(),
+            'clock_seq_hi_and_reserved' => $this->fields->getClockSeqHiAndReserved()->toString(),
+            'clock_seq_low' => $this->fields->getClockSeqLow()->toString(),
+            'node' => $this->fields->getNode()->toString(),
         ];
     }
 
@@ -429,9 +407,9 @@ class Uuid implements UuidInterface
     {
         return sprintf(
             '%02s%02s%012s',
-            $this->fields->getClockSeqHiAndReserved(),
-            $this->fields->getClockSeqLow(),
-            $this->fields->getNode()
+            $this->fields->getClockSeqHiAndReserved()->toString(),
+            $this->fields->getClockSeqLow()->toString(),
+            $this->fields->getNode()->toString()
         );
     }
 
@@ -447,9 +425,9 @@ class Uuid implements UuidInterface
     {
         return sprintf(
             '%08s%04s%04s',
-            $this->fields->getTimeLow(),
-            $this->fields->getTimeMid(),
-            $this->fields->getTimeHiAndVersion()
+            $this->fields->getTimeLow()->toString(),
+            $this->fields->getTimeMid()->toString(),
+            $this->fields->getTimeHiAndVersion()->toString()
         );
     }
 
@@ -482,12 +460,12 @@ class Uuid implements UuidInterface
      */
     public function getNode(): string
     {
-        return $this->numberConverter->fromHex($this->fields->getNode());
+        return $this->numberConverter->fromHex($this->fields->getNode()->toString());
     }
 
     public function getNodeHex(): string
     {
-        return $this->fields->getNode();
+        return $this->fields->getNode()->toString();
     }
 
     /**
@@ -495,12 +473,12 @@ class Uuid implements UuidInterface
      */
     public function getTimeHiAndVersion(): string
     {
-        return $this->numberConverter->fromHex($this->fields->getTimeHiAndVersion());
+        return $this->numberConverter->fromHex($this->fields->getTimeHiAndVersion()->toString());
     }
 
     public function getTimeHiAndVersionHex(): string
     {
-        return $this->fields->getTimeHiAndVersion();
+        return $this->fields->getTimeHiAndVersion()->toString();
     }
 
     /**
@@ -508,12 +486,12 @@ class Uuid implements UuidInterface
      */
     public function getTimeLow(): string
     {
-        return $this->numberConverter->fromHex($this->fields->getTimeLow());
+        return $this->numberConverter->fromHex($this->fields->getTimeLow()->toString());
     }
 
     public function getTimeLowHex(): string
     {
-        return $this->fields->getTimeLow();
+        return $this->fields->getTimeLow()->toString();
     }
 
     /**
@@ -521,12 +499,12 @@ class Uuid implements UuidInterface
      */
     public function getTimeMid(): string
     {
-        return $this->numberConverter->fromHex($this->fields->getTimeMid());
+        return $this->numberConverter->fromHex($this->fields->getTimeMid()->toString());
     }
 
     public function getTimeMidHex(): string
     {
-        return $this->fields->getTimeMid();
+        return $this->fields->getTimeMid()->toString();
     }
 
     /**
@@ -551,7 +529,7 @@ class Uuid implements UuidInterface
             throw new UnsupportedOperationException('Not a time-based UUID');
         }
 
-        return $this->numberConverter->fromHex($this->fields->getTimestamp());
+        return $this->numberConverter->fromHex($this->fields->getTimestamp()->toString());
     }
 
     public function getTimestampHex(): string
@@ -560,7 +538,7 @@ class Uuid implements UuidInterface
             throw new UnsupportedOperationException('Not a time-based UUID');
         }
 
-        return $this->fields->getTimestamp();
+        return $this->fields->getTimestamp()->toString();
     }
 
     public function getUrn(): string

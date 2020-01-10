@@ -20,6 +20,7 @@ use Ramsey\Uuid\Rfc4122\FieldsInterface;
 use Ramsey\Uuid\Rfc4122\NilTrait;
 use Ramsey\Uuid\Rfc4122\VariantTrait;
 use Ramsey\Uuid\Rfc4122\VersionTrait;
+use Ramsey\Uuid\Type\Hexadecimal;
 use Ramsey\Uuid\Uuid;
 
 /**
@@ -76,7 +77,7 @@ final class Fields implements FieldsInterface
         return $this->bytes;
     }
 
-    public function getTimeLow(): string
+    public function getTimeLow(): Hexadecimal
     {
         // Swap the bytes from little endian to network byte order.
         $hex = unpack(
@@ -88,10 +89,12 @@ final class Fields implements FieldsInterface
             )
         );
 
-        return (string) ($hex[1] ?? '');
+        $hex = (string) ($hex[1] ?? '');
+
+        return new Hexadecimal($hex);
     }
 
-    public function getTimeMid(): string
+    public function getTimeMid(): Hexadecimal
     {
         // Swap the bytes from little endian to network byte order.
         $hex = unpack(
@@ -102,10 +105,12 @@ final class Fields implements FieldsInterface
             )
         );
 
-        return (string) ($hex[1] ?? '');
+        $hex = (string) ($hex[1] ?? '');
+
+        return new Hexadecimal($hex);
     }
 
-    public function getTimeHiAndVersion(): string
+    public function getTimeHiAndVersion(): Hexadecimal
     {
         // Swap the bytes from little endian to network byte order.
         $hex = unpack(
@@ -116,39 +121,41 @@ final class Fields implements FieldsInterface
             )
         );
 
-        return (string) ($hex[1] ?? '');
+        $hex = (string) ($hex[1] ?? '');
+
+        return new Hexadecimal($hex);
     }
 
-    public function getTimestamp(): string
+    public function getTimestamp(): Hexadecimal
     {
-        return sprintf(
+        return new Hexadecimal(sprintf(
             '%03x%04s%08s',
-            hexdec($this->getTimeHiAndVersion()) & 0x0fff,
-            $this->getTimeMid(),
-            $this->getTimeLow()
-        );
+            hexdec($this->getTimeHiAndVersion()->toString()) & 0x0fff,
+            $this->getTimeMid()->toString(),
+            $this->getTimeLow()->toString()
+        ));
     }
 
-    public function getClockSeq(): string
+    public function getClockSeq(): Hexadecimal
     {
         $clockSeq = hexdec(bin2hex(substr($this->bytes, 8, 2))) & 0x3fff;
 
-        return str_pad(dechex($clockSeq), 4, '0', STR_PAD_LEFT);
+        return new Hexadecimal(str_pad(dechex($clockSeq), 4, '0', STR_PAD_LEFT));
     }
 
-    public function getClockSeqHiAndReserved(): string
+    public function getClockSeqHiAndReserved(): Hexadecimal
     {
-        return bin2hex(substr($this->bytes, 8, 1));
+        return new Hexadecimal(bin2hex(substr($this->bytes, 8, 1)));
     }
 
-    public function getClockSeqLow(): string
+    public function getClockSeqLow(): Hexadecimal
     {
-        return bin2hex(substr($this->bytes, 9, 1));
+        return new Hexadecimal(bin2hex(substr($this->bytes, 9, 1)));
     }
 
-    public function getNode(): string
+    public function getNode(): Hexadecimal
     {
-        return bin2hex(substr($this->bytes, 10));
+        return new Hexadecimal(bin2hex(substr($this->bytes, 10)));
     }
 
     public function getVersion(): ?int

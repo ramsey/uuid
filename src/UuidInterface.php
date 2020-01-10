@@ -17,6 +17,7 @@ namespace Ramsey\Uuid;
 use DateTimeInterface;
 use JsonSerializable;
 use Ramsey\Uuid\Converter\NumberConverterInterface;
+use Ramsey\Uuid\Fields\FieldsInterface;
 use Serializable;
 
 /**
@@ -61,6 +62,11 @@ interface UuidInterface extends JsonSerializable, Serializable
      * Returns the binary string representation of the UUID
      */
     public function getBytes(): string;
+
+    /**
+     * Returns the fields that comprise this UUID
+     */
+    public function getFields(): FieldsInterface;
 
     /**
      * Returns the number converter to use when converting hex values to/from integers

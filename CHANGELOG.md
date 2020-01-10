@@ -55,9 +55,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 * The `UuidInterface::getDateTime()` method now specifies `\DateTimeInterface`
   as the return value, rather than `\DateTime`; `Uuid::getDateTime()` now
   returns an instance of `\DateTimeImmutable` instead of `\DateTime`.
+* Add `getFields()` method to `UuidInterface`.
 * Add `getValidator()` method to `UuidFactoryInterface`.
 * Add `convertTime()` method to `Converter\TimeConverterInterface`.
 * Add `getTime()` method to `Provider\TimeProviderInterface`.
+* Change `Uuid::getFields()` to return an instance of `Fields\FieldsInterface`.
+  Previously, it returned an array of integer values (on 64-bit systems only).
 * Introduce `TimeConverterInterface $timeConverter` as fourth required
   constructor parameter for `Uuid` and second required constructor parameter for
   `Builder\DefaultUuidBuilder`.

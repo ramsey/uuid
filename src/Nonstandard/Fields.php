@@ -18,6 +18,7 @@ use Ramsey\Uuid\Exception\InvalidArgumentException;
 use Ramsey\Uuid\Fields\SerializableFieldsTrait;
 use Ramsey\Uuid\Rfc4122\FieldsInterface;
 use Ramsey\Uuid\Rfc4122\VariantTrait;
+use Ramsey\Uuid\Type\Hexadecimal;
 
 /**
  * Nonstandard UUID fields do not conform to the RFC 4122 standard
@@ -63,51 +64,51 @@ final class Fields implements FieldsInterface
         return $this->bytes;
     }
 
-    public function getClockSeq(): string
+    public function getClockSeq(): Hexadecimal
     {
         $clockSeq = hexdec(bin2hex(substr($this->bytes, 8, 2))) & 0x3fff;
 
-        return str_pad(dechex($clockSeq), 4, '0', STR_PAD_LEFT);
+        return new Hexadecimal(str_pad(dechex($clockSeq), 4, '0', STR_PAD_LEFT));
     }
 
-    public function getClockSeqHiAndReserved(): string
+    public function getClockSeqHiAndReserved(): Hexadecimal
     {
-        return bin2hex(substr($this->bytes, 8, 1));
+        return new Hexadecimal(bin2hex(substr($this->bytes, 8, 1)));
     }
 
-    public function getClockSeqLow(): string
+    public function getClockSeqLow(): Hexadecimal
     {
-        return bin2hex(substr($this->bytes, 9, 1));
+        return new Hexadecimal(bin2hex(substr($this->bytes, 9, 1)));
     }
 
-    public function getNode(): string
+    public function getNode(): Hexadecimal
     {
-        return bin2hex(substr($this->bytes, 10));
+        return new Hexadecimal(bin2hex(substr($this->bytes, 10)));
     }
 
-    public function getTimeHiAndVersion(): string
+    public function getTimeHiAndVersion(): Hexadecimal
     {
-        return bin2hex(substr($this->bytes, 6, 2));
+        return new Hexadecimal(bin2hex(substr($this->bytes, 6, 2)));
     }
 
-    public function getTimeLow(): string
+    public function getTimeLow(): Hexadecimal
     {
-        return bin2hex(substr($this->bytes, 0, 4));
+        return new Hexadecimal(bin2hex(substr($this->bytes, 0, 4)));
     }
 
-    public function getTimeMid(): string
+    public function getTimeMid(): Hexadecimal
     {
-        return bin2hex(substr($this->bytes, 4, 2));
+        return new Hexadecimal(bin2hex(substr($this->bytes, 4, 2)));
     }
 
-    public function getTimestamp(): string
+    public function getTimestamp(): Hexadecimal
     {
-        return sprintf(
+        return new Hexadecimal(sprintf(
             '%03x%04s%08s',
-            hexdec($this->getTimeHiAndVersion()) & 0x0fff,
-            $this->getTimeMid(),
-            $this->getTimeLow()
-        );
+            hexdec($this->getTimeHiAndVersion()->toString()) & 0x0fff,
+            $this->getTimeMid()->toString(),
+            $this->getTimeLow()->toString()
+        ));
     }
 
     public function getVersion(): ?int

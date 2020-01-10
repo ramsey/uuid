@@ -7,6 +7,7 @@ namespace Ramsey\Uuid\Test\Guid;
 use Ramsey\Uuid\Exception\InvalidArgumentException;
 use Ramsey\Uuid\Guid\Fields;
 use Ramsey\Uuid\Test\TestCase;
+use Ramsey\Uuid\Type\Hexadecimal;
 
 class FieldsTest extends TestCase
 {
@@ -102,7 +103,13 @@ class FieldsTest extends TestCase
         $bytes = (string) hex2bin($bytes);
         $fields = new Fields($bytes);
 
-        $this->assertSame($expectedValue, $fields->$methodName());
+        $result = $fields->$methodName();
+
+        if ($result instanceof Hexadecimal) {
+            $this->assertSame($expectedValue, $result->toString());
+        } else {
+            $this->assertSame($expectedValue, $result);
+        }
     }
 
     /**
