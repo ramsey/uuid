@@ -1,8 +1,5 @@
 # ramsey/uuid
 
-*NOTICE: Formerly known as `rhumsaa/uuid`, The package and namespace names have
-changed to `ramsey/uuid` and `Ramsey\Uuid`, respectively.*
-
 [![Source Code][badge-source]][source]
 [![Latest Version][badge-release]][release]
 [![Software License][badge-license]][license]
@@ -45,6 +42,78 @@ command to install the package and add it as a requirement to your project's
 
 ```bash
 composer require ramsey/uuid
+```
+
+
+## Upgrading from 3.x to 4.x
+
+_This section is a draft. It is incomplete._
+
+In the 4.x series, the following methods will always return strings:
+
+* `UuidInterface::getInteger()`
+* `Uuid::getTimeLow()`
+* `Uuid::getTimeMid()`
+* `Uuid::getTimeHiAndVersion()`
+* `Uuid::getClockSequence()`
+* `Uuid::getClockSeqHiAndReserved()`
+* `Uuid::getClockSeqLow()`
+* `Uuid::getNode()`
+* `Uuid::getLeastSignificantBits()`
+* `Uuid::getMostSignificantBits()`
+
+In 3.x, these methods returned varying types, depending on the environment:
+`int`, `string`, or `Moontoast\Math\BigNumber`. Moving to a string return type
+provides you with the flexibility to use the arbitrary-precision arithmetic
+library of your choice (i.e., bcmath, gmp, moontoast/math, phpseclib/phpseclib,
+brick/math, etc.).
+
+While still on the ramsey/uuid 3.x series, you may ease this transition by
+casting the return value these methods to a string and passing the result to a
+`Moontoast\Math\BigNumber` object (if already using moontoast/math) or
+transitioning to brick/math, etc. For example:
+
+``` php
+$bigNumber = new \Moontoast\Math\BigNumber($uuid->getInteger()->toString());
+
+// or
+
+$bigInteger = \Brick\Math\BigInteger::of($uuid->getInteger()->toString());
+```
+
+In 4.x, `Uuid::getFields()` returns an instance of `Fields\FieldsInterface`.
+Previously, it returned an array of integer values (on 64-bit systems only).
+
+For methods of `Fields\FieldsInterface` that return UUID fields (e.g.
+`getTimeLow()`, `getNode()`, etc.) use the return type `Type\Hexadecimal`. If
+you need the integer values for these fields, we recommend using the
+arbitrary-precision library of your choice (i.e., bcmath, gmp, brick/math, etc.)
+to convert them. Each is an unsigned integer, and some fields (time low, and
+node) are large enough that they will overflow the system's max integer values,
+so arbitrary-precision arithmetic is necessary to operate on them.
+
+For example, you may choose brick/math to convert the node field to a string
+integer:
+
+``` php
+// This works only in ramsey/uuid 4.x.
+$bigInteger = \Brick\Math\BigInteger::fromBase($uuid->getFields()->getNode(), 16);
+```
+
+While still on the ramsey/uuid 3.x series, you may ease this transition by
+building an array like this:
+
+``` php
+use Brick\Math\BigInteger;
+
+$fields = [
+    'time_low' => (string) BigInteger::fromBase($uuid->getTimeLowHex(), 16),
+    'time_mid' => (string) BigInteger::fromBase($uuid->getTimeMidHex(), 16),
+    'time_hi_and_version' => (string) BigInteger::fromBase($uuid->getTimeHiAndVersionHex(), 16),
+    'clock_seq_hi_and_reserved' => (string) BigInteger::fromBase($uuid->getClockSeqHiAndReservedHex(), 16),
+    'clock_seq_low' => (string) BigInteger::fromBase($uuid->getClockSeqLowHex(), 16),
+    'node' => (string) BigInteger::fromBase($uuid->getNodeHex(), 16),
+];
 ```
 
 
@@ -92,20 +161,6 @@ composer require ramsey/uuid=^2.9
 After doing so, you will have the latest ramsey/uuid package in the 2.x series,
 and there will be no need to modify any code; the namespace in the 2.x series is
 still `Rhumsaa`.
-
-
-## Requirements
-
-Some methods in this library have requirements due to integer size restrictions
-on 32-bit and 64-bit builds of PHP. A 64-bit build of PHP and either the [GMP
-PHP-extension][ext-gmp] or the [Moontoast\Math][] library are recommended.
-However, this library is designed to work on 32-bit builds of PHP without GMP
-or Moontoast\Math, with some degraded functionality. Please check the API
-documentation for more information.
-
-If a particular requirement is not present, then an
-`UnsatisfiedDependencyException` is thrown, allowing one to catch a bad call in
-an environment where the call is not supported and gracefully degrade.
 
 
 ## Examples
