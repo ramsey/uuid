@@ -228,6 +228,17 @@ class Uuid implements UuidInterface
     {
         return $this->toString();
     }
+    
+    /**
+     * Converts this UUID object to a string. Needed for custom APIs which require
+     * an object here with 'value' field (e.g. FHIRResource::getId() in FHIR R4 medical standard).
+     *
+     * @return string
+     */
+    public function getValue()
+    {
+        return $this->toString();
+    }
 
     /**
      * Re-constructs the object from its serialized form.
