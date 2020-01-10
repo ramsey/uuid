@@ -36,10 +36,10 @@
         "vimeo/psalm": "^3.7.2"
     },
     "suggest": {
-        "ext-bcmath": "Provides support for working with arbitrary-precision integers (using BCMath).",
-        "ext-ctype": "Provides support for PHP ctype functions",
-        "ext-gmp": "Provides support for working with arbitrary-precision integers (using GMP).",
-        "ext-uuid": "Provides the PECL UUID extension for use with the PeclUuidTimeGenerator and PeclUuidRandomGenerator",
+        "ext-bcmath": "Enables faster math with arbitrary-precision integers using BCMath.",
+        "ext-ctype": "Enables faster processing of character classification using ctype functions.",
+        "ext-gmp": "Enables faster math with arbitrary-precision integers using GMP.",
+        "ext-uuid": "Enables the use of PeclUuidTimeGenerator and PeclUuidRandomGenerator.",
         "ramsey/uuid-doctrine": "Allows the use of Ramsey\\Uuid\\Uuid as Doctrine field type.",
         "paragonie/random-lib": "Provides RandomLib for use with the RandomLibAdapter"
     },
