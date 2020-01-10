@@ -16,7 +16,6 @@
         "symfony/polyfill-ctype": "^1.8"
     },
     "require-dev": {
-        "ext-gmp": "*",
         "codeception/aspect-mock": "^3",
         "dealerdirect/phpcodesniffer-composer-installer": "^0.5.0",
         "doctrine/annotations": "^1.8",
@@ -37,13 +36,10 @@
         "vimeo/psalm": "^3.7.2"
     },
     "suggest": {
-        "ext-ctype": "Provides support for PHP Ctype functions",
-        "ext-gmp": "Provides support for converting UUID to 128-bit integer (in string form).",
-        "ext-libsodium": "Provides the PECL libsodium extension for use with the SodiumRandomGenerator",
-        "ext-openssl": "Provides the OpenSSL extension for use with the OpenSslGenerator",
+        "ext-bcmath": "Provides support for working with arbitrary-precision integers (using BCMath).",
+        "ext-ctype": "Provides support for PHP ctype functions",
+        "ext-gmp": "Provides support for working with arbitrary-precision integers (using GMP).",
         "ext-uuid": "Provides the PECL UUID extension for use with the PeclUuidTimeGenerator and PeclUuidRandomGenerator",
-        "moontoast/math": "Provides support for converting UUID to 128-bit integer (in string form).",
-        "ramsey/uuid-console": "A console application for generating UUIDs with ramsey/uuid",
         "ramsey/uuid-doctrine": "Allows the use of Ramsey\\Uuid\\Uuid as Doctrine field type.",
         "paragonie/random-lib": "Provides RandomLib for use with the RandomLibAdapter"
     },
