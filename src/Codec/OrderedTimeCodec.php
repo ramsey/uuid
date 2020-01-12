@@ -16,6 +16,7 @@ namespace Ramsey\Uuid\Codec;
 
 use Ramsey\Uuid\Exception\InvalidArgumentException;
 use Ramsey\Uuid\Exception\UnsupportedOperationException;
+use Ramsey\Uuid\Rfc4122\FieldsInterface;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
@@ -51,22 +52,23 @@ class OrderedTimeCodec extends StringCodec
         if (
             $uuid->getVariant() !== Uuid::RFC_4122
             || $uuid->getVersion() !== Uuid::UUID_TYPE_TIME
+            || !($uuid->getFields() instanceof FieldsInterface)
         ) {
             throw new InvalidArgumentException(
-                'Expected version 1 (time-based) UUID; received '
-                . var_export($uuid->toString(), true)
+                'Expected RFC 4122 version 1 (time-based) UUID'
             );
         }
 
-        $fields = $uuid->getFieldsHex();
+        /** @var FieldsInterface $fields */
+        $fields = $uuid->getFields();
 
         $optimized = [
-            $fields['time_hi_and_version'],
-            $fields['time_mid'],
-            $fields['time_low'],
-            $fields['clock_seq_hi_and_reserved'],
-            $fields['clock_seq_low'],
-            $fields['node'],
+            $fields->getTimeHiAndVersion()->toString(),
+            $fields->getTimeMid()->toString(),
+            $fields->getTimeLow()->toString(),
+            $fields->getClockSeqHiAndReserved()->toString(),
+            $fields->getClockSeqLow()->toString(),
+            $fields->getNode()->toString(),
         ];
 
         return (string) hex2bin(implode('', $optimized));

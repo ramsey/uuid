@@ -16,6 +16,7 @@ namespace Ramsey\Uuid\Codec;
 
 use Ramsey\Uuid\Exception\InvalidArgumentException;
 use Ramsey\Uuid\Exception\InvalidUuidStringException;
+use Ramsey\Uuid\Rfc4122\FieldsInterface;
 use Ramsey\Uuid\UuidInterface;
 
 /**
@@ -49,7 +50,17 @@ class TimestampFirstCombCodec extends StringCodec
      */
     public function encode(UuidInterface $uuid): string
     {
-        $sixPieceComponents = array_values($uuid->getFieldsHex());
+        /** @var FieldsInterface $fields */
+        $fields = $uuid->getFields();
+
+        $sixPieceComponents = [
+            $fields->getTimeLow()->toString(),
+            $fields->getTimeMid()->toString(),
+            $fields->getTimeHiAndVersion()->toString(),
+            $fields->getClockSeqHiAndReserved()->toString(),
+            $fields->getClockSeqLow()->toString(),
+            $fields->getNode()->toString(),
+        ];
 
         $sixPieceComponents = $this->swapTimestampAndRandomBits($sixPieceComponents);
 

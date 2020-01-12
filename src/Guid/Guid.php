@@ -17,6 +17,7 @@ namespace Ramsey\Uuid\Guid;
 use Ramsey\Uuid\Codec\CodecInterface;
 use Ramsey\Uuid\Converter\NumberConverterInterface;
 use Ramsey\Uuid\Converter\TimeConverterInterface;
+use Ramsey\Uuid\Math\CalculatorInterface;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
@@ -43,11 +44,13 @@ class Guid extends Uuid implements UuidInterface
         array $fields,
         NumberConverterInterface $numberConverter,
         CodecInterface $codec,
-        TimeConverterInterface $timeConverter
+        TimeConverterInterface $timeConverter,
+        CalculatorInterface $calculator
     ) {
         $this->fields = new Fields((string) hex2bin(implode('', $fields)));
         $this->codec = $codec;
         $this->numberConverter = $numberConverter;
         $this->timeConverter = $timeConverter;
+        $this->calculator = $calculator;
     }
 }

@@ -19,6 +19,8 @@ use Ramsey\Uuid\Converter\NumberConverterInterface;
 use Ramsey\Uuid\Converter\Time\DegradedTimeConverter;
 use Ramsey\Uuid\Converter\TimeConverterInterface;
 use Ramsey\Uuid\DegradedUuid;
+use Ramsey\Uuid\Math\BrickMathCalculator;
+use Ramsey\Uuid\Math\CalculatorInterface;
 use Ramsey\Uuid\UuidInterface;
 
 /**
@@ -40,17 +42,26 @@ class DegradedUuidBuilder implements UuidBuilderInterface
     private $timeConverter;
 
     /**
+     * @var CalculatorInterface
+     */
+    private $calculator;
+
+    /**
      * @param NumberConverterInterface $numberConverter The number converter to
      *     use when constructing the DegradedUuid
-     * @param TimeConverterInterface $timeConverter The time converter to use
+     * @param TimeConverterInterface|null $timeConverter The time converter to use
      *     for converting timestamps extracted from a UUID to Unix timestamps
+     * @param CalculatorInterface|null $calculator The calculator to use for
+     *     performing mathematical operations on UUIDs
      */
     public function __construct(
         NumberConverterInterface $numberConverter,
-        ?TimeConverterInterface $timeConverter = null
+        ?TimeConverterInterface $timeConverter = null,
+        ?CalculatorInterface $calculator = null
     ) {
         $this->numberConverter = $numberConverter;
         $this->timeConverter = $timeConverter ?: new DegradedTimeConverter();
+        $this->calculator = $calculator ?: new BrickMathCalculator();
     }
 
     /**
@@ -68,7 +79,8 @@ class DegradedUuidBuilder implements UuidBuilderInterface
             $fields,
             $this->numberConverter,
             $codec,
-            $this->timeConverter
+            $this->timeConverter,
+            $this->calculator
         );
     }
 }

@@ -45,6 +45,7 @@ final class UuidIsImmutable
      * @return mixed[]
      *
      * @psalm-pure
+     * @psalm-suppress DeprecatedMethod
      */
     public static function pureGetters(UuidInterface $a): array
     {

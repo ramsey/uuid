@@ -128,6 +128,11 @@ final class BrickMathCalculator implements CalculatorInterface
         return new Hexadecimal($this->toBase($value, 16));
     }
 
+    public function toIntegerValue(Hexadecimal $value): IntegerValue
+    {
+        return $this->fromBase($value->toString(), 16);
+    }
+
     /**
      * Maps ramsey/uuid rounding modes to those used by brick/math
      */

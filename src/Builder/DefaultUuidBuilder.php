@@ -17,6 +17,7 @@ namespace Ramsey\Uuid\Builder;
 use Ramsey\Uuid\Codec\CodecInterface;
 use Ramsey\Uuid\Converter\NumberConverterInterface;
 use Ramsey\Uuid\Converter\TimeConverterInterface;
+use Ramsey\Uuid\Math\CalculatorInterface;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
@@ -38,27 +39,35 @@ class DefaultUuidBuilder implements UuidBuilderInterface
     private $timeConverter;
 
     /**
+     * @var CalculatorInterface
+     */
+    private $calculator;
+
+    /**
      * Constructs the DefaultUuidBuilder
      *
      * @param NumberConverterInterface $numberConverter The number converter to
      *     use when constructing the Uuid
      * @param TimeConverterInterface $timeConverter The time converter to use
      *     for converting timestamps extracted from a UUID to Unix timestamps
+     * @param CalculatorInterface $calculator The calculator to use for
+     *     performing mathematical operations on UUIDs
      */
     public function __construct(
         NumberConverterInterface $numberConverter,
-        TimeConverterInterface $timeConverter
+        TimeConverterInterface $timeConverter,
+        CalculatorInterface $calculator
     ) {
         $this->numberConverter = $numberConverter;
         $this->timeConverter = $timeConverter;
+        $this->calculator = $calculator;
     }
 
     /**
      * Builds and returns a Uuid
      *
      * @param CodecInterface $codec The codec to use for building this Uuid instance
-     * @param string[] $fields An array of fields from which to construct a Uuid instance;
-     *     see {@see \Ramsey\Uuid\UuidInterface::getFieldsHex()} for array structure.
+     * @param string[] $fields An array of fields from which to construct a Uuid instance
      *
      * @return Uuid The DefaultUuidBuilder returns an instance of Ramsey\Uuid\Uuid
      */
@@ -68,7 +77,8 @@ class DefaultUuidBuilder implements UuidBuilderInterface
             $fields,
             $this->numberConverter,
             $codec,
-            $this->timeConverter
+            $this->timeConverter,
+            $this->calculator
         );
     }
 }

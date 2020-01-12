@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace Ramsey\Uuid\Test\Encoder;
 
+use Mockery;
 use PHPUnit\Framework\MockObject\MockObject;
 use Ramsey\Uuid\Builder\UuidBuilderInterface;
 use Ramsey\Uuid\Codec\CodecInterface;
 use Ramsey\Uuid\Codec\TimestampLastCombCodec;
+use Ramsey\Uuid\Rfc4122\Fields;
 use Ramsey\Uuid\Test\TestCase;
 use Ramsey\Uuid\UuidInterface;
 
@@ -31,11 +33,12 @@ class TimestampLastCombCodecTest extends TestCase
 
     public function testEncoding(): void
     {
-        /** @var MockObject & UuidInterface $uuidMock */
-        $uuidMock = $this->getMockBuilder(UuidInterface::class)->getMock();
-        $uuidMock->expects($this->any())
-            ->method('getFieldsHex')
-            ->willReturn(['0800200c', '9a66', '11e1', '9b', '21', 'ff6f8cb0c57d']);
+        $fields = new Fields((string) hex2bin('0800200c9a6611e19b21ff6f8cb0c57d'));
+
+        $uuidMock = Mockery::mock(UuidInterface::class, [
+            'getFields' => $fields,
+        ]);
+
         $encodedUuid = $this->codec->encode($uuidMock);
 
         $this->assertSame('0800200c-9a66-11e1-9b21-ff6f8cb0c57d', $encodedUuid);

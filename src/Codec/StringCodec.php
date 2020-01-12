@@ -17,6 +17,7 @@ namespace Ramsey\Uuid\Codec;
 use Ramsey\Uuid\Builder\UuidBuilderInterface;
 use Ramsey\Uuid\Exception\InvalidArgumentException;
 use Ramsey\Uuid\Exception\InvalidUuidStringException;
+use Ramsey\Uuid\Rfc4122\FieldsInterface;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
@@ -47,11 +48,21 @@ class StringCodec implements CodecInterface
      */
     public function encode(UuidInterface $uuid): string
     {
-        $fields = array_values($uuid->getFieldsHex());
+        /** @var FieldsInterface $fields */
+        $fields = $uuid->getFields();
+
+        $components = [
+            $fields->getTimeLow()->toString(),
+            $fields->getTimeMid()->toString(),
+            $fields->getTimeHiAndVersion()->toString(),
+            $fields->getClockSeqHiAndReserved()->toString(),
+            $fields->getClockSeqLow()->toString(),
+            $fields->getNode()->toString(),
+        ];
 
         return vsprintf(
             '%08s-%04s-%04s-%02s%02s-%012s',
-            $fields
+            $components
         );
     }
 
@@ -151,8 +162,6 @@ class StringCodec implements CodecInterface
 
     /**
      * Returns the fields that make up this UUID
-     *
-     * @see \Ramsey\Uuid\UuidInterface::getFieldsHex()
      *
      * @param string[] $components An array of hexadecimal strings representing
      *     the fields of an RFC 4122 UUID

@@ -10,8 +10,10 @@ use Ramsey\Uuid\Builder\UuidBuilderInterface;
 use Ramsey\Uuid\Codec\GuidStringCodec;
 use Ramsey\Uuid\Converter\NumberConverterInterface;
 use Ramsey\Uuid\Converter\TimeConverterInterface;
+use Ramsey\Uuid\Guid\Fields;
 use Ramsey\Uuid\Guid\Guid;
 use Ramsey\Uuid\Guid\GuidBuilder;
+use Ramsey\Uuid\Math\CalculatorInterface;
 use Ramsey\Uuid\Test\TestCase;
 use Ramsey\Uuid\UuidInterface;
 
@@ -28,7 +30,7 @@ class GuidStringCodecTest extends TestCase
     private $uuid;
 
     /**
-     * @var string[]
+     * @var Fields
      */
     private $fields;
 
@@ -37,14 +39,7 @@ class GuidStringCodecTest extends TestCase
         parent::setUp();
         $this->builder = $this->getMockBuilder(UuidBuilderInterface::class)->getMock();
         $this->uuid = $this->getMockBuilder(UuidInterface::class)->getMock();
-        $this->fields = [
-            'time_low' => '12345678',
-            'time_mid' => '1234',
-            'time_hi_and_version' => '4bcd',
-            'clock_seq_hi_and_reserved' => 'ab',
-            'clock_seq_low' => 'ef',
-            'node' => '1234abcd4321',
-        ];
+        $this->fields = new Fields((string) hex2bin('785634123412cd4babef1234abcd4321'));
     }
 
     protected function tearDown(): void
@@ -56,7 +51,7 @@ class GuidStringCodecTest extends TestCase
     public function testEncodeUsesFieldsArray(): void
     {
         $this->uuid->expects($this->once())
-            ->method('getFieldsHex')
+            ->method('getFields')
             ->willReturn($this->fields);
         $codec = new GuidStringCodec($this->builder);
         $codec->encode($this->uuid);
@@ -64,7 +59,7 @@ class GuidStringCodecTest extends TestCase
 
     public function testEncodeReturnsFormattedString(): void
     {
-        $this->uuid->method('getFieldsHex')
+        $this->uuid->method('getFields')
             ->willReturn($this->fields);
         $codec = new GuidStringCodec($this->builder);
         $result = $codec->encode($this->uuid);
@@ -87,8 +82,9 @@ class GuidStringCodecTest extends TestCase
         $codec = new GuidStringCodec($this->builder);
         $numberConverter = Mockery::mock(NumberConverterInterface::class);
         $timeConverter = Mockery::mock(TimeConverterInterface::class);
+        $calculator = Mockery::mock(CalculatorInterface::class);
 
-        $uuid = new Guid($fields, $numberConverter, $codec, $timeConverter);
+        $uuid = new Guid($fields, $numberConverter, $codec, $timeConverter, $calculator);
 
         $bytes = $codec->encodeBinary($uuid);
 
@@ -101,7 +97,8 @@ class GuidStringCodecTest extends TestCase
 
         $numberConverter = Mockery::mock(NumberConverterInterface::class);
         $timeConverter = Mockery::mock(TimeConverterInterface::class);
-        $builder = new GuidBuilder($numberConverter, $timeConverter);
+        $calculator = Mockery::mock(CalculatorInterface::class);
+        $builder = new GuidBuilder($numberConverter, $timeConverter, $calculator);
         $codec = new GuidStringCodec($builder);
         $guid = $codec->decode($string);
 

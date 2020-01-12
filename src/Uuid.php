@@ -20,9 +20,9 @@ use Ramsey\Uuid\Codec\CodecInterface;
 use Ramsey\Uuid\Converter\NumberConverterInterface;
 use Ramsey\Uuid\Converter\TimeConverterInterface;
 use Ramsey\Uuid\Exception\DateTimeException;
-use Ramsey\Uuid\Exception\UnsatisfiedDependencyException;
 use Ramsey\Uuid\Exception\UnsupportedOperationException;
 use Ramsey\Uuid\Fields\FieldsInterface;
+use Ramsey\Uuid\Math\CalculatorInterface;
 use Ramsey\Uuid\Rfc4122\Fields;
 use Ramsey\Uuid\Rfc4122\FieldsInterface as Rfc4122FieldsInterface;
 
@@ -172,6 +172,11 @@ class Uuid implements UuidInterface
     protected $timeConverter;
 
     /**
+     * @var CalculatorInterface
+     */
+    protected $calculator;
+
+    /**
      * Creates a universally unique identifier (UUID) from an array of fields
      *
      * Unless you're making advanced use of this library to generate identifiers
@@ -195,17 +200,21 @@ class Uuid implements UuidInterface
      *     UUID strings
      * @param TimeConverterInterface $timeConverter The time converter to use
      *     for converting timestamps extracted from a UUID to unix timestamps
+     * @param CalculatorInterface $calculator The calculator to use for performing
+     *     mathematical operations on UUIDs
      */
     public function __construct(
         array $fields,
         NumberConverterInterface $numberConverter,
         CodecInterface $codec,
-        TimeConverterInterface $timeConverter
+        TimeConverterInterface $timeConverter,
+        CalculatorInterface $calculator
     ) {
         $this->fields = new Fields((string) hex2bin(implode('', $fields)));
         $this->codec = $codec;
         $this->numberConverter = $numberConverter;
         $this->timeConverter = $timeConverter;
+        $this->calculator = $calculator;
     }
 
     public function __toString(): string
@@ -242,7 +251,7 @@ class Uuid implements UuidInterface
         /** @var \Ramsey\Uuid\Uuid $uuid */
         $uuid = self::fromString($serialized);
         $this->codec = $uuid->codec;
-        $this->numberConverter = $uuid->getNumberConverter();
+        $this->numberConverter = $uuid->numberConverter;
         $this->fields = $uuid->fields;
     }
 
@@ -282,56 +291,75 @@ class Uuid implements UuidInterface
     }
 
     /**
-     * Returns the high field of the clock sequence multiplexed with the variant
+     * @deprecated Use {@see UuidInterface::getFields()} to get a
+     *     {@see FieldsInterface} instance. If it is a {@see Rfc4122FieldsInterface}
+     *     instance, you may call {@see Rfc4122FieldsInterface::getClockSeqHiAndReserved()}
+     *     and use the arbitrary-precision math library of your choice to
+     *     convert it to a string integer.
      */
     public function getClockSeqHiAndReserved(): string
     {
         return $this->numberConverter->fromHex($this->fields->getClockSeqHiAndReserved()->toString());
     }
 
+    /**
+     * @deprecated Use {@see UuidInterface::getFields()} to get a
+     *     {@see FieldsInterface} instance. If it is a {@see Rfc4122FieldsInterface}
+     *     instance, you may call {@see Rfc4122FieldsInterface::getClockSeqHiAndReserved()}.
+     */
     public function getClockSeqHiAndReservedHex(): string
     {
         return $this->fields->getClockSeqHiAndReserved()->toString();
     }
 
     /**
-     * Returns the low field of the clock sequence
+     * @deprecated Use {@see UuidInterface::getFields()} to get a
+     *     {@see FieldsInterface} instance. If it is a {@see Rfc4122FieldsInterface}
+     *     instance, you may call {@see Rfc4122FieldsInterface::getClockSeqLow()}
+     *     and use the arbitrary-precision math library of your choice to
+     *     convert it to a string integer.
      */
     public function getClockSeqLow(): string
     {
         return $this->numberConverter->fromHex($this->fields->getClockSeqLow()->toString());
     }
 
+    /**
+     * @deprecated Use {@see UuidInterface::getFields()} to get a
+     *     {@see FieldsInterface} instance. If it is a {@see Rfc4122FieldsInterface}
+     *     instance, you may call {@see Rfc4122FieldsInterface::getClockSeqLow()}.
+     */
     public function getClockSeqLowHex(): string
     {
         return $this->fields->getClockSeqLow()->toString();
     }
 
     /**
-     * Returns the full clock sequence value
-     *
-     * For UUID version 1, the clock sequence is used to help avoid
-     * duplicates that could arise when the clock is set backwards in time
-     * or if the node ID changes.
-     *
-     * For UUID version 3 or 5, the clock sequence is a 14-bit value
-     * constructed from a name as described in RFC 4122, Section 4.3.
-     *
-     * For UUID version 4, clock sequence is a randomly or pseudo-randomly
-     * generated 14-bit value as described in RFC 4122, Section 4.4.
-     *
-     * @link http://tools.ietf.org/html/rfc4122#section-4.1.5 RFC 4122, § 4.1.5: Clock Sequence
+     * @deprecated Use {@see UuidInterface::getFields()} to get a
+     *     {@see FieldsInterface} instance. If it is a {@see Rfc4122FieldsInterface}
+     *     instance, you may call {@see Rfc4122FieldsInterface::getClockSeq()}
+     *     and use the arbitrary-precision math library of your choice to
+     *     convert it to a string integer.
      */
     public function getClockSequence(): string
     {
         return $this->numberConverter->fromHex($this->fields->getClockSeq()->toString());
     }
 
+    /**
+     * @deprecated Use {@see UuidInterface::getFields()} to get a
+     *     {@see FieldsInterface} instance. If it is a {@see Rfc4122FieldsInterface}
+     *     instance, you may call {@see Rfc4122FieldsInterface::getClockSeq()}.
+     */
     public function getClockSequenceHex(): string
     {
         return $this->fields->getClockSeq()->toString();
     }
 
+    /**
+     * @deprecated This method will be removed in 5.0.0. There is no alternative
+     *     recommendation, so plan accordingly.
+     */
     public function getNumberConverter(): NumberConverterInterface
     {
         return $this->numberConverter;
@@ -349,7 +377,9 @@ class Uuid implements UuidInterface
             throw new UnsupportedOperationException('Not a time-based UUID');
         }
 
-        $unixTime = $this->timeConverter->convertTime($this->getTimestamp());
+        $unixTime = $this->timeConverter->convertTime(
+            $this->calculator->toIntegerValue($this->fields->getTimestamp())->toString()
+        );
 
         try {
             return new DateTimeImmutable("@{$unixTime}");
@@ -371,6 +401,9 @@ class Uuid implements UuidInterface
     }
 
     /**
+     * @deprecated Use {@see UuidInterface::getFields()} to get a
+     *     {@see FieldsInterface} instance.
+     *
      * @return string[]
      */
     public function getFieldsHex(): array
@@ -432,96 +465,99 @@ class Uuid implements UuidInterface
     }
 
     /**
-     * Returns the node value associated with this UUID
-     *
-     * For UUID version 1, the node field consists of an IEEE 802 MAC
-     * address, usually the host address. For systems with multiple IEEE
-     * 802 addresses, any available one can be used. The lowest addressed
-     * octet (octet number 10) contains the global/local bit and the
-     * unicast/multicast bit, and is the first octet of the address
-     * transmitted on an 802.3 LAN.
-     *
-     * For systems with no IEEE address, a randomly or pseudo-randomly
-     * generated value may be used; see RFC 4122, Section 4.5. The
-     * multicast bit must be set in such addresses, in order that they
-     * will never conflict with addresses obtained from network cards.
-     *
-     * For UUID version 3 or 5, the node field is a 48-bit value constructed
-     * from a name as described in RFC 4122, Section 4.3.
-     *
-     * For UUID version 4, the node field is a randomly or pseudo-randomly
-     * generated 48-bit value as described in RFC 4122, Section 4.4.
-     *
-     * @link http://tools.ietf.org/html/rfc4122#section-4.1.6 RFC 4122, § 4.1.6: Node
-     *
-     * @return string Unsigned 48-bit integer value of node
-     *
-     * @throws UnsatisfiedDependencyException if large integer support is not available
+     * @deprecated Use {@see UuidInterface::getFields()} to get a
+     *     {@see FieldsInterface} instance. If it is a {@see Rfc4122FieldsInterface}
+     *     instance, you may call {@see Rfc4122FieldsInterface::getNode()}
+     *     and use the arbitrary-precision math library of your choice to
+     *     convert it to a string integer.
      */
     public function getNode(): string
     {
         return $this->numberConverter->fromHex($this->fields->getNode()->toString());
     }
 
+    /**
+     * @deprecated Use {@see UuidInterface::getFields()} to get a
+     *     {@see FieldsInterface} instance. If it is a {@see Rfc4122FieldsInterface}
+     *     instance, you may call {@see Rfc4122FieldsInterface::getNode()}.
+     */
     public function getNodeHex(): string
     {
         return $this->fields->getNode()->toString();
     }
 
     /**
-     * Returns the high field of the timestamp multiplexed with the version
+     * @deprecated Use {@see UuidInterface::getFields()} to get a
+     *     {@see FieldsInterface} instance. If it is a {@see Rfc4122FieldsInterface}
+     *     instance, you may call {@see Rfc4122FieldsInterface::getTimeHiAndVersion()}
+     *     and use the arbitrary-precision math library of your choice to
+     *     convert it to a string integer.
      */
     public function getTimeHiAndVersion(): string
     {
         return $this->numberConverter->fromHex($this->fields->getTimeHiAndVersion()->toString());
     }
 
+    /**
+     * @deprecated Use {@see UuidInterface::getFields()} to get a
+     *     {@see FieldsInterface} instance. If it is a {@see Rfc4122FieldsInterface}
+     *     instance, you may call {@see Rfc4122FieldsInterface::getTimeHiAndVersion()}.
+     */
     public function getTimeHiAndVersionHex(): string
     {
         return $this->fields->getTimeHiAndVersion()->toString();
     }
 
     /**
-     * Returns the low field of the timestamp
+     * @deprecated Use {@see UuidInterface::getFields()} to get a
+     *     {@see FieldsInterface} instance. If it is a {@see Rfc4122FieldsInterface}
+     *     instance, you may call {@see Rfc4122FieldsInterface::getTimeLow()}
+     *     and use the arbitrary-precision math library of your choice to
+     *     convert it to a string integer.
      */
     public function getTimeLow(): string
     {
         return $this->numberConverter->fromHex($this->fields->getTimeLow()->toString());
     }
 
+    /**
+     * @deprecated Use {@see UuidInterface::getFields()} to get a
+     *     {@see FieldsInterface} instance. If it is a {@see Rfc4122FieldsInterface}
+     *     instance, you may call {@see Rfc4122FieldsInterface::getTimeLow()}.
+     */
     public function getTimeLowHex(): string
     {
         return $this->fields->getTimeLow()->toString();
     }
 
     /**
-     * Returns the middle field of the timestamp
+     * @deprecated Use {@see UuidInterface::getFields()} to get a
+     *     {@see FieldsInterface} instance. If it is a {@see Rfc4122FieldsInterface}
+     *     instance, you may call {@see Rfc4122FieldsInterface::getTimeMid()}
+     *     and use the arbitrary-precision math library of your choice to
+     *     convert it to a string integer.
      */
     public function getTimeMid(): string
     {
         return $this->numberConverter->fromHex($this->fields->getTimeMid()->toString());
     }
 
+    /**
+     * @deprecated Use {@see UuidInterface::getFields()} to get a
+     *     {@see FieldsInterface} instance. If it is a {@see Rfc4122FieldsInterface}
+     *     instance, you may call {@see Rfc4122FieldsInterface::getTimeMid()}.
+     */
     public function getTimeMidHex(): string
     {
         return $this->fields->getTimeMid()->toString();
     }
 
     /**
-     * Returns the full timestamp value
-     *
-     * The 60 bit timestamp value is constructed from the time_low,
-     * time_mid, and time_hi fields of this UUID. The resulting
-     * timestamp is measured in 100-nanosecond units since midnight,
-     * October 15, 1582 UTC.
-     *
-     * The timestamp value is only meaningful in a time-based UUID, which
-     * has version type 1.
-     *
-     * @link http://tools.ietf.org/html/rfc4122#section-4.1.4 RFC 4122, § 4.1.4: Timestamp
-     *
-     * @throws UnsatisfiedDependencyException if large integer support is not available
-     * @throws UnsupportedOperationException if UUID is not time-based
+     * @deprecated Use {@see UuidInterface::getFields()} to get a
+     *     {@see FieldsInterface} instance. If it is a {@see Rfc4122FieldsInterface}
+     *     instance, you may call {@see Rfc4122FieldsInterface::getTimestamp()}
+     *     and use the arbitrary-precision math library of your choice to
+     *     convert it to a string integer.
      */
     public function getTimestamp(): string
     {
@@ -532,6 +568,11 @@ class Uuid implements UuidInterface
         return $this->numberConverter->fromHex($this->fields->getTimestamp()->toString());
     }
 
+    /**
+     * @deprecated Use {@see UuidInterface::getFields()} to get a
+     *     {@see FieldsInterface} instance. If it is a {@see Rfc4122FieldsInterface}
+     *     instance, you may call {@see Rfc4122FieldsInterface::getTimestamp()}.
+     */
     public function getTimestampHex(): string
     {
         if ($this->getVersion() !== 1) {

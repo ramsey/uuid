@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace Ramsey\Uuid\Test\Builder;
 
-use PHPUnit\Framework\MockObject\MockObject;
+use Mockery;
 use Ramsey\Uuid\Builder\DefaultUuidBuilder;
 use Ramsey\Uuid\Codec\CodecInterface;
 use Ramsey\Uuid\Converter\NumberConverterInterface;
 use Ramsey\Uuid\Converter\TimeConverterInterface;
+use Ramsey\Uuid\Math\CalculatorInterface;
 use Ramsey\Uuid\Test\TestCase;
 use Ramsey\Uuid\Uuid;
 
@@ -16,16 +17,12 @@ class DefaultUuidBuilderTest extends TestCase
 {
     public function testBuildCreatesUuid(): void
     {
-        /** @var MockObject & NumberConverterInterface $numberConverter */
-        $numberConverter = $this->getMockBuilder(NumberConverterInterface::class)->getMock();
+        $numberConverter = Mockery::mock(NumberConverterInterface::class);
+        $timeConverter = Mockery::mock(TimeConverterInterface::class);
+        $calculator = Mockery::mock(CalculatorInterface::class);
+        $codec = Mockery::mock(CodecInterface::class);
 
-        /** @var MockObject & TimeConverterInterface $timeConverter */
-        $timeConverter = $this->getMockBuilder(TimeConverterInterface::class)->getMock();
-
-        $builder = new DefaultUuidBuilder($numberConverter, $timeConverter);
-
-        /** @var MockObject & CodecInterface $codec */
-        $codec = $this->getMockBuilder(CodecInterface::class)->getMock();
+        $builder = new DefaultUuidBuilder($numberConverter, $timeConverter, $calculator);
 
         $fields = [
             'time_low' => '754cd475',

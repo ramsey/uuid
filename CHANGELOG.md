@@ -61,9 +61,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 * Add `getTime()` method to `Provider\TimeProviderInterface`.
 * Change `Uuid::getFields()` to return an instance of `Fields\FieldsInterface`.
   Previously, it returned an array of integer values (on 64-bit systems only).
-* Introduce `TimeConverterInterface $timeConverter` as fourth required
+* Introduce `Converter\TimeConverterInterface $timeConverter` as fourth required
   constructor parameter for `Uuid` and second required constructor parameter for
   `Builder\DefaultUuidBuilder`.
+* Introduce `Math\CalculatorInterface $calculator` as the fifth required
+  constructor parameter for `Uuid` and the third required constructor parameter
+  for `Builder\DefaultUuidBuilder`.
 * Change `UuidInterface::getInteger()` to always return a `string` value instead
   of `mixed`. This is a string representation of a 128-bit integer. You may then
   use a math library of your choice (bcmath, gmp, etc.) to operate on the
@@ -89,15 +92,43 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Deprecated
 
+The following functionality is deprecated and will be removed in ramsey/uuid
+5.0.0.
+
+* The following methods from `UuidInterface` and `Uuid` are deprecated. Use their
+  counterparts on the `Rfc4122\FieldsInterface` returned by `Uuid::getFields()`.
+  * `getClockSeqHiAndReservedHex()`
+  * `getClockSeqLowHex()`
+  * `getClockSequenceHex()`
+  * `getFieldsHex()`
+  * `getNodeHex()`
+  * `getTimeHiAndVersionHex()`
+  * `getTimeLowHex()`
+  * `getTimeMidHex()`
+  * `getTimestampHex()`
+* The following methods from `Uuid` are deprecated. Use the `Rfc4122\FieldsInterface`
+  instance returned by `Uuid::getFields()` to get the `Type\Hexadecimal` value
+  for these fields, and then use the arbitrary-precision arithmetic library of
+  your choice to convert them to string integers.
+  * `getClockSeqHiAndReserved()`
+  * `getClockSeqLow()`
+  * `getClockSequence()`
+  * `getNode()`
+  * `getTimeHiAndVersion()`
+  * `getTimeLow()`
+  * `getTimeMid()`
+  * `getTimestamp()`
+* `UuidInterface::getNumberConverter()` and `Uuid::getNumberConverter()` are
+  deprecated. There is no alternative recommendation, so plan accordingly.
 * `Converter\Number\BigNumberConverter` is deprecated; transition to
   `Converter\Number\GenericNumberConverter`.
 * `Converter\Time\BigNumberTimeConverter` is deprecated; transition to
   `Converter\Time\GenericTimeConverter`.
 * `Provider\TimeProviderInterface::currentTime()` is deprecated; transition to
   the `getTimestamp()` method on the same interface.
-* The classes for representing and generating *degraded* UUIDs are deprecated
-  and will be removed in ramsey/uuid 5.0.0. These are no longer necessary; this
-  library now behaves the same on 32-bit and 64-bit PHP.
+* The classes for representing and generating *degraded* UUIDs are deprecated.
+  These are no longer necessary; this library now behaves the same on 32-bit and
+  64-bit PHP.
   * `Builder\DegradedUuidBuilder`
   * `Converter\Number\DegradedNumberConverter`
   * `Converter\Time\DegradedTimeConverter`

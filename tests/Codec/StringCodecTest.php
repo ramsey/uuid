@@ -7,6 +7,7 @@ namespace Ramsey\Uuid\Test\Codec;
 use PHPUnit\Framework\MockObject\MockObject;
 use Ramsey\Uuid\Builder\UuidBuilderInterface;
 use Ramsey\Uuid\Codec\StringCodec;
+use Ramsey\Uuid\Rfc4122\Fields;
 use Ramsey\Uuid\Test\TestCase;
 use Ramsey\Uuid\UuidInterface;
 
@@ -23,27 +24,21 @@ class StringCodecTest extends TestCase
     private $uuid;
 
     /**
-     * @var string[]
+     * @var Fields
      */
     private $fields;
 
     /**
      * @var string
      */
-    private $uuidString = '12345678-1234-abcd-abef-1234abcd4321';
+    private $uuidString = '12345678-1234-4bcd-abef-1234abcd4321';
 
     protected function setUp(): void
     {
         parent::setUp();
         $this->builder = $this->getMockBuilder(UuidBuilderInterface::class)->getMock();
         $this->uuid = $this->getMockBuilder(UuidInterface::class)->getMock();
-        $this->fields = ['time_low' => '12345678',
-            'time_mid' => '1234',
-            'time_hi_and_version' => 'abcd',
-            'clock_seq_hi_and_reserved' => 'ab',
-            'clock_seq_low' => 'ef',
-            'node' => '1234abcd4321',
-        ];
+        $this->fields = new Fields((string) hex2bin('1234567812344bcdabef1234abcd4321'));
     }
 
     protected function tearDown(): void
@@ -55,7 +50,7 @@ class StringCodecTest extends TestCase
     public function testEncodeUsesFieldsArray(): void
     {
         $this->uuid->expects($this->once())
-            ->method('getFieldsHex')
+            ->method('getFields')
             ->willReturn($this->fields);
         $codec = new StringCodec($this->builder);
         $codec->encode($this->uuid);
@@ -63,7 +58,7 @@ class StringCodecTest extends TestCase
 
     public function testEncodeReturnsFormattedString(): void
     {
-        $this->uuid->method('getFieldsHex')
+        $this->uuid->method('getFields')
             ->willReturn($this->fields);
         $codec = new StringCodec($this->builder);
         $result = $codec->encode($this->uuid);
@@ -84,10 +79,19 @@ class StringCodecTest extends TestCase
 
     public function testDecodeUsesBuilderOnFields(): void
     {
-        $string = 'uuid:12345678-1234-abcd-abef-1234abcd4321';
+        $fields = [
+            'time_low' => $this->fields->getTimeLow()->toString(),
+            'time_mid' => $this->fields->getTimeMid()->toString(),
+            'time_hi_and_version' => $this->fields->getTimeHiAndVersion()->toString(),
+            'clock_seq_hi_and_reserved' => $this->fields->getClockSeqHiAndReserved()->toString(),
+            'clock_seq_low' => $this->fields->getClockSeqLow()->toString(),
+            'node' => $this->fields->getNode()->toString(),
+        ];
+
+        $string = 'uuid:12345678-1234-4bcd-abef-1234abcd4321';
         $this->builder->expects($this->once())
             ->method('build')
-            ->with($this->isInstanceOf(StringCodec::class), $this->fields);
+            ->with($this->isInstanceOf(StringCodec::class), $fields);
         $codec = new StringCodec($this->builder);
         $codec->decode($string);
     }

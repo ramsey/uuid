@@ -69,7 +69,8 @@ interface UuidInterface extends JsonSerializable, Serializable
     public function getFields(): FieldsInterface;
 
     /**
-     * Returns the number converter to use when converting hex values to/from integers
+     * @deprecated This method will be removed in 5.0.0. There is no alternative
+     *     recommendation, so plan accordingly.
      */
     public function getNumberConverter(): NumberConverterInterface;
 
@@ -79,50 +80,34 @@ interface UuidInterface extends JsonSerializable, Serializable
     public function getHex(): string;
 
     /**
-     * Returns an array of the fields of the UUID, with keys named according
-     * to the RFC 4122 names for the fields
-     *
-     * * **time_low**: The low field of the timestamp, an unsigned 32-bit integer
-     * * **time_mid**: The middle field of the timestamp, an unsigned 16-bit integer
-     * * **time_hi_and_version**: The high field of the timestamp multiplexed with
-     *   the version number, an unsigned 16-bit integer
-     * * **clock_seq_hi_and_reserved**: The high field of the clock sequence
-     *   multiplexed with the variant, an unsigned 8-bit integer
-     * * **clock_seq_low**: The low field of the clock sequence, an unsigned
-     *   8-bit integer
-     * * **node**: The spatially unique node identifier, an unsigned 48-bit
-     *   integer
-     *
-     * @link http://tools.ietf.org/html/rfc4122#section-4.1.2 RFC 4122, § 4.1.2: Layout and Byte Order
+     * @deprecated Use {@see UuidInterface::getFields()} to get a
+     *     {@see FieldsInterface} instance.
      *
      * @return string[]
      */
     public function getFieldsHex(): array;
 
     /**
-     * Returns the high field of the clock sequence multiplexed with the variant
+     * @deprecated Use {@see UuidInterface::getFields()} to get a
+     *     {@see FieldsInterface} instance. If it is a
+     *     {@see \Ramsey\Uuid\Rfc4122\FieldsInterface} instance, you may call
+     *     {@see \Ramsey\Uuid\Rfc4122\FieldsInterface::getClockSeqHiAndReserved()}.
      */
     public function getClockSeqHiAndReservedHex(): string;
 
     /**
-     * Returns the low field of the clock sequence
+     * @deprecated Use {@see UuidInterface::getFields()} to get a
+     *     {@see FieldsInterface} instance. If it is a
+     *     {@see \Ramsey\Uuid\Rfc4122\FieldsInterface} instance, you may call
+     *     {@see \Ramsey\Uuid\Rfc4122\FieldsInterface::getClockSeqLow()}.
      */
     public function getClockSeqLowHex(): string;
 
     /**
-     * Returns the full clock sequence value
-     *
-     * For UUID version 1, the clock sequence is used to help avoid
-     * duplicates that could arise when the clock is set backwards in time
-     * or if the node ID changes.
-     *
-     * For UUID version 3 or 5, the clock sequence is a 14-bit value
-     * constructed from a name as described in RFC 4122, Section 4.3.
-     *
-     * For UUID version 4, clock sequence is a randomly or pseudo-randomly
-     * generated 14-bit value as described in RFC 4122, Section 4.4.
-     *
-     * @link http://tools.ietf.org/html/rfc4122#section-4.1.5 RFC 4122, § 4.1.5: Clock Sequence
+     * @deprecated Use {@see UuidInterface::getFields()} to get a
+     *     {@see FieldsInterface} instance. If it is a
+     *     {@see \Ramsey\Uuid\Rfc4122\FieldsInterface} instance, you may call
+     *     {@see \Ramsey\Uuid\Rfc4122\FieldsInterface::getClockSeq()}.
      */
     public function getClockSequenceHex(): string;
 
@@ -154,57 +139,42 @@ interface UuidInterface extends JsonSerializable, Serializable
     public function getMostSignificantBitsHex(): string;
 
     /**
-     * Returns the node value
-     *
-     * For UUID version 1, the node field consists of an IEEE 802 MAC
-     * address, usually the host address. For systems with multiple IEEE
-     * 802 addresses, any available one can be used. The lowest addressed
-     * octet (octet number 10) contains the global/local bit and the
-     * unicast/multicast bit, and is the first octet of the address
-     * transmitted on an 802.3 LAN.
-     *
-     * For systems with no IEEE address, a randomly or pseudo-randomly
-     * generated value may be used; see RFC 4122, Section 4.5. The
-     * multicast bit must be set in such addresses, in order that they
-     * will never conflict with addresses obtained from network cards.
-     *
-     * For UUID version 3 or 5, the node field is a 48-bit value constructed
-     * from a name as described in RFC 4122, Section 4.3.
-     *
-     * For UUID version 4, the node field is a randomly or pseudo-randomly
-     * generated 48-bit value as described in RFC 4122, Section 4.4.
-     *
-     * @link http://tools.ietf.org/html/rfc4122#section-4.1.6 RFC 4122, § 4.1.6: Node
+     * @deprecated Use {@see UuidInterface::getFields()} to get a
+     *     {@see FieldsInterface} instance. If it is a
+     *     {@see \Ramsey\Uuid\Rfc4122\FieldsInterface} instance, you may call
+     *     {@see \Ramsey\Uuid\Rfc4122\FieldsInterface::getNode()}.
      */
     public function getNodeHex(): string;
 
     /**
-     * Returns the high field of the timestamp multiplexed with the version
+     * @deprecated Use {@see UuidInterface::getFields()} to get a
+     *     {@see FieldsInterface} instance. If it is a
+     *     {@see \Ramsey\Uuid\Rfc4122\FieldsInterface} instance, you may call
+     *     {@see \Ramsey\Uuid\Rfc4122\FieldsInterface::getTimeHiAndVersion()}.
      */
     public function getTimeHiAndVersionHex(): string;
 
     /**
-     * Returns the low field of the timestamp
+     * @deprecated Use {@see UuidInterface::getFields()} to get a
+     *     {@see FieldsInterface} instance. If it is a
+     *     {@see \Ramsey\Uuid\Rfc4122\FieldsInterface} instance, you may call
+     *     {@see \Ramsey\Uuid\Rfc4122\FieldsInterface::getTimeLow()}.
      */
     public function getTimeLowHex(): string;
 
     /**
-     * Returns the middle field of the timestamp
+     * @deprecated Use {@see UuidInterface::getFields()} to get a
+     *     {@see FieldsInterface} instance. If it is a
+     *     {@see \Ramsey\Uuid\Rfc4122\FieldsInterface} instance, you may call
+     *     {@see \Ramsey\Uuid\Rfc4122\FieldsInterface::getTimeMid()}.
      */
     public function getTimeMidHex(): string;
 
     /**
-     * Returns the full timestamp value
-     *
-     * The 60 bit timestamp value is constructed from the time_low,
-     * time_mid, and time_hi fields of the UUID. The resulting
-     * timestamp is measured in 100-nanosecond units since midnight,
-     * October 15, 1582 UTC.
-     *
-     * The timestamp value is only meaningful in a time-based UUID, which
-     * has version type 1.
-     *
-     * @link http://tools.ietf.org/html/rfc4122#section-4.1.4 RFC 4122, § 4.1.4: Timestamp
+     * @deprecated Use {@see UuidInterface::getFields()} to get a
+     *     {@see FieldsInterface} instance. If it is a
+     *     {@see \Ramsey\Uuid\Rfc4122\FieldsInterface} instance, you may call
+     *     {@see \Ramsey\Uuid\Rfc4122\FieldsInterface::getTimestamp()}.
      */
     public function getTimestampHex(): string;
 

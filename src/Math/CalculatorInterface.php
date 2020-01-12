@@ -91,4 +91,9 @@ interface CalculatorInterface
      * Converts an IntegerValue instance to a Hexadecimal instance
      */
     public function toHexadecimal(IntegerValue $value): Hexadecimal;
+
+    /**
+     * Converts a Hexadecimal instance to an IntegerValue instance
+     */
+    public function toIntegerValue(Hexadecimal $value): IntegerValue;
 }

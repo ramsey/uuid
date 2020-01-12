@@ -13,6 +13,8 @@ use Ramsey\Uuid\Converter\NumberConverterInterface;
 use Ramsey\Uuid\Converter\TimeConverterInterface;
 use Ramsey\Uuid\Exception\InvalidArgumentException;
 use Ramsey\Uuid\Exception\UnsupportedOperationException;
+use Ramsey\Uuid\Math\CalculatorInterface;
+use Ramsey\Uuid\Rfc4122\Fields;
 use Ramsey\Uuid\Test\TestCase;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidFactory;
@@ -31,7 +33,7 @@ class OrderedTimeCodecTest extends TestCase
     private $uuid;
 
     /**
-     * @var string[]
+     * @var Fields
      */
     private $fields;
 
@@ -50,14 +52,7 @@ class OrderedTimeCodecTest extends TestCase
         parent::setUp();
         $this->builder = $this->getMockBuilder(UuidBuilderInterface::class)->getMock();
         $this->uuid = $this->getMockBuilder(UuidInterface::class)->getMock();
-        $this->fields = [
-            'time_low' => '58e0a7d7',
-            'time_mid' => 'eebc',
-            'time_hi_and_version' => '11d8',
-            'clock_seq_hi_and_reserved' => '96',
-            'clock_seq_low' => '69',
-            'node' => '0800200c9a66',
-        ];
+        $this->fields = new Fields((string) hex2bin('58e0a7d7eebc11d896690800200c9a66'));
     }
 
     protected function tearDown(): void
@@ -69,7 +64,7 @@ class OrderedTimeCodecTest extends TestCase
     public function testEncodeUsesFieldsArray(): void
     {
         $this->uuid->expects($this->once())
-            ->method('getFieldsHex')
+            ->method('getFields')
             ->willReturn($this->fields);
         $codec = new OrderedTimeCodec($this->builder);
         $codec->encode($this->uuid);
@@ -77,7 +72,7 @@ class OrderedTimeCodecTest extends TestCase
 
     public function testEncodeReturnsFormattedString(): void
     {
-        $this->uuid->method('getFieldsHex')
+        $this->uuid->method('getFields')
             ->willReturn($this->fields);
         $codec = new OrderedTimeCodec($this->builder);
         $result = $codec->encode($this->uuid);
@@ -90,7 +85,8 @@ class OrderedTimeCodecTest extends TestCase
 
         $numberConverter = Mockery::mock(NumberConverterInterface::class);
         $timeConverter = Mockery::mock(TimeConverterInterface::class);
-        $builder = new DefaultUuidBuilder($numberConverter, $timeConverter);
+        $calculator = Mockery::mock(CalculatorInterface::class);
+        $builder = new DefaultUuidBuilder($numberConverter, $timeConverter, $calculator);
         $codec = new OrderedTimeCodec($builder);
 
         $factory = new UuidFactory();
@@ -128,7 +124,8 @@ class OrderedTimeCodecTest extends TestCase
 
         $numberConverter = Mockery::mock(NumberConverterInterface::class);
         $timeConverter = Mockery::mock(TimeConverterInterface::class);
-        $builder = new DefaultUuidBuilder($numberConverter, $timeConverter);
+        $calculator = Mockery::mock(CalculatorInterface::class);
+        $builder = new DefaultUuidBuilder($numberConverter, $timeConverter, $calculator);
         $codec = new OrderedTimeCodec($builder);
 
         $factory = new UuidFactory();
@@ -146,7 +143,8 @@ class OrderedTimeCodecTest extends TestCase
 
         $numberConverter = Mockery::mock(NumberConverterInterface::class);
         $timeConverter = Mockery::mock(TimeConverterInterface::class);
-        $builder = new DefaultUuidBuilder($numberConverter, $timeConverter);
+        $calculator = Mockery::mock(CalculatorInterface::class);
+        $builder = new DefaultUuidBuilder($numberConverter, $timeConverter, $calculator);
         $codec = new OrderedTimeCodec($builder);
 
         $uuid = Mockery::mock(UuidInterface::class, [
@@ -156,8 +154,7 @@ class OrderedTimeCodecTest extends TestCase
 
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage(
-            'Expected version 1 (time-based) UUID; received '
-            . "'{$nonRfc4122Uuid}'"
+            'Expected RFC 4122 version 1 (time-based) UUID'
         );
 
         $codec->encodeBinary($uuid);
@@ -169,7 +166,8 @@ class OrderedTimeCodecTest extends TestCase
 
         $numberConverter = Mockery::mock(NumberConverterInterface::class);
         $timeConverter = Mockery::mock(TimeConverterInterface::class);
-        $builder = new DefaultUuidBuilder($numberConverter, $timeConverter);
+        $calculator = Mockery::mock(CalculatorInterface::class);
+        $builder = new DefaultUuidBuilder($numberConverter, $timeConverter, $calculator);
         $codec = new OrderedTimeCodec($builder);
 
         $factory = new UuidFactory();
@@ -179,8 +177,7 @@ class OrderedTimeCodecTest extends TestCase
 
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage(
-            'Expected version 1 (time-based) UUID; received '
-            . "'{$nonTimeBasedUuid}'"
+            'Expected RFC 4122 version 1 (time-based) UUID'
         );
 
         $codec->encodeBinary($uuid);
@@ -216,7 +213,8 @@ class OrderedTimeCodecTest extends TestCase
 
         $numberConverter = Mockery::mock(NumberConverterInterface::class);
         $timeConverter = Mockery::mock(TimeConverterInterface::class);
-        $builder = new DefaultUuidBuilder($numberConverter, $timeConverter);
+        $calculator = Mockery::mock(CalculatorInterface::class);
+        $builder = new DefaultUuidBuilder($numberConverter, $timeConverter, $calculator);
         $codec = new OrderedTimeCodec($builder);
 
         $factory = new UuidFactory();

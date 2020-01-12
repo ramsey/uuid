@@ -18,6 +18,7 @@ use Ramsey\Uuid\Builder\UuidBuilderInterface;
 use Ramsey\Uuid\Codec\CodecInterface;
 use Ramsey\Uuid\Converter\NumberConverterInterface;
 use Ramsey\Uuid\Converter\TimeConverterInterface;
+use Ramsey\Uuid\Math\CalculatorInterface;
 use Ramsey\Uuid\UuidInterface;
 
 /**
@@ -38,25 +39,33 @@ class GuidBuilder implements UuidBuilderInterface
     private $timeConverter;
 
     /**
+     * @var CalculatorInterface
+     */
+    private $calculator;
+
+    /**
      * @param NumberConverterInterface $numberConverter The number converter to
      *     use when constructing the Guid
      * @param TimeConverterInterface $timeConverter The time converter to use
      *     for converting timestamps extracted from a UUID to Unix timestamps
+     * @param CalculatorInterface $calculator The calculator to use for
+     *     performing mathematical operations on UUIDs
      */
     public function __construct(
         NumberConverterInterface $numberConverter,
-        TimeConverterInterface $timeConverter
+        TimeConverterInterface $timeConverter,
+        CalculatorInterface $calculator
     ) {
         $this->numberConverter = $numberConverter;
         $this->timeConverter = $timeConverter;
+        $this->calculator = $calculator;
     }
 
     /**
      * Builds and returns a Guid
      *
      * @param CodecInterface $codec The codec to use for building this Guid instance
-     * @param string[] $fields An array of fields from which to construct a Guid instance;
-     *     see {@see \Ramsey\Uuid\UuidInterface::getFieldsHex()} for array structure.
+     * @param string[] $fields An array of fields from which to construct a Guid instance.
      *
      * @return Guid The GuidBuilder returns an instance of Ramsey\Uuid\Guid\Guid
      */
@@ -66,7 +75,8 @@ class GuidBuilder implements UuidBuilderInterface
             $fields,
             $this->numberConverter,
             $codec,
-            $this->timeConverter
+            $this->timeConverter,
+            $this->calculator
         );
     }
 }
