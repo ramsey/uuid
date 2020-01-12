@@ -21,6 +21,7 @@ use Ramsey\Uuid\Converter\TimeConverterInterface;
 use Ramsey\Uuid\DegradedUuid;
 use Ramsey\Uuid\Math\BrickMathCalculator;
 use Ramsey\Uuid\Math\CalculatorInterface;
+use Ramsey\Uuid\Rfc4122\Fields as Rfc4122Fields;
 use Ramsey\Uuid\UuidInterface;
 
 /**
@@ -68,13 +69,14 @@ class DegradedUuidBuilder implements UuidBuilderInterface
      * Builds and returns a DegradedUuid
      *
      * @param CodecInterface $codec The codec to use for building this DegradedUuid instance
-     * @param string[] $fields An array of fields from which to construct a DegradedUuid instance;
-     *     see {@see \Ramsey\Uuid\UuidInterface::getFieldsHex()} for array structure.
+     * @param string[] $fields An array of fields from which to construct a DegradedUuid instance
      *
      * @return DegradedUuid The DegradedUuidBuild returns an instance of Ramsey\Uuid\DegradedUuid
      */
     public function build(CodecInterface $codec, array $fields): UuidInterface
     {
+        $fields = new Rfc4122Fields((string) hex2bin(implode('', $fields)));
+
         return new DegradedUuid(
             $fields,
             $this->numberConverter,

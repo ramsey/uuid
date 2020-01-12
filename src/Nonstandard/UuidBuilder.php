@@ -72,6 +72,8 @@ class UuidBuilder implements UuidBuilderInterface
      */
     public function build(CodecInterface $codec, array $fields): UuidInterface
     {
+        $fields = new Fields((string) hex2bin(implode('', $fields)));
+
         return new Uuid(
             $fields,
             $this->numberConverter,

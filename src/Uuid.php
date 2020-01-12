@@ -23,7 +23,6 @@ use Ramsey\Uuid\Exception\DateTimeException;
 use Ramsey\Uuid\Exception\UnsupportedOperationException;
 use Ramsey\Uuid\Fields\FieldsInterface;
 use Ramsey\Uuid\Math\CalculatorInterface;
-use Ramsey\Uuid\Rfc4122\Fields;
 use Ramsey\Uuid\Rfc4122\FieldsInterface as Rfc4122FieldsInterface;
 
 /**
@@ -192,8 +191,7 @@ class Uuid implements UuidInterface
      * $namespaceSha1Uuid = Uuid::uuid5(Uuid::NAMESPACE_URL, 'http://php.net/');
      * ```
      *
-     * @param string[] $fields An array of fields from which to construct a UUID;
-     *     see {@see \Ramsey\Uuid\UuidInterface::getFieldsHex()} for array structure
+     * @param Rfc4122FieldsInterface $fields The fields from which to construct a UUID
      * @param NumberConverterInterface $numberConverter The number converter to use
      *     for converting hex values to/from integers
      * @param CodecInterface $codec The codec to use when encoding or decoding
@@ -204,13 +202,13 @@ class Uuid implements UuidInterface
      *     mathematical operations on UUIDs
      */
     public function __construct(
-        array $fields,
+        Rfc4122FieldsInterface $fields,
         NumberConverterInterface $numberConverter,
         CodecInterface $codec,
         TimeConverterInterface $timeConverter,
         CalculatorInterface $calculator
     ) {
-        $this->fields = new Fields((string) hex2bin(implode('', $fields)));
+        $this->fields = $fields;
         $this->codec = $codec;
         $this->numberConverter = $numberConverter;
         $this->timeConverter = $timeConverter;

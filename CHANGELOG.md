@@ -61,6 +61,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 * Add `getTime()` method to `Provider\TimeProviderInterface`.
 * Change `Uuid::getFields()` to return an instance of `Fields\FieldsInterface`.
   Previously, it returned an array of integer values (on 64-bit systems only).
+* Change the first required constructor parameter for `Uuid` from
+  `array $fields` to `Rfc4122\FieldsInterface $fields`.
 * Introduce `Converter\TimeConverterInterface $timeConverter` as fourth required
   constructor parameter for `Uuid` and second required constructor parameter for
   `Builder\DefaultUuidBuilder`.

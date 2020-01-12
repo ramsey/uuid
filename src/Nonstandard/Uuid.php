@@ -28,20 +28,13 @@ use Ramsey\Uuid\UuidInterface;
  */
 class Uuid extends Rfc4122Uuid implements UuidInterface
 {
-    /**
-     * @param string[] $fields
-     */
     public function __construct(
-        array $fields,
+        Fields $fields,
         NumberConverterInterface $numberConverter,
         CodecInterface $codec,
         TimeConverterInterface $timeConverter,
         CalculatorInterface $calculator
     ) {
-        $this->fields = new Fields((string) hex2bin(implode('', $fields)));
-        $this->codec = $codec;
-        $this->numberConverter = $numberConverter;
-        $this->timeConverter = $timeConverter;
-        $this->calculator = $calculator;
+        parent::__construct($fields, $numberConverter, $codec, $timeConverter, $calculator);
     }
 }

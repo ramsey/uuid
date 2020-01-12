@@ -18,6 +18,7 @@ use Ramsey\Uuid\Codec\CodecInterface;
 use Ramsey\Uuid\Converter\NumberConverterInterface;
 use Ramsey\Uuid\Converter\TimeConverterInterface;
 use Ramsey\Uuid\Math\CalculatorInterface;
+use Ramsey\Uuid\Rfc4122\Fields as Rfc4122Fields;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
@@ -73,6 +74,8 @@ class DefaultUuidBuilder implements UuidBuilderInterface
      */
     public function build(CodecInterface $codec, array $fields): UuidInterface
     {
+        $fields = new Rfc4122Fields((string) hex2bin(implode('', $fields)));
+
         return new Uuid(
             $fields,
             $this->numberConverter,

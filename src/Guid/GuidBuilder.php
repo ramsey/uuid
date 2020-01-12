@@ -71,6 +71,8 @@ class GuidBuilder implements UuidBuilderInterface
      */
     public function build(CodecInterface $codec, array $fields): UuidInterface
     {
+        $fields = new Fields((string) hex2bin(implode('', $fields)));
+
         return new Guid(
             $fields,
             $this->numberConverter,

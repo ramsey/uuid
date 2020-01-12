@@ -68,17 +68,9 @@ class GuidStringCodecTest extends TestCase
 
     public function testEncodeBinary(): void
     {
-        $expectedBytes = hex2bin('785634123412cd4babef1234abcd4321');
+        $expectedBytes = (string) hex2bin('785634123412cd4babef1234abcd4321');
 
-        $fields = [
-            'time_low' => '78563412',
-            'time_mid' => '3412',
-            'time_hi_and_version' => 'cd4b',
-            'clock_seq_hi_and_reserved' => 'ab',
-            'clock_seq_low' => 'ef',
-            'node' => '1234abcd4321',
-        ];
-
+        $fields = new Fields($expectedBytes);
         $codec = new GuidStringCodec($this->builder);
         $numberConverter = Mockery::mock(NumberConverterInterface::class);
         $timeConverter = Mockery::mock(TimeConverterInterface::class);

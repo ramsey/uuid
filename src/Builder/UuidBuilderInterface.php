@@ -28,8 +28,7 @@ interface UuidBuilderInterface
      * Builds and returns a UuidInterface
      *
      * @param CodecInterface $codec The codec to use for building this UuidInterface instance
-     * @param string[] $fields An array of fields from which to construct a UuidInterface instance;
-     *     see {@see \Ramsey\Uuid\UuidInterface::getFieldsHex()} for array structure.
+     * @param string[] $fields An array of fields from which to construct a UuidInterface instance
      *
      * @return UuidInterface Implementations may choose to return more specific
      *     instances of UUIDs that implement UuidInterface
