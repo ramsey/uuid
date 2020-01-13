@@ -24,8 +24,13 @@ use Ramsey\Uuid\Generator\CombGenerator;
 use Ramsey\Uuid\Generator\RandomGeneratorFactory;
 use Ramsey\Uuid\Generator\RandomGeneratorInterface;
 use Ramsey\Uuid\Guid\Guid;
+use Ramsey\Uuid\Nonstandard\Uuid as NonstandardUuid;
 use Ramsey\Uuid\Provider\Time\FixedTimeProvider;
 use Ramsey\Uuid\Rfc4122\FieldsInterface;
+use Ramsey\Uuid\Rfc4122\UuidV1;
+use Ramsey\Uuid\Rfc4122\UuidV3;
+use Ramsey\Uuid\Rfc4122\UuidV4;
+use Ramsey\Uuid\Rfc4122\UuidV5;
 use Ramsey\Uuid\Type\Time;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidFactory;
@@ -955,6 +960,7 @@ class UuidTest extends TestCase
      * as the Python UUID library.
      *
      * @param string[] $fields
+     * @param class-string $class
      *
      * @dataProvider providePythonTests
      */
@@ -969,7 +975,8 @@ class UuidTest extends TestCase
         string $time,
         string $clockSeq,
         int $variant,
-        ?int $version
+        ?int $version,
+        string $class
     ): void {
         $uuids = [
             Uuid::fromString($string),
@@ -1000,6 +1007,7 @@ class UuidTest extends TestCase
             $this->assertSame($clockSeq, $uuid->getClockSequenceHex());
             $this->assertSame($variant, $uuid->getVariant());
             $this->assertSame($version, $uuid->getVersion());
+            $this->assertInstanceOf($class, $uuid);
         }
     }
 
@@ -1032,6 +1040,7 @@ class UuidTest extends TestCase
                 'clock_seq' => '0000',
                 'variant' => Uuid::RESERVED_NCS,
                 'version' => null,
+                'class' => Uuid::class,
             ],
             [
                 'string' => '00010203-0405-0607-0809-0a0b0c0d0e0f',
@@ -1052,6 +1061,7 @@ class UuidTest extends TestCase
                 'clock_seq' => '0809',
                 'variant' => Uuid::RESERVED_NCS,
                 'version' => null,
+                'class' => NonstandardUuid::class,
             ],
             [
                 'string' => '02d9e6d5-9467-382e-8f9b-9300a64ac3cd',
@@ -1072,6 +1082,7 @@ class UuidTest extends TestCase
                 'clock_seq' => '0f9b',
                 'variant' => Uuid::RFC_4122,
                 'version' => Uuid::UUID_TYPE_HASH_MD5,
+                'class' => UuidV3::class,
             ],
             [
                 'string' => '12345678-1234-5678-1234-567812345678',
@@ -1092,6 +1103,7 @@ class UuidTest extends TestCase
                 'clock_seq' => '1234',
                 'variant' => Uuid::RESERVED_NCS,
                 'version' => null,
+                'class' => NonstandardUuid::class,
             ],
             [
                 'string' => '6ba7b810-9dad-11d1-80b4-00c04fd430c8',
@@ -1112,6 +1124,7 @@ class UuidTest extends TestCase
                 'clock_seq' => '00b4',
                 'variant' => Uuid::RFC_4122,
                 'version' => Uuid::UUID_TYPE_TIME,
+                'class' => UuidV1::class,
             ],
             [
                 'string' => '6ba7b811-9dad-11d1-80b4-00c04fd430c8',
@@ -1132,6 +1145,7 @@ class UuidTest extends TestCase
                 'clock_seq' => '00b4',
                 'variant' => Uuid::RFC_4122,
                 'version' => Uuid::UUID_TYPE_TIME,
+                'class' => UuidV1::class,
             ],
             [
                 'string' => '6ba7b812-9dad-11d1-80b4-00c04fd430c8',
@@ -1152,6 +1166,7 @@ class UuidTest extends TestCase
                 'clock_seq' => '00b4',
                 'variant' => Uuid::RFC_4122,
                 'version' => Uuid::UUID_TYPE_TIME,
+                'class' => UuidV1::class,
             ],
             [
                 'string' => '6ba7b814-9dad-11d1-80b4-00c04fd430c8',
@@ -1172,6 +1187,7 @@ class UuidTest extends TestCase
                 'clock_seq' => '00b4',
                 'variant' => Uuid::RFC_4122,
                 'version' => Uuid::UUID_TYPE_TIME,
+                'class' => UuidV1::class,
             ],
             [
                 'string' => '7d444840-9dc0-11d1-b245-5ffdce74fad2',
@@ -1192,6 +1208,7 @@ class UuidTest extends TestCase
                 'clock_seq' => '3245',
                 'variant' => Uuid::RFC_4122,
                 'version' => Uuid::UUID_TYPE_TIME,
+                'class' => UuidV1::class,
             ],
             [
                 'string' => 'e902893a-9d22-3c7e-a7b8-d6e313b71d9f',
@@ -1212,6 +1229,7 @@ class UuidTest extends TestCase
                 'clock_seq' => '27b8',
                 'variant' => Uuid::RFC_4122,
                 'version' => Uuid::UUID_TYPE_HASH_MD5,
+                'class' => UuidV3::class,
             ],
             [
                 'string' => 'eb424026-6f54-4ef8-a4d0-bb658a1fc6cf',
@@ -1232,6 +1250,7 @@ class UuidTest extends TestCase
                 'clock_seq' => '24d0',
                 'variant' => Uuid::RFC_4122,
                 'version' => Uuid::UUID_TYPE_RANDOM,
+                'class' => UuidV4::class,
             ],
             [
                 'string' => 'f81d4fae-7dec-11d0-a765-00a0c91e6bf6',
@@ -1252,6 +1271,7 @@ class UuidTest extends TestCase
                 'clock_seq' => '2765',
                 'variant' => Uuid::RFC_4122,
                 'version' => Uuid::UUID_TYPE_TIME,
+                'class' => UuidV1::class,
             ],
             [
                 'string' => 'fffefdfc-fffe-fffe-fffe-fffefdfcfbfa',
@@ -1272,6 +1292,7 @@ class UuidTest extends TestCase
                 'clock_seq' => '3ffe',
                 'variant' => Uuid::RESERVED_FUTURE,
                 'version' => null,
+                'class' => NonstandardUuid::class,
             ],
             [
                 'string' => 'ffffffff-ffff-ffff-ffff-ffffffffffff',
@@ -1292,6 +1313,7 @@ class UuidTest extends TestCase
                 'clock_seq' => '3fff',
                 'variant' => Uuid::RESERVED_FUTURE,
                 'version' => null,
+                'class' => NonstandardUuid::class,
             ],
         ];
     }
@@ -1428,5 +1450,32 @@ class UuidTest extends TestCase
         );
 
         $uuid->getDateTime();
+    }
+
+    /**
+     * @param class-string $expectedClass
+     * @param mixed[] $args
+     *
+     * @dataProvider provideStaticMethods
+     */
+    public function testStaticCreationMethodsReturnSpecificUuidInstances(
+        string $expectedClass,
+        string $staticMethod,
+        array $args = []
+    ): void {
+        $this->assertInstanceOf($expectedClass, Uuid::$staticMethod(...$args));
+    }
+
+    /**
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingTraversableTypeHintSpecification
+     */
+    public function provideStaticMethods(): array
+    {
+        return [
+            [UuidV1::class, 'uuid1'],
+            [UuidV3::class, 'uuid3', [Uuid::NIL, 'foobar']],
+            [UuidV4::class, 'uuid4'],
+            [UuidV5::class, 'uuid5', [Uuid::NIL, 'foobar']],
+        ];
     }
 }
