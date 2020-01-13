@@ -16,7 +16,7 @@ namespace Ramsey\Uuid\Codec;
 
 use Ramsey\Uuid\Exception\InvalidArgumentException;
 use Ramsey\Uuid\Exception\UnsupportedOperationException;
-use Ramsey\Uuid\Rfc4122\FieldsInterface;
+use Ramsey\Uuid\Rfc4122\FieldsInterface as Rfc4122FieldsInterface;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
@@ -50,16 +50,15 @@ class OrderedTimeCodec extends StringCodec
     public function encodeBinary(UuidInterface $uuid): string
     {
         if (
-            $uuid->getVariant() !== Uuid::RFC_4122
-            || $uuid->getVersion() !== Uuid::UUID_TYPE_TIME
-            || !($uuid->getFields() instanceof FieldsInterface)
+            !($uuid->getFields() instanceof Rfc4122FieldsInterface)
+            || $uuid->getFields()->getVersion() !== Uuid::UUID_TYPE_TIME
         ) {
             throw new InvalidArgumentException(
                 'Expected RFC 4122 version 1 (time-based) UUID'
             );
         }
 
-        /** @var FieldsInterface $fields */
+        /** @var Rfc4122FieldsInterface $fields */
         $fields = $uuid->getFields();
 
         $optimized = [
@@ -92,24 +91,18 @@ class OrderedTimeCodec extends StringCodec
             );
         }
 
-        $unpacked = unpack('H*', $bytes);
+        // Rearrange the bytes to their original order.
+        $rearrangedBytes = substr($bytes, 4, 2)
+            . substr($bytes, 6, 2)
+            . substr($bytes, 2, 2)
+            . substr($bytes, 0, 2)
+            . substr($bytes, 8);
 
-        assert(is_string($unpacked[1]));
-
-        $hex = $unpacked[1];
-
-        // Rearrange the fields to their original order
-        $hex = substr($hex, 8, 4)
-            . substr($hex, 12, 4)
-            . substr($hex, 4, 4)
-            . substr($hex, 0, 4)
-            . substr($hex, 16);
-
-        $uuid = $this->decode($hex);
+        $uuid = parent::decodeBytes($rearrangedBytes);
 
         if (
-            $uuid->getVariant() !== Uuid::RFC_4122
-            || $uuid->getVersion() !== Uuid::UUID_TYPE_TIME
+            !($uuid->getFields() instanceof Rfc4122FieldsInterface)
+            || $uuid->getFields()->getVersion() !== Uuid::UUID_TYPE_TIME
         ) {
             throw new UnsupportedOperationException(
                 'Attempting to decode a non-time-based UUID using '

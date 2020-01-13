@@ -9,13 +9,17 @@ use PHPUnit\Framework\MockObject\MockObject;
 use Ramsey\Uuid\Builder\DefaultUuidBuilder;
 use Ramsey\Uuid\Builder\UuidBuilderInterface;
 use Ramsey\Uuid\Codec\OrderedTimeCodec;
+use Ramsey\Uuid\Converter\Number\GenericNumberConverter;
 use Ramsey\Uuid\Converter\NumberConverterInterface;
+use Ramsey\Uuid\Converter\Time\GenericTimeConverter;
 use Ramsey\Uuid\Converter\TimeConverterInterface;
 use Ramsey\Uuid\Exception\InvalidArgumentException;
 use Ramsey\Uuid\Exception\UnsupportedOperationException;
+use Ramsey\Uuid\Math\BrickMathCalculator;
+use Ramsey\Uuid\Nonstandard\Fields as NonstandardFields;
+use Ramsey\Uuid\Nonstandard\UuidBuilder;
 use Ramsey\Uuid\Rfc4122\Fields;
 use Ramsey\Uuid\Test\TestCase;
-use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidFactory;
 use Ramsey\Uuid\UuidInterface;
 
@@ -120,7 +124,8 @@ class OrderedTimeCodecTest extends TestCase
     {
         $bytes = (string) hex2bin($this->optimizedHex);
 
-        $numberConverter = Mockery::mock(NumberConverterInterface::class);
+        $calculator = new BrickMathCalculator();
+        $numberConverter = new GenericNumberConverter($calculator);
         $timeConverter = Mockery::mock(TimeConverterInterface::class);
         $builder = new DefaultUuidBuilder($numberConverter, $timeConverter);
         $codec = new OrderedTimeCodec($builder);
@@ -138,6 +143,7 @@ class OrderedTimeCodecTest extends TestCase
     {
         $nonRfc4122Uuid = '58e0a7d7-eebc-11d8-d669-0800200c9a66';
 
+        $fields = new NonstandardFields((string) hex2bin(str_replace('-', '', $nonRfc4122Uuid)));
         $numberConverter = Mockery::mock(NumberConverterInterface::class);
         $timeConverter = Mockery::mock(TimeConverterInterface::class);
         $builder = new DefaultUuidBuilder($numberConverter, $timeConverter);
@@ -146,6 +152,7 @@ class OrderedTimeCodecTest extends TestCase
         $uuid = Mockery::mock(UuidInterface::class, [
             'getVariant' => 0,
             'toString' => $nonRfc4122Uuid,
+            'getFields' => $fields,
         ]);
 
         $this->expectException(InvalidArgumentException::class);
@@ -183,15 +190,12 @@ class OrderedTimeCodecTest extends TestCase
         $nonRfc4122OptimizedHex = '11d8eebc58e0a7d716690800200c9a66';
         $bytes = (string) hex2bin($nonRfc4122OptimizedHex);
 
-        $uuid = Mockery::mock(UuidInterface::class, [
-            'getVariant' => Uuid::RESERVED_NCS,
-        ]);
+        $calculator = new BrickMathCalculator();
+        $numberConverter = new GenericNumberConverter($calculator);
+        $timeConverter = new GenericTimeConverter($calculator);
+        $builder = new UuidBuilder($numberConverter, $timeConverter);
 
-        $codec = Mockery::mock(OrderedTimeCodec::class, [
-            'decode' => $uuid,
-        ]);
-
-        $codec->shouldReceive('decodeBytes')->passthru();
+        $codec = new OrderedTimeCodec($builder);
 
         $this->expectException(UnsupportedOperationException::class);
         $this->expectExceptionMessage(
