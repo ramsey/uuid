@@ -4,7 +4,9 @@ namespace Ramsey\Uuid\Test;
 
 use Moontoast\Math\BigNumber;
 use Ramsey\Uuid\Builder\DegradedUuidBuilder;
+use Ramsey\Uuid\Codec\TimestampFirstCombCodec;
 use Ramsey\Uuid\Converter\Number\DegradedNumberConverter;
+use Ramsey\Uuid\Generator\CombGenerator;
 use Ramsey\Uuid\Generator\DefaultTimeGenerator;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidFactory;
@@ -584,5 +586,40 @@ class ExpectedBehaviorTest extends TestCase
         $this->assertSame('aVersion3Uuid', \Ramsey\Uuid\v3(Uuid::NAMESPACE_URL, 'https://example.com/foo'));
         $this->assertSame('aVersion4Uuid', \Ramsey\Uuid\v4());
         $this->assertSame('aVersion5Uuid', \Ramsey\Uuid\v5(Uuid::NAMESPACE_URL, 'https://example.com/foo'));
+    }
+
+    /**
+     * @link https://git.io/JvJZo Use of TimestampFirstCombCodec in laravel/framework
+     */
+    public function testUseOfTimestampFirstCombCodec()
+    {
+        $factory = new UuidFactory();
+
+        $factory->setRandomGenerator(new CombGenerator(
+            $factory->getRandomGenerator(),
+            $factory->getNumberConverter()
+        ));
+
+        $factory->setCodec(new TimestampFirstCombCodec(
+            $factory->getUuidBuilder()
+        ));
+
+        $uuid = $factory->uuid4();
+
+        // Swap fields according to the rules for TimestampFirstCombCodec.
+        $fields = array_values($uuid->getFieldsHex());
+        $last48Bits = $fields[5];
+        $fields[5] = $fields[0] . $fields[1];
+        $fields[0] = substr($last48Bits, 0, 8);
+        $fields[1] = substr($last48Bits, 8, 4);
+
+        $expectedHex = implode('', $fields);
+        $expectedBytes = hex2bin($expectedHex);
+
+        $this->assertInstanceOf('Ramsey\Uuid\UuidInterface', $uuid);
+        $this->assertSame(2, $uuid->getVariant());
+        $this->assertSame(4, $uuid->getVersion());
+        $this->assertSame($expectedBytes, $uuid->getBytes());
+        $this->assertSame($expectedHex, $uuid->getHex());
     }
 }
