@@ -14,7 +14,6 @@ declare(strict_types=1);
 
 namespace Ramsey\Uuid;
 
-use Ramsey\Uuid\Builder\DefaultUuidBuilder;
 use Ramsey\Uuid\Builder\FallbackBuilder;
 use Ramsey\Uuid\Builder\UuidBuilderInterface;
 use Ramsey\Uuid\Codec\CodecInterface;
@@ -40,6 +39,7 @@ use Ramsey\Uuid\Provider\Node\SystemNodeProvider;
 use Ramsey\Uuid\Provider\NodeProviderInterface;
 use Ramsey\Uuid\Provider\Time\SystemTimeProvider;
 use Ramsey\Uuid\Provider\TimeProviderInterface;
+use Ramsey\Uuid\Rfc4122\UuidBuilder as Rfc4122UuidBuilder;
 use Ramsey\Uuid\Validator\GenericValidator;
 use Ramsey\Uuid\Validator\ValidatorInterface;
 
@@ -328,7 +328,7 @@ class FeatureSet
         }
 
         return new FallbackBuilder([
-            new DefaultUuidBuilder($this->numberConverter, $this->timeConverter),
+            new Rfc4122UuidBuilder($this->numberConverter, $this->timeConverter),
             new NonstandardUuidBuilder($this->numberConverter, $this->timeConverter),
         ]);
     }

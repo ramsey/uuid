@@ -12,21 +12,23 @@
 
 declare(strict_types=1);
 
-namespace Ramsey\Uuid\Guid;
+namespace Ramsey\Uuid\Rfc4122;
 
 use Ramsey\Uuid\Builder\UuidBuilderInterface;
 use Ramsey\Uuid\Codec\CodecInterface;
 use Ramsey\Uuid\Converter\NumberConverterInterface;
 use Ramsey\Uuid\Converter\TimeConverterInterface;
 use Ramsey\Uuid\Exception\UnableToBuildUuidException;
+use Ramsey\Uuid\Exception\UnsupportedOperationException;
+use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
 /**
- * GuidBuilder builds instances of Guid
+ * UuidBuilder builds instances of RFC 4122 UUIDs
  *
  * @psalm-immutable
  */
-class GuidBuilder implements UuidBuilderInterface
+class UuidBuilder implements UuidBuilderInterface
 {
     /**
      * @var NumberConverterInterface
@@ -39,8 +41,10 @@ class GuidBuilder implements UuidBuilderInterface
     private $timeConverter;
 
     /**
+     * Constructs the DefaultUuidBuilder
+     *
      * @param NumberConverterInterface $numberConverter The number converter to
-     *     use when constructing the Guid
+     *     use when constructing the Uuid
      * @param TimeConverterInterface $timeConverter The time converter to use
      *     for converting timestamps extracted from a UUID to Unix timestamps
      */
@@ -53,19 +57,47 @@ class GuidBuilder implements UuidBuilderInterface
     }
 
     /**
-     * Builds and returns a Guid
+     * Builds and returns a Uuid
      *
-     * @param CodecInterface $codec The codec to use for building this Guid instance
-     * @param string[] $fields An array of fields from which to construct a Guid instance.
+     * @param CodecInterface $codec The codec to use for building this Uuid instance
+     * @param string[] $fields An array of fields from which to construct a Uuid instance
      *
-     * @return Guid The GuidBuilder returns an instance of Ramsey\Uuid\Guid\Guid
+     * @return Uuid The DefaultUuidBuilder returns an instance of Ramsey\Uuid\Uuid
      */
     public function build(CodecInterface $codec, array $fields): UuidInterface
     {
         try {
             $fields = new Fields((string) hex2bin(implode('', $fields)));
 
-            return new Guid(
+            switch ($fields->getVersion()) {
+                case 1:
+                    $versionClass = UuidV1::class;
+
+                    break;
+                case 2:
+                    $versionClass = Uuid::class;
+
+                    break;
+                case 3:
+                    $versionClass = UuidV3::class;
+
+                    break;
+                case 4:
+                    $versionClass = UuidV4::class;
+
+                    break;
+                case 5:
+                    $versionClass = UuidV5::class;
+
+                    break;
+                default:
+                    throw new UnsupportedOperationException(
+                        'The UUID version in the given fields is not supported '
+                        . 'by this UUID builder'
+                    );
+            }
+
+            return new $versionClass(
                 $fields,
                 $this->numberConverter,
                 $codec,

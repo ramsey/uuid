@@ -12,15 +12,16 @@
 
 declare(strict_types=1);
 
-namespace Ramsey\Uuid\Builder;
+namespace Ramsey\Uuid\Rfc4122;
 
-use Ramsey\Uuid\Rfc4122\UuidBuilder as Rfc4122UuidBuilder;
+use Ramsey\Uuid\Uuid;
 
 /**
- * @deprecated Transition to {@see Rfc4122UuidBuilder}.
+ * Version 3 UUIDs are named-based, using combination of a namespace and name
+ * that are hashed into a 128-bit unsigned integer using MD5
  *
  * @psalm-immutable
  */
-class DefaultUuidBuilder extends Rfc4122UuidBuilder implements UuidBuilderInterface
+final class UuidV3 extends Uuid implements UuidInterface
 {
 }

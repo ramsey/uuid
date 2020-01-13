@@ -16,7 +16,7 @@ namespace Ramsey\Uuid\Builder;
 
 use Ramsey\Uuid\Codec\CodecInterface;
 use Ramsey\Uuid\Exception\BuilderNotFoundException;
-use Ramsey\Uuid\Exception\InvalidArgumentException;
+use Ramsey\Uuid\Exception\UnableToBuildUuidException;
 use Ramsey\Uuid\UuidInterface;
 
 /**
@@ -52,16 +52,22 @@ class FallbackBuilder implements UuidBuilderInterface
      */
     public function build(CodecInterface $codec, array $fields): UuidInterface
     {
+        $lastBuilderException = null;
+
         foreach ($this->builders as $builder) {
             try {
                 return $builder->build($codec, $fields);
-            } catch (InvalidArgumentException $e) {
+            } catch (UnableToBuildUuidException $exception) {
+                $lastBuilderException = $exception;
+
                 continue;
             }
         }
 
         throw new BuilderNotFoundException(
-            'Could not find a suitable builder for the provided codec and fields'
+            'Could not find a suitable builder for the provided codec and fields',
+            0,
+            $lastBuilderException
         );
     }
 }

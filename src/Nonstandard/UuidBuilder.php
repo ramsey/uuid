@@ -18,6 +18,7 @@ use Ramsey\Uuid\Builder\UuidBuilderInterface;
 use Ramsey\Uuid\Codec\CodecInterface;
 use Ramsey\Uuid\Converter\NumberConverterInterface;
 use Ramsey\Uuid\Converter\TimeConverterInterface;
+use Ramsey\Uuid\Exception\UnableToBuildUuidException;
 use Ramsey\Uuid\UuidInterface;
 
 /**
@@ -62,13 +63,17 @@ class UuidBuilder implements UuidBuilderInterface
      */
     public function build(CodecInterface $codec, array $fields): UuidInterface
     {
-        $fields = new Fields((string) hex2bin(implode('', $fields)));
+        try {
+            $fields = new Fields((string) hex2bin(implode('', $fields)));
 
-        return new Uuid(
-            $fields,
-            $this->numberConverter,
-            $codec,
-            $this->timeConverter
-        );
+            return new Uuid(
+                $fields,
+                $this->numberConverter,
+                $codec,
+                $this->timeConverter
+            );
+        } catch (\Throwable $e) {
+            throw new UnableToBuildUuidException($e->getMessage(), (int) $e->getCode(), $e);
+        }
     }
 }

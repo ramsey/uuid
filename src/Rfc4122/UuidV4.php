@@ -12,15 +12,16 @@
 
 declare(strict_types=1);
 
-namespace Ramsey\Uuid\Builder;
+namespace Ramsey\Uuid\Rfc4122;
 
-use Ramsey\Uuid\Rfc4122\UuidBuilder as Rfc4122UuidBuilder;
+use Ramsey\Uuid\Uuid;
 
 /**
- * @deprecated Transition to {@see Rfc4122UuidBuilder}.
+ * Random, or version 4, UUIDs are randomly or pseudo-randomly generated 128-bit
+ * integers
  *
  * @psalm-immutable
  */
-class DefaultUuidBuilder extends Rfc4122UuidBuilder implements UuidBuilderInterface
+final class UuidV4 extends Uuid implements UuidInterface
 {
 }

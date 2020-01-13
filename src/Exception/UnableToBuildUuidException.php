@@ -12,15 +12,13 @@
 
 declare(strict_types=1);
 
-namespace Ramsey\Uuid\Builder;
+namespace Ramsey\Uuid\Exception;
 
-use Ramsey\Uuid\Rfc4122\UuidBuilder as Rfc4122UuidBuilder;
+use RuntimeException as PhpRuntimeException;
 
 /**
- * @deprecated Transition to {@see Rfc4122UuidBuilder}.
- *
- * @psalm-immutable
+ * Thrown to indicate a builder is unable to build a UUID
  */
-class DefaultUuidBuilder extends Rfc4122UuidBuilder implements UuidBuilderInterface
+class UnableToBuildUuidException extends PhpRuntimeException
 {
 }

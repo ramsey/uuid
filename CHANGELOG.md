@@ -10,7 +10,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Added
 
-* Add `Validator\ValidatorInterface` and `Validator\Validator` to allow
+* Add `Validator\ValidatorInterface` and `Validator\GenericValidator` to allow
   flexibility in validating UUIDs/GUIDs.
   * Add ability to change the default validator used by `Uuid` through
     `FeatureSet::setValidator()`.
@@ -31,8 +31,19 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   `Guid\Fields`, and `Nonstandard\Fields` store the 16-byte,
   binary string representation of the UUID internally, and these manage
   conversion of the binary string into the hexadecimal field values.
+* Add `Rfc4122\UuidInterface` to specifically represent RFC 4122 variant UUIDs.
+* Add classes to represent each version of RFC 4122 UUID. When generating new
+  UUIDs or creating UUIDs from existing strings, bytes, or integers, if the UUID
+  is an RFC 4122 variant, one of these instances will be returned:
+  * `Rfc4122\UuidV1`
+  * `Rfc4122\UuidV3`
+  * `Rfc4122\UuidV4`
+  * `Rfc4122\UuidV5`
+* Add `Rfc4122\UuidBuilder` to build RFC 4122 variant UUIDs. This replaces the
+  existing `Builder\DefaultUuidBuilder`, which is now deprecated.
 * Add classes to represent GUIDs and nonstandard (non-RFC 4122 variant) UUIDs:
-  `Guid\Guid` and `Nonstandard\Uuid`.
+  * `Guid\Guid`
+  * `Nonstandard\Uuid`.
 * Introduce a `Builder\FallbackBuilder`, used by `FeatureSet` to help decide
   whether to return a `Uuid` or `Nonstandard\Uuid` when decoding a
   UUID string or bytes.
@@ -84,10 +95,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   `OrderedTimeCodec::encodeBinary()` and `UnsupportedOperationException` when
   using `OrderedTimeCodec::decodeBytes()`.
 * Out of the box, `Uuid::fromString()`, `Uuid::fromBytes()`, and
-  `Uuid::fromInteger()` will now return either a `Uuid` or a
-  `Nonstandard\Uuid`, depending on whether the input contains an
-  RFC 4122 variant UUID with a valid version identifier. Both implement
-  `UuidInterface`, so BC breaks should not occur if typehints use the interface.
+  `Uuid::fromInteger()` will now return either an `Rfc4122\UuidInterface`
+  instance or an instance of `Nonstandard\Uuid`, depending on whether the input
+  contains an RFC 4122 variant UUID with a valid version identifier. Both
+  implement `UuidInterface`, so BC breaks should not occur if typehints use the
+  interface.
+* By default, the following static methods will now return the specific instance
+  types. This should not cause any BC breaks if typehints target `UuidInterface`:
+  * `Uuid::uuid1` returns `Rfc4122\UuidV1`
+  * `Uuid::uuid3` returns `Rfc4122\UuidV3`
+  * `Uuid::uuid4` returns `Rfc4122\UuidV4`
+  * `Uuid::uuid5` returns `Rfc4122\UuidV5`
 
 ### Deprecated
 
@@ -119,6 +137,8 @@ The following functionality is deprecated and will be removed in ramsey/uuid
   * `getTimestamp()`
 * `UuidInterface::getNumberConverter()` and `Uuid::getNumberConverter()` are
   deprecated. There is no alternative recommendation, so plan accordingly.
+* `Builder\DefaultUuidBuilder` is deprecated; transition to
+  `Rfc4122\UuidBuilder`.
 * `Converter\Number\BigNumberConverter` is deprecated; transition to
   `Converter\Number\GenericNumberConverter`.
 * `Converter\Time\BigNumberTimeConverter` is deprecated; transition to

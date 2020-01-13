@@ -9,7 +9,7 @@ use Ramsey\Uuid\Builder\FallbackBuilder;
 use Ramsey\Uuid\Builder\UuidBuilderInterface;
 use Ramsey\Uuid\Codec\CodecInterface;
 use Ramsey\Uuid\Exception\BuilderNotFoundException;
-use Ramsey\Uuid\Exception\InvalidArgumentException;
+use Ramsey\Uuid\Exception\UnableToBuildUuidException;
 use Ramsey\Uuid\Test\TestCase;
 
 class FallbackBuilderTest extends TestCase
@@ -24,21 +24,21 @@ class FallbackBuilderTest extends TestCase
             ->shouldReceive('build')
             ->once()
             ->with($codec, $fields)
-            ->andThrow(InvalidArgumentException::class);
+            ->andThrow(UnableToBuildUuidException::class);
 
         $builder2 = Mockery::mock(UuidBuilderInterface::class);
         $builder2
             ->shouldReceive('build')
             ->once()
             ->with($codec, $fields)
-            ->andThrow(InvalidArgumentException::class);
+            ->andThrow(UnableToBuildUuidException::class);
 
         $builder3 = Mockery::mock(UuidBuilderInterface::class);
         $builder3
             ->shouldReceive('build')
             ->once()
             ->with($codec, $fields)
-            ->andThrow(InvalidArgumentException::class);
+            ->andThrow(UnableToBuildUuidException::class);
 
         $fallbackBuilder = new FallbackBuilder([$builder1, $builder2, $builder3]);
 
