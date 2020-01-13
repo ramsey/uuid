@@ -13,7 +13,6 @@ use Ramsey\Uuid\Converter\NumberConverterInterface;
 use Ramsey\Uuid\Converter\TimeConverterInterface;
 use Ramsey\Uuid\Exception\InvalidArgumentException;
 use Ramsey\Uuid\Exception\UnsupportedOperationException;
-use Ramsey\Uuid\Math\CalculatorInterface;
 use Ramsey\Uuid\Rfc4122\Fields;
 use Ramsey\Uuid\Test\TestCase;
 use Ramsey\Uuid\Uuid;
@@ -85,8 +84,7 @@ class OrderedTimeCodecTest extends TestCase
 
         $numberConverter = Mockery::mock(NumberConverterInterface::class);
         $timeConverter = Mockery::mock(TimeConverterInterface::class);
-        $calculator = Mockery::mock(CalculatorInterface::class);
-        $builder = new DefaultUuidBuilder($numberConverter, $timeConverter, $calculator);
+        $builder = new DefaultUuidBuilder($numberConverter, $timeConverter);
         $codec = new OrderedTimeCodec($builder);
 
         $factory = new UuidFactory();
@@ -124,8 +122,7 @@ class OrderedTimeCodecTest extends TestCase
 
         $numberConverter = Mockery::mock(NumberConverterInterface::class);
         $timeConverter = Mockery::mock(TimeConverterInterface::class);
-        $calculator = Mockery::mock(CalculatorInterface::class);
-        $builder = new DefaultUuidBuilder($numberConverter, $timeConverter, $calculator);
+        $builder = new DefaultUuidBuilder($numberConverter, $timeConverter);
         $codec = new OrderedTimeCodec($builder);
 
         $factory = new UuidFactory();
@@ -143,8 +140,7 @@ class OrderedTimeCodecTest extends TestCase
 
         $numberConverter = Mockery::mock(NumberConverterInterface::class);
         $timeConverter = Mockery::mock(TimeConverterInterface::class);
-        $calculator = Mockery::mock(CalculatorInterface::class);
-        $builder = new DefaultUuidBuilder($numberConverter, $timeConverter, $calculator);
+        $builder = new DefaultUuidBuilder($numberConverter, $timeConverter);
         $codec = new OrderedTimeCodec($builder);
 
         $uuid = Mockery::mock(UuidInterface::class, [
@@ -166,8 +162,7 @@ class OrderedTimeCodecTest extends TestCase
 
         $numberConverter = Mockery::mock(NumberConverterInterface::class);
         $timeConverter = Mockery::mock(TimeConverterInterface::class);
-        $calculator = Mockery::mock(CalculatorInterface::class);
-        $builder = new DefaultUuidBuilder($numberConverter, $timeConverter, $calculator);
+        $builder = new DefaultUuidBuilder($numberConverter, $timeConverter);
         $codec = new OrderedTimeCodec($builder);
 
         $factory = new UuidFactory();
@@ -213,8 +208,7 @@ class OrderedTimeCodecTest extends TestCase
 
         $numberConverter = Mockery::mock(NumberConverterInterface::class);
         $timeConverter = Mockery::mock(TimeConverterInterface::class);
-        $calculator = Mockery::mock(CalculatorInterface::class);
-        $builder = new DefaultUuidBuilder($numberConverter, $timeConverter, $calculator);
+        $builder = new DefaultUuidBuilder($numberConverter, $timeConverter);
         $codec = new OrderedTimeCodec($builder);
 
         $factory = new UuidFactory();

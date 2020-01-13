@@ -18,7 +18,6 @@ use Ramsey\Uuid\Builder\UuidBuilderInterface;
 use Ramsey\Uuid\Codec\CodecInterface;
 use Ramsey\Uuid\Converter\NumberConverterInterface;
 use Ramsey\Uuid\Converter\TimeConverterInterface;
-use Ramsey\Uuid\Math\CalculatorInterface;
 use Ramsey\Uuid\UuidInterface;
 
 /**
@@ -39,26 +38,17 @@ class UuidBuilder implements UuidBuilderInterface
     private $timeConverter;
 
     /**
-     * @var CalculatorInterface
-     */
-    private $calculator;
-
-    /**
      * @param NumberConverterInterface $numberConverter The number converter to
      *     use when constructing the Nonstandard\Uuid
      * @param TimeConverterInterface $timeConverter The time converter to use
      *     for converting timestamps extracted from a UUID to Unix timestamps
-     * @param CalculatorInterface $calculator The calculator to use for
-     *     performing mathematical operations on UUIDs
      */
     public function __construct(
         NumberConverterInterface $numberConverter,
-        TimeConverterInterface $timeConverter,
-        CalculatorInterface $calculator
+        TimeConverterInterface $timeConverter
     ) {
         $this->numberConverter = $numberConverter;
         $this->timeConverter = $timeConverter;
-        $this->calculator = $calculator;
     }
 
     /**
@@ -78,8 +68,7 @@ class UuidBuilder implements UuidBuilderInterface
             $fields,
             $this->numberConverter,
             $codec,
-            $this->timeConverter,
-            $this->calculator
+            $this->timeConverter
         );
     }
 }

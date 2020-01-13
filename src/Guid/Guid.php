@@ -17,7 +17,6 @@ namespace Ramsey\Uuid\Guid;
 use Ramsey\Uuid\Codec\CodecInterface;
 use Ramsey\Uuid\Converter\NumberConverterInterface;
 use Ramsey\Uuid\Converter\TimeConverterInterface;
-use Ramsey\Uuid\Math\CalculatorInterface;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
@@ -41,9 +40,8 @@ class Guid extends Uuid implements UuidInterface
         Fields $fields,
         NumberConverterInterface $numberConverter,
         CodecInterface $codec,
-        TimeConverterInterface $timeConverter,
-        CalculatorInterface $calculator
+        TimeConverterInterface $timeConverter
     ) {
-        parent::__construct($fields, $numberConverter, $codec, $timeConverter, $calculator);
+        parent::__construct($fields, $numberConverter, $codec, $timeConverter);
     }
 }

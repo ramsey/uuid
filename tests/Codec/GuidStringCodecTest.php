@@ -13,7 +13,6 @@ use Ramsey\Uuid\Converter\TimeConverterInterface;
 use Ramsey\Uuid\Guid\Fields;
 use Ramsey\Uuid\Guid\Guid;
 use Ramsey\Uuid\Guid\GuidBuilder;
-use Ramsey\Uuid\Math\CalculatorInterface;
 use Ramsey\Uuid\Test\TestCase;
 use Ramsey\Uuid\UuidInterface;
 
@@ -74,9 +73,8 @@ class GuidStringCodecTest extends TestCase
         $codec = new GuidStringCodec($this->builder);
         $numberConverter = Mockery::mock(NumberConverterInterface::class);
         $timeConverter = Mockery::mock(TimeConverterInterface::class);
-        $calculator = Mockery::mock(CalculatorInterface::class);
 
-        $uuid = new Guid($fields, $numberConverter, $codec, $timeConverter, $calculator);
+        $uuid = new Guid($fields, $numberConverter, $codec, $timeConverter);
 
         $bytes = $codec->encodeBinary($uuid);
 
@@ -89,8 +87,7 @@ class GuidStringCodecTest extends TestCase
 
         $numberConverter = Mockery::mock(NumberConverterInterface::class);
         $timeConverter = Mockery::mock(TimeConverterInterface::class);
-        $calculator = Mockery::mock(CalculatorInterface::class);
-        $builder = new GuidBuilder($numberConverter, $timeConverter, $calculator);
+        $builder = new GuidBuilder($numberConverter, $timeConverter);
         $codec = new GuidStringCodec($builder);
         $guid = $codec->decode($string);
 

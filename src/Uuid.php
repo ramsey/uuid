@@ -22,7 +22,6 @@ use Ramsey\Uuid\Converter\TimeConverterInterface;
 use Ramsey\Uuid\Exception\DateTimeException;
 use Ramsey\Uuid\Exception\UnsupportedOperationException;
 use Ramsey\Uuid\Fields\FieldsInterface;
-use Ramsey\Uuid\Math\CalculatorInterface;
 use Ramsey\Uuid\Rfc4122\FieldsInterface as Rfc4122FieldsInterface;
 
 /**
@@ -171,11 +170,6 @@ class Uuid implements UuidInterface
     protected $timeConverter;
 
     /**
-     * @var CalculatorInterface
-     */
-    protected $calculator;
-
-    /**
      * Creates a universally unique identifier (UUID) from an array of fields
      *
      * Unless you're making advanced use of this library to generate identifiers
@@ -198,21 +192,17 @@ class Uuid implements UuidInterface
      *     UUID strings
      * @param TimeConverterInterface $timeConverter The time converter to use
      *     for converting timestamps extracted from a UUID to unix timestamps
-     * @param CalculatorInterface $calculator The calculator to use for performing
-     *     mathematical operations on UUIDs
      */
     public function __construct(
         Rfc4122FieldsInterface $fields,
         NumberConverterInterface $numberConverter,
         CodecInterface $codec,
-        TimeConverterInterface $timeConverter,
-        CalculatorInterface $calculator
+        TimeConverterInterface $timeConverter
     ) {
         $this->fields = $fields;
         $this->codec = $codec;
         $this->numberConverter = $numberConverter;
         $this->timeConverter = $timeConverter;
-        $this->calculator = $calculator;
     }
 
     public function __toString(): string
@@ -376,7 +366,7 @@ class Uuid implements UuidInterface
         }
 
         $unixTime = $this->timeConverter->convertTime(
-            $this->calculator->toIntegerValue($this->fields->getTimestamp())->toString()
+            $this->numberConverter->fromHex($this->fields->getTimestamp()->toString())
         );
 
         try {

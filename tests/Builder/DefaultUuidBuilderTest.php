@@ -9,7 +9,6 @@ use Ramsey\Uuid\Builder\DefaultUuidBuilder;
 use Ramsey\Uuid\Codec\CodecInterface;
 use Ramsey\Uuid\Converter\NumberConverterInterface;
 use Ramsey\Uuid\Converter\TimeConverterInterface;
-use Ramsey\Uuid\Math\CalculatorInterface;
 use Ramsey\Uuid\Test\TestCase;
 use Ramsey\Uuid\Uuid;
 
@@ -19,10 +18,9 @@ class DefaultUuidBuilderTest extends TestCase
     {
         $numberConverter = Mockery::mock(NumberConverterInterface::class);
         $timeConverter = Mockery::mock(TimeConverterInterface::class);
-        $calculator = Mockery::mock(CalculatorInterface::class);
         $codec = Mockery::mock(CodecInterface::class);
 
-        $builder = new DefaultUuidBuilder($numberConverter, $timeConverter, $calculator);
+        $builder = new DefaultUuidBuilder($numberConverter, $timeConverter);
 
         $fields = [
             'time_low' => '754cd475',

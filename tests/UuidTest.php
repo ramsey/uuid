@@ -24,7 +24,6 @@ use Ramsey\Uuid\Generator\CombGenerator;
 use Ramsey\Uuid\Generator\RandomGeneratorFactory;
 use Ramsey\Uuid\Generator\RandomGeneratorInterface;
 use Ramsey\Uuid\Guid\Guid;
-use Ramsey\Uuid\Math\BrickMathCalculator;
 use Ramsey\Uuid\Provider\Time\FixedTimeProvider;
 use Ramsey\Uuid\Rfc4122\FieldsInterface;
 use Ramsey\Uuid\Type\Time;
@@ -1408,14 +1407,13 @@ class UuidTest extends TestCase
     {
         $numberConverter = new BigNumberConverter();
         $timeConverter = Mockery::mock(TimeConverterInterface::class);
-        $calculator = new BrickMathCalculator();
 
         $timeConverter
             ->shouldReceive('convertTime')
             ->once()
             ->andReturn('foobar');
 
-        $builder = new DefaultUuidBuilder($numberConverter, $timeConverter, $calculator);
+        $builder = new DefaultUuidBuilder($numberConverter, $timeConverter);
         $codec = new StringCodec($builder);
 
         $factory = new UuidFactory();

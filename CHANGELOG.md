@@ -66,9 +66,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 * Introduce `Converter\TimeConverterInterface $timeConverter` as fourth required
   constructor parameter for `Uuid` and second required constructor parameter for
   `Builder\DefaultUuidBuilder`.
-* Introduce `Math\CalculatorInterface $calculator` as the fifth required
-  constructor parameter for `Uuid` and the third required constructor parameter
-  for `Builder\DefaultUuidBuilder`.
 * Change `UuidInterface::getInteger()` to always return a `string` value instead
   of `mixed`. This is a string representation of a 128-bit integer. You may then
   use a math library of your choice (bcmath, gmp, etc.) to operate on the

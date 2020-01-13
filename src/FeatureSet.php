@@ -324,12 +324,12 @@ class FeatureSet
     private function buildUuidBuilder(bool $useGuids = false): UuidBuilderInterface
     {
         if ($useGuids) {
-            return new GuidBuilder($this->numberConverter, $this->timeConverter, $this->calculator);
+            return new GuidBuilder($this->numberConverter, $this->timeConverter);
         }
 
         return new FallbackBuilder([
-            new DefaultUuidBuilder($this->numberConverter, $this->timeConverter, $this->calculator),
-            new NonstandardUuidBuilder($this->numberConverter, $this->timeConverter, $this->calculator),
+            new DefaultUuidBuilder($this->numberConverter, $this->timeConverter),
+            new NonstandardUuidBuilder($this->numberConverter, $this->timeConverter),
         ]);
     }
 
