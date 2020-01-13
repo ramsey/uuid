@@ -23,6 +23,7 @@ use Ramsey\Uuid\Exception\DateTimeException;
 use Ramsey\Uuid\Exception\UnsupportedOperationException;
 use Ramsey\Uuid\Fields\FieldsInterface;
 use Ramsey\Uuid\Rfc4122\FieldsInterface as Rfc4122FieldsInterface;
+use Throwable;
 
 /**
  * Represents a RFC 4122 universally unique identifier (UUID)
@@ -245,19 +246,13 @@ class Uuid implements UuidInterface
 
     public function compareTo(UuidInterface $other): int
     {
-        if ($this->getMostSignificantBitsHex() < $other->getMostSignificantBitsHex()) {
+        $compare = strcmp($this->getInteger(), $other->getInteger());
+
+        if ($compare < 0) {
             return -1;
         }
 
-        if ($this->getMostSignificantBitsHex() > $other->getMostSignificantBitsHex()) {
-            return 1;
-        }
-
-        if ($this->getLeastSignificantBitsHex() < $other->getLeastSignificantBitsHex()) {
-            return -1;
-        }
-
-        if ($this->getLeastSignificantBitsHex() > $other->getLeastSignificantBitsHex()) {
+        if ($compare > 0) {
             return 1;
         }
 
@@ -354,6 +349,9 @@ class Uuid implements UuidInterface
     }
 
     /**
+     * @deprecated In ramsey/uuid version 5.0.0, this will be removed.
+     *     It is available at {@see UuidV1::getDateTime()}.
+     *
      * @return DateTimeImmutable An immutable instance of DateTimeInterface
      *
      * @throws UnsupportedOperationException if UUID is not time-based
@@ -361,7 +359,7 @@ class Uuid implements UuidInterface
      */
     public function getDateTime(): DateTimeInterface
     {
-        if ($this->getVersion() !== 1) {
+        if ($this->fields->getVersion() !== 1) {
             throw new UnsupportedOperationException('Not a time-based UUID');
         }
 
@@ -371,7 +369,7 @@ class Uuid implements UuidInterface
 
         try {
             return new DateTimeImmutable("@{$unixTime}");
-        } catch (\Throwable $exception) {
+        } catch (Throwable $exception) {
             throw new DateTimeException(
                 $exception->getMessage(),
                 (int) $exception->getCode(),
@@ -549,7 +547,7 @@ class Uuid implements UuidInterface
      */
     public function getTimestamp(): string
     {
-        if ($this->getVersion() !== 1) {
+        if ($this->fields->getVersion() !== 1) {
             throw new UnsupportedOperationException('Not a time-based UUID');
         }
 
@@ -563,23 +561,41 @@ class Uuid implements UuidInterface
      */
     public function getTimestampHex(): string
     {
-        if ($this->getVersion() !== 1) {
+        if ($this->fields->getVersion() !== 1) {
             throw new UnsupportedOperationException('Not a time-based UUID');
         }
 
         return $this->fields->getTimestamp()->toString();
     }
 
+    /**
+     * @deprecated This has moved to {@see Rfc4122FieldsInterface::getUrn()} and
+     *     is available on {@see \Ramsey\Uuid\Rfc4122\UuidV1},
+     *     {@see \Ramsey\Uuid\Rfc4122\UuidV3}, {@see \Ramsey\Uuid\Rfc4122\UuidV4},
+     *     and {@see \Ramsey\Uuid\Rfc4122\UuidV5}.
+     */
     public function getUrn(): string
     {
         return 'urn:uuid:' . $this->toString();
     }
 
+    /**
+     * @deprecated Use {@see UuidInterface::getFields()} to get a
+     *     {@see FieldsInterface} instance. If it is a
+     *     {@see \Ramsey\Uuid\Rfc4122\FieldsInterface} instance, you may call
+     *     {@see \Ramsey\Uuid\Rfc4122\FieldsInterface::getVariant()}.
+     */
     public function getVariant(): ?int
     {
         return $this->fields->getVariant();
     }
 
+    /**
+     * @deprecated Use {@see UuidInterface::getFields()} to get a
+     *     {@see FieldsInterface} instance. If it is a
+     *     {@see \Ramsey\Uuid\Rfc4122\FieldsInterface} instance, you may call
+     *     {@see \Ramsey\Uuid\Rfc4122\FieldsInterface::getVersion()}.
+     */
     public function getVersion(): ?int
     {
         return $this->fields->getVersion();

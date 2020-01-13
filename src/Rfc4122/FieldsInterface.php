@@ -83,7 +83,17 @@ interface FieldsInterface extends BaseFieldsInterface
     /**
      * Returns the variant
      *
+     * The variant number describes the layout of the UUID. The variant
+     * number has the following meaning:
+     *
+     * - 0 - Reserved for NCS backward compatibility
+     * - 2 - The RFC 4122 variant
+     * - 6 - Reserved, Microsoft Corporation backward compatibility
+     * - 7 - Reserved for future definition
+     *
      * For RFC 4122 variant UUIDs, this value should always be the integer `2`.
+     *
+     * @link http://tools.ietf.org/html/rfc4122#section-4.1.1 RFC 4122, § 4.1.1: Variant
      */
     public function getVariant(): int;
 
@@ -98,6 +108,11 @@ interface FieldsInterface extends BaseFieldsInterface
      * 3. Name-based UUID hashed with MD5
      * 4. Randomly generated UUID
      * 5. Name-based UUID hashed with SHA-1
+     *
+     * This returns `null` if the UUID is not an RFC 4122 variant, since version
+     * is only meaningful for this variant.
+     *
+     * @link http://tools.ietf.org/html/rfc4122#section-4.1.3 RFC 4122, § 4.1.3: Version
      */
     public function getVersion(): ?int;
 

@@ -123,6 +123,8 @@ The following functionality is deprecated and will be removed in ramsey/uuid
   * `getTimeLowHex()`
   * `getTimeMidHex()`
   * `getTimestampHex()`
+  * `getVariant()`
+  * `getVersion()`
 * The following methods from `Uuid` are deprecated. Use the `Rfc4122\FieldsInterface`
   instance returned by `Uuid::getFields()` to get the `Type\Hexadecimal` value
   for these fields, and then use the arbitrary-precision arithmetic library of
@@ -135,6 +137,19 @@ The following functionality is deprecated and will be removed in ramsey/uuid
   * `getTimeLow()`
   * `getTimeMid()`
   * `getTimestamp()`
+* `getDateTime()` on `UuidInterface` and `Uuid` is deprecated. Use this method
+  only on instances of `Rfc4122\UuidV1`.
+* `getUrn()` on `UuidInterface` and `Uuid` is deprecated. It is available on
+  `Rfc4122\UuidInterface` and classes that implement it.
+* The following methods are deprecated and have no direct replacements. However,
+  you may obtain the same information by calling `UuidInterface::getHex()` and
+  splitting the return value in half.
+  * `UuidInterface::getLeastSignificantBitsHex()`
+  * `UuidInterface::getMostSignificantBitsHex()`
+  * `Uuid::getLeastSignificantBitsHex()`
+  * `Uuid::getMostSignificantBitsHex()`
+  * `Uuid::getLeastSignificantBits()`
+  * `Uuid::getMostSignificantBits()`
 * `UuidInterface::getNumberConverter()` and `Uuid::getNumberConverter()` are
   deprecated. There is no alternative recommendation, so plan accordingly.
 * `Builder\DefaultUuidBuilder` is deprecated; transition to

@@ -112,29 +112,27 @@ interface UuidInterface extends JsonSerializable, Serializable
     public function getClockSequenceHex(): string;
 
     /**
-     * Returns a DateTimeInterface object representing the timestamp associated
-     * with the UUID
-     *
-     * The timestamp value is only meaningful in a time-based UUID, which
-     * has version type 1.
-     *
-     * @return DateTimeInterface A PHP DateTimeInterface instance representing
-     *     the timestamp of a version 1 UUID
+     * @deprecated In ramsey/uuid version 5.0.0, this will be removed from the
+     *     interface. It is available at {@see UuidV1::getDateTime()}.
      */
     public function getDateTime(): DateTimeInterface;
 
     /**
-     * Returns the 128-bit integer value of the UUID as a string
+     * Returns the integer value of the UUID as a string
      */
     public function getInteger(): string;
 
     /**
-     * Returns the least significant 64 bits of the UUID
+     * @deprecated This method will be removed in 5.0.0. There is no direct
+     *     alternative, but the same information may be obtained by splitting
+     *     in half the value returned by {@see UuidInterface::getHex()}.
      */
     public function getLeastSignificantBitsHex(): string;
 
     /**
-     * Returns the most significant 64 bits of the UUID
+     * @deprecated This method will be removed in 5.0.0. There is no direct
+     *     alternative, but the same information may be obtained by splitting
+     *     in half the value returned by {@see UuidInterface::getHex()}.
      */
     public function getMostSignificantBitsHex(): string;
 
@@ -179,43 +177,24 @@ interface UuidInterface extends JsonSerializable, Serializable
     public function getTimestampHex(): string;
 
     /**
-     * Returns the string representation of the UUID as a URN
-     *
-     * @link http://en.wikipedia.org/wiki/Uniform_Resource_Name Uniform Resource Name
+     * @deprecated In ramsey/uuid version 5.0.0, this will be removed from this
+     *     interface. It has moved to {@see \Ramsey\Uuid\Rfc4122\UuidInterface::getUrn()}.
      */
     public function getUrn(): string;
 
     /**
-     * Returns the variant
-     *
-     * The variant number describes the layout of the UUID. The variant
-     * number has the following meaning:
-     *
-     * * 0 - Reserved for NCS backward compatibility
-     * * 2 - The RFC 4122 variant
-     * * 6 - Reserved, Microsoft Corporation backward compatibility
-     * * 7 - Reserved for future definition
-     *
-     * @link http://tools.ietf.org/html/rfc4122#section-4.1.1 RFC 4122, § 4.1.1: Variant
+     * @deprecated Use {@see UuidInterface::getFields()} to get a
+     *     {@see FieldsInterface} instance. If it is a
+     *     {@see \Ramsey\Uuid\Rfc4122\FieldsInterface} instance, you may call
+     *     {@see \Ramsey\Uuid\Rfc4122\FieldsInterface::getVariant()}.
      */
     public function getVariant(): ?int;
 
     /**
-     * Returns the version
-     *
-     * The version number describes how the UUID was generated and has the
-     * following meaning:
-     *
-     * * 1 - Time-based UUID
-     * * 2 - DCE security UUID
-     * * 3 - Name-based UUID hashed with MD5
-     * * 4 - Randomly generated UUID
-     * * 5 - Name-based UUID hashed with SHA-1
-     *
-     * This returns null if the UUID is not an RFC 4122 variant, since version
-     * is only meaningful for this variant.
-     *
-     * @link http://tools.ietf.org/html/rfc4122#section-4.1.3 RFC 4122, § 4.1.3: Version
+     * @deprecated Use {@see UuidInterface::getFields()} to get a
+     *     {@see FieldsInterface} instance. If it is a
+     *     {@see \Ramsey\Uuid\Rfc4122\FieldsInterface} instance, you may call
+     *     {@see \Ramsey\Uuid\Rfc4122\FieldsInterface::getVersion()}.
      */
     public function getVersion(): ?int;
 
