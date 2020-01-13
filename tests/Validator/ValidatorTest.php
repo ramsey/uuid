@@ -6,19 +6,19 @@ namespace Ramsey\Uuid\Test\Validator;
 
 use PHPUnit\Framework\MockObject\MockObject;
 use Ramsey\Uuid\Test\TestCase;
-use Ramsey\Uuid\Validator\Validator;
+use Ramsey\Uuid\Validator\GenericValidator;
 
 class ValidatorTest extends TestCase
 {
     /**
-     * @var MockObject & Validator
+     * @var MockObject & GenericValidator
      */
     private $validator = null;
 
     public function setUp(): void
     {
         // Disable calls to the constructor, but do not override any methods.
-        $this->validator = $this->getMockBuilder(Validator::class)
+        $this->validator = $this->getMockBuilder(GenericValidator::class)
             ->disableOriginalConstructor()
             ->onlyMethods([])
             ->getMock();

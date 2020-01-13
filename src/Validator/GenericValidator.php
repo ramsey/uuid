@@ -17,9 +17,9 @@ namespace Ramsey\Uuid\Validator;
 use Ramsey\Uuid\Uuid;
 
 /**
- * Validator validates strings as UUIDs of any variant
+ * GenericValidator validates strings as UUIDs of any variant
  */
-class Validator implements ValidatorInterface
+class GenericValidator implements ValidatorInterface
 {
     /**
      * Regular expression pattern for matching a UUID of any variant.

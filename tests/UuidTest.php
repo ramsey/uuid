@@ -30,7 +30,7 @@ use Ramsey\Uuid\Type\Time;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidFactory;
 use Ramsey\Uuid\UuidInterface;
-use Ramsey\Uuid\Validator\Validator;
+use Ramsey\Uuid\Validator\GenericValidator;
 use Ramsey\Uuid\Validator\ValidatorInterface;
 use stdClass;
 
@@ -874,7 +874,7 @@ class UuidTest extends TestCase
         $this->assertTrue(Uuid::isValid($argument));
 
         // reset the static validator
-        $factory->setValidator(new Validator());
+        $factory->setValidator(new GenericValidator());
     }
 
     public function testUsingNilAsValidUuid(): void
