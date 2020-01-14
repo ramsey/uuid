@@ -20,6 +20,7 @@ use Ramsey\Uuid\Converter\NumberConverterInterface;
 use Ramsey\Uuid\Converter\TimeConverterInterface;
 use Ramsey\Uuid\Exception\UnableToBuildUuidException;
 use Ramsey\Uuid\UuidInterface;
+use Throwable;
 
 /**
  * Nonstandard\UuidBuilder builds instances of Nonstandard\Uuid
@@ -72,7 +73,7 @@ class UuidBuilder implements UuidBuilderInterface
                 $codec,
                 $this->timeConverter
             );
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             throw new UnableToBuildUuidException($e->getMessage(), (int) $e->getCode(), $e);
         }
     }

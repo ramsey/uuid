@@ -20,6 +20,7 @@ use Ramsey\Uuid\Converter\NumberConverterInterface;
 use Ramsey\Uuid\Converter\TimeConverterInterface;
 use Ramsey\Uuid\Exception\UnableToBuildUuidException;
 use Ramsey\Uuid\UuidInterface;
+use Throwable;
 
 /**
  * GuidBuilder builds instances of Guid
@@ -71,7 +72,7 @@ class GuidBuilder implements UuidBuilderInterface
                 $codec,
                 $this->timeConverter
             );
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             throw new UnableToBuildUuidException($e->getMessage(), (int) $e->getCode(), $e);
         }
     }

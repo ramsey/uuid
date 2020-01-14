@@ -27,6 +27,7 @@ use Ramsey\Uuid\Guid\Guid;
 use Ramsey\Uuid\Nonstandard\Uuid as NonstandardUuid;
 use Ramsey\Uuid\Provider\Time\FixedTimeProvider;
 use Ramsey\Uuid\Rfc4122\FieldsInterface;
+use Ramsey\Uuid\Rfc4122\NilUuid;
 use Ramsey\Uuid\Rfc4122\UuidV1;
 use Ramsey\Uuid\Rfc4122\UuidV3;
 use Ramsey\Uuid\Rfc4122\UuidV4;
@@ -1040,7 +1041,7 @@ class UuidTest extends TestCase
                 'clock_seq' => '0000',
                 'variant' => Uuid::RESERVED_NCS,
                 'version' => null,
-                'class' => Uuid::class,
+                'class' => NilUuid::class,
             ],
             [
                 'string' => '00010203-0405-0607-0809-0a0b0c0d0e0f',
