@@ -17,9 +17,12 @@ namespace Ramsey\Uuid;
 use Ramsey\Uuid\Builder\UuidBuilderInterface;
 use Ramsey\Uuid\Codec\CodecInterface;
 use Ramsey\Uuid\Converter\NumberConverterInterface;
+use Ramsey\Uuid\Generator\DceSecurityGeneratorInterface;
 use Ramsey\Uuid\Generator\RandomGeneratorInterface;
 use Ramsey\Uuid\Generator\TimeGeneratorInterface;
 use Ramsey\Uuid\Provider\NodeProviderInterface;
+use Ramsey\Uuid\Type\Hexadecimal;
+use Ramsey\Uuid\Type\IntegerValue;
 use Ramsey\Uuid\Validator\ValidatorInterface;
 
 class UuidFactory implements UuidFactoryInterface
@@ -28,6 +31,11 @@ class UuidFactory implements UuidFactoryInterface
      * @var CodecInterface
      */
     private $codec;
+
+    /**
+     * @var DceSecurityGeneratorInterface
+     */
+    private $dceSecurityGenerator;
 
     /**
      * @var NodeProviderInterface
@@ -67,6 +75,7 @@ class UuidFactory implements UuidFactoryInterface
         $features = $features ?: new FeatureSet();
 
         $this->codec = $features->getCodec();
+        $this->dceSecurityGenerator = $features->getDceSecurityGenerator();
         $this->nodeProvider = $features->getNodeProvider();
         $this->numberConverter = $features->getNumberConverter();
         $this->randomGenerator = $features->getRandomGenerator();
@@ -234,6 +243,24 @@ class UuidFactory implements UuidFactoryInterface
         $hex = bin2hex($bytes);
 
         return $this->uuidFromHashedName($hex, 1);
+    }
+
+    public function uuid2(
+        int $localDomain,
+        ?IntegerValue $localIdentifier,
+        ?Hexadecimal $node = null,
+        ?int $clockSeq = null
+    ): UuidInterface {
+        $bytes = $this->dceSecurityGenerator->generate(
+            $localDomain,
+            $localIdentifier,
+            $node,
+            $clockSeq
+        );
+
+        $hex = bin2hex($bytes);
+
+        return $this->uuidFromHashedName($hex, 2);
     }
 
     /**

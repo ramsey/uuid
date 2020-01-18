@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<files psalm-version="3.8.2@90d6b73fd8062432030ef39b7b6694b3902daa31">
+<files psalm-version="3.8.3@389af1bfc739bfdff3f9e3dc7bd6499aee51a831">
   <file src="src/Builder/DegradedUuidBuilder.php">
     <DeprecatedClass occurrences="3">
       <code>new DegradedTimeConverter()</code>
@@ -44,11 +44,18 @@
       <code>uuid_parse($uuid)</code>
     </MixedReturnStatement>
   </file>
+  <file src="src/Provider/Dce/SystemDceSecurityProvider.php">
+    <ForbiddenCode occurrences="5">
+      <code>shell_exec('id -u')</code>
+      <code>shell_exec('id -g')</code>
+      <code>shell_exec('whoami /user /fo csv /nh')</code>
+      <code>shell_exec('net user %username% | findstr /b /i "Local Group Memberships"')</code>
+      <code>shell_exec('wmic group get name,sid | findstr /b /i ' . escapeshellarg($firstGroup))</code>
+    </ForbiddenCode>
+  </file>
   <file src="src/Provider/Node/SystemNodeProvider.php">
-    <MixedArgument occurrences="4">
+    <MixedArgument occurrences="2">
       <code>$node</code>
-      <code>constant('PHP_OS')</code>
-      <code>constant('PHP_OS')</code>
       <code>$macs</code>
     </MixedArgument>
     <MixedAssignment occurrences="2">

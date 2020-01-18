@@ -21,7 +21,6 @@ use Ramsey\Uuid\Converter\TimeConverterInterface;
 use Ramsey\Uuid\Exception\UnableToBuildUuidException;
 use Ramsey\Uuid\Exception\UnsupportedOperationException;
 use Ramsey\Uuid\Rfc4122\UuidInterface as Rfc4122UuidInterface;
-use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Throwable;
 
@@ -79,7 +78,7 @@ class UuidBuilder implements UuidBuilderInterface
                 case 1:
                     return new UuidV1($fields, $this->numberConverter, $codec, $this->timeConverter);
                 case 2:
-                    return new Uuid($fields, $this->numberConverter, $codec, $this->timeConverter);
+                    return new UuidV2($fields, $this->numberConverter, $codec, $this->timeConverter);
                 case 3:
                     return new UuidV3($fields, $this->numberConverter, $codec, $this->timeConverter);
                 case 4:

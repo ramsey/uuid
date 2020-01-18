@@ -24,6 +24,8 @@ use Ramsey\Uuid\Converter\NumberConverterInterface;
 use Ramsey\Uuid\Converter\Time\GenericTimeConverter;
 use Ramsey\Uuid\Converter\Time\PhpTimeConverter;
 use Ramsey\Uuid\Converter\TimeConverterInterface;
+use Ramsey\Uuid\Generator\DceSecurityGenerator;
+use Ramsey\Uuid\Generator\DceSecurityGeneratorInterface;
 use Ramsey\Uuid\Generator\PeclUuidTimeGenerator;
 use Ramsey\Uuid\Generator\RandomGeneratorFactory;
 use Ramsey\Uuid\Generator\RandomGeneratorInterface;
@@ -33,6 +35,8 @@ use Ramsey\Uuid\Guid\GuidBuilder;
 use Ramsey\Uuid\Math\BrickMathCalculator;
 use Ramsey\Uuid\Math\CalculatorInterface;
 use Ramsey\Uuid\Nonstandard\UuidBuilder as NonstandardUuidBuilder;
+use Ramsey\Uuid\Provider\Dce\SystemDceSecurityProvider;
+use Ramsey\Uuid\Provider\DceSecurityProviderInterface;
 use Ramsey\Uuid\Provider\Node\FallbackNodeProvider;
 use Ramsey\Uuid\Provider\Node\RandomNodeProvider;
 use Ramsey\Uuid\Provider\Node\SystemNodeProvider;
@@ -80,6 +84,11 @@ class FeatureSet
      * @var CodecInterface
      */
     private $codec;
+
+    /**
+     * @var DceSecurityGeneratorInterface
+     */
+    private $dceSecurityGenerator;
 
     /**
      * @var NodeProviderInterface
@@ -145,6 +154,7 @@ class FeatureSet
         $this->nodeProvider = $this->buildNodeProvider();
         $this->randomGenerator = $this->buildRandomGenerator();
         $this->setTimeProvider(new SystemTimeProvider());
+        $this->setDceSecurityProvider(new SystemDceSecurityProvider());
         $this->validator = new GenericValidator();
     }
 
@@ -170,6 +180,14 @@ class FeatureSet
     public function getCodec(): CodecInterface
     {
         return $this->codec;
+    }
+
+    /**
+     * Returns the DCE Security generator configured for this environment
+     */
+    public function getDceSecurityGenerator(): DceSecurityGeneratorInterface
+    {
+        return $this->dceSecurityGenerator;
     }
 
     /**
@@ -223,6 +241,14 @@ class FeatureSet
     }
 
     /**
+     * Sets the DCE Security provider to use in this environment
+     */
+    public function setDceSecurityProvider(DceSecurityProviderInterface $dceSecurityProvider): void
+    {
+        $this->dceSecurityGenerator = $this->buildDceSecurityGenerator($dceSecurityProvider);
+    }
+
+    /**
      * Sets the time provider to use in this environment
      */
     public function setTimeProvider(TimeProviderInterface $timeProvider): void
@@ -250,6 +276,19 @@ class FeatureSet
         }
 
         return new StringCodec($this->builder);
+    }
+
+    /**
+     * Returns a DCE Security generator configured for this environment
+     */
+    private function buildDceSecurityGenerator(
+        DceSecurityProviderInterface $dceSecurityProvider
+    ): DceSecurityGeneratorInterface {
+        return new DceSecurityGenerator(
+            $this->numberConverter,
+            $this->timeGenerator,
+            $dceSecurityProvider
+        );
     }
 
     /**

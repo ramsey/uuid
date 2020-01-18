@@ -4,15 +4,18 @@ declare(strict_types=1);
 
 namespace Ramsey\Uuid\Test;
 
+use Mockery;
 use PHPUnit\Framework\MockObject\MockObject;
 use Ramsey\Uuid\Builder\UuidBuilderInterface;
 use Ramsey\Uuid\Codec\CodecInterface;
 use Ramsey\Uuid\Converter\NumberConverterInterface;
 use Ramsey\Uuid\FeatureSet;
+use Ramsey\Uuid\Generator\DceSecurityGeneratorInterface;
 use Ramsey\Uuid\Generator\RandomGeneratorInterface;
 use Ramsey\Uuid\Generator\TimeGeneratorInterface;
 use Ramsey\Uuid\Provider\NodeProviderInterface;
 use Ramsey\Uuid\UuidFactory;
+use Ramsey\Uuid\Validator\ValidatorInterface;
 
 class UuidFactoryTest extends TestCase
 {
@@ -49,37 +52,46 @@ class UuidFactoryTest extends TestCase
 
     public function testGettersReturnValueFromFeatureSet(): void
     {
-        $codec = $this->getMockBuilder(CodecInterface::class)->getMock();
-        $nodeProvider = $this->getMockBuilder(NodeProviderInterface::class)->getMock();
-        $randomGenerator = $this->getMockBuilder(RandomGeneratorInterface::class)->getMock();
-        $timeGenerator = $this->getMockBuilder(TimeGeneratorInterface::class)->getMock();
+        $codec = Mockery::mock(CodecInterface::class);
+        $nodeProvider = Mockery::mock(NodeProviderInterface::class);
+        $randomGenerator = Mockery::mock(RandomGeneratorInterface::class);
+        $timeGenerator = Mockery::mock(TimeGeneratorInterface::class);
+        $dceSecurityGenerator = Mockery::mock(DceSecurityGeneratorInterface::class);
+        $numberConverter = Mockery::mock(NumberConverterInterface::class);
+        $builder = Mockery::mock(UuidBuilderInterface::class);
+        $validator = Mockery::mock(ValidatorInterface::class);
 
-        $featureSet = $this->getMockBuilder(FeatureSet::class)->getMock();
-        $featureSet->method('getCodec')->willReturn($codec);
-        $featureSet->method('getNodeProvider')->willReturn($nodeProvider);
-        $featureSet->method('getRandomGenerator')->willReturn($randomGenerator);
-        $featureSet->method('getTimeGenerator')->willReturn($timeGenerator);
+        $featureSet = Mockery::mock(FeatureSet::class, [
+            'getCodec' => $codec,
+            'getNodeProvider' => $nodeProvider,
+            'getRandomGenerator' => $randomGenerator,
+            'getTimeGenerator' => $timeGenerator,
+            'getDceSecurityGenerator' => $dceSecurityGenerator,
+            'getNumberConverter' => $numberConverter,
+            'getBuilder' => $builder,
+            'getValidator' => $validator,
+        ]);
 
         $uuidFactory = new UuidFactory($featureSet);
-        $this->assertEquals(
+        $this->assertSame(
             $codec,
             $uuidFactory->getCodec(),
             'getCodec did not return CodecInterface from FeatureSet'
         );
 
-        $this->assertEquals(
+        $this->assertSame(
             $nodeProvider,
             $uuidFactory->getNodeProvider(),
             'getNodeProvider did not return NodeProviderInterface from FeatureSet'
         );
 
-        $this->assertEquals(
+        $this->assertSame(
             $randomGenerator,
             $uuidFactory->getRandomGenerator(),
             'getRandomGenerator did not return RandomGeneratorInterface from FeatureSet'
         );
 
-        $this->assertEquals(
+        $this->assertSame(
             $timeGenerator,
             $uuidFactory->getTimeGenerator(),
             'getTimeGenerator did not return TimeGeneratorInterface from FeatureSet'

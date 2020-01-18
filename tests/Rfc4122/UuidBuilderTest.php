@@ -12,11 +12,11 @@ use Ramsey\Uuid\Math\BrickMathCalculator;
 use Ramsey\Uuid\Rfc4122\Fields;
 use Ramsey\Uuid\Rfc4122\UuidBuilder;
 use Ramsey\Uuid\Rfc4122\UuidV1;
+use Ramsey\Uuid\Rfc4122\UuidV2;
 use Ramsey\Uuid\Rfc4122\UuidV3;
 use Ramsey\Uuid\Rfc4122\UuidV4;
 use Ramsey\Uuid\Rfc4122\UuidV5;
 use Ramsey\Uuid\Test\TestCase;
-use Ramsey\Uuid\Uuid;
 
 class UuidBuilderTest extends TestCase
 {
@@ -57,7 +57,7 @@ class UuidBuilderTest extends TestCase
             ],
             [
                 'uuid' => 'ff6f8cb0-c57d-21e1-9b21-0800200c9a66',
-                'expectedClass' => Uuid::class,
+                'expectedClass' => UuidV2::class,
                 'expectedVersion' => 2,
             ],
             [

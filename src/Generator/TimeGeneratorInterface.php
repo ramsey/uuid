@@ -23,11 +23,12 @@ interface TimeGeneratorInterface
     /**
      * Generate a binary string from a node ID, clock sequence, and current time
      *
-     * @param int|string $node A 48-bit number representing the hardware address;
-     *     this number may be represented as an integer or a hexadecimal string
-     * @param int $clockSeq A 14-bit number used to help avoid duplicates that
-     *     could arise when the clock is set backwards in time or if the node ID
-     *     changes
+     * @param int|string|null $node A 48-bit number representing the hardware
+     *     address; this number may be represented as an integer or a
+     *     hexadecimal string
+     * @param int|null $clockSeq A 14-bit number used to help avoid duplicates
+     *     that could arise when the clock is set backwards in time or if the
+     *     node ID changes
      *
      * @return string A binary string
      */

@@ -36,11 +36,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   UUIDs or creating UUIDs from existing strings, bytes, or integers, if the UUID
   is an RFC 4122 variant, one of these instances will be returned:
   * `Rfc4122\UuidV1`
+  * `Rfc4122\UuidV2`
   * `Rfc4122\UuidV3`
   * `Rfc4122\UuidV4`
   * `Rfc4122\UuidV5`
+  * `Rfc4122\NilUuid`
 * Add `Rfc4122\UuidBuilder` to build RFC 4122 variant UUIDs. This replaces the
   existing `Builder\DefaultUuidBuilder`, which is now deprecated.
+* Add ability to generate version 2 (DCE Security) UUIDs.
 * Add classes to represent GUIDs and nonstandard (non-RFC 4122 variant) UUIDs:
   * `Guid\Guid`
   * `Nonstandard\Uuid`.
@@ -68,6 +71,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   returns an instance of `\DateTimeImmutable` instead of `\DateTime`.
 * Add `getFields()` method to `UuidInterface`.
 * Add `getValidator()` method to `UuidFactoryInterface`.
+* Add `uuid2()` method to `UuidFactoryInterface`.
 * Add `convertTime()` method to `Converter\TimeConverterInterface`.
 * Add `getTime()` method to `Provider\TimeProviderInterface`.
 * Change `Uuid::getFields()` to return an instance of `Fields\FieldsInterface`.

@@ -144,6 +144,27 @@ class Uuid implements UuidInterface
     public const UUID_TYPE_HASH_SHA1 = 5;
 
     /**
+     * DCE Security principal domain
+     *
+     * @link https://pubs.opengroup.org/onlinepubs/9696989899/chap11.htm#tagcjh_14_05_01_01 DCE 1.1, §11.5.1.1
+     */
+    public const DCE_DOMAIN_PERSON = 0;
+
+    /**
+     * DCE Security group domain
+     *
+     * @link https://pubs.opengroup.org/onlinepubs/9696989899/chap11.htm#tagcjh_14_05_01_01 DCE 1.1, §11.5.1.1
+     */
+    public const DCE_DOMAIN_GROUP = 1;
+
+    /**
+     * DCE Security organization domain
+     *
+     * @link https://pubs.opengroup.org/onlinepubs/9696989899/chap11.htm#tagcjh_14_05_01_01 DCE 1.1, §11.5.1.1
+     */
+    public const DCE_DOMAIN_ORG = 2;
+
+    /**
      * @var UuidFactoryInterface|null
      */
     private static $factory = null;
