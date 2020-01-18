@@ -14,18 +14,13 @@ declare(strict_types=1);
 
 namespace Ramsey\Uuid;
 
-use DateTimeImmutable;
-use DateTimeInterface;
 use Ramsey\Uuid\Codec\CodecInterface;
 use Ramsey\Uuid\Converter\NumberConverterInterface;
 use Ramsey\Uuid\Converter\TimeConverterInterface;
-use Ramsey\Uuid\Exception\DateTimeException;
-use Ramsey\Uuid\Exception\UnsupportedOperationException;
 use Ramsey\Uuid\Fields\FieldsInterface;
 use Ramsey\Uuid\Rfc4122\FieldsInterface as Rfc4122FieldsInterface;
 use Ramsey\Uuid\Type\Hexadecimal;
 use Ramsey\Uuid\Type\IntegerValue;
-use Throwable;
 
 /**
  * Represents a RFC 4122 universally unique identifier (UUID)
@@ -44,6 +39,8 @@ use Throwable;
  */
 class Uuid implements UuidInterface
 {
+    use DeprecatedUuidMethodsTrait;
+
     /**
      * When this namespace is specified, the name string is a fully-qualified
      * domain name
@@ -296,135 +293,9 @@ class Uuid implements UuidInterface
         return $this->codec->encodeBinary($this);
     }
 
-    /**
-     * @deprecated Use {@see UuidInterface::getFields()} to get a
-     *     {@see FieldsInterface} instance. If it is a {@see Rfc4122FieldsInterface}
-     *     instance, you may call {@see Rfc4122FieldsInterface::getClockSeqHiAndReserved()}
-     *     and use the arbitrary-precision math library of your choice to
-     *     convert it to a string integer.
-     */
-    public function getClockSeqHiAndReserved(): string
-    {
-        return $this->numberConverter->fromHex($this->fields->getClockSeqHiAndReserved()->toString());
-    }
-
-    /**
-     * @deprecated Use {@see UuidInterface::getFields()} to get a
-     *     {@see FieldsInterface} instance. If it is a {@see Rfc4122FieldsInterface}
-     *     instance, you may call {@see Rfc4122FieldsInterface::getClockSeqHiAndReserved()}.
-     */
-    public function getClockSeqHiAndReservedHex(): string
-    {
-        return $this->fields->getClockSeqHiAndReserved()->toString();
-    }
-
-    /**
-     * @deprecated Use {@see UuidInterface::getFields()} to get a
-     *     {@see FieldsInterface} instance. If it is a {@see Rfc4122FieldsInterface}
-     *     instance, you may call {@see Rfc4122FieldsInterface::getClockSeqLow()}
-     *     and use the arbitrary-precision math library of your choice to
-     *     convert it to a string integer.
-     */
-    public function getClockSeqLow(): string
-    {
-        return $this->numberConverter->fromHex($this->fields->getClockSeqLow()->toString());
-    }
-
-    /**
-     * @deprecated Use {@see UuidInterface::getFields()} to get a
-     *     {@see FieldsInterface} instance. If it is a {@see Rfc4122FieldsInterface}
-     *     instance, you may call {@see Rfc4122FieldsInterface::getClockSeqLow()}.
-     */
-    public function getClockSeqLowHex(): string
-    {
-        return $this->fields->getClockSeqLow()->toString();
-    }
-
-    /**
-     * @deprecated Use {@see UuidInterface::getFields()} to get a
-     *     {@see FieldsInterface} instance. If it is a {@see Rfc4122FieldsInterface}
-     *     instance, you may call {@see Rfc4122FieldsInterface::getClockSeq()}
-     *     and use the arbitrary-precision math library of your choice to
-     *     convert it to a string integer.
-     */
-    public function getClockSequence(): string
-    {
-        return $this->numberConverter->fromHex($this->fields->getClockSeq()->toString());
-    }
-
-    /**
-     * @deprecated Use {@see UuidInterface::getFields()} to get a
-     *     {@see FieldsInterface} instance. If it is a {@see Rfc4122FieldsInterface}
-     *     instance, you may call {@see Rfc4122FieldsInterface::getClockSeq()}.
-     */
-    public function getClockSequenceHex(): string
-    {
-        return $this->fields->getClockSeq()->toString();
-    }
-
-    /**
-     * @deprecated This method will be removed in 5.0.0. There is no alternative
-     *     recommendation, so plan accordingly.
-     */
-    public function getNumberConverter(): NumberConverterInterface
-    {
-        return $this->numberConverter;
-    }
-
-    /**
-     * @deprecated In ramsey/uuid version 5.0.0, this will be removed.
-     *     It is available at {@see UuidV1::getDateTime()}.
-     *
-     * @return DateTimeImmutable An immutable instance of DateTimeInterface
-     *
-     * @throws UnsupportedOperationException if UUID is not time-based
-     * @throws DateTimeException if DateTime throws an exception/error
-     */
-    public function getDateTime(): DateTimeInterface
-    {
-        if ($this->fields->getVersion() !== 1) {
-            throw new UnsupportedOperationException('Not a time-based UUID');
-        }
-
-        $unixTime = $this->timeConverter->convertTime(
-            $this->numberConverter->fromHex($this->fields->getTimestamp()->toString())
-        );
-
-        try {
-            return new DateTimeImmutable("@{$unixTime}");
-        } catch (Throwable $exception) {
-            throw new DateTimeException(
-                $exception->getMessage(),
-                (int) $exception->getCode(),
-                $exception
-            );
-        }
-    }
-
-    /**
-     * Returns the fields that comprise this UUID
-     */
     public function getFields(): FieldsInterface
     {
         return $this->fields;
-    }
-
-    /**
-     * @deprecated Use {@see UuidInterface::getFields()} to get a
-     *     {@see FieldsInterface} instance.
-     *
-     * @return string[]
-     */
-    public function getFieldsHex(): array
-    {
-        return [
-            'time_low' => $this->fields->getTimeLow()->toString(),
-            'time_mid' => $this->fields->getTimeMid()->toString(),
-            'time_hi_and_version' => $this->fields->getTimeHiAndVersion()->toString(),
-            'clock_seq_hi_and_reserved' => $this->fields->getClockSeqHiAndReserved()->toString(),
-            'clock_seq_low' => $this->fields->getClockSeqLow()->toString(),
-            'node' => $this->fields->getNode()->toString(),
-        ];
     }
 
     public function getHex(): string
@@ -435,193 +306,6 @@ class Uuid implements UuidInterface
     public function getInteger(): string
     {
         return $this->numberConverter->fromHex($this->getHex());
-    }
-
-    /**
-     * Returns the least significant 64 bits of the UUID
-     */
-    public function getLeastSignificantBits(): string
-    {
-        return $this->numberConverter->fromHex($this->getLeastSignificantBitsHex());
-    }
-
-    public function getLeastSignificantBitsHex(): string
-    {
-        return sprintf(
-            '%02s%02s%012s',
-            $this->fields->getClockSeqHiAndReserved()->toString(),
-            $this->fields->getClockSeqLow()->toString(),
-            $this->fields->getNode()->toString()
-        );
-    }
-
-    /**
-     * Returns the most significant 64 bits of the UUID
-     */
-    public function getMostSignificantBits(): string
-    {
-        return $this->numberConverter->fromHex($this->getMostSignificantBitsHex());
-    }
-
-    public function getMostSignificantBitsHex(): string
-    {
-        return sprintf(
-            '%08s%04s%04s',
-            $this->fields->getTimeLow()->toString(),
-            $this->fields->getTimeMid()->toString(),
-            $this->fields->getTimeHiAndVersion()->toString()
-        );
-    }
-
-    /**
-     * @deprecated Use {@see UuidInterface::getFields()} to get a
-     *     {@see FieldsInterface} instance. If it is a {@see Rfc4122FieldsInterface}
-     *     instance, you may call {@see Rfc4122FieldsInterface::getNode()}
-     *     and use the arbitrary-precision math library of your choice to
-     *     convert it to a string integer.
-     */
-    public function getNode(): string
-    {
-        return $this->numberConverter->fromHex($this->fields->getNode()->toString());
-    }
-
-    /**
-     * @deprecated Use {@see UuidInterface::getFields()} to get a
-     *     {@see FieldsInterface} instance. If it is a {@see Rfc4122FieldsInterface}
-     *     instance, you may call {@see Rfc4122FieldsInterface::getNode()}.
-     */
-    public function getNodeHex(): string
-    {
-        return $this->fields->getNode()->toString();
-    }
-
-    /**
-     * @deprecated Use {@see UuidInterface::getFields()} to get a
-     *     {@see FieldsInterface} instance. If it is a {@see Rfc4122FieldsInterface}
-     *     instance, you may call {@see Rfc4122FieldsInterface::getTimeHiAndVersion()}
-     *     and use the arbitrary-precision math library of your choice to
-     *     convert it to a string integer.
-     */
-    public function getTimeHiAndVersion(): string
-    {
-        return $this->numberConverter->fromHex($this->fields->getTimeHiAndVersion()->toString());
-    }
-
-    /**
-     * @deprecated Use {@see UuidInterface::getFields()} to get a
-     *     {@see FieldsInterface} instance. If it is a {@see Rfc4122FieldsInterface}
-     *     instance, you may call {@see Rfc4122FieldsInterface::getTimeHiAndVersion()}.
-     */
-    public function getTimeHiAndVersionHex(): string
-    {
-        return $this->fields->getTimeHiAndVersion()->toString();
-    }
-
-    /**
-     * @deprecated Use {@see UuidInterface::getFields()} to get a
-     *     {@see FieldsInterface} instance. If it is a {@see Rfc4122FieldsInterface}
-     *     instance, you may call {@see Rfc4122FieldsInterface::getTimeLow()}
-     *     and use the arbitrary-precision math library of your choice to
-     *     convert it to a string integer.
-     */
-    public function getTimeLow(): string
-    {
-        return $this->numberConverter->fromHex($this->fields->getTimeLow()->toString());
-    }
-
-    /**
-     * @deprecated Use {@see UuidInterface::getFields()} to get a
-     *     {@see FieldsInterface} instance. If it is a {@see Rfc4122FieldsInterface}
-     *     instance, you may call {@see Rfc4122FieldsInterface::getTimeLow()}.
-     */
-    public function getTimeLowHex(): string
-    {
-        return $this->fields->getTimeLow()->toString();
-    }
-
-    /**
-     * @deprecated Use {@see UuidInterface::getFields()} to get a
-     *     {@see FieldsInterface} instance. If it is a {@see Rfc4122FieldsInterface}
-     *     instance, you may call {@see Rfc4122FieldsInterface::getTimeMid()}
-     *     and use the arbitrary-precision math library of your choice to
-     *     convert it to a string integer.
-     */
-    public function getTimeMid(): string
-    {
-        return $this->numberConverter->fromHex($this->fields->getTimeMid()->toString());
-    }
-
-    /**
-     * @deprecated Use {@see UuidInterface::getFields()} to get a
-     *     {@see FieldsInterface} instance. If it is a {@see Rfc4122FieldsInterface}
-     *     instance, you may call {@see Rfc4122FieldsInterface::getTimeMid()}.
-     */
-    public function getTimeMidHex(): string
-    {
-        return $this->fields->getTimeMid()->toString();
-    }
-
-    /**
-     * @deprecated Use {@see UuidInterface::getFields()} to get a
-     *     {@see FieldsInterface} instance. If it is a {@see Rfc4122FieldsInterface}
-     *     instance, you may call {@see Rfc4122FieldsInterface::getTimestamp()}
-     *     and use the arbitrary-precision math library of your choice to
-     *     convert it to a string integer.
-     */
-    public function getTimestamp(): string
-    {
-        if ($this->fields->getVersion() !== 1) {
-            throw new UnsupportedOperationException('Not a time-based UUID');
-        }
-
-        return $this->numberConverter->fromHex($this->fields->getTimestamp()->toString());
-    }
-
-    /**
-     * @deprecated Use {@see UuidInterface::getFields()} to get a
-     *     {@see FieldsInterface} instance. If it is a {@see Rfc4122FieldsInterface}
-     *     instance, you may call {@see Rfc4122FieldsInterface::getTimestamp()}.
-     */
-    public function getTimestampHex(): string
-    {
-        if ($this->fields->getVersion() !== 1) {
-            throw new UnsupportedOperationException('Not a time-based UUID');
-        }
-
-        return $this->fields->getTimestamp()->toString();
-    }
-
-    /**
-     * @deprecated This has moved to {@see Rfc4122FieldsInterface::getUrn()} and
-     *     is available on {@see \Ramsey\Uuid\Rfc4122\UuidV1},
-     *     {@see \Ramsey\Uuid\Rfc4122\UuidV3}, {@see \Ramsey\Uuid\Rfc4122\UuidV4},
-     *     and {@see \Ramsey\Uuid\Rfc4122\UuidV5}.
-     */
-    public function getUrn(): string
-    {
-        return 'urn:uuid:' . $this->toString();
-    }
-
-    /**
-     * @deprecated Use {@see UuidInterface::getFields()} to get a
-     *     {@see FieldsInterface} instance. If it is a
-     *     {@see \Ramsey\Uuid\Rfc4122\FieldsInterface} instance, you may call
-     *     {@see \Ramsey\Uuid\Rfc4122\FieldsInterface::getVariant()}.
-     */
-    public function getVariant(): ?int
-    {
-        return $this->fields->getVariant();
-    }
-
-    /**
-     * @deprecated Use {@see UuidInterface::getFields()} to get a
-     *     {@see FieldsInterface} instance. If it is a
-     *     {@see \Ramsey\Uuid\Rfc4122\FieldsInterface} instance, you may call
-     *     {@see \Ramsey\Uuid\Rfc4122\FieldsInterface::getVersion()}.
-     */
-    public function getVersion(): ?int
-    {
-        return $this->fields->getVersion();
     }
 
     public function toString(): string

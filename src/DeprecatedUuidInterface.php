@@ -18,8 +18,8 @@ use DateTimeInterface;
 use Ramsey\Uuid\Converter\NumberConverterInterface;
 
 /**
- * This interface allows for separation of deprecated methods from the primary
- * UuidInterface, for easier reading and, when ready, removal of code.
+ * This interface encapsulates deprecated methods for ramsey/uuid; this
+ * interface and its methods will be removed in ramsey/uuid 5.0.0.
  *
  * @psalm-immutable
  */
