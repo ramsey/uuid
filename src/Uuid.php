@@ -23,6 +23,8 @@ use Ramsey\Uuid\Exception\DateTimeException;
 use Ramsey\Uuid\Exception\UnsupportedOperationException;
 use Ramsey\Uuid\Fields\FieldsInterface;
 use Ramsey\Uuid\Rfc4122\FieldsInterface as Rfc4122FieldsInterface;
+use Ramsey\Uuid\Type\Hexadecimal;
+use Ramsey\Uuid\Type\IntegerValue;
 use Throwable;
 
 /**
@@ -729,6 +731,34 @@ class Uuid implements UuidInterface
     public static function uuid1($node = null, ?int $clockSeq = null): UuidInterface
     {
         return self::getFactory()->uuid1($node, $clockSeq);
+    }
+
+    /**
+     * Returns a version 2 (DCE Security) UUID from a local domain, local
+     * identifier, host ID, clock sequence, and the current time
+     *
+     * @param int $localDomain The local domain to use when generating bytes,
+     *     according to DCE Security
+     * @param IntegerValue|null $localIdentifier The local identifier for the
+     *     given domain; this may be a UID or GID on POSIX systems, if the local
+     *     domain is person or group, or it may be a site-defined identifier
+     *     if the local domain is org
+     * @param Hexadecimal|null $node A 48-bit number representing the hardware
+     *     address
+     * @param int|null $clockSeq A 14-bit number used to help avoid duplicates
+     *     that could arise when the clock is set backwards in time or if the
+     *     node ID changes
+     *
+     * @return UuidInterface A UuidInterface instance that represents a
+     *     version 2 UUID
+     */
+    public static function uuid2(
+        int $localDomain,
+        ?IntegerValue $localIdentifier = null,
+        ?Hexadecimal $node = null,
+        ?int $clockSeq = null
+    ): UuidInterface {
+        return self::getFactory()->uuid2($localDomain, $localIdentifier, $node, $clockSeq);
     }
 
     /**

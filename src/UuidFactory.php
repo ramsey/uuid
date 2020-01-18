@@ -247,7 +247,7 @@ class UuidFactory implements UuidFactoryInterface
 
     public function uuid2(
         int $localDomain,
-        ?IntegerValue $localIdentifier,
+        ?IntegerValue $localIdentifier = null,
         ?Hexadecimal $node = null,
         ?int $clockSeq = null
     ): UuidInterface {

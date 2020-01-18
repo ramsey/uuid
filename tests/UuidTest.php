@@ -29,6 +29,7 @@ use Ramsey\Uuid\Provider\Time\FixedTimeProvider;
 use Ramsey\Uuid\Rfc4122\FieldsInterface;
 use Ramsey\Uuid\Rfc4122\NilUuid;
 use Ramsey\Uuid\Rfc4122\UuidV1;
+use Ramsey\Uuid\Rfc4122\UuidV2;
 use Ramsey\Uuid\Rfc4122\UuidV3;
 use Ramsey\Uuid\Rfc4122\UuidV4;
 use Ramsey\Uuid\Rfc4122\UuidV5;
@@ -1474,6 +1475,7 @@ class UuidTest extends TestCase
     {
         return [
             [UuidV1::class, 'uuid1'],
+            [UuidV2::class, 'uuid2', [Uuid::DCE_DOMAIN_PERSON]],
             [UuidV3::class, 'uuid3', [Uuid::NIL, 'foobar']],
             [UuidV4::class, 'uuid4'],
             [UuidV5::class, 'uuid5', [Uuid::NIL, 'foobar']],

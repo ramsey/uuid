@@ -43,7 +43,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   * `Rfc4122\NilUuid`
 * Add `Rfc4122\UuidBuilder` to build RFC 4122 variant UUIDs. This replaces the
   existing `Builder\DefaultUuidBuilder`, which is now deprecated.
-* Add ability to generate version 2 (DCE Security) UUIDs.
+* Add ability to generate version 2 (DCE Security) UUIDs, including the static
+  method `Uuid::uuid2()`, which returns an `Rfc4122\UuidV2` instance.
 * Add classes to represent GUIDs and nonstandard (non-RFC 4122 variant) UUIDs:
   * `Guid\Guid`
   * `Nonstandard\Uuid`.
