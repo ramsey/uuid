@@ -139,9 +139,7 @@ class FeatureSet
         $this->ignoreSystemNode = $ignoreSystemNode;
         $this->enablePecl = $enablePecl;
 
-        $this->calculator = new BrickMathCalculator();
-        $this->numberConverter = $this->buildNumberConverter();
-        $this->timeConverter = $this->buildTimeConverter();
+        $this->setCalculator(new BrickMathCalculator());
         $this->builder = $this->buildUuidBuilder($useGuids);
         $this->codec = $this->buildCodec($useGuids);
         $this->nodeProvider = $this->buildNodeProvider();
@@ -220,6 +218,8 @@ class FeatureSet
     public function setCalculator(CalculatorInterface $calculator): void
     {
         $this->calculator = $calculator;
+        $this->numberConverter = $this->buildNumberConverter($calculator);
+        $this->timeConverter = $this->buildTimeConverter($calculator);
     }
 
     /**
@@ -270,9 +270,9 @@ class FeatureSet
     /**
      * Returns a number converter configured for this environment
      */
-    private function buildNumberConverter(): NumberConverterInterface
+    private function buildNumberConverter(CalculatorInterface $calculator): NumberConverterInterface
     {
-        return new GenericNumberConverter($this->getCalculator());
+        return new GenericNumberConverter($calculator);
     }
 
     /**
@@ -305,9 +305,9 @@ class FeatureSet
     /**
      * Returns a time converter configured for this environment
      */
-    private function buildTimeConverter(): TimeConverterInterface
+    private function buildTimeConverter(CalculatorInterface $calculator): TimeConverterInterface
     {
-        $genericConverter = new GenericTimeConverter($this->getCalculator());
+        $genericConverter = new GenericTimeConverter($calculator);
 
         if ($this->is64BitSystem()) {
             return new PhpTimeConverter($genericConverter);
