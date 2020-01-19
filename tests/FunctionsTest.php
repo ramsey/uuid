@@ -4,9 +4,13 @@ declare(strict_types=1);
 
 namespace Ramsey\Uuid\Test;
 
+use Ramsey\Uuid\Rfc4122\FieldsInterface;
+use Ramsey\Uuid\Type\Hexadecimal;
+use Ramsey\Uuid\Type\IntegerValue;
 use Ramsey\Uuid\Uuid;
 
 use function Ramsey\Uuid\v1;
+use function Ramsey\Uuid\v2;
 use function Ramsey\Uuid\v3;
 use function Ramsey\Uuid\v4;
 use function Ramsey\Uuid\v5;
@@ -19,6 +23,22 @@ class FunctionsTest extends TestCase
 
         $this->assertIsString($v1);
         $this->assertSame(Uuid::UUID_TYPE_TIME, Uuid::fromString($v1)->getVersion());
+    }
+
+    public function testV2ReturnsVersion2UuidString(): void
+    {
+        $v2 = v2(
+            Uuid::DCE_DOMAIN_PERSON,
+            new IntegerValue('1004'),
+            new Hexadecimal('aabbccdd0011'),
+            1234
+        );
+
+        /** @var FieldsInterface $fields */
+        $fields = Uuid::fromString($v2)->getFields();
+
+        $this->assertIsString($v2);
+        $this->assertSame(Uuid::UUID_TYPE_IDENTIFIER, $fields->getVersion());
     }
 
     public function testV3ReturnsVersion3UuidString(): void
