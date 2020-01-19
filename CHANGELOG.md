@@ -180,6 +180,8 @@ The following functionality is deprecated and will be removed in ramsey/uuid
   * `Generator\MtRandGenerator`
   * `Generator\OpenSslGenerator`
   * `Generator\SodiumRandomGenerator`
+* Remove `Exception\UnsatisfiedDependencyException`. This library no longer
+  throws this exception.
 
 ### Fixed
 
