@@ -349,7 +349,7 @@ class FeatureSet
         $genericConverter = new GenericTimeConverter($calculator);
 
         if ($this->is64BitSystem()) {
-            return new PhpTimeConverter($genericConverter);
+            return new PhpTimeConverter($calculator, $genericConverter);
         }
 
         return $genericConverter;

@@ -14,12 +14,15 @@ declare(strict_types=1);
 
 namespace Ramsey\Uuid\Math;
 
+use Brick\Math\BigDecimal;
 use Brick\Math\BigInteger;
 use Brick\Math\Exception\MathException;
 use Brick\Math\RoundingMode as BrickMathRounding;
 use Ramsey\Uuid\Exception\InvalidArgumentException;
+use Ramsey\Uuid\Type\Decimal;
 use Ramsey\Uuid\Type\Hexadecimal;
 use Ramsey\Uuid\Type\IntegerValue;
+use Ramsey\Uuid\Type\NumberInterface;
 
 /**
  * A calculator using the brick/math library for arbitrary-precision arithmetic
@@ -41,7 +44,7 @@ final class BrickMathCalculator implements CalculatorInterface
         RoundingMode::HALF_EVEN => BrickMathRounding::HALF_EVEN,
     ];
 
-    public function add(IntegerValue $augend, IntegerValue ...$addends): IntegerValue
+    public function add(NumberInterface $augend, NumberInterface ...$addends): NumberInterface
     {
         /** @psalm-suppress ImpureMethodCall */
         $sum = BigInteger::of($augend->toString());
@@ -54,7 +57,7 @@ final class BrickMathCalculator implements CalculatorInterface
         return new IntegerValue((string) $sum);
     }
 
-    public function subtract(IntegerValue $minuend, IntegerValue ...$subtrahends): IntegerValue
+    public function subtract(NumberInterface $minuend, NumberInterface ...$subtrahends): NumberInterface
     {
         /** @psalm-suppress ImpureMethodCall */
         $difference = BigInteger::of($minuend->toString());
@@ -67,7 +70,7 @@ final class BrickMathCalculator implements CalculatorInterface
         return new IntegerValue((string) $difference);
     }
 
-    public function multiply(IntegerValue $multiplicand, IntegerValue ...$multipliers): IntegerValue
+    public function multiply(NumberInterface $multiplicand, NumberInterface ...$multipliers): NumberInterface
     {
         /** @psalm-suppress ImpureMethodCall */
         $product = BigInteger::of($multiplicand->toString());
@@ -80,19 +83,28 @@ final class BrickMathCalculator implements CalculatorInterface
         return new IntegerValue((string) $product);
     }
 
-    public function divide(int $roundingMode, IntegerValue $dividend, IntegerValue ...$divisors): IntegerValue
-    {
+    public function divide(
+        int $roundingMode,
+        int $scale,
+        NumberInterface $dividend,
+        NumberInterface ...$divisors
+    ): NumberInterface {
         $brickRounding = $this->getBrickRoundingMode($roundingMode);
 
         /** @psalm-suppress ImpureMethodCall */
-        $quotient = BigInteger::of($dividend->toString());
+        $quotient = BigDecimal::of($dividend->toString());
 
         foreach ($divisors as $divisor) {
             /** @psalm-suppress ImpureMethodCall */
-            $quotient = $quotient->dividedBy($divisor->toString(), $brickRounding);
+            $quotient = $quotient->dividedBy($divisor->toString(), $scale, $brickRounding);
         }
 
-        return new IntegerValue((string) $quotient);
+        if ($scale === 0) {
+            /** @psalm-suppress ImpureMethodCall */
+            return new IntegerValue((string) $quotient->toBigInteger());
+        }
+
+        return new Decimal((string) $quotient);
     }
 
     public function fromBase(string $value, int $base): IntegerValue

@@ -162,22 +162,26 @@ class UuidTest extends TestCase
         // Check a recent date
         $uuid = Uuid::fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
         $this->assertInstanceOf(DateTimeInterface::class, $uuid->getDateTime());
-        $this->assertEquals('2012-07-04T02:14:34+00:00', $uuid->getDateTime()->format('c'));
+        $this->assertSame('2012-07-04T02:14:34+00:00', $uuid->getDateTime()->format('c'));
+        $this->assertSame('1341368074.491000', $uuid->getDateTime()->format('U.u'));
 
         // Check an old date
         $uuid = Uuid::fromString('0901e600-0154-1000-9b21-0800200c9a66');
         $this->assertInstanceOf(DateTimeInterface::class, $uuid->getDateTime());
-        $this->assertEquals('1582-10-16T16:34:04+00:00', $uuid->getDateTime()->format('c'));
+        $this->assertSame('1582-10-16T16:34:04+00:00', $uuid->getDateTime()->format('c'));
+        $this->assertSame('-12219146756.000000', $uuid->getDateTime()->format('U.u'));
 
         // Check a future date
         $uuid = Uuid::fromString('ff9785f6-ffff-1fff-9669-00007ffffffe');
         $this->assertInstanceOf(DateTimeInterface::class, $uuid->getDateTime());
-        $this->assertEquals('5236-03-31T21:20:59+00:00', $uuid->getDateTime()->format('c'));
+        $this->assertSame('5236-03-31T21:20:59+00:00', $uuid->getDateTime()->format('c'));
+        $this->assertSame('103072857659.999999', $uuid->getDateTime()->format('U.u'));
 
         // Check the oldest date
         $uuid = Uuid::fromString('00000000-0000-1000-9669-00007ffffffe');
         $this->assertInstanceOf(DateTimeInterface::class, $uuid->getDateTime());
-        $this->assertEquals('1582-10-15T00:00:00+00:00', $uuid->getDateTime()->format('c'));
+        $this->assertSame('1582-10-15T00:00:00+00:00', $uuid->getDateTime()->format('c'));
+        $this->assertSame('-12219292800.000000', $uuid->getDateTime()->format('U.u'));
     }
 
     public function testGetDateTimeFromNonVersion1Uuid(): void
@@ -188,7 +192,7 @@ class UuidTest extends TestCase
         $this->expectException(UnsupportedOperationException::class);
         $this->expectExceptionMessage('Not a time-based UUID');
 
-        $date = $uuid->getDateTime();
+        $uuid->getDateTime();
     }
 
     public function testGetFields(): void
@@ -1427,7 +1431,7 @@ class UuidTest extends TestCase
         $this->assertEquals($uuid->getVersion(), Uuid::UUID_TYPE_HASH_SHA1);
     }
 
-    public function testGetDateTimeThrowsExceptionWhenDateTimeCannotParseString(): void
+    public function testGetDateTimeThrowsExceptionWhenDateTimeCannotParseDate(): void
     {
         $numberConverter = new BigNumberConverter();
         $timeConverter = Mockery::mock(TimeConverterInterface::class);
@@ -1435,7 +1439,7 @@ class UuidTest extends TestCase
         $timeConverter
             ->shouldReceive('convertTime')
             ->once()
-            ->andReturn('foobar');
+            ->andReturn(new Time(1579476464, '1234567890'));
 
         $builder = new DefaultUuidBuilder($numberConverter, $timeConverter);
         $codec = new StringCodec($builder);
@@ -1448,7 +1452,8 @@ class UuidTest extends TestCase
         $this->expectException(DateTimeException::class);
         $this->expectExceptionMessage(
             'DateTimeImmutable::__construct(): Failed to parse time string '
-            . '(@foobar) at position 0 (@): Unexpected character'
+            . '(2020-01-19 23:27:44.1234567890) at position 11 (2): '
+            . 'The timezone could not be found in the database'
         );
 
         $uuid->getDateTime();

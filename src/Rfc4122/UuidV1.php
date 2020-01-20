@@ -40,12 +40,13 @@ final class UuidV1 extends Uuid implements UuidInterface
      */
     public function getDateTime(): DateTimeInterface
     {
-        $unixTime = $this->timeConverter->convertTime(
-            $this->numberConverter->fromHex($this->fields->getTimestamp()->toString())
-        );
+        $time = $this->timeConverter->convertTime($this->fields->getTimestamp());
 
         try {
-            return new DateTimeImmutable("@{$unixTime}");
+            return new DateTimeImmutable(
+                date('Y-m-d H:i:s', (int) $time->getSeconds()->toString()) . '.'
+                . str_pad($time->getMicroSeconds()->toString(), 6, '0', STR_PAD_LEFT)
+            );
         } catch (Throwable $e) {
             throw new DateTimeException($e->getMessage(), (int) $e->getCode(), $e);
         }

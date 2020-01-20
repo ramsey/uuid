@@ -8,6 +8,7 @@ use Brick\Math\BigInteger;
 use Ramsey\Uuid\Converter\Time\BigNumberTimeConverter;
 use Ramsey\Uuid\Exception\InvalidArgumentException;
 use Ramsey\Uuid\Test\TestCase;
+use Ramsey\Uuid\Type\Hexadecimal;
 
 class BigNumberTimeConverterTest extends TestCase
 {
@@ -40,9 +41,9 @@ class BigNumberTimeConverterTest extends TestCase
     public function testConvertTime(): void
     {
         $converter = new BigNumberTimeConverter();
-        $returned = $converter->convertTime('135606608744910000');
+        $returned = $converter->convertTime(new Hexadecimal('1e1c57dff6f8cb0'));
 
-        $this->assertSame('1341368074', $returned);
+        $this->assertSame('1341368074', $returned->getSeconds()->toString());
     }
 
     public function testCalculateTimeThrowsExceptionWhenSecondsIsNotOnlyDigits(): void
@@ -69,18 +70,5 @@ class BigNumberTimeConverterTest extends TestCase
         );
 
         $converter->calculateTime('1234', '56.78');
-    }
-
-    public function testConvertTimeThrowsExceptionWhenTimestampIsNotOnlyDigits(): void
-    {
-        $converter = new BigNumberTimeConverter();
-
-        $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage(
-            'Value must be a signed integer or a string containing only digits '
-            . '0-9 and, optionally, a sign (+ or -)'
-        );
-
-        $converter->convertTime('1234.56');
     }
 }

@@ -16,6 +16,7 @@ namespace Ramsey\Uuid\Math;
 
 use Ramsey\Uuid\Type\Hexadecimal;
 use Ramsey\Uuid\Type\IntegerValue;
+use Ramsey\Uuid\Type\NumberInterface;
 
 /**
  * A calculator performs arithmetic operations on numbers
@@ -27,45 +28,51 @@ interface CalculatorInterface
     /**
      * Returns the sum of all the provided parameters
      *
-     * @param IntegerValue $augend The first addend (the integer being added to)
-     * @param IntegerValue ...$addends The additional integers to a add to the augend
+     * @param NumberInterface $augend The first addend (the integer being added to)
+     * @param NumberInterface ...$addends The additional integers to a add to the augend
      *
-     * @return IntegerValue The sum of all the parameters
+     * @return NumberInterface The sum of all the parameters
      */
-    public function add(IntegerValue $augend, IntegerValue ...$addends): IntegerValue;
+    public function add(NumberInterface $augend, NumberInterface ...$addends): NumberInterface;
 
     /**
      * Returns the difference of all the provided parameters
      *
-     * @param IntegerValue $minuend The integer being subtracted from
-     * @param IntegerValue ...$subtrahends The integers to subtract from the minuend
+     * @param NumberInterface $minuend The integer being subtracted from
+     * @param NumberInterface ...$subtrahends The integers to subtract from the minuend
      *
-     * @return IntegerValue The difference after subtracting all parameters
+     * @return NumberInterface The difference after subtracting all parameters
      */
-    public function subtract(IntegerValue $minuend, IntegerValue ...$subtrahends): IntegerValue;
+    public function subtract(NumberInterface $minuend, NumberInterface ...$subtrahends): NumberInterface;
 
     /**
      * Returns the product of all the provided parameters
      *
-     * @param IntegerValue $multiplicand The integer to be multiplied
-     * @param IntegerValue ...$multipliers The factors by which to multiply the multiplicand
+     * @param NumberInterface $multiplicand The integer to be multiplied
+     * @param NumberInterface ...$multipliers The factors by which to multiply the multiplicand
      *
-     * @return IntegerValue The product of multiplying all the provided parameters
+     * @return NumberInterface The product of multiplying all the provided parameters
      */
-    public function multiply(IntegerValue $multiplicand, IntegerValue ...$multipliers): IntegerValue;
+    public function multiply(NumberInterface $multiplicand, NumberInterface ...$multipliers): NumberInterface;
 
     /**
      * Returns the quotient of the provided parameters divided left-to-right
      *
      * @param int $roundingMode The RoundingMode constant to use for this operation
-     * @param IntegerValue $dividend The integer to be divided
-     * @param IntegerValue ...$divisors The integers to divide the dividend, in
+     * @param int $scale The scale to use for this operation
+     * @param NumberInterface $dividend The integer to be divided
+     * @param NumberInterface ...$divisors
      *     the order in which the division operations should take place
      *     (left-to-right)
      *
-     * @return IntegerValue The quotient of dividing the provided parameters left-to-right
+     * @return NumberInterface The quotient of dividing the provided parameters left-to-right
      */
-    public function divide(int $roundingMode, IntegerValue $dividend, IntegerValue ...$divisors): IntegerValue;
+    public function divide(
+        int $roundingMode,
+        int $scale,
+        NumberInterface $dividend,
+        NumberInterface ...$divisors
+    ): NumberInterface;
 
     /**
      * Converts a value from an arbitrary base to a base-10 integer value

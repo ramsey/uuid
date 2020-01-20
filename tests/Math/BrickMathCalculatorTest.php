@@ -59,7 +59,7 @@ class BrickMathCalculatorTest extends TestCase
 
         $calculator = new BrickMathCalculator();
 
-        $result = $calculator->divide(RoundingMode::HALF_UP, $int1, $int2, $int3);
+        $result = $calculator->divide(RoundingMode::HALF_UP, 0, $int1, $int2, $int3);
 
         $this->assertSame('24', $result->toString());
     }

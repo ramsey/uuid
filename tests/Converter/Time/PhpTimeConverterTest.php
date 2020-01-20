@@ -11,6 +11,7 @@ use Ramsey\Uuid\Converter\Time\PhpTimeConverter;
 use Ramsey\Uuid\Exception\InvalidArgumentException;
 use Ramsey\Uuid\Math\BrickMathCalculator;
 use Ramsey\Uuid\Test\TestCase;
+use Ramsey\Uuid\Type\Hexadecimal;
 
 class PhpTimeConverterTest extends TestCase
 {
@@ -68,32 +69,19 @@ class PhpTimeConverterTest extends TestCase
         $converter->calculateTime('1234', '56.78');
     }
 
-    public function testConvertTimeThrowsExceptionWhenTimestampIsNotOnlyDigits(): void
-    {
-        /** @var Mockery\MockInterface & PhpTimeConverter $converter */
-        $converter = Mockery::mock(PhpTimeConverter::class)->makePartial();
-
-        $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage(
-            'Value must be a signed integer or a string containing only digits '
-            . '0-9 and, optionally, a sign (+ or -)'
-        );
-
-        $converter->convertTime('1234.56');
-    }
-
     /**
      * @dataProvider provideConvertTime
      */
-    public function testConvertTime(string $uuidTimestamp, string $unixTimestamp): void
+    public function testConvertTime(Hexadecimal $uuidTimestamp, string $unixTimestamp, string $microSeconds): void
     {
         $calculator = new BrickMathCalculator();
         $fallbackConverter = new GenericTimeConverter($calculator);
-        $converter = new PhpTimeConverter($fallbackConverter);
+        $converter = new PhpTimeConverter($calculator, $fallbackConverter);
 
         $result = $converter->convertTime($uuidTimestamp);
 
-        $this->assertSame($unixTimestamp, $result);
+        $this->assertSame($unixTimestamp, $result->getSeconds()->toString());
+        $this->assertSame($microSeconds, $result->getMicroSeconds()->toString());
     }
 
     /**
@@ -103,38 +91,44 @@ class PhpTimeConverterTest extends TestCase
     {
         return [
             [
-                'uuidTimestamp' => '135606608744910000',
+                'uuidTimestamp' => new Hexadecimal('1e1c57dff6f8cb0'),
                 'unixTimestamp' => '1341368074',
+                'microSeconds' => '491000',
             ],
             [
-                'uuidTimestamp' => '137979051595210230',
+                'uuidTimestamp' => new Hexadecimal('1ea333764c71df6'),
                 'unixTimestamp' => '1578612359',
+                'microSeconds' => '521023',
             ],
             [
-                'uuidTimestamp' => '1152921504599999990',
+                'uuidTimestamp' => new Hexadecimal('fffffffff9785f6'),
                 'unixTimestamp' => '103072857659',
+                'microSeconds' => '999999',
             ],
 
             // This is the last possible time supported by v1 UUIDs. When
             // converted to a Unix timestamp, the microseconds are lost.
             // 60038-03-11 05:36:10.955161
             [
-                'uuidTimestamp' => '18446744073709551610',
+                'uuidTimestamp' => new Hexadecimal('fffffffffffffffa'),
                 'unixTimestamp' => '1832455114570',
+                'microSeconds' => '955161',
             ],
 
             // This is the earliest possible date supported by v1 UUIDs:
             // 1582-10-15 00:00:00.000000
             [
-                'uuidTimestamp' => '0',
+                'uuidTimestamp' => new Hexadecimal('000000000000'),
                 'unixTimestamp' => '-12219292800',
+                'microSeconds' => '0',
             ],
 
             // This is the Unix epoch:
             // 1970-01-01 00:00:00.000000
             [
-                'uuidTimestamp' => '122192928000000000',
+                'uuidTimestamp' => new Hexadecimal('1b21dd213814000'),
                 'unixTimestamp' => '0',
+                'microSeconds' => '0',
             ],
         ];
     }
@@ -148,7 +142,7 @@ class PhpTimeConverterTest extends TestCase
     {
         $calculator = new BrickMathCalculator();
         $fallbackConverter = new GenericTimeConverter($calculator);
-        $converter = new PhpTimeConverter($fallbackConverter);
+        $converter = new PhpTimeConverter($calculator, $fallbackConverter);
 
         $result = $converter->calculateTime($seconds, $microSeconds);
 

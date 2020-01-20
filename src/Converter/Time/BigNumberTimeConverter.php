@@ -16,10 +16,12 @@ namespace Ramsey\Uuid\Converter\Time;
 
 use Ramsey\Uuid\Converter\TimeConverterInterface;
 use Ramsey\Uuid\Math\BrickMathCalculator;
+use Ramsey\Uuid\Type\Hexadecimal;
+use Ramsey\Uuid\Type\Time;
 
 /**
  * Previously used to integrate moontoast/math as a bignum arithmetic library,
- * BigNumberTimeConverter is deprecated in favor of ArbitraryPrecisionTimeConverter
+ * BigNumberTimeConverter is deprecated in favor of GenericTimeConverter
  *
  * @deprecated Transition to {@see GenericTimeConverter}.
  */
@@ -48,8 +50,8 @@ class BigNumberTimeConverter implements TimeConverterInterface
      * @inheritDoc
      * @psalm-pure
      */
-    public function convertTime(string $timestamp): string
+    public function convertTime(Hexadecimal $uuidTimestamp): Time
     {
-        return $this->converter->convertTime($timestamp);
+        return $this->converter->convertTime($uuidTimestamp);
     }
 }

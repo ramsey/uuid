@@ -14,6 +14,9 @@ declare(strict_types=1);
 
 namespace Ramsey\Uuid\Converter;
 
+use Ramsey\Uuid\Type\Hexadecimal;
+use Ramsey\Uuid\Type\Time;
+
 /**
  * A time converter converts timestamps into representations that may be used
  * in UUIDs
@@ -40,14 +43,13 @@ interface TimeConverterInterface
     /**
      * Converts a timestamp extracted from a UUID to a Unix timestamp
      *
-     * @param string $timestamp A string integer representation of a UUID
+     * @param Hexadecimal $uuidTimestamp A hexadecimal representation of a UUID
      *     timestamp; a UUID timestamp is a count of 100-nanosecond intervals
-     *     since UTC 00:00:00.00, 15 October 1582; this must be a numeric string
-     *     to accommodate unsigned integers greater than PHP_INT_MAX.
+     *     since UTC 00:00:00.00, 15 October 1582.
      *
-     * @return string String representation of an integer
+     * @return Time An instance of {@see Time}
      *
      * @psalm-pure
      */
-    public function convertTime(string $timestamp): string;
+    public function convertTime(Hexadecimal $uuidTimestamp): Time;
 }

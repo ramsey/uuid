@@ -136,18 +136,15 @@ trait DeprecatedUuidMethodsTrait
             throw new UnsupportedOperationException('Not a time-based UUID');
         }
 
-        $unixTime = $this->timeConverter->convertTime(
-            $this->numberConverter->fromHex($this->fields->getTimestamp()->toString())
-        );
+        $time = $this->timeConverter->convertTime($this->fields->getTimestamp());
 
         try {
-            return new DateTimeImmutable("@{$unixTime}");
-        } catch (Throwable $exception) {
-            throw new DateTimeException(
-                $exception->getMessage(),
-                (int) $exception->getCode(),
-                $exception
+            return new DateTimeImmutable(
+                date('Y-m-d H:i:s', (int) $time->getSeconds()->toString()) . '.'
+                . str_pad($time->getMicroSeconds()->toString(), 6, '0', STR_PAD_LEFT)
             );
+        } catch (Throwable $e) {
+            throw new DateTimeException($e->getMessage(), (int) $e->getCode(), $e);
         }
     }
 

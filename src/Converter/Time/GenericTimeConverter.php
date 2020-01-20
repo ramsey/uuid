@@ -17,6 +17,7 @@ namespace Ramsey\Uuid\Converter\Time;
 use Ramsey\Uuid\Converter\TimeConverterInterface;
 use Ramsey\Uuid\Math\CalculatorInterface;
 use Ramsey\Uuid\Math\RoundingMode;
+use Ramsey\Uuid\Type\Hexadecimal;
 use Ramsey\Uuid\Type\IntegerValue;
 use Ramsey\Uuid\Type\Time;
 
@@ -54,6 +55,7 @@ class GenericTimeConverter implements TimeConverterInterface
             new IntegerValue('10')
         );
 
+        /** @var IntegerValue $uuidTime */
         $uuidTime = $this->calculator->add(
             $sec,
             $usec,
@@ -78,12 +80,14 @@ class GenericTimeConverter implements TimeConverterInterface
      * @inheritDoc
      * @psalm-pure
      */
-    public function convertTime(string $timestamp): string
+    public function convertTime(Hexadecimal $uuidTimestamp): Time
     {
-        $timestamp = new IntegerValue($timestamp);
-
-        $unixTimestamp = $this->calculator->subtract(
-            $timestamp,
+        // From the total, subtract the number of 100-nanosecond intervals from
+        // the UUID epoch (Gregorian calendar date) to the Unix epoch. This
+        // gives us the number of 100-nanosecond intervals from the Unix epoch,
+        // which also includes the microtime.
+        $epochNanoseconds = $this->calculator->subtract(
+            $this->calculator->toIntegerValue($uuidTimestamp),
             new IntegerValue('122192928000000000')
         );
 
@@ -91,10 +95,13 @@ class GenericTimeConverter implements TimeConverterInterface
         // into the next second, giving us the wrong Unix timestamp.
         $unixTimestamp = $this->calculator->divide(
             RoundingMode::DOWN,
-            $unixTimestamp,
+            6,
+            $epochNanoseconds,
             new IntegerValue('10000000')
         );
 
-        return $unixTimestamp->toString();
+        $split = explode('.', (string) $unixTimestamp, 2);
+
+        return new Time($split[0], $split[1] ?? 0);
     }
 }

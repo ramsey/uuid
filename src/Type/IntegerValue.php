@@ -30,7 +30,7 @@ use function ctype_digit;
  *
  * @psalm-immutable
  */
-final class IntegerValue
+final class IntegerValue implements NumberInterface
 {
     /**
      * @var string
@@ -56,6 +56,14 @@ final class IntegerValue
                 'Value must be a signed integer or a string containing only '
                 . 'digits 0-9 and, optionally, a sign (+ or -)'
             );
+        }
+
+        // Trim any leading zeros.
+        $value = ltrim($value, '0');
+
+        // Set to zero if the string is empty after trimming zeros.
+        if ($value === '') {
+            $value = '0';
         }
 
         // Add the negative sign back to the value.

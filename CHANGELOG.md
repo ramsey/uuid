@@ -62,6 +62,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 * Add `Converter\Number\GenericNumberConverter` and
   `Converter\Time\GenericTimeConverter` which will use the calculator provided
   to convert numbers and time to values for UUIDs.
+* The `\DateTimeInterface` instance returned by `UuidInterface::getDateTime()`
+  (and now `Rfc4122\UuidV1::getDateTime()`) now includes microseconds, as
+  specified by the version 1 UUID.
 
 ### Changed
 
@@ -91,9 +94,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   * `NumberConverterInterface::fromHex(string $hex): string`
   * `NumberConverterInterface::toHex(string $number): string`
   * `TimeConverterInterface::calculateTime(string $seconds, string $microSeconds): array`
-  * `TimeConverterInterface::convertTime(string $timestamp): string`
-* `UnsatisfiedDependencyException` and `UnsupportedOperationException` are now
-  descended from `\LogicException`. Previously, they descended from `\RuntimeException`.
+* `UnsupportedOperationException` is now descended from `\LogicException`.
+  Previously, it descended from `\RuntimeException`.
 * When encoding to bytes or decoding from bytes, `OrderedTimeCodec` now checks
   whether the UUID is an RFC 4122 variant, version 1 UUID. If not, it will throw
   an exception—`InvalidArgumentException` when using
