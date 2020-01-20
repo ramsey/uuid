@@ -1,28 +1,24 @@
 parameters:
     autoload_files:
-        - tests/phpstan-bootstrap.php
+        - ./phpstan-bootstrap.php
     checkMissingIterableValueType: false
     reportUnmatchedIgnoredErrors: false
     excludes_analyse:
-        - tests/ExpectedBehaviorTest.php
+        - ./ExpectedBehaviorTest.php
     ignoreErrors:
         -
             message: "#^Function uuid_create\\(\\) has no return typehint specified\\.$#"
             count: 1
-            path: tests/phpstan-bootstrap.php
+            path: phpstan-bootstrap.php
         -
             message: "#^Function uuid_create\\(\\) has parameter \\$uuid_type with no typehint specified\\.$#"
             count: 1
-            path: tests/phpstan-bootstrap.php
+            path: phpstan-bootstrap.php
         -
             message: "#^Function uuid_parse\\(\\) has no return typehint specified\\.$#"
             count: 1
-            path: tests/phpstan-bootstrap.php
+            path: phpstan-bootstrap.php
         -
             message: "#^Function uuid_parse\\(\\) has parameter \\$uuid with no typehint specified\\.$#"
             count: 1
-            path: tests/phpstan-bootstrap.php
-        -
-            message: "#^Unreachable statement - code above always terminates\\.$#"
-            count: 3
-            path: tests/UuidTest.php
+            path: phpstan-bootstrap.php

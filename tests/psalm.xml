@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<psalm
+    totallyTyped="true"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="https://getpsalm.org/schema/config"
+    xsi:schemaLocation="vendor/vimeo/psalm/config.xsd"
+    errorBaseline="tests/psalm-baseline.xml"
+>
+    <projectFiles>
+        <directory name="src" />
+        <directory name="tests/static-analysis" />
+    </projectFiles>
+</psalm>
