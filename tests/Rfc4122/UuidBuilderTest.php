@@ -27,7 +27,7 @@ class UuidBuilderTest extends TestCase
      */
     public function testBuild(string $uuid, string $expectedClass, int $expectedVersion): void
     {
-        $fields = explode('-', $uuid);
+        $bytes = (string) hex2bin(str_replace('-', '', $uuid));
 
         $calculator = new BrickMathCalculator();
         $numberConverter = new GenericNumberConverter($calculator);
@@ -35,7 +35,7 @@ class UuidBuilderTest extends TestCase
         $builder = new UuidBuilder($numberConverter, $timeConverter);
         $codec = new StringCodec($builder);
 
-        $result = $builder->build($codec, $fields);
+        $result = $builder->build($codec, $bytes);
 
         /** @var Fields $fields */
         $fields = $result->getFields();
@@ -80,7 +80,7 @@ class UuidBuilderTest extends TestCase
 
     public function testBuildThrowsUnableToBuildException(): void
     {
-        $fields = explode('-', 'ff6f8cb0-c57d-51e1-9b21-0800200c9a');
+        $bytes = (string) hex2bin(str_replace('-', '', 'ff6f8cb0-c57d-51e1-9b21-0800200c9a'));
 
         $calculator = new BrickMathCalculator();
         $numberConverter = new GenericNumberConverter($calculator);
@@ -93,6 +93,6 @@ class UuidBuilderTest extends TestCase
             'The byte string must be 16 bytes long; received 15 bytes'
         );
 
-        $builder->build($codec, $fields);
+        $builder->build($codec, $bytes);
     }
 }

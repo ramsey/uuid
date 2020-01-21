@@ -292,20 +292,19 @@ class UuidFactory implements UuidFactoryInterface
     }
 
     /**
-     * Returns a Uuid created from the provided fields
+     * Returns a Uuid created from the provided byte string
      *
-     * Uses the configured builder and codec and the provided array of
-     * hexadecimal-value UUID fields to construct a Uuid object.
+     * Uses the configured builder and codec and the provided byte string to
+     * construct a Uuid object.
      *
-     * @param string[] $fields An array of fields from which to construct a UUID;
-     *     see {@see \Ramsey\Uuid\UuidInterface::getFieldsHex()} for array structure
+     * @param string $bytes The byte string from which to construct a UUID
      *
      * @return UuidInterface An instance of UuidInterface, created from the
-     *     provided fields
+     *     provided bytes
      */
-    public function uuid(array $fields): UuidInterface
+    public function uuid(string $bytes): UuidInterface
     {
-        return $this->uuidBuilder->build($this->codec, $fields);
+        return $this->uuidBuilder->build($this->codec, $bytes);
     }
 
     /**
@@ -354,6 +353,6 @@ class UuidFactory implements UuidFactoryInterface
             'node' => substr($hash, 20, 12),
         ];
 
-        return $this->uuid($fields);
+        return $this->uuid((string) hex2bin(implode('', $fields)));
     }
 }

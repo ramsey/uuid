@@ -88,10 +88,12 @@ class StringCodecTest extends TestCase
             'node' => $this->fields->getNode()->toString(),
         ];
 
+        $bytes = hex2bin(implode('', $fields));
+
         $string = 'uuid:12345678-1234-4bcd-abef-1234abcd4321';
         $this->builder->expects($this->once())
             ->method('build')
-            ->with($this->isInstanceOf(StringCodec::class), $fields);
+            ->with($this->isInstanceOf(StringCodec::class), $bytes);
         $codec = new StringCodec($this->builder);
         $codec->decode($string);
     }

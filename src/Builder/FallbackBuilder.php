@@ -45,18 +45,17 @@ class FallbackBuilder implements UuidBuilderInterface
      * succeeds
      *
      * @param CodecInterface $codec The codec to use for building this instance
-     * @param string[] $fields An array of fields from which to construct an instance;
-     *     see {@see \Ramsey\Uuid\UuidInterface::getFieldsHex()} for array structure.
+     * @param string $bytes The byte string from which to construct a UUID
      *
      * @return UuidInterface an instance of a UUID object
      */
-    public function build(CodecInterface $codec, array $fields): UuidInterface
+    public function build(CodecInterface $codec, string $bytes): UuidInterface
     {
         $lastBuilderException = null;
 
         foreach ($this->builders as $builder) {
             try {
-                return $builder->build($codec, $fields);
+                return $builder->build($codec, $bytes);
             } catch (UnableToBuildUuidException $exception) {
                 $lastBuilderException = $exception;
 

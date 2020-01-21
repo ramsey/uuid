@@ -61,14 +61,14 @@ class UuidBuilder implements UuidBuilderInterface
      * Builds and returns a Uuid
      *
      * @param CodecInterface $codec The codec to use for building this Uuid instance
-     * @param string[] $fields An array of fields from which to construct a Uuid instance
+     * @param string $bytes The byte string from which to construct a UUID
      *
      * @return Rfc4122UuidInterface UuidBuilder returns instances of Rfc4122UuidInterface
      */
-    public function build(CodecInterface $codec, array $fields): UuidInterface
+    public function build(CodecInterface $codec, string $bytes): UuidInterface
     {
         try {
-            $fields = new Fields((string) hex2bin(implode('', $fields)));
+            $fields = new Fields($bytes);
 
             if ($fields->isNil()) {
                 return new NilUuid($fields, $this->numberConverter, $codec, $this->timeConverter);

@@ -57,17 +57,15 @@ class GuidBuilder implements UuidBuilderInterface
      * Builds and returns a Guid
      *
      * @param CodecInterface $codec The codec to use for building this Guid instance
-     * @param string[] $fields An array of fields from which to construct a Guid instance.
+     * @param string $bytes The byte string from which to construct a UUID
      *
      * @return Guid The GuidBuilder returns an instance of Ramsey\Uuid\Guid\Guid
      */
-    public function build(CodecInterface $codec, array $fields): UuidInterface
+    public function build(CodecInterface $codec, string $bytes): UuidInterface
     {
         try {
-            $fields = new Fields((string) hex2bin(implode('', $fields)));
-
             return new Guid(
-                $fields,
+                new Fields($bytes),
                 $this->numberConverter,
                 $codec,
                 $this->timeConverter

@@ -166,13 +166,13 @@ class StringCodec implements CodecInterface
      * @param string[] $components An array of hexadecimal strings representing
      *     the fields of an RFC 4122 UUID
      *
-     * @return string[]
+     * @return string The byte string for the UUID
      *
      * @psalm-pure
      */
-    protected function getFields(array $components): array
+    protected function getFields(array $components): string
     {
-        return [
+        $fields = [
             'time_low' => str_pad($components[0], 8, '0', STR_PAD_LEFT),
             'time_mid' => str_pad($components[1], 4, '0', STR_PAD_LEFT),
             'time_hi_and_version' => str_pad($components[2], 4, '0', STR_PAD_LEFT),
@@ -180,5 +180,7 @@ class StringCodec implements CodecInterface
             'clock_seq_low' => str_pad(substr($components[3], 2), 2, '0', STR_PAD_LEFT),
             'node' => str_pad($components[4], 12, '0', STR_PAD_LEFT),
         ];
+
+        return (string) hex2bin(implode('', $fields));
     }
 }

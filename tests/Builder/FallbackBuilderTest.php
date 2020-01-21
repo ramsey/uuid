@@ -17,27 +17,27 @@ class FallbackBuilderTest extends TestCase
     public function testBuildThrowsExceptionAfterAllConfiguredBuildersHaveErrored(): void
     {
         $codec = Mockery::mock(CodecInterface::class);
-        $fields = ['someFields'];
+        $bytes = 'foobar';
 
         $builder1 = Mockery::mock(UuidBuilderInterface::class);
         $builder1
             ->shouldReceive('build')
             ->once()
-            ->with($codec, $fields)
+            ->with($codec, $bytes)
             ->andThrow(UnableToBuildUuidException::class);
 
         $builder2 = Mockery::mock(UuidBuilderInterface::class);
         $builder2
             ->shouldReceive('build')
             ->once()
-            ->with($codec, $fields)
+            ->with($codec, $bytes)
             ->andThrow(UnableToBuildUuidException::class);
 
         $builder3 = Mockery::mock(UuidBuilderInterface::class);
         $builder3
             ->shouldReceive('build')
             ->once()
-            ->with($codec, $fields)
+            ->with($codec, $bytes)
             ->andThrow(UnableToBuildUuidException::class);
 
         $fallbackBuilder = new FallbackBuilder([$builder1, $builder2, $builder3]);
@@ -47,6 +47,6 @@ class FallbackBuilderTest extends TestCase
             'Could not find a suitable builder for the provided codec and fields'
         );
 
-        $fallbackBuilder->build($codec, $fields);
+        $fallbackBuilder->build($codec, $bytes);
     }
 }

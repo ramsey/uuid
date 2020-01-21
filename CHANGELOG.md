@@ -89,6 +89,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   of `mixed`. This is a string representation of a 128-bit integer. You may then
   use a math library of your choice (bcmath, gmp, etc.) to operate on the
   string integer.
+* Change the second required parameter of `Builder\UuidBuilderInterface::build()`
+  from `array $fields` to `string $bytes`. Rather than accepting an array of
+  hexadecimal strings as UUID fields, the `build()` method now expects a byte
+  string.
 * Change methods in converter interfaces to accept and return string values
   instead of `mixed`; this simplifies the interface and makes it consistent:
   * `NumberConverterInterface::fromHex(string $hex): string`

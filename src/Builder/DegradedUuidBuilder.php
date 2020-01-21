@@ -58,16 +58,14 @@ class DegradedUuidBuilder implements UuidBuilderInterface
      * Builds and returns a DegradedUuid
      *
      * @param CodecInterface $codec The codec to use for building this DegradedUuid instance
-     * @param string[] $fields An array of fields from which to construct a DegradedUuid instance
+     * @param string $bytes The byte string from which to construct a UUID
      *
      * @return DegradedUuid The DegradedUuidBuild returns an instance of Ramsey\Uuid\DegradedUuid
      */
-    public function build(CodecInterface $codec, array $fields): UuidInterface
+    public function build(CodecInterface $codec, string $bytes): UuidInterface
     {
-        $fields = new Rfc4122Fields((string) hex2bin(implode('', $fields)));
-
         return new DegradedUuid(
-            $fields,
+            new Rfc4122Fields($bytes),
             $this->numberConverter,
             $codec,
             $this->timeConverter

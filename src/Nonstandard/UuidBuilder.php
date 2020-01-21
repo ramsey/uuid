@@ -57,18 +57,16 @@ class UuidBuilder implements UuidBuilderInterface
      * Builds and returns a Nonstandard\Uuid
      *
      * @param CodecInterface $codec The codec to use for building this instance
-     * @param string[] $fields An array of fields from which to construct an instance.
+     * @param string $bytes The byte string from which to construct a UUID
      *
      * @return Uuid The Nonstandard\UuidBuilder returns an instance of
      *     Nonstandard\Uuid
      */
-    public function build(CodecInterface $codec, array $fields): UuidInterface
+    public function build(CodecInterface $codec, string $bytes): UuidInterface
     {
         try {
-            $fields = new Fields((string) hex2bin(implode('', $fields)));
-
             return new Uuid(
-                $fields,
+                new Fields($bytes),
                 $this->numberConverter,
                 $codec,
                 $this->timeConverter

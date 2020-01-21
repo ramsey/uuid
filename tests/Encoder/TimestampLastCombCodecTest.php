@@ -65,14 +65,14 @@ class TimestampLastCombCodecTest extends TestCase
             ->method('build')
             ->with(
                 $this->codec,
-                [
+                hex2bin(implode('', [
                     'time_low' => '0800200c',
                     'time_mid' => '9a66',
                     'time_hi_and_version' => '11e1',
                     'clock_seq_hi_and_reserved' => '9b',
                     'clock_seq_low' => '21',
                     'node' => 'ff6f8cb0c57d',
-                ]
+                ]))
             );
         $this->codec->decode('0800200c-9a66-11e1-9b21-ff6f8cb0c57d');
     }
@@ -83,14 +83,14 @@ class TimestampLastCombCodecTest extends TestCase
             ->method('build')
             ->with(
                 $this->codec,
-                [
+                hex2bin(implode('', [
                     'time_low' => '0800200c',
                     'time_mid' => '9a66',
                     'time_hi_and_version' => '11e1',
                     'clock_seq_hi_and_reserved' => '9b',
                     'clock_seq_low' => '21',
                     'node' => 'ff6f8cb0c57d',
-                ]
+                ]))
             );
         $this->codec->decodeBytes((string) hex2bin('0800200c9a6611e19b21ff6f8cb0c57d'));
     }
