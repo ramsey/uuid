@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Ramsey\Uuid\Test\Validator;
+namespace Ramsey\Uuid\Test\Rfc4122;
 
+use Ramsey\Uuid\Rfc4122\Validator;
 use Ramsey\Uuid\Test\TestCase;
-use Ramsey\Uuid\Validator\GenericValidator;
 
-class GenericValidatorTest extends TestCase
+class ValidatorTest extends TestCase
 {
     /**
      * @dataProvider provideValuesForValidation
@@ -23,7 +23,7 @@ class GenericValidatorTest extends TestCase
             $variations[] = strtoupper($variation);
         }
 
-        $validator = new GenericValidator();
+        $validator = new Validator();
 
         foreach ($variations as $variation) {
             $this->assertSame($expected, $validator->validate($variation));
@@ -36,6 +36,8 @@ class GenericValidatorTest extends TestCase
     public function provideValuesForValidation(): array
     {
         $hexMutations = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 'a', 'b', 'c', 'd', 'e', 'f'];
+        $trueVersions = [1, 2, 3, 4, 5];
+        $trueVariants = [8, 9, 'a', 'b'];
 
         $testValues = [];
 
@@ -43,7 +45,7 @@ class GenericValidatorTest extends TestCase
             foreach ($hexMutations as $variant) {
                 $testValues[] = [
                     'value' => "ff6f8cb0-c57d-{$version}1e1-{$variant}b21-0800200c9a66",
-                    'expected' => true,
+                    'expected' => in_array($variant, $trueVariants, true) && in_array($version, $trueVersions, true),
                 ];
             }
         }
