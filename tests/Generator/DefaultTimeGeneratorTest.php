@@ -126,21 +126,17 @@ class DefaultTimeGeneratorTest extends TestCase
      * @runInSeparateProcess
      * @preserveGlobalState disabled
      */
-    public function testGenerateAppliesVersionAndVariant(): void
+    public function testGenerateDoesNotApplyVersionAndVariant(): void
     {
-        $expectedBytes = hex2bin('83cb98e098e003cb8fe2122f80ca9e06');
+        $expectedBytes = hex2bin('83cb98e098e003cb0fe2122f80ca9e06');
 
         $this->timeConverter->method('calculateTime')
             ->with($this->currentTime['sec'], $this->currentTime['usec'])
             ->willReturn($this->calculatedTime);
+
         $binaryUtils = Mockery::mock('alias:' . BinaryUtils::class);
-        $binaryUtils->shouldReceive('applyVersion')
-            ->with($this->calculatedTime['hi'], 1)
-            ->andReturn(971);
-        $clockSeqShifted = 15;
-        $binaryUtils->shouldReceive('applyVariant')
-            ->with($clockSeqShifted)
-            ->andReturn(143);
+        $binaryUtils->shouldNotReceive('applyVersion');
+        $binaryUtils->shouldNotReceive('applyVariant');
 
         $defaultTimeGenerator = new DefaultTimeGenerator(
             $this->nodeProvider,
@@ -149,49 +145,6 @@ class DefaultTimeGeneratorTest extends TestCase
         );
 
         $this->assertSame($expectedBytes, $defaultTimeGenerator->generate($this->nodeId, $this->clockSeq));
-    }
-
-    /**
-     * @runInSeparateProcess
-     * @preserveGlobalState disabled
-     */
-    public function testGenerateReturnsBinaryStringInUuidFormat(): void
-    {
-        $this->timeConverter->method('calculateTime')->willReturn($this->calculatedTime);
-        $binaryUtils = Mockery::mock('alias:' . BinaryUtils::class);
-        $binaryUtils->shouldReceive('applyVersion')->andReturn(971);
-        $binaryUtils->shouldReceive('applyVariant')->andReturn(143);
-
-        $defaultTimeGenerator = new DefaultTimeGenerator(
-            $this->nodeProvider,
-            $this->timeConverter,
-            $this->timeProvider
-        );
-        $result = $defaultTimeGenerator->generate($this->nodeId, $this->clockSeq);
-
-        // Given we use values:
-        // $low = '83cb98e0';
-        // $mid = '98e0';
-        // $timeHi = 971;
-        // $clockSeqHi = 143;
-        // $clockSeq = 4066;
-        // $node = '122f80ca9e06';
-        //
-        // $values = [
-        //     $low,
-        //     $mid,
-        //     sprintf('%04x', $timeHi),
-        //     sprintf('%02x', $clockSeqHi),
-        //     sprintf('%02x', $clockSeq & 0xff),
-        //     $node
-        // ];
-        //
-        // then:
-        // $hex = vsprintf('%08s%04s%04s%02s%02s%012s', $values);
-
-        $hex = '83cb98e098e003cb8fe2122f80ca9e06';
-        $binary = hex2bin($hex);
-        $this->assertEquals($binary, $result);
     }
 
     /**

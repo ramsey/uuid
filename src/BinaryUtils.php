@@ -14,53 +14,49 @@ declare(strict_types=1);
 
 namespace Ramsey\Uuid;
 
-use function is_int;
-
 /**
  * Provides binary math utilities
  */
 class BinaryUtils
 {
     /**
-     * Applies the RFC 4122 variant field to the `clock_seq_hi_and_reserved` field
+     * Applies the RFC 4122 variant field to the 16-bit clock sequence
      *
      * @link http://tools.ietf.org/html/rfc4122#section-4.1.1 RFC 4122, § 4.1.1: Variant
      *
-     * @param int $clockSeqHi The value of `clock_seq_hi_and_reserved` field
-     *     before the RFC 4122 variant is applied
+     * @param int $clockSeq The 16-bit clock sequence value before the RFC 4122
+     *     variant is applied
      *
-     * @return int The high field of the clock sequence multiplexed with the variant
+     * @return int The 16-bit clock sequence multiplexed with the UUID variant
      *
      * @psalm-pure
      */
-    public static function applyVariant(int $clockSeqHi): int
+    public static function applyVariant(int $clockSeq): int
     {
-        // Set the variant to RFC 4122.
-        $clockSeqHi = $clockSeqHi & 0x3f;
-        $clockSeqHi |= 0x80;
+        $clockSeq = $clockSeq & 0x3fff;
+        $clockSeq |= 0x8000;
 
-        return $clockSeqHi;
+        return $clockSeq;
     }
 
     /**
-     * Applies the RFC 4122 version number to the `time_hi_and_version` field
+     * Applies the RFC 4122 version number to the 16-bit `time_hi_and_version` field
      *
      * @link http://tools.ietf.org/html/rfc4122#section-4.1.3 RFC 4122, § 4.1.3: Version
      *
-     * @param string $timeHi The value of the `time_hi_and_version` field before
-     *     the RFC 4122 version is applied
+     * @param int $timeHi The value of the 16-bit `time_hi_and_version` field
+     *     before the RFC 4122 version is applied
      * @param int $version The RFC 4122 version to apply to the `time_hi` field
      *
-     * @return int The high field of the timestamp multiplexed with the version number
+     * @return int The 16-bit time_hi field of the timestamp multiplexed with
+     *     the UUID version number
      *
      * @psalm-pure
      */
-    public static function applyVersion(string $timeHi, int $version): int
+    public static function applyVersion(int $timeHi, int $version): int
     {
-        $timeHi = hexdec($timeHi) & 0x0fff;
+        $timeHi = $timeHi & 0x0fff;
         $timeHi |= $version << 12;
-
-        assert(is_int($timeHi));
 
         return $timeHi;
     }

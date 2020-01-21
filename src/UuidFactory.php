@@ -341,15 +341,17 @@ class UuidFactory implements UuidFactoryInterface
      */
     private function uuidFromHashedName(string $hash, int $version): UuidInterface
     {
-        $timeHi = BinaryUtils::applyVersion(substr($hash, 12, 4), $version);
-        $clockSeqHi = BinaryUtils::applyVariant((int) hexdec(substr($hash, 16, 2)));
+        $timeHi = BinaryUtils::applyVersion((int) hexdec(substr($hash, 12, 4)), $version);
+        $clockSeq = BinaryUtils::applyVariant((int) hexdec(substr($hash, 16, 4)));
+
+        $clockSeqHex = str_pad(dechex($clockSeq), 4, '0', STR_PAD_LEFT);
 
         $fields = [
             'time_low' => substr($hash, 0, 8),
             'time_mid' => substr($hash, 8, 4),
             'time_hi_and_version' => str_pad(dechex($timeHi), 4, '0', STR_PAD_LEFT),
-            'clock_seq_hi_and_reserved' => str_pad(dechex($clockSeqHi), 2, '0', STR_PAD_LEFT),
-            'clock_seq_low' => substr($hash, 18, 2),
+            'clock_seq_hi_and_reserved' => substr($clockSeqHex, 0, 2),
+            'clock_seq_low' => substr($clockSeqHex, 2),
             'node' => substr($hash, 20, 12),
         ];
 

@@ -92,7 +92,7 @@ class DceSecurityGeneratorTest extends TestCase
                 'expectedId' => '000003e9',
                 'expectedDomain' => '00',
                 'expectedNode' => '001122334455',
-                'expectedTimeMidHi' => '37f211ea',
+                'expectedTimeMidHi' => '37f201ea',
             ],
             [
                 'uid' => '1001',
@@ -107,7 +107,7 @@ class DceSecurityGeneratorTest extends TestCase
                 'expectedId' => '000007d1',
                 'expectedDomain' => '01',
                 'expectedNode' => '001122334455',
-                'expectedTimeMidHi' => '37f211ea',
+                'expectedTimeMidHi' => '37f201ea',
             ],
             [
                 'uid' => 0,
@@ -122,7 +122,7 @@ class DceSecurityGeneratorTest extends TestCase
                 'expectedId' => 'ffffffff',
                 'expectedDomain' => '02',
                 'expectedNode' => '001122334455',
-                'expectedTimeMidHi' => '37f211ea',
+                'expectedTimeMidHi' => '37f201ea',
             ],
         ];
     }

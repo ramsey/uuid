@@ -93,6 +93,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   from `array $fields` to `string $bytes`. Rather than accepting an array of
   hexadecimal strings as UUID fields, the `build()` method now expects a byte
   string.
+* `Generator\DefaultTimeGenerator` no longer adds the variant and version bits
+  to the bytes it returns. These must be applied to the bytes afterwards.
 * Change methods in converter interfaces to accept and return string values
   instead of `mixed`; this simplifies the interface and makes it consistent:
   * `NumberConverterInterface::fromHex(string $hex): string`

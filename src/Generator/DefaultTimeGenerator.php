@@ -14,12 +14,12 @@ declare(strict_types=1);
 
 namespace Ramsey\Uuid\Generator;
 
-use Ramsey\Uuid\BinaryUtils;
 use Ramsey\Uuid\Converter\TimeConverterInterface;
 use Ramsey\Uuid\Exception\InvalidArgumentException;
 use Ramsey\Uuid\Exception\RandomSourceException;
 use Ramsey\Uuid\Provider\NodeProviderInterface;
 use Ramsey\Uuid\Provider\TimeProviderInterface;
+use Throwable;
 
 /**
  * DefaultTimeGenerator generates strings of binary data based on a node ID,
@@ -66,7 +66,7 @@ class DefaultTimeGenerator implements TimeGeneratorInterface
             try {
                 // This does not use "stable storage"; see RFC 4122, Section 4.2.1.1.
                 $clockSeq = random_int(0, 0x3fff);
-            } catch (\Throwable $exception) {
+            } catch (Throwable $exception) {
                 throw new RandomSourceException(
                     $exception->getMessage(),
                     (int) $exception->getCode(),
@@ -82,17 +82,13 @@ class DefaultTimeGenerator implements TimeGeneratorInterface
             $this->timeProvider->getTime()->getMicroSeconds()->toString()
         );
 
-        $timeHi = BinaryUtils::applyVersion((string) ($uuidTime['hi'] ?? 0), 1);
-        $clockSeqHi = BinaryUtils::applyVariant($clockSeq >> 8);
-
         $hex = vsprintf(
-            '%08s%04s%04s%02s%02s%012s',
+            '%08s%04s%04s%04s%012s',
             [
                 $uuidTime['low'] ?? 0,
                 $uuidTime['mid'] ?? 0,
-                sprintf('%04x', $timeHi),
-                sprintf('%02x', $clockSeqHi),
-                sprintf('%02x', $clockSeq & 0xff),
+                $uuidTime['hi'] ?? 0,
+                sprintf('%04x', $clockSeq),
                 $node,
             ]
         );
