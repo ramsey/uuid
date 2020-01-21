@@ -1439,7 +1439,7 @@ class UuidTest extends TestCase
         $timeConverter
             ->shouldReceive('convertTime')
             ->once()
-            ->andReturn(new Time(1579476464, '1234567890'));
+            ->andReturn(new Time(1234567890, '1234567'));
 
         $builder = new DefaultUuidBuilder($numberConverter, $timeConverter);
         $codec = new StringCodec($builder);
@@ -1452,8 +1452,7 @@ class UuidTest extends TestCase
         $this->expectException(DateTimeException::class);
         $this->expectExceptionMessage(
             'DateTimeImmutable::__construct(): Failed to parse time string '
-            . '(2020-01-19 23:27:44.1234567890) at position 11 (2): '
-            . 'The timezone could not be found in the database'
+            . '(@1234567890.1234567) at position 18 (7): Unexpected character'
         );
 
         $uuid->getDateTime();

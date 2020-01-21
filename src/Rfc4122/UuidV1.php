@@ -44,7 +44,9 @@ final class UuidV1 extends Uuid implements UuidInterface
 
         try {
             return new DateTimeImmutable(
-                date('Y-m-d H:i:s', (int) $time->getSeconds()->toString()) . '.'
+                '@'
+                . $time->getSeconds()->toString()
+                . '.'
                 . str_pad($time->getMicroSeconds()->toString(), 6, '0', STR_PAD_LEFT)
             );
         } catch (Throwable $e) {
