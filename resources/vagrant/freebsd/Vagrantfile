@@ -1,0 +1,35 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+$script = <<-SCRIPT
+pkg update
+pkg install -y \
+  php74 \
+  php74-bcmath \
+  php74-composer \
+  php74-dom \
+  php74-gmp \
+  php74-json \
+  php74-pecl-libsodium \
+  php74-pecl-uuid \
+  php74-pecl-xdebug \
+  php74-simplexml \
+  php74-tokenizer \
+  php74-xml \
+  php74-xmlreader \
+  php74-xmlwriter \
+  php74-zip \
+  unzip
+SCRIPT
+
+Vagrant.configure("2") do |config|
+  config.vm.box = "freebsd/FreeBSD-12.1-RELEASE"
+  config.vm.box_version = "2019.11.01"
+  config.vm.provision "shell", inline: $script
+  config.vm.synced_folder "../../../", "/home/vagrant/uuid", type: "rsync"
+  config.ssh.shell = "sh"
+
+  config.vm.provider "virtualbox" do |v|
+    v.name = "ramsey-uuid-freebsd"
+  end
+end

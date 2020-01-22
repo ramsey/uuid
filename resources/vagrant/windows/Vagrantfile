@@ -1,0 +1,22 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+$script = <<-SCRIPT
+choco install composer php unzip --no-progress -y
+Invoke-WebRequest -Uri https://windows.php.net/downloads/pecl/releases/xdebug/2.9.1/php_xdebug-2.9.1-7.4-nts-vc15-x64.zip -UseBasicParsing -OutFile C:\\temp\\php_xdebug.zip
+unzip C:\\temp\\php_xdebug.zip -d C:\\temp\\php_xdebug
+move C:\\temp\\php_xdebug\\php_xdebug.dll C:\\tools\\php74\\ext\\php_xdebug.dll
+Add-Content C:\\tools\\php74\\php.ini "`nextension=gmp"
+Add-Content C:\\tools\\php74\\php.ini "`nextension=sodium"
+Add-Content C:\\tools\\php74\\php.ini "`nzend_extension=xdebug"
+SCRIPT
+
+Vagrant.configure("2") do |config|
+  config.vm.box = "jborean93/WindowsServer2019"
+  config.vm.provision "shell", inline: $script
+  config.vm.synced_folder "../../../", "C:\\Users\\vagrant\\uuid"
+
+  config.vm.provider "virtualbox" do |vb|
+    vb.name = "ramsey-uuid-windows"
+  end
+end
