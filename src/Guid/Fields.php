@@ -89,9 +89,7 @@ final class Fields implements FieldsInterface
             )
         );
 
-        $hex = (string) ($hex[1] ?? '');
-
-        return new Hexadecimal($hex);
+        return new Hexadecimal((string) ($hex[1] ?? ''));
     }
 
     public function getTimeMid(): Hexadecimal
@@ -105,9 +103,7 @@ final class Fields implements FieldsInterface
             )
         );
 
-        $hex = (string) ($hex[1] ?? '');
-
-        return new Hexadecimal($hex);
+        return new Hexadecimal((string) ($hex[1] ?? ''));
     }
 
     public function getTimeHiAndVersion(): Hexadecimal
@@ -121,9 +117,7 @@ final class Fields implements FieldsInterface
             )
         );
 
-        $hex = (string) ($hex[1] ?? '');
-
-        return new Hexadecimal($hex);
+        return new Hexadecimal((string) ($hex[1] ?? ''));
     }
 
     public function getTimestamp(): Hexadecimal
