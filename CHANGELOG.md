@@ -6,7 +6,22 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 
-## [4.0.0-dev]
+## [Unreleased]
+
+### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+### Security
+
+
+## [4.0.0-alpha1] - 2020-01-22
 
 ### Added
 
@@ -194,10 +209,6 @@ The following functionality is deprecated and will be removed in ramsey/uuid
   * `Generator\SodiumRandomGenerator`
 * Remove `Exception\UnsatisfiedDependencyException`. This library no longer
   throws this exception.
-
-### Fixed
-
-### Security
 
 
 ## [3.9.2] - 2019-12-17
@@ -770,8 +781,8 @@ versions leading up to this release.*
 [ramsey/uuid-doctrine]: https://github.com/ramsey/uuid-doctrine
 [ramsey/uuid-console]: https://github.com/ramsey/uuid-console
 
-[4.0.0-dev]: https://github.com/ramsey/uuid/compare/master...4.x
-[unreleased]: https://github.com/ramsey/uuid/compare/3.9.2...HEAD
+[unreleased]: https://github.com/ramsey/uuid/compare/4.0.0-alpha1...HEAD
+[4.0.0-alpha1]: https://github.com/ramsey/uuid/compare/3.9.2...4.0.0-alpha1
 [3.9.2]: https://github.com/ramsey/uuid/compare/3.9.1...3.9.2
 [3.9.1]: https://github.com/ramsey/uuid/compare/3.9.0...3.9.1
 [3.9.0]: https://github.com/ramsey/uuid/compare/3.8.0...3.9.0
