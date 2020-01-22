@@ -17,7 +17,7 @@ namespace Ramsey\Uuid\Nonstandard;
 use Ramsey\Uuid\Codec\CodecInterface;
 use Ramsey\Uuid\Converter\NumberConverterInterface;
 use Ramsey\Uuid\Converter\TimeConverterInterface;
-use Ramsey\Uuid\Uuid as Rfc4122Uuid;
+use Ramsey\Uuid\Uuid as BaseUuid;
 use Ramsey\Uuid\UuidInterface;
 
 /**
@@ -25,7 +25,7 @@ use Ramsey\Uuid\UuidInterface;
  *
  * @psalm-immutable
  */
-class Uuid extends Rfc4122Uuid implements UuidInterface
+class Uuid extends BaseUuid implements UuidInterface
 {
     public function __construct(
         Fields $fields,

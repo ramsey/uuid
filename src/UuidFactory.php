@@ -240,9 +240,8 @@ class UuidFactory implements UuidFactoryInterface
     public function uuid1($node = null, ?int $clockSeq = null): UuidInterface
     {
         $bytes = $this->timeGenerator->generate($node, $clockSeq);
-        $hex = bin2hex($bytes);
 
-        return $this->uuidFromHashedName($hex, 1);
+        return $this->uuidFromBytesAndVersion($bytes, 1);
     }
 
     public function uuid2(
@@ -258,9 +257,7 @@ class UuidFactory implements UuidFactoryInterface
             $clockSeq
         );
 
-        $hex = bin2hex($bytes);
-
-        return $this->uuidFromHashedName($hex, 2);
+        return $this->uuidFromBytesAndVersion($bytes, 2);
     }
 
     /**
@@ -275,12 +272,7 @@ class UuidFactory implements UuidFactoryInterface
     {
         $bytes = $this->randomGenerator->generate(16);
 
-        // When converting the bytes to hex, it turns into a 32-character
-        // hexadecimal string that looks a lot like an MD5 hash, so at this
-        // point, we can just pass it to uuidFromHashedName.
-        $hex = bin2hex((string) $bytes);
-
-        return $this->uuidFromHashedName($hex, 4);
+        return $this->uuidFromBytesAndVersion($bytes, 4);
     }
 
     /**
@@ -313,48 +305,43 @@ class UuidFactory implements UuidFactoryInterface
      * @param string|UuidInterface $ns The namespace (must be a valid UUID)
      * @param string $name The name to hash together with the namespace
      * @param int $version The version of UUID to create (3 or 5)
-     * @param callable $hashFunction The hash function to use when hashing together
-     *     the namespace and name
+     * @param string $hashAlgorithm The hashing algorithm to use when hashing
+     *     together the namespace and name
      *
      * @return UuidInterface An instance of UuidInterface, created by hashing
      *     together the provided namespace and name
      */
-    private function uuidFromNsAndName($ns, string $name, int $version, callable $hashFunction): UuidInterface
+    private function uuidFromNsAndName($ns, string $name, int $version, string $hashAlgorithm): UuidInterface
     {
         if (!($ns instanceof UuidInterface)) {
             $ns = $this->codec->decode($ns);
         }
 
-        $hash = (string) call_user_func($hashFunction, $ns->getBytes() . $name);
+        $bytes = hash($hashAlgorithm, $ns->getBytes() . $name, true);
 
-        return $this->uuidFromHashedName($hash, $version);
+        return $this->uuidFromBytesAndVersion(substr($bytes, 0, 16), $version);
     }
 
     /**
-     * Returns an RFC 4122 variant Uuid, created from the provided hash and version
+     * Returns an RFC 4122 variant Uuid, created from the provided bytes and version
      *
-     * @param string $hash The hashed string to convert to a UUID
+     * @param string $bytes The byte string to convert to a UUID
      * @param int $version The RFC 4122 version to apply to the UUID
      *
      * @return UuidInterface An instance of UuidInterface, created from the
-     *     hashed string and version
+     *     byte string and version
      */
-    private function uuidFromHashedName(string $hash, int $version): UuidInterface
+    private function uuidFromBytesAndVersion(string $bytes, int $version): UuidInterface
     {
-        $timeHi = BinaryUtils::applyVersion((int) hexdec(substr($hash, 12, 4)), $version);
-        $clockSeq = BinaryUtils::applyVariant((int) hexdec(substr($hash, 16, 4)));
+        $timeHi = (int) unpack('n*', substr($bytes, 6, 2))[1];
+        $timeHiAndVersion = pack('n*', BinaryUtils::applyVersion($timeHi, $version));
 
-        $clockSeqHex = str_pad(dechex($clockSeq), 4, '0', STR_PAD_LEFT);
+        $clockSeqHi = (int) unpack('n*', substr($bytes, 8, 2))[1];
+        $clockSeqHiAndReserved = pack('n*', BinaryUtils::applyVariant($clockSeqHi));
 
-        $fields = [
-            'time_low' => substr($hash, 0, 8),
-            'time_mid' => substr($hash, 8, 4),
-            'time_hi_and_version' => str_pad(dechex($timeHi), 4, '0', STR_PAD_LEFT),
-            'clock_seq_hi_and_reserved' => substr($clockSeqHex, 0, 2),
-            'clock_seq_low' => substr($clockSeqHex, 2),
-            'node' => substr($hash, 20, 12),
-        ];
+        $bytes = substr_replace($bytes, $timeHiAndVersion, 6, 2);
+        $bytes = substr_replace($bytes, $clockSeqHiAndReserved, 8, 2);
 
-        return $this->uuid((string) hex2bin(implode('', $fields)));
+        return $this->uuid($bytes);
     }
 }
