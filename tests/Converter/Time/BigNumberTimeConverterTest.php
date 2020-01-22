@@ -26,16 +26,15 @@ class BigNumberTimeConverterTest extends TestCase
         $maskMid = BigInteger::fromBase('ffff', 16);
         $maskHi = BigInteger::fromBase('0fff', 16);
 
-        $expectedArray = [
-            'low' => sprintf('%08s', $calculatedTime->and($maskLow)->toBase(16)),
-            'mid' => sprintf('%04s', $calculatedTime->shiftedRight(32)->and($maskMid)->toBase(16)),
-            'hi' => sprintf('%04s', $calculatedTime->shiftedRight(48)->and($maskHi)->toBase(16)),
-        ];
+        $expected = sprintf('%04s', $calculatedTime->shiftedRight(48)->and($maskHi)->toBase(16));
+        $expected .= sprintf('%04s', $calculatedTime->shiftedRight(32)->and($maskMid)->toBase(16));
+        $expected .= sprintf('%08s', $calculatedTime->and($maskLow)->toBase(16));
 
         $converter = new BigNumberTimeConverter();
         $returned = $converter->calculateTime((string) $seconds, (string) $microSeconds);
 
-        $this->assertSame($expectedArray, $returned);
+        $this->assertInstanceOf(Hexadecimal::class, $returned);
+        $this->assertSame($expected, $returned->toString());
     }
 
     public function testConvertTime(): void

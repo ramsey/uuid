@@ -24,8 +24,9 @@ use Ramsey\Uuid\Type\Time;
 interface TimeConverterInterface
 {
     /**
-     * Uses the provided seconds and micro-seconds to calculate the time_low,
-     * time_mid, and time_high fields used by RFC 4122 version 1 UUIDs
+     * Uses the provided seconds and micro-seconds to calculate the count of
+     * 100-nanosecond intervals since UTC 00:00:00.00, 15 October 1582, for
+     * RFC 4122 variant UUIDs
      *
      * @link http://tools.ietf.org/html/rfc4122#section-4.2.2 RFC 4122, § 4.2.2: Generation Details
      *
@@ -34,11 +35,11 @@ interface TimeConverterInterface
      * @param string $microSeconds A string representation of the micro-seconds
      *     associated with the time to calculate
      *
-     * @return string[] An array guaranteed to contain `low`, `mid`, and `hi` keys
+     * @return Hexadecimal The full UUID timestamp as a Hexadecimal value
      *
      * @psalm-pure
      */
-    public function calculateTime(string $seconds, string $microSeconds): array;
+    public function calculateTime(string $seconds, string $microSeconds): Hexadecimal;
 
     /**
      * Converts a timestamp extracted from a UUID to a Unix timestamp

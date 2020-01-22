@@ -41,7 +41,7 @@ class GenericTimeConverter implements TimeConverterInterface
      * @inheritDoc
      * @psalm-pure
      */
-    public function calculateTime(string $seconds, string $microSeconds): array
+    public function calculateTime(string $seconds, string $microSeconds): Hexadecimal
     {
         $timestamp = new Time($seconds, $microSeconds);
 
@@ -69,11 +69,7 @@ class GenericTimeConverter implements TimeConverterInterface
             STR_PAD_LEFT
         );
 
-        return [
-            'low' => substr($uuidTimeHex, 8),
-            'mid' => substr($uuidTimeHex, 4, 4),
-            'hi' => substr($uuidTimeHex, 0, 4),
-        ];
+        return new Hexadecimal($uuidTimeHex);
     }
 
     /**

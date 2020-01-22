@@ -95,6 +95,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   string.
 * `Generator\DefaultTimeGenerator` no longer adds the variant and version bits
   to the bytes it returns. These must be applied to the bytes afterwards.
+* `Converter/TimeConverterInterface::calculateTime()` now returns
+  `Type\Hexadecimal` instead of `array`. The value is the full UUID timestamp
+  value (count of 100-nanosecond intervals since the Gregorian calendar epoch)
+  in hexadecimal format.
 * Change methods in converter interfaces to accept and return string values
   instead of `mixed`; this simplifies the interface and makes it consistent:
   * `NumberConverterInterface::fromHex(string $hex): string`

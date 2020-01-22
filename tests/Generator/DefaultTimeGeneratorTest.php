@@ -16,6 +16,7 @@ use Ramsey\Uuid\Generator\DefaultTimeGenerator;
 use Ramsey\Uuid\Provider\NodeProviderInterface;
 use Ramsey\Uuid\Provider\TimeProviderInterface;
 use Ramsey\Uuid\Test\TestCase;
+use Ramsey\Uuid\Type\Hexadecimal;
 use Ramsey\Uuid\Type\Time;
 
 class DefaultTimeGeneratorTest extends TestCase
@@ -46,7 +47,7 @@ class DefaultTimeGeneratorTest extends TestCase
     private $currentTime;
 
     /**
-     * @var string[]
+     * @var Hexadecimal
      */
     private $calculatedTime;
 
@@ -61,7 +62,7 @@ class DefaultTimeGeneratorTest extends TestCase
         $this->nodeProvider = $this->getMockBuilder(NodeProviderInterface::class)->getMock();
         $this->timeConverter = $this->getMockBuilder(TimeConverterInterface::class)->getMock();
         $this->currentTime = ['sec' => 1458733431, 'usec' => 877449];
-        $this->calculatedTime = ['low' => '83cb98e0', 'mid' => '98e0', 'hi' => '03cb'];
+        $this->calculatedTime = new Hexadecimal('03cb98e083cb98e0');
 
         $time = new Time($this->currentTime['sec'], $this->currentTime['usec']);
         $this->timeProvider = Mockery::mock(TimeProviderInterface::class, [

@@ -13,6 +13,7 @@ use Ramsey\Uuid\DegradedUuid;
 use Ramsey\Uuid\Generator\CombGenerator;
 use Ramsey\Uuid\Generator\DefaultTimeGenerator;
 use Ramsey\Uuid\Math\BrickMathCalculator;
+use Ramsey\Uuid\Type\Hexadecimal;
 use Ramsey\Uuid\Type\Time;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidFactory;
@@ -532,11 +533,7 @@ class ExpectedBehaviorTest extends TestCase
         $timeConverter
             ->shouldReceive('calculateTime')
             ->andReturnUsing(function ($seconds, $microSeconds) {
-                return [
-                    'low' => dechex($seconds),
-                    'mid' => dechex($microSeconds),
-                    'hi' => 'abcd',
-                ];
+                return new Hexadecimal('abcd' . dechex($microSeconds) . dechex($seconds));
             });
 
         $timeProvider = \Mockery::mock('Ramsey\Uuid\Provider\TimeProviderInterface', [

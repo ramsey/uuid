@@ -75,25 +75,18 @@ class DefaultTimeGenerator implements TimeGeneratorInterface
             }
         }
 
-        // Create a 60-bit time value as a count of 100-nanosecond intervals
-        // since 00:00:00.00, 15 October 1582.
         $uuidTime = $this->timeConverter->calculateTime(
             $this->timeProvider->getTime()->getSeconds()->toString(),
             $this->timeProvider->getTime()->getMicroSeconds()->toString()
         );
 
-        $hex = vsprintf(
-            '%08s%04s%04s%04s%012s',
-            [
-                $uuidTime['low'] ?? 0,
-                $uuidTime['mid'] ?? 0,
-                $uuidTime['hi'] ?? 0,
-                sprintf('%04x', $clockSeq),
-                $node,
-            ]
-        );
+        $timeBytes = (string) hex2bin(str_pad($uuidTime->toString(), 16, '0', STR_PAD_LEFT));
 
-        return (string) hex2bin($hex);
+        return $timeBytes[4] . $timeBytes[5] . $timeBytes[6] . $timeBytes[7]
+            . $timeBytes[2] . $timeBytes[3]
+            . $timeBytes[0] . $timeBytes[1]
+            . pack('n*', $clockSeq)
+            . $node;
     }
 
     /**
@@ -102,7 +95,7 @@ class DefaultTimeGenerator implements TimeGeneratorInterface
      *
      * @param string|int|null $node A node value that may be used to override the node provider
      *
-     * @return string Hexadecimal representation of the node ID
+     * @return string 6-byte binary string representation of the node
      *
      * @throws InvalidArgumentException
      */
@@ -114,13 +107,13 @@ class DefaultTimeGenerator implements TimeGeneratorInterface
 
         // Convert the node to hex, if it is still an integer.
         if (is_int($node)) {
-            $node = sprintf('%012x', $node);
+            $node = dechex($node);
         }
 
         if (!ctype_xdigit((string) $node) || strlen((string) $node) > 12) {
             throw new InvalidArgumentException('Invalid node value');
         }
 
-        return strtolower(sprintf('%012s', (string) $node));
+        return (string) hex2bin(str_pad((string) $node, 12, '0', STR_PAD_LEFT));
     }
 }

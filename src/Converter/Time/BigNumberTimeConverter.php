@@ -41,7 +41,7 @@ class BigNumberTimeConverter implements TimeConverterInterface
      * @inheritDoc
      * @psalm-pure
      */
-    public function calculateTime(string $seconds, string $microSeconds): array
+    public function calculateTime(string $seconds, string $microSeconds): Hexadecimal
     {
         return $this->converter->calculateTime($seconds, $microSeconds);
     }

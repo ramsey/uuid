@@ -64,7 +64,7 @@ class PhpTimeConverter implements TimeConverterInterface
      * @inheritDoc
      * @psalm-pure
      */
-    public function calculateTime(string $seconds, string $microSeconds): array
+    public function calculateTime(string $seconds, string $microSeconds): Hexadecimal
     {
         $seconds = new IntegerValue($seconds);
         $microSeconds = new IntegerValue($microSeconds);
@@ -88,12 +88,7 @@ class PhpTimeConverter implements TimeConverterInterface
             );
         }
 
-        /** @psalm-suppress MixedArgument */
-        return [
-            'low' => sprintf('%08x', $uuidTime & 0xffffffff),
-            'mid' => sprintf('%04x', ($uuidTime >> 32) & 0xffff),
-            'hi' => sprintf('%04x', ($uuidTime >> 48) & 0x0fff),
-        ];
+        return new Hexadecimal(str_pad(dechex($uuidTime), 16, '0', STR_PAD_LEFT));
     }
 
     /**

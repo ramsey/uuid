@@ -12,18 +12,16 @@ use Ramsey\Uuid\Type\Hexadecimal;
 class GenericTimeConverterTest extends TestCase
 {
     /**
-     * @param string[] $expected
-     *
      * @dataProvider provideCalculateTime
      */
-    public function testCalculateTime(string $seconds, string $microSeconds, array $expected): void
+    public function testCalculateTime(string $seconds, string $microSeconds, string $expected): void
     {
         $calculator = new BrickMathCalculator();
         $converter = new GenericTimeConverter($calculator);
 
         $result = $converter->calculateTime($seconds, $microSeconds);
 
-        $this->assertSame($expected, $result);
+        $this->assertSame($expected, $result->toString());
     }
 
     /**
@@ -35,29 +33,17 @@ class GenericTimeConverterTest extends TestCase
             [
                 'seconds' => '-12219146756',
                 'microSeconds' => '0',
-                'expected' => [
-                    'low' => '0901e600',
-                    'mid' => '0154',
-                    'hi' => '0000',
-                ],
+                'expected' => '000001540901e600',
             ],
             [
                 'seconds' => '103072857659',
                 'microseconds' => '999999',
-                'expected' => [
-                    'low' => 'ff9785f6',
-                    'mid' => 'ffff',
-                    'hi' => '0fff',
-                ],
+                'expected' => '0fffffffff9785f6',
             ],
             [
                 'seconds' => '1578612359',
                 'microseconds' => '521023',
-                'expected' => [
-                    'low' => '64c71df6',
-                    'mid' => '3337',
-                    'hi' => '01ea',
-                ],
+                'expected' => '01ea333764c71df6',
             ],
 
             // This is the earliest possible date supported by v1 UUIDs:
@@ -65,11 +51,7 @@ class GenericTimeConverterTest extends TestCase
             [
                 'seconds' => '-12219292800',
                 'microSeconds' => '0',
-                'expected' => [
-                    'low' => '00000000',
-                    'mid' => '0000',
-                    'hi' => '0000',
-                ],
+                'expected' => '0000000000000000',
             ],
 
             // This is the last possible time supported by v1 UUIDs:
@@ -77,11 +59,7 @@ class GenericTimeConverterTest extends TestCase
             [
                 'seconds' => '1832455114570',
                 'microseconds' => '955161',
-                'expected' => [
-                    'low' => 'fffffffa',
-                    'mid' => 'ffff',
-                    'hi' => 'ffff',
-                ],
+                'expected' => 'fffffffffffffffa',
             ],
         ];
     }
