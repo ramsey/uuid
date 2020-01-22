@@ -51,19 +51,16 @@ class StringCodec implements CodecInterface
         /** @var FieldsInterface $fields */
         $fields = $uuid->getFields();
 
-        $components = [
-            $fields->getTimeLow()->toString(),
-            $fields->getTimeMid()->toString(),
-            $fields->getTimeHiAndVersion()->toString(),
-            $fields->getClockSeqHiAndReserved()->toString(),
-            $fields->getClockSeqLow()->toString(),
-            $fields->getNode()->toString(),
-        ];
-
-        return vsprintf(
-            '%08s-%04s-%04s-%02s%02s-%012s',
-            $components
-        );
+        return $fields->getTimeLow()->toString()
+            . '-'
+            . $fields->getTimeMid()->toString()
+            . '-'
+            . $fields->getTimeHiAndVersion()->toString()
+            . '-'
+            . $fields->getClockSeqHiAndReserved()->toString()
+            . $fields->getClockSeqLow()->toString()
+            . '-'
+            . $fields->getNode()->toString();
     }
 
     /**
@@ -71,7 +68,7 @@ class StringCodec implements CodecInterface
      */
     public function encodeBinary(UuidInterface $uuid): string
     {
-        return (string) hex2bin($uuid->getHex());
+        return $uuid->getFields()->getBytes();
     }
 
     /**
@@ -83,17 +80,11 @@ class StringCodec implements CodecInterface
      */
     public function decode(string $encodedUuid): UuidInterface
     {
-        $components = $this->extractComponents($encodedUuid);
-        $fields = $this->getFields($components);
-
-        return $this->builder->build($this, $fields);
+        return $this->builder->build($this, $this->getBytes($encodedUuid));
     }
 
     /**
-     * @throws InvalidArgumentException if $bytes is an invalid length
-     *
      * @inheritDoc
-     *
      * @psalm-pure
      */
     public function decodeBytes(string $bytes): UuidInterface
@@ -104,9 +95,7 @@ class StringCodec implements CodecInterface
             );
         }
 
-        $hexUuid = unpack('H*', $bytes);
-
-        return $this->decode((string) $hexUuid[1]);
+        return $this->builder->build($this, $bytes);
     }
 
     /**
@@ -118,69 +107,32 @@ class StringCodec implements CodecInterface
     }
 
     /**
-     * Returns an array of UUID components (the UUID exploded on its dashes)
-     *
-     * @param string $encodedUuid A hexadecimal string representation of a UUID
-     *
-     * @return string[]
-     *
-     * @throws InvalidUuidStringException
+     * Returns a byte string of the UUID
      *
      * @psalm-pure
      */
-    protected function extractComponents(string $encodedUuid): array
+    protected function getBytes(string $encodedUuid): string
     {
-        $nameParsed = str_replace([
-            'urn:',
-            'uuid:',
-            '{',
-            '}',
-            '-',
-        ], '', $encodedUuid);
+        $parsedUuid = str_replace(
+            ['urn:', 'uuid:', 'URN:', 'UUID:', '{', '}', '-'],
+            '',
+            $encodedUuid
+        );
 
-        // We have stripped out the dashes and are breaking up the string using
-        // substr(). In this way, we can accept a full hex value that doesn't
-        // contain dashes.
         $components = [
-            substr($nameParsed, 0, 8),
-            substr($nameParsed, 8, 4),
-            substr($nameParsed, 12, 4),
-            substr($nameParsed, 16, 4),
-            substr($nameParsed, 20),
+            substr($parsedUuid, 0, 8),
+            substr($parsedUuid, 8, 4),
+            substr($parsedUuid, 12, 4),
+            substr($parsedUuid, 16, 4),
+            substr($parsedUuid, 20),
         ];
 
-        $nameParsed = implode('-', $components);
-
-        if (!Uuid::isValid($nameParsed)) {
+        if (!Uuid::isValid(implode('-', $components))) {
             throw new InvalidUuidStringException(
                 'Invalid UUID string: ' . $encodedUuid
             );
         }
 
-        return $components;
-    }
-
-    /**
-     * Returns the fields that make up this UUID
-     *
-     * @param string[] $components An array of hexadecimal strings representing
-     *     the fields of an RFC 4122 UUID
-     *
-     * @return string The byte string for the UUID
-     *
-     * @psalm-pure
-     */
-    protected function getFields(array $components): string
-    {
-        $fields = [
-            'time_low' => str_pad($components[0], 8, '0', STR_PAD_LEFT),
-            'time_mid' => str_pad($components[1], 4, '0', STR_PAD_LEFT),
-            'time_hi_and_version' => str_pad($components[2], 4, '0', STR_PAD_LEFT),
-            'clock_seq_hi_and_reserved' => str_pad(substr($components[3], 0, 2), 2, '0', STR_PAD_LEFT),
-            'clock_seq_low' => str_pad(substr($components[3], 2), 2, '0', STR_PAD_LEFT),
-            'node' => str_pad($components[4], 12, '0', STR_PAD_LEFT),
-        ];
-
-        return (string) hex2bin(implode('', $fields));
+        return (string) hex2bin($parsedUuid);
     }
 }

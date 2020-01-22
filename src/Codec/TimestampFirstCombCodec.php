@@ -14,9 +14,7 @@ declare(strict_types=1);
 
 namespace Ramsey\Uuid\Codec;
 
-use Ramsey\Uuid\Exception\InvalidArgumentException;
 use Ramsey\Uuid\Exception\InvalidUuidStringException;
-use Ramsey\Uuid\Rfc4122\FieldsInterface;
 use Ramsey\Uuid\UuidInterface;
 
 /**
@@ -50,23 +48,15 @@ class TimestampFirstCombCodec extends StringCodec
      */
     public function encode(UuidInterface $uuid): string
     {
-        /** @var FieldsInterface $fields */
-        $fields = $uuid->getFields();
+        $bytes = $this->swapBytes($uuid->getFields()->getBytes());
 
-        $sixPieceComponents = [
-            $fields->getTimeLow()->toString(),
-            $fields->getTimeMid()->toString(),
-            $fields->getTimeHiAndVersion()->toString(),
-            $fields->getClockSeqHiAndReserved()->toString(),
-            $fields->getClockSeqLow()->toString(),
-            $fields->getNode()->toString(),
-        ];
-
-        $sixPieceComponents = $this->swapTimestampAndRandomBits($sixPieceComponents);
-
-        return vsprintf(
-            '%08s-%04s-%04s-%02s%02s-%012s',
-            $sixPieceComponents
+        return sprintf(
+            '%08s-%04s-%04s-%04s-%012s',
+            bin2hex(substr($bytes, 0, 4)),
+            bin2hex(substr($bytes, 4, 2)),
+            bin2hex(substr($bytes, 6, 2)),
+            bin2hex(substr($bytes, 8, 2)),
+            bin2hex(substr($bytes, 10))
         );
     }
 
@@ -75,9 +65,7 @@ class TimestampFirstCombCodec extends StringCodec
      */
     public function encodeBinary(UuidInterface $uuid): string
     {
-        $stringEncoding = $this->encode($uuid);
-
-        return (string) hex2bin(str_replace('-', '', $stringEncoding));
+        return $this->swapBytes($uuid->getFields()->getBytes());
     }
 
     /**
@@ -89,48 +77,33 @@ class TimestampFirstCombCodec extends StringCodec
      */
     public function decode(string $encodedUuid): UuidInterface
     {
-        $fivePieceComponents = $this->extractComponents($encodedUuid);
+        $bytes = $this->getBytes($encodedUuid);
 
-        $fivePieceComponents = $this->swapTimestampAndRandomBits($fivePieceComponents);
-
-        return $this->getBuilder()->build($this, $this->getFields($fivePieceComponents));
+        return $this->getBuilder()->build($this, $this->swapBytes($bytes));
     }
 
     /**
-     * @throws InvalidArgumentException if $bytes is an invalid length
-     *
      * @inheritDoc
-     *
      * @psalm-pure
      */
     public function decodeBytes(string $bytes): UuidInterface
     {
-        return $this->decode(bin2hex($bytes));
+        return $this->getBuilder()->build($this, $this->swapBytes($bytes));
     }
 
     /**
-     * Swaps the first 48 bits with the last 48 bits
-     *
-     * @param string[] $components An array of UUID components (the UUID exploded on its dashes)
-     *
-     * @return string[] The adjusted components
+     * Swaps bytes according to the timestamp-first COMB rules
      *
      * @psalm-pure
      */
-    private function swapTimestampAndRandomBits(array $components): array
+    private function swapBytes(string $bytes): string
     {
-        $last48Bits = $components[4];
+        $first48Bits = substr($bytes, 0, 6);
+        $last48Bits = substr($bytes, -6);
 
-        if (count($components) === 6) {
-            $last48Bits = $components[5];
-            $components[5] = $components[0] . $components[1];
-        } else {
-            $components[4] = $components[0] . $components[1];
-        }
+        $bytes = substr_replace($bytes, $last48Bits, 0, 6);
+        $bytes = substr_replace($bytes, $first48Bits, -6);
 
-        $components[0] = substr($last48Bits, 0, 8);
-        $components[1] = substr($last48Bits, 8, 4);
-
-        return $components;
+        return $bytes;
     }
 }

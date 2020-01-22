@@ -14,8 +14,6 @@ declare(strict_types=1);
 
 namespace Ramsey\Uuid\Codec;
 
-use Ramsey\Uuid\Exception\InvalidArgumentException;
-use Ramsey\Uuid\Exception\InvalidUuidStringException;
 use Ramsey\Uuid\UuidInterface;
 
 /**
@@ -26,34 +24,18 @@ use Ramsey\Uuid\UuidInterface;
 class GuidStringCodec extends StringCodec
 {
     /**
-     * @psalm-pure
-     */
-    public function encodeBinary(UuidInterface $uuid): string
-    {
-        $components = $this->swapBytes($this->extractComponents($uuid->toString()));
-
-        return (string) hex2bin(implode('', $components));
-    }
-
-    /**
-     * @throws InvalidUuidStringException
-     *
      * @inheritDoc
-     *
      * @psalm-pure
      */
     public function decode(string $encodedUuid): UuidInterface
     {
-        $components = $this->swapBytes($this->extractComponents($encodedUuid));
+        $bytes = $this->getBytes($encodedUuid);
 
-        return $this->getBuilder()->build($this, $this->getFields($components));
+        return $this->getBuilder()->build($this, $this->swapBytes($bytes));
     }
 
     /**
-     * @throws InvalidArgumentException if $bytes is an invalid length
-     *
      * @inheritDoc
-     *
      * @psalm-pure
      */
     public function decodeBytes(string $bytes): UuidInterface
@@ -63,22 +45,15 @@ class GuidStringCodec extends StringCodec
     }
 
     /**
-     * @param string[] $fields The fields that comprise this UUID
-     *
-     * @return string[]
+     * Swaps bytes according to the GUID rules
      *
      * @psalm-pure
      */
-    private function swapBytes(array $fields): array
+    private function swapBytes(string $bytes): string
     {
-        $fields = array_values($fields);
-
-        // Swap bytes to support GUID byte order.
-        $bytes = (string) hex2bin(implode('', $fields));
-        $fields[0] = bin2hex($bytes[3] . $bytes[2] . $bytes[1] . $bytes[0]);
-        $fields[1] = bin2hex($bytes[5] . $bytes[4]);
-        $fields[2] = bin2hex($bytes[7] . $bytes[6]);
-
-        return $fields;
+        return $bytes[3] . $bytes[2] . $bytes[1] . $bytes[0]
+            . $bytes[5] . $bytes[4]
+            . $bytes[7] . $bytes[6]
+            . substr($bytes, 8);
     }
 }

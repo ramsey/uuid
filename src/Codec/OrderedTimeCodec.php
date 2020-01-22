@@ -58,19 +58,12 @@ class OrderedTimeCodec extends StringCodec
             );
         }
 
-        /** @var Rfc4122FieldsInterface $fields */
-        $fields = $uuid->getFields();
+        $bytes = $uuid->getFields()->getBytes();
 
-        $optimized = [
-            $fields->getTimeHiAndVersion()->toString(),
-            $fields->getTimeMid()->toString(),
-            $fields->getTimeLow()->toString(),
-            $fields->getClockSeqHiAndReserved()->toString(),
-            $fields->getClockSeqLow()->toString(),
-            $fields->getNode()->toString(),
-        ];
-
-        return (string) hex2bin(implode('', $optimized));
+        return $bytes[6] . $bytes[7]
+            . $bytes[4] . $bytes[5]
+            . $bytes[0] . $bytes[1] . $bytes[2] . $bytes[3]
+            . substr($bytes, 8);
     }
 
     /**
@@ -92,10 +85,9 @@ class OrderedTimeCodec extends StringCodec
         }
 
         // Rearrange the bytes to their original order.
-        $rearrangedBytes = substr($bytes, 4, 2)
-            . substr($bytes, 6, 2)
-            . substr($bytes, 2, 2)
-            . substr($bytes, 0, 2)
+        $rearrangedBytes = $bytes[4] . $bytes[5] . $bytes[6] . $bytes[7]
+            . $bytes[2] . $bytes[3]
+            . $bytes[0] . $bytes[1]
             . substr($bytes, 8);
 
         $uuid = parent::decodeBytes($rearrangedBytes);

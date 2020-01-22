@@ -10,6 +10,7 @@ use Ramsey\Uuid\Builder\UuidBuilderInterface;
 use Ramsey\Uuid\Codec\CodecInterface;
 use Ramsey\Uuid\Codec\TimestampLastCombCodec;
 use Ramsey\Uuid\Rfc4122\Fields;
+use Ramsey\Uuid\Rfc4122\FieldsInterface;
 use Ramsey\Uuid\Test\TestCase;
 use Ramsey\Uuid\UuidInterface;
 
@@ -46,14 +47,14 @@ class TimestampLastCombCodecTest extends TestCase
 
     public function testBinaryEncoding(): void
     {
+        $fields = Mockery::mock(FieldsInterface::class, [
+            'getBytes' => hex2bin('0800200c9a6611e19b21ff6f8cb0c57d'),
+        ]);
+
         /** @var MockObject & UuidInterface $uuidMock */
         $uuidMock = $this->getMockBuilder(UuidInterface::class)->getMock();
-        $uuidMock->expects($this->any())
-            ->method('getHex')
-            ->willReturn('0800200c9a6611e19b21ff6f8cb0c57d');
-        $uuidMock->expects($this->any())
-            ->method('getBytes')
-            ->willReturn(hex2bin('0800200c9a6611e19b21ff6f8cb0c57d'));
+        $uuidMock->expects($this->any())->method('getFields')->willReturn($fields);
+
         $encodedUuid = $this->codec->encodeBinary($uuidMock);
 
         $this->assertSame(hex2bin('0800200c9a6611e19b21ff6f8cb0c57d'), $encodedUuid);
