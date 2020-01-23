@@ -9,6 +9,7 @@ vagrant ssh
 Once inside the VM:
 
 ``` bash
+refreshenv
 cd uuid
 composer install
 composer run-script --timeout=0 test
