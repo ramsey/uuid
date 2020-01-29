@@ -14,10 +14,16 @@ fi
 
 architecture="${ARCH:-${TRAVIS_CPU_ARCH:-$(uname -m)}}"
 
+# Only use Xdebug if running as a cron job on Travis CI
+xdebug=""
+if [ "${TRAVIS_EVENT_TYPE}" != "cron" ]; then
+    xdebug="-without-xdebug"
+fi
+
 cmd_proxy=""
 
 if [ "${architecture}" = "arm32" ]; then
-    image="benramsey/ramsey-uuid:php-${php_version}-arm32v7"
+    image="benramsey/ramsey-uuid:php-${php_version}-arm32v7${xdebug}"
     volumes="-v ${PWD}:${PWD} -v ${HOME}/.composer/cache:/root/.composer/cache"
     cmd_proxy="docker run --rm ${volumes} -w ${PWD} ${image}"
 fi
