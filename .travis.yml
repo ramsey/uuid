@@ -48,7 +48,7 @@ before_install:
 
 install:
   - |
-    if [ "${TRAVIS_EVENT_TYPE}" != "cron" ]; fi
+    if [ "${TRAVIS_EVENT_TYPE}" != "cron" ]; then
       phpenv config-rm xdebug.ini
     fi
   - travis_retry ./resources/scripts/cmd-proxy.sh composer require --no-update "php-coveralls/php-coveralls:^1 | ^2"
