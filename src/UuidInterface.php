@@ -61,6 +61,8 @@ interface UuidInterface extends
 
     /**
      * Returns the binary string representation of the UUID
+     *
+     * @psalm-return non-empty-string
      */
     public function getBytes(): string;
 
@@ -71,21 +73,29 @@ interface UuidInterface extends
 
     /**
      * Returns the hexadecimal string representation of the UUID
+     *
+     * @psalm-return non-empty-string
      */
     public function getHex(): string;
 
     /**
      * Returns the integer value of the UUID as a string
+     *
+     * @psalm-return non-empty-string
      */
     public function getInteger(): string;
 
     /**
      * Returns a string representation of the UUID
+     *
+     * @psalm-return non-empty-string
      */
     public function toString(): string;
 
     /**
      * Casts the UUID to a string representation
+     *
+     * @psalm-return non-empty-string
      */
     public function __toString(): string;
 }

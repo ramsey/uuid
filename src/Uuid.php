@@ -226,6 +226,7 @@ class Uuid implements UuidInterface
         $this->timeConverter = $timeConverter;
     }
 
+    /** @psalm-return non-empty-string */
     public function __toString(): string
     {
         return $this->toString();
@@ -288,6 +289,7 @@ class Uuid implements UuidInterface
         return $this->compareTo($other) === 0;
     }
 
+    /** @psalm-return non-empty-string */
     public function getBytes(): string
     {
         return $this->codec->encodeBinary($this);
@@ -298,16 +300,23 @@ class Uuid implements UuidInterface
         return $this->fields;
     }
 
+    /**
+     * @psalm-return non-empty-string
+     * @psalm-suppress MoreSpecificReturnType we know that the retrieved `string` is never empty
+     * @psalm-suppress LessSpecificReturnStatement we know that the retrieved `string` is never empty
+     */
     public function getHex(): string
     {
         return str_replace('-', '', $this->toString());
     }
 
+    /** @psalm-return non-empty-string */
     public function getInteger(): string
     {
         return $this->numberConverter->fromHex($this->getHex());
     }
 
+    /** @psalm-return non-empty-string */
     public function toString(): string
     {
         return $this->codec->encode($this);

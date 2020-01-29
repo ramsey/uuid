@@ -65,6 +65,9 @@ class StringCodec implements CodecInterface
 
     /**
      * @psalm-pure
+     * @psalm-return non-empty-string
+     * @psalm-suppress MoreSpecificReturnType we know that the retrieved `string` is never empty
+     * @psalm-suppress LessSpecificReturnStatement we know that the retrieved `string` is never empty
      */
     public function encodeBinary(UuidInterface $uuid): string
     {

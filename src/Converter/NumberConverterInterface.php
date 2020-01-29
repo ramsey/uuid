@@ -31,6 +31,8 @@ interface NumberConverterInterface
      *
      * @return string String representation of an integer
      *
+     * @psalm-return numeric-string
+     *
      * @psalm-pure
      */
     public function fromHex(string $hex): string;
@@ -44,6 +46,8 @@ interface NumberConverterInterface
      *     than PHP_INT_MAX.
      *
      * @return string Hexadecimal string
+     *
+     * @psalm-return non-empty-string
      *
      * @psalm-pure
      */
