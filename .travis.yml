@@ -47,7 +47,10 @@ before_install:
   - ./resources/scripts/cmd-proxy.sh ./resources/scripts/system-info.sh
 
 install:
-  - [ "${TRAVIS_EVENT_TYPE}" != "cron" ] && phpenv config-rm xdebug.ini
+  - |
+    if [ "${TRAVIS_EVENT_TYPE}" != "cron" ]; fi
+      phpenv config-rm xdebug.ini
+    fi
   - travis_retry ./resources/scripts/cmd-proxy.sh composer require --no-update "php-coveralls/php-coveralls:^1 | ^2"
   - travis_retry ./resources/scripts/cmd-proxy.sh composer install --no-interaction --prefer-dist --no-progress --no-suggest
 
