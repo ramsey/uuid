@@ -10,6 +10,8 @@ use Ramsey\Uuid\Exception\InvalidArgumentException;
 use Ramsey\Uuid\Test\TestCase;
 use Ramsey\Uuid\Type\Hexadecimal;
 
+use function sprintf;
+
 class BigNumberTimeConverterTest extends TestCase
 {
     public function testCalculateTimeReturnsArrayOfTimeSegments(): void

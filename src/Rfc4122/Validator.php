@@ -17,6 +17,9 @@ namespace Ramsey\Uuid\Rfc4122;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\Validator\ValidatorInterface;
 
+use function preg_match;
+use function str_replace;
+
 /**
  * Rfc4122\Validator validates strings as UUIDs of the RFC 4122 variant
  */

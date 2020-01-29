@@ -17,6 +17,9 @@ namespace Ramsey\Uuid\Type;
 use Ramsey\Uuid\Exception\InvalidArgumentException;
 
 use function ctype_xdigit;
+use function strpos;
+use function strtolower;
+use function substr;
 
 /**
  * A value object representing a hexadecimal number

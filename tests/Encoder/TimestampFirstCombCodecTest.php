@@ -13,6 +13,9 @@ use Ramsey\Uuid\Rfc4122\Fields;
 use Ramsey\Uuid\Test\TestCase;
 use Ramsey\Uuid\UuidInterface;
 
+use function hex2bin;
+use function implode;
+
 class TimestampFirstCombCodecTest extends TestCase
 {
     /**

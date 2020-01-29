@@ -23,6 +23,9 @@ use Ramsey\Uuid\Rfc4122\FieldsInterface as Rfc4122FieldsInterface;
 use Ramsey\Uuid\Type\Hexadecimal;
 use Ramsey\Uuid\Type\IntegerValue;
 
+use function str_replace;
+use function strcmp;
+
 /**
  * Represents a RFC 4122 universally unique identifier (UUID)
  *

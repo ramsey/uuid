@@ -16,6 +16,9 @@ namespace Ramsey\Uuid\Codec;
 
 use Ramsey\Uuid\UuidInterface;
 
+use function bin2hex;
+use function substr;
+
 /**
  * GuidStringCodec encodes and decodes globally unique identifiers (GUID)
  *

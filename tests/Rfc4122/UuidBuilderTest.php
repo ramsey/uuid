@@ -18,6 +18,9 @@ use Ramsey\Uuid\Rfc4122\UuidV4;
 use Ramsey\Uuid\Rfc4122\UuidV5;
 use Ramsey\Uuid\Test\TestCase;
 
+use function hex2bin;
+use function str_replace;
+
 class UuidBuilderTest extends TestCase
 {
     /**

@@ -16,6 +16,8 @@ namespace Ramsey\Uuid\Generator;
 
 use Ramsey\Uuid\Exception\RandomSourceException;
 
+use function random_bytes;
+
 /**
  * RandomBytesGenerator generates strings of random binary data using the
  * built-in `random_bytes()` PHP function

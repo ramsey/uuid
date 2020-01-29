@@ -25,6 +25,10 @@ use Ramsey\Uuid\Rfc4122\FieldsInterface as Rfc4122FieldsInterface;
 use Ramsey\Uuid\Uuid;
 use Throwable;
 
+use function str_pad;
+
+use const STR_PAD_LEFT;
+
 /**
  * Time-based, or version 1, UUIDs include timestamp, clock sequence, and node
  * values that are combined into a 128-bit unsigned integer

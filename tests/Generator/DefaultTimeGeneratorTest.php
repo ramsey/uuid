@@ -22,6 +22,8 @@ use Ramsey\Uuid\Test\TestCase;
 use Ramsey\Uuid\Type\Hexadecimal;
 use Ramsey\Uuid\Type\Time;
 
+use function hex2bin;
+
 class DefaultTimeGeneratorTest extends TestCase
 {
     /**

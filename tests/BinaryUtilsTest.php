@@ -6,6 +6,8 @@ namespace Ramsey\Uuid\Test;
 
 use Ramsey\Uuid\BinaryUtils;
 
+use function dechex;
+
 class BinaryUtilsTest extends TestCase
 {
     /**

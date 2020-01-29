@@ -10,6 +10,8 @@ use Ramsey\Uuid\Exception\RandomSourceException;
 use Ramsey\Uuid\Generator\RandomBytesGenerator;
 use Ramsey\Uuid\Test\TestCase;
 
+use function hex2bin;
+
 class RandomBytesGeneratorTest extends TestCase
 {
     /**

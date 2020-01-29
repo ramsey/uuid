@@ -10,6 +10,13 @@ use Ramsey\Uuid\Exception\InvalidArgumentException;
 use Ramsey\Uuid\Provider\Node\SystemNodeProvider;
 use Ramsey\Uuid\Test\TestCase;
 
+use function array_shift;
+use function array_walk;
+use function gettype;
+use function is_array;
+use function strlen;
+use function vsprintf;
+
 /**
  * Tests for the SystemNodeProvider class
  *

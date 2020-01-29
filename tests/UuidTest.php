@@ -42,7 +42,20 @@ use Ramsey\Uuid\Validator\GenericValidator;
 use Ramsey\Uuid\Validator\ValidatorInterface;
 use stdClass;
 
+use function base64_decode;
+use function base64_encode;
+use function gmdate;
+use function hex2bin;
+use function json_encode;
+use function serialize;
+use function str_pad;
 use function strlen;
+use function strtotime;
+use function strtoupper;
+use function substr;
+use function uniqid;
+use function unserialize;
+use function usleep;
 
 class UuidTest extends TestCase
 {

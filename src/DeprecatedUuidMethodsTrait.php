@@ -23,6 +23,11 @@ use Ramsey\Uuid\Exception\UnsupportedOperationException;
 use Ramsey\Uuid\Rfc4122\FieldsInterface as Rfc4122FieldsInterface;
 use Throwable;
 
+use function str_pad;
+use function substr;
+
+use const STR_PAD_LEFT;
+
 /**
  * This trait encapsulates deprecated methods for ramsey/uuid; this trait and
  * its methods will be removed in ramsey/uuid 5.0.0.

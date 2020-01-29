@@ -18,6 +18,21 @@ use Ramsey\Uuid\Exception\DceSecurityException;
 use Ramsey\Uuid\Provider\DceSecurityProviderInterface;
 use Ramsey\Uuid\Type\IntegerValue;
 
+use function constant;
+use function escapeshellarg;
+use function ini_get;
+use function preg_split;
+use function shell_exec;
+use function str_getcsv;
+use function strpos;
+use function strrpos;
+use function strtolower;
+use function strtoupper;
+use function substr;
+use function trim;
+
+use const PREG_SPLIT_NO_EMPTY;
+
 /**
  * SystemDceSecurityProvider retrieves the user or group identifiers from the system
  */

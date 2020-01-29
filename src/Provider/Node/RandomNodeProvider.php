@@ -17,6 +17,16 @@ namespace Ramsey\Uuid\Provider\Node;
 use Ramsey\Uuid\Exception\RandomSourceException;
 use Ramsey\Uuid\Provider\NodeProviderInterface;
 
+use function bin2hex;
+use function dechex;
+use function hex2bin;
+use function hexdec;
+use function random_bytes;
+use function str_pad;
+use function substr;
+
+use const STR_PAD_LEFT;
+
 /**
  * RandomNodeProvider generates a random node ID
  *

@@ -10,6 +10,8 @@ use Ramsey\Uuid\Test\TestCase;
 use Ramsey\Uuid\Type\IntegerValue;
 use phpmock\mockery\PHPMockery;
 
+use function array_merge;
+
 class SystemDceSecurityProviderTest extends TestCase
 {
     /**

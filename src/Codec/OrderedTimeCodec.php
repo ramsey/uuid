@@ -20,6 +20,9 @@ use Ramsey\Uuid\Rfc4122\FieldsInterface as Rfc4122FieldsInterface;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
+use function strlen;
+use function substr;
+
 /**
  * OrderedTimeCodec encodes and decodes a UUID, optimizing the byte order for
  * more efficient storage

@@ -16,6 +16,31 @@ namespace Ramsey\Uuid\Provider\Node;
 
 use Ramsey\Uuid\Provider\NodeProviderInterface;
 
+use function array_filter;
+use function array_map;
+use function array_walk;
+use function constant;
+use function count;
+use function file_get_contents;
+use function glob;
+use function ini_get;
+use function is_array;
+use function is_readable;
+use function ob_get_clean;
+use function ob_start;
+use function passthru;
+use function preg_match;
+use function preg_match_all;
+use function reset;
+use function str_replace;
+use function strpos;
+use function strtolower;
+use function strtoupper;
+use function substr;
+
+use const GLOB_NOSORT;
+use const PREG_PATTERN_ORDER;
+
 /**
  * SystemNodeProvider retrieves the system node ID, if possible
  *

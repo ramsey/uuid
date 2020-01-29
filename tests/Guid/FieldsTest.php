@@ -9,6 +9,10 @@ use Ramsey\Uuid\Guid\Fields;
 use Ramsey\Uuid\Test\TestCase;
 use Ramsey\Uuid\Type\Hexadecimal;
 
+use function hex2bin;
+use function serialize;
+use function unserialize;
+
 class FieldsTest extends TestCase
 {
     public function testConstructorThrowsExceptionIfNotSixteenByteString(): void

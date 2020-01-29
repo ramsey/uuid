@@ -16,6 +16,9 @@ use Ramsey\Uuid\Guid\GuidBuilder;
 use Ramsey\Uuid\Test\TestCase;
 use Ramsey\Uuid\UuidInterface;
 
+use function hex2bin;
+use function pack;
+
 class GuidStringCodecTest extends TestCase
 {
     /**

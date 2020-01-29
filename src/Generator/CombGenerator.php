@@ -17,6 +17,15 @@ namespace Ramsey\Uuid\Generator;
 use Ramsey\Uuid\Converter\NumberConverterInterface;
 use Ramsey\Uuid\Exception\InvalidArgumentException;
 
+use function bin2hex;
+use function explode;
+use function hex2bin;
+use function microtime;
+use function str_pad;
+use function substr;
+
+use const STR_PAD_LEFT;
+
 /**
  * CombGenerator generates COMBs (combined UUID/timestamp)
  *

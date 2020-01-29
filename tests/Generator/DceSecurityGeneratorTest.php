@@ -22,6 +22,9 @@ use Ramsey\Uuid\Type\IntegerValue;
 use Ramsey\Uuid\Type\Time;
 use Ramsey\Uuid\Uuid;
 
+use function bin2hex;
+use function substr;
+
 class DceSecurityGeneratorTest extends TestCase
 {
     /**
