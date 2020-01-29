@@ -1,5 +1,8 @@
 language: php
 os: linux
+cache:
+  directories:
+    - /home/travis/.composer/cache/
 
 services:
   - docker
