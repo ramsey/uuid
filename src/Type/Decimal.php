@@ -16,6 +16,8 @@ namespace Ramsey\Uuid\Type;
 
 use Ramsey\Uuid\Exception\InvalidArgumentException;
 
+use function is_numeric;
+
 /**
  * A value object representing a decimal
  *

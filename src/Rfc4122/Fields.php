@@ -19,6 +19,17 @@ use Ramsey\Uuid\Fields\SerializableFieldsTrait;
 use Ramsey\Uuid\Type\Hexadecimal;
 use Ramsey\Uuid\Uuid;
 
+use function bin2hex;
+use function dechex;
+use function hexdec;
+use function sprintf;
+use function str_pad;
+use function strlen;
+use function substr;
+use function unpack;
+
+use const STR_PAD_LEFT;
+
 /**
  * RFC 4122 variant UUIDs are comprised of a set of named fields
  *

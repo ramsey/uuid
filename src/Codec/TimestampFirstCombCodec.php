@@ -17,6 +17,11 @@ namespace Ramsey\Uuid\Codec;
 use Ramsey\Uuid\Exception\InvalidUuidStringException;
 use Ramsey\Uuid\UuidInterface;
 
+use function bin2hex;
+use function sprintf;
+use function substr;
+use function substr_replace;
+
 /**
  * TimestampFirstCombCodec encodes and decodes COMBs, with the timestamp as the
  * first 48 bits

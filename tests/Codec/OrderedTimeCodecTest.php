@@ -23,6 +23,10 @@ use Ramsey\Uuid\Test\TestCase;
 use Ramsey\Uuid\UuidFactory;
 use Ramsey\Uuid\UuidInterface;
 
+use function hex2bin;
+use function pack;
+use function str_replace;
+
 class OrderedTimeCodecTest extends TestCase
 {
     /**

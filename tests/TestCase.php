@@ -8,6 +8,10 @@ use AspectMock\Test as AspectMock;
 use Mockery;
 use PHPUnit\Framework\TestCase as PhpUnitTestCase;
 
+use function current;
+use function pack;
+use function unpack;
+
 class TestCase extends PhpUnitTestCase
 {
     protected function tearDown(): void

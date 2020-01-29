@@ -21,6 +21,12 @@ use Ramsey\Uuid\Rfc4122\FieldsInterface;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
+use function hex2bin;
+use function implode;
+use function str_replace;
+use function strlen;
+use function substr;
+
 /**
  * StringCodec encodes and decodes RFC 4122 UUIDs
  *

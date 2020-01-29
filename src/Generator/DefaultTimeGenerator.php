@@ -22,6 +22,17 @@ use Ramsey\Uuid\Provider\NodeProviderInterface;
 use Ramsey\Uuid\Provider\TimeProviderInterface;
 use Throwable;
 
+use function ctype_xdigit;
+use function dechex;
+use function hex2bin;
+use function is_int;
+use function pack;
+use function random_int;
+use function str_pad;
+use function strlen;
+
+use const STR_PAD_LEFT;
+
 /**
  * DefaultTimeGenerator generates strings of binary data based on a node ID,
  * clock sequence, and the current time

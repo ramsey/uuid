@@ -21,6 +21,14 @@ use Ramsey\Uuid\Type\Hexadecimal;
 use Ramsey\Uuid\Type\IntegerValue;
 use Ramsey\Uuid\Uuid;
 
+use function hex2bin;
+use function in_array;
+use function pack;
+use function str_pad;
+use function substr_replace;
+
+use const STR_PAD_LEFT;
+
 /**
  * DceSecurityGenerator generates strings of binary data based on a local
  * domain, local identifier, node ID, clock sequence, and the current time

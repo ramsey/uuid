@@ -23,6 +23,9 @@ use Ramsey\Uuid\Type\Hexadecimal;
 use Ramsey\Uuid\UuidFactory;
 use Ramsey\Uuid\Validator\ValidatorInterface;
 
+use function hex2bin;
+use function strtoupper;
+
 class UuidFactoryTest extends TestCase
 {
     public function testParsesUuidCorrectly(): void

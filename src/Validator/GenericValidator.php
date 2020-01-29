@@ -16,6 +16,9 @@ namespace Ramsey\Uuid\Validator;
 
 use Ramsey\Uuid\Uuid;
 
+use function preg_match;
+use function str_replace;
+
 /**
  * GenericValidator validates strings as UUIDs of any variant
  */

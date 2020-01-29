@@ -17,6 +17,9 @@ namespace Ramsey\Uuid\Type;
 use Ramsey\Uuid\Exception\InvalidArgumentException;
 
 use function ctype_digit;
+use function ltrim;
+use function strpos;
+use function substr;
 
 /**
  * A value object representing an integer

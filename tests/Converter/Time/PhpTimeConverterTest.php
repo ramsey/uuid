@@ -13,6 +13,8 @@ use Ramsey\Uuid\Math\BrickMathCalculator;
 use Ramsey\Uuid\Test\TestCase;
 use Ramsey\Uuid\Type\Hexadecimal;
 
+use function sprintf;
+
 class PhpTimeConverterTest extends TestCase
 {
     public function testCalculateTimeReturnsArrayOfTimeSegments(): void

@@ -240,6 +240,10 @@
     <!-- Forbid using absolute class name references -->
     <rule ref="SlevomatCodingStandard.Namespaces.ReferenceUsedNamesOnly">
         <properties>
+            <property name="allowFallbackGlobalConstants" value="false"/>
+            <property name="allowFallbackGlobalFunctions" value="false"/>
+            <property name="allowFullyQualifiedGlobalConstants" value="false"/>
+            <property name="allowFullyQualifiedGlobalFunctions" value="false"/>
             <property name="allowFullyQualifiedExceptions" value="true"/>
             <property name="allowPartialUses" value="false"/>
             <property name="fullyQualifiedKeywords" type="array">

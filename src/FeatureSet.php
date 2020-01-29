@@ -47,6 +47,8 @@ use Ramsey\Uuid\Rfc4122\UuidBuilder as Rfc4122UuidBuilder;
 use Ramsey\Uuid\Validator\GenericValidator;
 use Ramsey\Uuid\Validator\ValidatorInterface;
 
+use const PHP_INT_SIZE;
+
 /**
  * FeatureSet detects and exposes available features in the current environment
  *

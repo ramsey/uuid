@@ -21,6 +21,18 @@ use Ramsey\Uuid\Type\Hexadecimal;
 use Ramsey\Uuid\Type\IntegerValue;
 use Ramsey\Uuid\Type\Time;
 
+use function count;
+use function dechex;
+use function explode;
+use function ini_get;
+use function is_float;
+use function is_int;
+use function str_pad;
+use function strlen;
+
+use const STR_PAD_LEFT;
+use const STR_PAD_RIGHT;
+
 /**
  * PhpTimeConverter uses built-in PHP functions and standard math operations
  * available to the PHP programming language to provide facilities for

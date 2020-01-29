@@ -7,6 +7,9 @@ namespace Ramsey\Uuid\Test\Validator;
 use Ramsey\Uuid\Test\TestCase;
 use Ramsey\Uuid\Validator\GenericValidator;
 
+use function array_merge;
+use function strtoupper;
+
 class GenericValidatorTest extends TestCase
 {
     /**

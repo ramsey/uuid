@@ -12,6 +12,9 @@ use Ramsey\Uuid\Converter\TimeConverterInterface;
 use Ramsey\Uuid\Test\TestCase;
 use Ramsey\Uuid\Uuid;
 
+use function hex2bin;
+use function implode;
+
 class DefaultUuidBuilderTest extends TestCase
 {
     public function testBuildCreatesUuid(): void

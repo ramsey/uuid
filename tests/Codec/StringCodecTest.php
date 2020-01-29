@@ -13,6 +13,10 @@ use Ramsey\Uuid\Rfc4122\FieldsInterface;
 use Ramsey\Uuid\Test\TestCase;
 use Ramsey\Uuid\UuidInterface;
 
+use function hex2bin;
+use function implode;
+use function pack;
+
 class StringCodecTest extends TestCase
 {
     /**

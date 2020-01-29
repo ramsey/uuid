@@ -18,6 +18,8 @@ use Ramsey\Uuid\Exception\InvalidArgumentException;
 use Ramsey\Uuid\Provider\TimeProviderInterface;
 use Ramsey\Uuid\Type\Time;
 
+use function array_key_exists;
+
 /**
  * FixedTimeProvider uses an known time to provide the time
  *

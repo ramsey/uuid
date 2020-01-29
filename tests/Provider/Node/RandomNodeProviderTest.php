@@ -10,6 +10,12 @@ use Ramsey\Uuid\Exception\RandomSourceException;
 use Ramsey\Uuid\Provider\Node\RandomNodeProvider;
 use Ramsey\Uuid\Test\TestCase;
 
+use function bin2hex;
+use function hex2bin;
+use function hexdec;
+use function sprintf;
+use function substr;
+
 class RandomNodeProviderTest extends TestCase
 {
     protected function tearDown(): void

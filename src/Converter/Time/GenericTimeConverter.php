@@ -21,6 +21,11 @@ use Ramsey\Uuid\Type\Hexadecimal;
 use Ramsey\Uuid\Type\IntegerValue;
 use Ramsey\Uuid\Type\Time;
 
+use function explode;
+use function str_pad;
+
+use const STR_PAD_LEFT;
+
 /**
  * GenericTimeConverter uses the provided calculator to calculate and convert
  * time values

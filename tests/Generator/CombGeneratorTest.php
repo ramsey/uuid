@@ -13,6 +13,13 @@ use Ramsey\Uuid\Generator\CombGenerator;
 use Ramsey\Uuid\Generator\RandomGeneratorInterface;
 use Ramsey\Uuid\Test\TestCase;
 
+use function bin2hex;
+use function dechex;
+use function hex2bin;
+use function str_pad;
+
+use const STR_PAD_LEFT;
+
 class CombGeneratorTest extends TestCase
 {
     /**

@@ -14,6 +14,8 @@ declare(strict_types=1);
 
 namespace Ramsey\Uuid\Rfc4122;
 
+use function hex2bin;
+
 /**
  * Provides common functionality for nil UUIDs
  *

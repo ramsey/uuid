@@ -7,6 +7,10 @@ namespace Ramsey\Uuid\Test\Rfc4122;
 use Ramsey\Uuid\Rfc4122\Validator;
 use Ramsey\Uuid\Test\TestCase;
 
+use function array_merge;
+use function in_array;
+use function strtoupper;
+
 class ValidatorTest extends TestCase
 {
     /**

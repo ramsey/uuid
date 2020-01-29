@@ -30,6 +30,16 @@ use Ramsey\Uuid\Type\IntegerValue;
 use Ramsey\Uuid\Type\Time;
 use Ramsey\Uuid\Validator\ValidatorInterface;
 
+use function hash;
+use function pack;
+use function str_pad;
+use function strtolower;
+use function substr;
+use function substr_replace;
+use function unpack;
+
+use const STR_PAD_LEFT;
+
 class UuidFactory implements UuidFactoryInterface
 {
     /**

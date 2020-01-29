@@ -20,6 +20,16 @@ use Ramsey\Uuid\Rfc4122\FieldsInterface;
 use Ramsey\Uuid\Rfc4122\VariantTrait;
 use Ramsey\Uuid\Type\Hexadecimal;
 
+use function bin2hex;
+use function dechex;
+use function hexdec;
+use function sprintf;
+use function str_pad;
+use function strlen;
+use function substr;
+
+use const STR_PAD_LEFT;
+
 /**
  * Nonstandard UUID fields do not conform to the RFC 4122 standard
  *

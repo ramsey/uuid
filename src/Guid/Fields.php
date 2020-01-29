@@ -23,6 +23,18 @@ use Ramsey\Uuid\Rfc4122\VersionTrait;
 use Ramsey\Uuid\Type\Hexadecimal;
 use Ramsey\Uuid\Uuid;
 
+use function bin2hex;
+use function dechex;
+use function hexdec;
+use function pack;
+use function sprintf;
+use function str_pad;
+use function strlen;
+use function substr;
+use function unpack;
+
+use const STR_PAD_LEFT;
+
 /**
  * GUIDs are comprised of a set of named fields, according to RFC 4122
  *
