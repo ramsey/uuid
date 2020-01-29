@@ -37,6 +37,9 @@ class GenericNumberConverter implements NumberConverterInterface
     /**
      * @inheritDoc
      * @psalm-pure
+     * @psalm-return numeric-string
+     * @psalm-suppress MoreSpecificReturnType we know that the retrieved `string` is never empty
+     * @psalm-suppress LessSpecificReturnStatement we know that the retrieved `string` is never empty
      */
     public function fromHex(string $hex): string
     {
@@ -46,6 +49,9 @@ class GenericNumberConverter implements NumberConverterInterface
     /**
      * @inheritDoc
      * @psalm-pure
+     * @psalm-return non-empty-string
+     * @psalm-suppress MoreSpecificReturnType we know that the retrieved `string` is never empty
+     * @psalm-suppress LessSpecificReturnStatement we know that the retrieved `string` is never empty
      */
     public function toHex(string $number): string
     {

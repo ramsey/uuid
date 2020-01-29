@@ -29,6 +29,8 @@ interface CodecInterface
      *
      * @return string Hexadecimal string representation of a UUID
      *
+     * @psalm-return non-empty-string
+     *
      * @psalm-pure
      */
     public function encode(UuidInterface $uuid): string;
@@ -40,6 +42,8 @@ interface CodecInterface
      *     representation
      *
      * @return string Binary string representation of a UUID
+     *
+     * @psalm-return non-empty-string
      *
      * @psalm-pure
      */
