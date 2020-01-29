@@ -45,12 +45,9 @@ addons:
 before_install:
   - travis_retry ./resources/scripts/travis-before-install.sh
   - ./resources/scripts/cmd-proxy.sh ./resources/scripts/system-info.sh
+  - if [ "${TRAVIS_EVENT_TYPE}" != "cron" ]; then phpenv config-rm xdebug.ini || echo 'No xdebug config.'; fi
 
 install:
-  - |
-    if [ "${TRAVIS_EVENT_TYPE}" != "cron" ]; then
-      phpenv config-rm xdebug.ini
-    fi
   - travis_retry ./resources/scripts/cmd-proxy.sh composer require --no-update "php-coveralls/php-coveralls:^1 | ^2"
   - travis_retry ./resources/scripts/cmd-proxy.sh composer install --no-interaction --prefer-dist --no-progress --no-suggest
 
