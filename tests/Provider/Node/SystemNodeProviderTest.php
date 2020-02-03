@@ -586,8 +586,6 @@ class SystemNodeProviderTest extends TestCase
      * @param string[]|array[]|null $constantBodyAssert
      * @param string[]|array[]|null $iniGetDisableFunctionsAssert
      * @param string[]|array[]|null $isReadableAssert
-     *
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
      */
     private function assertMockFunctions(
         $fileGetContentsAssert,

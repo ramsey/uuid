@@ -39,8 +39,6 @@ class FixedTimeProvider implements TimeProviderInterface
      *
      * @throws InvalidArgumentException if the `$time` does not contain
      *     `sec` or `usec` components
-     *
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
      */
     public function __construct($time)
     {
