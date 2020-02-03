@@ -14,6 +14,8 @@ declare(strict_types=1);
 
 namespace Ramsey\Uuid\Generator;
 
+use const UUID_TYPE_RANDOM;
+
 /**
  * PeclUuidRandomGenerator generates strings of random binary data using ext-uuid
  *

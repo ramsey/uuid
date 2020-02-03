@@ -14,6 +14,8 @@ declare(strict_types=1);
 
 namespace Ramsey\Uuid\Generator;
 
+use const UUID_TYPE_TIME;
+
 /**
  * PeclUuidTimeGenerator generates strings of binary data for time-base UUIDs,
  * using ext-uuid
