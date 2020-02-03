@@ -6,6 +6,7 @@ namespace Ramsey\Uuid\Test;
 
 use Mockery;
 use Ramsey\Uuid\Builder\FallbackBuilder;
+use Ramsey\Uuid\Converter\TimeConverterInterface;
 use Ramsey\Uuid\FeatureSet;
 use Ramsey\Uuid\Guid\GuidBuilder;
 use Ramsey\Uuid\Validator\ValidatorInterface;
@@ -34,5 +35,12 @@ class FeatureSetTest extends TestCase
         $featureSet->setValidator($validator);
 
         $this->assertSame($validator, $featureSet->getValidator());
+    }
+
+    public function testGetTimeConverter(): void
+    {
+        $featureSet = new FeatureSet();
+
+        $this->assertInstanceOf(TimeConverterInterface::class, $featureSet->getTimeConverter());
     }
 }

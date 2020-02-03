@@ -33,6 +33,7 @@ use Ramsey\Uuid\Rfc4122\UuidV2;
 use Ramsey\Uuid\Rfc4122\UuidV3;
 use Ramsey\Uuid\Rfc4122\UuidV4;
 use Ramsey\Uuid\Rfc4122\UuidV5;
+use Ramsey\Uuid\Type\Hexadecimal;
 use Ramsey\Uuid\Type\Time;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidFactory;
@@ -959,6 +960,17 @@ class UuidTest extends TestCase
         $fromIntegerUuid = Uuid::fromInteger($integer);
 
         $this->assertTrue($uuid->equals($fromIntegerUuid));
+    }
+
+    public function testFromDateTime(): void
+    {
+        /** @var UuidV1 $uuid */
+        $uuid = Uuid::fromString('ff6f8cb0-c57d-11e1-8b21-0800200c9a66');
+        $dateTime = $uuid->getDateTime();
+
+        $fromDateTimeUuid = Uuid::fromDateTime($dateTime, new Hexadecimal('0800200c9a66'), 2849);
+
+        $this->assertTrue($uuid->equals($fromDateTimeUuid));
     }
 
     /**

@@ -215,6 +215,14 @@ class FeatureSet
     }
 
     /**
+     * Returns the time converter configured for this environment
+     */
+    public function getTimeConverter(): TimeConverterInterface
+    {
+        return $this->timeConverter;
+    }
+
+    /**
      * Returns the time generator configured for this environment
      */
     public function getTimeGenerator(): TimeGeneratorInterface

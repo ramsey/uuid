@@ -70,7 +70,8 @@
     </TypeDoesNotContainType>
   </file>
   <file src="src/Uuid.php">
-    <ImpureMethodCall occurrences="4">
+    <ImpureMethodCall occurrences="5">
+      <code>getFactory</code>
       <code>getFactory</code>
       <code>getFactory</code>
       <code>getFactory</code>

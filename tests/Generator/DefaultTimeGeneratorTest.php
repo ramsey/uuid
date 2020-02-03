@@ -12,8 +12,11 @@ use PHPUnit\Framework\MockObject\MockObject;
 use Ramsey\Uuid\BinaryUtils;
 use Ramsey\Uuid\Converter\TimeConverterInterface;
 use Ramsey\Uuid\Exception\RandomSourceException;
+use Ramsey\Uuid\Exception\TimeSourceException;
+use Ramsey\Uuid\FeatureSet;
 use Ramsey\Uuid\Generator\DefaultTimeGenerator;
 use Ramsey\Uuid\Provider\NodeProviderInterface;
+use Ramsey\Uuid\Provider\Time\FixedTimeProvider;
 use Ramsey\Uuid\Provider\TimeProviderInterface;
 use Ramsey\Uuid\Test\TestCase;
 use Ramsey\Uuid\Type\Hexadecimal;
@@ -188,5 +191,23 @@ class DefaultTimeGeneratorTest extends TestCase
         $this->expectExceptionMessage('Could not gather sufficient random data');
 
         $defaultTimeGenerator->generate($this->nodeId);
+    }
+
+    public function testDefaultTimeGeneratorThrowsExceptionForLargeGeneratedValue(): void
+    {
+        $timeProvider = new FixedTimeProvider(new Time('1832455114570', '955162'));
+        $featureSet = new FeatureSet();
+        $timeGenerator = new DefaultTimeGenerator(
+            $featureSet->getNodeProvider(),
+            $featureSet->getTimeConverter(),
+            $timeProvider
+        );
+
+        $this->expectException(TimeSourceException::class);
+        $this->expectExceptionMessage(
+            'The generated time of \'10000000000000004\' is larger than expected'
+        );
+
+        $timeGenerator->generate();
     }
 }

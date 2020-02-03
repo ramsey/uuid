@@ -14,15 +14,20 @@ declare(strict_types=1);
 
 namespace Ramsey\Uuid;
 
+use DateTimeInterface;
 use Ramsey\Uuid\Builder\UuidBuilderInterface;
 use Ramsey\Uuid\Codec\CodecInterface;
 use Ramsey\Uuid\Converter\NumberConverterInterface;
+use Ramsey\Uuid\Converter\TimeConverterInterface;
 use Ramsey\Uuid\Generator\DceSecurityGeneratorInterface;
+use Ramsey\Uuid\Generator\DefaultTimeGenerator;
 use Ramsey\Uuid\Generator\RandomGeneratorInterface;
 use Ramsey\Uuid\Generator\TimeGeneratorInterface;
 use Ramsey\Uuid\Provider\NodeProviderInterface;
+use Ramsey\Uuid\Provider\Time\FixedTimeProvider;
 use Ramsey\Uuid\Type\Hexadecimal;
 use Ramsey\Uuid\Type\IntegerValue;
+use Ramsey\Uuid\Type\Time;
 use Ramsey\Uuid\Validator\ValidatorInterface;
 
 class UuidFactory implements UuidFactoryInterface
@@ -53,6 +58,11 @@ class UuidFactory implements UuidFactoryInterface
     private $randomGenerator;
 
     /**
+     * @var TimeConverterInterface
+     */
+    private $timeConverter;
+
+    /**
      * @var TimeGeneratorInterface
      */
     private $timeGenerator;
@@ -79,6 +89,7 @@ class UuidFactory implements UuidFactoryInterface
         $this->nodeProvider = $features->getNodeProvider();
         $this->numberConverter = $features->getNumberConverter();
         $this->randomGenerator = $features->getRandomGenerator();
+        $this->timeConverter = $features->getTimeConverter();
         $this->timeGenerator = $features->getTimeGenerator();
         $this->uuidBuilder = $features->getBuilder();
         $this->validator = $features->getValidator();
@@ -232,6 +243,28 @@ class UuidFactory implements UuidFactoryInterface
         $hex = str_pad($hex, 32, '0', STR_PAD_LEFT);
 
         return $this->fromString($hex);
+    }
+
+    public function fromDateTime(
+        DateTimeInterface $dateTime,
+        ?Hexadecimal $node = null,
+        ?int $clockSeq = null
+    ): UuidInterface {
+        $timeProvider = new FixedTimeProvider(
+            new Time($dateTime->getTimestamp(), $dateTime->format('u'))
+        );
+
+        $timeGenerator = new DefaultTimeGenerator(
+            $this->nodeProvider,
+            $this->timeConverter,
+            $timeProvider
+        );
+
+        $nodeHex = $node ? $node->toString() : null;
+
+        $bytes = $timeGenerator->generate($nodeHex, $clockSeq);
+
+        return $this->uuidFromBytesAndVersion($bytes, 1);
     }
 
     /**

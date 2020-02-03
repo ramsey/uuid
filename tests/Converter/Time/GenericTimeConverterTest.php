@@ -54,12 +54,27 @@ class GenericTimeConverterTest extends TestCase
                 'expected' => '0000000000000000',
             ],
 
-            // This is the last possible time supported by v1 UUIDs:
+            // This is the last possible time supported by the GenericTimeConverter:
             // 60038-03-11 05:36:10.955161
+            // When a UUID is created from this time, however, the highest 4 bits
+            // are replaced with the version (1), so we lose fidelity and cannot
+            // accurately decompose the date from the UUID.
             [
                 'seconds' => '1832455114570',
                 'microseconds' => '955161',
                 'expected' => 'fffffffffffffffa',
+            ],
+
+            // This is technically the last possible time supported by v1 UUIDs:
+            // 5236-03-31 21:21:00.684697
+            // All dates above this will lose fidelity, since the highest 4 bits
+            // are replaced with the UUID version (1). As a result, we cannot
+            // accurately decompose the date from UUIDs created from dates
+            // greater than this one.
+            [
+                'seconds' => '103072857660',
+                'microseconds' => '684697',
+                'expected' => '0ffffffffffffffa',
             ],
         ];
     }

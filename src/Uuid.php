@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace Ramsey\Uuid;
 
+use DateTimeInterface;
 use Ramsey\Uuid\Codec\CodecInterface;
 use Ramsey\Uuid\Converter\NumberConverterInterface;
 use Ramsey\Uuid\Converter\TimeConverterInterface;
@@ -366,6 +367,27 @@ class Uuid implements UuidInterface
     public static function fromString(string $uuid): UuidInterface
     {
         return self::getFactory()->fromString($uuid);
+    }
+
+    /**
+     * Creates a UUID from a DateTimeInterface instance
+     *
+     * @param DateTimeInterface $dateTime The date and time
+     * @param Hexadecimal|null $node A 48-bit number representing the hardware
+     *     address
+     * @param int|null $clockSeq A 14-bit number used to help avoid duplicates
+     *     that could arise when the clock is set backwards in time or if the
+     *     node ID changes
+     *
+     * @return UuidInterface A UuidInterface instance that represents a
+     *     version 1 UUID created from a DateTimeInterface instance
+     */
+    public static function fromDateTime(
+        DateTimeInterface $dateTime,
+        ?Hexadecimal $node = null,
+        ?int $clockSeq = null
+    ): UuidInterface {
+        return self::getFactory()->fromDateTime($dateTime, $node, $clockSeq);
     }
 
     /**

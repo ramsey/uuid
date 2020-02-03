@@ -17,6 +17,7 @@ namespace Ramsey\Uuid\Generator;
 use Ramsey\Uuid\Converter\TimeConverterInterface;
 use Ramsey\Uuid\Exception\InvalidArgumentException;
 use Ramsey\Uuid\Exception\RandomSourceException;
+use Ramsey\Uuid\Exception\TimeSourceException;
 use Ramsey\Uuid\Provider\NodeProviderInterface;
 use Ramsey\Uuid\Provider\TimeProviderInterface;
 use Throwable;
@@ -75,12 +76,23 @@ class DefaultTimeGenerator implements TimeGeneratorInterface
             }
         }
 
+        $time = $this->timeProvider->getTime();
+
         $uuidTime = $this->timeConverter->calculateTime(
-            $this->timeProvider->getTime()->getSeconds()->toString(),
-            $this->timeProvider->getTime()->getMicroSeconds()->toString()
+            $time->getSeconds()->toString(),
+            $time->getMicroSeconds()->toString()
         );
 
-        $timeBytes = (string) hex2bin(str_pad($uuidTime->toString(), 16, '0', STR_PAD_LEFT));
+        $timeHex = str_pad($uuidTime->toString(), 16, '0', STR_PAD_LEFT);
+
+        if (strlen($timeHex) !== 16) {
+            throw new TimeSourceException(sprintf(
+                'The generated time of \'%s\' is larger than expected',
+                $timeHex
+            ));
+        }
+
+        $timeBytes = (string) hex2bin($timeHex);
 
         return $timeBytes[4] . $timeBytes[5] . $timeBytes[6] . $timeBytes[7]
             . $timeBytes[2] . $timeBytes[3]

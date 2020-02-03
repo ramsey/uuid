@@ -10,7 +10,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Added
 
+* Add `Uuid::fromDateTime()` to create version 1 UUIDs from instances of
+  `\DateTimeInterface`.
+
 ### Changed
+
+* Add `fromDateTime()` method to `UuidFactoryInterface`.
 
 ### Deprecated
 
