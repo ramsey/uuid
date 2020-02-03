@@ -251,7 +251,7 @@ class UuidFactory implements UuidFactoryInterface
         ?int $clockSeq = null
     ): UuidInterface {
         $timeProvider = new FixedTimeProvider(
-            new Time($dateTime->getTimestamp(), $dateTime->format('u'))
+            new Time($dateTime->format('U'), $dateTime->format('u'))
         );
 
         $timeGenerator = new DefaultTimeGenerator(
