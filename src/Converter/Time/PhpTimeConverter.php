@@ -24,7 +24,6 @@ use Ramsey\Uuid\Type\Time;
 use function count;
 use function dechex;
 use function explode;
-use function ini_get;
 use function is_float;
 use function is_int;
 use function str_pad;

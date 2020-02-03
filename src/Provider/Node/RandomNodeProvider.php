@@ -21,7 +21,6 @@ use function bin2hex;
 use function dechex;
 use function hex2bin;
 use function hexdec;
-use function random_bytes;
 use function str_pad;
 use function substr;
 

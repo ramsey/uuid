@@ -27,7 +27,7 @@ use function dechex;
 use function hex2bin;
 use function is_int;
 use function pack;
-use function random_int;
+use function sprintf;
 use function str_pad;
 use function strlen;
 
