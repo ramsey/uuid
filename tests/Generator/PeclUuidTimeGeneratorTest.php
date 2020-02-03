@@ -7,6 +7,8 @@ namespace Ramsey\Uuid\Test\Generator;
 use AspectMock\Test as AspectMock;
 use Ramsey\Uuid\Generator\PeclUuidTimeGenerator;
 
+use const UUID_TYPE_TIME;
+
 class PeclUuidTimeGeneratorTest extends PeclUuidTestCase
 {
     /**
