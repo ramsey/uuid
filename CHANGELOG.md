@@ -626,8 +626,7 @@ versions leading up to this release.*
 
 ### Fixed
 
-* Improve Doctrine conversion to Uuid or string for the ramsey/uuid [Doctrine
-  field type]
+* Improve Doctrine conversion to Uuid or string for the ramsey/uuid [Doctrine field type]
 
 
 ## [2.7.4] - 2014-10-29

@@ -9,6 +9,7 @@ parameters:
     reportUnmatchedIgnoredErrors: false
     excludes_analyse:
         - ./ExpectedBehaviorTest.php
+        - ./phpstan-bootstrap.php
     ignoreErrors:
         -
             message: "#^Function uuid_create\\(\\) has no return typehint specified\\.$#"
