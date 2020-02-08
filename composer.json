@@ -71,11 +71,11 @@
     },
     "scripts": {
         "lint": "parallel-lint src tests",
-        "phpcbf": "phpcbf -vpw",
-        "phpcs": "phpcs",
+        "phpcbf": "phpcbf -vpw --cache=build/cache/phpcs.cache",
+        "phpcs": "phpcs --cache=build/cache/phpcs.cache",
         "phpstan": [
-            "phpstan analyse -c tests/phpstan.neon src --level max --no-progress",
-            "phpstan analyse -c tests/phpstan-tests.neon tests --level max --no-progress"
+            "phpstan analyse -c tests/phpstan.neon --no-progress",
+            "phpstan analyse -c tests/phpstan-tests.neon --no-progress"
         ],
         "psalm": "psalm --show-info=false --config=tests/psalm.xml",
         "phpunit": "phpunit --verbose --colors=always",

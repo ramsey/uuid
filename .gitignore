@@ -1,4 +1,3 @@
-.phpunit.result.cache
 /build/
 /composer.lock
 /phpcs.xml

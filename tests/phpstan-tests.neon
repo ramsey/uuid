@@ -1,4 +1,8 @@
 parameters:
+    tmpDir: ../build/cache/phpstan
+    level: max
+    paths:
+        - .
     autoload_files:
         - ./phpstan-bootstrap.php
     checkMissingIterableValueType: false
