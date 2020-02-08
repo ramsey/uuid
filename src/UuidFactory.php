@@ -21,6 +21,7 @@ use Ramsey\Uuid\Converter\NumberConverterInterface;
 use Ramsey\Uuid\Converter\TimeConverterInterface;
 use Ramsey\Uuid\Generator\DceSecurityGeneratorInterface;
 use Ramsey\Uuid\Generator\DefaultTimeGenerator;
+use Ramsey\Uuid\Generator\NameGeneratorInterface;
 use Ramsey\Uuid\Generator\RandomGeneratorInterface;
 use Ramsey\Uuid\Generator\TimeGeneratorInterface;
 use Ramsey\Uuid\Provider\NodeProviderInterface;
@@ -30,7 +31,6 @@ use Ramsey\Uuid\Type\IntegerValue;
 use Ramsey\Uuid\Type\Time;
 use Ramsey\Uuid\Validator\ValidatorInterface;
 
-use function hash;
 use function pack;
 use function str_pad;
 use function strtolower;
@@ -51,6 +51,11 @@ class UuidFactory implements UuidFactoryInterface
      * @var DceSecurityGeneratorInterface
      */
     private $dceSecurityGenerator;
+
+    /**
+     * @var NameGeneratorInterface
+     */
+    private $nameGenerator;
 
     /**
      * @var NodeProviderInterface
@@ -96,6 +101,7 @@ class UuidFactory implements UuidFactoryInterface
 
         $this->codec = $features->getCodec();
         $this->dceSecurityGenerator = $features->getDceSecurityGenerator();
+        $this->nameGenerator = $features->getNameGenerator();
         $this->nodeProvider = $features->getNodeProvider();
         $this->numberConverter = $features->getNumberConverter();
         $this->randomGenerator = $features->getRandomGenerator();
@@ -121,6 +127,25 @@ class UuidFactory implements UuidFactoryInterface
     public function setCodec(CodecInterface $codec): void
     {
         $this->codec = $codec;
+    }
+
+    /**
+     * Returns the name generator used by this factory
+     */
+    public function getNameGenerator(): NameGeneratorInterface
+    {
+        return $this->nameGenerator;
+    }
+
+    /**
+     * Sets the name generator to use for this factory
+     *
+     * @param NameGeneratorInterface $nameGenerator A generator to generate
+     *     binary data, based on a namespace and name
+     */
+    public function setNameGenerator(NameGeneratorInterface $nameGenerator): void
+    {
+        $this->nameGenerator = $nameGenerator;
     }
 
     /**
@@ -357,10 +382,10 @@ class UuidFactory implements UuidFactoryInterface
     private function uuidFromNsAndName($ns, string $name, int $version, string $hashAlgorithm): UuidInterface
     {
         if (!($ns instanceof UuidInterface)) {
-            $ns = $this->codec->decode($ns);
+            $ns = $this->fromString($ns);
         }
 
-        $bytes = hash($hashAlgorithm, $ns->getBytes() . $name, true);
+        $bytes = $this->nameGenerator->generate($ns, $name, $hashAlgorithm);
 
         return $this->uuidFromBytesAndVersion(substr($bytes, 0, 16), $version);
     }

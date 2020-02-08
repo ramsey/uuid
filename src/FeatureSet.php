@@ -26,6 +26,10 @@ use Ramsey\Uuid\Converter\Time\PhpTimeConverter;
 use Ramsey\Uuid\Converter\TimeConverterInterface;
 use Ramsey\Uuid\Generator\DceSecurityGenerator;
 use Ramsey\Uuid\Generator\DceSecurityGeneratorInterface;
+use Ramsey\Uuid\Generator\NameGeneratorFactory;
+use Ramsey\Uuid\Generator\NameGeneratorInterface;
+use Ramsey\Uuid\Generator\PeclUuidNameGenerator;
+use Ramsey\Uuid\Generator\PeclUuidRandomGenerator;
 use Ramsey\Uuid\Generator\PeclUuidTimeGenerator;
 use Ramsey\Uuid\Generator\RandomGeneratorFactory;
 use Ramsey\Uuid\Generator\RandomGeneratorInterface;
@@ -93,6 +97,11 @@ class FeatureSet
     private $dceSecurityGenerator;
 
     /**
+     * @var NameGeneratorInterface
+     */
+    private $nameGenerator;
+
+    /**
      * @var NodeProviderInterface
      */
     private $nodeProvider;
@@ -154,6 +163,7 @@ class FeatureSet
         $this->builder = $this->buildUuidBuilder($useGuids);
         $this->codec = $this->buildCodec($useGuids);
         $this->nodeProvider = $this->buildNodeProvider();
+        $this->nameGenerator = $this->buildNameGenerator();
         $this->randomGenerator = $this->buildRandomGenerator();
         $this->setTimeProvider(new SystemTimeProvider());
         $this->setDceSecurityProvider(new SystemDceSecurityProvider());
@@ -190,6 +200,14 @@ class FeatureSet
     public function getDceSecurityGenerator(): DceSecurityGeneratorInterface
     {
         return $this->dceSecurityGenerator;
+    }
+
+    /**
+     * Returns the name generator configured for this environment
+     */
+    public function getNameGenerator(): NameGeneratorInterface
+    {
+        return $this->nameGenerator;
     }
 
     /**
@@ -329,6 +347,10 @@ class FeatureSet
      */
     private function buildRandomGenerator(): RandomGeneratorInterface
     {
+        if ($this->enablePecl) {
+            return new PeclUuidRandomGenerator();
+        }
+
         return (new RandomGeneratorFactory())->getGenerator();
     }
 
@@ -349,6 +371,18 @@ class FeatureSet
             $this->timeConverter,
             $timeProvider
         ))->getGenerator();
+    }
+
+    /**
+     * Returns a name generator configured for this environment
+     */
+    private function buildNameGenerator(): NameGeneratorInterface
+    {
+        if ($this->enablePecl) {
+            return new PeclUuidNameGenerator();
+        }
+
+        return (new NameGeneratorFactory())->getGenerator();
     }
 
     /**

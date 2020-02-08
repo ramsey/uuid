@@ -12,7 +12,7 @@ class RandomGeneratorFactoryTest extends TestCase
 {
     public function testFactoryReturnsRandomBytesGenerator(): void
     {
-        $generator = RandomGeneratorFactory::getGenerator();
+        $generator = (new RandomGeneratorFactory)->getGenerator();
 
         $this->assertInstanceOf(RandomBytesGenerator::class, $generator);
     }

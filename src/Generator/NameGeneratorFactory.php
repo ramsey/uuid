@@ -15,16 +15,16 @@ declare(strict_types=1);
 namespace Ramsey\Uuid\Generator;
 
 /**
- * RandomGeneratorFactory retrieves a default random generator, based on the
+ * NameGeneratorFactory retrieves a default name generator, based on the
  * environment
  */
-class RandomGeneratorFactory
+class NameGeneratorFactory
 {
     /**
-     * Returns a default random generator, based on the current environment
+     * Returns a default name generator, based on the current environment
      */
-    public function getGenerator(): RandomGeneratorInterface
+    public function getGenerator(): NameGeneratorInterface
     {
-        return new RandomBytesGenerator();
+        return new DefaultNameGenerator();
     }
 }

@@ -12,6 +12,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 * Add `Uuid::fromDateTime()` to create version 1 UUIDs from instances of
   `\DateTimeInterface`.
+* Add `Generator\NameGeneratorInterface` to support alternate methods of
+  generating bytes for version 3 and version 5 name-based UUID. By default,
+  ramsey/uuid uses the `Generator\DefaultNameGenerator`, which uses the standard
+  algorithm this library has used since the beginning. You may choose to use the
+  new `Generator\PeclUuidNameGenerator` to make use of the new
+  `uuid_generate_md5()` and `uuid_generate_sha1()` functions in ext-uuid version
+  1.1.0.
 
 ### Changed
 

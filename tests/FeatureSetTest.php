@@ -8,6 +8,8 @@ use Mockery;
 use Ramsey\Uuid\Builder\FallbackBuilder;
 use Ramsey\Uuid\Converter\TimeConverterInterface;
 use Ramsey\Uuid\FeatureSet;
+use Ramsey\Uuid\Generator\DefaultNameGenerator;
+use Ramsey\Uuid\Generator\PeclUuidTimeGenerator;
 use Ramsey\Uuid\Guid\GuidBuilder;
 use Ramsey\Uuid\Validator\ValidatorInterface;
 
@@ -42,5 +44,19 @@ class FeatureSetTest extends TestCase
         $featureSet = new FeatureSet();
 
         $this->assertInstanceOf(TimeConverterInterface::class, $featureSet->getTimeConverter());
+    }
+
+    public function testDefaultNameGeneratorIsSelected(): void
+    {
+        $featureSet = new FeatureSet();
+
+        $this->assertInstanceOf(DefaultNameGenerator::class, $featureSet->getNameGenerator());
+    }
+
+    public function testPeclUuidTimeGeneratorIsSelected(): void
+    {
+        $featureSet = new FeatureSet(false, false, false, false, true);
+
+        $this->assertInstanceOf(PeclUuidTimeGenerator::class, $featureSet->getTimeGenerator());
     }
 }

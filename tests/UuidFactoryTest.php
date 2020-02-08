@@ -15,6 +15,8 @@ use Ramsey\Uuid\Converter\NumberConverterInterface;
 use Ramsey\Uuid\Converter\TimeConverterInterface;
 use Ramsey\Uuid\FeatureSet;
 use Ramsey\Uuid\Generator\DceSecurityGeneratorInterface;
+use Ramsey\Uuid\Generator\DefaultNameGenerator;
+use Ramsey\Uuid\Generator\NameGeneratorInterface;
 use Ramsey\Uuid\Generator\RandomGeneratorInterface;
 use Ramsey\Uuid\Generator\TimeGeneratorInterface;
 use Ramsey\Uuid\Provider\NodeProviderInterface;
@@ -66,6 +68,7 @@ class UuidFactoryTest extends TestCase
         $randomGenerator = Mockery::mock(RandomGeneratorInterface::class);
         $timeConverter = Mockery::mock(TimeConverterInterface::class);
         $timeGenerator = Mockery::mock(TimeGeneratorInterface::class);
+        $nameGenerator = Mockery::mock(NameGeneratorInterface::class);
         $dceSecurityGenerator = Mockery::mock(DceSecurityGeneratorInterface::class);
         $numberConverter = Mockery::mock(NumberConverterInterface::class);
         $builder = Mockery::mock(UuidBuilderInterface::class);
@@ -77,6 +80,7 @@ class UuidFactoryTest extends TestCase
             'getRandomGenerator' => $randomGenerator,
             'getTimeConverter' => $timeConverter,
             'getTimeGenerator' => $timeGenerator,
+            'getNameGenerator' => $nameGenerator,
             'getDceSecurityGenerator' => $dceSecurityGenerator,
             'getNumberConverter' => $numberConverter,
             'getBuilder' => $builder,
@@ -203,5 +207,24 @@ class UuidFactoryTest extends TestCase
                 '103072857660.684697',
             ],
         ];
+    }
+
+    public function testFactoryReturnsDefaultNameGenerator()
+    {
+        $factory = new UuidFactory();
+
+        $this->assertInstanceOf(DefaultNameGenerator::class, $factory->getNameGenerator());
+    }
+
+    public function testFactoryReturnsSetNameGenerator()
+    {
+        $factory = new UuidFactory();
+
+        $this->assertInstanceOf(DefaultNameGenerator::class, $factory->getNameGenerator());
+
+        $nameGenerator = Mockery::mock(NameGeneratorInterface::class);
+        $factory->setNameGenerator($nameGenerator);
+
+        $this->assertSame($nameGenerator, $factory->getNameGenerator());
     }
 }

@@ -13,7 +13,13 @@ if (!function_exists('uuid_create')) {
      */
     function uuid_create($type = 0)
     {
-        return '';
+        switch ($type) {
+            case 1:
+                return \Ramsey\Uuid\v1();
+            case 4:
+            default:
+                return \Ramsey\Uuid\v4();
+        }
     }
 }
 
@@ -24,7 +30,31 @@ if (!function_exists('uuid_parse')) {
      */
     function uuid_parse($uuid)
     {
-        return '';
+        return \Ramsey\Uuid\Uuid::fromString($uuid)->getBytes();
+    }
+}
+
+if (!function_exists('uuid_generate_md5')) {
+    /**
+     * @param string $ns
+     * @param string $name
+     * @return string
+     */
+    function uuid_generate_md5($ns, $name)
+    {
+        return \Ramsey\Uuid\v3($ns, $name);
+    }
+}
+
+if (!function_exists('uuid_generate_sha1')) {
+    /**
+     * @param string $ns
+     * @param string $name
+     * @return string
+     */
+    function uuid_generate_sha1($ns, $name)
+    {
+        return \Ramsey\Uuid\v5($ns, $name);
     }
 }
 
