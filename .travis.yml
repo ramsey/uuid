@@ -52,6 +52,7 @@ install:
   - travis_retry ./resources/scripts/cmd-proxy.sh composer install --no-interaction --prefer-dist --no-progress --no-suggest
 
 before_script:
+  - mkdir -p build/cache
   - mkdir -p build/logs
 
 script:
