@@ -209,14 +209,14 @@ class UuidFactoryTest extends TestCase
         ];
     }
 
-    public function testFactoryReturnsDefaultNameGenerator()
+    public function testFactoryReturnsDefaultNameGenerator(): void
     {
         $factory = new UuidFactory();
 
         $this->assertInstanceOf(DefaultNameGenerator::class, $factory->getNameGenerator());
     }
 
-    public function testFactoryReturnsSetNameGenerator()
+    public function testFactoryReturnsSetNameGenerator(): void
     {
         $factory = new UuidFactory();
 

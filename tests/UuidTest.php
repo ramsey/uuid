@@ -651,7 +651,7 @@ class UuidTest extends TestCase
     {
         $factory = new UuidFactory();
         $generator = new CombGenerator(
-            (new RandomGeneratorFactory)->getGenerator(),
+            (new RandomGeneratorFactory())->getGenerator(),
             $factory->getNumberConverter()
         );
 

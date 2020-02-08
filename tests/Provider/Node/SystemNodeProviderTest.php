@@ -580,12 +580,12 @@ class SystemNodeProviderTest extends TestCase
      *
      * Provide a NULL to assert a function is never called.
      *
-     * @param string[]|null $fileGetContentsAssert
-     * @param string[]|null $globBodyAssert
-     * @param string[]|null $passthruBodyAssert
-     * @param string[]|null $constantBodyAssert
-     * @param string[]|null $iniGetDisableFunctionsAssert
-     * @param string[]|null $isReadableAssert
+     * @param array<int, string>|array<int, array<int,string>>|null $fileGetContentsAssert
+     * @param array<int, string>|array<int, array<int,string>>|null $globBodyAssert
+     * @param array<int, string>|array<int, array<int,string>>|null $passthruBodyAssert
+     * @param array<int, string>|array<int, array<int,string>>|null $constantBodyAssert
+     * @param array<int, string>|array<int, array<int,string>>|null $iniGetDisableFunctionsAssert
+     * @param array<int, string>|array<int, array<int,string>>|null $isReadableAssert
      */
     private function assertMockFunctions(
         ?array $fileGetContentsAssert,
