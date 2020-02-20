@@ -204,6 +204,12 @@ class UuidTest extends TestCase
         $this->assertInstanceOf(DateTimeInterface::class, $uuid->getDateTime());
         $this->assertSame('1582-10-15T00:00:00+00:00', $uuid->getDateTime()->format('c'));
         $this->assertSame('-12219292800.000000', $uuid->getDateTime()->format('U.u'));
+
+        // The Unix epoch
+        $uuid = Uuid::fromString('13814000-1dd2-11b2-9669-00007ffffffe');
+        $this->assertInstanceOf(DateTimeInterface::class, $uuid->getDateTime());
+        $this->assertSame('1970-01-01T00:00:00+00:00', $uuid->getDateTime()->format('c'));
+        $this->assertSame('0.000000', $uuid->getDateTime()->format('U.u'));
     }
 
     public function testGetDateTimeFromNonVersion1Uuid(): void
