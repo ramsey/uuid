@@ -191,6 +191,14 @@ class UuidTest extends TestCase
         $this->assertSame('5236-03-31T21:20:59+00:00', $uuid->getDateTime()->format('c'));
         $this->assertSame('103072857659.999999', $uuid->getDateTime()->format('U.u'));
 
+        // Check the last possible time supported by v1 UUIDs
+        // See inline comments in
+        // {@see \Ramsey\Uuid\Test\Converter\Time\GenericTimeConverterTest::provideCalculateTime()}
+        $uuid = Uuid::fromString('fffffffa-ffff-1fff-8b1e-acde48001122');
+        $this->assertInstanceOf(DateTimeInterface::class, $uuid->getDateTime());
+        $this->assertSame('5236-03-31T21:21:00+00:00', $uuid->getDateTime()->format('c'));
+        $this->assertSame('103072857660.684697', $uuid->getDateTime()->format('U.u'));
+
         // Check the oldest date
         $uuid = Uuid::fromString('00000000-0000-1000-9669-00007ffffffe');
         $this->assertInstanceOf(DateTimeInterface::class, $uuid->getDateTime());
