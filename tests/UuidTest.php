@@ -1440,7 +1440,7 @@ class UuidTest extends TestCase
     public function testUuidVersionConstantForVersion2(): void
     {
         $uuid = Uuid::fromString('6fa459ea-ee8a-2ca4-894e-db77e160355e');
-        $this->assertEquals($uuid->getVersion(), Uuid::UUID_TYPE_IDENTIFIER);
+        $this->assertEquals($uuid->getVersion(), Uuid::UUID_TYPE_DCE_SECURITY);
     }
 
     /**

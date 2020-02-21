@@ -38,7 +38,7 @@ class FunctionsTest extends TestCase
         $fields = Uuid::fromString($v2)->getFields();
 
         $this->assertIsString($v2);
-        $this->assertSame(Uuid::UUID_TYPE_IDENTIFIER, $fields->getVersion());
+        $this->assertSame(Uuid::UUID_TYPE_DCE_SECURITY, $fields->getVersion());
     }
 
     public function testV3ReturnsVersion3UuidString(): void

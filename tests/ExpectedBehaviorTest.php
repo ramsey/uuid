@@ -624,4 +624,33 @@ class ExpectedBehaviorTest extends TestCase
         $this->assertSame($expectedBytes, $uuid->getBytes());
         $this->assertSame($expectedHex, (string) $uuid->getHex());
     }
+
+    /**
+     * @dataProvider provideUuidConstantTests
+     */
+    public function testUuidConstants($constantName, $expected)
+    {
+        $this->assertSame($expected, constant("Ramsey\\Uuid\\Uuid::{$constantName}"));
+    }
+
+    public function provideUuidConstantTests()
+    {
+        return [
+            ['NAMESPACE_DNS', '6ba7b810-9dad-11d1-80b4-00c04fd430c8'],
+            ['NAMESPACE_URL', '6ba7b811-9dad-11d1-80b4-00c04fd430c8'],
+            ['NAMESPACE_OID', '6ba7b812-9dad-11d1-80b4-00c04fd430c8'],
+            ['NAMESPACE_X500', '6ba7b814-9dad-11d1-80b4-00c04fd430c8'],
+            ['NIL', '00000000-0000-0000-0000-000000000000'],
+            ['RESERVED_NCS', 0],
+            ['RFC_4122', 2],
+            ['RESERVED_MICROSOFT', 6],
+            ['RESERVED_FUTURE', 7],
+            ['VALID_PATTERN', '^[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}$'],
+            ['UUID_TYPE_TIME', 1],
+            ['UUID_TYPE_IDENTIFIER', 2],
+            ['UUID_TYPE_HASH_MD5', 3],
+            ['UUID_TYPE_RANDOM', 4],
+            ['UUID_TYPE_HASH_SHA1', 5],
+        ];
+    }
 }

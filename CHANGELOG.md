@@ -24,6 +24,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Deprecated
 
+* `Uuid::UUID_TYPE_IDENTIFIER` is deprecated. Use `Uuid::UUID_TYPE_DCE_SECURITY`
+  instead.
+* `Uuid::VALID_PATTERN` is deprecated. Use `Validator\GenericValidator::VALID_PATTERN`
+  instead.
+
 ### Removed
 
 ### Fixed

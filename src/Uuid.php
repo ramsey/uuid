@@ -112,6 +112,11 @@ class Uuid implements UuidInterface
     public const RESERVED_FUTURE = 7;
 
     /**
+     * @deprecated Use {@see GenericValidator::VALID_PATTERN} instead.
+     */
+    public const VALID_PATTERN = '^[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}$';
+
+    /**
      * Version 1 (time-based) UUID
      *
      * @link https://tools.ietf.org/html/rfc4122#section-4.1.3 RFC 4122, § 4.1.3: Version
@@ -119,9 +124,14 @@ class Uuid implements UuidInterface
     public const UUID_TYPE_TIME = 1;
 
     /**
-     * Version 2 (identifier-based) UUID
+     * Version 2 (DCE Security) UUID
      *
      * @link https://tools.ietf.org/html/rfc4122#section-4.1.3 RFC 4122, § 4.1.3: Version
+     */
+    public const UUID_TYPE_DCE_SECURITY = 2;
+
+    /**
+     * @deprecated Use {@see Uuid::UUID_TYPE_DCE_SECURITY} instead.
      */
     public const UUID_TYPE_IDENTIFIER = 2;
 
