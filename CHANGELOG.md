@@ -23,6 +23,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Changed
 
 * Add `fromDateTime()` method to `UuidFactoryInterface`.
+* Change `UuidInterface::getHex()` to return a `Ramsey\Uuid\Type\Hexadecimal` instance.
+* Change `UuidInterface::getInteger()` to return a `Ramsey\Uuid\Type\IntegerValue` instance.
 
 ### Deprecated
 

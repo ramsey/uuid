@@ -271,7 +271,7 @@ class Uuid implements UuidInterface
 
     public function compareTo(UuidInterface $other): int
     {
-        $compare = strcmp($this->getInteger(), $other->getInteger());
+        $compare = strcmp($this->getInteger()->toString(), $other->getInteger()->toString());
 
         if ($compare < 0) {
             return -1;
@@ -304,20 +304,14 @@ class Uuid implements UuidInterface
         return $this->fields;
     }
 
-    /**
-     * @psalm-return non-empty-string
-     * @psalm-suppress MoreSpecificReturnType we know that the retrieved `string` is never empty
-     * @psalm-suppress LessSpecificReturnStatement we know that the retrieved `string` is never empty
-     */
-    public function getHex(): string
+    public function getHex(): Hexadecimal
     {
-        return str_replace('-', '', $this->toString());
+        return new Hexadecimal(str_replace('-', '', $this->toString()));
     }
 
-    /** @psalm-return non-empty-string */
-    public function getInteger(): string
+    public function getInteger(): IntegerValue
     {
-        return $this->numberConverter->fromHex($this->getHex());
+        return new IntegerValue($this->numberConverter->fromHex($this->getHex()->toString()));
     }
 
     /** @psalm-return non-empty-string */

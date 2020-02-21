@@ -29,18 +29,6 @@ final class UuidIsNeverEmpty
     }
 
     /** @psalm-return non-empty-string */
-    public function hexIsNeverEmpty(UuidInterface $uuid): string
-    {
-        return $uuid->getHex();
-    }
-
-    /** @psalm-return non-empty-string */
-    public function integerIsNeverEmpty(UuidInterface $uuid): string
-    {
-        return $uuid->getInteger();
-    }
-
-    /** @psalm-return non-empty-string */
     public function stringIsNeverEmpty(UuidInterface $uuid): string
     {
         return $uuid->toString();

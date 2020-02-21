@@ -48,7 +48,7 @@ class ExpectedBehaviorTest extends TestCase
         $this->assertTrue($uuid->equals(clone $uuid));
         $this->assertIsString($uuid->getBytes());
         $this->assertInstanceOf('Ramsey\Uuid\Converter\NumberConverterInterface', $uuid->getNumberConverter());
-        $this->assertIsString($uuid->getHex());
+        $this->assertIsString((string) $uuid->getHex());
         $this->assertIsArray($uuid->getFieldsHex());
         $this->assertArrayHasKey('time_low', $uuid->getFieldsHex());
         $this->assertArrayHasKey('time_mid', $uuid->getFieldsHex());
@@ -68,11 +68,11 @@ class ExpectedBehaviorTest extends TestCase
         $this->assertSame($uuid->getFieldsHex()['clock_seq_hi_and_reserved'], $uuid->getClockSeqHiAndReservedHex());
         $this->assertSame($uuid->getFieldsHex()['clock_seq_low'], $uuid->getClockSeqLowHex());
         $this->assertSame($uuid->getFieldsHex()['node'], $uuid->getNodeHex());
-        $this->assertSame(substr($uuid->getHex(), 16), $uuid->getLeastSignificantBitsHex());
-        $this->assertSame(substr($uuid->getHex(), 0, 16), $uuid->getMostSignificantBitsHex());
+        $this->assertSame(substr((string) $uuid->getHex(), 16), $uuid->getLeastSignificantBitsHex());
+        $this->assertSame(substr((string) $uuid->getHex(), 0, 16), $uuid->getMostSignificantBitsHex());
 
         $this->assertSame(
-            $uuid->getHex(),
+            (string) $uuid->getHex(),
             $uuid->getTimeLowHex()
             . $uuid->getTimeMidHex()
             . $uuid->getTimeHiAndVersionHex()
@@ -82,7 +82,7 @@ class ExpectedBehaviorTest extends TestCase
         );
 
         $this->assertSame(
-            $uuid->getHex(),
+            (string) $uuid->getHex(),
             $uuid->getFieldsHex()['time_low']
             . $uuid->getFieldsHex()['time_mid']
             . $uuid->getFieldsHex()['time_hi_and_version']
@@ -93,9 +93,9 @@ class ExpectedBehaviorTest extends TestCase
 
         $this->assertIsString($uuid->getUrn());
         $this->assertStringStartsWith('urn:uuid:', $uuid->getUrn());
-        $this->assertSame('urn:uuid:' . $uuid->getHex(), str_replace('-', '', $uuid->getUrn()));
-        $this->assertSame($uuid->getHex(), str_replace('-', '', $uuid->toString()));
-        $this->assertSame($uuid->getHex(), str_replace('-', '', (string) $uuid));
+        $this->assertSame('urn:uuid:' . (string) $uuid->getHex(), str_replace('-', '', $uuid->getUrn()));
+        $this->assertSame((string) $uuid->getHex(), str_replace('-', '', $uuid->toString()));
+        $this->assertSame((string) $uuid->getHex(), str_replace('-', '', (string) $uuid));
 
         $this->assertSame(
             $uuid->toString(),
@@ -622,6 +622,6 @@ class ExpectedBehaviorTest extends TestCase
         $this->assertSame(2, $uuid->getVariant());
         $this->assertSame(4, $uuid->getVersion());
         $this->assertSame($expectedBytes, $uuid->getBytes());
-        $this->assertSame($expectedHex, $uuid->getHex());
+        $this->assertSame($expectedHex, (string) $uuid->getHex());
     }
 }

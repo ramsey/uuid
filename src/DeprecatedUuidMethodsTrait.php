@@ -180,7 +180,7 @@ trait DeprecatedUuidMethodsTrait
      */
     public function getLeastSignificantBits(): string
     {
-        $leastSignificantHex = substr($this->getHex(), 16);
+        $leastSignificantHex = substr($this->getHex()->toString(), 16);
 
         return $this->numberConverter->fromHex($leastSignificantHex);
     }
@@ -192,7 +192,7 @@ trait DeprecatedUuidMethodsTrait
      */
     public function getLeastSignificantBitsHex(): string
     {
-        return substr($this->getHex(), 16);
+        return substr($this->getHex()->toString(), 16);
     }
 
     /**
@@ -202,7 +202,7 @@ trait DeprecatedUuidMethodsTrait
      */
     public function getMostSignificantBits(): string
     {
-        $mostSignificantHex = substr($this->getHex(), 0, 16);
+        $mostSignificantHex = substr($this->getHex()->toString(), 0, 16);
 
         return $this->numberConverter->fromHex($mostSignificantHex);
     }
@@ -214,7 +214,7 @@ trait DeprecatedUuidMethodsTrait
      */
     public function getMostSignificantBitsHex(): string
     {
-        return substr($this->getHex(), 0, 16);
+        return substr($this->getHex()->toString(), 0, 16);
     }
 
     /**

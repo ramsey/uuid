@@ -85,7 +85,7 @@ final class UuidIsImmutable
 
         return [
             Uuid::fromBytes($id->getBytes()),
-            Uuid::fromInteger($id->getInteger()),
+            Uuid::fromInteger($id->getInteger()->toString()),
             Uuid::isValid('ff6f8cb0-c57d-11e1-9b21-0800200c9a66'),
         ];
     }

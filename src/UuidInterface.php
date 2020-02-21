@@ -16,6 +16,8 @@ namespace Ramsey\Uuid;
 
 use JsonSerializable;
 use Ramsey\Uuid\Fields\FieldsInterface;
+use Ramsey\Uuid\Type\Hexadecimal;
+use Ramsey\Uuid\Type\IntegerValue;
 use Serializable;
 
 /**
@@ -73,17 +75,13 @@ interface UuidInterface extends
 
     /**
      * Returns the hexadecimal string representation of the UUID
-     *
-     * @psalm-return non-empty-string
      */
-    public function getHex(): string;
+    public function getHex(): Hexadecimal;
 
     /**
      * Returns the integer value of the UUID as a string
-     *
-     * @psalm-return non-empty-string
      */
-    public function getInteger(): string;
+    public function getInteger(): IntegerValue;
 
     /**
      * Returns a string representation of the UUID

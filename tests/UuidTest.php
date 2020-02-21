@@ -976,7 +976,7 @@ class UuidTest extends TestCase
     public function testFromInteger(): void
     {
         $uuid = Uuid::fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
-        $integer = $uuid->getInteger();
+        $integer = $uuid->getInteger()->toString();
 
         $fromIntegerUuid = Uuid::fromInteger($integer);
 
@@ -1029,9 +1029,9 @@ class UuidTest extends TestCase
         /** @var UuidInterface $uuid */
         foreach ($uuids as $uuid) {
             $this->assertSame($string, $uuid->toString());
-            $this->assertSame($hex, $uuid->getHex());
+            $this->assertSame($hex, $uuid->getHex()->toString());
             $this->assertSame(base64_decode($bytes), $uuid->getBytes());
-            $this->assertSame($int, $uuid->getInteger());
+            $this->assertSame($int, $uuid->getInteger()->toString());
             $this->assertSame($fields, $uuid->getFieldsHex());
             $this->assertSame($fields['time_low'], $uuid->getTimeLowHex());
             $this->assertSame($fields['time_mid'], $uuid->getTimeMidHex());
