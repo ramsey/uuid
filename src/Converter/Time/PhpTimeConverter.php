@@ -147,7 +147,7 @@ class PhpTimeConverter implements TimeConverterInterface
         }
 
         // If the microseconds are less than six characters AND the length of
-        // the number is greater than or equal the PHP precision , then it's
+        // the number is greater than or equal to the PHP precision, then it's
         // possible that we lost some precision for the microseconds. Return an
         // empty array, so that we can choose to use the fallback converter.
         if (strlen($split[1]) < 6 && strlen((string) $time) >= $this->phpPrecision) {

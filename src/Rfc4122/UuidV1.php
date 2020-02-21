@@ -78,12 +78,23 @@ final class UuidV1 extends Uuid implements UuidInterface
     {
         $time = $this->timeConverter->convertTime($this->fields->getTimestamp());
 
+        $microseconds = $time->getMicroSeconds()->toString();
+
+        if (strlen($microseconds) > 6) {
+            $roundingDigit = (int) substr($microseconds, 6, 1);
+            $microseconds = (int) substr($microseconds, 0, 6);
+
+            if ($roundingDigit >= 5) {
+                $microseconds++;
+            }
+        }
+
         try {
             return new DateTimeImmutable(
                 '@'
                 . $time->getSeconds()->toString()
                 . '.'
-                . str_pad($time->getMicroSeconds()->toString(), 6, '0', STR_PAD_LEFT)
+                . str_pad((string) $microseconds, 6, '0', STR_PAD_LEFT)
             );
         } catch (Throwable $e) {
             throw new DateTimeException($e->getMessage(), (int) $e->getCode(), $e);

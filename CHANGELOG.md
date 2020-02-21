@@ -30,6 +30,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 
+* Round microseconds to six digits when getting DateTime from v1 UUIDs. This
+  circumvents a needless exception for an otherwise valid time-based UUID.
+
 ### Security
 
 
