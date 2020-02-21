@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace Ramsey\Uuid\Codec;
 
+use Ramsey\Uuid\Guid\Guid;
 use Ramsey\Uuid\UuidInterface;
 
 use function bin2hex;
@@ -22,7 +23,7 @@ use function substr;
 /**
  * GuidStringCodec encodes and decodes globally unique identifiers (GUID)
  *
- * @link https://en.wikipedia.org/wiki/Globally_unique_identifier Globally Unique Identifier
+ * @see Guid
  */
 class GuidStringCodec extends StringCodec
 {

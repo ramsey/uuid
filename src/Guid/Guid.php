@@ -30,7 +30,22 @@ use Ramsey\Uuid\UuidInterface;
  * > subject to swapping. This byte swapping applies even for versions 3, 4, and
  * > 5, where the canonical fields do not correspond to the content of the UUID.
  *
+ * The first three fields of a GUID are encoded in little-endian byte order,
+ * while the last three fields are in network (big-endian) byte order. This is
+ * according to the history of the Microsoft definition of a GUID.
+ *
+ * According to the .NET Guid.ToByteArray method documentation:
+ *
+ * > Note that the order of bytes in the returned byte array is different from
+ * > the string representation of a Guid value. The order of the beginning
+ * > four-byte group and the next two two-byte groups is reversed, whereas the
+ * > order of the last two-byte group and the closing six-byte group is the
+ * > same.
+ *
  * @link https://en.wikipedia.org/wiki/Universally_unique_identifier#Variants UUID Variants on Wikipedia
+ * @link https://docs.microsoft.com/en-us/windows/win32/api/guiddef/ns-guiddef-guid Windows GUID structure
+ * @link https://docs.microsoft.com/en-us/dotnet/api/system.guid .NET Guid Struct
+ * @link https://docs.microsoft.com/en-us/dotnet/api/system.guid.tobytearray .NET Guid.ToByteArray Method
  *
  * @psalm-immutable
  */

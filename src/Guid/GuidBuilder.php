@@ -25,6 +25,8 @@ use Throwable;
 /**
  * GuidBuilder builds instances of Guid
  *
+ * @see Guid
+ *
  * @psalm-immutable
  */
 class GuidBuilder implements UuidBuilderInterface

@@ -38,6 +38,8 @@ use const STR_PAD_LEFT;
 /**
  * GUIDs are comprised of a set of named fields, according to RFC 4122
  *
+ * @see Guid
+ *
  * @psalm-immutable
  */
 final class Fields implements FieldsInterface
