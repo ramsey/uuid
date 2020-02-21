@@ -7,7 +7,7 @@ namespace Ramsey\Uuid\Test\Provider\Dce;
 use Ramsey\Uuid\Exception\DceSecurityException;
 use Ramsey\Uuid\Provider\Dce\SystemDceSecurityProvider;
 use Ramsey\Uuid\Test\TestCase;
-use Ramsey\Uuid\Type\IntegerValue;
+use Ramsey\Uuid\Type\Integer as IntegerObject;
 use phpmock\mockery\PHPMockery;
 
 use function array_merge;
@@ -146,7 +146,7 @@ class SystemDceSecurityProviderTest extends TestCase
 
         $uid = $provider->getUid();
 
-        $this->assertInstanceOf(IntegerValue::class, $uid);
+        $this->assertInstanceOf(IntegerObject::class, $uid);
         $this->assertSame($expectedId, $uid->toString());
         $this->assertSame($uid, $provider->getUid());
     }
@@ -198,7 +198,7 @@ class SystemDceSecurityProviderTest extends TestCase
 
         $uid = $provider->getUid();
 
-        $this->assertInstanceOf(IntegerValue::class, $uid);
+        $this->assertInstanceOf(IntegerObject::class, $uid);
         $this->assertSame($id, $uid->toString());
         $this->assertSame($uid, $provider->getUid());
     }
@@ -297,7 +297,7 @@ class SystemDceSecurityProviderTest extends TestCase
 
         $gid = $provider->getGid();
 
-        $this->assertInstanceOf(IntegerValue::class, $gid);
+        $this->assertInstanceOf(IntegerObject::class, $gid);
         $this->assertSame($id, $gid->toString());
         $this->assertSame($gid, $provider->getGid());
     }
@@ -418,7 +418,7 @@ class SystemDceSecurityProviderTest extends TestCase
 
         $gid = $provider->getGid();
 
-        $this->assertInstanceOf(IntegerValue::class, $gid);
+        $this->assertInstanceOf(IntegerObject::class, $gid);
         $this->assertSame($expectedId, $gid->toString());
         $this->assertSame($gid, $provider->getGid());
     }

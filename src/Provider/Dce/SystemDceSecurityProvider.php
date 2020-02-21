@@ -16,7 +16,7 @@ namespace Ramsey\Uuid\Provider\Dce;
 
 use Ramsey\Uuid\Exception\DceSecurityException;
 use Ramsey\Uuid\Provider\DceSecurityProviderInterface;
-use Ramsey\Uuid\Type\IntegerValue;
+use Ramsey\Uuid\Type\Integer as IntegerObject;
 
 use function escapeshellarg;
 use function preg_split;
@@ -40,11 +40,11 @@ class SystemDceSecurityProvider implements DceSecurityProviderInterface
      *
      * @inheritDoc
      */
-    public function getUid(): IntegerValue
+    public function getUid(): IntegerObject
     {
         static $uid = null;
 
-        if ($uid instanceof IntegerValue) {
+        if ($uid instanceof IntegerObject) {
             return $uid;
         }
 
@@ -60,7 +60,7 @@ class SystemDceSecurityProvider implements DceSecurityProviderInterface
             );
         }
 
-        $uid = new IntegerValue($uid);
+        $uid = new IntegerObject($uid);
 
         return $uid;
     }
@@ -70,11 +70,11 @@ class SystemDceSecurityProvider implements DceSecurityProviderInterface
      *
      * @inheritDoc
      */
-    public function getGid(): IntegerValue
+    public function getGid(): IntegerObject
     {
         static $gid = null;
 
-        if ($gid instanceof IntegerValue) {
+        if ($gid instanceof IntegerObject) {
             return $gid;
         }
 
@@ -90,7 +90,7 @@ class SystemDceSecurityProvider implements DceSecurityProviderInterface
             );
         }
 
-        $gid = new IntegerValue($gid);
+        $gid = new IntegerObject($gid);
 
         return $gid;
     }

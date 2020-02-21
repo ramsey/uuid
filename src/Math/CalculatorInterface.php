@@ -15,7 +15,7 @@ declare(strict_types=1);
 namespace Ramsey\Uuid\Math;
 
 use Ramsey\Uuid\Type\Hexadecimal;
-use Ramsey\Uuid\Type\IntegerValue;
+use Ramsey\Uuid\Type\Integer as IntegerObject;
 use Ramsey\Uuid\Type\NumberInterface;
 
 /**
@@ -80,27 +80,27 @@ interface CalculatorInterface
      * @param string $value The value to convert
      * @param int $base The base to convert from (i.e., 2, 16, 32, etc.)
      *
-     * @return IntegerValue The base-10 integer value of the converted value
+     * @return IntegerObject The base-10 integer value of the converted value
      */
-    public function fromBase(string $value, int $base): IntegerValue;
+    public function fromBase(string $value, int $base): IntegerObject;
 
     /**
      * Converts a base-10 integer value to an arbitrary base
      *
-     * @param IntegerValue $value The integer value to convert
+     * @param IntegerObject $value The integer value to convert
      * @param int $base The base to convert to (i.e., 2, 16, 32, etc.)
      *
      * @return string The value represented in the specified base
      */
-    public function toBase(IntegerValue $value, int $base): string;
+    public function toBase(IntegerObject $value, int $base): string;
 
     /**
-     * Converts an IntegerValue instance to a Hexadecimal instance
+     * Converts an Integer instance to a Hexadecimal instance
      */
-    public function toHexadecimal(IntegerValue $value): Hexadecimal;
+    public function toHexadecimal(IntegerObject $value): Hexadecimal;
 
     /**
-     * Converts a Hexadecimal instance to an IntegerValue instance
+     * Converts a Hexadecimal instance to an Integer instance
      */
-    public function toIntegerValue(Hexadecimal $value): IntegerValue;
+    public function toIntegerValue(Hexadecimal $value): IntegerObject;
 }

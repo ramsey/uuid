@@ -12,6 +12,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Changed
 
+* Rename `Type\IntegerValue` to `Type\Integer`. It was originally named
+  `IntegerValue` because static analysis sees `Integer` in docblock annotations
+  and treats it as the native `int` type. `Integer` is not a reserved word in
+  PHP, so it should be named `Integer` for consistency with other types in this
+  library. When using it, a class alias prevents static analysis from
+  complaining.
+
 ### Deprecated
 
 ### Removed

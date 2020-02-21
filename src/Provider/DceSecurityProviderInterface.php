@@ -15,7 +15,7 @@ declare(strict_types=1);
 namespace Ramsey\Uuid\Provider;
 
 use Ramsey\Uuid\Rfc4122\UuidV2;
-use Ramsey\Uuid\Type\IntegerValue;
+use Ramsey\Uuid\Type\Integer as IntegerObject;
 
 /**
  * A DCE provider provides access to local domain identifiers for version 2,
@@ -30,12 +30,12 @@ interface DceSecurityProviderInterface
      *
      * @link https://en.wikipedia.org/wiki/User_identifier User identifier
      */
-    public function getUid(): IntegerValue;
+    public function getUid(): IntegerObject;
 
     /**
      * Returns a group identifier for the system
      *
      * @link https://en.wikipedia.org/wiki/Group_identifier Group identifier
      */
-    public function getGid(): IntegerValue;
+    public function getGid(): IntegerObject;
 }

@@ -21,7 +21,7 @@ use Ramsey\Uuid\Converter\TimeConverterInterface;
 use Ramsey\Uuid\Fields\FieldsInterface;
 use Ramsey\Uuid\Rfc4122\FieldsInterface as Rfc4122FieldsInterface;
 use Ramsey\Uuid\Type\Hexadecimal;
-use Ramsey\Uuid\Type\IntegerValue;
+use Ramsey\Uuid\Type\Integer as IntegerObject;
 
 use function str_replace;
 use function strcmp;
@@ -309,9 +309,9 @@ class Uuid implements UuidInterface
         return new Hexadecimal(str_replace('-', '', $this->toString()));
     }
 
-    public function getInteger(): IntegerValue
+    public function getInteger(): IntegerObject
     {
-        return new IntegerValue($this->numberConverter->fromHex($this->getHex()->toString()));
+        return new IntegerObject($this->numberConverter->fromHex($this->getHex()->toString()));
     }
 
     /** @psalm-return non-empty-string */
@@ -451,7 +451,7 @@ class Uuid implements UuidInterface
      *
      * @param int $localDomain The local domain to use when generating bytes,
      *     according to DCE Security
-     * @param IntegerValue|null $localIdentifier The local identifier for the
+     * @param IntegerObject|null $localIdentifier The local identifier for the
      *     given domain; this may be a UID or GID on POSIX systems, if the local
      *     domain is person or group, or it may be a site-defined identifier
      *     if the local domain is org
@@ -466,7 +466,7 @@ class Uuid implements UuidInterface
      */
     public static function uuid2(
         int $localDomain,
-        ?IntegerValue $localIdentifier = null,
+        ?IntegerObject $localIdentifier = null,
         ?Hexadecimal $node = null,
         ?int $clockSeq = null
     ): UuidInterface {

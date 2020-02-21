@@ -17,7 +17,7 @@ namespace Ramsey\Uuid;
 use JsonSerializable;
 use Ramsey\Uuid\Fields\FieldsInterface;
 use Ramsey\Uuid\Type\Hexadecimal;
-use Ramsey\Uuid\Type\IntegerValue;
+use Ramsey\Uuid\Type\Integer as IntegerObject;
 use Serializable;
 
 /**
@@ -81,7 +81,7 @@ interface UuidInterface extends
     /**
      * Returns the integer value of the UUID as a string
      */
-    public function getInteger(): IntegerValue;
+    public function getInteger(): IntegerObject;
 
     /**
      * Returns a string representation of the UUID

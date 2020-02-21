@@ -33,7 +33,7 @@ use function substr;
  *
  * @psalm-immutable
  */
-final class IntegerValue implements NumberInterface
+final class Integer implements NumberInterface
 {
     /**
      * @var string

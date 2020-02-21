@@ -16,7 +16,7 @@ namespace Ramsey\Uuid\Converter\Number;
 
 use Ramsey\Uuid\Converter\NumberConverterInterface;
 use Ramsey\Uuid\Math\CalculatorInterface;
-use Ramsey\Uuid\Type\IntegerValue;
+use Ramsey\Uuid\Type\Integer as IntegerObject;
 
 /**
  * GenericNumberConverter uses the provided calculate to convert decimal
@@ -55,6 +55,6 @@ class GenericNumberConverter implements NumberConverterInterface
      */
     public function toHex(string $number): string
     {
-        return $this->calculator->toBase(new IntegerValue($number), 16);
+        return $this->calculator->toBase(new IntegerObject($number), 16);
     }
 }

@@ -16,7 +16,7 @@ namespace Ramsey\Uuid;
 
 use DateTimeInterface;
 use Ramsey\Uuid\Type\Hexadecimal;
-use Ramsey\Uuid\Type\IntegerValue;
+use Ramsey\Uuid\Type\Integer as IntegerObject;
 use Ramsey\Uuid\Validator\ValidatorInterface;
 
 /**
@@ -53,7 +53,7 @@ interface UuidFactoryInterface
      *
      * @param int $localDomain The local domain to use when generating bytes,
      *     according to DCE Security
-     * @param IntegerValue|null $localIdentifier The local identifier for the
+     * @param IntegerObject|null $localIdentifier The local identifier for the
      *     given domain; this may be a UID or GID on POSIX systems, if the local
      *     domain is person or group, or it may be a site-defined identifier
      *     if the local domain is org
@@ -68,7 +68,7 @@ interface UuidFactoryInterface
      */
     public function uuid2(
         int $localDomain,
-        ?IntegerValue $localIdentifier = null,
+        ?IntegerObject $localIdentifier = null,
         ?Hexadecimal $node = null,
         ?int $clockSeq = null
     ): UuidInterface;

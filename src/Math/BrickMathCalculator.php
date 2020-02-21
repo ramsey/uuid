@@ -21,7 +21,7 @@ use Brick\Math\RoundingMode as BrickMathRounding;
 use Ramsey\Uuid\Exception\InvalidArgumentException;
 use Ramsey\Uuid\Type\Decimal;
 use Ramsey\Uuid\Type\Hexadecimal;
-use Ramsey\Uuid\Type\IntegerValue;
+use Ramsey\Uuid\Type\Integer as IntegerObject;
 use Ramsey\Uuid\Type\NumberInterface;
 
 /**
@@ -52,7 +52,7 @@ final class BrickMathCalculator implements CalculatorInterface
             $sum = $sum->plus($addend->toString());
         }
 
-        return new IntegerValue((string) $sum);
+        return new IntegerObject((string) $sum);
     }
 
     public function subtract(NumberInterface $minuend, NumberInterface ...$subtrahends): NumberInterface
@@ -63,7 +63,7 @@ final class BrickMathCalculator implements CalculatorInterface
             $difference = $difference->minus($subtrahend->toString());
         }
 
-        return new IntegerValue((string) $difference);
+        return new IntegerObject((string) $difference);
     }
 
     public function multiply(NumberInterface $multiplicand, NumberInterface ...$multipliers): NumberInterface
@@ -74,7 +74,7 @@ final class BrickMathCalculator implements CalculatorInterface
             $product = $product->multipliedBy($multiplier->toString());
         }
 
-        return new IntegerValue((string) $product);
+        return new IntegerObject((string) $product);
     }
 
     public function divide(
@@ -92,16 +92,16 @@ final class BrickMathCalculator implements CalculatorInterface
         }
 
         if ($scale === 0) {
-            return new IntegerValue((string) $quotient->toBigInteger());
+            return new IntegerObject((string) $quotient->toBigInteger());
         }
 
         return new Decimal((string) $quotient);
     }
 
-    public function fromBase(string $value, int $base): IntegerValue
+    public function fromBase(string $value, int $base): IntegerObject
     {
         try {
-            return new IntegerValue((string) BigInteger::fromBase($value, $base));
+            return new IntegerObject((string) BigInteger::fromBase($value, $base));
         } catch (MathException $exception) {
             throw new InvalidArgumentException(
                 $exception->getMessage(),
@@ -111,7 +111,7 @@ final class BrickMathCalculator implements CalculatorInterface
         }
     }
 
-    public function toBase(IntegerValue $value, int $base): string
+    public function toBase(IntegerObject $value, int $base): string
     {
         try {
             return BigInteger::of($value->toString())->toBase($base);
@@ -124,12 +124,12 @@ final class BrickMathCalculator implements CalculatorInterface
         }
     }
 
-    public function toHexadecimal(IntegerValue $value): Hexadecimal
+    public function toHexadecimal(IntegerObject $value): Hexadecimal
     {
         return new Hexadecimal($this->toBase($value, 16));
     }
 
-    public function toIntegerValue(Hexadecimal $value): IntegerValue
+    public function toIntegerValue(Hexadecimal $value): IntegerObject
     {
         return $this->fromBase($value->toString(), 16);
     }

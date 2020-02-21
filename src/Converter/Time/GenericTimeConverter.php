@@ -18,7 +18,7 @@ use Ramsey\Uuid\Converter\TimeConverterInterface;
 use Ramsey\Uuid\Math\CalculatorInterface;
 use Ramsey\Uuid\Math\RoundingMode;
 use Ramsey\Uuid\Type\Hexadecimal;
-use Ramsey\Uuid\Type\IntegerValue;
+use Ramsey\Uuid\Type\Integer as IntegerObject;
 use Ramsey\Uuid\Type\Time;
 
 use function explode;
@@ -52,19 +52,19 @@ class GenericTimeConverter implements TimeConverterInterface
 
         $sec = $this->calculator->multiply(
             $timestamp->getSeconds(),
-            new IntegerValue('10000000')
+            new IntegerObject('10000000')
         );
 
         $usec = $this->calculator->multiply(
             $timestamp->getMicroSeconds(),
-            new IntegerValue('10')
+            new IntegerObject('10')
         );
 
-        /** @var IntegerValue $uuidTime */
+        /** @var IntegerObject $uuidTime */
         $uuidTime = $this->calculator->add(
             $sec,
             $usec,
-            new IntegerValue('122192928000000000')
+            new IntegerObject('122192928000000000')
         );
 
         $uuidTimeHex = str_pad(
@@ -89,14 +89,14 @@ class GenericTimeConverter implements TimeConverterInterface
         // which also includes the microtime.
         $epochNanoseconds = $this->calculator->subtract(
             $this->calculator->toIntegerValue($uuidTimestamp),
-            new IntegerValue('122192928000000000')
+            new IntegerObject('122192928000000000')
         );
 
         $unixTimestamp = $this->calculator->divide(
             RoundingMode::HALF_UP,
             6,
             $epochNanoseconds,
-            new IntegerValue('10000000')
+            new IntegerObject('10000000')
         );
 
         $split = explode('.', (string) $unixTimestamp, 2);

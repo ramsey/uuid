@@ -18,7 +18,7 @@ use Ramsey\Uuid\Converter\NumberConverterInterface;
 use Ramsey\Uuid\Exception\InvalidArgumentException;
 use Ramsey\Uuid\Provider\DceSecurityProviderInterface;
 use Ramsey\Uuid\Type\Hexadecimal;
-use Ramsey\Uuid\Type\IntegerValue;
+use Ramsey\Uuid\Type\Integer as IntegerObject;
 use Ramsey\Uuid\Uuid;
 
 use function hex2bin;
@@ -68,7 +68,7 @@ class DceSecurityGenerator implements DceSecurityGeneratorInterface
 
     public function generate(
         int $localDomain,
-        ?IntegerValue $localIdentifier = null,
+        ?IntegerObject $localIdentifier = null,
         ?Hexadecimal $node = null,
         ?int $clockSeq = null
     ): string {

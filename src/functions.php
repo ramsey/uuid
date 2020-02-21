@@ -16,7 +16,7 @@ declare(strict_types=1);
 namespace Ramsey\Uuid;
 
 use Ramsey\Uuid\Type\Hexadecimal;
-use Ramsey\Uuid\Type\IntegerValue;
+use Ramsey\Uuid\Type\Integer as IntegerObject;
 
 /**
  * Returns a version 1 (time-based) UUID from a host ID, sequence number,
@@ -39,7 +39,7 @@ function v1($node = null, ?int $clockSeq = null): string
  *
  * @param int $localDomain The local domain to use when generating bytes,
  *     according to DCE Security
- * @param IntegerValue|null $localIdentifier The local identifier for the
+ * @param IntegerObject|null $localIdentifier The local identifier for the
  *     given domain; this may be a UID or GID on POSIX systems, if the local
  *     domain is person or group, or it may be a site-defined identifier
  *     if the local domain is org
@@ -51,7 +51,7 @@ function v1($node = null, ?int $clockSeq = null): string
  */
 function v2(
     int $localDomain,
-    ?IntegerValue $localIdentifier = null,
+    ?IntegerObject $localIdentifier = null,
     ?Hexadecimal $node = null,
     ?int $clockSeq = null
 ): string {

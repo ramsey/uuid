@@ -8,15 +8,15 @@ use Ramsey\Uuid\Math\BrickMathCalculator;
 use Ramsey\Uuid\Math\RoundingMode;
 use Ramsey\Uuid\Test\TestCase;
 use Ramsey\Uuid\Type\Hexadecimal;
-use Ramsey\Uuid\Type\IntegerValue;
+use Ramsey\Uuid\Type\Integer as IntegerObject;
 
 class BrickMathCalculatorTest extends TestCase
 {
     public function testAdd(): void
     {
-        $int1 = new IntegerValue(5);
-        $int2 = new IntegerValue(6);
-        $int3 = new IntegerValue(7);
+        $int1 = new IntegerObject(5);
+        $int2 = new IntegerObject(6);
+        $int3 = new IntegerObject(7);
 
         $calculator = new BrickMathCalculator();
 
@@ -27,9 +27,9 @@ class BrickMathCalculatorTest extends TestCase
 
     public function testSubtract(): void
     {
-        $int1 = new IntegerValue(5);
-        $int2 = new IntegerValue(6);
-        $int3 = new IntegerValue(7);
+        $int1 = new IntegerObject(5);
+        $int2 = new IntegerObject(6);
+        $int3 = new IntegerObject(7);
 
         $calculator = new BrickMathCalculator();
 
@@ -40,9 +40,9 @@ class BrickMathCalculatorTest extends TestCase
 
     public function testMultiply(): void
     {
-        $int1 = new IntegerValue(5);
-        $int2 = new IntegerValue(6);
-        $int3 = new IntegerValue(7);
+        $int1 = new IntegerObject(5);
+        $int2 = new IntegerObject(6);
+        $int3 = new IntegerObject(7);
 
         $calculator = new BrickMathCalculator();
 
@@ -53,9 +53,9 @@ class BrickMathCalculatorTest extends TestCase
 
     public function testDivide(): void
     {
-        $int1 = new IntegerValue(1023);
-        $int2 = new IntegerValue(6);
-        $int3 = new IntegerValue(7);
+        $int1 = new IntegerObject(1023);
+        $int2 = new IntegerObject(6);
+        $int3 = new IntegerObject(7);
 
         $calculator = new BrickMathCalculator();
 
@@ -70,13 +70,13 @@ class BrickMathCalculatorTest extends TestCase
 
         $result = $calculator->fromBase('ffffffffffffffffffff', 16);
 
-        $this->assertInstanceOf(IntegerValue::class, $result);
+        $this->assertInstanceOf(IntegerObject::class, $result);
         $this->assertSame('1208925819614629174706175', $result->toString());
     }
 
     public function testToBase(): void
     {
-        $intValue = new IntegerValue('1208925819614629174706175');
+        $intValue = new IntegerObject('1208925819614629174706175');
         $calculator = new BrickMathCalculator();
 
         $this->assertSame('ffffffffffffffffffff', $calculator->toBase($intValue, 16));
@@ -84,7 +84,7 @@ class BrickMathCalculatorTest extends TestCase
 
     public function testToHexadecimal(): void
     {
-        $intValue = new IntegerValue('1208925819614629174706175');
+        $intValue = new IntegerObject('1208925819614629174706175');
         $calculator = new BrickMathCalculator();
 
         $result = $calculator->toHexadecimal($intValue);

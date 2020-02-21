@@ -14,6 +14,8 @@ declare(strict_types=1);
 
 namespace Ramsey\Uuid\Type;
 
+use Ramsey\Uuid\Type\Integer as IntegerObject;
+
 /**
  * A value object representing a timestamp
  *
@@ -26,12 +28,12 @@ namespace Ramsey\Uuid\Type;
 final class Time
 {
     /**
-     * @var IntegerValue
+     * @var IntegerObject
      */
     private $seconds;
 
     /**
-     * @var IntegerValue
+     * @var IntegerObject
      */
     private $microSeconds;
 
@@ -41,16 +43,16 @@ final class Time
      */
     public function __construct($seconds, $microSeconds = 0)
     {
-        $this->seconds = new IntegerValue($seconds);
-        $this->microSeconds = new IntegerValue($microSeconds);
+        $this->seconds = new IntegerObject($seconds);
+        $this->microSeconds = new IntegerObject($microSeconds);
     }
 
-    public function getSeconds(): IntegerValue
+    public function getSeconds(): IntegerObject
     {
         return $this->seconds;
     }
 
-    public function getMicroSeconds(): IntegerValue
+    public function getMicroSeconds(): IntegerObject
     {
         return $this->microSeconds;
     }

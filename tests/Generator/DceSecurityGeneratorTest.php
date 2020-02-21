@@ -18,7 +18,7 @@ use Ramsey\Uuid\Provider\NodeProviderInterface;
 use Ramsey\Uuid\Provider\Time\FixedTimeProvider;
 use Ramsey\Uuid\Test\TestCase;
 use Ramsey\Uuid\Type\Hexadecimal;
-use Ramsey\Uuid\Type\IntegerValue;
+use Ramsey\Uuid\Type\Integer as IntegerObject;
 use Ramsey\Uuid\Type\Time;
 use Ramsey\Uuid\Uuid;
 
@@ -42,7 +42,7 @@ class DceSecurityGeneratorTest extends TestCase
         $seconds,
         $microseconds,
         int $providedDomain,
-        ?IntegerValue $providedId,
+        ?IntegerObject $providedId,
         ?Hexadecimal $providedNode,
         ?int $providedClockSeq,
         string $expectedId,
@@ -51,8 +51,8 @@ class DceSecurityGeneratorTest extends TestCase
         string $expectedTimeMidHi
     ): void {
         $dceSecurityProvider = Mockery::mock(DceSecurityProviderInterface::class, [
-            'getUid' => new IntegerValue($uid),
-            'getGid' => new IntegerValue($gid),
+            'getUid' => new IntegerObject($uid),
+            'getGid' => new IntegerObject($gid),
         ]);
 
         $nodeProvider = Mockery::mock(NodeProviderInterface::class, [
@@ -119,7 +119,7 @@ class DceSecurityGeneratorTest extends TestCase
                 'seconds' => 1579132397,
                 'microseconds' => 500000,
                 'providedDomain' => Uuid::DCE_DOMAIN_ORG,
-                'providedId' => new IntegerValue('4294967295'),
+                'providedId' => new IntegerObject('4294967295'),
                 'providedNode' => null,
                 'providedClockSeq' => null,
                 'expectedId' => 'ffffffff',

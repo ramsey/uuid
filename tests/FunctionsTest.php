@@ -6,7 +6,7 @@ namespace Ramsey\Uuid\Test;
 
 use Ramsey\Uuid\Rfc4122\FieldsInterface;
 use Ramsey\Uuid\Type\Hexadecimal;
-use Ramsey\Uuid\Type\IntegerValue;
+use Ramsey\Uuid\Type\Integer as IntegerObject;
 use Ramsey\Uuid\Uuid;
 
 use function Ramsey\Uuid\v1;
@@ -29,7 +29,7 @@ class FunctionsTest extends TestCase
     {
         $v2 = v2(
             Uuid::DCE_DOMAIN_PERSON,
-            new IntegerValue('1004'),
+            new IntegerObject('1004'),
             new Hexadecimal('aabbccdd0011'),
             1234
         );

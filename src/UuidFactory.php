@@ -27,7 +27,7 @@ use Ramsey\Uuid\Generator\TimeGeneratorInterface;
 use Ramsey\Uuid\Provider\NodeProviderInterface;
 use Ramsey\Uuid\Provider\Time\FixedTimeProvider;
 use Ramsey\Uuid\Type\Hexadecimal;
-use Ramsey\Uuid\Type\IntegerValue;
+use Ramsey\Uuid\Type\Integer as IntegerObject;
 use Ramsey\Uuid\Type\Time;
 use Ramsey\Uuid\Validator\ValidatorInterface;
 
@@ -314,7 +314,7 @@ class UuidFactory implements UuidFactoryInterface
 
     public function uuid2(
         int $localDomain,
-        ?IntegerValue $localIdentifier = null,
+        ?IntegerObject $localIdentifier = null,
         ?Hexadecimal $node = null,
         ?int $clockSeq = null
     ): UuidInterface {

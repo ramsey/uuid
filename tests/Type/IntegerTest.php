@@ -6,9 +6,9 @@ namespace Ramsey\Uuid\Test\Type;
 
 use Ramsey\Uuid\Exception\InvalidArgumentException;
 use Ramsey\Uuid\Test\TestCase;
-use Ramsey\Uuid\Type\IntegerValue;
+use Ramsey\Uuid\Type\Integer as IntegerObject;
 
-class IntegerValueTest extends TestCase
+class IntegerTest extends TestCase
 {
     /**
      * @param int|float|string $value
@@ -17,7 +17,7 @@ class IntegerValueTest extends TestCase
      */
     public function testIntegerValueType($value, string $expected): void
     {
-        $integer = new IntegerValue($value);
+        $integer = new IntegerObject($value);
 
         $this->assertSame($expected, $integer->toString());
         $this->assertSame($expected, (string) $integer);
@@ -141,7 +141,7 @@ class IntegerValueTest extends TestCase
             . 'digits 0-9 and, optionally, a sign (+ or -)'
         );
 
-        new IntegerValue($value);
+        new IntegerObject($value);
     }
 
     /**
