@@ -350,8 +350,8 @@ class Uuid implements UuidInterface
             throw new UnsupportedOperationException('Not a time-based UUID');
         }
 
-        $unixTime = ($this->getTimestamp() - 0x01b21dd213814000) / 1e7;
-        $unixTime = number_format($unixTime, 0, '', '');
+        $unixTimeNanoseconds = $this->getTimestamp() - 0x01b21dd213814000;
+        $unixTime = ($unixTimeNanoseconds - $unixTimeNanoseconds % 1e7) / 1e7;
 
         return new DateTime("@{$unixTime}");
     }

@@ -172,21 +172,25 @@ class UuidTest extends TestCase
         $uuid = Uuid::fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
         $this->assertInstanceOf('\DateTime', $uuid->getDateTime());
         $this->assertEquals('2012-07-04T02:14:34+00:00', $uuid->getDateTime()->format('c'));
+        $this->assertSame('1341368074', $uuid->getDateTime()->format('U'));
 
         // Check an old date
         $uuid = Uuid::fromString('0901e600-0154-1000-9b21-0800200c9a66');
         $this->assertInstanceOf('\DateTime', $uuid->getDateTime());
         $this->assertEquals('1582-10-16T16:34:04+00:00', $uuid->getDateTime()->format('c'));
+        $this->assertSame('-12219146756', $uuid->getDateTime()->format('U'));
 
         // Check a future date
         $uuid = Uuid::fromString('ff9785f6-ffff-1fff-9669-00007ffffffe');
         $this->assertInstanceOf('\DateTime', $uuid->getDateTime());
-        $this->assertEquals('5236-03-31T21:21:00+00:00', $uuid->getDateTime()->format('c'));
+        $this->assertEquals('5236-03-31T21:20:59+00:00', $uuid->getDateTime()->format('c'));
+        $this->assertSame('103072857659', $uuid->getDateTime()->format('U'));
 
         // Check the oldest date
         $uuid = Uuid::fromString('00000000-0000-1000-9669-00007ffffffe');
         $this->assertInstanceOf('\DateTime', $uuid->getDateTime());
         $this->assertEquals('1582-10-15T00:00:00+00:00', $uuid->getDateTime()->format('c'));
+        $this->assertSame('-12219292800', $uuid->getDateTime()->format('U'));
     }
 
     /**
@@ -200,21 +204,25 @@ class UuidTest extends TestCase
         $uuid = Uuid::fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
         $this->assertInstanceOf('\DateTime', $uuid->getDateTime());
         $this->assertEquals('2012-07-04T02:14:34+00:00', $uuid->getDateTime()->format('c'));
+        $this->assertSame('1341368074', $uuid->getDateTime()->format('U'));
 
         // Check an old date
         $uuid = Uuid::fromString('0901e600-0154-1000-9b21-0800200c9a66');
         $this->assertInstanceOf('\DateTime', $uuid->getDateTime());
         $this->assertEquals('1582-10-16T16:34:04+00:00', $uuid->getDateTime()->format('c'));
+        $this->assertSame('-12219146756', $uuid->getDateTime()->format('U'));
 
         // Check a future date
         $uuid = Uuid::fromString('ff9785f6-ffff-1fff-9669-00007ffffffe');
         $this->assertInstanceOf('\DateTime', $uuid->getDateTime());
-        $this->assertEquals('5236-03-31T21:21:00+00:00', $uuid->getDateTime()->format('c'));
+        $this->assertEquals('5236-03-31T21:20:59+00:00', $uuid->getDateTime()->format('c'));
+        $this->assertSame('103072857659', $uuid->getDateTime()->format('U'));
 
         // Check the oldest date
         $uuid = Uuid::fromString('00000000-0000-1000-9669-00007ffffffe');
         $this->assertInstanceOf('\DateTime', $uuid->getDateTime());
         $this->assertEquals('1582-10-15T00:00:00+00:00', $uuid->getDateTime()->format('c'));
+        $this->assertSame('-12219292800', $uuid->getDateTime()->format('U'));
     }
 
     /**
@@ -1333,9 +1341,8 @@ class UuidTest extends TestCase
                 );
 
                 // Assert that the time matches
-                $testTime = round($currentTime + ($usec / 1000000));
-                $this->assertEquals($testTime, $uuid64->getDateTime()->getTimestamp());
-                $this->assertEquals($testTime, $uuid32->getDateTime()->getTimestamp());
+                $this->assertEquals($currentTime, $uuid64->getDateTime()->getTimestamp());
+                $this->assertEquals($currentTime, $uuid32->getDateTime()->getTimestamp());
             }
 
             $currentTime++;
