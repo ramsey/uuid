@@ -46,11 +46,9 @@ final class BrickMathCalculator implements CalculatorInterface
 
     public function add(NumberInterface $augend, NumberInterface ...$addends): NumberInterface
     {
-        /** @psalm-suppress ImpureMethodCall */
         $sum = BigInteger::of($augend->toString());
 
         foreach ($addends as $addend) {
-            /** @psalm-suppress ImpureMethodCall */
             $sum = $sum->plus($addend->toString());
         }
 
@@ -59,11 +57,9 @@ final class BrickMathCalculator implements CalculatorInterface
 
     public function subtract(NumberInterface $minuend, NumberInterface ...$subtrahends): NumberInterface
     {
-        /** @psalm-suppress ImpureMethodCall */
         $difference = BigInteger::of($minuend->toString());
 
         foreach ($subtrahends as $subtrahend) {
-            /** @psalm-suppress ImpureMethodCall */
             $difference = $difference->minus($subtrahend->toString());
         }
 
@@ -72,11 +68,9 @@ final class BrickMathCalculator implements CalculatorInterface
 
     public function multiply(NumberInterface $multiplicand, NumberInterface ...$multipliers): NumberInterface
     {
-        /** @psalm-suppress ImpureMethodCall */
         $product = BigInteger::of($multiplicand->toString());
 
         foreach ($multipliers as $multiplier) {
-            /** @psalm-suppress ImpureMethodCall */
             $product = $product->multipliedBy($multiplier->toString());
         }
 
@@ -91,16 +85,13 @@ final class BrickMathCalculator implements CalculatorInterface
     ): NumberInterface {
         $brickRounding = $this->getBrickRoundingMode($roundingMode);
 
-        /** @psalm-suppress ImpureMethodCall */
         $quotient = BigDecimal::of($dividend->toString());
 
         foreach ($divisors as $divisor) {
-            /** @psalm-suppress ImpureMethodCall */
             $quotient = $quotient->dividedBy($divisor->toString(), $scale, $brickRounding);
         }
 
         if ($scale === 0) {
-            /** @psalm-suppress ImpureMethodCall */
             return new IntegerValue((string) $quotient->toBigInteger());
         }
 
@@ -110,7 +101,6 @@ final class BrickMathCalculator implements CalculatorInterface
     public function fromBase(string $value, int $base): IntegerValue
     {
         try {
-            /** @psalm-suppress ImpureMethodCall */
             return new IntegerValue((string) BigInteger::fromBase($value, $base));
         } catch (MathException $exception) {
             throw new InvalidArgumentException(
@@ -124,7 +114,6 @@ final class BrickMathCalculator implements CalculatorInterface
     public function toBase(IntegerValue $value, int $base): string
     {
         try {
-            /** @psalm-suppress ImpureMethodCall */
             return BigInteger::of($value->toString())->toBase($base);
         } catch (MathException $exception) {
             throw new InvalidArgumentException(
