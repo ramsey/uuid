@@ -2,18 +2,20 @@
 
 namespace Ramsey\Uuid\Test\Converter;
 
-use PHPUnit_Framework_TestCase;
 use Ramsey\Uuid\Converter\Time\PhpTimeConverter;
+use Ramsey\Uuid\Test\TestCase;
 
 /**
  * Class PhpTimeConverterTest
  * @package Ramsey\Uuid\Test\Converter
  * @covers Ramsey\Uuid\Converter\Time\PhpTimeConverter
  */
-class PhpTimeConverterTest extends PHPUnit_Framework_TestCase
+class PhpTimeConverterTest extends TestCase
 {
     public function testCalculateTimeReturnsArrayOfTimeSegments()
     {
+        $this->skip64BitTest();
+
         $seconds = 5;
         $microSeconds = 3;
         $calculatedTime = ($seconds * 10000000) + ($microSeconds * 10) + 0x01b21dd213814000;
@@ -33,6 +35,8 @@ class PhpTimeConverterTest extends PHPUnit_Framework_TestCase
      */
     public function testCalculateTime($seconds, $microSeconds, $expected)
     {
+        $this->skip64BitTest();
+
         $converter = new PhpTimeConverter();
 
         $result = $converter->calculateTime($seconds, $microSeconds);
