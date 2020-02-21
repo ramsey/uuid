@@ -10,6 +10,21 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Added
 
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+### Security
+
+
+## [4.0.0-alpha2] - 2020-02-21
+
+### Added
+
 * Add `Uuid::fromDateTime()` to create version 1 UUIDs from instances of
   `\DateTimeInterface`.
 * Add `Generator\NameGeneratorInterface` to support alternate methods of
@@ -26,16 +41,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 * Change `UuidInterface::getHex()` to return a `Ramsey\Uuid\Type\Hexadecimal` instance.
 * Change `UuidInterface::getInteger()` to return a `Ramsey\Uuid\Type\IntegerValue` instance.
 
-### Deprecated
-
-### Removed
-
 ### Fixed
 
 * Round microseconds to six digits when getting DateTime from v1 UUIDs. This
   circumvents a needless exception for an otherwise valid time-based UUID.
-
-### Security
 
 
 ## [4.0.0-alpha1] - 2020-01-22
@@ -814,7 +823,8 @@ versions leading up to this release.*
 [ramsey/uuid-doctrine]: https://github.com/ramsey/uuid-doctrine
 [ramsey/uuid-console]: https://github.com/ramsey/uuid-console
 
-[unreleased]: https://github.com/ramsey/uuid/compare/4.0.0-alpha1...HEAD
+[unreleased]: https://github.com/ramsey/uuid/compare/4.0.0-alpha2...HEAD
+[4.0.0-alpha2]: https://github.com/ramsey/uuid/compare/4.0.0-alpha1...4.0.0-alpha2
 [4.0.0-alpha1]: https://github.com/ramsey/uuid/compare/3.9.3...4.0.0-alpha1
 [3.9.3]: https://github.com/ramsey/uuid/compare/3.9.2...3.9.3
 [3.9.2]: https://github.com/ramsey/uuid/compare/3.9.1...3.9.2
