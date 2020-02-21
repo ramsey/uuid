@@ -14,8 +14,6 @@ declare(strict_types=1);
 
 namespace Ramsey\Uuid\Rfc4122;
 
-use function hex2bin;
-
 /**
  * Provides common functionality for nil UUIDs
  *
@@ -38,6 +36,6 @@ trait NilTrait
      */
     public function isNil(): bool
     {
-        return $this->getBytes() === hex2bin('00000000000000000000000000000000');
+        return $this->getBytes() === "\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0";
     }
 }
