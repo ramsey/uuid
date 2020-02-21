@@ -20,6 +20,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   PHP, so it should be named `Integer` for consistency with other types in this
   library. When using it, a class alias prevents static analysis from
   complaining.
+* Mark `Guid\Guid` and `Nonstandard\Uuid` classes as `final`.
 
 ### Deprecated
 

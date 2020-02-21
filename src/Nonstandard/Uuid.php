@@ -25,7 +25,7 @@ use Ramsey\Uuid\UuidInterface;
  *
  * @psalm-immutable
  */
-class Uuid extends BaseUuid implements UuidInterface
+final class Uuid extends BaseUuid implements UuidInterface
 {
     public function __construct(
         Fields $fields,
