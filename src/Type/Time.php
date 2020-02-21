@@ -25,7 +25,7 @@ use Ramsey\Uuid\Type\Integer as IntegerObject;
  *
  * @psalm-immutable
  */
-final class Time
+final class Time implements TypeInterface
 {
     /**
      * @var IntegerObject
@@ -55,5 +55,15 @@ final class Time
     public function getMicroSeconds(): IntegerObject
     {
         return $this->microSeconds;
+    }
+
+    public function toString(): string
+    {
+        return $this->seconds->toString() . '.' . $this->microSeconds->toString();
+    }
+
+    public function __toString(): string
+    {
+        return $this->toString();
     }
 }

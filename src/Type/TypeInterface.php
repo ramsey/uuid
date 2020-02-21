@@ -15,10 +15,13 @@ declare(strict_types=1);
 namespace Ramsey\Uuid\Type;
 
 /**
- * NumberInterface ensures consistency in numeric values returned by ramsey/uuid
+ * TypeInterface ensures consistency in typed values returned by ramsey/uuid
  *
  * @psalm-immutable
  */
-interface NumberInterface extends TypeInterface
+interface TypeInterface
 {
+    public function toString(): string;
+
+    public function __toString(): string;
 }

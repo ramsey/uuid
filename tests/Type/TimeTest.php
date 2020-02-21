@@ -18,9 +18,13 @@ class TimeTest extends TestCase
     public function testTime($seconds, $microSeconds): void
     {
         $params = [$seconds];
+        $timeString = (string) $seconds;
 
         if ($microSeconds !== null) {
             $params[] = $microSeconds;
+            $timeString .= ".{$microSeconds}";
+        } else {
+            $timeString .= '.0';
         }
 
         $time = new Time(...$params);
@@ -31,6 +35,8 @@ class TimeTest extends TestCase
             (string) $microSeconds ?: '0',
             $time->getMicroSeconds()->toString()
         );
+
+        $this->assertSame($timeString, (string) $time);
     }
 
     /**

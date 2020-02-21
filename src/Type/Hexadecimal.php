@@ -30,7 +30,7 @@ use function substr;
  *
  * @psalm-immutable
  */
-final class Hexadecimal
+final class Hexadecimal implements TypeInterface
 {
     /**
      * @var string
