@@ -21,6 +21,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Security
 
 
+## [4.0.0-alpha3] - 2020-02-21
+
+### Fixed
+
+* Fix microsecond rounding error on 32-bit systems.
+
+
 ## [4.0.0-alpha2] - 2020-02-21
 
 ### Added
@@ -823,7 +830,8 @@ versions leading up to this release.*
 [ramsey/uuid-doctrine]: https://github.com/ramsey/uuid-doctrine
 [ramsey/uuid-console]: https://github.com/ramsey/uuid-console
 
-[unreleased]: https://github.com/ramsey/uuid/compare/4.0.0-alpha2...HEAD
+[unreleased]: https://github.com/ramsey/uuid/compare/4.0.0-alpha3...HEAD
+[4.0.0-alpha3]: https://github.com/ramsey/uuid/compare/4.0.0-alpha2...4.0.0-alpha3
 [4.0.0-alpha2]: https://github.com/ramsey/uuid/compare/4.0.0-alpha1...4.0.0-alpha2
 [4.0.0-alpha1]: https://github.com/ramsey/uuid/compare/3.9.3...4.0.0-alpha1
 [3.9.3]: https://github.com/ramsey/uuid/compare/3.9.2...3.9.3

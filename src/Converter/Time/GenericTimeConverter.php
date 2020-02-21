@@ -92,10 +92,8 @@ class GenericTimeConverter implements TimeConverterInterface
             new IntegerValue('122192928000000000')
         );
 
-        // Round down so that the microseconds do not shift the timestamp
-        // into the next second, giving us the wrong Unix timestamp.
         $unixTimestamp = $this->calculator->divide(
-            RoundingMode::DOWN,
+            RoundingMode::HALF_UP,
             6,
             $epochNanoseconds,
             new IntegerValue('10000000')

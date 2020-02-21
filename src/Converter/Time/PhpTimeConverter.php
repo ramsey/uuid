@@ -154,9 +154,22 @@ class PhpTimeConverter implements TimeConverterInterface
             return [];
         }
 
+        $microseconds = $split[1];
+
+        // Ensure the microseconds are no longer than 6 digits. If they are,
+        // truncate the number to the first 6 digits and round up, if needed.
+        if (strlen($microseconds) > 6) {
+            $roundingDigit = (int) substr($microseconds, 6, 1);
+            $microseconds = (int) substr($microseconds, 0, 6);
+
+            if ($roundingDigit >= 5) {
+                $microseconds++;
+            }
+        }
+
         return [
             'sec' => $split[0],
-            'usec' => str_pad($split[1], 6, '0', STR_PAD_RIGHT),
+            'usec' => str_pad((string) $microseconds, 6, '0', STR_PAD_RIGHT),
         ];
     }
 }
