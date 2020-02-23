@@ -10,6 +10,21 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Added
 
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+### Security
+
+
+## [4.0.0-alpha4] - 2020-02-23
+
+### Added
+
 * Add a `Type\TypeInterface` that each of the ramsey/uuid types implements.
 * Support version 6 UUIDs; see <http://gh.peabody.io/uuidv6/>.
 
@@ -30,12 +45,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   instead.
 * `Uuid::VALID_PATTERN` is deprecated. Use `Validator\GenericValidator::VALID_PATTERN`
   instead.
-
-### Removed
-
-### Fixed
-
-### Security
 
 
 ## [4.0.0-alpha3] - 2020-02-21
@@ -847,7 +856,8 @@ versions leading up to this release.*
 [ramsey/uuid-doctrine]: https://github.com/ramsey/uuid-doctrine
 [ramsey/uuid-console]: https://github.com/ramsey/uuid-console
 
-[unreleased]: https://github.com/ramsey/uuid/compare/4.0.0-alpha3...HEAD
+[unreleased]: https://github.com/ramsey/uuid/compare/4.0.0-alpha4...HEAD
+[4.0.0-alpha4]: https://github.com/ramsey/uuid/compare/4.0.0-alpha3...4.0.0-alpha4
 [4.0.0-alpha3]: https://github.com/ramsey/uuid/compare/4.0.0-alpha2...4.0.0-alpha3
 [4.0.0-alpha2]: https://github.com/ramsey/uuid/compare/4.0.0-alpha1...4.0.0-alpha2
 [4.0.0-alpha1]: https://github.com/ramsey/uuid/compare/3.9.3...4.0.0-alpha1
