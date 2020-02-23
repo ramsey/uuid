@@ -14,11 +14,9 @@ declare(strict_types=1);
 
 namespace Ramsey\Uuid\Provider\Time;
 
-use Ramsey\Uuid\Exception\InvalidArgumentException;
 use Ramsey\Uuid\Provider\TimeProviderInterface;
+use Ramsey\Uuid\Type\Integer as IntegerObject;
 use Ramsey\Uuid\Type\Time;
-
-use function array_key_exists;
 
 /**
  * FixedTimeProvider uses an known time to provide the time
@@ -33,26 +31,15 @@ class FixedTimeProvider implements TimeProviderInterface
      */
     private $fixedTime;
 
-    /**
-     * @param int[]|string[]|Time $time An array containing 'sec' and
-     *     'usec' keys or a Time object
-     *
-     * @throws InvalidArgumentException if the `$time` does not contain
-     *     `sec` or `usec` components
-     */
-    public function __construct($time)
+    public function __construct(Time $time)
     {
-        if (!$time instanceof Time) {
-            $time = $this->convertToTime($time);
-        }
-
         $this->fixedTime = $time;
     }
 
     /**
      * Sets the `usec` component of the time
      *
-     * @param int|string|Time $value The `usec` value to set
+     * @param int|string|IntegerObject $value The `usec` value to set
      */
     public function setUsec($value): void
     {
@@ -62,7 +49,7 @@ class FixedTimeProvider implements TimeProviderInterface
     /**
      * Sets the `sec` component of the time
      *
-     * @param int|string|Time $value The `sec` value to set
+     * @param int|string|IntegerObject $value The `sec` value to set
      */
     public function setSec($value): void
     {
@@ -85,22 +72,5 @@ class FixedTimeProvider implements TimeProviderInterface
     public function getTime(): Time
     {
         return $this->fixedTime;
-    }
-
-    /**
-     * @param int[]|string[] $time
-     *
-     * @return Time A time created from the provided array
-     *
-     * @throws InvalidArgumentException if the `$time` does not contain
-     *     `sec` or `usec` components
-     */
-    private function convertToTime(array $time): Time
-    {
-        if (!array_key_exists('sec', $time) || !array_key_exists('usec', $time)) {
-            throw new InvalidArgumentException('Array must contain sec and usec keys.');
-        }
-
-        return new Time($time['sec'], $time['usec']);
     }
 }

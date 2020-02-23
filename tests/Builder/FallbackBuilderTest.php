@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Ramsey\Uuid\Test\Builder;
 
 use Mockery;
+use Ramsey\Uuid\Builder\BuilderCollection;
 use Ramsey\Uuid\Builder\FallbackBuilder;
 use Ramsey\Uuid\Builder\UuidBuilderInterface;
 use Ramsey\Uuid\Codec\CodecInterface;
@@ -40,7 +41,7 @@ class FallbackBuilderTest extends TestCase
             ->with($codec, $bytes)
             ->andThrow(UnableToBuildUuidException::class);
 
-        $fallbackBuilder = new FallbackBuilder([$builder1, $builder2, $builder3]);
+        $fallbackBuilder = new FallbackBuilder(new BuilderCollection([$builder1, $builder2, $builder3]));
 
         $this->expectException(BuilderNotFoundException::class);
         $this->expectExceptionMessage(

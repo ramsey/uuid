@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Ramsey\Uuid\Test\Provider\Node;
 
 use Ramsey\Uuid\Provider\Node\FallbackNodeProvider;
+use Ramsey\Uuid\Provider\Node\NodeProviderCollection;
 use Ramsey\Uuid\Provider\NodeProviderInterface;
 use Ramsey\Uuid\Test\TestCase;
 
@@ -21,7 +22,7 @@ class FallbackNodeProviderTest extends TestCase
             ->method('getNode')
             ->willReturn(null);
 
-        $provider = new FallbackNodeProvider([$providerWithoutNode, $providerWithNode]);
+        $provider = new FallbackNodeProvider(new NodeProviderCollection([$providerWithoutNode, $providerWithNode]));
         $provider->getNode();
     }
 
@@ -39,7 +40,9 @@ class FallbackNodeProviderTest extends TestCase
         $anotherProviderWithoutNode->expects($this->never())
             ->method('getNode');
 
-        $provider = new FallbackNodeProvider([$providerWithoutNode, $providerWithNode, $anotherProviderWithoutNode]);
+        $provider = new FallbackNodeProvider(new NodeProviderCollection(
+            [$providerWithoutNode, $providerWithNode, $anotherProviderWithoutNode]
+        ));
         $node = $provider->getNode();
 
         $this->assertEquals('57764a07f756', $node);
@@ -51,7 +54,7 @@ class FallbackNodeProviderTest extends TestCase
         $providerWithoutNode->method('getNode')
             ->willReturn(null);
 
-        $provider = new FallbackNodeProvider([$providerWithoutNode]);
+        $provider = new FallbackNodeProvider(new NodeProviderCollection([$providerWithoutNode]));
         $node = $provider->getNode();
 
         $this->assertNull($node);

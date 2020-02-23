@@ -33,7 +33,10 @@ use const STR_PAD_LEFT;
  */
 class RandomNodeProvider implements NodeProviderInterface
 {
-    public function getNode(): string
+    /**
+     * @inheritDoc
+     */
+    public function getNode()
     {
         try {
             $nodeBytes = random_bytes(6);

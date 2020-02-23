@@ -22,15 +22,6 @@ use Ramsey\Uuid\Type\Time;
 interface TimeProviderInterface
 {
     /**
-     * Returns a timestamp array
-     *
-     * @deprecated Transition to {@see TimeProviderInterface::getTime()}.
-     *
-     * @return int[]|string[] Array containing `sec` and `usec` components of a timestamp
-     */
-    public function currentTime(): array;
-
-    /**
      * Returns a time object
      */
     public function getTime(): Time;

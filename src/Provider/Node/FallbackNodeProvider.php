@@ -23,14 +23,14 @@ use Ramsey\Uuid\Provider\NodeProviderInterface;
 class FallbackNodeProvider implements NodeProviderInterface
 {
     /**
-     * @var NodeProviderInterface[]
+     * @var NodeProviderCollection
      */
     private $nodeProviders;
 
     /**
-     * @param NodeProviderInterface[] $providers Array of node providers
+     * @param NodeProviderCollection $providers Array of node providers
      */
-    public function __construct(array $providers)
+    public function __construct(NodeProviderCollection $providers)
     {
         $this->nodeProviders = $providers;
     }
@@ -40,6 +40,7 @@ class FallbackNodeProvider implements NodeProviderInterface
      */
     public function getNode()
     {
+        /** @var NodeProviderInterface $provider */
         foreach ($this->nodeProviders as $provider) {
             if ($node = $provider->getNode()) {
                 return $node;

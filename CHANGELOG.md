@@ -10,7 +10,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Added
 
+* Introduce `Builder\BuilderCollection` and `Provider\Node\NodeProviderCollection`.
+
 ### Changed
+
+* `Builder\FallbackBuilder` now accepts only a `Builder\BuilderCollection` as
+  its constructor parameter.
+* `Provider\Node\FallbackNodeProvider` now accepts only a `Provider\Node\NodeProviderCollection`
+  as its constructor parameter.
+* `Provider\Time\FixedTimeProvider` no longer accepts an array but accepts only
+  `Type\Time` instances.
 
 ### Deprecated
 
