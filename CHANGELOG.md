@@ -872,7 +872,8 @@ versions leading up to this release.*
 [ramsey/uuid-doctrine]: https://github.com/ramsey/uuid-doctrine
 [ramsey/uuid-console]: https://github.com/ramsey/uuid-console
 
-[unreleased]: https://github.com/ramsey/uuid/compare/4.0.0-alpha4...HEAD
+[unreleased]: https://github.com/ramsey/uuid/compare/4.0.0-alpha5...HEAD
+[4.0.0-alpha5]: https://github.com/ramsey/uuid/compare/4.0.0-alpha4...4.0.0-alpha5
 [4.0.0-alpha4]: https://github.com/ramsey/uuid/compare/4.0.0-alpha3...4.0.0-alpha4
 [4.0.0-alpha3]: https://github.com/ramsey/uuid/compare/4.0.0-alpha2...4.0.0-alpha3
 [4.0.0-alpha2]: https://github.com/ramsey/uuid/compare/4.0.0-alpha1...4.0.0-alpha2
