@@ -89,7 +89,6 @@ class FieldsTest extends TestCase
         // representations, which are never in GUID byte order.
         return [
             ['b08c6fff7dc5e1018b210800200c9a66'],
-            ['b08c6fff7dc5e1618b210800200c9a66'],
             ['b08c6fff7dc5e1719b210800200c9a66'],
             ['b08c6fff7dc5e181ab210800200c9a66'],
             ['b08c6fff7dc5e191bb210800200c9a66'],

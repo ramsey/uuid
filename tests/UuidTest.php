@@ -25,6 +25,7 @@ use Ramsey\Uuid\Generator\RandomGeneratorFactory;
 use Ramsey\Uuid\Generator\RandomGeneratorInterface;
 use Ramsey\Uuid\Guid\Guid;
 use Ramsey\Uuid\Nonstandard\Uuid as NonstandardUuid;
+use Ramsey\Uuid\Nonstandard\UuidV6;
 use Ramsey\Uuid\Provider\Time\FixedTimeProvider;
 use Ramsey\Uuid\Rfc4122\FieldsInterface;
 use Ramsey\Uuid\Rfc4122\NilUuid;
@@ -539,6 +540,84 @@ class UuidTest extends TestCase
         $this->assertInstanceOf(DateTimeInterface::class, $uuid->getDateTime());
         $this->assertEquals(2, $uuid->getVariant());
         $this->assertEquals(1, $uuid->getVersion());
+    }
+
+    public function testUuid6(): void
+    {
+        $uuid = Uuid::uuid6();
+        $this->assertInstanceOf(UuidV6::class, $uuid);
+        $this->assertInstanceOf(DateTimeInterface::class, $uuid->getDateTime());
+        $this->assertEquals(2, $uuid->getVariant());
+        $this->assertEquals(6, $uuid->getVersion());
+    }
+
+    public function testUuid6WithNodeAndClockSequence(): void
+    {
+        $uuid = Uuid::uuid6('0800200c9a66', 0x1669);
+        $this->assertInstanceOf(UuidV6::class, $uuid);
+        $this->assertInstanceOf(DateTimeInterface::class, $uuid->getDateTime());
+        $this->assertSame(2, $uuid->getVariant());
+        $this->assertSame(6, $uuid->getVersion());
+        $this->assertSame('1669', $uuid->getClockSequenceHex());
+        $this->assertSame('0800200c9a66', $uuid->getNodeHex());
+        $this->assertSame('9669-0800200c9a66', substr($uuid->toString(), 19));
+    }
+
+    public function testUuid6WithHexadecimalNode(): void
+    {
+        $uuid = Uuid::uuid6('7160355e');
+
+        $this->assertInstanceOf(UuidV6::class, $uuid);
+        $this->assertInstanceOf(DateTimeInterface::class, $uuid->getDateTime());
+        $this->assertSame(2, $uuid->getVariant());
+        $this->assertSame(6, $uuid->getVersion());
+        $this->assertSame('00007160355e', $uuid->getNodeHex());
+    }
+
+    public function testUuid6WithMixedCaseHexadecimalNode(): void
+    {
+        $uuid = Uuid::uuid6('71B0aD5e');
+
+        $this->assertInstanceOf(Uuid::class, $uuid);
+        $this->assertInstanceOf(DateTimeInterface::class, $uuid->getDateTime());
+        $this->assertSame(2, $uuid->getVariant());
+        $this->assertSame(6, $uuid->getVersion());
+        $this->assertSame('000071b0ad5e', $uuid->getNodeHex());
+    }
+
+    public function testUuid6WithOutOfBoundsNode(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Invalid node value');
+
+        Uuid::uuid6('9223372036854775808');
+    }
+
+    public function testUuid6WithNonHexadecimalNode(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Invalid node value');
+
+        Uuid::uuid6('db77e160355g');
+    }
+
+    public function testUuid6WithNon48bitNumber(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Invalid node value');
+
+        Uuid::uuid6('db77e160355ef');
+    }
+
+    public function testUuid6WithRandomNode(): void
+    {
+        Uuid::setFactory(new UuidFactory(new FeatureSet(false, false, false, true)));
+
+        $uuid = Uuid::uuid6();
+        $this->assertInstanceOf(UuidV6::class, $uuid);
+        $this->assertInstanceOf(DateTimeInterface::class, $uuid->getDateTime());
+        $this->assertEquals(2, $uuid->getVariant());
+        $this->assertEquals(6, $uuid->getVersion());
     }
 
     /**
@@ -1468,6 +1547,12 @@ class UuidTest extends TestCase
     {
         $uuid = Uuid::fromString('886313e1-3b8a-5372-9b90-0c9aee199e5d');
         $this->assertEquals($uuid->getVersion(), Uuid::UUID_TYPE_HASH_SHA1);
+    }
+
+    public function testUuidVersionConstantForVersion6(): void
+    {
+        $uuid = Uuid::fromString('886313e1-3b8a-6372-9b90-0c9aee199e5d');
+        $this->assertEquals($uuid->getVersion(), Uuid::UUID_TYPE_PEABODY);
     }
 
     public function testGetDateTimeThrowsExceptionWhenDateTimeCannotParseDate(): void

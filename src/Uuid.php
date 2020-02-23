@@ -157,6 +157,17 @@ class Uuid implements UuidInterface
     public const UUID_TYPE_HASH_SHA1 = 5;
 
     /**
+     * Version 6 (ordered-time) UUID
+     *
+     * This is named `UUID_TYPE_PEABODY`, since the specification is still in
+     * draft form, and the primary author/editor's name is Brad Peabody.
+     *
+     * @link https://github.com/uuid6/uuid6-ietf-draft UUID version 6 IETF draft
+     * @link http://gh.peabody.io/uuidv6/ "Version 6" UUIDs
+     */
+    public const UUID_TYPE_PEABODY = 6;
+
+    /**
      * DCE Security principal domain
      *
      * @link https://pubs.opengroup.org/onlinepubs/9696989899/chap11.htm#tagcjh_14_05_01_01 DCE 1.1, §11.5.1.1
@@ -522,5 +533,23 @@ class Uuid implements UuidInterface
     public static function uuid5($ns, string $name): UuidInterface
     {
         return self::getFactory()->uuid5($ns, $name);
+    }
+
+    /**
+     * Returns a version 6 (ordered-time) UUID from a host ID, sequence number,
+     * and the current time
+     *
+     * @param int|string $node A 48-bit number representing the hardware address;
+     *     this number may be represented as an integer or a hexadecimal string
+     * @param int $clockSeq A 14-bit number used to help avoid duplicates that
+     *     could arise when the clock is set backwards in time or if the node ID
+     *     changes
+     *
+     * @return UuidInterface A UuidInterface instance that represents a
+     *     version 6 UUID
+     */
+    public static function uuid6($node = null, ?int $clockSeq = null): UuidInterface
+    {
+        return self::getFactory()->uuid6($node, $clockSeq);
     }
 }

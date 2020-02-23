@@ -125,12 +125,21 @@ final class Fields implements FieldsInterface
 
     public function getTimestamp(): Hexadecimal
     {
-        return new Hexadecimal(sprintf(
+        $timestamp = sprintf(
             '%03x%04s%08s',
             hexdec($this->getTimeHiAndVersion()->toString()) & 0x0fff,
             $this->getTimeMid()->toString(),
             $this->getTimeLow()->toString()
-        ));
+        );
+
+        // Put the timestamp into the correct order, if this is a v6 UUID.
+        if ($this->getVersion() === Uuid::UUID_TYPE_PEABODY) {
+            $timestamp = substr($timestamp, 7)
+                . substr($timestamp, 3, 4)
+                . substr($timestamp, 0, 3);
+        }
+
+        return new Hexadecimal($timestamp);
     }
 
     public function getVersion(): ?int

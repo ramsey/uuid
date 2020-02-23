@@ -352,6 +352,27 @@ class UuidFactory implements UuidFactoryInterface
     }
 
     /**
+     * @inheritDoc
+     */
+    public function uuid6($node = null, ?int $clockSeq = null): UuidInterface
+    {
+        $bytes = $this->timeGenerator->generate($node, $clockSeq);
+
+        // Rearrange the bytes, according to the UUID version 6 specification.
+        $v6 = $bytes[6] . $bytes[7] . $bytes[4] . $bytes[5]
+            . $bytes[0] . $bytes[1] . $bytes[2] . $bytes[3];
+        $v6 = bin2hex($v6);
+
+        // Drop the first four bits, while adding an empty four bits for the
+        // version field. This allows us to reconstruct the correct time from
+        // the bytes of this UUID.
+        $v6Bytes = hex2bin(substr($v6, 1, 12) . '0' . substr($v6, -3));
+        $v6Bytes .= substr($bytes, 8);
+
+        return $this->uuidFromBytesAndVersion($v6Bytes, 6);
+    }
+
+    /**
      * Returns a Uuid created from the provided byte string
      *
      * Uses the configured builder and codec and the provided byte string to

@@ -84,7 +84,6 @@ class FieldsTest extends TestCase
     {
         return [
             ['ff6f8cb0-c57d-01e1-8b21-0800200c9a66'],
-            ['ff6f8cb0-c57d-61e1-8b21-0800200c9a66'],
             ['ff6f8cb0-c57d-71e1-9b21-0800200c9a66'],
             ['ff6f8cb0-c57d-81e1-ab21-0800200c9a66'],
             ['ff6f8cb0-c57d-91e1-bb21-0800200c9a66'],
@@ -164,6 +163,18 @@ class FieldsTest extends TestCase
             ['ff6f8cb0-c57d-51e1-8b21-0800200c9a66', 'getVariant', 2],
             ['ff6f8cb0-c57d-51e1-8b21-0800200c9a66', 'getVersion', 5],
             ['ff6f8cb0-c57d-51e1-8b21-0800200c9a66', 'isNil', false],
+
+            ['ff6f8cb0-c57d-61e1-8b21-0800200c9a66', 'getClockSeq', '0b21'],
+            ['ff6f8cb0-c57d-61e1-8b21-0800200c9a66', 'getClockSeqHiAndReserved', '8b'],
+            ['ff6f8cb0-c57d-61e1-8b21-0800200c9a66', 'getClockSeqLow', '21'],
+            ['ff6f8cb0-c57d-61e1-8b21-0800200c9a66', 'getNode', '0800200c9a66'],
+            ['ff6f8cb0-c57d-61e1-8b21-0800200c9a66', 'getTimeHiAndVersion', '61e1'],
+            ['ff6f8cb0-c57d-61e1-8b21-0800200c9a66', 'getTimeLow', 'ff6f8cb0'],
+            ['ff6f8cb0-c57d-61e1-8b21-0800200c9a66', 'getTimeMid', 'c57d'],
+            ['ff6f8cb0-c57d-61e1-8b21-0800200c9a66', 'getTimestamp', 'ff6f8cb0c57d1e1'],
+            ['ff6f8cb0-c57d-61e1-8b21-0800200c9a66', 'getVariant', 2],
+            ['ff6f8cb0-c57d-61e1-8b21-0800200c9a66', 'getVersion', 6],
+            ['ff6f8cb0-c57d-61e1-8b21-0800200c9a66', 'isNil', false],
 
             ['00000000-0000-0000-0000-000000000000', 'getClockSeq', '0000'],
             ['00000000-0000-0000-0000-000000000000', 'getClockSeqHiAndReserved', '00'],

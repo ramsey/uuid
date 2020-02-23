@@ -106,6 +106,21 @@ interface UuidFactoryInterface
     public function uuid5($ns, string $name): UuidInterface;
 
     /**
+     * Returns a version 6 (ordered-time) UUID from a host ID, sequence number,
+     * and the current time
+     *
+     * @param int|string $node A 48-bit number representing the hardware address;
+     *     this number may be represented as an integer or a hexadecimal string
+     * @param int $clockSeq A 14-bit number used to help avoid duplicates that
+     *     could arise when the clock is set backwards in time or if the node ID
+     *     changes
+     *
+     * @return UuidInterface A UuidInterface instance that represents a
+     *     version 6 UUID
+     */
+    public function uuid6($node = null, ?int $clockSeq = null): UuidInterface;
+
+    /**
      * Creates a UUID from a byte string
      *
      * @param string $bytes A binary string
