@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Added
 
 * Add a `Type\TypeInterface` that each of the ramsey/uuid types implements.
+* Support version 6 UUIDs; see <http://gh.peabody.io/uuidv6/>.
 
 ### Changed
 
@@ -21,6 +22,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   library. When using it, a class alias prevents static analysis from
   complaining.
 * Mark `Guid\Guid` and `Nonstandard\Uuid` classes as `final`.
+* Add `uuid6()` method to `UuidFactoryInterface`.
 
 ### Deprecated
 
