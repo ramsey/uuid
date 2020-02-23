@@ -28,6 +28,7 @@ use function is_float;
 use function is_int;
 use function str_pad;
 use function strlen;
+use function substr;
 
 use const STR_PAD_LEFT;
 use const STR_PAD_RIGHT;

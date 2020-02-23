@@ -251,7 +251,9 @@ class Uuid implements UuidInterface
         $this->timeConverter = $timeConverter;
     }
 
-    /** @psalm-return non-empty-string */
+    /**
+     * @psalm-return non-empty-string
+     */
     public function __toString(): string
     {
         return $this->toString();
@@ -314,7 +316,9 @@ class Uuid implements UuidInterface
         return $this->compareTo($other) === 0;
     }
 
-    /** @psalm-return non-empty-string */
+    /**
+     * @psalm-return non-empty-string
+     */
     public function getBytes(): string
     {
         return $this->codec->encodeBinary($this);
@@ -335,7 +339,9 @@ class Uuid implements UuidInterface
         return new IntegerObject($this->numberConverter->fromHex($this->getHex()->toString()));
     }
 
-    /** @psalm-return non-empty-string */
+    /**
+     * @psalm-return non-empty-string
+     */
     public function toString(): string
     {
         return $this->codec->encode($this);

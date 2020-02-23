@@ -27,7 +27,9 @@ use Ramsey\Uuid\Rfc4122\UuidV1;
 use Ramsey\Uuid\Uuid;
 use Throwable;
 
+use function hex2bin;
 use function str_pad;
+use function substr;
 
 use const STR_PAD_LEFT;
 

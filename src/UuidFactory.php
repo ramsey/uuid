@@ -31,6 +31,8 @@ use Ramsey\Uuid\Type\Integer as IntegerObject;
 use Ramsey\Uuid\Type\Time;
 use Ramsey\Uuid\Validator\ValidatorInterface;
 
+use function bin2hex;
+use function hex2bin;
 use function pack;
 use function str_pad;
 use function strtolower;
