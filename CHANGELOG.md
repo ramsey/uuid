@@ -10,6 +10,21 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Added
 
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+### Security
+
+
+## [4.0.0-alpha5] - 2020-02-23
+
+### Added
+
 * Introduce `Builder\BuilderCollection` and `Provider\Node\NodeProviderCollection`.
 
 ### Changed
@@ -20,14 +35,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   as its constructor parameter.
 * `Provider\Time\FixedTimeProvider` no longer accepts an array but accepts only
   `Type\Time` instances.
-
-### Deprecated
-
-### Removed
-
-### Fixed
-
-### Security
 
 
 ## [4.0.0-alpha4] - 2020-02-23
