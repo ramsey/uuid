@@ -56,19 +56,6 @@ class FixedTimeProvider implements TimeProviderInterface
         $this->fixedTime = new Time($value, $this->fixedTime->getMicroSeconds());
     }
 
-    /**
-     * @deprecated Transition to {@see FixedTimeProvider::getTime()}
-     *
-     * @inheritDoc
-     */
-    public function currentTime(): array
-    {
-        return [
-            'sec' => $this->fixedTime->getSeconds()->toString(),
-            'usec' => $this->fixedTime->getMicroSeconds()->toString(),
-        ];
-    }
-
     public function getTime(): Time
     {
         return $this->fixedTime;
