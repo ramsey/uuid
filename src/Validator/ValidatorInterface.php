@@ -20,6 +20,16 @@ namespace Ramsey\Uuid\Validator;
 interface ValidatorInterface
 {
     /**
+     * Returns the regular expression pattern used by this validator
+     *
+     * @return string The regular expression pattern this validator uses
+     *
+     * @psalm-pure
+     * @psalm-return non-empty-string
+     */
+    public function getPattern(): string;
+
+    /**
      * Returns true if the provided string represents a UUID
      *
      * @param string $uuid The string to validate as a UUID

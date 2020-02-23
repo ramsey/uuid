@@ -112,7 +112,7 @@ class Uuid implements UuidInterface
     public const RESERVED_FUTURE = 7;
 
     /**
-     * @deprecated Use {@see GenericValidator::VALID_PATTERN} instead.
+     * @deprecated Use {@see ValidatorInterface::getPattern()} instead.
      */
     public const VALID_PATTERN = '^[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}$';
 

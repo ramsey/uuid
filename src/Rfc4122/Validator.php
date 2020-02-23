@@ -23,13 +23,21 @@ use function str_replace;
 /**
  * Rfc4122\Validator validates strings as UUIDs of the RFC 4122 variant
  */
-class Validator implements ValidatorInterface
+final class Validator implements ValidatorInterface
 {
-    /**
-     * Regular expression pattern for matching an RFC 4122 UUID
-     */
-    public const VALID_PATTERN = '^[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-'
+    private const VALID_PATTERN = '^[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-'
         . '[1-5]{1}[0-9A-Fa-f]{3}-[ABab89]{1}[0-9A-Fa-f]{3}-[0-9A-Fa-f]{12}$';
+
+    /**
+     * @psalm-pure
+     * @psalm-return non-empty-string
+     * @psalm-suppress MoreSpecificReturnType we know that the retrieved `string` is never empty
+     * @psalm-suppress LessSpecificReturnStatement we know that the retrieved `string` is never empty
+     */
+    public function getPattern(): string
+    {
+        return self::VALID_PATTERN;
+    }
 
     /**
      * @psalm-pure

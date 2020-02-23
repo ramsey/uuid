@@ -22,12 +22,23 @@ use function str_replace;
 /**
  * GenericValidator validates strings as UUIDs of any variant
  */
-class GenericValidator implements ValidatorInterface
+final class GenericValidator implements ValidatorInterface
 {
     /**
      * Regular expression pattern for matching a UUID of any variant.
      */
-    public const VALID_PATTERN = '^[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}$';
+    private const VALID_PATTERN = '^[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}$';
+
+    /**
+     * @psalm-pure
+     * @psalm-return non-empty-string
+     * @psalm-suppress MoreSpecificReturnType we know that the retrieved `string` is never empty
+     * @psalm-suppress LessSpecificReturnStatement we know that the retrieved `string` is never empty
+     */
+    public function getPattern(): string
+    {
+        return self::VALID_PATTERN;
+    }
 
     /**
      * @psalm-pure
