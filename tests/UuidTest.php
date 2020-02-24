@@ -214,6 +214,47 @@ class UuidTest extends TestCase
         $this->assertSame('0.000000', $uuid->getDateTime()->format('U.u'));
     }
 
+    public function testGetDateTimeForUuidV6(): void
+    {
+        // Check a recent date
+        $uuid = Uuid::fromString('1e1c57df-f6f8-6cb0-9b21-0800200c9a66');
+        $this->assertInstanceOf(DateTimeInterface::class, $uuid->getDateTime());
+        $this->assertSame('2012-07-04T02:14:34+00:00', $uuid->getDateTime()->format('c'));
+        $this->assertSame('1341368074.491000', $uuid->getDateTime()->format('U.u'));
+
+        // Check an old date
+        $uuid = Uuid::fromString('00001540-901e-6600-9b21-0800200c9a66');
+        $this->assertInstanceOf(DateTimeInterface::class, $uuid->getDateTime());
+        $this->assertSame('1582-10-16T16:34:04+00:00', $uuid->getDateTime()->format('c'));
+        $this->assertSame('-12219146756.000000', $uuid->getDateTime()->format('U.u'));
+
+        // Check a future date
+        $uuid = Uuid::fromString('ffffffff-f978-65f6-9669-00007ffffffe');
+        $this->assertInstanceOf(DateTimeInterface::class, $uuid->getDateTime());
+        $this->assertSame('5236-03-31T21:20:59+00:00', $uuid->getDateTime()->format('c'));
+        $this->assertSame('103072857659.999999', $uuid->getDateTime()->format('U.u'));
+
+        // Check the last possible time supported by UUIDs
+        // See inline comments in
+        // {@see \Ramsey\Uuid\Test\Converter\Time\GenericTimeConverterTest::provideCalculateTime()}
+        $uuid = Uuid::fromString('ffffffff-ffff-6ffa-8b1e-acde48001122');
+        $this->assertInstanceOf(DateTimeInterface::class, $uuid->getDateTime());
+        $this->assertSame('5236-03-31T21:21:00+00:00', $uuid->getDateTime()->format('c'));
+        $this->assertSame('103072857660.684697', $uuid->getDateTime()->format('U.u'));
+
+        // Check the oldest date
+        $uuid = Uuid::fromString('00000000-0000-6000-9669-00007ffffffe');
+        $this->assertInstanceOf(DateTimeInterface::class, $uuid->getDateTime());
+        $this->assertSame('1582-10-15T00:00:00+00:00', $uuid->getDateTime()->format('c'));
+        $this->assertSame('-12219292800.000000', $uuid->getDateTime()->format('U.u'));
+
+        // The Unix epoch
+        $uuid = Uuid::fromString('1b21dd21-3814-6000-9669-00007ffffffe');
+        $this->assertInstanceOf(DateTimeInterface::class, $uuid->getDateTime());
+        $this->assertSame('1970-01-01T00:00:00+00:00', $uuid->getDateTime()->format('c'));
+        $this->assertSame('0.000000', $uuid->getDateTime()->format('U.u'));
+    }
+
     public function testGetDateTimeFromNonVersion1Uuid(): void
     {
         // Using a version 4 UUID to test
