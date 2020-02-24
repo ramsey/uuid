@@ -553,7 +553,7 @@ class UuidTest extends TestCase
 
     public function testUuid6WithNodeAndClockSequence(): void
     {
-        $uuid = Uuid::uuid6('0800200c9a66', 0x1669);
+        $uuid = Uuid::uuid6(new Hexadecimal('0800200c9a66'), 0x1669);
         $this->assertInstanceOf(UuidV6::class, $uuid);
         $this->assertInstanceOf(DateTimeInterface::class, $uuid->getDateTime());
         $this->assertSame(2, $uuid->getVariant());
@@ -565,7 +565,7 @@ class UuidTest extends TestCase
 
     public function testUuid6WithHexadecimalNode(): void
     {
-        $uuid = Uuid::uuid6('7160355e');
+        $uuid = Uuid::uuid6(new Hexadecimal('7160355e'));
 
         $this->assertInstanceOf(UuidV6::class, $uuid);
         $this->assertInstanceOf(DateTimeInterface::class, $uuid->getDateTime());
@@ -576,7 +576,7 @@ class UuidTest extends TestCase
 
     public function testUuid6WithMixedCaseHexadecimalNode(): void
     {
-        $uuid = Uuid::uuid6('71B0aD5e');
+        $uuid = Uuid::uuid6(new Hexadecimal('71B0aD5e'));
 
         $this->assertInstanceOf(Uuid::class, $uuid);
         $this->assertInstanceOf(DateTimeInterface::class, $uuid->getDateTime());
@@ -590,15 +590,7 @@ class UuidTest extends TestCase
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Invalid node value');
 
-        Uuid::uuid6('9223372036854775808');
-    }
-
-    public function testUuid6WithNonHexadecimalNode(): void
-    {
-        $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('Invalid node value');
-
-        Uuid::uuid6('db77e160355g');
+        Uuid::uuid6(new Hexadecimal('9223372036854775808'));
     }
 
     public function testUuid6WithNon48bitNumber(): void
@@ -606,7 +598,7 @@ class UuidTest extends TestCase
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Invalid node value');
 
-        Uuid::uuid6('db77e160355ef');
+        Uuid::uuid6(new Hexadecimal('db77e160355ef'));
     }
 
     public function testUuid6WithRandomNode(): void

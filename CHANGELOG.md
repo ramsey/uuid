@@ -10,11 +10,24 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Added
 
+* Add `ValidatorInterface::getPattern()` to return the regular expression
+  pattern used by the validator.
+* Add `v6()` helper function for version 6 UUIDs.
+
 ### Changed
+
+* Set the pattern constants on validators as `private`. Use the `getPattern()`
+  method instead.
+* Change the `$node` parameter for `UuidFactoryInterface::uuid6()` to accept
+  `null` or `Type\Hexadecimal`.
 
 ### Deprecated
 
 ### Removed
+
+* Remove `currentTime()` method from `Provider\Time\FixedTimeProvider` and
+  `Provider\Time\SystemTimeProvider`; it had previously been removed from
+  `Provider\TimeProviderInterface`.
 
 ### Fixed
 

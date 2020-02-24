@@ -353,12 +353,10 @@ class UuidFactory implements UuidFactoryInterface
         return $this->uuidFromNsAndName($ns, $name, 5, 'sha1');
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function uuid6($node = null, ?int $clockSeq = null): UuidInterface
+    public function uuid6(?Hexadecimal $node = null, ?int $clockSeq = null): UuidInterface
     {
-        $bytes = $this->timeGenerator->generate($node, $clockSeq);
+        $nodeHex = $node ? $node->toString() : null;
+        $bytes = $this->timeGenerator->generate($nodeHex, $clockSeq);
 
         // Rearrange the bytes, according to the UUID version 6 specification.
         $v6 = $bytes[6] . $bytes[7] . $bytes[4] . $bytes[5]

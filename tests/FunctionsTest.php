@@ -14,6 +14,7 @@ use function Ramsey\Uuid\v2;
 use function Ramsey\Uuid\v3;
 use function Ramsey\Uuid\v4;
 use function Ramsey\Uuid\v5;
+use function Ramsey\Uuid\v6;
 
 class FunctionsTest extends TestCase
 {
@@ -65,5 +66,19 @@ class FunctionsTest extends TestCase
 
         $this->assertIsString($v5);
         $this->assertSame(Uuid::UUID_TYPE_HASH_SHA1, Uuid::fromString($v5)->getVersion());
+    }
+
+    public function testV6ReturnsVersion6UuidString(): void
+    {
+        $v6 = v6(
+            new Hexadecimal('aabbccdd0011'),
+            1234
+        );
+
+        /** @var FieldsInterface $fields */
+        $fields = Uuid::fromString($v6)->getFields();
+
+        $this->assertIsString($v6);
+        $this->assertSame(Uuid::UUID_TYPE_PEABODY, $fields->getVersion());
     }
 }

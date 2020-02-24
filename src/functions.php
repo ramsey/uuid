@@ -27,6 +27,8 @@ use Ramsey\Uuid\Type\Integer as IntegerObject;
  * @param int $clockSeq A 14-bit number used to help avoid duplicates that
  *     could arise when the clock is set backwards in time or if the node ID
  *     changes
+ *
+ * @return string Version 1 UUID as a string
  */
 function v1($node = null, ?int $clockSeq = null): string
 {
@@ -48,6 +50,8 @@ function v1($node = null, ?int $clockSeq = null): string
  * @param int|null $clockSeq A 14-bit number used to help avoid duplicates
  *     that could arise when the clock is set backwards in time or if the
  *     node ID changes
+ *
+ * @return string Version 2 UUID as a string
  */
 function v2(
     int $localDomain,
@@ -63,6 +67,8 @@ function v2(
  * namespace ID and a name
  *
  * @param string|UuidInterface $ns The namespace (must be a valid UUID)
+ *
+ * @return string Version 3 UUID as a string
  */
 function v3($ns, string $name): string
 {
@@ -71,6 +77,8 @@ function v3($ns, string $name): string
 
 /**
  * Returns a version 4 (random) UUID
+ *
+ * @return string Version 4 UUID as a string
  */
 function v4(): string
 {
@@ -82,8 +90,27 @@ function v4(): string
  * namespace ID and a name
  *
  * @param string|UuidInterface $ns The namespace (must be a valid UUID)
+ *
+ * @return string Version 5 UUID as a string
  */
 function v5($ns, string $name): string
 {
     return Uuid::uuid5($ns, $name)->toString();
+}
+
+/**
+ * Returns a version 6 (ordered-time) UUID from a host ID, sequence number,
+ * and the current time
+ *
+ * @param Hexadecimal|null $node A 48-bit number representing the hardware
+ *     address
+ * @param int $clockSeq A 14-bit number used to help avoid duplicates that
+ *     could arise when the clock is set backwards in time or if the node ID
+ *     changes
+ *
+ * @return string Version 6 UUID as a string
+ */
+function v6(?Hexadecimal $node = null, ?int $clockSeq = null): string
+{
+    return Uuid::uuid6($node, $clockSeq)->toString();
 }
