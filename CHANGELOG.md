@@ -20,6 +20,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   method instead.
 * Change the `$node` parameter for `UuidFactoryInterface::uuid6()` to accept
   `null` or `Type\Hexadecimal`.
+* Accept `Type\Hexadecimal` for the `$node` parameter for
+  `UuidFactoryInterface::uuid1()`. This is in addition to the `int|string` types
+  already accepted, so there are no BC breaks. `Type\Hexadecimal` is now the
+  recommended type to pass for `$node`.
 
 ### Deprecated
 

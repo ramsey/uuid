@@ -20,6 +20,7 @@ use Ramsey\Uuid\Exception\RandomSourceException;
 use Ramsey\Uuid\Exception\TimeSourceException;
 use Ramsey\Uuid\Provider\NodeProviderInterface;
 use Ramsey\Uuid\Provider\TimeProviderInterface;
+use Ramsey\Uuid\Type\Hexadecimal;
 use Throwable;
 
 use function ctype_xdigit;
@@ -72,6 +73,10 @@ class DefaultTimeGenerator implements TimeGeneratorInterface
      */
     public function generate($node = null, ?int $clockSeq = null): string
     {
+        if ($node instanceof Hexadecimal) {
+            $node = $node->toString();
+        }
+
         $node = $this->getValidNode($node);
 
         if ($clockSeq === null) {
