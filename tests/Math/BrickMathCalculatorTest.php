@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Ramsey\Uuid\Test\Math;
 
+use Ramsey\Uuid\Exception\InvalidArgumentException;
 use Ramsey\Uuid\Math\BrickMathCalculator;
 use Ramsey\Uuid\Math\RoundingMode;
 use Ramsey\Uuid\Test\TestCase;
@@ -91,5 +92,25 @@ class BrickMathCalculatorTest extends TestCase
 
         $this->assertInstanceOf(Hexadecimal::class, $result);
         $this->assertSame('ffffffffffffffffffff', $result->toString());
+    }
+
+    public function testFromBaseThrowsException(): void
+    {
+        $calculator = new BrickMathCalculator();
+
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('"o" is not a valid character in base 16');
+
+        $calculator->fromBase('foobar', 16);
+    }
+
+    public function testToBaseThrowsException(): void
+    {
+        $calculator = new BrickMathCalculator();
+
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Base 1024 is out of range [2, 36]');
+
+        $calculator->toBase(new IntegerObject(42), 1024);
     }
 }

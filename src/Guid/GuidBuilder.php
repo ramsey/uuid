@@ -67,7 +67,7 @@ class GuidBuilder implements UuidBuilderInterface
     {
         try {
             return new Guid(
-                new Fields($bytes),
+                $this->buildFields($bytes),
                 $this->numberConverter,
                 $codec,
                 $this->timeConverter
@@ -75,5 +75,13 @@ class GuidBuilder implements UuidBuilderInterface
         } catch (Throwable $e) {
             throw new UnableToBuildUuidException($e->getMessage(), (int) $e->getCode(), $e);
         }
+    }
+
+    /**
+     * Proxy method to allow injecting a mock, for testing
+     */
+    protected function buildFields(string $bytes): Fields
+    {
+        return new Fields($bytes);
     }
 }

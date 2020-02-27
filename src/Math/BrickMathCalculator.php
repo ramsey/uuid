@@ -102,7 +102,7 @@ final class BrickMathCalculator implements CalculatorInterface
     {
         try {
             return new IntegerObject((string) BigInteger::fromBase($value, $base));
-        } catch (MathException $exception) {
+        } catch (MathException | \InvalidArgumentException $exception) {
             throw new InvalidArgumentException(
                 $exception->getMessage(),
                 (int) $exception->getCode(),
@@ -115,7 +115,7 @@ final class BrickMathCalculator implements CalculatorInterface
     {
         try {
             return BigInteger::of($value->toString())->toBase($base);
-        } catch (MathException $exception) {
+        } catch (MathException | \InvalidArgumentException $exception) {
             throw new InvalidArgumentException(
                 $exception->getMessage(),
                 (int) $exception->getCode(),

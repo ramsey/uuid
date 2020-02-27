@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Ramsey\Uuid\Test\Rfc4122;
 
+use Mockery;
 use Ramsey\Uuid\Codec\StringCodec;
 use Ramsey\Uuid\Converter\Number\GenericNumberConverter;
 use Ramsey\Uuid\Converter\Time\GenericTimeConverter;
@@ -11,6 +12,7 @@ use Ramsey\Uuid\Exception\UnableToBuildUuidException;
 use Ramsey\Uuid\Math\BrickMathCalculator;
 use Ramsey\Uuid\Nonstandard\UuidV6;
 use Ramsey\Uuid\Rfc4122\Fields;
+use Ramsey\Uuid\Rfc4122\FieldsInterface;
 use Ramsey\Uuid\Rfc4122\UuidBuilder;
 use Ramsey\Uuid\Rfc4122\UuidV1;
 use Ramsey\Uuid\Rfc4122\UuidV2;
@@ -103,5 +105,27 @@ class UuidBuilderTest extends TestCase
         );
 
         $builder->build($codec, $bytes);
+    }
+
+    public function testBuildThrowsUnableToBuildExceptionForIncorrectVersionFields(): void
+    {
+        $fields = Mockery::mock(FieldsInterface::class, [
+            'isNil' => false,
+            'getVersion' => 255,
+        ]);
+
+        $builder = Mockery::mock(UuidBuilder::class);
+        $builder->shouldAllowMockingProtectedMethods();
+        $builder->shouldReceive('buildFields')->andReturn($fields);
+        $builder->shouldReceive('build')->passthru();
+
+        $codec = Mockery::mock(StringCodec::class);
+
+        $this->expectException(UnableToBuildUuidException::class);
+        $this->expectExceptionMessage(
+            'The UUID version in the given fields is not supported by this UUID builder'
+        );
+
+        $builder->build($codec, 'foobar');
     }
 }

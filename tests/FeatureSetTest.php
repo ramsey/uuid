@@ -11,6 +11,7 @@ use Ramsey\Uuid\FeatureSet;
 use Ramsey\Uuid\Generator\DefaultNameGenerator;
 use Ramsey\Uuid\Generator\PeclUuidTimeGenerator;
 use Ramsey\Uuid\Guid\GuidBuilder;
+use Ramsey\Uuid\Math\BrickMathCalculator;
 use Ramsey\Uuid\Validator\ValidatorInterface;
 
 class FeatureSetTest extends TestCase
@@ -58,5 +59,12 @@ class FeatureSetTest extends TestCase
         $featureSet = new FeatureSet(false, false, false, false, true);
 
         $this->assertInstanceOf(PeclUuidTimeGenerator::class, $featureSet->getTimeGenerator());
+    }
+
+    public function testGetCalculator(): void
+    {
+        $featureSet = new FeatureSet();
+
+        $this->assertInstanceOf(BrickMathCalculator::class, $featureSet->getCalculator());
     }
 }

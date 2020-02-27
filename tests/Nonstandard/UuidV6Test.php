@@ -9,11 +9,14 @@ use Mockery;
 use Ramsey\Uuid\Codec\CodecInterface;
 use Ramsey\Uuid\Converter\NumberConverterInterface;
 use Ramsey\Uuid\Converter\TimeConverterInterface;
+use Ramsey\Uuid\Exception\DateTimeException;
 use Ramsey\Uuid\Exception\InvalidArgumentException;
 use Ramsey\Uuid\Nonstandard\UuidV6;
 use Ramsey\Uuid\Rfc4122\FieldsInterface;
 use Ramsey\Uuid\Rfc4122\UuidV1;
 use Ramsey\Uuid\Test\TestCase;
+use Ramsey\Uuid\Type\Hexadecimal;
+use Ramsey\Uuid\Type\Time;
 use Ramsey\Uuid\Uuid;
 
 class UuidV6Test extends TestCase
@@ -156,5 +159,26 @@ class UuidV6Test extends TestCase
                 'uuidv1' => '12e8a980-1dd2-11b2-8d4f-acde48001122',
             ],
         ];
+    }
+
+    public function testGetDateTimeThrowsException(): void
+    {
+        $fields = Mockery::mock(FieldsInterface::class, [
+            'getVersion' => 6,
+            'getTimestamp' => new Hexadecimal('0'),
+        ]);
+
+        $numberConverter = Mockery::mock(NumberConverterInterface::class);
+        $codec = Mockery::mock(CodecInterface::class);
+
+        $timeConverter = Mockery::mock(TimeConverterInterface::class, [
+            'convertTime' => new Time('0', '1234567'),
+        ]);
+
+        $uuid = new UuidV6($fields, $numberConverter, $codec, $timeConverter);
+
+        $this->expectException(DateTimeException::class);
+
+        $uuid->getDateTime();
     }
 }

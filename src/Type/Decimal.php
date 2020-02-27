@@ -51,6 +51,16 @@ final class Decimal implements NumberInterface
             );
         }
 
+        // Remove the leading +-symbol.
+        if (strpos($value, '+') === 0) {
+            $value = substr($value, 1);
+        }
+
+        // For cases like `-0` or `-0.0000`, convert the value to `0`.
+        if (abs((float) $value) === 0.0) {
+            $value = '0';
+        }
+
         $this->value = $value;
     }
 

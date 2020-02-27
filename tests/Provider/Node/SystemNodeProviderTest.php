@@ -6,6 +6,7 @@ namespace Ramsey\Uuid\Test\Provider\Node;
 
 use AspectMock\Proxy\FuncProxy;
 use AspectMock\Test as AspectMock;
+use Mockery;
 use Ramsey\Uuid\Exception\InvalidArgumentException;
 use Ramsey\Uuid\Provider\Node\SystemNodeProvider;
 use Ramsey\Uuid\Test\TestCase;
@@ -876,5 +877,33 @@ TXT
             'Too long -- extra character'  => ["\nABC-01-23-45-67-89\n",   'BC0123456789'],
             'Too long -- extra tuple'      => ["\n01-AA-BB-CC-DD-EE-FF\n", '01AABBCCDDEE'],
         ];
+    }
+
+    /**
+     * @runInSeparateProcess
+     * @preserveGlobalState disabled
+     */
+    public function testInternalNodeValueIsArray(): void
+    {
+        $provider = Mockery::mock(SystemNodeProvider::class);
+        $provider->shouldAllowMockingProtectedMethods();
+        $provider->shouldReceive('getSysfs')->andReturn(['foo:bar']);
+        $provider->shouldReceive('getNode')->passthru();
+
+        $this->assertSame('foobar', $provider->getNode());
+    }
+
+    /**
+     * @runInSeparateProcess
+     * @preserveGlobalState disabled
+     */
+    public function testInternalNodeValueIsArrayWithNoElements(): void
+    {
+        $provider = Mockery::mock(SystemNodeProvider::class);
+        $provider->shouldAllowMockingProtectedMethods();
+        $provider->shouldReceive('getSysfs')->andReturn([]);
+        $provider->shouldReceive('getNode')->passthru();
+
+        $this->assertFalse($provider->getNode());
     }
 }

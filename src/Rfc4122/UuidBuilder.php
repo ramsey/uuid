@@ -69,7 +69,7 @@ class UuidBuilder implements UuidBuilderInterface
     public function build(CodecInterface $codec, string $bytes): UuidInterface
     {
         try {
-            $fields = new Fields($bytes);
+            $fields = $this->buildFields($bytes);
 
             if ($fields->isNil()) {
                 return new NilUuid($fields, $this->numberConverter, $codec, $this->timeConverter);
@@ -97,5 +97,13 @@ class UuidBuilder implements UuidBuilderInterface
         } catch (Throwable $e) {
             throw new UnableToBuildUuidException($e->getMessage(), (int) $e->getCode(), $e);
         }
+    }
+
+    /**
+     * Proxy method to allow injecting a mock, for testing
+     */
+    protected function buildFields(string $bytes): FieldsInterface
+    {
+        return new Fields($bytes);
     }
 }

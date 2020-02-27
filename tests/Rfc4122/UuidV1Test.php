@@ -9,10 +9,13 @@ use Mockery;
 use Ramsey\Uuid\Codec\CodecInterface;
 use Ramsey\Uuid\Converter\NumberConverterInterface;
 use Ramsey\Uuid\Converter\TimeConverterInterface;
+use Ramsey\Uuid\Exception\DateTimeException;
 use Ramsey\Uuid\Exception\InvalidArgumentException;
 use Ramsey\Uuid\Rfc4122\FieldsInterface;
 use Ramsey\Uuid\Rfc4122\UuidV1;
 use Ramsey\Uuid\Test\TestCase;
+use Ramsey\Uuid\Type\Hexadecimal;
+use Ramsey\Uuid\Type\Time;
 use Ramsey\Uuid\Uuid;
 
 class UuidV1Test extends TestCase
@@ -94,5 +97,26 @@ class UuidV1Test extends TestCase
                 'expected' => '-1.000000',
             ],
         ];
+    }
+
+    public function testGetDateTimeThrowsException(): void
+    {
+        $fields = Mockery::mock(FieldsInterface::class, [
+            'getVersion' => 1,
+            'getTimestamp' => new Hexadecimal('0'),
+        ]);
+
+        $numberConverter = Mockery::mock(NumberConverterInterface::class);
+        $codec = Mockery::mock(CodecInterface::class);
+
+        $timeConverter = Mockery::mock(TimeConverterInterface::class, [
+            'convertTime' => new Time('0', '1234567'),
+        ]);
+
+        $uuid = new UuidV1($fields, $numberConverter, $codec, $timeConverter);
+
+        $this->expectException(DateTimeException::class);
+
+        $uuid->getDateTime();
     }
 }

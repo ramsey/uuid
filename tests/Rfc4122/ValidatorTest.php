@@ -77,4 +77,14 @@ class ValidatorTest extends TestCase
             ],
         ]);
     }
+
+    public function testGetPattern(): void
+    {
+        $expectedPattern = '^[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-'
+            . '[1-5]{1}[0-9A-Fa-f]{3}-[ABab89]{1}[0-9A-Fa-f]{3}-[0-9A-Fa-f]{12}$';
+
+        $validator = new Validator();
+
+        $this->assertSame($expectedPattern, $validator->getPattern());
+    }
 }

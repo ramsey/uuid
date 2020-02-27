@@ -74,4 +74,13 @@ class GenericValidatorTest extends TestCase
             ],
         ]);
     }
+
+    public function testGetPattern(): void
+    {
+        $expectedPattern = '^[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}$';
+
+        $validator = new GenericValidator();
+
+        $this->assertSame($expectedPattern, $validator->getPattern());
+    }
 }
