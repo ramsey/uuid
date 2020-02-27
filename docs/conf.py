@@ -43,6 +43,7 @@ release = version
 
 # -- General configuration ---------------------------------------------------
 
+master_doc = 'index'
 highlight_language = 'php'
 
 # enable highlighting for PHP code not between ``<?php ... ?>`` by default
