@@ -41,6 +41,22 @@ use const STR_PAD_RIGHT;
 class PhpTimeConverter implements TimeConverterInterface
 {
     /**
+     * The number of 100-nanosecond intervals from the Gregorian calendar epoch
+     * to the Unix epoch.
+     */
+    private const GREGORIAN_TO_UNIX_INTERVALS = 0x01b21dd213814000;
+
+    /**
+     * The number of 100-nanosecond intervals in one second.
+     */
+    private const SECOND_INTERVALS = 10000000;
+
+    /**
+     * The number of 100-nanosecond intervals in one microsecond.
+     */
+    private const MICROSECOND_INTERVALS = 10;
+
+    /**
      * @var CalculatorInterface
      */
     private $calculator;
@@ -81,15 +97,11 @@ class PhpTimeConverter implements TimeConverterInterface
         $seconds = new IntegerObject($seconds);
         $microSeconds = new IntegerObject($microSeconds);
 
-        // 0x01b21dd213814000 is the number of 100-nanosecond intervals between the
-        // UUID epoch 1582-10-15 00:00:00 and the Unix epoch 1970-01-01 00:00:00.
-        // - A nanosecond is 1/1,000,000,000 of a second.
-        // - A nanosecond is 1/1,000 of a microsecond.
-        // - There are 10,000,000 100-nanosecond intervals within 1 second.
-        // - There are 10 100-nanosecond intervals within a microsecond.
-        $uuidTime = ((int) $seconds->toString() * 10000000)
-            + ((int) $microSeconds->toString() * 10)
-            + 0x01b21dd213814000;
+        // Calculate the count of 100-nanosecond intervals since the Gregorian
+        // calendar epoch for the given seconds and microseconds.
+        $uuidTime = ((int) $seconds->toString() * self::SECOND_INTERVALS)
+            + ((int) $microSeconds->toString() * self::MICROSECOND_INTERVALS)
+            + self::GREGORIAN_TO_UNIX_INTERVALS;
 
         // Check to see whether we've overflowed the max/min integer size.
         // If so, we will default to a different time converter.
@@ -111,8 +123,10 @@ class PhpTimeConverter implements TimeConverterInterface
     {
         $timestamp = $this->calculator->toIntegerValue($uuidTimestamp);
 
+        // Convert the 100-nanosecond intervals into seconds and microseconds.
         $splitTime = $this->splitTime(
-            ((int) $timestamp->toString() - 0x01b21dd213814000) / 10000000
+            ((int) $timestamp->toString() - self::GREGORIAN_TO_UNIX_INTERVALS)
+            / self::SECOND_INTERVALS
         );
 
         if (count($splitTime) === 0) {
