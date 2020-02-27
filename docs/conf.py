@@ -54,7 +54,7 @@ lexers['php-annotations'] = PhpLexer(startinline=True)
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
-    'sphinx_rtd_theme',
+    'sphinx.ext.autodoc',
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -85,3 +85,14 @@ html_theme_options = {
 html_static_path = ['_static']
 
 html_title = "ramsey/uuid %s Manual" % get_version()
+html_show_sphinx = False
+
+htmlhelp_basename = 'ramsey-uuid-doc'
+
+html_context = {
+    "display_github": True,
+    "github_user": "ramsey",
+    "github_repo": "uuid",
+    "github_version": version,
+    "conf_py_path": "/docs/",
+}
