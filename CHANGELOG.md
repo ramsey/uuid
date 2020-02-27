@@ -10,6 +10,21 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Added
 
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+### Security
+
+
+## [4.0.0-beta1] - 2020-02-27
+
+### Added
+
 * Add `ValidatorInterface::getPattern()` to return the regular expression
   pattern used by the validator.
 * Add `v6()` helper function for version 6 UUIDs.
@@ -25,17 +40,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   already accepted, so there are no BC breaks. `Type\Hexadecimal` is now the
   recommended type to pass for `$node`.
 
-### Deprecated
-
 ### Removed
 
 * Remove `currentTime()` method from `Provider\Time\FixedTimeProvider` and
   `Provider\Time\SystemTimeProvider`; it had previously been removed from
   `Provider\TimeProviderInterface`.
-
-### Fixed
-
-### Security
 
 
 ## [4.0.0-alpha5] - 2020-02-23
