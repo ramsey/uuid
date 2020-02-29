@@ -19,6 +19,7 @@ use Ramsey\Uuid\Converter\NumberConverterInterface;
 use Ramsey\Uuid\Converter\TimeConverterInterface;
 use Ramsey\Uuid\Exception\InvalidArgumentException;
 use Ramsey\Uuid\Rfc4122\FieldsInterface as Rfc4122FieldsInterface;
+use Ramsey\Uuid\Type\Integer as IntegerObject;
 use Ramsey\Uuid\Uuid;
 
 /**
@@ -60,5 +61,37 @@ final class UuidV2 extends Uuid implements UuidInterface
         }
 
         parent::__construct($fields, $numberConverter, $codec, $timeConverter);
+    }
+
+    /**
+     * Returns the local domain used to create this version 2 UUID
+     */
+    public function getLocalDomain(): int
+    {
+        /** @var Rfc4122FieldsInterface $fields */
+        $fields = $this->getFields();
+
+        return (int) hexdec($fields->getClockSeqLow()->toString());
+    }
+
+    /**
+     * Returns the string name of the local domain
+     */
+    public function getLocalDomainName(): string
+    {
+        return Uuid::DCE_DOMAIN_NAMES[$this->getLocalDomain()];
+    }
+
+    /**
+     * Returns the local identifier for the domain used to create this version 2 UUID
+     */
+    public function getLocalIdentifier(): IntegerObject
+    {
+        /** @var Rfc4122FieldsInterface $fields */
+        $fields = $this->getFields();
+
+        return new IntegerObject(
+            $this->numberConverter->fromHex($fields->getTimeLow()->toString())
+        );
     }
 }

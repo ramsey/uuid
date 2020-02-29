@@ -193,7 +193,7 @@ class SystemDceSecurityProvider implements DceSecurityProviderInterface
      * Since Windows does not have the same concept as an effective POSIX GID
      * for the running script, we will get the local group memberships for the
      * user running the script. Then, we will get the SID (security identifier)
-     * for the first group. that appears in that list. Finally, we will return
+     * for the first group that appears in that list. Finally, we will return
      * the RID (relative identifier) for the group and use that as the GID.
      *
      * @link https://www.windows-commandline.com/list-of-user-groups-command-line/ List of user groups command line

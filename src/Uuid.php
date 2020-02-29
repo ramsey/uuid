@@ -189,6 +189,17 @@ class Uuid implements UuidInterface
     public const DCE_DOMAIN_ORG = 2;
 
     /**
+     * DCE Security domain string names
+     *
+     * @link https://pubs.opengroup.org/onlinepubs/9696989899/chap11.htm#tagcjh_14_05_01_01 DCE 1.1, §11.5.1.1
+     */
+    public const DCE_DOMAIN_NAMES = [
+        self::DCE_DOMAIN_PERSON => 'person',
+        self::DCE_DOMAIN_GROUP => 'group',
+        self::DCE_DOMAIN_ORG => 'org',
+    ];
+
+    /**
      * @var UuidFactoryInterface|null
      */
     private static $factory = null;
