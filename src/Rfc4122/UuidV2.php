@@ -22,6 +22,8 @@ use Ramsey\Uuid\Rfc4122\FieldsInterface as Rfc4122FieldsInterface;
 use Ramsey\Uuid\Type\Integer as IntegerObject;
 use Ramsey\Uuid\Uuid;
 
+use function hexdec;
+
 /**
  * DCE Security version, or version 2, UUIDs include local domain identifier,
  * local ID for the specified domain, and node values that are combined into a
