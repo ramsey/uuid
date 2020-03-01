@@ -129,6 +129,11 @@ class FeatureSet
     private $timeGenerator;
 
     /**
+     * @var TimeProviderInterface
+     */
+    private $timeProvider;
+
+    /**
      * @var ValidatorInterface
      */
     private $validator;
@@ -279,10 +284,20 @@ class FeatureSet
     }
 
     /**
+     * Sets the node provider to use in this environment
+     */
+    public function setNodeProvider(NodeProviderInterface $nodeProvider): void
+    {
+        $this->nodeProvider = $nodeProvider;
+        $this->timeGenerator = $this->buildTimeGenerator($this->timeProvider);
+    }
+
+    /**
      * Sets the time provider to use in this environment
      */
     public function setTimeProvider(TimeProviderInterface $timeProvider): void
     {
+        $this->timeProvider = $timeProvider;
         $this->timeGenerator = $this->buildTimeGenerator($timeProvider);
     }
 

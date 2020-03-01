@@ -12,6 +12,7 @@ use Ramsey\Uuid\Generator\DefaultNameGenerator;
 use Ramsey\Uuid\Generator\PeclUuidTimeGenerator;
 use Ramsey\Uuid\Guid\GuidBuilder;
 use Ramsey\Uuid\Math\BrickMathCalculator;
+use Ramsey\Uuid\Provider\NodeProviderInterface;
 use Ramsey\Uuid\Validator\ValidatorInterface;
 
 class FeatureSetTest extends TestCase
@@ -66,5 +67,14 @@ class FeatureSetTest extends TestCase
         $featureSet = new FeatureSet();
 
         $this->assertInstanceOf(BrickMathCalculator::class, $featureSet->getCalculator());
+    }
+
+    public function testSetNodeProvider(): void
+    {
+        $nodeProvider = Mockery::mock(NodeProviderInterface::class);
+        $featureSet = new FeatureSet();
+        $featureSet->setNodeProvider($nodeProvider);
+
+        $this->assertSame($nodeProvider, $featureSet->getNodeProvider());
     }
 }
