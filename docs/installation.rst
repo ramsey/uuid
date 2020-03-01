@@ -1,10 +1,6 @@
-.. _installation:
-
 ======================
 Installing ramsey/uuid
 ======================
-
-.. _installation.requirements:
 
 Requirements
 ############
@@ -26,8 +22,6 @@ ramsey/uuid recommends installing the
 `gmp <https://www.php.net/manual/en/gmp.installation.php>`_,
 or `bcmath <https://www.php.net/manual/en/bc.installation.php>`_ extensions.
 While not required, these extensions improve the performance of ramsey/uuid.
-
-.. _installation.composer:
 
 Composer
 ########

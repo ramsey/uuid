@@ -1,5 +1,3 @@
-.. _introduction:
-
 ============
 Introduction
 ============
@@ -25,7 +23,8 @@ A UUID, when encoded in hexadecimal string format, looks like:
 The probability of duplicating a UUID is close to zero, so they are a great
 choice for generating unique identifiers in distributed systems.
 
-UUIDs can also be stored in binary format, as a string of bytes.
+UUIDs can also be stored in binary format, as a string of 16 bytes.
+
 
 .. _RFC 4122: https://tools.ietf.org/html/rfc4122
 .. _version 6 UUIDs: http://gh.peabody.io/uuidv6/
