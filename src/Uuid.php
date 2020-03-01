@@ -305,7 +305,7 @@ class Uuid implements UuidInterface
 
     public function compareTo(UuidInterface $other): int
     {
-        $compare = strcmp($this->getInteger()->toString(), $other->getInteger()->toString());
+        $compare = strcmp($this->toString(), $other->toString());
 
         if ($compare < 0) {
             return -1;
