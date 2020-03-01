@@ -21,6 +21,20 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Security
 
 
+## [4.0.0-beta2] - 2020-03-01
+
+## Added
+
+* Add missing convenience methods for `Rfc4122\UuidV2`.
+* Add `Provider\Node\StaticNodeProvider` to assist in setting a custom static
+  node value with the multicast bit set for version 1 UUIDs.
+
+## Changed
+
+* `Provider\NodeProviderInterface::getNode()` now returns `Type\Hexadecimal`
+  instead of `string|false|null`.
+
+
 ## [4.0.0-beta1] - 2020-02-27
 
 ### Added
@@ -898,7 +912,8 @@ versions leading up to this release.*
 [ramsey/uuid-doctrine]: https://github.com/ramsey/uuid-doctrine
 [ramsey/uuid-console]: https://github.com/ramsey/uuid-console
 
-[unreleased]: https://github.com/ramsey/uuid/compare/4.0.0-beta1...HEAD
+[unreleased]: https://github.com/ramsey/uuid/compare/4.0.0-beta2...HEAD
+[4.0.0-beta2]: https://github.com/ramsey/uuid/compare/4.0.0-beta1...4.0.0-beta2
 [4.0.0-beta1]: https://github.com/ramsey/uuid/compare/4.0.0-alpha5...4.0.0-beta1
 [4.0.0-alpha5]: https://github.com/ramsey/uuid/compare/4.0.0-alpha4...4.0.0-alpha5
 [4.0.0-alpha4]: https://github.com/ramsey/uuid/compare/4.0.0-alpha3...4.0.0-alpha4
