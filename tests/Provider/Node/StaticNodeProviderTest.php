@@ -18,7 +18,7 @@ class StaticNodeProviderTest extends TestCase
     {
         $staticNode = new StaticNodeProvider($node);
 
-        $this->assertSame($expectedNode, $staticNode->getNode());
+        $this->assertSame($expectedNode, $staticNode->getNode()->toString());
     }
 
     /**

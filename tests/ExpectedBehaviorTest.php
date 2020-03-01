@@ -526,7 +526,7 @@ class ExpectedBehaviorTest extends TestCase
     public function testUsingDefaultTimeGeneratorWithCustomProviders()
     {
         $nodeProvider = \Mockery::mock('Ramsey\Uuid\Provider\NodeProviderInterface', [
-            'getNode' => '0123456789ab',
+            'getNode' => new Hexadecimal('0123456789ab'),
         ]);
 
         $timeConverter = \Mockery::mock('Ramsey\Uuid\Converter\TimeConverterInterface');

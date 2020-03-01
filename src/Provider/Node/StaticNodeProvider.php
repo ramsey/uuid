@@ -51,12 +51,9 @@ class StaticNodeProvider implements NodeProviderInterface
         $this->node = $this->setMulticastBit($node);
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function getNode()
+    public function getNode(): Hexadecimal
     {
-        return $this->node->toString();
+        return $this->node;
     }
 
     /**

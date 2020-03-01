@@ -16,6 +16,7 @@ namespace Ramsey\Uuid\Provider\Node;
 
 use Ramsey\Uuid\Exception\RandomSourceException;
 use Ramsey\Uuid\Provider\NodeProviderInterface;
+use Ramsey\Uuid\Type\Hexadecimal;
 
 use function bin2hex;
 use function dechex;
@@ -33,10 +34,7 @@ use const STR_PAD_LEFT;
  */
 class RandomNodeProvider implements NodeProviderInterface
 {
-    /**
-     * @inheritDoc
-     */
-    public function getNode()
+    public function getNode(): Hexadecimal
     {
         try {
             $nodeBytes = random_bytes(6);
@@ -65,6 +63,6 @@ class RandomNodeProvider implements NodeProviderInterface
         // Recombine the node bytes.
         $node = $nodeMsb . $nodeLsb;
 
-        return str_pad(bin2hex($node), 12, '0', STR_PAD_LEFT);
+        return new Hexadecimal(str_pad(bin2hex($node), 12, '0', STR_PAD_LEFT));
     }
 }

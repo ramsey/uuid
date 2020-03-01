@@ -14,7 +14,9 @@ declare(strict_types=1);
 
 namespace Ramsey\Uuid\Provider\Node;
 
+use Ramsey\Uuid\Exception\NodeException;
 use Ramsey\Uuid\Provider\NodeProviderInterface;
+use Ramsey\Uuid\Type\Hexadecimal;
 
 /**
  * FallbackNodeProvider retrieves the system node ID by stepping through a list
@@ -35,18 +37,25 @@ class FallbackNodeProvider implements NodeProviderInterface
         $this->nodeProviders = $providers;
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function getNode()
+    public function getNode(): Hexadecimal
     {
+        $lastProviderException = null;
+
         /** @var NodeProviderInterface $provider */
         foreach ($this->nodeProviders as $provider) {
-            if ($node = $provider->getNode()) {
-                return $node;
+            try {
+                return $provider->getNode();
+            } catch (NodeException $exception) {
+                $lastProviderException = $exception;
+
+                continue;
             }
         }
 
-        return null;
+        throw new NodeException(
+            'Unable to find a suitable node provider',
+            0,
+            $lastProviderException
+        );
     }
 }

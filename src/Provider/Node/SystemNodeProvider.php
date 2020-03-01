@@ -14,13 +14,14 @@ declare(strict_types=1);
 
 namespace Ramsey\Uuid\Provider\Node;
 
+use Ramsey\Uuid\Exception\NodeException;
 use Ramsey\Uuid\Provider\NodeProviderInterface;
+use Ramsey\Uuid\Type\Hexadecimal;
 
 use function array_filter;
 use function array_map;
 use function array_walk;
 use function count;
-use function is_array;
 use function ob_get_clean;
 use function ob_start;
 use function preg_match;
@@ -44,37 +45,48 @@ use const PREG_PATTERN_ORDER;
 class SystemNodeProvider implements NodeProviderInterface
 {
     /**
-     * @inheritDoc
+     * Pattern to match nodes in ifconfig and ipconfig output.
      */
-    public function getNode()
+    private const IFCONFIG_PATTERN = '/[^:]([0-9a-f]{2}([:-])[0-9a-f]{2}(\2[0-9a-f]{2}){4})[^:]/i';
+
+    /**
+     * Pattern to match nodes in sysfs stream output.
+     */
+    private const SYSFS_PATTERN = '/^([0-9a-f]{2}:){5}[0-9a-f]{2}$/i';
+
+    public function getNode(): Hexadecimal
+    {
+        $node = $this->getNodeFromSystem();
+
+        if ($node === '') {
+            throw new NodeException(
+                'Unable to fetch a node for this system'
+            );
+        }
+
+        return new Hexadecimal($node);
+    }
+
+    /**
+     * Returns the system node, if it can find it
+     */
+    protected function getNodeFromSystem(): string
     {
         static $node = null;
 
         if ($node !== null) {
-            return $node;
+            return (string) $node;
         }
-
-        $pattern = '/[^:]([0-9A-Fa-f]{2}([:-])[0-9A-Fa-f]{2}(\2[0-9A-Fa-f]{2}){4})[^:]/';
-        $matches = [];
 
         // First, try a Linux-specific approach.
         $node = $this->getSysfs();
 
-        // Search the ifconfig output for all MAC addresses and return
-        // the first one found.
-        if ($node === false) {
-            if (preg_match_all($pattern, $this->getIfconfig(), $matches, PREG_PATTERN_ORDER)) {
-                $node = $matches[1][0] ?? false;
-            }
+        if ($node === '') {
+            // Search ifconfig output for MAC addresses & return the first one.
+            $node = $this->getIfconfig();
         }
 
-        if ($node !== false) {
-            $node = str_replace([':', '-'], '', $node);
-
-            if (is_array($node)) {
-                $node = $node[0] ?? false;
-            }
-        }
+        $node = str_replace([':', '-'], '', $node);
 
         return $node;
     }
@@ -84,7 +96,7 @@ class SystemNodeProvider implements NodeProviderInterface
      *
      * @codeCoverageIgnore
      */
-    private function getIfconfig(): string
+    protected function getIfconfig(): string
     {
         $disabledFunctions = strtolower((string) ini_get('disable_functions'));
 
@@ -113,23 +125,28 @@ class SystemNodeProvider implements NodeProviderInterface
                 break;
         }
 
-        return (string) ob_get_clean();
+        $ifconfig = (string) ob_get_clean();
+
+        $node = '';
+        if (preg_match_all(self::IFCONFIG_PATTERN, $ifconfig, $matches, PREG_PATTERN_ORDER)) {
+            $node = $matches[1][0] ?? '';
+        }
+
+        return (string) $node;
     }
 
     /**
      * Returns MAC address from the first system interface via the sysfs interface
-     *
-     * @return string|bool
      */
-    protected function getSysfs()
+    protected function getSysfs(): string
     {
-        $mac = false;
+        $mac = '';
 
         if (strtoupper(constant('PHP_OS')) === 'LINUX') {
             $addressPaths = glob('/sys/class/net/*/address', GLOB_NOSORT);
 
             if ($addressPaths === false || count($addressPaths) === 0) {
-                return false;
+                return '';
             }
 
             $macs = [];
@@ -145,12 +162,12 @@ class SystemNodeProvider implements NodeProviderInterface
             // Remove invalid entries.
             $macs = array_filter($macs, function (string $address) {
                 return $address !== '00:00:00:00:00:00'
-                    && preg_match('/^([0-9a-f]{2}:){5}[0-9a-f]{2}$/i', $address);
+                    && preg_match(self::SYSFS_PATTERN, $address);
             });
 
             $mac = reset($macs);
         }
 
-        return $mac;
+        return (string) $mac;
     }
 }

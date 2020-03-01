@@ -87,7 +87,7 @@ class DefaultTimeGeneratorTest extends TestCase
     {
         $this->nodeProvider->expects($this->once())
             ->method('getNode')
-            ->willReturn('122f80ca9e06');
+            ->willReturn(new Hexadecimal('122f80ca9e06'));
         $this->timeConverter->expects($this->once())
             ->method('calculateTime')
             ->with($this->currentTime['sec'], $this->currentTime['usec'])

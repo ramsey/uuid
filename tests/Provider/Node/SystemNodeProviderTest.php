@@ -6,8 +6,8 @@ namespace Ramsey\Uuid\Test\Provider\Node;
 
 use AspectMock\Proxy\FuncProxy;
 use AspectMock\Test as AspectMock;
-use Mockery;
 use Ramsey\Uuid\Exception\InvalidArgumentException;
+use Ramsey\Uuid\Exception\NodeException;
 use Ramsey\Uuid\Provider\Node\SystemNodeProvider;
 use Ramsey\Uuid\Test\TestCase;
 
@@ -84,13 +84,13 @@ class SystemNodeProviderTest extends TestCase
         /* Assert the result match expectations */
         $this->assertMockFunctions(null, null, ['netstat -ie 2>&1'], ['PHP_OS'], ['disable_functions']);
 
-        $this->assertSame($expected, $node);
+        $this->assertSame($expected, $node->toString());
 
         $message = vsprintf(
             'Node should be a hexadecimal string of 12 characters. Actual node: %s (length: %s)',
-            [$node, strlen($node),]
+            [$node->toString(), strlen($node->toString()),]
         );
-        $this->assertRegExp('/^[A-Fa-f0-9]{12}$/', $node, $message);
+        $this->assertRegExp('/^[A-Fa-f0-9]{12}$/', $node->toString(), $message);
     }
 
     /**
@@ -112,13 +112,18 @@ class SystemNodeProviderTest extends TestCase
         );
 
         /* Act */
+        $exception = null;
         $provider = new SystemNodeProvider();
-        $node = $provider->getNode();
+
+        try {
+            $node = $provider->getNode();
+        } catch (NodeException $exception) {
+            // do nothing
+        }
 
         /* Assert */
         $this->assertMockFunctions(null, null, ['netstat -ie 2>&1'], ['PHP_OS'], ['disable_functions']);
-
-        $this->assertFalse($node);
+        $this->assertInstanceOf(NodeException::class, $exception);
     }
 
     /**
@@ -146,7 +151,7 @@ class SystemNodeProviderTest extends TestCase
         /* Assert */
         $this->assertMockFunctions(null, null, ['netstat -ie 2>&1'], ['PHP_OS'], ['disable_functions']);
 
-        $this->assertEquals($expected, $node);
+        $this->assertEquals($expected, $node->toString());
     }
 
     /**
@@ -168,13 +173,18 @@ class SystemNodeProviderTest extends TestCase
         );
 
         /* Act */
+        $exception = null;
         $provider = new SystemNodeProvider();
-        $node = $provider->getNode();
+
+        try {
+            $node = $provider->getNode();
+        } catch (NodeException $exception) {
+            // do nothing
+        }
 
         /* Assert */
         $this->assertMockFunctions(null, null, ['netstat -ie 2>&1'], ['PHP_OS'], ['disable_functions']);
-
-        $this->assertEquals(false, $node);
+        $this->assertInstanceOf(NodeException::class, $exception);
     }
 
     /**
@@ -201,7 +211,7 @@ class SystemNodeProviderTest extends TestCase
         /* Assert */
         $this->assertMockFunctions(null, null, ['netstat -ie 2>&1'], ['PHP_OS'], ['disable_functions']);
 
-        $this->assertEquals('AABBCCDDEEFF', $node);
+        $this->assertEquals('aabbccddeeff', $node->toString());
     }
 
     /**
@@ -222,13 +232,18 @@ class SystemNodeProviderTest extends TestCase
         );
 
         /* Act */
+        $exception = null;
         $provider = new SystemNodeProvider();
-        $node = $provider->getNode();
+
+        try {
+            $node = $provider->getNode();
+        } catch (NodeException $exception) {
+            // do nothing
+        }
 
         /* Assert */
         $this->assertMockFunctions(null, null, ['netstat -ie 2>&1'], ['PHP_OS'], ['disable_functions']);
-
-        $this->assertFalse($node);
+        $this->assertInstanceOf(NodeException::class, $exception);
     }
 
     /**
@@ -249,14 +264,26 @@ class SystemNodeProviderTest extends TestCase
         );
 
         /* Act */
+        $exception1 = null;
+        $exception2 = null;
         $provider = new SystemNodeProvider();
-        $provider->getNode();
-        $node = $provider->getNode();
+
+        try {
+            $provider->getNode();
+        } catch (NodeException $exception1) {
+            // do nothing
+        }
+
+        try {
+            $provider->getNode();
+        } catch (NodeException $exception2) {
+            // do nothing
+        }
 
         /* Assert */
         $this->assertMockFunctions(null, null, ['netstat -ie 2>&1'], ['PHP_OS'], ['disable_functions']);
-
-        $this->assertFalse($node);
+        $this->assertInstanceOf(NodeException::class, $exception1);
+        $this->assertInstanceOf(NodeException::class, $exception2);
     }
 
     /**
@@ -277,8 +304,14 @@ class SystemNodeProviderTest extends TestCase
         );
 
         /* Act */
+        $exception = null;
         $provider = new SystemNodeProvider();
-        $node = $provider->getNode();
+
+        try {
+            $node = $provider->getNode();
+        } catch (NodeException $exception) {
+            // do nothing
+        }
 
         /* Assert */
         $globBodyAssert = null;
@@ -298,7 +331,7 @@ class SystemNodeProviderTest extends TestCase
             $isReadableAssert
         );
 
-        $this->assertFalse($node);
+        $this->assertInstanceOf(NodeException::class, $exception);
     }
 
     /**
@@ -326,7 +359,7 @@ class SystemNodeProviderTest extends TestCase
         /* Assert */
         $this->assertMockFunctions(null, null, ['netstat -ie 2>&1'], ['PHP_OS'], ['disable_functions']);
 
-        $this->assertEquals($node, $node2);
+        $this->assertEquals($node->toString(), $node2->toString());
     }
 
     /**
@@ -354,7 +387,7 @@ class SystemNodeProviderTest extends TestCase
         /* Assert */
         $this->assertMockFunctions(null, null, ['netstat -ie 2>&1'], ['PHP_OS'], ['disable_functions']);
 
-        $this->assertEquals($node, $node2);
+        $this->assertEquals($node->toString(), $node2->toString());
     }
 
     /**
@@ -409,7 +442,7 @@ class SystemNodeProviderTest extends TestCase
             $isReadableAssert
         );
 
-        $this->assertEquals('010203040506', $node);
+        $this->assertEquals('010203040506', $node->toString());
     }
 
     /**
@@ -442,7 +475,7 @@ class SystemNodeProviderTest extends TestCase
             ['disable_functions']
         );
 
-        $this->assertEquals('010203040506', $node);
+        $this->assertEquals('010203040506', $node->toString());
     }
 
     /**
@@ -475,7 +508,7 @@ class SystemNodeProviderTest extends TestCase
             ['disable_functions']
         );
 
-        $this->assertEquals('010203040506', $node);
+        $this->assertEquals('010203040506', $node->toString());
     }
 
     /**
@@ -510,7 +543,7 @@ class SystemNodeProviderTest extends TestCase
             ['mock address path 1', 'mock address path 2']
         );
 
-        $this->assertEquals('010203040506', $node);
+        $this->assertEquals('010203040506', $node->toString());
     }
 
     /**
@@ -529,8 +562,14 @@ class SystemNodeProviderTest extends TestCase
         );
 
         /* Act */
+        $exception = null;
         $provider = new SystemNodeProvider();
-        $node = $provider->getNode();
+
+        try {
+            $node = $provider->getNode();
+        } catch (NodeException $exception) {
+            // do nothing
+        }
 
         /* Assert */
         $this->assertMockFunctions(
@@ -541,7 +580,7 @@ class SystemNodeProviderTest extends TestCase
             ['disable_functions']
         );
 
-        $this->assertFalse($node);
+        $this->assertInstanceOf(NodeException::class, $exception);
     }
 
     /**
@@ -845,7 +884,7 @@ TXT
                    DHCP Enabled. . . . . . . . . . . : No
                    Autoconfiguration Enabled . . . . : Yes
 TXT
-                , '080027B842C6',
+                , '080027b842c6',
             ],
             'Full output - FreeBSD' => [<<<'TXT'
                 Name    Mtu Network       Address              Ipkts Ierrs Idrop    Opkts Oerrs  Coll
@@ -859,51 +898,23 @@ TXT
             /* The single line that is relevant */
             'Linux  - single line'  => ["\ndocker0   Link encap:Ethernet  HWaddr 01:23:45:67:89:ab\n", '0123456789ab'],
             'MacOS  - Single line ' => ["\nether 10:dd:b1:b4:e4:8e\n", '10ddb1b4e48e'],
-            'Window - single line' => ["\nPhysical Address. . . . . . . . . : 08-00-27-B8-42-C6\n", '080027B842C6'],
+            'Window - single line' => ["\nPhysical Address. . . . . . . . . : 08-00-27-B8-42-C6\n", '080027b842c6'],
 
             /* Minimal subsets of the single line to show the differences */
-            'with colon, with linebreak, with space'          => ["\n : AA-BB-CC-DD-EE-FF\n", 'AABBCCDDEEFF'],
-            'without colon, with linebreak, with space'       => ["\n AA-BB-CC-DD-EE-FF \n",  'AABBCCDDEEFF'],
-            'without colon, with linebreak, without space'    => ["\nAA-BB-CC-DD-EE-FF\n",    'AABBCCDDEEFF'],
-            'without colon, without linebreak, with space'    => [' AA-BB-CC-DD-EE-FF ',      'AABBCCDDEEFF'],
+            'with colon, with linebreak, with space'          => ["\n : AA-BB-CC-DD-EE-FF\n", 'aabbccddeeff'],
+            'without colon, with linebreak, with space'       => ["\n AA-BB-CC-DD-EE-FF \n",  'aabbccddeeff'],
+            'without colon, with linebreak, without space'    => ["\nAA-BB-CC-DD-EE-FF\n",    'aabbccddeeff'],
+            'without colon, without linebreak, with space'    => [' AA-BB-CC-DD-EE-FF ',      'aabbccddeeff'],
 
             /* Other accepted variations */
             'Actual mac - 1'               => ["\n52:54:00:14:91:69\n",    '525400149169'],
             'Actual mac - 2'               => ["\n00:16:3e:a9:73:f0\n",    '00163ea973f0'],
-            'FF:FF:FF:FF:FF:FF'            => ["\nFF:FF:FF:FF:FF:FF\n",    'FFFFFFFFFFFF'],
+            'FF:FF:FF:FF:FF:FF'            => ["\nFF:FF:FF:FF:FF:FF\n",    'ffffffffffff'],
 
             /* Incorrect variations that are also accepted */
             'Local host'                   => ["\n00:00:00:00:00:00\n",    '000000000000'],
-            'Too long -- extra character'  => ["\nABC-01-23-45-67-89\n",   'BC0123456789'],
-            'Too long -- extra tuple'      => ["\n01-AA-BB-CC-DD-EE-FF\n", '01AABBCCDDEE'],
+            'Too long -- extra character'  => ["\nABC-01-23-45-67-89\n",   'bc0123456789'],
+            'Too long -- extra tuple'      => ["\n01-AA-BB-CC-DD-EE-FF\n", '01aabbccddee'],
         ];
-    }
-
-    /**
-     * @runInSeparateProcess
-     * @preserveGlobalState disabled
-     */
-    public function testInternalNodeValueIsArray(): void
-    {
-        $provider = Mockery::mock(SystemNodeProvider::class);
-        $provider->shouldAllowMockingProtectedMethods();
-        $provider->shouldReceive('getSysfs')->andReturn(['foo:bar']);
-        $provider->shouldReceive('getNode')->passthru();
-
-        $this->assertSame('foobar', $provider->getNode());
-    }
-
-    /**
-     * @runInSeparateProcess
-     * @preserveGlobalState disabled
-     */
-    public function testInternalNodeValueIsArrayWithNoElements(): void
-    {
-        $provider = Mockery::mock(SystemNodeProvider::class);
-        $provider->shouldAllowMockingProtectedMethods();
-        $provider->shouldReceive('getSysfs')->andReturn([]);
-        $provider->shouldReceive('getNode')->passthru();
-
-        $this->assertFalse($provider->getNode());
     }
 }

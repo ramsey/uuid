@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace Ramsey\Uuid\Test\Provider\Node;
 
+use Ramsey\Uuid\Exception\NodeException;
 use Ramsey\Uuid\Provider\Node\FallbackNodeProvider;
 use Ramsey\Uuid\Provider\Node\NodeProviderCollection;
 use Ramsey\Uuid\Provider\NodeProviderInterface;
 use Ramsey\Uuid\Test\TestCase;
+use Ramsey\Uuid\Type\Hexadecimal;
 
 class FallbackNodeProviderTest extends TestCase
 {
@@ -16,11 +18,11 @@ class FallbackNodeProviderTest extends TestCase
         $providerWithNode = $this->getMockBuilder(NodeProviderInterface::class)->getMock();
         $providerWithNode->expects($this->once())
             ->method('getNode')
-            ->willReturn('57764a07f756');
+            ->willReturn(new Hexadecimal('57764a07f756'));
         $providerWithoutNode = $this->getMockBuilder(NodeProviderInterface::class)->getMock();
         $providerWithoutNode->expects($this->once())
             ->method('getNode')
-            ->willReturn(null);
+            ->willThrowException(new NodeException());
 
         $provider = new FallbackNodeProvider(new NodeProviderCollection([$providerWithoutNode, $providerWithNode]));
         $provider->getNode();
@@ -31,11 +33,11 @@ class FallbackNodeProviderTest extends TestCase
         $providerWithoutNode = $this->getMockBuilder(NodeProviderInterface::class)->getMock();
         $providerWithoutNode->expects($this->once())
             ->method('getNode')
-            ->willReturn(null);
+            ->willThrowException(new NodeException());
         $providerWithNode = $this->getMockBuilder(NodeProviderInterface::class)->getMock();
         $providerWithNode->expects($this->once())
             ->method('getNode')
-            ->willReturn('57764a07f756');
+            ->willReturn(new Hexadecimal('57764a07f756'));
         $anotherProviderWithoutNode = $this->getMockBuilder(NodeProviderInterface::class)->getMock();
         $anotherProviderWithoutNode->expects($this->never())
             ->method('getNode');
@@ -48,15 +50,19 @@ class FallbackNodeProviderTest extends TestCase
         $this->assertEquals('57764a07f756', $node);
     }
 
-    public function testGetNodeReturnsNullWhenNoNodesFound(): void
+    public function testGetNodeThrowsExceptionWhenNoNodesFound(): void
     {
         $providerWithoutNode = $this->getMockBuilder(NodeProviderInterface::class)->getMock();
         $providerWithoutNode->method('getNode')
-            ->willReturn(null);
+            ->willThrowException(new NodeException());
 
         $provider = new FallbackNodeProvider(new NodeProviderCollection([$providerWithoutNode]));
-        $node = $provider->getNode();
 
-        $this->assertNull($node);
+        $this->expectException(NodeException::class);
+        $this->expectExceptionMessage(
+            'Unable to find a suitable node provider'
+        );
+
+        $provider->getNode();
     }
 }

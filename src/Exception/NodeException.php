@@ -12,19 +12,13 @@
 
 declare(strict_types=1);
 
-namespace Ramsey\Uuid\Provider;
+namespace Ramsey\Uuid\Exception;
 
-use Ramsey\Uuid\Type\Hexadecimal;
+use RuntimeException as PhpRuntimeException;
 
 /**
- * A node provider retrieves or generates a node ID
+ * Thrown to indicate that attempting to fetch or create a node ID encountered an error
  */
-interface NodeProviderInterface
+class NodeException extends PhpRuntimeException
 {
-    /**
-     * Returns a node ID
-     *
-     * @return Hexadecimal The node ID as a hexadecimal string
-     */
-    public function getNode(): Hexadecimal;
 }

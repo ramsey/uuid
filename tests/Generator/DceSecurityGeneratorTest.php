@@ -56,7 +56,7 @@ class DceSecurityGeneratorTest extends TestCase
         ]);
 
         $nodeProvider = Mockery::mock(NodeProviderInterface::class, [
-            'getNode' => $node,
+            'getNode' => new Hexadecimal($node),
         ]);
 
         $timeProvider = new FixedTimeProvider(new Time($seconds, $microseconds));
