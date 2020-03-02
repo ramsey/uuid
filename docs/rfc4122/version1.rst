@@ -1,3 +1,5 @@
+.. _rfc4122.version1:
+
 =====================
 Version 1: Time-based
 =====================
@@ -33,9 +35,13 @@ will generate a random node.
 
     $uuid = Uuid::uuid1();
 
-    echo $uuid->toString() . "\n";
-    echo $uuid->getDateTime()->format('r') . "\n";
-    echo $uuid->getFields()->getNode()->toString() . "\n";
+    printf(
+        "UUID: %s\nVersion: %d\nDate: %s\nNode: %s\n",
+        $uuid->toString(),
+        $uuid->getFields()->getVersion(),
+        $uuid->getDateTime()->format('r'),
+        $uuid->getFields()->getNode()->toString()
+    );
 
 This will generate a version 1 UUID and print out its string representation, the
 time the UUID was created, and the node used to create the UUID.
@@ -44,9 +50,35 @@ It will look something like this:
 
 .. code-block:: text
 
-    ba1fe680-5b3b-11ea-8009-acde48001122
-    Sat, 29 Feb 2020 21:37:47 +0000
-    acde48001122
+    UUID: e22e1622-5c14-11ea-b2f3-acde48001122
+    Version: 1
+    Date: Sun, 01 Mar 2020 23:32:15 +0000
+    Node: acde48001122
+
+After creating a ``UuidInterface`` object from a string (or bytes), you can
+check to see if it's a version 1 UUID by checking its instance type.
+
+.. code-block:: php
+
+    use Ramsey\Uuid\Rfc4122\UuidV1;
+    use Ramsey\Uuid\Uuid;
+
+    $uuid = Uuid::fromString('200e43fa-5c14-11ea-bc55-0242ac130003');
+
+    if ($uuid instanceof UuidV1) {
+        printf(
+            "UUID: %s\nVersion: %d\nDate: %s\nNode: %s\n",
+            $uuid->toString(),
+            $uuid->getFields()->getVersion(),
+            $uuid->getDateTime()->format('r'),
+            $uuid->getFields()->getNode()->toString()
+        );
+    }
+
+.. tip::
+    Check out the :php:interface:`Ramsey\\Uuid\\Rfc4122\\UuidInterface` API
+    documentation to learn more about what you can do with a ``UuidV1``
+    instance.
 
 
 Random or Custom Node

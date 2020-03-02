@@ -53,7 +53,6 @@ information.
 [javauuid]: http://docs.oracle.com/javase/6/docs/api/java/util/UUID.html
 [pyuuid]: http://docs.python.org/3/library/uuid.html
 [composer]: http://getcomposer.org/
-[wiki-cookbook]: https://github.com/ramsey/uuid/wiki/Ramsey%5CUuid-Cookbook
 [contributing.md]: https://github.com/ramsey/uuid/blob/master/.github/CONTRIBUTING.md
 
 [badge-source]: https://img.shields.io/badge/source-ramsey/uuid-blue.svg?style=flat-square

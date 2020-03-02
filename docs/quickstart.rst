@@ -1,4 +1,70 @@
+.. _quickstart:
+
 ===============
 Getting Started
 ===============
 
+After :ref:`installing ramsey/uuid <installation>`, the quickest way to get
+up-and-running is to use the static generation methods.
+
+.. code-block:: php
+
+    use Ramsey\Uuid\Uuid;
+
+    $uuid = Uuid::uuid4();
+
+    printf(
+        "UUID: %s\nVersion: %d\n",
+        $uuid->toString(),
+        $uuid->getFields()->getVersion()
+    );
+
+This will return an instance of ``Ramsey\Uuid\Rfc4122\UuidV4``.
+
+.. tip::
+    .. rubric:: Use the Interfaces
+
+    Feel free to use ``instanceof`` to check the specific instance types of
+    UUIDs. However, when using type hints, it's best to use the interfaces.
+
+    The most lenient interface is ``Ramsey\Uuid\UuidInterface``, while
+    ``Ramsey\Uuid\Rfc4122\UuidInterface`` ensures the UUIDs you're using conform
+    to the `RFC 4122`_ standard. If you're not sure which one to use, start with
+    the stricter ``Ramsey\Uuid\Rfc4122\UuidInterface``.
+
+ramsey/uuid provides a number of helpful static methods that help you work with
+and generate most types of UUIDs, without any special customization of the
+library.
+
+.. list-table::
+    :widths: 25 75
+    :width: 100%
+    :align: center
+    :header-rows: 1
+
+    * - Method
+      - Description
+    * - :php:meth:`Uuid::uuid1() <Ramsey\\Uuid\\Uuid::uuid1>`
+      - This generates a :ref:`rfc4122.version1` UUID.
+    * - :php:meth:`Uuid::uuid2() <Ramsey\\Uuid\\Uuid::uuid2>`
+      - This generates a :ref:`rfc4122.version2` UUID.
+    * - :php:meth:`Uuid::uuid3() <Ramsey\\Uuid\\Uuid::uuid3>`
+      - This generates a :ref:`rfc4122.version3` UUID.
+    * - :php:meth:`Uuid::uuid4() <Ramsey\\Uuid\\Uuid::uuid4>`
+      - This generates a :ref:`rfc4122.version4` UUID.
+    * - :php:meth:`Uuid::uuid5() <Ramsey\\Uuid\\Uuid::uuid5>`
+      - This generates a :ref:`rfc4122.version5` UUID.
+    * - :php:meth:`Uuid::uuid6() <Ramsey\\Uuid\\Uuid::uuid6>`
+      - This generates a :ref:`nonstandard.version6` UUID.
+    * - :php:meth:`Uuid::isValid() <Ramsey\\Uuid\\Uuid::isValid>`
+      - Checks whether a string is a valid UUID.
+    * - :php:meth:`Uuid::fromString() <Ramsey\\Uuid\\Uuid::fromString>`
+      - Creates a UUID instance from a string UUID.
+    * - :php:meth:`Uuid::fromBytes() <Ramsey\\Uuid\\Uuid::fromBytes>`
+      - Creates a UUID instance from a 16-byte string.
+    * - :php:meth:`Uuid::fromInteger() <Ramsey\\Uuid\\Uuid::fromInteger>`
+      - Creates a UUID instance from a string integer.
+    * - :php:meth:`Uuid::fromDateTime() <Ramsey\\Uuid\\Uuid::fromDateTime>`
+      - Creates a version 1 UUID instance from a PHP ``DateTimeInterface``.
+
+.. _RFC 4122: https://tools.ietf.org/html/rfc4122

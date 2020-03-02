@@ -1,9 +1,11 @@
+.. _upgrading:
+
 =====================
 Upgrading ramsey/uuid
 =====================
 
 .. toctree::
-   :titlesonly:
+    :titlesonly:
 
-   upgrading/3-to-4
-   upgrading/2-to-3
+    upgrading/3-to-4
+    upgrading/2-to-3

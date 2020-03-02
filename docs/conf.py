@@ -55,6 +55,7 @@ lexers['php-annotations'] = PhpLexer(startinline=True)
 # ones.
 extensions = [
     'sphinx.ext.autodoc',
+    'sphinxcontrib.phpdomain',
 ]
 
 # Add any paths that contain templates here, relative to this directory.

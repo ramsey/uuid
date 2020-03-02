@@ -27,7 +27,7 @@ use Ramsey\Uuid\UuidInterface as BaseUuidInterface;
 interface UuidInterface extends BaseUuidInterface
 {
     /**
-     * Returns the string representation of the UUID as a URN
+     * Returns the string standard representation of the UUID as a URN
      *
      * @link http://en.wikipedia.org/wiki/Uniform_Resource_Name Uniform Resource Name
      * @link https://tools.ietf.org/html/rfc4122#section-3 RFC 4122, § 3: Namespace Registration Template

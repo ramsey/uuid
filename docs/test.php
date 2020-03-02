@@ -2,23 +2,10 @@
 
 require_once '../vendor/autoload.php';
 
-use Ramsey\Uuid\FeatureSet;
-use Ramsey\Uuid\Provider\Node\StaticNodeProvider;
-use Ramsey\Uuid\Type\Hexadecimal;
 use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidFactory;
 
-$nodeProvider = new StaticNodeProvider(new Hexadecimal('1234567890ab'));
+const MY_NAMESPACE = '9a494836-ef67-4c63-a27b-15bc5a17e0ed';
 
-$featureSet = new FeatureSet();
-$featureSet->setNodeProvider($nodeProvider);
+$uuid = Uuid::uuid3(MY_NAMESPACE, 'widget/1234567890');
 
-$factory = new UuidFactory($featureSet);
-
-Uuid::setFactory($factory);
-
-$uuid = Uuid::uuid1();
-
-echo $uuid->toString() . "\n";
-echo $uuid->getDateTime()->format('r') . "\n";
-echo $uuid->getFields()->getNode()->toString() . "\n";
+printf("UUID: %s\n", $uuid->toString());

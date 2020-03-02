@@ -74,24 +74,24 @@ interface UuidInterface extends
     public function getFields(): FieldsInterface;
 
     /**
-     * Returns the hexadecimal string representation of the UUID
+     * Returns the hexadecimal representation of the UUID
      */
     public function getHex(): Hexadecimal;
 
     /**
-     * Returns the integer value of the UUID as a string
+     * Returns the integer representation of the UUID
      */
     public function getInteger(): IntegerObject;
 
     /**
-     * Returns a string representation of the UUID
+     * Returns the string standard representation of the UUID
      *
      * @psalm-return non-empty-string
      */
     public function toString(): string;
 
     /**
-     * Casts the UUID to a string representation
+     * Casts the UUID to the string standard representation
      *
      * @psalm-return non-empty-string
      */

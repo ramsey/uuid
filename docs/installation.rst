@@ -1,3 +1,5 @@
+.. _installation:
+
 ======================
 Installing ramsey/uuid
 ======================

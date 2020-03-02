@@ -27,17 +27,7 @@ use function str_replace;
 use function strcmp;
 
 /**
- * Represents a RFC 4122 universally unique identifier (UUID)
- *
- * This class provides immutable UUID objects (the Uuid class) and the static
- * methods `uuid1()`, `uuid3()`, `uuid4()`, and `uuid5()` for generating version
- * 1, 3, 4, and 5 UUIDs as specified in RFC 4122.
- *
- * If all you want is a unique ID, you should probably call `uuid1()` or `uuid4()`.
- * Note that `uuid1()` may compromise privacy since it creates a UUID containing
- * the computer’s network address. `uuid4()` creates a random UUID.
- *
- * @link http://tools.ietf.org/html/rfc4122 RFC 4122
+ * Uuid provides constants and static methods for working with and generating UUIDs
  *
  * @psalm-immutable
  */
