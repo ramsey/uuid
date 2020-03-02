@@ -38,7 +38,6 @@ library.
 
 .. list-table::
     :widths: 25 75
-    :width: 100%
     :align: center
     :header-rows: 1
 

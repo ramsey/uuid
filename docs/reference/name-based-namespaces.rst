@@ -9,7 +9,6 @@ interesting name spaces."
 
 .. list-table::
     :widths: 30 70
-    :width: 100%
     :align: center
     :header-rows: 1
 
