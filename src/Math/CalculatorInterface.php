@@ -102,5 +102,5 @@ interface CalculatorInterface
     /**
      * Converts a Hexadecimal instance to an Integer instance
      */
-    public function toIntegerValue(Hexadecimal $value): IntegerObject;
+    public function toInteger(Hexadecimal $value): IntegerObject;
 }

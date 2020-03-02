@@ -15,7 +15,7 @@ class IntegerTest extends TestCase
      *
      * @dataProvider provideInteger
      */
-    public function testIntegerValueType($value, string $expected): void
+    public function testIntegerType($value, string $expected): void
     {
         $integer = new IntegerObject($value);
 

@@ -111,7 +111,7 @@ class GenericTimeConverter implements TimeConverterInterface
         // number of 100-nanosecond intervals from the Unix epoch, which also
         // includes the microtime.
         $epochNanoseconds = $this->calculator->subtract(
-            $this->calculator->toIntegerValue($uuidTimestamp),
+            $this->calculator->toInteger($uuidTimestamp),
             new IntegerObject(self::GREGORIAN_TO_UNIX_INTERVALS)
         );
 

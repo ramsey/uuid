@@ -121,7 +121,7 @@ class PhpTimeConverter implements TimeConverterInterface
      */
     public function convertTime(Hexadecimal $uuidTimestamp): Time
     {
-        $timestamp = $this->calculator->toIntegerValue($uuidTimestamp);
+        $timestamp = $this->calculator->toInteger($uuidTimestamp);
 
         // Convert the 100-nanosecond intervals into seconds and microseconds.
         $splitTime = $this->splitTime(

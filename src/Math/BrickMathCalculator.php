@@ -129,7 +129,7 @@ final class BrickMathCalculator implements CalculatorInterface
         return new Hexadecimal($this->toBase($value, 16));
     }
 
-    public function toIntegerValue(Hexadecimal $value): IntegerObject
+    public function toInteger(Hexadecimal $value): IntegerObject
     {
         return $this->fromBase($value->toString(), 16);
     }
