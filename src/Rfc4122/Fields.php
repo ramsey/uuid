@@ -123,20 +123,49 @@ final class Fields implements FieldsInterface
         return new Hexadecimal(bin2hex(substr($this->bytes, 4, 2)));
     }
 
+    /**
+     * Returns the full 60-bit timestamp, without the version
+     *
+     * For version 2 UUIDs, the time_low field is the local identifier and
+     * should not be returned as part of the time. For this reason, we set the
+     * bottom 32 bits of the timestamp to 0's. As a result, there is some loss
+     * of fidelity of the timestamp, for version 2 UUIDs. The timestamp can be
+     * off by a range of 0 to 429.4967295 seconds (or 7 minutes, 9 seconds, and
+     * 496730 microseconds).
+     *
+     * For version 6 UUIDs, the timestamp order is reversed from the typical RFC
+     * 4122 order (the time bits are in the correct bit order, so that it is
+     * monotonically increasing). In returning the timestamp value, we put the
+     * bits in the order: time_low + time_mid + time_hi.
+     */
     public function getTimestamp(): Hexadecimal
     {
-        $timestamp = sprintf(
-            '%03x%04s%08s',
-            hexdec($this->getTimeHiAndVersion()->toString()) & 0x0fff,
-            $this->getTimeMid()->toString(),
-            $this->getTimeLow()->toString()
-        );
+        switch ($this->getVersion()) {
+            case Uuid::UUID_TYPE_DCE_SECURITY:
+                $timestamp = sprintf(
+                    '%03x%04s%08s',
+                    hexdec($this->getTimeHiAndVersion()->toString()) & 0x0fff,
+                    $this->getTimeMid()->toString(),
+                    ''
+                );
 
-        // Put the timestamp into the correct order, if this is a v6 UUID.
-        if ($this->getVersion() === Uuid::UUID_TYPE_PEABODY) {
-            $timestamp = substr($timestamp, 7)
-                . substr($timestamp, 3, 4)
-                . substr($timestamp, 0, 3);
+                break;
+            case Uuid::UUID_TYPE_PEABODY:
+                $timestamp = sprintf(
+                    '%08s%04s%03x',
+                    $this->getTimeLow()->toString(),
+                    $this->getTimeMid()->toString(),
+                    hexdec($this->getTimeHiAndVersion()->toString()) & 0x0fff
+                );
+
+                break;
+            default:
+                $timestamp = sprintf(
+                    '%03x%04s%08s',
+                    hexdec($this->getTimeHiAndVersion()->toString()) & 0x0fff,
+                    $this->getTimeMid()->toString(),
+                    $this->getTimeLow()->toString()
+                );
         }
 
         return new Hexadecimal($timestamp);

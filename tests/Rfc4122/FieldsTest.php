@@ -187,6 +187,18 @@ class FieldsTest extends TestCase
             ['00000000-0000-0000-0000-000000000000', 'getVariant', 0],
             ['00000000-0000-0000-0000-000000000000', 'getVersion', null],
             ['00000000-0000-0000-0000-000000000000', 'isNil', true],
+
+            ['000001f5-5cde-21ea-8400-0242ac130003', 'getClockSeq', '0400'],
+            ['000001f5-5cde-21ea-8400-0242ac130003', 'getClockSeqHiAndReserved', '84'],
+            ['000001f5-5cde-21ea-8400-0242ac130003', 'getClockSeqLow', '00'],
+            ['000001f5-5cde-21ea-8400-0242ac130003', 'getNode', '0242ac130003'],
+            ['000001f5-5cde-21ea-8400-0242ac130003', 'getTimeHiAndVersion', '21ea'],
+            ['000001f5-5cde-21ea-8400-0242ac130003', 'getTimeLow', '000001f5'],
+            ['000001f5-5cde-21ea-8400-0242ac130003', 'getTimeMid', '5cde'],
+            ['000001f5-5cde-21ea-8400-0242ac130003', 'getTimestamp', '1ea5cde00000000'],
+            ['000001f5-5cde-21ea-8400-0242ac130003', 'getVariant', 2],
+            ['000001f5-5cde-21ea-8400-0242ac130003', 'getVersion', 2],
+            ['000001f5-5cde-21ea-8400-0242ac130003', 'isNil', false],
         ];
     }
 

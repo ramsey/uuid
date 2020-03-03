@@ -186,6 +186,25 @@ class UuidFactory implements UuidFactoryInterface
     }
 
     /**
+     * Returns the DCE Security generator used by this factory
+     */
+    public function getDceSecurityGenerator(): DceSecurityGeneratorInterface
+    {
+        return $this->dceSecurityGenerator;
+    }
+
+    /**
+     * Sets the DCE Security generator to use for this factory
+     *
+     * @param DceSecurityGeneratorInterface $generator A generator to generate
+     *     binary data, based on a local domain and local identifier
+     */
+    public function setDceSecurityGenerator(DceSecurityGeneratorInterface $generator): void
+    {
+        $this->dceSecurityGenerator = $generator;
+    }
+
+    /**
      * Returns the number converter used by this factory
      */
     public function getNumberConverter(): NumberConverterInterface
