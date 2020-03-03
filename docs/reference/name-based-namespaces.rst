@@ -17,7 +17,7 @@ interesting name spaces."
     * - :php:const:`Uuid::NAMESPACE_DNS <Ramsey\\Uuid\\Uuid::NAMESPACE_DNS>`
       - The name string is a fully-qualified domain name.
     * - :php:const:`Uuid::NAMESPACE_URL <Ramsey\\Uuid\\Uuid::NAMESPACE_URL>`
-      - The name string is URL.
+      - The name string is a URL.
     * - :php:const:`Uuid::NAMESPACE_OID <Ramsey\\Uuid\\Uuid::NAMESPACE_OID>`
       - The name string is an `ISO object identifier (OID)`_.
     * - :php:const:`Uuid::NAMESPACE_X500 <Ramsey\\Uuid\\Uuid::NAMESPACE_X500>`

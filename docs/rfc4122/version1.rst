@@ -76,7 +76,7 @@ check to see if it's a version 1 UUID by checking its instance type.
     }
 
 .. tip::
-    Check out the :php:interface:`Ramsey\\Uuid\\Rfc4122\\UuidInterface` API
+    Check out the :php:class:`Ramsey\\Uuid\\Rfc4122\\UuidV1` API
     documentation to learn more about what you can do with a ``UuidV1``
     instance.
 

@@ -12,6 +12,79 @@ the ramsey/uuid library.
 
 .. php:class:: Uuid
 
+    .. php:const:: UUID_TYPE_TIME
+
+        :ref:`rfc4122.version1` UUID.
+
+    .. php:const:: UUID_TYPE_DCE_SECURITY
+
+        :ref:`rfc4122.version2` UUID.
+
+    .. php:const:: UUID_TYPE_HASH_MD5
+
+        :ref:`rfc4122.version3` UUID.
+
+    .. php:const:: UUID_TYPE_RANDOM
+
+        :ref:`rfc4122.version4` UUID.
+
+    .. php:const:: UUID_TYPE_HASH_SHA1
+
+        :ref:`rfc4122.version5` UUID.
+
+    .. php:const:: UUID_TYPE_PEABODY
+
+        :ref:`nonstandard.version6` UUID.
+
+    .. php:const:: NAMESPACE_DNS
+
+        The name string is a fully-qualified domain name.
+
+    .. php:const:: NAMESPACE_URL
+
+        The name string is a URL.
+
+    .. php:const:: NAMESPACE_OID
+
+        The name string is an `ISO object identifier (OID)`_.
+
+    .. php:const:: NAMESPACE_X500
+
+        The name string is an `X.500`_ `DN`_ in `DER`_ or a text output format.
+
+    .. php:const:: NIL
+
+        The nil UUID is a special form of UUID that is specified to have all 128
+        bits set to zero.
+
+    .. php:const:: DCE_DOMAIN_PERSON
+
+        DCE Security principal (person) domain.
+
+    .. php:const:: DCE_DOMAIN_GROUP
+
+        DCE Security group domain.
+
+    .. php:const:: DCE_DOMAIN_ORG
+
+        DCE Security organization domain.
+
+    .. php:const:: RESERVED_NCS
+
+        Variant identifier: reserved, NCS backward compatibility.
+
+    .. php:const:: RFC_4122
+
+        Variant identifier: the UUID layout specified in RFC 4122.
+
+    .. php:const:: RESERVED_MICROSOFT
+
+        Variant identifier: reserved, Microsoft Corporation backward compatibility.
+
+    .. php:const:: RESERVED_FUTURE
+
+        Variant identifier: reserved for future definition.
+
     .. php:staticmethod:: uuid1([$node[, $clockSeq]])
 
         Generates a version 1, time-based UUID. See :ref:`rfc4122.version1`.
@@ -24,7 +97,7 @@ the ramsey/uuid library.
 
         Generates a version 2, DCE Security UUID. See :ref:`rfc4122.version2`.
 
-        :param int $localDomain: The local domain to use (one of ``Uuid::DCE_DOMAIN_PERSON``, ``Uuid::DCE_DOMAIN_GROUP``, or ``Uuid::DCE_DOMAIN_ORG``)
+        :param int $localDomain: The local domain to use (one of :php:const:`Uuid::DCE_DOMAIN_PERSON`, :php:const:`Uuid::DCE_DOMAIN_GROUP`, or :php:const:`Uuid::DCE_DOMAIN_ORG`)
         :param Ramsey\\Uuid\\Type\\Integer|null $localIdentifier: A local identifier for the domain (defaults to system UID or GID for *person* or *group*)
         :param Ramsey\\Uuid\\Type\\Hexadecimal|null $node: An optional hexadecimal node to use
         :param int|null $clockSeq: An optional clock sequence to use
@@ -84,7 +157,7 @@ the ramsey/uuid library.
 
     .. php:staticmethod:: fromDateTime($dateTime[, $node[, $clockSeq]])
 
-        Creates a version 1 UUID instance from a ``DateTimeInterface`` instance.
+        Creates a version 1 UUID instance from a ``\DateTimeInterface`` instance.
 
         :param DateTimeInterface $dateTime: The date from which to create the UUID instance
         :param Ramsey\\Uuid\\Type\\Hexadecimal|null $node: An optional hexadecimal node to use
@@ -98,18 +171,8 @@ the ramsey/uuid library.
         :param string $uuid: The string standard representation of a UUID
         :returns: True if the string UUID is valid, false otherwise
 
-    .. php:const:: NAMESPACE_DNS
 
-        6ba7b810-9dad-11d1-80b4-00c04fd430c8
-
-    .. php:const:: NAMESPACE_URL
-
-        6ba7b811-9dad-11d1-80b4-00c04fd430c8
-
-    .. php:const:: NAMESPACE_OID
-
-        6ba7b812-9dad-11d1-80b4-00c04fd430c8
-
-    .. php:const:: NAMESPACE_X500
-
-        6ba7b814-9dad-11d1-80b4-00c04fd430c8
+.. _ISO object identifier (OID): http://www.oid-info.com
+.. _X.500: https://en.wikipedia.org/wiki/X.500
+.. _DN: https://en.wikipedia.org/wiki/Distinguished_Name
+.. _DER: https://www.itu.int/rec/T-REC-X.690/
