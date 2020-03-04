@@ -8,6 +8,11 @@ use Ramsey\Uuid\Exception\InvalidArgumentException;
 use Ramsey\Uuid\Test\TestCase;
 use Ramsey\Uuid\Type\Integer as IntegerObject;
 
+use function json_encode;
+use function serialize;
+use function sprintf;
+use function unserialize;
+
 class IntegerTest extends TestCase
 {
     /**
@@ -162,5 +167,32 @@ class IntegerTest extends TestCase
             ['abc123'],
             ['foobar'],
         ];
+    }
+
+    /**
+     * @param mixed $value
+     *
+     * @dataProvider provideInteger
+     */
+    public function testSerializeUnserializeInteger($value, string $expected): void
+    {
+        $integer = new IntegerObject($value);
+        $serializedInteger = serialize($integer);
+        $unserializedInteger = unserialize($serializedInteger);
+
+        $this->assertSame($expected, $unserializedInteger->toString());
+    }
+
+    /**
+     * @param mixed $value
+     *
+     * @dataProvider provideInteger
+     */
+    public function testJsonSerialize($value, string $expected): void
+    {
+        $integer = new IntegerObject($value);
+        $expectedJson = sprintf('"%s"', $expected);
+
+        $this->assertSame($expectedJson, json_encode($integer));
     }
 }

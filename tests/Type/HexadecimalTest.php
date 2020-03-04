@@ -8,6 +8,11 @@ use Ramsey\Uuid\Exception\InvalidArgumentException;
 use Ramsey\Uuid\Test\TestCase;
 use Ramsey\Uuid\Type\Hexadecimal;
 
+use function json_encode;
+use function serialize;
+use function sprintf;
+use function unserialize;
+
 class HexadecimalTest extends TestCase
 {
     /**
@@ -66,5 +71,32 @@ class HexadecimalTest extends TestCase
             ['foobar'],
             ['0xfoobar'],
         ];
+    }
+
+    /**
+     * @param mixed $value
+     *
+     * @dataProvider provideHex
+     */
+    public function testSerializeUnserializeHexadecimal($value, string $expected): void
+    {
+        $hexadecimal = new Hexadecimal($value);
+        $serializedHexadecimal = serialize($hexadecimal);
+        $unserializedHexadecimal = unserialize($serializedHexadecimal);
+
+        $this->assertSame($expected, $unserializedHexadecimal->toString());
+    }
+
+    /**
+     * @param mixed $value
+     *
+     * @dataProvider provideHex
+     */
+    public function testJsonSerialize($value, string $expected): void
+    {
+        $hexadecimal = new Hexadecimal($value);
+        $expectedJson = sprintf('"%s"', $expected);
+
+        $this->assertSame($expectedJson, json_encode($hexadecimal));
     }
 }

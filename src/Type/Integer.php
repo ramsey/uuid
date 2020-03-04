@@ -86,4 +86,26 @@ final class Integer implements NumberInterface
     {
         return $this->toString();
     }
+
+    public function jsonSerialize(): string
+    {
+        return $this->toString();
+    }
+
+    public function serialize(): string
+    {
+        return $this->toString();
+    }
+
+    /**
+     * Constructs the object from a serialized string representation
+     *
+     * @param string $serialized The serialized string representation of the object
+     *
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
+     */
+    public function unserialize($serialized): void
+    {
+        $this->__construct($serialized);
+    }
 }

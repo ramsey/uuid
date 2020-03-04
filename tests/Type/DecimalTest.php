@@ -8,6 +8,11 @@ use Ramsey\Uuid\Exception\InvalidArgumentException;
 use Ramsey\Uuid\Test\TestCase;
 use Ramsey\Uuid\Type\Decimal;
 
+use function json_encode;
+use function serialize;
+use function sprintf;
+use function unserialize;
+
 class DecimalTest extends TestCase
 {
     /**
@@ -225,5 +230,32 @@ class DecimalTest extends TestCase
             ['+abcd'],
             ['-0012.a'],
         ];
+    }
+
+    /**
+     * @param mixed $value
+     *
+     * @dataProvider provideDecimal
+     */
+    public function testSerializeUnserializeDecimal($value, string $expected): void
+    {
+        $decimal = new Decimal($value);
+        $serializedDecimal = serialize($decimal);
+        $unserializedDecimal = unserialize($serializedDecimal);
+
+        $this->assertSame($expected, $unserializedDecimal->toString());
+    }
+
+    /**
+     * @param mixed $value
+     *
+     * @dataProvider provideDecimal
+     */
+    public function testJsonSerialize($value, string $expected): void
+    {
+        $decimal = new Decimal($value);
+        $expectedJson = sprintf('"%s"', $expected);
+
+        $this->assertSame($expectedJson, json_encode($decimal));
     }
 }

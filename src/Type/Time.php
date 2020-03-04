@@ -14,7 +14,12 @@ declare(strict_types=1);
 
 namespace Ramsey\Uuid\Type;
 
+use Ramsey\Uuid\Exception\UnsupportedOperationException;
 use Ramsey\Uuid\Type\Integer as IntegerObject;
+use stdClass;
+
+use function json_decode;
+use function json_encode;
 
 /**
  * A value object representing a timestamp
@@ -65,5 +70,42 @@ final class Time implements TypeInterface
     public function __toString(): string
     {
         return $this->toString();
+    }
+
+    /**
+     * @return string[]
+     */
+    public function jsonSerialize(): array
+    {
+        return [
+            'seconds' => $this->getSeconds()->toString(),
+            'microseconds' => $this->getMicroSeconds()->toString(),
+        ];
+    }
+
+    public function serialize(): string
+    {
+        return (string) json_encode($this);
+    }
+
+    /**
+     * Constructs the object from a serialized string representation
+     *
+     * @param string $serialized The serialized string representation of the object
+     *
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
+     */
+    public function unserialize($serialized): void
+    {
+        /** @var stdClass $time */
+        $time = json_decode($serialized);
+
+        if (!isset($time->seconds) || !isset($time->microseconds)) {
+            throw new UnsupportedOperationException(
+                'Attempted to unserialize an invalid value'
+            );
+        }
+
+        $this->__construct($time->seconds, $time->microseconds);
     }
 }
