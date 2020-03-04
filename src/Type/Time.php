@@ -40,16 +40,16 @@ final class Time implements TypeInterface
     /**
      * @var IntegerObject
      */
-    private $microSeconds;
+    private $microseconds;
 
     /**
      * @param mixed $seconds
-     * @param mixed $microSeconds
+     * @param mixed $microseconds
      */
-    public function __construct($seconds, $microSeconds = 0)
+    public function __construct($seconds, $microseconds = 0)
     {
         $this->seconds = new IntegerObject($seconds);
-        $this->microSeconds = new IntegerObject($microSeconds);
+        $this->microseconds = new IntegerObject($microseconds);
     }
 
     public function getSeconds(): IntegerObject
@@ -57,14 +57,14 @@ final class Time implements TypeInterface
         return $this->seconds;
     }
 
-    public function getMicroSeconds(): IntegerObject
+    public function getMicroseconds(): IntegerObject
     {
-        return $this->microSeconds;
+        return $this->microseconds;
     }
 
     public function toString(): string
     {
-        return $this->seconds->toString() . '.' . $this->microSeconds->toString();
+        return $this->seconds->toString() . '.' . $this->microseconds->toString();
     }
 
     public function __toString(): string
@@ -79,7 +79,7 @@ final class Time implements TypeInterface
     {
         return [
             'seconds' => $this->getSeconds()->toString(),
-            'microseconds' => $this->getMicroSeconds()->toString(),
+            'microseconds' => $this->getMicroseconds()->toString(),
         ];
     }
 

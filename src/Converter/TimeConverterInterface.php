@@ -32,14 +32,14 @@ interface TimeConverterInterface
      *
      * @param string $seconds A string representation of the number of seconds
      *     since the Unix epoch for the time to calculate
-     * @param string $microSeconds A string representation of the micro-seconds
+     * @param string $microseconds A string representation of the micro-seconds
      *     associated with the time to calculate
      *
      * @return Hexadecimal The full UUID timestamp as a Hexadecimal value
      *
      * @psalm-pure
      */
-    public function calculateTime(string $seconds, string $microSeconds): Hexadecimal;
+    public function calculateTime(string $seconds, string $microseconds): Hexadecimal;
 
     /**
      * Converts a timestamp extracted from a UUID to a Unix timestamp

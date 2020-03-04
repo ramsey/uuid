@@ -16,18 +16,18 @@ class TimeTest extends TestCase
 {
     /**
      * @param int|float|string $seconds
-     * @param int|float|string|null $microSeconds
+     * @param int|float|string|null $microseconds
      *
      * @dataProvider provideTimeValues
      */
-    public function testTime($seconds, $microSeconds): void
+    public function testTime($seconds, $microseconds): void
     {
         $params = [$seconds];
         $timeString = (string) $seconds;
 
-        if ($microSeconds !== null) {
-            $params[] = $microSeconds;
-            $timeString .= ".{$microSeconds}";
+        if ($microseconds !== null) {
+            $params[] = $microseconds;
+            $timeString .= ".{$microseconds}";
         } else {
             $timeString .= '.0';
         }
@@ -37,8 +37,8 @@ class TimeTest extends TestCase
         $this->assertSame((string) $seconds, $time->getSeconds()->toString());
 
         $this->assertSame(
-            (string) $microSeconds ?: '0',
-            $time->getMicroSeconds()->toString()
+            (string) $microseconds ?: '0',
+            $time->getMicroseconds()->toString()
         );
 
         $this->assertSame($timeString, (string) $time);
@@ -52,26 +52,26 @@ class TimeTest extends TestCase
         return [
             [
                 'seconds' => 103072857659,
-                'microSeconds' => null,
+                'microseconds' => null,
             ],
             [
                 'seconds' => -12219292800,
-                'microSeconds' => 1234,
+                'microseconds' => 1234,
             ],
         ];
     }
 
     /**
      * @param int|float|string $seconds
-     * @param int|float|string|null $microSeconds
+     * @param int|float|string|null $microseconds
      *
      * @dataProvider provideTimeValues
      */
-    public function testSerializeUnserializeTime($seconds, $microSeconds): void
+    public function testSerializeUnserializeTime($seconds, $microseconds): void
     {
         $params = [$seconds];
-        if ($microSeconds !== null) {
-            $params[] = $microSeconds;
+        if ($microseconds !== null) {
+            $params[] = $microseconds;
         }
 
         $time = new Time(...$params);
@@ -81,8 +81,8 @@ class TimeTest extends TestCase
         $this->assertSame((string) $seconds, $unserializedTime->getSeconds()->toString());
 
         $this->assertSame(
-            (string) $microSeconds ?: '0',
-            $unserializedTime->getMicroSeconds()->toString()
+            (string) $microseconds ?: '0',
+            $unserializedTime->getMicroseconds()->toString()
         );
     }
 
@@ -98,22 +98,22 @@ class TimeTest extends TestCase
 
     /**
      * @param int|float|string $seconds
-     * @param int|float|string|null $microSeconds
+     * @param int|float|string|null $microseconds
      *
      * @dataProvider provideTimeValues
      */
-    public function testJsonSerialize($seconds, $microSeconds): void
+    public function testJsonSerialize($seconds, $microseconds): void
     {
         $time = [
             'seconds' => (string) $seconds,
-            'microseconds' => (string) $microSeconds ?: '0',
+            'microseconds' => (string) $microseconds ?: '0',
         ];
 
         $expectedJson = json_encode($time);
 
         $params = [$seconds];
-        if ($microSeconds !== null) {
-            $params[] = $microSeconds;
+        if ($microseconds !== null) {
+            $params[] = $microseconds;
         }
 
         $time = new Time(...$params);

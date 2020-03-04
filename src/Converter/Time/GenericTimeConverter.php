@@ -62,9 +62,9 @@ class GenericTimeConverter implements TimeConverterInterface
      * @inheritDoc
      * @psalm-pure
      */
-    public function calculateTime(string $seconds, string $microSeconds): Hexadecimal
+    public function calculateTime(string $seconds, string $microseconds): Hexadecimal
     {
-        $timestamp = new Time($seconds, $microSeconds);
+        $timestamp = new Time($seconds, $microseconds);
 
         // Convert the seconds into a count of 100-nanosecond intervals.
         $sec = $this->calculator->multiply(
@@ -74,7 +74,7 @@ class GenericTimeConverter implements TimeConverterInterface
 
         // Convert the microseconds into a count of 100-nanosecond intervals.
         $usec = $this->calculator->multiply(
-            $timestamp->getMicroSeconds(),
+            $timestamp->getMicroseconds(),
             new IntegerObject(self::MICROSECOND_INTERVALS)
         );
 

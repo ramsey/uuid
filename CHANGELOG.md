@@ -233,7 +233,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   instead of `mixed`; this simplifies the interface and makes it consistent:
   * `NumberConverterInterface::fromHex(string $hex): string`
   * `NumberConverterInterface::toHex(string $number): string`
-  * `TimeConverterInterface::calculateTime(string $seconds, string $microSeconds): array`
+  * `TimeConverterInterface::calculateTime(string $seconds, string $microseconds): array`
 * `UnsupportedOperationException` is now descended from `\LogicException`.
   Previously, it descended from `\RuntimeException`.
 * When encoding to bytes or decoding from bytes, `OrderedTimeCodec` now checks

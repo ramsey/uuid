@@ -14,12 +14,12 @@ class GenericTimeConverterTest extends TestCase
     /**
      * @dataProvider provideCalculateTime
      */
-    public function testCalculateTime(string $seconds, string $microSeconds, string $expected): void
+    public function testCalculateTime(string $seconds, string $microseconds, string $expected): void
     {
         $calculator = new BrickMathCalculator();
         $converter = new GenericTimeConverter($calculator);
 
-        $result = $converter->calculateTime($seconds, $microSeconds);
+        $result = $converter->calculateTime($seconds, $microseconds);
 
         $this->assertSame($expected, $result->toString());
     }
@@ -32,7 +32,7 @@ class GenericTimeConverterTest extends TestCase
         return [
             [
                 'seconds' => '-12219146756',
-                'microSeconds' => '0',
+                'microseconds' => '0',
                 'expected' => '000001540901e600',
             ],
             [
@@ -50,7 +50,7 @@ class GenericTimeConverterTest extends TestCase
             // 1582-10-15 00:00:00.000000
             [
                 'seconds' => '-12219292800',
-                'microSeconds' => '0',
+                'microseconds' => '0',
                 'expected' => '0000000000000000',
             ],
 
@@ -82,7 +82,7 @@ class GenericTimeConverterTest extends TestCase
     /**
      * @dataProvider provideConvertTime
      */
-    public function testConvertTime(Hexadecimal $uuidTimestamp, string $unixTimestamp, string $microSeconds): void
+    public function testConvertTime(Hexadecimal $uuidTimestamp, string $unixTimestamp, string $microseconds): void
     {
         $calculator = new BrickMathCalculator();
         $converter = new GenericTimeConverter($calculator);
@@ -90,7 +90,7 @@ class GenericTimeConverterTest extends TestCase
         $result = $converter->convertTime($uuidTimestamp);
 
         $this->assertSame($unixTimestamp, $result->getSeconds()->toString());
-        $this->assertSame($microSeconds, $result->getMicroSeconds()->toString());
+        $this->assertSame($microseconds, $result->getMicroseconds()->toString());
     }
 
     /**
@@ -102,17 +102,17 @@ class GenericTimeConverterTest extends TestCase
             [
                 'uuidTimestamp' => new Hexadecimal('1e1c57dff6f8cb0'),
                 'unixTimestamp' => '1341368074',
-                'microSeconds' => '491000',
+                'microseconds' => '491000',
             ],
             [
                 'uuidTimestamp' => new Hexadecimal('1ea333764c71df6'),
                 'unixTimestamp' => '1578612359',
-                'microSeconds' => '521023',
+                'microseconds' => '521023',
             ],
             [
                 'uuidTimestamp' => new Hexadecimal('fffffffff9785f6'),
                 'unixTimestamp' => '103072857659',
-                'microSeconds' => '999999',
+                'microseconds' => '999999',
             ],
 
             // This is the last possible time supported by v1 UUIDs. When
@@ -121,7 +121,7 @@ class GenericTimeConverterTest extends TestCase
             [
                 'uuidTimestamp' => new Hexadecimal('fffffffffffffffa'),
                 'unixTimestamp' => '1832455114570',
-                'microSeconds' => '955161',
+                'microseconds' => '955161',
             ],
 
             // This is the earliest possible date supported by v1 UUIDs:
@@ -129,7 +129,7 @@ class GenericTimeConverterTest extends TestCase
             [
                 'uuidTimestamp' => new Hexadecimal('000000000000'),
                 'unixTimestamp' => '-12219292800',
-                'microSeconds' => '0',
+                'microseconds' => '0',
             ],
 
             // This is the Unix epoch:
@@ -137,7 +137,7 @@ class GenericTimeConverterTest extends TestCase
             [
                 'uuidTimestamp' => new Hexadecimal('1b21dd213814000'),
                 'unixTimestamp' => '0',
-                'microSeconds' => '0',
+                'microseconds' => '0',
             ],
         ];
     }

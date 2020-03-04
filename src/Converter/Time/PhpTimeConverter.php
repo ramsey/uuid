@@ -92,15 +92,15 @@ class PhpTimeConverter implements TimeConverterInterface
      * @inheritDoc
      * @psalm-pure
      */
-    public function calculateTime(string $seconds, string $microSeconds): Hexadecimal
+    public function calculateTime(string $seconds, string $microseconds): Hexadecimal
     {
         $seconds = new IntegerObject($seconds);
-        $microSeconds = new IntegerObject($microSeconds);
+        $microseconds = new IntegerObject($microseconds);
 
         // Calculate the count of 100-nanosecond intervals since the Gregorian
         // calendar epoch for the given seconds and microseconds.
         $uuidTime = ((int) $seconds->toString() * self::SECOND_INTERVALS)
-            + ((int) $microSeconds->toString() * self::MICROSECOND_INTERVALS)
+            + ((int) $microseconds->toString() * self::MICROSECOND_INTERVALS)
             + self::GREGORIAN_TO_UNIX_INTERVALS;
 
         // Check to see whether we've overflowed the max/min integer size.
@@ -108,7 +108,7 @@ class PhpTimeConverter implements TimeConverterInterface
         if (!is_int($uuidTime)) {
             return $this->fallbackConverter->calculateTime(
                 $seconds->toString(),
-                $microSeconds->toString()
+                $microseconds->toString()
             );
         }
 

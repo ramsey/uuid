@@ -53,7 +53,7 @@ class FixedTimeProvider implements TimeProviderInterface
      */
     public function setSec($value): void
     {
-        $this->fixedTime = new Time($value, $this->fixedTime->getMicroSeconds());
+        $this->fixedTime = new Time($value, $this->fixedTime->getMicroseconds());
     }
 
     public function getTime(): Time

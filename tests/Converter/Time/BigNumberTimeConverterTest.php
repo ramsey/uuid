@@ -17,11 +17,11 @@ class BigNumberTimeConverterTest extends TestCase
     public function testCalculateTimeReturnsArrayOfTimeSegments(): void
     {
         $seconds = BigInteger::of(5);
-        $microSeconds = BigInteger::of(3);
+        $microseconds = BigInteger::of(3);
 
         $calculatedTime = BigInteger::zero()
             ->plus($seconds->multipliedBy(10000000))
-            ->plus($microSeconds->multipliedBy(10))
+            ->plus($microseconds->multipliedBy(10))
             ->plus(BigInteger::fromBase('01b21dd213814000', 16));
 
         $maskLow = BigInteger::fromBase('ffffffff', 16);
@@ -33,7 +33,7 @@ class BigNumberTimeConverterTest extends TestCase
         $expected .= sprintf('%08s', $calculatedTime->and($maskLow)->toBase(16));
 
         $converter = new BigNumberTimeConverter();
-        $returned = $converter->calculateTime((string) $seconds, (string) $microSeconds);
+        $returned = $converter->calculateTime((string) $seconds, (string) $microseconds);
 
         $this->assertInstanceOf(Hexadecimal::class, $returned);
         $this->assertSame($expected, $returned->toString());
@@ -60,7 +60,7 @@ class BigNumberTimeConverterTest extends TestCase
         $converter->calculateTime('12.34', '5678');
     }
 
-    public function testCalculateTimeThrowsExceptionWhenMicroSecondsIsNotOnlyDigits(): void
+    public function testCalculateTimeThrowsExceptionWhenMicrosecondsIsNotOnlyDigits(): void
     {
         $converter = new BigNumberTimeConverter();
 

@@ -87,7 +87,7 @@ final class UuidV6 extends Uuid implements UuidInterface
                 '@'
                 . $time->getSeconds()->toString()
                 . '.'
-                . str_pad($time->getMicroSeconds()->toString(), 6, '0', STR_PAD_LEFT)
+                . str_pad($time->getMicroseconds()->toString(), 6, '0', STR_PAD_LEFT)
             );
         } catch (Throwable $e) {
             throw new DateTimeException($e->getMessage(), (int) $e->getCode(), $e);

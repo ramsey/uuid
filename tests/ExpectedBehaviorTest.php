@@ -532,8 +532,8 @@ class ExpectedBehaviorTest extends TestCase
         $timeConverter = \Mockery::mock('Ramsey\Uuid\Converter\TimeConverterInterface');
         $timeConverter
             ->shouldReceive('calculateTime')
-            ->andReturnUsing(function ($seconds, $microSeconds) {
-                return new Hexadecimal('abcd' . dechex($microSeconds) . dechex($seconds));
+            ->andReturnUsing(function ($seconds, $microseconds) {
+                return new Hexadecimal('abcd' . dechex($microseconds) . dechex($seconds));
             });
 
         $timeProvider = \Mockery::mock('Ramsey\Uuid\Provider\TimeProviderInterface', [

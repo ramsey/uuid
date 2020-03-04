@@ -96,7 +96,7 @@ class DefaultTimeGenerator implements TimeGeneratorInterface
 
         $uuidTime = $this->timeConverter->calculateTime(
             $time->getSeconds()->toString(),
-            $time->getMicroSeconds()->toString()
+            $time->getMicroseconds()->toString()
         );
 
         $timeHex = str_pad($uuidTime->toString(), 16, '0', STR_PAD_LEFT);

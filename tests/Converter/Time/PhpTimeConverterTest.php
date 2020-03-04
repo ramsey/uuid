@@ -20,11 +20,11 @@ class PhpTimeConverterTest extends TestCase
     public function testCalculateTimeReturnsArrayOfTimeSegments(): void
     {
         $seconds = BigInteger::of(5);
-        $microSeconds = BigInteger::of(3);
+        $microseconds = BigInteger::of(3);
 
         $calculatedTime = BigInteger::zero()
             ->plus($seconds->multipliedBy(10000000))
-            ->plus($microSeconds->multipliedBy(10))
+            ->plus($microseconds->multipliedBy(10))
             ->plus(BigInteger::fromBase('01b21dd213814000', 16));
 
         $maskLow = BigInteger::fromBase('ffffffff', 16);
@@ -36,7 +36,7 @@ class PhpTimeConverterTest extends TestCase
         $expected .= sprintf('%08s', $calculatedTime->and($maskLow)->toBase(16));
 
         $converter = new PhpTimeConverter();
-        $returned = $converter->calculateTime((string) $seconds, (string) $microSeconds);
+        $returned = $converter->calculateTime((string) $seconds, (string) $microseconds);
 
         $this->assertSame($expected, $returned->toString());
     }
@@ -55,7 +55,7 @@ class PhpTimeConverterTest extends TestCase
         $converter->calculateTime('12.34', '5678');
     }
 
-    public function testCalculateTimeThrowsExceptionWhenMicroSecondsIsNotOnlyDigits(): void
+    public function testCalculateTimeThrowsExceptionWhenMicrosecondsIsNotOnlyDigits(): void
     {
         /** @var Mockery\MockInterface & PhpTimeConverter $converter */
         $converter = Mockery::mock(PhpTimeConverter::class)->makePartial();
@@ -72,7 +72,7 @@ class PhpTimeConverterTest extends TestCase
     /**
      * @dataProvider provideConvertTime
      */
-    public function testConvertTime(Hexadecimal $uuidTimestamp, string $unixTimestamp, string $microSeconds): void
+    public function testConvertTime(Hexadecimal $uuidTimestamp, string $unixTimestamp, string $microseconds): void
     {
         $calculator = new BrickMathCalculator();
         $fallbackConverter = new GenericTimeConverter($calculator);
@@ -81,7 +81,7 @@ class PhpTimeConverterTest extends TestCase
         $result = $converter->convertTime($uuidTimestamp);
 
         $this->assertSame($unixTimestamp, $result->getSeconds()->toString());
-        $this->assertSame($microSeconds, $result->getMicroSeconds()->toString());
+        $this->assertSame($microseconds, $result->getMicroseconds()->toString());
     }
 
     /**
@@ -93,17 +93,17 @@ class PhpTimeConverterTest extends TestCase
             [
                 'uuidTimestamp' => new Hexadecimal('1e1c57dff6f8cb0'),
                 'unixTimestamp' => '1341368074',
-                'microSeconds' => '491000',
+                'microseconds' => '491000',
             ],
             [
                 'uuidTimestamp' => new Hexadecimal('1ea333764c71df6'),
                 'unixTimestamp' => '1578612359',
-                'microSeconds' => '521023',
+                'microseconds' => '521023',
             ],
             [
                 'uuidTimestamp' => new Hexadecimal('fffffffff9785f6'),
                 'unixTimestamp' => '103072857659',
-                'microSeconds' => '999999',
+                'microseconds' => '999999',
             ],
 
             // This is the last possible time supported by v1 UUIDs. When
@@ -112,7 +112,7 @@ class PhpTimeConverterTest extends TestCase
             [
                 'uuidTimestamp' => new Hexadecimal('fffffffffffffffa'),
                 'unixTimestamp' => '1832455114570',
-                'microSeconds' => '955161',
+                'microseconds' => '955161',
             ],
 
             // This is the earliest possible date supported by v1 UUIDs:
@@ -120,7 +120,7 @@ class PhpTimeConverterTest extends TestCase
             [
                 'uuidTimestamp' => new Hexadecimal('000000000000'),
                 'unixTimestamp' => '-12219292800',
-                'microSeconds' => '0',
+                'microseconds' => '0',
             ],
 
             // This is the Unix epoch:
@@ -128,7 +128,7 @@ class PhpTimeConverterTest extends TestCase
             [
                 'uuidTimestamp' => new Hexadecimal('1b21dd213814000'),
                 'unixTimestamp' => '0',
-                'microSeconds' => '0',
+                'microseconds' => '0',
             ],
         ];
     }
@@ -136,13 +136,13 @@ class PhpTimeConverterTest extends TestCase
     /**
      * @dataProvider provideCalculateTime
      */
-    public function testCalculateTime(string $seconds, string $microSeconds, string $expected): void
+    public function testCalculateTime(string $seconds, string $microseconds, string $expected): void
     {
         $calculator = new BrickMathCalculator();
         $fallbackConverter = new GenericTimeConverter($calculator);
         $converter = new PhpTimeConverter($calculator, $fallbackConverter);
 
-        $result = $converter->calculateTime($seconds, $microSeconds);
+        $result = $converter->calculateTime($seconds, $microseconds);
 
         $this->assertSame($expected, $result->toString());
     }
@@ -155,7 +155,7 @@ class PhpTimeConverterTest extends TestCase
         return [
             [
                 'seconds' => '-12219146756',
-                'microSeconds' => '0',
+                'microseconds' => '0',
                 'expected' => '000001540901e600',
             ],
             [
@@ -173,7 +173,7 @@ class PhpTimeConverterTest extends TestCase
             // 1582-10-15 00:00:00.000000
             [
                 'seconds' => '-12219292800',
-                'microSeconds' => '0',
+                'microseconds' => '0',
                 'expected' => '0000000000000000',
             ],
 
