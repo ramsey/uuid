@@ -4,47 +4,25 @@
 Rfc4122\\UuidInterface
 ======================
 
-All RFC 4122 UUID instances in ramsey/uuid implement the following interface.
-
 .. php:namespace:: Ramsey\Uuid\Rfc4122
 
 .. php:interface:: UuidInterface
 
-    Represents an RFC 4122 UUID.
+    Implements :php:interface:`Ramsey\\Uuid\\UuidInterface`.
 
-    .. php:method:: compareTo($other)
-
-        :param Ramsey\\Uuid\\UuidInterface $other: The UUID to compare
-        :returns: (*int*) Returns ``-1``, ``0``, or ``1`` if the UUID is less than, equal to, or greater than the other UUID.
-
-    .. php:method:: equals($other)
-
-        :param object|null $other: An object to test for equality with this UUID.
-        :returns: (*bool*) Returns true if the UUID is equal to the provided object.
-
-    .. php:method:: getBytes()
-
-        :returns: (*string*) A binary string representation of the UUID.
+    ``Rfc4122\UuidInterface`` represents an RFC 4122 UUID.
+    In addition to providing the methods defined on the interface, this class
+    additionally provides the following methods.
 
     .. php:method:: getFields()
 
-        :returns: (:php:interface:`Ramsey\\Uuid\\Rfc4122\\FieldsInterface`) The fields that comprise this UUID.
-
-    .. php:method:: getHex()
-
-        :returns: (*Ramsey\\Uuid\\Type\\Hexadecimal*) The hexadecimal representation of the UUID.
-
-    .. php:method:: getInteger()
-
-        :returns: (*Ramsey\\Uuid\\Type\\Integer*) The integer representation of the UUID.
-
-    .. php:method:: toString()
-
-        :returns: (*string*) The string standard representation of the UUID.
+        :returns: The fields that comprise this UUID.
+        :returntype: Ramsey\\Uuid\\Rfc4122\\FieldsInterface
 
     .. php:method:: getUrn()
 
-        :returns: (*string*) The string standard representation of the UUID as a `URN`_.
+        :returns: The string standard representation of the UUID as a `URN`_.
+        :returntype: ``string``
 
 
 .. _URN: https://tools.ietf.org/html/rfc8141

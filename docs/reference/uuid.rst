@@ -91,7 +91,8 @@ the ramsey/uuid library.
 
         :param Ramsey\\Uuid\\Type\\Hexadecimal|null $node: An optional hexadecimal node to use
         :param int|null $clockSeq: An optional clock sequence to use
-        :returns: (*Ramsey\\Uuid\\Rfc4122\\UuidV1*) A version 1 UUID
+        :returns: A version 1 UUID
+        :returntype: Ramsey\\Uuid\\Rfc4122\\UuidV1
 
     .. php:staticmethod:: uuid2($localDomain[, $localIdentifier[, $node[, $clockSeq]]])
 
@@ -101,7 +102,8 @@ the ramsey/uuid library.
         :param Ramsey\\Uuid\\Type\\Integer|null $localIdentifier: A local identifier for the domain (defaults to system UID or GID for *person* or *group*)
         :param Ramsey\\Uuid\\Type\\Hexadecimal|null $node: An optional hexadecimal node to use
         :param int|null $clockSeq: An optional clock sequence to use
-        :returns: (*Ramsey\\Uuid\\Rfc4122\\UuidV2*) A version 2 UUID
+        :returns: A version 2 UUID
+        :returntype: Ramsey\\Uuid\\Rfc4122\\UuidV2
 
     .. php:staticmethod:: uuid3($ns, $name)
 
@@ -109,13 +111,15 @@ the ramsey/uuid library.
 
         :param Ramsey\\Uuid\\UuidInterface|string $ns: The namespace for this identifier
         :param string $name: The name from which to generate an identifier
-        :returns: (*Ramsey\\Uuid\\Rfc4122\\UuidV3*) A version 3 UUID
+        :returns: A version 3 UUID
+        :returntype: Ramsey\\Uuid\\Rfc4122\\UuidV3
 
     .. php:staticmethod:: uuid4()
 
         Generates a version 4, random UUID. See :ref:`rfc4122.version4`.
 
-        :returns: (*Ramsey\\Uuid\\Rfc4122\\UuidV4*) A version 4 UUID
+        :returns: A version 4 UUID
+        :returntype: Ramsey\\Uuid\\Rfc4122\\UuidV4
 
     .. php:staticmethod:: uuid5($ns, $name)
 
@@ -123,7 +127,8 @@ the ramsey/uuid library.
 
         :param Ramsey\\Uuid\\UuidInterface|string $ns: The namespace for this identifier
         :param string $name: The name from which to generate an identifier
-        :returns: (*Ramsey\\Uuid\\Rfc4122\\UuidV5*) A version 5 UUID
+        :returns: A version 5 UUID
+        :returntype: Ramsey\\Uuid\\Rfc4122\\UuidV5
 
     .. php:staticmethod:: uuid6([$node[, $clockSeq]])
 
@@ -131,7 +136,8 @@ the ramsey/uuid library.
 
         :param Ramsey\\Uuid\\Type\\Hexadecimal|null $node: An optional hexadecimal node to use
         :param int|null $clockSeq: An optional clock sequence to use
-        :returns: (*Ramsey\\Uuid\\Nonstandard\\UuidV6*) A version 6 UUID
+        :returns: A version 6 UUID
+        :returntype: Ramsey\\Uuid\\Nonstandard\\UuidV6
 
     .. php:staticmethod:: fromString($uuid)
 
@@ -139,21 +145,21 @@ the ramsey/uuid library.
         representation.
 
         :param string $uuid: The string standard representation of a UUID
-        :returns: (*Ramsey\\Uuid\\UuidInterface*) An instance of ``UuidInterface``
+        :returntype: Ramsey\\Uuid\\UuidInterface
 
     .. php:staticmethod:: fromBytes($bytes)
 
         Creates an instance of ``UuidInterface`` from a 16-byte string.
 
         :param string $bytes: A 16-byte binary string representation of a UUID
-        :returns: (*Ramsey\\Uuid\\UuidInterface*) An instance of ``UuidInterface``
+        :returntype: Ramsey\\Uuid\\UuidInterface
 
     .. php:staticmethod:: fromInteger($integer)
 
         Creates an instance of ``UuidInterface`` from a 128-bit string integer.
 
         :param string $integer: A 128-bit string integer representation of a UUID
-        :returns: (*Ramsey\\Uuid\\UuidInterface*) An instance of ``UuidInterface``
+        :returntype: Ramsey\\Uuid\\UuidInterface
 
     .. php:staticmethod:: fromDateTime($dateTime[, $node[, $clockSeq]])
 
@@ -162,14 +168,15 @@ the ramsey/uuid library.
         :param DateTimeInterface $dateTime: The date from which to create the UUID instance
         :param Ramsey\\Uuid\\Type\\Hexadecimal|null $node: An optional hexadecimal node to use
         :param int|null $clockSeq: An optional clock sequence to use
-        :returns: (*Ramsey\\Uuid\\Rfc4122\\UuidV1*) A version 1 UUID
+        :returns: A version 1 UUID
+        :returntype: Ramsey\\Uuid\\Rfc4122\\UuidV1
 
     .. php:staticmethod:: isValid($uuid)
 
         Validates the string standard representation of a UUID
 
         :param string $uuid: The string standard representation of a UUID
-        :returns: True if the string UUID is valid, false otherwise
+        :returntype: ``bool``
 
 
 .. _ISO object identifier (OID): http://www.oid-info.com

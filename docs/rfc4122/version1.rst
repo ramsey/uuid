@@ -50,10 +50,10 @@ It will look something like this:
 
 .. code-block:: text
 
-    UUID: e22e1622-5c14-11ea-b2f3-acde48001122
+    UUID: e22e1622-5c14-11ea-b2f3-0242ac130003
     Version: 1
     Date: Sun, 01 Mar 2020 23:32:15 +0000
-    Node: acde48001122
+    Node: 0242ac130003
 
 After creating a ``UuidInterface`` object from a string (or bytes), you can
 check to see if it's a version 1 UUID by checking its instance type.
@@ -114,7 +114,7 @@ You may also set the node value of your choice. In this example, we use
     $uuid = Uuid::uuid1($nodeProvider->getNode());
 
 .. attention::
-    According to RFC 4122, nodes that do not identify the host should set the
+    According to [RFC4122]_, nodes that do not identify the host should set the
     unicast/multicast bit to one (``1``). This bit will never be set in IEEE 802
     addresses obtained from network cards, so it helps to distinguish it from a
     hardware MAC address.
@@ -123,7 +123,7 @@ You may also set the node value of your choice. In this example, we use
     bit for you, so they’re the easiest to use, but if you use a custom node
     provider, be sure to set this bit.
 
-    See `RFC 4122, section 4.5 <https://tools.ietf.org/html/rfc4122#section-4.5>`_,
+    See [RFC4122]_, `section 4.5 <https://tools.ietf.org/html/rfc4122#section-4.5>`_,
     for more details.
 
 

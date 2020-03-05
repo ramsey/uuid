@@ -14,7 +14,7 @@ RFC 4122 UUIDs
     rfc4122/version4
     rfc4122/version5
 
-`RFC 4122`_ defines five versions of UUID. Each version has different generation
+[RFC4122]_ defines five versions of UUID. Each version has different generation
 algorithms and properties. Which one you choose to use depends on your use-case.
 You can find out more about their applications on the specific page for that
 version.
@@ -43,6 +43,3 @@ Version 5: Named-based (SHA-1)
     This version of UUID hashes together a namespace and a name to create a
     deterministic UUID. The hashing algorithm used is SHA-1. For more details,
     see :doc:`rfc4122/version5`.
-
-
-.. _RFC 4122: https://tools.ietf.org/html/rfc4122

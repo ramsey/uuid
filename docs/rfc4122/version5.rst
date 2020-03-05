@@ -36,7 +36,7 @@ to the namespace they're created in. RFC 4122 defines some
 for URLs.
 
 .. note::
-    Version 5 UUIDs use `SHA-1`_ as the hashing algorithm for combining the
+    Version 5 UUIDs use [SHA1]_ as the hashing algorithm for combining the
     namespace and the name.
 
 .. code-block:: php
@@ -100,6 +100,3 @@ will always be ``a35477ae-bfb1-5f2e-b5a4-4711594d855f``.
 We can publish this namespace, allowing others to use it to generate identifiers
 for widgets. When two or more systems try to reference the same widget, they'll
 end up generating the same identifier for it, which is exactly what we want.
-
-
-.. _SHA-1: http://dx.doi.org/10.6028/NIST.FIPS.180-4

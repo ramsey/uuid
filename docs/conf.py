@@ -13,6 +13,7 @@
 import os
 import sphinx_rtd_theme
 import sys
+import datetime
 
 from pygments.lexers.web import PhpLexer
 from sphinx.highlighting import lexers
@@ -40,6 +41,8 @@ author = 'Ben Ramsey'
 version = get_version().strip()
 release = version
 
+today = datetime.date.today().strftime('%Y-%m-%d')
+
 
 # -- General configuration ---------------------------------------------------
 
@@ -55,6 +58,7 @@ lexers['php-annotations'] = PhpLexer(startinline=True)
 # ones.
 extensions = [
     'sphinx.ext.autodoc',
+    'sphinx.ext.todo',
     'sphinxcontrib.phpdomain',
 ]
 

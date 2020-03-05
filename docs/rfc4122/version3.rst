@@ -6,7 +6,7 @@ Version 3: Name-based (MD5)
 
 .. attention::
 
-    `RFC 4122`_ states, "If backward compatibility is not an issue, SHA-1 is
+    [RFC4122]_ states, "If backward compatibility is not an issue, SHA-1 is
     preferred." As a result, the use of :ref:`version 5 UUIDs
     <rfc4122.version5>` is preferred over version 3 UUIDs, unless you have a
     specific use-case for version 3 UUIDs.
@@ -18,8 +18,8 @@ Version 3: Name-based (MD5)
     <rfc4122.version5>`. The only difference is the hashing algorithm used to
     generate the UUID.
 
-    Version 3 UUIDs use `MD5`_ as the hashing algorithm for combining the
-    namespace and the name.
+    Version 3 UUIDs use MD5 [RFC1321]_ as the hashing algorithm for combining
+    the namespace and the name.
 
 Due to the use of a different hashing algorithm, version 3 UUIDs generated with
 any given namespace and name will differ from version 5 UUIDs generated using
@@ -62,7 +62,3 @@ will always be ``53564aa3-4154-3ca5-ac90-dba59dc7d3cb``.
     ``Ramsey\Uuid\Rfc4122\UuidV3``. Check out the
     :php:interface:`Ramsey\\Uuid\\Rfc4122\\UuidInterface` API documentation to
     learn more about what you can do with a ``UuidV3`` instance.
-
-
-.. _RFC 4122: https://tools.ietf.org/html/rfc4122
-.. _MD5: https://tools.ietf.org/html/rfc1321

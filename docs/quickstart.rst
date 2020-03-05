@@ -4,8 +4,47 @@
 Getting Started
 ===============
 
-After :ref:`installing ramsey/uuid <installation>`, the quickest way to get
-up-and-running is to use the static generation methods.
+
+Requirements
+############
+
+ramsey/uuid |version| requires the following:
+
+* PHP 7.2+
+* `ext-json <https://www.php.net/manual/en/book.json.php>`_
+
+The JSON extension is normally enabled by default, but it is possible to disable
+it. Other required extensions include
+`PCRE <https://www.php.net/manual/en/book.pcre.php>`_
+and `SPL <https://www.php.net/manual/en/book.spl.php>`_. These standard
+extensions cannot be disabled without patching PHP's build system and/or C
+sources.
+
+ramsey/uuid recommends installing/enabling the following extensions. While not
+required, these extensions improve the performance of ramsey/uuid.
+
+* `ext-ctype <https://www.php.net/manual/en/book.ctype.php>`_
+* `ext-gmp <https://www.php.net/manual/en/book.gmp.php>`_
+* `ext-bcmath <https://www.php.net/manual/en/book.bc.php>`_
+
+
+Install With Composer
+#####################
+
+The only supported installation method for ramsey/uuid is
+`Composer <https://getcomposer.org>`_. Use the following command to add
+ramsey/uuid to your project dependencies:
+
+.. code-block:: bash
+
+    composer require ramsey/uuid
+
+
+Using ramsey/uuid
+#################
+
+After installing ramsey/uuid, the quickest way to get up-and-running is to use
+the static generation methods.
 
 .. code-block:: php
 

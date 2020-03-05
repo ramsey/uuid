@@ -16,4 +16,5 @@ Rfc4122\\UuidV1
 
     .. php:method:: getDateTime()
 
-        :returns: (*\\DateTimeInterface*) A date object representing the timestamp associated with the UUID.
+        :returns: A date object representing the timestamp associated with the UUID.
+        :returntype: ``\DateTimeInterface``

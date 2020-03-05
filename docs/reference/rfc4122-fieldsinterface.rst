@@ -4,61 +4,68 @@
 Rfc4122\\FieldsInterface
 ========================
 
-All RFC 4122 UUID instances in ramsey/uuid implement a ``getFields()`` method
-that returns an instance of ``Rfc4122\FieldsInterface``.
-
 .. php:namespace:: Ramsey\Uuid\Rfc4122
 
 .. php:interface:: FieldsInterface
 
-    Represents the fields of an RFC 4122 UUID.
+    Implements :php:interface:`Ramsey\\Uuid\\Fields\\FieldsInterface`.
 
-    .. php:method:: getBytes()
-
-        :returns: (*string*) The bytes that comprise these fields.
+    ``Rfc4122\FieldsInterface`` represents the fields of an RFC 4122 UUID.
+    In addition to providing the methods defined on the interface, this class
+    additionally provides the following methods.
 
     .. php:method:: getClockSeq()
 
-        :returns: (*Ramsey\\Uuid\\Type\\Hexadecimal*) The full 16-bit clock sequence, with the variant bits (two most significant bits) masked out.
+        :returns: The full 16-bit clock sequence, with the variant bits (two most significant bits) masked out.
+        :returntype: Ramsey\\Uuid\\Type\\Hexadecimal
 
     .. php:method:: getClockSeqHiAndReserved()
 
-        :returns: (*Ramsey\\Uuid\\Type\\Hexadecimal*) The high field of the clock sequence multiplexed with the variant.
+        :returns: The high field of the clock sequence multiplexed with the variant.
+        :returntype: Ramsey\\Uuid\\Type\\Hexadecimal
 
     .. php:method:: getClockSeqLow()
 
-        :returns: (*Ramsey\\Uuid\\Type\\Hexadecimal*) The low field of the clock sequence.
+        :returns: The low field of the clock sequence.
+        :returntype: Ramsey\\Uuid\\Type\\Hexadecimal
 
     .. php:method:: getNode()
 
-        :returns: (*Ramsey\\Uuid\\Type\\Hexadecimal*) The node field.
+        :returns: The node field.
+        :returntype: Ramsey\\Uuid\\Type\\Hexadecimal
 
     .. php:method:: getTimeHiAndVersion()
 
-        :returns: (*Ramsey\\Uuid\\Type\\Hexadecimal*) The high field of the timestamp multiplexed with the version.
+        :returns: The high field of the timestamp multiplexed with the version.
+        :returntype: Ramsey\\Uuid\\Type\\Hexadecimal
 
     .. php:method:: getTimeLow()
 
-        :returns: (*Ramsey\\Uuid\\Type\\Hexadecimal*) The low field of the timestamp.
+        :returns: The low field of the timestamp.
+        :returntype: Ramsey\\Uuid\\Type\\Hexadecimal
 
     .. php:method:: getTimeMid()
 
-        :returns: (*Ramsey\\Uuid\\Type\\Hexadecimal*) The middle field of the timestamp.
+        :returns: The middle field of the timestamp.
+        :returntype: Ramsey\\Uuid\\Type\\Hexadecimal
 
     .. php:method:: getTimestamp()
 
-        :returns: (*Ramsey\\Uuid\\Type\\Hexadecimal*) The full 60-bit timestamp, without the version.
+        :returns: The full 60-bit timestamp, without the version.
+        :returntype: Ramsey\\Uuid\\Type\\Hexadecimal
 
     .. php:method:: getVariant()
 
         Returns the variant, which, for RFC 4122 variant UUIDs, should always be
         the value ``2``.
 
-        :returns: (*int*) The UUID variant.
+        :returns: The UUID variant.
+        :returntype: ``int``
 
     .. php:method:: getVersion()
 
-        :returns: (*int*) The UUID version.
+        :returns: The UUID version.
+        :returntype: ``int``
 
     .. php:method:: isNil()
 
@@ -66,4 +73,5 @@ that returns an instance of ``Rfc4122\FieldsInterface``.
         Its string standard representation is always
         ``00000000-0000-0000-0000-000000000000``.
 
-        :returns: (*bool*) True if this UUID represents a nil UUID.
+        :returns: True if this UUID represents a nil UUID.
+        :returntype: ``bool``

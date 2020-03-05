@@ -13,7 +13,8 @@ only the string standard representation of a UUID.
 
     :param Ramsey\\Uuid\\Type\\Hexadecimal|null $node: An optional hexadecimal node to use
     :param int|null $clockSeq: An optional clock sequence to use
-    :returns: (*string*) A string standard representation of a version 1 UUID
+    :returns: A string standard representation of a version 1 UUID
+    :returntype: string
 
 .. php:function:: Ramsey\\Uuid\\v2($localDomain[, $localIdentifier[, $node[, $clockSeq]]])
 
@@ -23,7 +24,8 @@ only the string standard representation of a UUID.
     :param Ramsey\\Uuid\\Type\\Integer|null $localIdentifier: A local identifier for the domain (defaults to system UID or GID for *person* or *group*)
     :param Ramsey\\Uuid\\Type\\Hexadecimal|null $node: An optional hexadecimal node to use
     :param int|null $clockSeq: An optional clock sequence to use
-    :returns: (*string*) A string standard representation of a version 2 UUID
+    :returns: A string standard representation of a version 2 UUID
+    :returntype: string
 
 .. php:function:: Ramsey\\Uuid\\v3($ns, $name)
 
@@ -31,13 +33,15 @@ only the string standard representation of a UUID.
 
     :param Ramsey\\Uuid\\UuidInterface|string $ns: The namespace for this identifier
     :param string $name: The name from which to generate an identifier
-    :returns: (*string*) A string standard representation of a version 3 UUID
+    :returns: A string standard representation of a version 3 UUID
+    :returntype: string
 
 .. php:function:: Ramsey\\Uuid\\v4()
 
     Generates a string standard representation of a version 4, random UUID.
 
-    :returns: (*string*) A string standard representation of a version 4 UUID
+    :returns: A string standard representation of a version 4 UUID
+    :returntype: string
 
 .. php:function:: Ramsey\\Uuid\\v5($ns, $name)
 
@@ -45,7 +49,8 @@ only the string standard representation of a UUID.
 
     :param Ramsey\\Uuid\\UuidInterface|string $ns: The namespace for this identifier
     :param string $name: The name from which to generate an identifier
-    :returns: (*string*) A string standard representation of a version 5 UUID
+    :returns: A string standard representation of a version 5 UUID
+    :returntype: string
 
 .. php:function:: Ramsey\\Uuid\\v6([$node[, $clockSeq]])
 
@@ -53,4 +58,5 @@ only the string standard representation of a UUID.
 
     :param Ramsey\\Uuid\\Type\\Hexadecimal|null $node: An optional hexadecimal node to use
     :param int|null $clockSeq: An optional clock sequence to use
-    :returns: (*string*) A string standard representation of a version 6 UUID
+    :returns: A string standard representation of a version 6 UUID
+    :returntype: string
