@@ -21,4 +21,8 @@ namespace Ramsey\Uuid\Type;
  */
 interface NumberInterface extends TypeInterface
 {
+    /**
+     * Returns true if this number is less than zero
+     */
+    public function isNegative(): bool;
 }

@@ -20,12 +20,13 @@ class DecimalTest extends TestCase
      *
      * @dataProvider provideDecimal
      */
-    public function testDecimalValueType($value, string $expected): void
+    public function testDecimalValueType($value, string $expected, bool $expectedIsNegative): void
     {
         $decimal = new Decimal($value);
 
         $this->assertSame($expected, $decimal->toString());
         $this->assertSame($expected, (string) $decimal);
+        $this->assertSame($expectedIsNegative, $decimal->isNegative());
     }
 
     /**
@@ -37,166 +38,207 @@ class DecimalTest extends TestCase
             [
                 'value' => '-11386878954224802805705605120',
                 'expected' => '-11386878954224802805705605120',
+                'expectedIsNegative' => true,
             ],
             [
                 'value' => '-9223372036854775808',
                 'expected' => '-9223372036854775808',
+                'expectedIsNegative' => true,
             ],
             [
                 'value' => -99986838650880,
                 'expected' => '-99986838650880',
+                'expectedIsNegative' => true,
             ],
             [
                 'value' => -4294967296,
                 'expected' => '-4294967296',
+                'expectedIsNegative' => true,
             ],
             [
                 'value' => -2147483649,
                 'expected' => '-2147483649',
+                'expectedIsNegative' => true,
             ],
             [
                 'value' => -123456.0,
                 'expected' => '-123456',
+                'expectedIsNegative' => true,
             ],
             [
                 'value' => -1.00000000000001,
                 'expected' => '-1',
+                'expectedIsNegative' => true,
             ],
             [
                 'value' => -1,
                 'expected' => '-1',
+                'expectedIsNegative' => true,
             ],
             [
                 'value' => '-1',
                 'expected' => '-1',
+                'expectedIsNegative' => true,
             ],
             [
                 'value' => 0,
                 'expected' => '0',
+                'expectedIsNegative' => false,
             ],
             [
                 'value' => '0',
                 'expected' => '0',
+                'expectedIsNegative' => false,
             ],
             [
                 'value' => -0,
                 'expected' => '0',
+                'expectedIsNegative' => false,
             ],
             [
                 'value' => '-0',
                 'expected' => '0',
+                'expectedIsNegative' => false,
             ],
             [
                 'value' => '+0',
                 'expected' => '0',
+                'expectedIsNegative' => false,
             ],
             [
                 'value' => 1,
                 'expected' => '1',
+                'expectedIsNegative' => false,
             ],
             [
                 'value' => '1',
                 'expected' => '1',
+                'expectedIsNegative' => false,
             ],
             [
                 'value' => '+1',
                 'expected' => '1',
+                'expectedIsNegative' => false,
             ],
             [
                 'value' => 1.00000000000001,
                 'expected' => '1',
+                'expectedIsNegative' => false,
             ],
             [
                 'value' => 123456.0,
                 'expected' => '123456',
+                'expectedIsNegative' => false,
             ],
             [
                 'value' => 2147483648,
                 'expected' => '2147483648',
+                'expectedIsNegative' => false,
             ],
             [
                 'value' => 4294967294,
                 'expected' => '4294967294',
+                'expectedIsNegative' => false,
             ],
             [
                 'value' => 99965363767850,
                 'expected' => '99965363767850',
+                'expectedIsNegative' => false,
             ],
             [
                 'value' => '9223372036854775808',
                 'expected' => '9223372036854775808',
+                'expectedIsNegative' => false,
             ],
             [
                 'value' => '11386878954224802805705605120',
                 'expected' => '11386878954224802805705605120',
+                'expectedIsNegative' => false,
             ],
             [
                 'value' => -9223372036854775809,
                 'expected' => '-9.2233720368548E+18',
+                'expectedIsNegative' => true,
             ],
             [
                 'value' => 9223372036854775808,
                 'expected' => '9.2233720368548E+18',
+                'expectedIsNegative' => false,
             ],
             [
                 'value' => -123456.789,
                 'expected' => '-123456.789',
+                'expectedIsNegative' => true,
             ],
             [
                 'value' => -1.0000000000001,
                 'expected' => '-1.0000000000001',
+                'expectedIsNegative' => true,
             ],
             [
                 'value' => -0.5,
                 'expected' => '-0.5',
+                'expectedIsNegative' => true,
             ],
             [
                 'value' => 0.5,
                 'expected' => '0.5',
+                'expectedIsNegative' => false,
             ],
             [
                 'value' => 1.0000000000001,
                 'expected' => '1.0000000000001',
+                'expectedIsNegative' => false,
             ],
             [
                 'value' => 123456.789,
                 'expected' => '123456.789',
+                'expectedIsNegative' => false,
             ],
             [
                 'value' => '-0',
                 'expected' => '0',
+                'expectedIsNegative' => false,
             ],
             [
                 'value' => '+0',
                 'expected' => '0',
+                'expectedIsNegative' => false,
             ],
             [
                 'value' => -0.00000000,
                 'expected' => '0',
+                'expectedIsNegative' => false,
             ],
             [
                 'value' => 0.00000000,
                 'expected' => '0',
+                'expectedIsNegative' => false,
             ],
             [
                 'value' => -0.0001,
                 'expected' => '-0.0001',
+                'expectedIsNegative' => true,
             ],
             [
                 'value' => 0.0001,
                 'expected' => '0.0001',
+                'expectedIsNegative' => false,
             ],
             [
                 'value' => -0.00001,
                 'expected' => '-1.0E-5',
+                'expectedIsNegative' => true,
             ],
             [
                 'value' => 0.00001,
                 'expected' => '1.0E-5',
+                'expectedIsNegative' => false,
             ],
             [
                 'value' => '+1234.56',
                 'expected' => '1234.56',
+                'expectedIsNegative' => false,
             ],
         ];
     }

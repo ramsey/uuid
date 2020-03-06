@@ -26,6 +26,11 @@ Types
 
     NumberInterface ensures consistency in numeric values returned by ramsey/uuid.
 
+    .. php:method:: isNegative()
+
+        :returns: True if this number is less than zero, false otherwise.
+        :returntype: ``bool``
+
 .. php:class:: Decimal
 
     Implements :php:interface:`Ramsey\\Uuid\\Type\\NumberInterface`.

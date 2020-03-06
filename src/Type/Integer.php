@@ -41,6 +41,11 @@ final class Integer implements NumberInterface
     private $value;
 
     /**
+     * @var bool
+     */
+    private $isNegative = false;
+
+    /**
      * @param mixed $value The integer value to store
      */
     public function __construct($value)
@@ -72,9 +77,15 @@ final class Integer implements NumberInterface
         // Add the negative sign back to the value.
         if ($sign === '-' && $value !== '0') {
             $value = $sign . $value;
+            $this->isNegative = true;
         }
 
         $this->value = $value;
+    }
+
+    public function isNegative(): bool
+    {
+        return $this->isNegative;
     }
 
     public function toString(): string

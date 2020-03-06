@@ -38,6 +38,11 @@ final class Decimal implements NumberInterface
     private $value;
 
     /**
+     * @var bool
+     */
+    private $isNegative = false;
+
+    /**
      * @param mixed $value The decimal value to store
      */
     public function __construct($value)
@@ -61,7 +66,16 @@ final class Decimal implements NumberInterface
             $value = '0';
         }
 
+        if (strpos($value, '-') === 0) {
+            $this->isNegative = true;
+        }
+
         $this->value = $value;
+    }
+
+    public function isNegative(): bool
+    {
+        return $this->isNegative;
     }
 
     public function toString(): string

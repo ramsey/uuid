@@ -20,12 +20,13 @@ class IntegerTest extends TestCase
      *
      * @dataProvider provideInteger
      */
-    public function testIntegerType($value, string $expected): void
+    public function testIntegerType($value, string $expected, bool $expectedIsNegative): void
     {
         $integer = new IntegerObject($value);
 
         $this->assertSame($expected, $integer->toString());
         $this->assertSame($expected, (string) $integer);
+        $this->assertSame($expectedIsNegative, $integer->isNegative());
     }
 
     /**
@@ -37,98 +38,122 @@ class IntegerTest extends TestCase
             [
                 'value' => '-11386878954224802805705605120',
                 'expected' => '-11386878954224802805705605120',
+                'expectedIsNegative' => true,
             ],
             [
                 'value' => '-9223372036854775808',
                 'expected' => '-9223372036854775808',
+                'expectedIsNegative' => true,
             ],
             [
                 'value' => -99986838650880,
                 'expected' => '-99986838650880',
+                'expectedIsNegative' => true,
             ],
             [
                 'value' => -4294967296,
                 'expected' => '-4294967296',
+                'expectedIsNegative' => true,
             ],
             [
                 'value' => -2147483649,
                 'expected' => '-2147483649',
+                'expectedIsNegative' => true,
             ],
             [
                 'value' => -123456.0,
                 'expected' => '-123456',
+                'expectedIsNegative' => true,
             ],
             [
                 'value' => -1.00000000000001,
                 'expected' => '-1',
+                'expectedIsNegative' => true,
             ],
             [
                 'value' => -1,
                 'expected' => '-1',
+                'expectedIsNegative' => true,
             ],
             [
                 'value' => '-1',
                 'expected' => '-1',
+                'expectedIsNegative' => true,
             ],
             [
                 'value' => 0,
                 'expected' => '0',
+                'expectedIsNegative' => false,
             ],
             [
                 'value' => '0',
                 'expected' => '0',
+                'expectedIsNegative' => false,
             ],
             [
                 'value' => -0,
                 'expected' => '0',
+                'expectedIsNegative' => false,
             ],
             [
                 'value' => '-0',
                 'expected' => '0',
+                'expectedIsNegative' => false,
             ],
             [
                 'value' => '+0',
                 'expected' => '0',
+                'expectedIsNegative' => false,
             ],
             [
                 'value' => 1,
                 'expected' => '1',
+                'expectedIsNegative' => false,
             ],
             [
                 'value' => '1',
                 'expected' => '1',
+                'expectedIsNegative' => false,
             ],
             [
                 'value' => '+1',
                 'expected' => '1',
+                'expectedIsNegative' => false,
             ],
             [
                 'value' => 1.00000000000001,
                 'expected' => '1',
+                'expectedIsNegative' => false,
             ],
             [
                 'value' => 123456.0,
                 'expected' => '123456',
+                'expectedIsNegative' => false,
             ],
             [
                 'value' => 2147483648,
                 'expected' => '2147483648',
+                'expectedIsNegative' => false,
             ],
             [
                 'value' => 4294967294,
                 'expected' => '4294967294',
+                'expectedIsNegative' => false,
             ],
             [
                 'value' => 99965363767850,
                 'expected' => '99965363767850',
+                'expectedIsNegative' => false,
             ],
             [
                 'value' => '9223372036854775808',
                 'expected' => '9223372036854775808',
+                'expectedIsNegative' => false,
             ],
             [
                 'value' => '11386878954224802805705605120',
                 'expected' => '11386878954224802805705605120',
+                'expectedIsNegative' => false,
             ],
         ];
     }
