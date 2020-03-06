@@ -32,7 +32,7 @@ class FunctionsTest extends TestCase
             Uuid::DCE_DOMAIN_PERSON,
             new IntegerObject('1004'),
             new Hexadecimal('aabbccdd0011'),
-            1234
+            63
         );
 
         /** @var FieldsInterface $fields */
