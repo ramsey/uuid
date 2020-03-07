@@ -4,7 +4,8 @@
 Version 5: Name-based (SHA-1)
 =============================
 
-.. caution::
+.. danger::
+
     Since :ref:`version 3 <rfc4122.version3>` and version 5 UUIDs essentially
     use a *salt* (the namespace) to hash data, it may be tempting to use them to
     hash passwords. **DO NOT do this under any circumstances!** You should not
@@ -36,7 +37,8 @@ to the namespace they're created in. RFC 4122 defines some
 for URLs.
 
 .. note::
-    Version 5 UUIDs use [SHA1]_ as the hashing algorithm for combining the
+
+    Version 5 UUIDs use `SHA-1`_ as the hashing algorithm for combining the
     namespace and the name.
 
 .. code-block:: php
@@ -53,10 +55,10 @@ will always be ``a8f6ae40-d8a7-58f0-be05-a22f94eca9ec``. See for yourself. Run
 the code above, and you'll see it always generates the same UUID.
 
 .. tip::
-    Version 5 UUIDs generated in ramsey/uuid are instances of
-    ``Ramsey\Uuid\Rfc4122\UuidV5``. Check out the
-    :php:interface:`Ramsey\\Uuid\\Rfc4122\\UuidInterface` API documentation to
-    learn more about what you can do with a ``UuidV5`` instance.
+
+    Version 5 UUIDs generated in ramsey/uuid are instances of UuidV5. Check out
+    the :php:class:`Ramsey\\Uuid\\Rfc4122\\UuidV5` API documentation to learn
+    more about what you can do with a UuidV5 instance.
 
 
 .. _rfc4122.version5.custom-namespaces:
@@ -100,3 +102,6 @@ will always be ``a35477ae-bfb1-5f2e-b5a4-4711594d855f``.
 We can publish this namespace, allowing others to use it to generate identifiers
 for widgets. When two or more systems try to reference the same widget, they'll
 end up generating the same identifier for it, which is exactly what we want.
+
+
+.. _SHA-1: https://en.wikipedia.org/wiki/SHA-1

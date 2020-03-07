@@ -7,5 +7,4 @@ Nonstandard UUIDs
 
     nonstandard/version6
     nonstandard/comb
-    nonstandard/ordered-time
     nonstandard/guid

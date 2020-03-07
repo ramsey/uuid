@@ -21,25 +21,19 @@ Rfc4122\\UuidV2
 
         .. caution::
 
-            It is important to note that a version 2 UUID suffers from some loss of
-            fidelity of the timestamp, due to replacing the ``time_low`` field with
-            the local identifier. When constructing the timestamp value for date
-            purposes, we replace the local identifier bits with zeros. As a result,
-            the timestamp can be off by a range of 0 to 429.4967295 seconds (or
-            about 7 minutes, 9 seconds, and 496730 microseconds).
-
-            Astute observers might note this value directly corresponds to
-            2\ :sup:`32` -- 1, or ``0xffffffff``. The local identifier is 32-bits,
-            and we have set each of these bits to 0, so the maximum range of
-            timestamp drift is ``0x00000000`` to ``0xffffffff`` (counted in
-            100-nanosecond intervals).
+            It is important to note that version 2 UUIDs suffer from some loss
+            of timestamp precision. See :ref:`rfc4122.version2.timestamp-problems`
+            to learn more.
 
         :returns: A date object representing the timestamp associated with the UUID
         :returntype: ``\DateTimeInterface``
 
     .. php:method:: getLocalDomain()
 
-        :returns: The local domain identifier for this UUID, which is one of :php:const:`Ramsey\\Uuid\\Uuid::DCE_DOMAIN_PERSON`, :php:const:`Ramsey\\Uuid\\Uuid::DCE_DOMAIN_GROUP`, or :php:const:`Ramsey\\Uuid\\Uuid::DCE_DOMAIN_ORG`
+        :returns: The local domain identifier for this UUID, which is one of
+                  :php:const:`Ramsey\\Uuid\\Uuid::DCE_DOMAIN_PERSON`,
+                  :php:const:`Ramsey\\Uuid\\Uuid::DCE_DOMAIN_GROUP`, or
+                  :php:const:`Ramsey\\Uuid\\Uuid::DCE_DOMAIN_ORG`
         :returntype: ``int``
 
     .. php:method:: getLocalDomainName()

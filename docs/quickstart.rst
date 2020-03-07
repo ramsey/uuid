@@ -58,7 +58,7 @@ the static generation methods.
         $uuid->getFields()->getVersion()
     );
 
-This will return an instance of ``Ramsey\Uuid\Rfc4122\UuidV4``.
+This will return an instance of :php:class:`Ramsey\\Uuid\\Rfc4122\\UuidV4`.
 
 .. tip::
     .. rubric:: Use the Interfaces
@@ -66,10 +66,11 @@ This will return an instance of ``Ramsey\Uuid\Rfc4122\UuidV4``.
     Feel free to use ``instanceof`` to check the specific instance types of
     UUIDs. However, when using type hints, it's best to use the interfaces.
 
-    The most lenient interface is ``Ramsey\Uuid\UuidInterface``, while
-    ``Ramsey\Uuid\Rfc4122\UuidInterface`` ensures the UUIDs you're using conform
-    to the `RFC 4122`_ standard. If you're not sure which one to use, start with
-    the stricter ``Ramsey\Uuid\Rfc4122\UuidInterface``.
+    The most lenient interface is :php:interface:`Ramsey\\Uuid\\UuidInterface`,
+    while :php:interface:`Ramsey\\Uuid\\Rfc4122\\UuidInterface` ensures the
+    UUIDs you're using conform to the `RFC 4122`_ standard. If you're not sure
+    which one to use, start with the stricter
+    :php:interface:`Rfc4122\\UuidInterface <Ramsey\\Uuid\\Rfc4122\\UuidInterface>`.
 
 ramsey/uuid provides a number of helpful static methods that help you work with
 and generate most types of UUIDs, without any special customization of the
@@ -103,6 +104,6 @@ library.
     * - :php:meth:`Uuid::fromInteger() <Ramsey\\Uuid\\Uuid::fromInteger>`
       - Creates a UUID instance from a string integer.
     * - :php:meth:`Uuid::fromDateTime() <Ramsey\\Uuid\\Uuid::fromDateTime>`
-      - Creates a version 1 UUID instance from a PHP ``DateTimeInterface``.
+      - Creates a version 1 UUID instance from a PHP ``\DateTimeInterface``.
 
 .. _RFC 4122: https://tools.ietf.org/html/rfc4122

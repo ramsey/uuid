@@ -68,3 +68,11 @@ Types
     A value object representing a timestamp, for type-safety purposes, to ensure
     that timestamps used by ramsey/uuid are truly timestamp integers and not
     some other kind of string or integer.
+
+    .. php:method:: getSeconds()
+
+        :returntype: :php:class:`Ramsey\\Uuid\\Type\\Integer`
+
+    .. php:method:: getMicroseconds()
+
+        :returntype: :php:class:`Ramsey\\Uuid\\Type\\Integer`
