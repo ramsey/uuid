@@ -45,11 +45,12 @@ use function substr_replace;
  * ```
  *
  * @link https://www.informit.com/articles/printerfriendly/25862 The Cost of GUIDs as Primary Keys
+ *
+ * @psalm-immutable
  */
 class TimestampFirstCombCodec extends StringCodec
 {
     /**
-     * @psalm-pure
      * @psalm-return non-empty-string
      * @psalm-suppress MoreSpecificReturnType we know that the retrieved `string` is never empty
      * @psalm-suppress LessSpecificReturnStatement we know that the retrieved `string` is never empty
@@ -69,7 +70,6 @@ class TimestampFirstCombCodec extends StringCodec
     }
 
     /**
-     * @psalm-pure
      * @psalm-return non-empty-string
      * @psalm-suppress MoreSpecificReturnType we know that the retrieved `string` is never empty
      * @psalm-suppress LessSpecificReturnStatement we know that the retrieved `string` is never empty
@@ -83,8 +83,6 @@ class TimestampFirstCombCodec extends StringCodec
      * @throws InvalidUuidStringException
      *
      * @inheritDoc
-     *
-     * @psalm-pure
      */
     public function decode(string $encodedUuid): UuidInterface
     {
@@ -93,10 +91,6 @@ class TimestampFirstCombCodec extends StringCodec
         return $this->getBuilder()->build($this, $this->swapBytes($bytes));
     }
 
-    /**
-     * @inheritDoc
-     * @psalm-pure
-     */
     public function decodeBytes(string $bytes): UuidInterface
     {
         return $this->getBuilder()->build($this, $this->swapBytes($bytes));
@@ -104,8 +98,6 @@ class TimestampFirstCombCodec extends StringCodec
 
     /**
      * Swaps bytes according to the timestamp-first COMB rules
-     *
-     * @psalm-pure
      */
     private function swapBytes(string $bytes): string
     {

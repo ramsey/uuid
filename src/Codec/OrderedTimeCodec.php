@@ -40,6 +40,8 @@ use function substr;
  * malformed UUIDs.
  *
  * @link https://www.percona.com/blog/2014/12/19/store-uuid-optimized-way/ Storing UUID Values in MySQL
+ *
+ * @psalm-immutable
  */
 class OrderedTimeCodec extends StringCodec
 {
@@ -48,7 +50,6 @@ class OrderedTimeCodec extends StringCodec
      * fields rearranged for optimized storage
      *
      * @inheritDoc
-     * @psalm-pure
      * @psalm-return non-empty-string
      * @psalm-suppress MoreSpecificReturnType we know that the retrieved `string` is never empty
      * @psalm-suppress LessSpecificReturnStatement we know that the retrieved `string` is never empty
@@ -79,8 +80,6 @@ class OrderedTimeCodec extends StringCodec
      * @throws InvalidArgumentException if $bytes is an invalid length
      *
      * @inheritDoc
-     *
-     * @psalm-pure
      */
     public function decodeBytes(string $bytes): UuidInterface
     {

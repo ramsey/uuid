@@ -24,13 +24,11 @@ use function substr;
  * GuidStringCodec encodes and decodes globally unique identifiers (GUID)
  *
  * @see Guid
+ *
+ * @psalm-immutable
  */
 class GuidStringCodec extends StringCodec
 {
-    /**
-     * @inheritDoc
-     * @psalm-pure
-     */
     public function decode(string $encodedUuid): UuidInterface
     {
         $bytes = $this->getBytes($encodedUuid);
@@ -38,10 +36,6 @@ class GuidStringCodec extends StringCodec
         return $this->getBuilder()->build($this, $this->swapBytes($bytes));
     }
 
-    /**
-     * @inheritDoc
-     * @psalm-pure
-     */
     public function decodeBytes(string $bytes): UuidInterface
     {
         // Specifically call parent::decode to preserve correct byte order
@@ -50,8 +44,6 @@ class GuidStringCodec extends StringCodec
 
     /**
      * Swaps bytes according to the GUID rules
-     *
-     * @psalm-pure
      */
     private function swapBytes(string $bytes): string
     {

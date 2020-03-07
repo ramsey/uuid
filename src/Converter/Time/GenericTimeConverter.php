@@ -29,6 +29,8 @@ use const STR_PAD_LEFT;
 /**
  * GenericTimeConverter uses the provided calculator to calculate and convert
  * time values
+ *
+ * @psalm-immutable
  */
 class GenericTimeConverter implements TimeConverterInterface
 {

@@ -37,6 +37,8 @@ use const STR_PAD_RIGHT;
  * PhpTimeConverter uses built-in PHP functions and standard math operations
  * available to the PHP programming language to provide facilities for
  * converting parts of time into representations that may be used in UUIDs
+ *
+ * @psalm-immutable
  */
 class PhpTimeConverter implements TimeConverterInterface
 {

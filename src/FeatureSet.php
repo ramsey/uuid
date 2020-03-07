@@ -427,6 +427,7 @@ class FeatureSet
             return new GuidBuilder($this->numberConverter, $this->timeConverter);
         }
 
+        /** @psalm-suppress ImpureArgument */
         return new FallbackBuilder(new BuilderCollection([
             new Rfc4122UuidBuilder($this->numberConverter, $this->timeConverter),
             new NonstandardUuidBuilder($this->numberConverter, $this->timeConverter),

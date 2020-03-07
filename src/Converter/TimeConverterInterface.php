@@ -20,6 +20,8 @@ use Ramsey\Uuid\Type\Time;
 /**
  * A time converter converts timestamps into representations that may be used
  * in UUIDs
+ *
+ * @psalm-immutable
  */
 interface TimeConverterInterface
 {

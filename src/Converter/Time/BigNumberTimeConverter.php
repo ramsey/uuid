@@ -24,6 +24,8 @@ use Ramsey\Uuid\Type\Time;
  * BigNumberTimeConverter is deprecated in favor of GenericTimeConverter
  *
  * @deprecated Transition to {@see GenericTimeConverter}.
+ *
+ * @psalm-immutable
  */
 class BigNumberTimeConverter implements TimeConverterInterface
 {

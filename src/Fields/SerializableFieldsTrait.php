@@ -19,6 +19,8 @@ use function base64_encode;
 
 /**
  * Provides common serialization functionality to fields
+ *
+ * @psalm-immutable
  */
 trait SerializableFieldsTrait
 {

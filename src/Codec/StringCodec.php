@@ -31,6 +31,8 @@ use function substr;
  * StringCodec encodes and decodes RFC 4122 UUIDs
  *
  * @link http://tools.ietf.org/html/rfc4122
+ *
+ * @psalm-immutable
  */
 class StringCodec implements CodecInterface
 {
@@ -49,9 +51,6 @@ class StringCodec implements CodecInterface
         $this->builder = $builder;
     }
 
-    /**
-     * @psalm-pure
-     */
     public function encode(UuidInterface $uuid): string
     {
         /** @var FieldsInterface $fields */
@@ -70,7 +69,6 @@ class StringCodec implements CodecInterface
     }
 
     /**
-     * @psalm-pure
      * @psalm-return non-empty-string
      * @psalm-suppress MoreSpecificReturnType we know that the retrieved `string` is never empty
      * @psalm-suppress LessSpecificReturnStatement we know that the retrieved `string` is never empty
@@ -84,18 +82,12 @@ class StringCodec implements CodecInterface
      * @throws InvalidUuidStringException
      *
      * @inheritDoc
-     *
-     * @psalm-pure
      */
     public function decode(string $encodedUuid): UuidInterface
     {
         return $this->builder->build($this, $this->getBytes($encodedUuid));
     }
 
-    /**
-     * @inheritDoc
-     * @psalm-pure
-     */
     public function decodeBytes(string $bytes): UuidInterface
     {
         if (strlen($bytes) !== 16) {
@@ -117,8 +109,6 @@ class StringCodec implements CodecInterface
 
     /**
      * Returns a byte string of the UUID
-     *
-     * @psalm-pure
      */
     protected function getBytes(string $encodedUuid): string
     {

@@ -21,6 +21,8 @@ use Ramsey\Uuid\Type\Integer as IntegerObject;
 /**
  * GenericNumberConverter uses the provided calculate to convert decimal
  * numbers to and from hexadecimal values
+ *
+ * @psalm-immutable
  */
 class GenericNumberConverter implements NumberConverterInterface
 {

@@ -17,6 +17,8 @@ namespace Ramsey\Uuid\Converter;
 /**
  * A number converter converts UUIDs from hexadecimal characters into
  * representations of integers and vice versa
+ *
+ * @psalm-immutable
  */
 interface NumberConverterInterface
 {

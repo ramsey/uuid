@@ -22,6 +22,8 @@ use Ramsey\Uuid\Math\BrickMathCalculator;
  * BigNumberConverter is deprecated in favor of GenericNumberConverter
  *
  * @deprecated Transition to {@see GenericNumberConverter}.
+ *
+ * @psalm-immutable
  */
 class BigNumberConverter implements NumberConverterInterface
 {
