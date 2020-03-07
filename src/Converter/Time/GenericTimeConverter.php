@@ -60,10 +60,6 @@ class GenericTimeConverter implements TimeConverterInterface
         $this->calculator = $calculator;
     }
 
-    /**
-     * @inheritDoc
-     * @psalm-pure
-     */
     public function calculateTime(string $seconds, string $microseconds): Hexadecimal
     {
         $timestamp = new Time($seconds, $microseconds);
@@ -102,10 +98,6 @@ class GenericTimeConverter implements TimeConverterInterface
         return new Hexadecimal($uuidTimeHex);
     }
 
-    /**
-     * @inheritDoc
-     * @psalm-pure
-     */
     public function convertTime(Hexadecimal $uuidTimestamp): Time
     {
         // From the total, subtract the number of 100-nanosecond intervals from

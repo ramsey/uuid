@@ -39,19 +39,11 @@ class BigNumberTimeConverter implements TimeConverterInterface
         $this->converter = new GenericTimeConverter(new BrickMathCalculator());
     }
 
-    /**
-     * @inheritDoc
-     * @psalm-pure
-     */
     public function calculateTime(string $seconds, string $microseconds): Hexadecimal
     {
         return $this->converter->calculateTime($seconds, $microseconds);
     }
 
-    /**
-     * @inheritDoc
-     * @psalm-pure
-     */
     public function convertTime(Hexadecimal $uuidTimestamp): Time
     {
         return $this->converter->convertTime($uuidTimestamp);

@@ -90,10 +90,6 @@ class PhpTimeConverter implements TimeConverterInterface
         $this->phpPrecision = (int) ini_get('precision');
     }
 
-    /**
-     * @inheritDoc
-     * @psalm-pure
-     */
     public function calculateTime(string $seconds, string $microseconds): Hexadecimal
     {
         $seconds = new IntegerObject($seconds);
@@ -107,6 +103,7 @@ class PhpTimeConverter implements TimeConverterInterface
 
         // Check to see whether we've overflowed the max/min integer size.
         // If so, we will default to a different time converter.
+        /** @psalm-suppress RedundantCondition */
         if (!is_int($uuidTime)) {
             return $this->fallbackConverter->calculateTime(
                 $seconds->toString(),
@@ -117,10 +114,6 @@ class PhpTimeConverter implements TimeConverterInterface
         return new Hexadecimal(str_pad(dechex((int) $uuidTime), 16, '0', STR_PAD_LEFT));
     }
 
-    /**
-     * @inheritDoc
-     * @psalm-pure
-     */
     public function convertTime(Hexadecimal $uuidTimestamp): Time
     {
         $timestamp = $this->calculator->toInteger($uuidTimestamp);
@@ -142,8 +135,6 @@ class PhpTimeConverter implements TimeConverterInterface
      * @param int|float $time The time to split into seconds and microseconds
      *
      * @return string[]
-     *
-     * @psalm-pure
      */
     private function splitTime($time): array
     {
