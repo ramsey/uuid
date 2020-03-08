@@ -19,6 +19,7 @@ Contents
     quickstart
     rfc4122
     nonstandard
+    customize
     upgrading
     FAQs <faq>
     reference

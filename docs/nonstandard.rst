@@ -6,5 +6,4 @@ Nonstandard UUIDs
     :titlesonly:
 
     nonstandard/version6
-    nonstandard/comb
     nonstandard/guid
