@@ -25,7 +25,7 @@ Version 6: Ordered-time
     :ref:`version 1 UUID <rfc4122.version1>` with a *monotonically increasing*
     UUID. For more details, see :ref:`nonstandard.version6`.
 
-GUID
+Globally Unique Identifiers (GUIDs)
     A globally unique identifier, or GUID, is often used as a synonym for UUID.
     A key difference is the order of the bytes. Any `RFC 4122`_ version UUID may
     be represented as a GUID. For more details, see :ref:`nonstandard.guid`.

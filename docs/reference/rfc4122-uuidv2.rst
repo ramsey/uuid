@@ -16,8 +16,8 @@ Rfc4122\\UuidV2
 
     .. php:method:: getDateTime()
 
-        Returns a DateTimeInterface object representing the timestamp associated
-        with the UUID
+        Returns a `DateTimeInterface <https://www.php.net/datetimeinterface>`_
+        instance representing the timestamp associated with the UUID
 
         .. caution::
 

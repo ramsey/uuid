@@ -4,7 +4,7 @@
 Uuid
 ====
 
-``Ramsey\Uuid`` provides static methods for the most common functionality for
+Ramsey\Uuid\Uuid provides static methods for the most common functionality for
 generating and working with UUIDs. It also provides constants used throughout
 the ramsey/uuid library.
 
@@ -141,7 +141,7 @@ the ramsey/uuid library.
 
     .. php:staticmethod:: fromString($uuid)
 
-        Creates an instance of ``UuidInterface`` from the string standard
+        Creates an instance of UuidInterface from the string standard
         representation.
 
         :param string $uuid: The string standard representation of a UUID
@@ -149,21 +149,22 @@ the ramsey/uuid library.
 
     .. php:staticmethod:: fromBytes($bytes)
 
-        Creates an instance of ``UuidInterface`` from a 16-byte string.
+        Creates an instance of UuidInterface from a 16-byte string.
 
         :param string $bytes: A 16-byte binary string representation of a UUID
         :returntype: Ramsey\\Uuid\\UuidInterface
 
     .. php:staticmethod:: fromInteger($integer)
 
-        Creates an instance of ``UuidInterface`` from a 128-bit string integer.
+        Creates an instance of UuidInterface from a 128-bit string integer.
 
         :param string $integer: A 128-bit string integer representation of a UUID
         :returntype: Ramsey\\Uuid\\UuidInterface
 
     .. php:staticmethod:: fromDateTime($dateTime[, $node[, $clockSeq]])
 
-        Creates a version 1 UUID instance from a ``\DateTimeInterface`` instance.
+        Creates a version 1 UUID instance from a `DateTimeInterface
+        <https://www.php.net/datetimeinterface>`_ instance.
 
         :param DateTimeInterface $dateTime: The date from which to create the UUID instance
         :param Ramsey\\Uuid\\Type\\Hexadecimal|null $node: An optional hexadecimal node to use

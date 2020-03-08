@@ -1,8 +1,8 @@
 .. _nonstandard.guid:
 
-=================================
-Globally Unique Identifier (GUID)
-=================================
+===================================
+Globally Unique Identifiers (GUIDs)
+===================================
 
 .. tip::
 

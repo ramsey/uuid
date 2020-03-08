@@ -10,7 +10,7 @@ Rfc4122\\FieldsInterface
 
     Implements :php:interface:`Ramsey\\Uuid\\Fields\\FieldsInterface`.
 
-    ``Rfc4122\FieldsInterface`` represents the fields of an RFC 4122 UUID.
+    Rfc4122\FieldsInterface represents the fields of an RFC 4122 UUID.
     In addition to the methods defined on the interface, this class additionally
     defines the following methods.
 

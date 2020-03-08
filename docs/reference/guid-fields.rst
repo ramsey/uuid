@@ -10,4 +10,4 @@ Guid\\Fields
 
     Implements :php:interface:`Ramsey\\Uuid\\Rfc4122\\FieldsInterface`.
 
-    ``Guid\Fields`` represents the fields of a GUID.
+    Guid\Fields represents the fields of a GUID.

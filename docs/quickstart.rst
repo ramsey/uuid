@@ -104,6 +104,8 @@ library.
     * - :php:meth:`Uuid::fromInteger() <Ramsey\\Uuid\\Uuid::fromInteger>`
       - Creates a UUID instance from a string integer.
     * - :php:meth:`Uuid::fromDateTime() <Ramsey\\Uuid\\Uuid::fromDateTime>`
-      - Creates a version 1 UUID instance from a PHP ``\DateTimeInterface``.
+      - Creates a version 1 UUID instance from a PHP `DateTimeInterface`_.
+
 
 .. _RFC 4122: https://tools.ietf.org/html/rfc4122
+.. _DateTimeInterface: https://www.php.net/datetimeinterface

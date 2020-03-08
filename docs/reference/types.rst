@@ -8,7 +8,8 @@ Types
 
 .. php:class:: TypeInterface
 
-    Implements ``\JsonSerializable`` and ``\Serializable``.
+    Implements `JsonSerializable <https://www.php.net/jsonserializable>`_ and
+    `Serializable <https://www.php.net/serializable>`_.
 
     TypeInterface ensures consistency in typed values returned by ramsey/uuid.
 
