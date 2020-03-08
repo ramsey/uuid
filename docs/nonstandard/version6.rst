@@ -83,6 +83,12 @@ sequence.
 
     $uuid = Uuid::uuid6($nodeProvider->getNode(), $clockSequence);
 
+.. tip::
+
+    Version 6 UUIDs generated in ramsey/uuid are instances of UuidV6. Check out
+    the :php:class:`Ramsey\\Uuid\\Nonstandard\\UuidV6` API documentation to
+    learn more about what you can do with a UuidV6 instance.
+
 
 .. _nonstandard.version6.nodes:
 
