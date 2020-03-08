@@ -21,8 +21,8 @@ version.
 
 Version 1: Time-based
     This version of UUID combines a timestamp, node value (in the form of a MAC
-    address from the local computer's network interface),and a clock sequence to
-    ensure uniqueness. For more details, see :doc:`rfc4122/version1`.
+    address from the local computer's network interface), and a clock sequence
+    to ensure uniqueness. For more details, see :doc:`rfc4122/version1`.
 
 Version 2: DCE Security
     This version of UUID is the same as Version 1, except the ``clock_seq_low``

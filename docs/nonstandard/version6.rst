@@ -13,15 +13,15 @@ Version 6: Ordered-Time
     are significant changes to the layout, ramsey/uuid will attempt to maintain
     backward compatibility but cannot guarantee it.
 
-Version 6 UUIDs solve two problems that have long existed with the use of
+Version 6 UUIDs solve `two problems that have long existed`_ with the use of
 :ref:`version 1 <rfc4122.version1>` UUIDs:
 
 1. Scattered database records
 2. Inability to sort by identifier in a meaningful way (i.e., insert order)
 
-To overcome these issues, we need the ability to generate UUID that is
-*monotonically increasing*, while still providing all the benefits of a version
-1 UUID.
+To overcome these issues, we need the ability to generate UUIDs that are
+*monotonically increasing*, while still providing all the benefits of version
+1 UUIDs.
 
 Version 6 UUIDs do this by storing the time in standard byte order, instead of
 breaking it up and rearranging the time bytes, according to the `RFC 4122`_
@@ -205,4 +205,5 @@ need the benefit of a monotonically increasing unique identifier, see
 
 
 .. _Internet-Draft under review: https://tools.ietf.org/html/draft-peabody-dispatch-new-uuid-format
+.. _two problems that have long existed: https://www.percona.com/blog/2014/12/19/store-uuid-optimized-way/
 .. _RFC 4122: https://tools.ietf.org/html/rfc4122

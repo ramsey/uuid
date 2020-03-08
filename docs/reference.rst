@@ -18,6 +18,8 @@ Reference
     reference/rfc4122-uuidv4
     reference/rfc4122-uuidv5
     reference/nonstandard-uuidv6
+    reference/guid-fields
+    reference/guid-guid
     reference/types
     reference/exceptions
     reference/helper

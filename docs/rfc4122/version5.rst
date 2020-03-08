@@ -32,7 +32,7 @@ always generate the same identifier for any given URL?
 This is where a name-based UUID comes in handy.
 
 Name-based UUIDs combine a namespace with a name. This way, the UUIDs are unique
-to the namespace they're created in. RFC 4122 defines some
+to the namespace they're created in. `RFC 4122`_ defines some
 :ref:`predefined namespaces <reference.name-based-namespaces>`, one of which is
 for URLs.
 
@@ -83,8 +83,8 @@ The best way to do this is to generate a :ref:`version 1 <rfc4122.version1>` or
 
     printf("My namespace UUID is %s\n", $uuid->toString());
 
-This will generate a random UUID, which we'll store to a constant so we can
-reuse it as our own custom namespace.
+This will generate a version 1, time-based UUID, which we'll store to a constant
+so we can reuse it as our own custom namespace.
 
 .. code-block:: php
     :caption: Use a custom namespace to create version 5, name-based UUIDs
@@ -104,4 +104,5 @@ for widgets. When two or more systems try to reference the same widget, they'll
 end up generating the same identifier for it, which is exactly what we want.
 
 
+.. _RFC 4122: https://tools.ietf.org/html/rfc4122
 .. _SHA-1: https://en.wikipedia.org/wiki/SHA-1
