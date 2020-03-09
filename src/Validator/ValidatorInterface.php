@@ -16,6 +16,8 @@ namespace Ramsey\Uuid\Validator;
 
 /**
  * A validator validates a string as a proper UUID
+ *
+ * @psalm-immutable
  */
 interface ValidatorInterface
 {
@@ -24,7 +26,6 @@ interface ValidatorInterface
      *
      * @return string The regular expression pattern this validator uses
      *
-     * @psalm-pure
      * @psalm-return non-empty-string
      */
     public function getPattern(): string;
@@ -35,8 +36,6 @@ interface ValidatorInterface
      * @param string $uuid The string to validate as a UUID
      *
      * @return bool True if the string is a valid UUID, false otherwise
-     *
-     * @psalm-pure
      */
     public function validate(string $uuid): bool;
 }
