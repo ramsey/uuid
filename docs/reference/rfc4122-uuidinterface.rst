@@ -10,7 +10,7 @@ Rfc4122\\UuidInterface
 
     Implements :php:interface:`Ramsey\\Uuid\\UuidInterface`.
 
-    ``Rfc4122\UuidInterface`` represents an RFC 4122 UUID. In addition to the
+    Rfc4122\UuidInterface represents an RFC 4122 UUID. In addition to the
     methods defined on the interface, this interface additionally defines the
     following methods.
 

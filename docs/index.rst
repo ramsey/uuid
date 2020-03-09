@@ -19,6 +19,7 @@ Contents
     quickstart
     rfc4122
     nonstandard
+    database
     customize
     upgrading
     FAQs <faq>

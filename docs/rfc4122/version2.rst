@@ -249,8 +249,8 @@ that represents a local identifier. Because of this, not only do version 2 UUIDs
 have :ref:`limited uniqueness <rfc4122.version2.uniqueness-problems>`, but they
 also lack time precision.
 
-When reconstructing the timestamp to return a ``\DateTimeInterface`` instance
-from :php:meth:`UuidV2::getDateTime() <Ramsey\\Uuid\\Rfc4122\\UuidV2::getDateTime>`,
+When reconstructing the timestamp to return a `DateTimeInterface`_ instance from
+:php:meth:`UuidV2::getDateTime() <Ramsey\\Uuid\\Rfc4122\\UuidV2::getDateTime>`,
 we replace the 32 lower bits of the timestamp with zeros, since the local
 identifier should not be part of the timestamp. This results in a loss of
 precision, causing the timestamp to be off by a range of 0 to 429.4967295
@@ -270,3 +270,4 @@ it could be off by about 7 minutes.
 
 .. _Distributed Computing Environment: https://en.wikipedia.org/wiki/Distributed_Computing_Environment
 .. _POSIX: https://en.wikipedia.org/wiki/POSIX
+.. _DateTimeInterface: https://www.php.net/datetimeinterface

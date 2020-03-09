@@ -20,6 +20,9 @@ Reference
     reference/nonstandard-uuidv6
     reference/guid-fields
     reference/guid-guid
+    reference/nonstandard-fields
+    reference/nonstandard-uuid
+    reference/uuidfactoryinterface
     reference/types
     reference/exceptions
     reference/helper

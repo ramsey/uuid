@@ -8,33 +8,33 @@ Exceptions
 
 .. php:exception:: BuilderNotFoundException
 
-    Extends ``\RuntimeException``.
+    Extends `RuntimeException <https://www.php.net/runtimeexception>`_.
 
     Thrown to indicate that no suitable UUID builder could be found.
 
 .. php:exception:: DateTimeException
 
-    Extends ``\RuntimeException``.
+    Extends `RuntimeException <https://www.php.net/runtimeexception>`_.
 
     Thrown to indicate that the PHP DateTime extension encountered an
     exception or error.
 
 .. php:exception:: DceSecurityException
 
-    Extends ``\RuntimeException``.
+    Extends `RuntimeException <https://www.php.net/runtimeexception>`_.
 
     Thrown to indicate an exception occurred while dealing with DCE Security
     (version 2) UUIDs
 
 .. php:exception:: InvalidArgumentException
 
-    Extends ``\InvalidArgumentException``.
+    Extends `InvalidArgumentException <https://www.php.net/invalidargumentexception>`_.
 
     Thrown to indicate that the argument received is not valid.
 
 .. php:exception:: InvalidBytesException
 
-    Extends ``\RuntimeException``.
+    Extends `RuntimeException <https://www.php.net/runtimeexception>`_.
 
     Thrown to indicate that the bytes being operated on are invalid in some way.
 
@@ -46,38 +46,38 @@ Exceptions
 
 .. php:exception:: NameException
 
-    Extends ``\RuntimeException``.
+    Extends `RuntimeException <https://www.php.net/runtimeexception>`_.
 
     Thrown to indicate that an error occurred while attempting to hash a
     namespace and name
 
 .. php:exception:: NodeException
 
-    Extends ``\RuntimeException``.
+    Extends `RuntimeException <https://www.php.net/runtimeexception>`_.
 
     Thrown to indicate that attempting to fetch or create a node ID encountered
     an error.
 
 .. php:exception:: RandomSourceException
 
-    Extends ``\RuntimeException``.
+    Extends `RuntimeException <https://www.php.net/runtimeexception>`_.
 
     Thrown to indicate that the source of random data encountered an error.
 
 .. php:exception:: TimeSourceException
 
-    Extends ``\RuntimeException``.
+    Extends `RuntimeException <https://www.php.net/runtimeexception>`_.
 
     Thrown to indicate that the source of time encountered an error.
 
 .. php:exception:: UnableToBuildUuidException
 
-    Extends ``\RuntimeException``.
+    Extends `RuntimeException <https://www.php.net/runtimeexception>`_.
 
     Thrown to indicate a builder is unable to build a UUID.
 
 .. php:exception:: UnsupportedOperationException
 
-    Extends ``\LogicException``.
+    Extends `LogicException <https://www.php.net/logicexception>`_.
 
     Thrown to indicate that the requested operation is not supported.
