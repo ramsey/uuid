@@ -92,7 +92,6 @@
     "support": {
         "issues": "https://github.com/ramsey/uuid/issues",
         "rss": "https://github.com/ramsey/uuid/releases.atom",
-        "source": "https://github.com/ramsey/uuid",
-        "wiki": "https://github.com/ramsey/uuid/wiki"
+        "source": "https://github.com/ramsey/uuid"
     }
 }

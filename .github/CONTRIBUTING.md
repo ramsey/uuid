@@ -16,7 +16,6 @@ this project and its community, you are expected to uphold this code.
 You can find help and discussion in the following places:
 
 * GitHub Issues: <https://github.com/ramsey/uuid/issues>
-* GitHub Wiki: <https://github.com/ramsey/uuid/wiki>
 
 
 ## Reporting Bugs
