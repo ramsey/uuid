@@ -10,12 +10,13 @@ Customization
 
     customize/ordered-time-codec
     customize/timestamp-first-comb-codec
+    customize/calculators
 
 ramsey/uuid offers a variety of ways to modify the standard behavior of the
-library through dependency injection. Using `UuidFactory`_, `FeatureSet`_, and
+library through dependency injection. Using `FeatureSet`_, `UuidFactory`_, and
 :php:meth:`Uuid::setFactory() <Ramsey\\Uuid\\Uuid::setFactory()>`, you are able
-to replace just about any `codec`_, `builder`_, `converter`_, `provider`_,
-`generator`_, and more.
+to replace just about any `builder`_, `codec`_, `converter`_, `generator`_,
+`provider`_, and more.
 
 Ordered-time Codec
     The ordered-time codec exists to rearrange the bytes of a version 1,
@@ -26,6 +27,11 @@ Timestamp-first COMB Codec
     The timestamp-first COMB codec replaces part of a version 4, random UUID
     with a timestamp, so that the UUID becomes monotonically increasing. To
     learn more, see :ref:`customize.timestamp-first-comb-codec`.
+
+Using a Custom Calculator
+    It's possible to replace the default calculator ramsey/uuid uses. If your
+    requirements require a different solution for making calculations, see
+    :ref:`customize.calculators`.
 
 
 .. _UuidFactory: https://github.com/ramsey/uuid/blob/master/src/UuidFactory.php
