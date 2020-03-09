@@ -12,6 +12,7 @@ Customization
     customize/timestamp-first-comb-codec
     customize/calculators
     customize/validators
+    customize/factory
 
 ramsey/uuid offers a variety of ways to modify the standard behavior of the
 library through dependency injection. Using `FeatureSet`_, `UuidFactory`_, and
@@ -38,6 +39,12 @@ Using a Custom Validator
     If your requirements require a different level of validation or a different
     UUID format, you may replace the default validator. See
     :ref:`customize.validators`, to learn more.
+
+Replace the Default Factory
+    Not only are you able to inject alternate builders, codecs, etc. into the
+    factory and use the factory to generate UUIDs, you may also replace the
+    global, static factory used by the static methods on the Uuid class. To find
+    out how, see :ref:`customize.factory`.
 
 
 .. _UuidFactory: https://github.com/ramsey/uuid/blob/master/src/UuidFactory.php
