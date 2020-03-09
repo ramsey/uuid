@@ -245,7 +245,7 @@ explains how to use ramsey/uuid to implement the second solution.
 .. hint::
 
     :ref:`Version 6, ordered-time UUIDs <nonstandard.version6>` are a proposed
-    new version of UUID that would take the place of ordered time UUIDs.
+    new version of UUID that take the place of ordered time UUIDs.
 
 
 .. _ramsey/uuid-doctrine: https://github.com/ramsey/uuid-doctrine

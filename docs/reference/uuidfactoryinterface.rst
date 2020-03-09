@@ -1,91 +1,20 @@
-.. _reference.uuid:
+.. _reference.uuidfactoryinterface:
 
-====
-Uuid
-====
-
-Ramsey\Uuid\Uuid provides static methods for the most common functionality for
-generating and working with UUIDs. It also provides constants used throughout
-the ramsey/uuid library.
+====================
+UuidFactoryInterface
+====================
 
 .. php:namespace:: Ramsey\Uuid
 
-.. php:class:: Uuid
+.. php:interface:: UuidFactoryInterface
 
-    .. php:const:: UUID_TYPE_TIME
+    Represents a UUID factory.
 
-        :ref:`rfc4122.version1` UUID.
+    .. php:method:: getValidator()
 
-    .. php:const:: UUID_TYPE_DCE_SECURITY
+        :returntype: Ramsey\\Uuid\\Validator\\ValidatorInterface
 
-        :ref:`rfc4122.version2` UUID.
-
-    .. php:const:: UUID_TYPE_HASH_MD5
-
-        :ref:`rfc4122.version3` UUID.
-
-    .. php:const:: UUID_TYPE_RANDOM
-
-        :ref:`rfc4122.version4` UUID.
-
-    .. php:const:: UUID_TYPE_HASH_SHA1
-
-        :ref:`rfc4122.version5` UUID.
-
-    .. php:const:: UUID_TYPE_PEABODY
-
-        :ref:`nonstandard.version6` UUID.
-
-    .. php:const:: NAMESPACE_DNS
-
-        The name string is a fully-qualified domain name.
-
-    .. php:const:: NAMESPACE_URL
-
-        The name string is a URL.
-
-    .. php:const:: NAMESPACE_OID
-
-        The name string is an `ISO object identifier (OID)`_.
-
-    .. php:const:: NAMESPACE_X500
-
-        The name string is an `X.500`_ `DN`_ in `DER`_ or a text output format.
-
-    .. php:const:: NIL
-
-        The nil UUID is a special form of UUID that is specified to have all 128
-        bits set to zero.
-
-    .. php:const:: DCE_DOMAIN_PERSON
-
-        DCE Security principal (person) domain.
-
-    .. php:const:: DCE_DOMAIN_GROUP
-
-        DCE Security group domain.
-
-    .. php:const:: DCE_DOMAIN_ORG
-
-        DCE Security organization domain.
-
-    .. php:const:: RESERVED_NCS
-
-        Variant identifier: reserved, NCS backward compatibility.
-
-    .. php:const:: RFC_4122
-
-        Variant identifier: the UUID layout specified in RFC 4122.
-
-    .. php:const:: RESERVED_MICROSOFT
-
-        Variant identifier: reserved, Microsoft Corporation backward compatibility.
-
-    .. php:const:: RESERVED_FUTURE
-
-        Variant identifier: reserved for future definition.
-
-    .. php:staticmethod:: uuid1([$node[, $clockSeq]])
+    .. php:method:: uuid1([$node[, $clockSeq]])
 
         Generates a version 1, time-based UUID. See :ref:`rfc4122.version1`.
 
@@ -94,7 +23,7 @@ the ramsey/uuid library.
         :returns: A version 1 UUID
         :returntype: Ramsey\\Uuid\\Rfc4122\\UuidV1
 
-    .. php:staticmethod:: uuid2($localDomain[, $localIdentifier[, $node[, $clockSeq]]])
+    .. php:method:: uuid2($localDomain[, $localIdentifier[, $node[, $clockSeq]]])
 
         Generates a version 2, DCE Security UUID. See :ref:`rfc4122.version2`.
 
@@ -105,7 +34,7 @@ the ramsey/uuid library.
         :returns: A version 2 UUID
         :returntype: Ramsey\\Uuid\\Rfc4122\\UuidV2
 
-    .. php:staticmethod:: uuid3($ns, $name)
+    .. php:method:: uuid3($ns, $name)
 
         Generates a version 3, name-based (MD5) UUID. See :ref:`rfc4122.version3`.
 
@@ -114,14 +43,14 @@ the ramsey/uuid library.
         :returns: A version 3 UUID
         :returntype: Ramsey\\Uuid\\Rfc4122\\UuidV3
 
-    .. php:staticmethod:: uuid4()
+    .. php:method:: uuid4()
 
         Generates a version 4, random UUID. See :ref:`rfc4122.version4`.
 
         :returns: A version 4 UUID
         :returntype: Ramsey\\Uuid\\Rfc4122\\UuidV4
 
-    .. php:staticmethod:: uuid5($ns, $name)
+    .. php:method:: uuid5($ns, $name)
 
         Generates a version 5, name-based (SHA-1) UUID. See :ref:`rfc4122.version5`.
 
@@ -130,7 +59,7 @@ the ramsey/uuid library.
         :returns: A version 5 UUID
         :returntype: Ramsey\\Uuid\\Rfc4122\\UuidV5
 
-    .. php:staticmethod:: uuid6([$node[, $clockSeq]])
+    .. php:method:: uuid6([$node[, $clockSeq]])
 
         Generates a version 6, ordered-time UUID. See :ref:`nonstandard.version6`.
 
@@ -139,7 +68,7 @@ the ramsey/uuid library.
         :returns: A version 6 UUID
         :returntype: Ramsey\\Uuid\\Nonstandard\\UuidV6
 
-    .. php:staticmethod:: fromString($uuid)
+    .. php:method:: fromString($uuid)
 
         Creates an instance of UuidInterface from the string standard
         representation.
@@ -147,21 +76,21 @@ the ramsey/uuid library.
         :param string $uuid: The string standard representation of a UUID
         :returntype: Ramsey\\Uuid\\UuidInterface
 
-    .. php:staticmethod:: fromBytes($bytes)
+    .. php:method:: fromBytes($bytes)
 
         Creates an instance of UuidInterface from a 16-byte string.
 
         :param string $bytes: A 16-byte binary string representation of a UUID
         :returntype: Ramsey\\Uuid\\UuidInterface
 
-    .. php:staticmethod:: fromInteger($integer)
+    .. php:method:: fromInteger($integer)
 
         Creates an instance of UuidInterface from a 128-bit string integer.
 
         :param string $integer: A 128-bit string integer representation of a UUID
         :returntype: Ramsey\\Uuid\\UuidInterface
 
-    .. php:staticmethod:: fromDateTime($dateTime[, $node[, $clockSeq]])
+    .. php:method:: fromDateTime($dateTime[, $node[, $clockSeq]])
 
         Creates a version 1 UUID instance from a `DateTimeInterface
         <https://www.php.net/datetimeinterface>`_ instance.
@@ -171,23 +100,3 @@ the ramsey/uuid library.
         :param int|null $clockSeq: An optional clock sequence to use
         :returns: A version 1 UUID
         :returntype: Ramsey\\Uuid\\Rfc4122\\UuidV1
-
-    .. php:staticmethod:: isValid($uuid)
-
-        Validates the string standard representation of a UUID.
-
-        :param string $uuid: The string standard representation of a UUID
-        :returntype: ``bool``
-
-    .. php:staticmethod:: setFactory($factory)
-
-        Sets the factory used to create UUIDs.
-
-        :param Ramsey\\Uuid\\UuidFactoryInterface $factory: A UUID factory to use for all UUID generation
-        :returntype: void
-
-
-.. _ISO object identifier (OID): http://www.oid-info.com
-.. _X.500: https://en.wikipedia.org/wiki/X.500
-.. _DN: https://en.wikipedia.org/wiki/Distinguished_Name
-.. _DER: https://www.itu.int/rec/T-REC-X.690/
