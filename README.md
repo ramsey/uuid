@@ -8,8 +8,8 @@
 [![Coverage Status][badge-coverage]][coverage]
 [![Total Downloads][badge-downloads]][downloads]
 
-ramsey/uuid is a PHP library for generating and working with [RFC 4122][rfc4122]
-version 1, 2, 3, 4, and 5 universally unique identifiers (UUID).
+ramsey/uuid is a PHP library for generating and working with universally unique
+identifiers (UUIDs).
 
 This project adheres to a [Contributor Code of Conduct][conduct]. By
 participating in this project and its community, you are expected to uphold this
