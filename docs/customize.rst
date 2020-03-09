@@ -11,6 +11,7 @@ Customization
     customize/ordered-time-codec
     customize/timestamp-first-comb-codec
     customize/calculators
+    customize/validators
 
 ramsey/uuid offers a variety of ways to modify the standard behavior of the
 library through dependency injection. Using `FeatureSet`_, `UuidFactory`_, and
@@ -32,6 +33,11 @@ Using a Custom Calculator
     It's possible to replace the default calculator ramsey/uuid uses. If your
     requirements require a different solution for making calculations, see
     :ref:`customize.calculators`.
+
+Using a Custom Validator
+    If your requirements require a different level of validation or a different
+    UUID format, you may replace the default validator. See
+    :ref:`customize.validators`, to learn more.
 
 
 .. _UuidFactory: https://github.com/ramsey/uuid/blob/master/src/UuidFactory.php
