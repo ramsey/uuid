@@ -1,3 +1,5 @@
+.. _copyright:
+
 =========
 Copyright
 =========
