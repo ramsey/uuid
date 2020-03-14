@@ -97,6 +97,10 @@ standard functionality and API found in version 3 will not differ much.
     upgrade to version 4 the ability to continue using your project, while
     deciding on an appropriate upgrade schedule.
 
+    If your downstream users do not specify ramsey/uuid as a dependency, and
+    they use functionality specific to version 3, they may need to update their
+    own Composer dependencies to use ramsey/uuid ``^3`` to avoid using version 4.
+
 
 .. _upgrading.3-to-4.static-methods:
 
