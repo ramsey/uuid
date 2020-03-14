@@ -82,6 +82,21 @@ standard functionality and API found in version 3 will not differ much.
   :ref:`constructor <upgrading.3-to-4.constructors>` changes and update your
   code.
 
+.. tip::
+
+    If you maintain a public project that uses ramsey/uuid version 3 and you
+    find that **your code does not require any changes to upgrade** to version
+    4, consider using the following version constraint in your project's
+    ``composer.json`` file:
+
+    .. code-block:: bash
+
+        composer require ramsey/uuid:"^3 || ^4"
+
+    This will allow any `downstream users`_ of your project who aren't ready to
+    upgrade to version 4 the ability to continue using your project, while
+    deciding on an appropriate upgrade schedule.
+
 
 .. _upgrading.3-to-4.static-methods:
 
@@ -468,6 +483,7 @@ array. It accepts :php:class:`Type\\Time <Ramsey\\Uuid\\Type\\Time>` instances.
     return value of the deprecated ``getFieldsHex()`` method.
 
 
+.. _downstream users: https://en.wikipedia.org/wiki/Downstream_(software_development)
 .. _version 6 UUIDs: http://gh.peabody.io/uuidv6/
 .. _4.0.0 changelog: https://github.com/ramsey/uuid/releases/tag/4.0.0
 .. _brick/math: https://github.com/brick/math

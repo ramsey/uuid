@@ -10,7 +10,7 @@
     "homepage": "https://github.com/ramsey/uuid",
     "license": "MIT",
     "require": {
-        "php": "^7.2 | ^8",
+        "php": "^7.2 || ^8",
         "ext-json": "*",
         "brick/math": "^0.8",
         "ramsey/collection": "^1.0",
