@@ -273,6 +273,10 @@ class FeatureSet
         $this->calculator = $calculator;
         $this->numberConverter = $this->buildNumberConverter($calculator);
         $this->timeConverter = $this->buildTimeConverter($calculator);
+
+        if (isset($this->timeProvider)) {
+            $this->timeGenerator = $this->buildTimeGenerator($this->timeProvider);
+        }
     }
 
     /**

@@ -1,3 +1,5 @@
+.. _index:
+
 ==================
 ramsey/uuid Manual
 ==================
@@ -21,6 +23,7 @@ Contents
     nonstandard
     database
     customize
+    testing
     upgrading
     FAQs <faq>
     reference

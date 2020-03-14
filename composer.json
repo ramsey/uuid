@@ -18,7 +18,7 @@
     },
     "require-dev": {
         "codeception/aspect-mock": "^3",
-        "dealerdirect/phpcodesniffer-composer-installer": "^0.5.0",
+        "dealerdirect/phpcodesniffer-composer-installer": "^0.6.2",
         "doctrine/annotations": "^1.8",
         "goaop/framework": "^2",
         "jakub-onderka/php-parallel-lint": "^1",
@@ -35,7 +35,7 @@
         "phpunit/phpunit": "^8.5",
         "slevomat/coding-standard": "^6.0",
         "squizlabs/php_codesniffer": "^3.5",
-        "vimeo/psalm": "^3.7.2"
+        "vimeo/psalm": "3.9.4"
     },
     "suggest": {
         "ext-bcmath": "Enables faster math with arbitrary-precision integers using BCMath.",

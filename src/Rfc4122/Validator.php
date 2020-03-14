@@ -22,6 +22,8 @@ use function str_replace;
 
 /**
  * Rfc4122\Validator validates strings as UUIDs of the RFC 4122 variant
+ *
+ * @psalm-immutable
  */
 final class Validator implements ValidatorInterface
 {
@@ -29,7 +31,6 @@ final class Validator implements ValidatorInterface
         . '[1-5]{1}[0-9A-Fa-f]{3}-[ABab89]{1}[0-9A-Fa-f]{3}-[0-9A-Fa-f]{12}$';
 
     /**
-     * @psalm-pure
      * @psalm-return non-empty-string
      * @psalm-suppress MoreSpecificReturnType we know that the retrieved `string` is never empty
      * @psalm-suppress LessSpecificReturnStatement we know that the retrieved `string` is never empty
@@ -39,9 +40,6 @@ final class Validator implements ValidatorInterface
         return self::VALID_PATTERN;
     }
 
-    /**
-     * @psalm-pure
-     */
     public function validate(string $uuid): bool
     {
         $uuid = str_replace(['urn:', 'uuid:', 'URN:', 'UUID:', '{', '}'], '', $uuid);
