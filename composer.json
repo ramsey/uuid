@@ -18,7 +18,7 @@
     },
     "require-dev": {
         "codeception/aspect-mock": "^3",
-        "dealerdirect/phpcodesniffer-composer-installer": "^0.5.0",
+        "dealerdirect/phpcodesniffer-composer-installer": "^0.6.2",
         "doctrine/annotations": "^1.8",
         "goaop/framework": "^2",
         "jakub-onderka/php-parallel-lint": "^1",
