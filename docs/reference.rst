@@ -27,3 +27,5 @@ Reference
     reference/exceptions
     reference/helper
     reference/name-based-namespaces
+    reference/calculators
+    reference/validators

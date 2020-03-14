@@ -1,7 +1,7 @@
 {
     "name": "ramsey/uuid",
     "type": "library",
-    "description": "A PHP library for generating RFC 4122 version 1, 2, 3, 4, and 5 universally unique identifiers (UUID).",
+    "description": "A PHP library for generating and working with universally unique identifiers (UUIDs).",
     "keywords": [
         "uuid",
         "identifier",
@@ -35,7 +35,7 @@
         "phpunit/phpunit": "^8.5",
         "slevomat/coding-standard": "^6.0",
         "squizlabs/php_codesniffer": "^3.5",
-        "vimeo/psalm": "^3.7.2"
+        "vimeo/psalm": "3.9.4"
     },
     "suggest": {
         "ext-bcmath": "Enables faster math with arbitrary-precision integers using BCMath.",

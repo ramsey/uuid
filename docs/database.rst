@@ -193,6 +193,12 @@ For this reason, if you choose to use UUIDs as primary keys, it might be worth
 the drawbacks to use UUID bytes (i.e., ``char(16)``) instead of the string
 representation (see :ref:`database.bytes`).
 
+.. hint::
+
+    If not using InnoDB with MySQL or MariaDB, consult your database engine
+    documentation to find whether it also has similar properties that will
+    factor into your use of UUIDs.
+
 
 .. _database.uk:
 
@@ -225,8 +231,8 @@ Insertion Order and Sorting
 
 UUIDs are not *monotonically increasing*. Even time-based UUIDs are not. If
 using UUIDs as primary keys, the inserts will be random, and the data will be
-scattered on disk. Over time, as the database size grows, lookups will become
-slower and slower.
+scattered on disk (for InnoDB). Over time, as the database size grows, lookups
+will become slower and slower.
 
 .. note::
 
