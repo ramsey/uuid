@@ -30,6 +30,13 @@ composer require ramsey/uuid
 ```
 
 
+## Upgrading to Version 4
+
+See the documentation for a thorough upgrade guide:
+
+* [Upgrading ramsey/uuid Version 3 to 4](https://uuid.ramsey.dev/en/latest/upgrading/3-to-4.html)
+
+
 ## Documentation
 
 Please see <https://uuid.ramsey.dev> for documentation, tips, examples, and

@@ -1,8 +1,8 @@
 .. _upgrading.2-to-3:
 
-======================
-ramsey/uuid 2.x to 3.x
-======================
+==============
+Version 2 to 3
+==============
 
 While we have made significant internal changes to the library, we have made
 every effort to ensure a seamless upgrade path from the 2.x series of this

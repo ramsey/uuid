@@ -24,7 +24,7 @@ For example:
     $orderedTimeUuid = $factory->uuid1();
 
 When doing this, the default behavior of ramsey/uuid is left intact. If we call
-``Uuid::uuid()`` to generate a version 1 UUID after configuring the factory as
+``Uuid::uuid1()`` to generate a version 1 UUID after configuring the factory as
 shown above, it won't use :ref:`OrderedTimeCodec <customize.ordered-time-codec>`
 to generate the UUID.
 

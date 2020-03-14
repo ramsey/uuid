@@ -46,3 +46,8 @@ UuidInterface
 
         :returns: The string standard representation of the UUID.
         :returntype: ``string``
+
+    .. php:method:: __toString()
+
+        :returns: The string standard representation of the UUID.
+        :returntype: ``string``
