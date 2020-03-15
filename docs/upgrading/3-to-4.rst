@@ -36,7 +36,7 @@ There are a lot of new features in ramsey/uuid! Here are a few of them:
   * Rfc4122\\NilUuid
 
 * Add classes to represent version 6 UUIDs, GUIDs, and nonstandard
-  (non-RFC 4122 variant) UUIDs:
+  (non-RFC 4122 variants) UUIDs:
 
   * :php:class:`Nonstandard\\UuidV6 <Ramsey\\Uuid\\Nonstandard\\UuidV6>`
   * :php:class:`Nonstandard\\Uuid <Ramsey\\Uuid\\Nonstandard\\Uuid>`
@@ -70,7 +70,7 @@ standard functionality and API found in version 3 will not differ much.
   use :php:interface:`UuidInterface <Ramsey\\Uuid\\UuidInterface>`.
 * The :ref:`return types for three methods <upgrading.3-to-4.return-types>`
   defined on :php:interface:`UuidInterface <Ramsey\\Uuid\\UuidInterface>` have
-  changed, breaking backward compatibility. **Take note, and update your code.**
+  changed, breaking backwards compatibility. **Take note and update your code.**
 * :ref:`There are a number of deprecations. <upgrading.3-to-4.deprecations>`
   These shouldn't affect you now, but please take a look at the recommendations
   and update your code soon. These will go away in ramsey/uuid version 5.
@@ -94,7 +94,7 @@ standard functionality and API found in version 3 will not differ much.
         composer require ramsey/uuid:"^3 || ^4"
 
     This will allow any `downstream users`_ of your project who aren't ready to
-    upgrade to version 4 the ability to continue using your project, while
+    upgrade to version 4 the ability to continue using your project while
     deciding on an appropriate upgrade schedule.
 
     If your downstream users do not specify ramsey/uuid as a dependency, and
@@ -156,7 +156,7 @@ Changed Return Types
 ####################
 
 The following :php:interface:`UuidInterface <Ramsey\\Uuid\\UuidInterface>`
-method return types have changed in version 4, and you will need to update your
+method return types have changed in version 4 and you will need to update your
 code, if you use these methods.
 
 .. list-table:: Changed UuidInterface method return types
@@ -370,7 +370,7 @@ Builder\\UuidBuilderInterface
     * - Method
       - Description
     * - ``build()``
-      - Second parameter used to accept ``array $fields``; now accepts ``string $bytes``
+      - The second parameter used to accept ``array $fields``; now accepts ``string $bytes``
 
 Converter\\TimeConverterInterface
 ---------------------------------

@@ -14,10 +14,10 @@ Nonstandard UUIDs
 
 Outside of `RFC 4122`_, other types of UUIDs are in-use, following rules of
 their own. Some of these are on their way to becoming accepted standards, while
-others have historical reasons for remaining valid today. Still others are
+others have historical reasons for remaining valid today. Still, others are
 completely random and do not follow any rules.
 
-For these cases, ramsey/uuid provides special functionality to handle these
+For these cases, ramsey/uuid provides a special functionality to handle these
 alternate, nonstandard forms.
 
 Version 6: Ordered-time

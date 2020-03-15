@@ -14,7 +14,7 @@ There are several strategies to consider when working with UUIDs in a database.
 Among these are whether to store the string representation or bytes and whether
 the UUID column should be treated as a primary key. We'll discuss a few of these
 approaches here, but the final decision on how to use UUIDs in a database is up
-to you, since your needs will be different from those of others.
+to you since your needs will be different from those of others.
 
 .. note::
 
@@ -178,7 +178,7 @@ Using As a Primary Key
 
 In the previous examples, we didn't use the UUID as a primary key, but it's
 logical to use the ``notes.uuid`` field as a primary key. There's nothing wrong
-with this approach, but there are a couple points to consider:
+with this approach, but there are a couple of points to consider:
 
 * InnoDB stores data in the primary key order
 * All the secondary keys also contain the primary key (in InnoDB)
@@ -189,7 +189,7 @@ second point, if you are using the string version of the UUID (i.e.,
 space, but every secondary key that uses that primary key will also be must
 larger.
 
-For this reason, if you choose to use UUIDs as primary keys, it might be worth
+For this reason, if you choose to using UUIDs as primary keys, it might be worth
 the drawbacks to use UUID bytes (i.e., ``char(16)``) instead of the string
 representation (see :ref:`database.bytes`).
 
@@ -208,11 +208,11 @@ Using As a Unique Key
 Instead of :ref:`using UUIDs as a primary key <database.pk>`, you may choose to
 use an ``AUTO_INCREMENT`` column with the ``int unsigned`` data type as a
 primary key, while using a ``char(36)`` for UUIDs and setting a ``UNIQUE KEY``
-on this column. This will aid in lookups, while helping keep your secondary keys
+on this column. This will aid in lookups while helping keep your secondary keys
 small.
 
 .. code-block:: sql
-    :caption: Use auto-incrementing column as primary key, with UUID as unique key
+    :caption: Use an auto-incrementing column as primary key, with UUID as a unique key
     :name: database.id-auto-increment-uuid-unique-key
 
     CREATE TABLE `notes` (
@@ -237,7 +237,7 @@ will become slower and slower.
 .. note::
 
     See Percona's "`Storing UUID Values in MySQL`_" post, for more details on
-    performance of UUIDs as primary keys.
+    the performance of UUIDs as primary keys.
 
 To minimize these problems, two solutions have been devised:
 
