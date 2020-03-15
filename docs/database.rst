@@ -189,7 +189,7 @@ second point, if you are using the string version of the UUID (i.e.,
 space, but every secondary key that uses that primary key will also be must
 larger.
 
-For this reason, if you choose to using UUIDs as primary keys, it might be worth
+For this reason, if you choose to use UUIDs as primary keys, it might be worth
 the drawbacks to use UUID bytes (i.e., ``char(16)``) instead of the string
 representation (see :ref:`database.bytes`).
 
