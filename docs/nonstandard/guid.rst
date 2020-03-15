@@ -142,7 +142,7 @@ arranged like this:
 
     Networking protocols usually use big-endian ordering, while computer
     processor architectures often use little-endian ordering.
-    The terms originated in Jonathan Swift's *Guilliver's Travels*, where the
+    The terms originated in Jonathan Swift's *Gulliver's Travels*, where the
     Lilliputians argue over which end of a hard-boiled egg is the best end to
     crack.
 

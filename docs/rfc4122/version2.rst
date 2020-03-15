@@ -109,7 +109,7 @@ If using the *person* or *group* domains, ramsey/uuid will attempt to look up
 these values from the local machine. On `POSIX`_ systems, it will use ``id -u``
 and ``id -g``, respectively. On Windows, it will use ``whoami`` and ``wmic``.
 
-The *org* domain is site-defined. Its intent it to identify the organization
+The *org* domain is site-defined. Its intent is to identify the organization
 that generated the UUID, but since this can have different meanings for
 different companies and projects, you get to define its value.
 
@@ -201,7 +201,7 @@ Limited Uniqueness
 ------------------
 
 With the inclusion of the local identifier and domain comes a serious limitation
-in the amount of unique UUIDs that may be created. This is because:
+in the number of unique UUIDs that may be created. This is because:
 
 1. The local identifier replaces the lower 32 bits of the timestamp.
 2. The domain replaces the lower 8 bits of the clock sequence.

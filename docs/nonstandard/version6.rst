@@ -17,10 +17,10 @@ Version 6 UUIDs solve `two problems that have long existed`_ with the use of
 :ref:`version 1 <rfc4122.version1>` UUIDs:
 
 1. Scattered database records
-2. Inability to sort by identifier in a meaningful way (i.e., insert order)
+2. Inability to sort by an identifier in a meaningful way (i.e., insert order)
 
 To overcome these issues, we need the ability to generate UUIDs that are
-*monotonically increasing*, while still providing all the benefits of version
+*monotonically increasing* while still providing all the benefits of version
 1 UUIDs.
 
 Version 6 UUIDs do this by storing the time in standard byte order, instead of

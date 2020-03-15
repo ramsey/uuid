@@ -19,7 +19,7 @@ following message:
 
 .. code-block:: text
 
-    Package rhumsaa/uuid is abandoned, you should avoid using it. Use
+    Package rhumsaa/uuid is abandoned; you should avoid using it. Use
     ramsey/uuid instead.
 
 Don't panic. Simply execute the following commands with Composer:
@@ -41,7 +41,7 @@ Why does ramsey/uuid use ``final``?
 
 You might notice that many of the concrete classes returned in ramsey/uuid are
 marked as ``final``. There are specific reasons for this choice, and I will
-offer a few solutions for those looking to extend or mock the classes, for
+offer a few solutions for those looking to extend or mock the classes for
 testing purposes.
 
 But Why?
@@ -113,7 +113,7 @@ At the same time, ramsey/uuid is able to guarantee that neither a
 `downstream`_ code.
 
 UUIDs have specific rules that make them practically unique. ramsey/uuid ensures
-that other code cannot change this expectation, while allowing your code and
+that other code cannot change this expectation while allowing your code and
 third-party libraries to change how UUIDs are generated and to return different
 types of UUIDs not specified by `RFC 4122`_.
 
