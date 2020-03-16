@@ -29,8 +29,10 @@ jobs:
       arch: arm64
       env: ARCH=arm32
     - php: nightly
+      env: COMPOSER_OPTIONS=--ignore-platform-reqs
     - php: nightly
       arch: s390x
+      env: COMPOSER_OPTIONS=--ignore-platform-reqs
   allow_failures:
     - php: nightly
 
@@ -49,7 +51,7 @@ before_install:
 
 install:
   - travis_retry ./resources/scripts/cmd-proxy.sh composer require --no-update "php-coveralls/php-coveralls:^1 | ^2"
-  - travis_retry ./resources/scripts/cmd-proxy.sh composer install --no-interaction --prefer-dist --no-progress --no-suggest
+  - travis_retry ./resources/scripts/cmd-proxy.sh composer install --no-interaction --prefer-dist --no-progress --no-suggest $COMPOSER_OPTIONS
 
 before_script:
   - mkdir -p build/cache
