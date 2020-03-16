@@ -177,6 +177,23 @@ code, if you use these methods.
       - ``mixed`` [#f1]_
       - :php:class:`Type\\Integer <Ramsey\\Uuid\\Type\\Integer>`
 
+In version 3, the following :php:class:`Uuid <Ramsey\\Uuid\\Uuid>` methods
+return ``int``, ``string``, or Moontoast\\Math\\BigNumber, depending on the
+environment. In version 4, they all return numeric ``string`` values for the
+sake of consistency. These methods :ref:`are also deprecated
+<upgrading.3-to-4.deprecations.uuid>` and will be removed in version 5.
+
+* ``getClockSeqHiAndReserved()``
+* ``getClockSeqLow()``
+* ``getClockSequence()``
+* ``getLeastSignificantBits()``
+* ``getMostSignificantBits()``
+* ``getNode()``
+* ``getTimeHiAndVersion()``
+* ``getTimeLow()``
+* ``getTimeMid()``
+* ``getTimestamp()``
+
 
 .. _upgrading.3-to-4.deprecations:
 
