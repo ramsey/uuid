@@ -6,6 +6,7 @@ namespace Ramsey\Uuid\Test\Rfc4122;
 
 use Mockery;
 use Ramsey\Uuid\Exception\InvalidBytesException;
+use Ramsey\Uuid\Rfc4122\Fields;
 use Ramsey\Uuid\Rfc4122\VariantTrait;
 use Ramsey\Uuid\Test\TestCase;
 
@@ -19,6 +20,7 @@ class VariantTraitTest extends TestCase
      */
     public function testGetVariantThrowsExceptionForWrongNumberOfBytes(string $bytes): void
     {
+        /** @var Fields $trait */
         $trait = Mockery::mock(VariantTrait::class, [
             'getBytes' => $bytes,
         ]);
@@ -47,6 +49,7 @@ class VariantTraitTest extends TestCase
     {
         $bytes = (string) hex2bin(str_replace('-', '', $uuid));
 
+        /** @var Fields $trait */
         $trait = Mockery::mock(VariantTrait::class, [
             'getBytes' => $bytes,
         ]);
