@@ -101,7 +101,7 @@ this (again, assume some of the variables in this example have been set
 beforehand):
 
 .. code-block:: php
-    :caption: Store a string UUID to the uuid column
+    :caption: Store UUID bytes to the uuid column
     :name: database.uuid-bytes-store-example
 
     $sth->execute([
@@ -186,7 +186,7 @@ with this approach, but there are a couple of points to consider:
 We'll deal with the first point in the section, :ref:`database.order`. For the
 second point, if you are using the string version of the UUID (i.e.,
 ``char(36)``), then not only will the primary key be large and take up a lot of
-space, but every secondary key that uses that primary key will also be must
+space, but every secondary key that uses that primary key will also be much
 larger.
 
 For this reason, if you choose to use UUIDs as primary keys, it might be worth
