@@ -33,7 +33,7 @@ There are a lot of new features in ramsey/uuid! Here are a few of them:
   * :php:class:`Rfc4122\\UuidV3 <Ramsey\\Uuid\\Rfc4122\\UuidV3>`
   * :php:class:`Rfc4122\\UuidV4 <Ramsey\\Uuid\\Rfc4122\\UuidV4>`
   * :php:class:`Rfc4122\\UuidV5 <Ramsey\\Uuid\\Rfc4122\\UuidV5>`
-  * Rfc4122\\NilUuid
+  * :php:class:`Rfc4122\\NilUuid <Ramsey\\Uuid\\Rfc4122\\NilUuid>`
 
 * Add classes to represent version 6 UUIDs, GUIDs, and nonstandard
   (non-RFC 4122 variants) UUIDs:
