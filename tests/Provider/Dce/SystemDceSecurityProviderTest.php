@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Ramsey\Uuid\Test\Provider\Dce;
 
+use Mockery;
 use Ramsey\Uuid\Exception\DceSecurityException;
 use Ramsey\Uuid\Provider\Dce\SystemDceSecurityProvider;
 use Ramsey\Uuid\Test\TestCase;
@@ -365,7 +366,7 @@ class SystemDceSecurityProviderTest extends TestCase
             ->andReturn('Local Group Memberships   *Users');
 
         $shellExec
-            ->with("wmic group get name,sid | findstr /b /i 'Users'")
+            ->with(Mockery::pattern("/^wmic group get name,sid \| findstr \/b \/i (\"|\')Users(\"|\')$/"))
             ->once()
             ->andReturn($value);
 
@@ -410,7 +411,7 @@ class SystemDceSecurityProviderTest extends TestCase
             ->andReturn($netUserResponse);
 
         $shellExec
-            ->with("wmic group get name,sid | findstr /b /i '{$expectedGroup}'")
+            ->with(Mockery::pattern("/^wmic group get name,sid \| findstr \/b \/i (\"|\'){$expectedGroup}(\"|\')$/"))
             ->once()
             ->andReturn($wmicGroupResponse);
 
