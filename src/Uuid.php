@@ -538,6 +538,9 @@ class Uuid implements UuidInterface
      *
      * @return UuidInterface A UuidInterface instance that represents a
      *     version 5 UUID
+     *
+     * @psalm-pure note: changing the internal factory is an edge case not covered by purity invariants,
+     *             but under constant factory setups, this method operates in functionally pure manners
      */
     public static function uuid5($ns, string $name): UuidInterface
     {
