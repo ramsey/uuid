@@ -83,6 +83,8 @@ interface UuidFactoryInterface
      *
      * @return UuidInterface A UuidInterface instance that represents a
      *     version 3 UUID
+     *
+     * @psalm-pure
      */
     public function uuid3($ns, string $name): UuidInterface;
 
@@ -103,6 +105,8 @@ interface UuidFactoryInterface
      *
      * @return UuidInterface A UuidInterface instance that represents a
      *     version 5 UUID
+     *
+     * @psalm-pure
      */
     public function uuid5($ns, string $name): UuidInterface;
 

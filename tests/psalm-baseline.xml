@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<files psalm-version="3.8.3@389af1bfc739bfdff3f9e3dc7bd6499aee51a831">
+<files psalm-version="3.9.4@352bd3f5c5789db04e4010856c2f4e01ed354f4e">
   <file src="src/Builder/DegradedUuidBuilder.php">
     <DeprecatedClass occurrences="3">
       <code>new DegradedTimeConverter()</code>
@@ -44,6 +44,13 @@
       <code>uuid_parse($uuid)</code>
     </MixedReturnStatement>
   </file>
+  <file src="src/Generator/PeclUuidNameGenerator.php">
+    <ImpureFunctionCall occurrences="3">
+      <code>uuid_generate_md5</code>
+      <code>uuid_generate_sha1</code>
+      <code>uuid_parse</code>
+    </ImpureFunctionCall>
+  </file>
   <file src="src/Provider/Dce/SystemDceSecurityProvider.php">
     <ForbiddenCode occurrences="5">
       <code>shell_exec('id -u')</code>
@@ -54,23 +61,16 @@
     </ForbiddenCode>
   </file>
   <file src="src/Provider/Node/SystemNodeProvider.php">
-    <MixedArgument occurrences="2">
-      <code>$node</code>
+    <MixedArgument occurrences="1">
       <code>$macs</code>
     </MixedArgument>
-    <MixedAssignment occurrences="2">
-      <code>$node</code>
+    <MixedAssignment occurrences="1">
       <code>$node</code>
     </MixedAssignment>
-    <MixedInferredReturnType occurrences="1">
-      <code>getNode</code>
-    </MixedInferredReturnType>
-    <TypeDoesNotContainType occurrences="1">
-      <code>is_array($node)</code>
-    </TypeDoesNotContainType>
   </file>
   <file src="src/Uuid.php">
-    <ImpureMethodCall occurrences="5">
+    <ImpureMethodCall occurrences="6">
+      <code>getFactory</code>
       <code>getFactory</code>
       <code>getFactory</code>
       <code>getFactory</code>

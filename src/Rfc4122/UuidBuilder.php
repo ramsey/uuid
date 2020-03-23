@@ -65,6 +65,8 @@ class UuidBuilder implements UuidBuilderInterface
      * @param string $bytes The byte string from which to construct a UUID
      *
      * @return Rfc4122UuidInterface UuidBuilder returns instances of Rfc4122UuidInterface
+     *
+     * @psalm-pure
      */
     public function build(CodecInterface $codec, string $bytes): UuidInterface
     {
