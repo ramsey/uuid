@@ -91,6 +91,15 @@ final class UuidIsImmutable
     }
 
     /** @psalm-pure */
+    public static function uuid3IsPure(): UuidInterface
+    {
+        return Uuid::uuid3(
+            Uuid::fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66'),
+            'Look ma! I am a pure function!'
+        );
+    }
+
+    /** @psalm-pure */
     public static function uuid5IsPure(): UuidInterface
     {
         return Uuid::uuid5(
