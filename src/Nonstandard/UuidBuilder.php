@@ -61,6 +61,8 @@ class UuidBuilder implements UuidBuilderInterface
      *
      * @return Uuid The Nonstandard\UuidBuilder returns an instance of
      *     Nonstandard\Uuid
+     *
+     * @psalm-pure
      */
     public function build(CodecInterface $codec, string $bytes): UuidInterface
     {

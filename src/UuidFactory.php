@@ -351,6 +351,7 @@ class UuidFactory implements UuidFactoryInterface
 
     /**
      * @inheritDoc
+     * @psalm-pure
      */
     public function uuid3($ns, string $name): UuidInterface
     {
@@ -366,6 +367,7 @@ class UuidFactory implements UuidFactoryInterface
 
     /**
      * @inheritDoc
+     * @psalm-pure
      */
     public function uuid5($ns, string $name): UuidInterface
     {
@@ -401,6 +403,8 @@ class UuidFactory implements UuidFactoryInterface
      *
      * @return UuidInterface An instance of UuidInterface, created from the
      *     provided bytes
+     *
+     * @psalm-pure
      */
     public function uuid(string $bytes): UuidInterface
     {
@@ -418,6 +422,8 @@ class UuidFactory implements UuidFactoryInterface
      *
      * @return UuidInterface An instance of UuidInterface, created by hashing
      *     together the provided namespace and name
+     *
+     * @psalm-pure
      */
     private function uuidFromNsAndName($ns, string $name, int $version, string $hashAlgorithm): UuidInterface
     {
@@ -438,6 +444,8 @@ class UuidFactory implements UuidFactoryInterface
      *
      * @return UuidInterface An instance of UuidInterface, created from the
      *     byte string and version
+     *
+     * @psalm-pure
      */
     private function uuidFromBytesAndVersion(string $bytes, int $version): UuidInterface
     {
