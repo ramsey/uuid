@@ -291,6 +291,7 @@ class Uuid implements UuidInterface
         $this->codec = $uuid->codec;
         $this->numberConverter = $uuid->numberConverter;
         $this->fields = $uuid->fields;
+        $this->timeConverter = $uuid->timeConverter;
     }
 
     public function compareTo(UuidInterface $other): int

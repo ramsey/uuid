@@ -7,6 +7,9 @@ namespace Ramsey\Uuid\Test\Provider\Node;
 use Ramsey\Uuid\Exception\NodeException;
 use Ramsey\Uuid\Provider\Node\FallbackNodeProvider;
 use Ramsey\Uuid\Provider\Node\NodeProviderCollection;
+use Ramsey\Uuid\Provider\Node\RandomNodeProvider;
+use Ramsey\Uuid\Provider\Node\StaticNodeProvider;
+use Ramsey\Uuid\Provider\Node\SystemNodeProvider;
 use Ramsey\Uuid\Provider\NodeProviderInterface;
 use Ramsey\Uuid\Test\TestCase;
 use Ramsey\Uuid\Type\Hexadecimal;
@@ -64,5 +67,32 @@ class FallbackNodeProviderTest extends TestCase
         );
 
         $provider->getNode();
+    }
+
+    public function testSerializationOfNodeProviderCollection(): void
+    {
+        $staticNodeProvider = new StaticNodeProvider(new Hexadecimal('aabbccddeeff'));
+        $randomNodeProvider = new RandomNodeProvider();
+        $systemNodeProvider = new SystemNodeProvider();
+
+        $nodeProviderCollection = new NodeProviderCollection(
+            [
+                $staticNodeProvider,
+                $randomNodeProvider,
+                $systemNodeProvider,
+            ]
+        );
+
+        $serializedNodeProviderCollection = serialize($nodeProviderCollection);
+
+        /** @var NodeProviderCollection $unserializedNodeProviderCollection */
+        $unserializedNodeProviderCollection = unserialize($serializedNodeProviderCollection);
+
+        $this->assertInstanceOf(NodeProviderCollection::class, $unserializedNodeProviderCollection);
+
+        foreach ($unserializedNodeProviderCollection as $nodeProvider) {
+            $this->assertInstanceOf(NodeProviderInterface::class, $nodeProvider);
+            $this->assertInstanceOf(Hexadecimal::class, $nodeProvider->getNode());
+        }
     }
 }

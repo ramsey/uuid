@@ -16,6 +16,13 @@ namespace Ramsey\Uuid\Builder;
 
 use Ramsey\Collection\AbstractCollection;
 use Ramsey\Collection\CollectionInterface;
+use Ramsey\Uuid\Converter\Number\GenericNumberConverter;
+use Ramsey\Uuid\Converter\Time\GenericTimeConverter;
+use Ramsey\Uuid\Converter\Time\PhpTimeConverter;
+use Ramsey\Uuid\Guid\GuidBuilder;
+use Ramsey\Uuid\Math\BrickMathCalculator;
+use Ramsey\Uuid\Nonstandard\UuidBuilder as NonstandardUuidBuilder;
+use Ramsey\Uuid\Rfc4122\UuidBuilder as Rfc4122UuidBuilder;
 use Traversable;
 
 /**
@@ -36,5 +43,31 @@ class BuilderCollection extends AbstractCollection implements CollectionInterfac
     public function getIterator(): Traversable
     {
         return parent::getIterator();
+    }
+
+    /**
+     * Re-constructs the object from its serialized form
+     *
+     * @param string $serialized The serialized PHP string to unserialize into
+     *     a UuidInterface instance
+     *
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
+     */
+    public function unserialize($serialized): void
+    {
+        /** @var mixed[] $data */
+        $data = unserialize($serialized, [
+            'allowed_classes' => [
+                BrickMathCalculator::class,
+                GenericNumberConverter::class,
+                GenericTimeConverter::class,
+                GuidBuilder::class,
+                NonstandardUuidBuilder::class,
+                PhpTimeConverter::class,
+                Rfc4122UuidBuilder::class,
+            ],
+        ]);
+
+        $this->data = $data;
     }
 }

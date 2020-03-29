@@ -4,14 +4,28 @@ declare(strict_types=1);
 
 namespace Ramsey\Uuid\Test\Builder;
 
+use DateTimeInterface;
 use Mockery;
 use Ramsey\Uuid\Builder\BuilderCollection;
 use Ramsey\Uuid\Builder\FallbackBuilder;
 use Ramsey\Uuid\Builder\UuidBuilderInterface;
 use Ramsey\Uuid\Codec\CodecInterface;
+use Ramsey\Uuid\Codec\StringCodec;
+use Ramsey\Uuid\Converter\Number\GenericNumberConverter;
+use Ramsey\Uuid\Converter\Time\GenericTimeConverter;
+use Ramsey\Uuid\Converter\Time\PhpTimeConverter;
 use Ramsey\Uuid\Exception\BuilderNotFoundException;
 use Ramsey\Uuid\Exception\UnableToBuildUuidException;
+use Ramsey\Uuid\Guid\GuidBuilder;
+use Ramsey\Uuid\Math\BrickMathCalculator;
+use Ramsey\Uuid\Nonstandard\UuidBuilder as NonstandardUuidBuilder;
+use Ramsey\Uuid\Nonstandard\UuidV6;
+use Ramsey\Uuid\Rfc4122\UuidBuilder as Rfc4122UuidBuilder;
+use Ramsey\Uuid\Rfc4122\UuidV1;
+use Ramsey\Uuid\Rfc4122\UuidV2;
 use Ramsey\Uuid\Test\TestCase;
+use Ramsey\Uuid\UuidInterface;
+use Ramsey\Uuid\Validator\GenericValidator;
 
 class FallbackBuilderTest extends TestCase
 {
@@ -49,5 +63,149 @@ class FallbackBuilderTest extends TestCase
         );
 
         $fallbackBuilder->build($codec, $bytes);
+    }
+
+    /**
+     * @dataProvider provideBytes
+     */
+    public function testSerializationOfBuilderCollection(string $bytes): void
+    {
+        $validator = new GenericValidator();
+        $calculator = new BrickMathCalculator();
+        $genericNumberConverter = new GenericNumberConverter($calculator);
+        $genericTimeConverter = new GenericTimeConverter($calculator);
+        $phpTimeConverter = new PhpTimeConverter($calculator, $genericTimeConverter);
+
+        // Use the GenericTimeConverter.
+        $guidBuilder = new GuidBuilder($genericNumberConverter, $genericTimeConverter);
+        $rfc4122Builder = new Rfc4122UuidBuilder($genericNumberConverter, $genericTimeConverter);
+        $nonstandardBuilder = new NonstandardUuidBuilder($genericNumberConverter, $genericTimeConverter);
+
+        // Use the PhpTimeConverter.
+        $guidBuilder2 = new GuidBuilder($genericNumberConverter, $phpTimeConverter);
+        $rfc4122Builder2 = new Rfc4122UuidBuilder($genericNumberConverter, $phpTimeConverter);
+        $nonstandardBuilder2 = new NonstandardUuidBuilder($genericNumberConverter, $phpTimeConverter);
+
+        $builderCollection = new BuilderCollection(
+            [
+                $guidBuilder,
+                $guidBuilder2,
+                $rfc4122Builder,
+                $rfc4122Builder2,
+                $nonstandardBuilder,
+                $nonstandardBuilder2,
+            ]
+        );
+
+        $serializedBuilderCollection = serialize($builderCollection);
+
+        /** @var BuilderCollection $unserializedBuilderCollection */
+        $unserializedBuilderCollection = unserialize($serializedBuilderCollection);
+
+        $this->assertInstanceOf(BuilderCollection::class, $unserializedBuilderCollection);
+
+        /** @var UuidBuilderInterface $builder */
+        foreach ($unserializedBuilderCollection as $builder) {
+            $codec = new StringCodec($builder);
+
+            $this->assertInstanceOf(UuidBuilderInterface::class, $builder);
+
+            try {
+                $uuid = $builder->build($codec, $bytes);
+                $this->assertInstanceOf(UuidInterface::class, $uuid);
+
+                if (($uuid instanceof UuidV1) || ($uuid instanceof UuidV2) || ($uuid instanceof UuidV6)) {
+                    $this->assertInstanceOf(DateTimeInterface::class, $uuid->getDateTime());
+                }
+            } catch (UnableToBuildUuidException $exception) {
+                switch ($exception->getMessage()) {
+                    case 'The byte string received does not contain a valid version':
+                    case 'The byte string received does not conform to the RFC 4122 variant':
+                    case 'The byte string received does not conform to the RFC 4122 or Microsoft Corporation variants':
+                        // This is expected; ignoring.
+
+                        break;
+                    default:
+                        throw $exception;
+                }
+            }
+        }
+    }
+
+    /**
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingTraversableTypeHintSpecification
+     */
+    public function provideBytes(): array
+    {
+        return [
+            [
+                // GUID bytes
+                'bytes' => hex2bin('b08c6fff7dc5e1110b210800200c9a66'),
+            ],
+            [
+                // GUID bytes
+                'bytes' => hex2bin('b08c6fff7dc5e1111b210800200c9a66'),
+            ],
+            [
+                // GUID bytes
+                'bytes' => hex2bin('b08c6fff7dc5e1112b210800200c9a66'),
+            ],
+            [
+                // GUID bytes
+                'bytes' => hex2bin('b08c6fff7dc5e1113b210800200c9a66'),
+            ],
+            [
+                // GUID bytes
+                'bytes' => hex2bin('b08c6fff7dc5e1114b210800200c9a66'),
+            ],
+            [
+                // GUID bytes
+                'bytes' => hex2bin('b08c6fff7dc5e1115b210800200c9a66'),
+            ],
+            [
+                // GUID bytes
+                'bytes' => hex2bin('b08c6fff7dc5e1116b210800200c9a66'),
+            ],
+            [
+                // GUID bytes
+                'bytes' => hex2bin('b08c6fff7dc5e1117b210800200c9a66'),
+            ],
+            [
+                // GUID bytes
+                'bytes' => hex2bin('b08c6fff7dc5e111eb210800200c9a66'),
+            ],
+            [
+                // GUID bytes
+                'bytes' => hex2bin('b08c6fff7dc5e111fb210800200c9a66'),
+            ],
+            [
+                // Version 1 bytes
+                'bytes' => hex2bin('ff6f8cb0c57d11e19b210800200c9a66'),
+            ],
+            [
+                // Version 2 bytes
+                'bytes' => hex2bin('000001f55cde21ea84000242ac130003'),
+            ],
+            [
+                // Version 3 bytes
+                'bytes' => hex2bin('ff6f8cb0c57d31e1bb210800200c9a66'),
+            ],
+            [
+                // Version 4 bytes
+                'bytes' => hex2bin('ff6f8cb0c57d41e1ab210800200c9a66'),
+            ],
+            [
+                // Version 5 bytes
+                'bytes' => hex2bin('ff6f8cb0c57d51e18b210800200c9a66'),
+            ],
+            [
+                // Version 6 bytes
+                'bytes' => hex2bin('ff6f8cb0c57d61e18b210800200c9a66'),
+            ],
+            [
+                // NIL bytes
+                'bytes' => hex2bin('00000000000000000000000000000000'),
+            ],
+        ];
     }
 }

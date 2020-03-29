@@ -17,6 +17,7 @@ namespace Ramsey\Uuid\Provider\Node;
 use Ramsey\Collection\AbstractCollection;
 use Ramsey\Collection\CollectionInterface;
 use Ramsey\Uuid\Provider\NodeProviderInterface;
+use Ramsey\Uuid\Type\Hexadecimal;
 
 /**
  * A collection of NodeProviderInterface objects
@@ -26,5 +27,28 @@ class NodeProviderCollection extends AbstractCollection implements CollectionInt
     public function getType(): string
     {
         return NodeProviderInterface::class;
+    }
+
+    /**
+     * Re-constructs the object from its serialized form
+     *
+     * @param string $serialized The serialized PHP string to unserialize into
+     *     a UuidInterface instance
+     *
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
+     */
+    public function unserialize($serialized): void
+    {
+        /** @var mixed[] $data */
+        $data = unserialize($serialized, [
+            'allowed_classes' => [
+                Hexadecimal::class,
+                RandomNodeProvider::class,
+                StaticNodeProvider::class,
+                SystemNodeProvider::class,
+            ],
+        ]);
+
+        $this->data = $data;
     }
 }

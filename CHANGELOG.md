@@ -21,6 +21,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Security
 
 
+## [4.0.1] - 2020-03-29
+
+### Fixed
+
+* Fix collection deserialization errors due to upstream `allowed_classes` being
+  set to `false`. For details, see [ramsey/uuid#303](https://github.com/ramsey/uuid/issues/303)
+  and [ramsey/collection#47](https://github.com/ramsey/collection/issues/47).
+
+
 ## [4.0.0] - 2020-03-22
 
 ### Added
@@ -1173,7 +1182,8 @@ versions leading up to this release.*
 [ramsey/uuid-doctrine]: https://github.com/ramsey/uuid-doctrine
 [ramsey/uuid-console]: https://github.com/ramsey/uuid-console
 
-[unreleased]: https://github.com/ramsey/uuid/compare/4.0.0...HEAD
+[unreleased]: https://github.com/ramsey/uuid/compare/4.0.1...HEAD
+[4.0.1]: https://github.com/ramsey/uuid/compare/4.0.0...4.0.1
 [4.0.0]: https://github.com/ramsey/uuid/compare/4.0.0-beta2...4.0.0
 [4.0.0-beta2]: https://github.com/ramsey/uuid/compare/4.0.0-beta1...4.0.0-beta2
 [4.0.0-beta1]: https://github.com/ramsey/uuid/compare/4.0.0-alpha5...4.0.0-beta1
