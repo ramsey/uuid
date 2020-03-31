@@ -123,7 +123,6 @@ class FallbackBuilderTest extends TestCase
                     case 'The byte string received does not conform to the RFC 4122 variant':
                     case 'The byte string received does not conform to the RFC 4122 or Microsoft Corporation variants':
                         // This is expected; ignoring.
-
                         break;
                     default:
                         throw $exception;
