@@ -17,7 +17,10 @@ namespace Ramsey\Uuid\Guid;
 use Ramsey\Uuid\Codec\CodecInterface;
 use Ramsey\Uuid\Converter\NumberConverterInterface;
 use Ramsey\Uuid\Converter\TimeConverterInterface;
+use Ramsey\Uuid\FeatureSet;
 use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidFactory;
+use Ramsey\Uuid\UuidFactoryInterface;
 use Ramsey\Uuid\UuidInterface;
 
 /**
@@ -51,6 +54,11 @@ use Ramsey\Uuid\UuidInterface;
  */
 final class Guid extends Uuid implements UuidInterface
 {
+    /**
+     * @var UuidFactoryInterface|null
+     */
+    private static $factory = null;
+
     public function __construct(
         Fields $fields,
         NumberConverterInterface $numberConverter,
@@ -58,5 +66,28 @@ final class Guid extends Uuid implements UuidInterface
         TimeConverterInterface $timeConverter
     ) {
         parent::__construct($fields, $numberConverter, $codec, $timeConverter);
+    }
+
+    /**
+     * Returns the factory used to create UUIDs
+     */
+    public static function getFactory(): UuidFactoryInterface
+    {
+        if (self::$factory === null) {
+            self::$factory = new UuidFactory(new FeatureSet(true));
+        }
+
+        return self::$factory;
+    }
+
+    /**
+     * Sets the factory used to create UUIDs
+     *
+     * @param UuidFactoryInterface $factory A factory that will be used by this
+     *     class to create UUIDs
+     */
+    public static function setFactory(UuidFactoryInterface $factory): void
+    {
+        throw new \Exception('not allowed');
     }
 }

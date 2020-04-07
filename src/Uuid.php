@@ -385,7 +385,7 @@ class Uuid implements UuidInterface
      */
     public static function fromBytes(string $bytes): UuidInterface
     {
-        return self::getFactory()->fromBytes($bytes);
+        return static::getFactory()->fromBytes($bytes);
     }
 
     /**
@@ -401,7 +401,7 @@ class Uuid implements UuidInterface
      */
     public static function fromString(string $uuid): UuidInterface
     {
-        return self::getFactory()->fromString($uuid);
+        return static::getFactory()->fromString($uuid);
     }
 
     /**
@@ -422,7 +422,7 @@ class Uuid implements UuidInterface
         ?Hexadecimal $node = null,
         ?int $clockSeq = null
     ): UuidInterface {
-        return self::getFactory()->fromDateTime($dateTime, $node, $clockSeq);
+        return static::getFactory()->fromDateTime($dateTime, $node, $clockSeq);
     }
 
     /**
@@ -438,7 +438,7 @@ class Uuid implements UuidInterface
      */
     public static function fromInteger(string $integer): UuidInterface
     {
-        return self::getFactory()->fromInteger($integer);
+        return static::getFactory()->fromInteger($integer);
     }
 
     /**
@@ -453,7 +453,7 @@ class Uuid implements UuidInterface
      */
     public static function isValid(string $uuid): bool
     {
-        return self::getFactory()->getValidator()->validate($uuid);
+        return static::getFactory()->getValidator()->validate($uuid);
     }
 
     /**
@@ -472,7 +472,7 @@ class Uuid implements UuidInterface
      */
     public static function uuid1($node = null, ?int $clockSeq = null): UuidInterface
     {
-        return self::getFactory()->uuid1($node, $clockSeq);
+        return static::getFactory()->uuid1($node, $clockSeq);
     }
 
     /**
@@ -501,7 +501,7 @@ class Uuid implements UuidInterface
         ?Hexadecimal $node = null,
         ?int $clockSeq = null
     ): UuidInterface {
-        return self::getFactory()->uuid2($localDomain, $localIdentifier, $node, $clockSeq);
+        return static::getFactory()->uuid2($localDomain, $localIdentifier, $node, $clockSeq);
     }
 
     /**
@@ -519,7 +519,7 @@ class Uuid implements UuidInterface
      */
     public static function uuid3($ns, string $name): UuidInterface
     {
-        return self::getFactory()->uuid3($ns, $name);
+        return static::getFactory()->uuid3($ns, $name);
     }
 
     /**
@@ -530,7 +530,7 @@ class Uuid implements UuidInterface
      */
     public static function uuid4(): UuidInterface
     {
-        return self::getFactory()->uuid4();
+        return static::getFactory()->uuid4();
     }
 
     /**
@@ -548,7 +548,7 @@ class Uuid implements UuidInterface
      */
     public static function uuid5($ns, string $name): UuidInterface
     {
-        return self::getFactory()->uuid5($ns, $name);
+        return static::getFactory()->uuid5($ns, $name);
     }
 
     /**
@@ -568,6 +568,6 @@ class Uuid implements UuidInterface
         ?Hexadecimal $node = null,
         ?int $clockSeq = null
     ): UuidInterface {
-        return self::getFactory()->uuid6($node, $clockSeq);
+        return static::getFactory()->uuid6($node, $clockSeq);
     }
 }
