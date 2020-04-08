@@ -322,6 +322,13 @@ class UuidFactory implements UuidFactoryInterface
 
         return $this->uuidFromBytesAndVersion($bytes, 1);
     }
+    
+    /**
+     * @psalm-pure
+     */
+    public function fromHexadecimal(Hexadecimal $hex): UuidInterface {
+        return $this->codec->decode($hex->__toString());
+    }
 
     /**
      * @inheritDoc

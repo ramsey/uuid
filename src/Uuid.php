@@ -424,6 +424,10 @@ class Uuid implements UuidInterface
     ): UuidInterface {
         return self::getFactory()->fromDateTime($dateTime, $node, $clockSeq);
     }
+    
+    public static function fromHexadecimal(Hexadecimal $hex): UuidInterface {
+       return self::getFactory()->fromHexadecimal($hex);
+    }
 
     /**
      * Creates a UUID from a 128-bit integer string
