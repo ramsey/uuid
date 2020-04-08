@@ -424,9 +424,21 @@ class Uuid implements UuidInterface
     ): UuidInterface {
         return self::getFactory()->fromDateTime($dateTime, $node, $clockSeq);
     }
-    
-    public static function fromHexadecimal(Hexadecimal $hex): UuidInterface {
-       return self::getFactory()->fromHexadecimal($hex);
+
+    /**
+     * Creates a UUID from the Hexadecimal object
+     *
+     * @param Hexadecimal $hex Hexadecimal object representing a hexadecimal number
+     *
+     * @return UuidInterface A UuidInterface instance created from the Hexadecimal 
+     * object representing a hexadecimal number
+     *
+     * @psalm-pure note: changing the internal factory is an edge case not covered by purity invariants,
+     *             but under constant factory setups, this method operates in functionally pure manners
+     */
+    public static function fromHexadecimal(Hexadecimal $hex): UuidInterface
+    {
+        return self::getFactory()->fromHexadecimal($hex);
     }
 
     /**

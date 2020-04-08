@@ -179,7 +179,7 @@ interface UuidFactoryInterface
         ?Hexadecimal $node = null,
         ?int $clockSeq = null
     ): UuidInterface;
-    
+
     /**
      * Creates a UUID from a Hexadecimal object
      *
