@@ -179,16 +179,4 @@ interface UuidFactoryInterface
         ?Hexadecimal $node = null,
         ?int $clockSeq = null
     ): UuidInterface;
-
-    /**
-     * Creates a UUID from a Hexadecimal object
-     *
-     * @param Hexadecimal $hex Hexadecimal object representing a hexadecimal number
-     *
-     * @return UuidInterface A UuidInterface instance created from the Hexadecimal 
-     * object representing a hexadecimal number
-     *
-     * @psalm-pure
-     */
-    public function fromHexadecimal(Hexadecimal $hex): UuidInterface;
 }

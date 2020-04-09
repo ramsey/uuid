@@ -118,10 +118,6 @@ class StringCodec implements CodecInterface
             $encodedUuid
         );
 
-        if (strpos($parsedUuid, '0x') === 0) {
-            $parsedUuid = substr($parsedUuid, 2);
-        }
-
         $components = [
             substr($parsedUuid, 0, 8),
             substr($parsedUuid, 8, 4),

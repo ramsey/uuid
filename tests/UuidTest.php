@@ -76,7 +76,7 @@ class UuidTest extends TestCase
     public function fromHexadecimal(): void
     {
         $hex = new Hexadecimal('0x1EA78DEB37CE625E8F1A025041000001');
-        $uuid = Uuid::fromHex($hex);
+        $uuid = Uuid::fromHexadecimal($hex);
         $this->assertInstanceOf(Uuid::class, $uuid);
         $this->assertEquals('1ea78deb-37ce-625e-8f1a-025041000001', $uuid->toString());
     }
@@ -87,7 +87,7 @@ class UuidTest extends TestCase
         $this->expectExceptionMessage('Invalid UUID string:');
 
         $hex = new Hexadecimal('0x1EA78DEB37CE625E8F1A0250410000');
-        $uuid = Uuid::fromHex($hex);
+        Uuid::fromHexadecimal($hex);
     }
 
     /**
@@ -139,13 +139,6 @@ class UuidTest extends TestCase
         $uuid = Uuid::fromString('urn:uuid:ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
         $this->assertInstanceOf(Uuid::class, $uuid);
         $this->assertEquals('ff6f8cb0-c57d-11e1-9b21-0800200c9a66', $uuid->toString());
-    }
-
-    public function testFromStringHexadecimal(): void
-    {
-        $uuid = Uuid::fromString('0x1EA78DEB37CE625E8F1A025041000001');
-        $this->assertInstanceOf(Uuid::class, $uuid);
-        $this->assertEquals('1ea78deb-37ce-625e-8f1a-025041000001', $uuid->toString());
     }
 
     public function testGetBytes(): void
