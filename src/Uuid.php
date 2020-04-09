@@ -430,7 +430,7 @@ class Uuid implements UuidInterface
      *
      * @param Hexadecimal $hex Hexadecimal object representing a hexadecimal number
      *
-     * @return UuidInterface A UuidInterface instance created from the Hexadecimal 
+     * @return UuidInterface A UuidInterface instance created from the Hexadecimal
      * object representing a hexadecimal number
      *
      * @psalm-pure note: changing the internal factory is an edge case not covered by purity invariants,
