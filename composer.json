@@ -28,7 +28,6 @@
         "php-mock/php-mock-phpunit": "^2.5",
         "php-parallel-lint/php-parallel-lint": "^1.1",
         "phpstan/extension-installer": "^1.0",
-        "phpstan/phpdoc-parser": "0.4.4",
         "phpstan/phpstan": "^0.12",
         "phpstan/phpstan-mockery": "^0.12",
         "phpstan/phpstan-phpunit": "^0.12",
