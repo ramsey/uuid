@@ -62,6 +62,7 @@ script:
   - ./resources/scripts/cmd-proxy.sh composer phpcs
   - ./resources/scripts/cmd-proxy.sh composer phpstan
   - ./resources/scripts/cmd-proxy.sh composer psalm
+  - ./resources/scripts/cmd-proxy.sh composer phpbench
   - travis_wait 30 ./resources/scripts/cmd-proxy.sh ./vendor/bin/phpunit --verbose --coverage-clover build/logs/clover.xml
 
 after_success:

@@ -73,6 +73,7 @@
     },
     "scripts": {
         "lint": "parallel-lint src tests",
+        "phpbench": "phpbench run",
         "phpcbf": "phpcbf -vpw --cache=build/cache/phpcs.cache",
         "phpcs": "phpcs --cache=build/cache/phpcs.cache",
         "phpstan": [
@@ -84,6 +85,7 @@
         "phpunit-coverage": "phpunit --verbose --colors=always --coverage-html build/coverage",
         "test": [
             "@lint",
+            "@phpbench",
             "@phpcs",
             "@phpstan",
             "@psalm",
