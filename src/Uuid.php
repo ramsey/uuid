@@ -19,12 +19,16 @@ use Ramsey\Uuid\Codec\CodecInterface;
 use Ramsey\Uuid\Converter\NumberConverterInterface;
 use Ramsey\Uuid\Converter\TimeConverterInterface;
 use Ramsey\Uuid\Fields\FieldsInterface;
+use Ramsey\Uuid\Lazy\LazyUuidFromString;
 use Ramsey\Uuid\Rfc4122\FieldsInterface as Rfc4122FieldsInterface;
 use Ramsey\Uuid\Type\Hexadecimal;
 use Ramsey\Uuid\Type\Integer as IntegerObject;
 
+use function bin2hex;
+use function preg_match;
 use function str_replace;
 use function strcmp;
+use function strtolower;
 
 /**
  * Uuid provides constants and static methods for working with and generating UUIDs
@@ -195,6 +199,12 @@ class Uuid implements UuidInterface
     private static $factory = null;
 
     /**
+     * @var bool flag to detect if the UUID factory was replaced internally, which disables all optimizations
+     *           for the default/happy path internal scenarios
+     */
+    private static $factoryReplaced = false;
+
+    /**
      * @var CodecInterface
      */
     protected $codec;
@@ -288,10 +298,10 @@ class Uuid implements UuidInterface
     {
         if (strlen($serialized) === 16) {
             /** @var Uuid $uuid */
-            $uuid = self::fromBytes($serialized);
+            $uuid = self::getFactory()->fromBytes($serialized);
         } else {
             /** @var Uuid $uuid */
-            $uuid = self::fromString($serialized);
+            $uuid = self::getFactory()->fromString($serialized);
         }
 
         $this->codec = $uuid->codec;
@@ -375,6 +385,10 @@ class Uuid implements UuidInterface
      */
     public static function setFactory(UuidFactoryInterface $factory): void
     {
+        // Note: non-string equality is intentional here. If the factory is configured differently, every assumption
+        //       around purity is broken, and we have to internally decide everything differently.
+        self::$factoryReplaced = ($factory != new UuidFactory());
+
         self::$factory = $factory;
     }
 
@@ -391,6 +405,7 @@ class Uuid implements UuidInterface
      */
     public static function fromBytes(string $bytes): UuidInterface
     {
+        // @TODO optimize this endpoint too
         return self::getFactory()->fromBytes($bytes);
     }
 
@@ -407,6 +422,10 @@ class Uuid implements UuidInterface
      */
     public static function fromString(string $uuid): UuidInterface
     {
+        if (! self::$factoryReplaced && preg_match(LazyUuidFromString::VALID_PATTERN, $uuid) === 1) {
+            return new LazyUuidFromString(strtolower($uuid));
+        }
+
         return self::getFactory()->fromString($uuid);
     }
 

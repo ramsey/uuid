@@ -75,13 +75,25 @@ class ValidatorTest extends TestCase
                 'value' => 'ff6f8cb0-c57da-51e1-9b21-0800200c9a66',
                 'expected' => false,
             ],
+            [
+                'value' => "ff6f8cb0-c57d-11e1-1b21-0800200c9a66\n",
+                'expected' => false,
+            ],
+            [
+                'value' => "\nff6f8cb0-c57d-11e1-1b21-0800200c9a66",
+                'expected' => false,
+            ],
+            [
+                'value' => "\nff6f8cb0-c57d-11e1-1b21-0800200c9a66\n",
+                'expected' => false,
+            ],
         ]);
     }
 
     public function testGetPattern(): void
     {
-        $expectedPattern = '^[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-'
-            . '[1-5]{1}[0-9A-Fa-f]{3}-[ABab89]{1}[0-9A-Fa-f]{3}-[0-9A-Fa-f]{12}$';
+        $expectedPattern = '\A[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-'
+            . '[1-5]{1}[0-9A-Fa-f]{3}-[ABab89]{1}[0-9A-Fa-f]{3}-[0-9A-Fa-f]{12}\z';
 
         $validator = new Validator();
 

@@ -72,12 +72,24 @@ class GenericValidatorTest extends TestCase
                 'value' => 'ff6f8cb0-c57da-51e1-9b21-0800200c9a66',
                 'expected' => false,
             ],
+            [
+                'value' => "ff6f8cb0-c57d-11e1-1b21-0800200c9a66\n",
+                'expected' => false,
+            ],
+            [
+                'value' => "\nff6f8cb0-c57d-11e1-1b21-0800200c9a66",
+                'expected' => false,
+            ],
+            [
+                'value' => "\nff6f8cb0-c57d-11e1-1b21-0800200c9a66\n",
+                'expected' => false,
+            ],
         ]);
     }
 
     public function testGetPattern(): void
     {
-        $expectedPattern = '^[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}$';
+        $expectedPattern = '\A[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}\z';
 
         $validator = new GenericValidator();
 
