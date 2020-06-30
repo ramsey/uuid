@@ -22,7 +22,7 @@ use Ramsey\Uuid\Nonstandard\UuidV6;
 use Ramsey\Uuid\Rfc4122\UuidV1;
 use Ramsey\Uuid\Type\Hexadecimal;
 use Ramsey\Uuid\Type\Integer as IntegerObject;
-use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidFactory;
 use Ramsey\Uuid\UuidInterface;
 
 use function assert;
@@ -38,15 +38,26 @@ use function str_replace;
  *           in consumer libraries.
  *
  * @psalm-immutable
+ *
+ * Note: the {@see FieldsInterface} does not declare methods that deprecated API
+ *        relies upon: the API has been ported from the {@see \Ramsey\Uuid\Uuid} definition,
+ *        and is deprecated anyway.
+ * Note: the deprecated API from {@see \Ramsey\Uuid\Uuid} is in use here (on purpose): it will be removed
+ *       once the deprecated API is gone from this class too.
+ *
+ * @psalm-suppress UndefinedInterfaceMethod
+ * @psalm-suppress DeprecatedMethod
  */
 final class LazyUuidFromString implements UuidInterface
 {
     public const VALID_REGEX = '/\A[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\z/ms';
-
-    /** @var non-empty-string */
+    /**
+     * @var string
+     * @psalm-var non-empty-string
+     */
     private $uuid;
 
-    /** @var non-empty-string */
+    /** @psalm-param non-empty-string $uuid */
     public function __construct(string $uuid)
     {
         $this->uuid = $uuid;
@@ -57,103 +68,128 @@ final class LazyUuidFromString implements UuidInterface
         return $this->uuid;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     *
+     * @param string $serialized
+     *
+     * @psalm-param non-empty-string $serialized
+     */
     public function unserialize($serialized): void
     {
         $this->uuid = $serialized;
     }
 
+    /** @psalm-suppress DeprecatedMethod */
     public function getNumberConverter(): NumberConverterInterface
     {
         return $this->unwrap()
             ->getNumberConverter();
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     *
+     * @psalm-suppress DeprecatedMethod
+     */
     public function getFieldsHex(): array
     {
         return $this->unwrap()
             ->getFieldsHex();
     }
 
+    /** @psalm-suppress DeprecatedMethod */
     public function getClockSeqHiAndReservedHex(): string
     {
         return $this->unwrap()
             ->getClockSeqHiAndReservedHex();
     }
 
+    /** @psalm-suppress DeprecatedMethod */
     public function getClockSeqLowHex(): string
     {
         return $this->unwrap()
             ->getClockSeqLowHex();
     }
 
+    /** @psalm-suppress DeprecatedMethod */
     public function getClockSequenceHex(): string
     {
         return $this->unwrap()
             ->getClockSequenceHex();
     }
 
+    /** @psalm-suppress DeprecatedMethod */
     public function getDateTime(): DateTimeInterface
     {
         return $this->unwrap()
             ->getDateTime();
     }
 
+    /** @psalm-suppress DeprecatedMethod */
     public function getLeastSignificantBitsHex(): string
     {
         return $this->unwrap()
             ->getLeastSignificantBitsHex();
     }
 
+    /** @psalm-suppress DeprecatedMethod */
     public function getMostSignificantBitsHex(): string
     {
         return $this->unwrap()
             ->getMostSignificantBitsHex();
     }
 
+    /** @psalm-suppress DeprecatedMethod */
     public function getNodeHex(): string
     {
         return $this->unwrap()
             ->getNodeHex();
     }
 
+    /** @psalm-suppress DeprecatedMethod */
     public function getTimeHiAndVersionHex(): string
     {
         return $this->unwrap()
             ->getTimeHiAndVersionHex();
     }
 
+    /** @psalm-suppress DeprecatedMethod */
     public function getTimeLowHex(): string
     {
         return $this->unwrap()
             ->getTimeLowHex();
     }
 
+    /** @psalm-suppress DeprecatedMethod */
     public function getTimeMidHex(): string
     {
         return $this->unwrap()
             ->getTimeMidHex();
     }
 
+    /** @psalm-suppress DeprecatedMethod */
     public function getTimestampHex(): string
     {
         return $this->unwrap()
             ->getTimestampHex();
     }
 
+    /** @psalm-suppress DeprecatedMethod */
     public function getUrn(): string
     {
         return $this->unwrap()
             ->getUrn();
     }
 
+    /** @psalm-suppress DeprecatedMethod */
     public function getVariant(): ?int
     {
         return $this->unwrap()
             ->getVariant();
     }
 
+    /** @psalm-suppress DeprecatedMethod */
     public function getVersion(): ?int
     {
         return $this->unwrap()
@@ -175,9 +211,16 @@ final class LazyUuidFromString implements UuidInterface
         return $this->uuid === $other->toString();
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @psalm-suppress MoreSpecificReturnType
+     * @psalm-suppress LessSpecificReturnStatement we know that {@see self::$uuid} is a non-empty string, so
+     *                                             we know that {@see hex2bin} will retrieve a non-empty string too.
+     */
     public function getBytes(): string
     {
-        return hex2bin(str_replace('-', '', $this->uuid));
+        return (string) hex2bin(str_replace('-', '', $this->uuid));
     }
 
     public function getFields(): FieldsInterface
@@ -219,6 +262,11 @@ final class LazyUuidFromString implements UuidInterface
      *     instance, you may call {@see Rfc4122FieldsInterface::getClockSeqHiAndReserved()}
      *     and use the arbitrary-precision math library of your choice to
      *     convert it to a string integer.
+     *
+     * @psalm-suppress UndefinedInterfaceMethod
+     * @psalm-suppress DeprecatedMethod
+     * @psalm-suppress MixedArgument
+     * @psalm-suppress MixedMethodCall
      */
     public function getClockSeqHiAndReserved(): string
     {
@@ -238,6 +286,11 @@ final class LazyUuidFromString implements UuidInterface
      *     instance, you may call {@see Rfc4122FieldsInterface::getClockSeqLow()}
      *     and use the arbitrary-precision math library of your choice to
      *     convert it to a string integer.
+     *
+     * @psalm-suppress UndefinedInterfaceMethod
+     * @psalm-suppress DeprecatedMethod
+     * @psalm-suppress MixedArgument
+     * @psalm-suppress MixedMethodCall
      */
     public function getClockSeqLow(): string
     {
@@ -257,6 +310,11 @@ final class LazyUuidFromString implements UuidInterface
      *     instance, you may call {@see Rfc4122FieldsInterface::getClockSeq()}
      *     and use the arbitrary-precision math library of your choice to
      *     convert it to a string integer.
+     *
+     * @psalm-suppress UndefinedInterfaceMethod
+     * @psalm-suppress DeprecatedMethod
+     * @psalm-suppress MixedArgument
+     * @psalm-suppress MixedMethodCall
      */
     public function getClockSequence(): string
     {
@@ -274,6 +332,11 @@ final class LazyUuidFromString implements UuidInterface
      * @deprecated This method will be removed in 5.0.0. There is no direct
      *     alternative, but the same information may be obtained by splitting
      *     in half the value returned by {@see UuidInterface::getHex()}.
+     *
+     * @psalm-suppress UndefinedInterfaceMethod
+     * @psalm-suppress DeprecatedMethod
+     * @psalm-suppress MixedArgument
+     * @psalm-suppress MixedMethodCall
      */
     public function getLeastSignificantBits(): string
     {
@@ -287,6 +350,11 @@ final class LazyUuidFromString implements UuidInterface
      * @deprecated This method will be removed in 5.0.0. There is no direct
      *     alternative, but the same information may be obtained by splitting
      *     in half the value returned by {@see UuidInterface::getHex()}.
+     *
+     * @psalm-suppress UndefinedInterfaceMethod
+     * @psalm-suppress DeprecatedMethod
+     * @psalm-suppress MixedArgument
+     * @psalm-suppress MixedMethodCall
      */
     public function getMostSignificantBits(): string
     {
@@ -302,6 +370,11 @@ final class LazyUuidFromString implements UuidInterface
      *     instance, you may call {@see Rfc4122FieldsInterface::getNode()}
      *     and use the arbitrary-precision math library of your choice to
      *     convert it to a string integer.
+     *
+     * @psalm-suppress UndefinedInterfaceMethod
+     * @psalm-suppress DeprecatedMethod
+     * @psalm-suppress MixedArgument
+     * @psalm-suppress MixedMethodCall
      */
     public function getNode(): string
     {
@@ -321,6 +394,11 @@ final class LazyUuidFromString implements UuidInterface
      *     instance, you may call {@see Rfc4122FieldsInterface::getTimeHiAndVersion()}
      *     and use the arbitrary-precision math library of your choice to
      *     convert it to a string integer.
+     *
+     * @psalm-suppress UndefinedInterfaceMethod
+     * @psalm-suppress DeprecatedMethod
+     * @psalm-suppress MixedArgument
+     * @psalm-suppress MixedMethodCall
      */
     public function getTimeHiAndVersion(): string
     {
@@ -340,6 +418,11 @@ final class LazyUuidFromString implements UuidInterface
      *     instance, you may call {@see Rfc4122FieldsInterface::getTimeLow()}
      *     and use the arbitrary-precision math library of your choice to
      *     convert it to a string integer.
+     *
+     * @psalm-suppress UndefinedInterfaceMethod
+     * @psalm-suppress DeprecatedMethod
+     * @psalm-suppress MixedArgument
+     * @psalm-suppress MixedMethodCall
      */
     public function getTimeLow(): string
     {
@@ -359,6 +442,11 @@ final class LazyUuidFromString implements UuidInterface
      *     instance, you may call {@see Rfc4122FieldsInterface::getTimeMid()}
      *     and use the arbitrary-precision math library of your choice to
      *     convert it to a string integer.
+     *
+     * @psalm-suppress UndefinedInterfaceMethod
+     * @psalm-suppress DeprecatedMethod
+     * @psalm-suppress MixedArgument
+     * @psalm-suppress MixedMethodCall
      */
     public function getTimeMid(): string
     {
@@ -378,6 +466,11 @@ final class LazyUuidFromString implements UuidInterface
      *     instance, you may call {@see Rfc4122FieldsInterface::getTimestamp()}
      *     and use the arbitrary-precision math library of your choice to
      *     convert it to a string integer.
+     *
+     * @psalm-suppress UndefinedInterfaceMethod
+     * @psalm-suppress DeprecatedMethod
+     * @psalm-suppress MixedArgument
+     * @psalm-suppress MixedMethodCall
      */
     public function getTimestamp(): string
     {
@@ -414,9 +507,16 @@ final class LazyUuidFromString implements UuidInterface
         return $instance;
     }
 
+    /**
+     * @psalm-suppress ImpureMethodCall the retrieval of the factory is a clear violation of purity here: this is a
+     *                                  known pitfall of the design of this library, where a value object contains
+     *                                  a mutable reference to a factory. We use a fixed factory here, so the violation
+     *                                  will not have real-world effects, as this object is only instantiated with the
+     *                                  default factory settings/features.
+     */
     private function unwrap(): UuidInterface
     {
-        return Uuid::getFactory()
+        return (new UuidFactory())
             ->fromString($this->uuid);
     }
 }

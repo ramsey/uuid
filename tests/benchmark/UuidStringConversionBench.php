@@ -132,7 +132,7 @@ final class UuidStringConversionBench
     /** @var UuidInterface */
     private $uuid;
     /**
-     * @var UuidInterface
+     * @var UuidInterface[]
      * @psalm-var non-empty-list<UuidInterface>
      */
     private $promiscuousUuids;
@@ -152,7 +152,7 @@ final class UuidStringConversionBench
      */
     private $uuidBytes;
     /**
-     * @var string
+     * @var string[]
      * @psalm-var non-empty-list<non-empty-string>
      */
     private $promiscuousUuidsBytes;

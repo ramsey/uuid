@@ -67,6 +67,7 @@
     },
     "autoload-dev": {
         "psr-4": {
+            "Ramsey\\Uuid\\Benchmark\\": "tests/benchmark/",
             "Ramsey\\Uuid\\StaticAnalysis\\": "tests/static-analysis/",
             "Ramsey\\Uuid\\Test\\": "tests/"
         }

@@ -1168,7 +1168,6 @@ class UuidTest extends TestCase
      * as the Python UUID library.
      *
      * @param string[] $fields
-     * @param class-string $class
      *
      * @dataProvider providePythonTests
      */
