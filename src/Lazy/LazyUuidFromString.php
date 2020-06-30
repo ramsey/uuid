@@ -24,6 +24,7 @@ use Ramsey\Uuid\Type\Hexadecimal;
 use Ramsey\Uuid\Type\Integer as IntegerObject;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
+use function assert;
 use function hex2bin;
 use function str_replace;
 
@@ -39,7 +40,7 @@ use function str_replace;
  */
 final class LazyUuidFromString implements UuidInterface
 {
-    public const VALID_PATTERN = '/\A[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}\z/ms';
+    public const VALID_REGEX = '/\A[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\z/ms';
 
     /** @var non-empty-string */
     private $uuid;
@@ -399,6 +400,15 @@ final class LazyUuidFromString implements UuidInterface
         assert($instance instanceof UuidV6);
 
         return $instance->toUuidV1();
+    }
+
+    public function toUuidV6(): UuidV6
+    {
+        $instance = $this->unwrap();
+
+        assert($instance instanceof UuidV6);
+
+        return $instance;
     }
 
     private function unwrap(): UuidInterface

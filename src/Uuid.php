@@ -28,7 +28,9 @@ use function bin2hex;
 use function preg_match;
 use function str_replace;
 use function strcmp;
+use function strlen;
 use function strtolower;
+use function substr;
 
 /**
  * Uuid provides constants and static methods for working with and generating UUIDs
@@ -405,7 +407,22 @@ class Uuid implements UuidInterface
      */
     public static function fromBytes(string $bytes): UuidInterface
     {
-        // @TODO optimize this endpoint too
+        if (! self::$factoryReplaced && strlen($bytes) === 16) {
+            $base16Uuid = bin2hex($bytes);
+
+            return self::fromString(
+                substr($base16Uuid,0, 8)
+                . '-'
+                . substr($base16Uuid, 8, 4)
+                . '-'
+                . substr($base16Uuid, 12, 4)
+                . '-'
+                . substr($base16Uuid, 16, 4)
+                . '-'
+                . substr($base16Uuid, 20, 12)
+            );
+        }
+
         return self::getFactory()->fromBytes($bytes);
     }
 
@@ -422,7 +439,7 @@ class Uuid implements UuidInterface
      */
     public static function fromString(string $uuid): UuidInterface
     {
-        if (! self::$factoryReplaced && preg_match(LazyUuidFromString::VALID_PATTERN, $uuid) === 1) {
+        if (! self::$factoryReplaced && preg_match(LazyUuidFromString::VALID_REGEX, $uuid) === 1) {
             return new LazyUuidFromString(strtolower($uuid));
         }
 
