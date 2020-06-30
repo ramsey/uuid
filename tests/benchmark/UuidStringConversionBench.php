@@ -16,6 +16,7 @@ namespace Ramsey\Uuid\Benchmark;
 
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
+
 use function array_map;
 
 final class UuidStringConversionBench
@@ -132,31 +133,26 @@ final class UuidStringConversionBench
     private $uuid;
     /**
      * @var UuidInterface
-     *
      * @psalm-var non-empty-list<UuidInterface>
      */
     private $promiscuousUuids;
     /**
      * @var string
-     *
      * @psalm-var non-empty-string
      */
     private $tinyUuidBytes;
     /**
      * @var string
-     *
      * @psalm-var non-empty-string
      */
     private $hugeUuidBytes;
     /**
      * @var string
-     *
      * @psalm-var non-empty-string
      */
     private $uuidBytes;
     /**
      * @var string
-     *
      * @psalm-var non-empty-list<non-empty-string>
      */
     private $promiscuousUuidsBytes;

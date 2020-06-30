@@ -24,6 +24,7 @@ use Ramsey\Uuid\Type\Hexadecimal;
 use Ramsey\Uuid\Type\Integer as IntegerObject;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
+
 use function assert;
 use function hex2bin;
 use function str_replace;
@@ -33,10 +34,10 @@ use function str_replace;
  * conversion. This object optimizes instantiation, serialization and string conversion time, at the cost of
  * increased overhead for more advanced UUID operations.
  *
- * @psalm-immutable
- *
  * @internal this type is used internally for performance reasons, and is not supposed to be directly referenced
  *           in consumer libraries.
+ *
+ * @psalm-immutable
  */
 final class LazyUuidFromString implements UuidInterface
 {
@@ -56,6 +57,7 @@ final class LazyUuidFromString implements UuidInterface
         return $this->uuid;
     }
 
+    /** {@inheritDoc} */
     public function unserialize($serialized): void
     {
         $this->uuid = $serialized;
@@ -67,6 +69,7 @@ final class LazyUuidFromString implements UuidInterface
             ->getNumberConverter();
     }
 
+    /** {@inheritDoc} */
     public function getFieldsHex(): array
     {
         return $this->unwrap()

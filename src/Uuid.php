@@ -389,6 +389,7 @@ class Uuid implements UuidInterface
     {
         // Note: non-string equality is intentional here. If the factory is configured differently, every assumption
         //       around purity is broken, and we have to internally decide everything differently.
+        // phpcs:ignore SlevomatCodingStandard.Operators.DisallowEqualOperators.DisallowedNotEqualOperator
         self::$factoryReplaced = ($factory != new UuidFactory());
 
         self::$factory = $factory;
@@ -411,7 +412,7 @@ class Uuid implements UuidInterface
             $base16Uuid = bin2hex($bytes);
 
             return self::fromString(
-                substr($base16Uuid,0, 8)
+                substr($base16Uuid, 0, 8)
                 . '-'
                 . substr($base16Uuid, 8, 4)
                 . '-'
