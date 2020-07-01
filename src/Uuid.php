@@ -387,7 +387,7 @@ class Uuid implements UuidInterface
      */
     public static function setFactory(UuidFactoryInterface $factory): void
     {
-        // Note: non-string equality is intentional here. If the factory is configured differently, every assumption
+        // Note: non-strict equality is intentional here. If the factory is configured differently, every assumption
         //       around purity is broken, and we have to internally decide everything differently.
         // phpcs:ignore SlevomatCodingStandard.Operators.DisallowEqualOperators.DisallowedNotEqualOperator
         self::$factoryReplaced = ($factory != new UuidFactory());
