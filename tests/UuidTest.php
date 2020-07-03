@@ -24,15 +24,11 @@ use Ramsey\Uuid\Generator\CombGenerator;
 use Ramsey\Uuid\Generator\RandomGeneratorFactory;
 use Ramsey\Uuid\Generator\RandomGeneratorInterface;
 use Ramsey\Uuid\Guid\Guid;
-use Ramsey\Uuid\Nonstandard\UuidV6;
+use Ramsey\Uuid\Lazy\LazyUuidFromString;
 use Ramsey\Uuid\Provider\Node\RandomNodeProvider;
 use Ramsey\Uuid\Provider\Time\FixedTimeProvider;
 use Ramsey\Uuid\Rfc4122\FieldsInterface;
 use Ramsey\Uuid\Rfc4122\UuidV1;
-use Ramsey\Uuid\Rfc4122\UuidV2;
-use Ramsey\Uuid\Rfc4122\UuidV3;
-use Ramsey\Uuid\Rfc4122\UuidV4;
-use Ramsey\Uuid\Rfc4122\UuidV5;
 use Ramsey\Uuid\Type\Hexadecimal;
 use Ramsey\Uuid\Type\Time;
 use Ramsey\Uuid\Uuid;
@@ -85,8 +81,6 @@ class UuidTest extends TestCase
 
         $guid = Guid::fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
 
-        $this->assertInstanceOf(Uuid::class, $guid);
-
         // UUID's and GUID's share the same textual representation.
         $this->assertSame($uuid->toString(), $guid->toString());
 
@@ -97,7 +91,6 @@ class UuidTest extends TestCase
     public function testFromStringWithCurlyBraces(): void
     {
         $uuid = Uuid::fromString('{ff6f8cb0-c57d-11e1-9b21-0800200c9a66}');
-        $this->assertInstanceOf(Uuid::class, $uuid);
         $this->assertEquals('ff6f8cb0-c57d-11e1-9b21-0800200c9a66', $uuid->toString());
     }
 
@@ -128,7 +121,6 @@ class UuidTest extends TestCase
     public function testFromStringWithUrn(): void
     {
         $uuid = Uuid::fromString('urn:uuid:ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
-        $this->assertInstanceOf(Uuid::class, $uuid);
         $this->assertEquals('ff6f8cb0-c57d-11e1-9b21-0800200c9a66', $uuid->toString());
     }
 
@@ -512,7 +504,6 @@ class UuidTest extends TestCase
     public function testUuid1(): void
     {
         $uuid = Uuid::uuid1();
-        $this->assertInstanceOf(Uuid::class, $uuid);
         $this->assertInstanceOf(DateTimeInterface::class, $uuid->getDateTime());
         $this->assertEquals(2, $uuid->getVariant());
         $this->assertEquals(1, $uuid->getVersion());
@@ -522,7 +513,6 @@ class UuidTest extends TestCase
     {
         /** @var Uuid $uuid */
         $uuid = Uuid::uuid1('0800200c9a66', 0x1669);
-        $this->assertInstanceOf(Uuid::class, $uuid);
         $this->assertInstanceOf(DateTimeInterface::class, $uuid->getDateTime());
         $this->assertEquals(2, $uuid->getVariant());
         $this->assertEquals(1, $uuid->getVersion());
@@ -535,7 +525,6 @@ class UuidTest extends TestCase
     {
         /** @var Uuid $uuid */
         $uuid = Uuid::uuid1(new Hexadecimal('0800200c9a66'), 0x1669);
-        $this->assertInstanceOf(Uuid::class, $uuid);
         $this->assertInstanceOf(DateTimeInterface::class, $uuid->getDateTime());
         $this->assertEquals(2, $uuid->getVariant());
         $this->assertEquals(1, $uuid->getVersion());
@@ -549,7 +538,6 @@ class UuidTest extends TestCase
         /** @var Uuid $uuid */
         $uuid = Uuid::uuid1('7160355e');
 
-        $this->assertInstanceOf(Uuid::class, $uuid);
         $this->assertInstanceOf(DateTimeInterface::class, $uuid->getDateTime());
         $this->assertEquals(2, $uuid->getVariant());
         $this->assertEquals(1, $uuid->getVersion());
@@ -562,7 +550,6 @@ class UuidTest extends TestCase
         /** @var Uuid $uuid */
         $uuid = Uuid::uuid1(new Hexadecimal('7160355e'));
 
-        $this->assertInstanceOf(Uuid::class, $uuid);
         $this->assertInstanceOf(DateTimeInterface::class, $uuid->getDateTime());
         $this->assertEquals(2, $uuid->getVariant());
         $this->assertEquals(1, $uuid->getVersion());
@@ -575,7 +562,6 @@ class UuidTest extends TestCase
         /** @var Uuid $uuid */
         $uuid = Uuid::uuid1('71B0aD5e');
 
-        $this->assertInstanceOf(Uuid::class, $uuid);
         $this->assertInstanceOf(DateTimeInterface::class, $uuid->getDateTime());
         $this->assertEquals(2, $uuid->getVariant());
         $this->assertEquals(1, $uuid->getVersion());
@@ -612,7 +598,6 @@ class UuidTest extends TestCase
         Uuid::setFactory(new UuidFactory(new FeatureSet(false, false, false, true)));
 
         $uuid = Uuid::uuid1();
-        $this->assertInstanceOf(Uuid::class, $uuid);
         $this->assertInstanceOf(DateTimeInterface::class, $uuid->getDateTime());
         $this->assertEquals(2, $uuid->getVariant());
         $this->assertEquals(1, $uuid->getVersion());
@@ -621,7 +606,6 @@ class UuidTest extends TestCase
     public function testUuid1WithUserGeneratedRandomNode(): void
     {
         $uuid = Uuid::uuid1(new Hexadecimal((string) (new RandomNodeProvider())->getNode()));
-        $this->assertInstanceOf(Uuid::class, $uuid);
         $this->assertInstanceOf(DateTimeInterface::class, $uuid->getDateTime());
         $this->assertEquals(2, $uuid->getVariant());
         $this->assertEquals(1, $uuid->getVersion());
@@ -630,7 +614,6 @@ class UuidTest extends TestCase
     public function testUuid6(): void
     {
         $uuid = Uuid::uuid6();
-        $this->assertInstanceOf(UuidV6::class, $uuid);
         $this->assertInstanceOf(DateTimeInterface::class, $uuid->getDateTime());
         $this->assertEquals(2, $uuid->getVariant());
         $this->assertEquals(6, $uuid->getVersion());
@@ -639,7 +622,6 @@ class UuidTest extends TestCase
     public function testUuid6WithNodeAndClockSequence(): void
     {
         $uuid = Uuid::uuid6(new Hexadecimal('0800200c9a66'), 0x1669);
-        $this->assertInstanceOf(UuidV6::class, $uuid);
         $this->assertInstanceOf(DateTimeInterface::class, $uuid->getDateTime());
         $this->assertSame(2, $uuid->getVariant());
         $this->assertSame(6, $uuid->getVersion());
@@ -652,7 +634,6 @@ class UuidTest extends TestCase
     {
         $uuid = Uuid::uuid6(new Hexadecimal('7160355e'));
 
-        $this->assertInstanceOf(UuidV6::class, $uuid);
         $this->assertInstanceOf(DateTimeInterface::class, $uuid->getDateTime());
         $this->assertSame(2, $uuid->getVariant());
         $this->assertSame(6, $uuid->getVersion());
@@ -663,7 +644,6 @@ class UuidTest extends TestCase
     {
         $uuid = Uuid::uuid6(new Hexadecimal('71B0aD5e'));
 
-        $this->assertInstanceOf(Uuid::class, $uuid);
         $this->assertInstanceOf(DateTimeInterface::class, $uuid->getDateTime());
         $this->assertSame(2, $uuid->getVariant());
         $this->assertSame(6, $uuid->getVersion());
@@ -691,7 +671,6 @@ class UuidTest extends TestCase
         Uuid::setFactory(new UuidFactory(new FeatureSet(false, false, false, true)));
 
         $uuid = Uuid::uuid6();
-        $this->assertInstanceOf(UuidV6::class, $uuid);
         $this->assertInstanceOf(DateTimeInterface::class, $uuid->getDateTime());
         $this->assertEquals(2, $uuid->getVariant());
         $this->assertEquals(6, $uuid->getVersion());
@@ -700,7 +679,6 @@ class UuidTest extends TestCase
     public function testUuid6WithUserGeneratedRandomNode(): void
     {
         $uuid = Uuid::uuid6(new Hexadecimal((string) (new RandomNodeProvider())->getNode()));
-        $this->assertInstanceOf(UuidV6::class, $uuid);
         $this->assertInstanceOf(DateTimeInterface::class, $uuid->getDateTime());
         $this->assertEquals(2, $uuid->getVariant());
         $this->assertEquals(6, $uuid->getVersion());
@@ -757,7 +735,6 @@ class UuidTest extends TestCase
     public function testUuid4(): void
     {
         $uuid = Uuid::uuid4();
-        $this->assertInstanceOf(Uuid::class, $uuid);
         $this->assertEquals(2, $uuid->getVariant());
         $this->assertEquals(4, $uuid->getVersion());
     }
@@ -1081,8 +1058,16 @@ class UuidTest extends TestCase
 
     public function testUsingNilAsValidUuid(): void
     {
-        $this->assertInstanceOf(Uuid::class, Uuid::uuid3(Uuid::NIL, 'randomtext'));
-        $this->assertInstanceOf(Uuid::class, Uuid::uuid5(Uuid::NIL, 'randomtext'));
+        self::assertSame(
+            '0cb17687-6ec7-324b-833a-f1d101a7edb7',
+            Uuid::uuid3(Uuid::NIL, 'randomtext')
+                ->toString()
+        );
+        self::assertSame(
+            '3b24c15b-1273-5628-ade4-fc67c6ede500',
+            Uuid::uuid5(Uuid::NIL, 'randomtext')
+                ->toString()
+        );
     }
 
     public function testFromBytes(): void
@@ -1660,17 +1645,49 @@ class UuidTest extends TestCase
     }
 
     /**
-     * @param class-string $expectedClass
      * @param mixed[] $args
      *
      * @dataProvider provideStaticMethods
      */
     public function testStaticCreationMethodsReturnSpecificUuidInstances(
-        string $expectedClass,
         string $staticMethod,
         array $args = []
     ): void {
-        $this->assertInstanceOf($expectedClass, Uuid::$staticMethod(...$args));
+        $this->assertInstanceOf(LazyUuidFromString::class, Uuid::$staticMethod(...$args));
+    }
+
+    /**
+     * @param mixed[] $args
+     *
+     * @dataProvider provideStaticMethods
+     */
+    public function testUuidInstancesBuiltFromStringAreEquivalentToTheirGeneratedCounterparts(
+        string $staticMethod,
+        array $args = []
+    ): void {
+        $generated = Uuid::$staticMethod(...$args);
+
+        self::assertEquals(
+            $generated,
+            Uuid::fromString($generated->toString())
+        );
+    }
+
+    /**
+     * @param mixed[] $args
+     *
+     * @dataProvider provideStaticMethods
+     */
+    public function testUuidInstancesBuiltFromBytesAreEquivalentToTheirGeneratedCounterparts(
+        string $staticMethod,
+        array $args = []
+    ): void {
+        $generated = Uuid::$staticMethod(...$args);
+
+        self::assertEquals(
+            $generated,
+            Uuid::fromBytes($generated->getBytes())
+        );
     }
 
     /**
@@ -1679,11 +1696,11 @@ class UuidTest extends TestCase
     public function provideStaticMethods(): array
     {
         return [
-            [UuidV1::class, 'uuid1'],
-            [UuidV2::class, 'uuid2', [Uuid::DCE_DOMAIN_PERSON]],
-            [UuidV3::class, 'uuid3', [Uuid::NIL, 'foobar']],
-            [UuidV4::class, 'uuid4'],
-            [UuidV5::class, 'uuid5', [Uuid::NIL, 'foobar']],
+            ['uuid1'],
+            ['uuid2', [Uuid::DCE_DOMAIN_PERSON]],
+            ['uuid3', [Uuid::NIL, 'foobar']],
+            ['uuid4'],
+            ['uuid5', [Uuid::NIL, 'foobar']],
         ];
     }
 }

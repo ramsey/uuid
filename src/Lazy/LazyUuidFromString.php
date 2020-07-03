@@ -26,8 +26,10 @@ use Ramsey\Uuid\UuidFactory;
 use Ramsey\Uuid\UuidInterface;
 
 use function assert;
+use function bin2hex;
 use function hex2bin;
 use function str_replace;
+use function substr;
 
 /**
  * Lazy version of a UUID: its format has not been determined yet, so it is mostly only usable for string/bytes
@@ -61,6 +63,24 @@ final class LazyUuidFromString implements UuidInterface
     public function __construct(string $uuid)
     {
         $this->uuid = $uuid;
+    }
+
+    /** @psalm-pure */
+    public static function fromBytes(string $bytes): self
+    {
+        $base16Uuid = bin2hex($bytes);
+
+        return new self(
+            substr($base16Uuid, 0, 8)
+            . '-'
+            . substr($base16Uuid, 8, 4)
+            . '-'
+            . substr($base16Uuid, 12, 4)
+            . '-'
+            . substr($base16Uuid, 16, 4)
+            . '-'
+            . substr($base16Uuid, 20, 12)
+        );
     }
 
     public function serialize(): string

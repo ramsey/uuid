@@ -416,6 +416,7 @@ class Uuid implements UuidInterface
         if (! self::$factoryReplaced && strlen($bytes) === 16) {
             $base16Uuid = bin2hex($bytes);
 
+            // Note: we are calling `fromString` internally because we don't know if the given `$bytes` is a valid UUID
             return self::fromString(
                 substr($base16Uuid, 0, 8)
                 . '-'

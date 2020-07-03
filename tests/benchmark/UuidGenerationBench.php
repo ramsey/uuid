@@ -16,7 +16,7 @@ namespace Ramsey\Uuid\Benchmark;
 
 use Ramsey\Uuid\Provider\Node\StaticNodeProvider;
 use Ramsey\Uuid\Type\Hexadecimal;
-use Ramsey\Uuid\Type\Integer;
+use Ramsey\Uuid\Type\Integer as IntegerIdentifier;
 use Ramsey\Uuid\Uuid;
 
 final class UuidGenerationBench
@@ -25,7 +25,7 @@ final class UuidGenerationBench
     private $node;
     /** @var int */
     private $clockSequence;
-    /** @var Integer */
+    /** @var IntegerIdentifier */
     private $localIdentifier;
     /** @var \Ramsey\Uuid\UuidInterface */
     private $namespace;
@@ -35,7 +35,7 @@ final class UuidGenerationBench
         $this->node = (new StaticNodeProvider(new Hexadecimal('121212121212')))
             ->getNode();
         $this->clockSequence = 16383;
-        $this->localIdentifier = new Integer(5);
+        $this->localIdentifier = new IntegerIdentifier(5);
         $this->namespace = Uuid::fromString('c485840e-9389-4548-a276-aeecd9730e50');
     }
 
