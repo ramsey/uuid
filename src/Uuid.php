@@ -273,7 +273,7 @@ class Uuid implements UuidInterface
      */
     public function serialize(): string
     {
-        return $this->toString();
+        return $this->getBytes();
     }
 
     /**
@@ -286,8 +286,14 @@ class Uuid implements UuidInterface
      */
     public function unserialize($serialized): void
     {
-        /** @var \Ramsey\Uuid\Uuid $uuid */
-        $uuid = self::fromString($serialized);
+        if (strlen($serialized) === 16) {
+            /** @var Uuid $uuid */
+            $uuid = self::fromBytes($serialized);
+        } else {
+            /** @var Uuid $uuid */
+            $uuid = self::fromString($serialized);
+        }
+
         $this->codec = $uuid->codec;
         $this->numberConverter = $uuid->numberConverter;
         $this->fields = $uuid->fields;

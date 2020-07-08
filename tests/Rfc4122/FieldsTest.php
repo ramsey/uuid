@@ -212,4 +212,14 @@ class FieldsTest extends TestCase
 
         $this->assertEquals($fields, $unserializedFields);
     }
+
+    public function testSerializingFieldsWithOldFormat(): void
+    {
+        $fields = new Fields("\xb3\xcd\x58\x6a\xe3\xca\x44\xf3\x98\x8c\xf4\xd6\x66\xc1\xbf\x4d");
+
+        $serializedFields = 'C:26:"Ramsey\Uuid\Rfc4122\Fields":24:{s81YauPKRPOYjPTWZsG/TQ==}';
+        $unserializedFields = unserialize($serializedFields);
+
+        $this->assertEquals($fields, $unserializedFields);
+    }
 }
