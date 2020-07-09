@@ -58,6 +58,8 @@ final class LazyUuidFromString implements UuidInterface
      * @psalm-var non-empty-string
      */
     private $uuid;
+    /** @var UuidInterface|null */
+    private $unwrapped;
 
     /** @psalm-param non-empty-string $uuid */
     public function __construct(string $uuid)
@@ -103,7 +105,7 @@ final class LazyUuidFromString implements UuidInterface
     /** @psalm-suppress DeprecatedMethod */
     public function getNumberConverter(): NumberConverterInterface
     {
-        return $this->unwrap()
+        return ($this->unwrapped ?? $this->unwrap())
             ->getNumberConverter();
     }
 
@@ -114,111 +116,111 @@ final class LazyUuidFromString implements UuidInterface
      */
     public function getFieldsHex(): array
     {
-        return $this->unwrap()
+        return ($this->unwrapped ?? $this->unwrap())
             ->getFieldsHex();
     }
 
     /** @psalm-suppress DeprecatedMethod */
     public function getClockSeqHiAndReservedHex(): string
     {
-        return $this->unwrap()
+        return ($this->unwrapped ?? $this->unwrap())
             ->getClockSeqHiAndReservedHex();
     }
 
     /** @psalm-suppress DeprecatedMethod */
     public function getClockSeqLowHex(): string
     {
-        return $this->unwrap()
+        return ($this->unwrapped ?? $this->unwrap())
             ->getClockSeqLowHex();
     }
 
     /** @psalm-suppress DeprecatedMethod */
     public function getClockSequenceHex(): string
     {
-        return $this->unwrap()
+        return ($this->unwrapped ?? $this->unwrap())
             ->getClockSequenceHex();
     }
 
     /** @psalm-suppress DeprecatedMethod */
     public function getDateTime(): DateTimeInterface
     {
-        return $this->unwrap()
+        return ($this->unwrapped ?? $this->unwrap())
             ->getDateTime();
     }
 
     /** @psalm-suppress DeprecatedMethod */
     public function getLeastSignificantBitsHex(): string
     {
-        return $this->unwrap()
+        return ($this->unwrapped ?? $this->unwrap())
             ->getLeastSignificantBitsHex();
     }
 
     /** @psalm-suppress DeprecatedMethod */
     public function getMostSignificantBitsHex(): string
     {
-        return $this->unwrap()
+        return ($this->unwrapped ?? $this->unwrap())
             ->getMostSignificantBitsHex();
     }
 
     /** @psalm-suppress DeprecatedMethod */
     public function getNodeHex(): string
     {
-        return $this->unwrap()
+        return ($this->unwrapped ?? $this->unwrap())
             ->getNodeHex();
     }
 
     /** @psalm-suppress DeprecatedMethod */
     public function getTimeHiAndVersionHex(): string
     {
-        return $this->unwrap()
+        return ($this->unwrapped ?? $this->unwrap())
             ->getTimeHiAndVersionHex();
     }
 
     /** @psalm-suppress DeprecatedMethod */
     public function getTimeLowHex(): string
     {
-        return $this->unwrap()
+        return ($this->unwrapped ?? $this->unwrap())
             ->getTimeLowHex();
     }
 
     /** @psalm-suppress DeprecatedMethod */
     public function getTimeMidHex(): string
     {
-        return $this->unwrap()
+        return ($this->unwrapped ?? $this->unwrap())
             ->getTimeMidHex();
     }
 
     /** @psalm-suppress DeprecatedMethod */
     public function getTimestampHex(): string
     {
-        return $this->unwrap()
+        return ($this->unwrapped ?? $this->unwrap())
             ->getTimestampHex();
     }
 
     /** @psalm-suppress DeprecatedMethod */
     public function getUrn(): string
     {
-        return $this->unwrap()
+        return ($this->unwrapped ?? $this->unwrap())
             ->getUrn();
     }
 
     /** @psalm-suppress DeprecatedMethod */
     public function getVariant(): ?int
     {
-        return $this->unwrap()
+        return ($this->unwrapped ?? $this->unwrap())
             ->getVariant();
     }
 
     /** @psalm-suppress DeprecatedMethod */
     public function getVersion(): ?int
     {
-        return $this->unwrap()
+        return ($this->unwrapped ?? $this->unwrap())
             ->getVersion();
     }
 
     public function compareTo(UuidInterface $other): int
     {
-        return $this->unwrap()
+        return ($this->unwrapped ?? $this->unwrap())
             ->compareTo($other);
     }
 
@@ -245,19 +247,19 @@ final class LazyUuidFromString implements UuidInterface
 
     public function getFields(): FieldsInterface
     {
-        return $this->unwrap()
+        return ($this->unwrapped ?? $this->unwrap())
             ->getFields();
     }
 
     public function getHex(): Hexadecimal
     {
-        return $this->unwrap()
+        return ($this->unwrapped ?? $this->unwrap())
             ->getHex();
     }
 
     public function getInteger(): IntegerObject
     {
-        return $this->unwrap()
+        return ($this->unwrapped ?? $this->unwrap())
             ->getInteger();
     }
 
@@ -290,7 +292,7 @@ final class LazyUuidFromString implements UuidInterface
      */
     public function getClockSeqHiAndReserved(): string
     {
-        $instance = $this->unwrap();
+        $instance = ($this->unwrapped ?? $this->unwrap());
 
         return $instance->getNumberConverter()
             ->fromHex(
@@ -314,7 +316,7 @@ final class LazyUuidFromString implements UuidInterface
      */
     public function getClockSeqLow(): string
     {
-        $instance = $this->unwrap();
+        $instance = ($this->unwrapped ?? $this->unwrap());
 
         return $instance->getNumberConverter()
             ->fromHex(
@@ -338,7 +340,7 @@ final class LazyUuidFromString implements UuidInterface
      */
     public function getClockSequence(): string
     {
-        $instance = $this->unwrap();
+        $instance = ($this->unwrapped ?? $this->unwrap());
 
         return $instance->getNumberConverter()
             ->fromHex(
@@ -360,7 +362,7 @@ final class LazyUuidFromString implements UuidInterface
      */
     public function getLeastSignificantBits(): string
     {
-        $instance = $this->unwrap();
+        $instance = ($this->unwrapped ?? $this->unwrap());
 
         return $instance->getNumberConverter()
             ->fromHex(substr($instance->getHex()->toString(), 16));
@@ -378,7 +380,7 @@ final class LazyUuidFromString implements UuidInterface
      */
     public function getMostSignificantBits(): string
     {
-        $instance = $this->unwrap();
+        $instance = ($this->unwrapped ?? $this->unwrap());
 
         return $instance->getNumberConverter()
             ->fromHex(substr($instance->getHex()->toString(), 0, 16));
@@ -398,7 +400,7 @@ final class LazyUuidFromString implements UuidInterface
      */
     public function getNode(): string
     {
-        $instance = $this->unwrap();
+        $instance = ($this->unwrapped ?? $this->unwrap());
 
         return $instance->getNumberConverter()
             ->fromHex(
@@ -422,7 +424,7 @@ final class LazyUuidFromString implements UuidInterface
      */
     public function getTimeHiAndVersion(): string
     {
-        $instance = $this->unwrap();
+        $instance = ($this->unwrapped ?? $this->unwrap());
 
         return $instance->getNumberConverter()
             ->fromHex(
@@ -446,7 +448,7 @@ final class LazyUuidFromString implements UuidInterface
      */
     public function getTimeLow(): string
     {
-        $instance = $this->unwrap();
+        $instance = ($this->unwrapped ?? $this->unwrap());
 
         return $instance->getNumberConverter()
             ->fromHex(
@@ -470,7 +472,7 @@ final class LazyUuidFromString implements UuidInterface
      */
     public function getTimeMid(): string
     {
-        $instance = $this->unwrap();
+        $instance = ($this->unwrapped ?? $this->unwrap());
 
         return $instance->getNumberConverter()
             ->fromHex(
@@ -494,7 +496,7 @@ final class LazyUuidFromString implements UuidInterface
      */
     public function getTimestamp(): string
     {
-        $instance = $this->unwrap();
+        $instance = ($this->unwrapped ?? $this->unwrap());
         $fields   = $instance->getFields();
 
         if ($fields->getVersion() !== 1) {
@@ -507,7 +509,7 @@ final class LazyUuidFromString implements UuidInterface
 
     public function toUuidV1(): UuidV1
     {
-        $instance = $this->unwrap();
+        $instance = ($this->unwrapped ?? $this->unwrap());
 
         if ($instance instanceof UuidV1) {
             return $instance;
@@ -520,7 +522,7 @@ final class LazyUuidFromString implements UuidInterface
 
     public function toUuidV6(): UuidV6
     {
-        $instance = $this->unwrap();
+        $instance = ($this->unwrapped ?? $this->unwrap());
 
         assert($instance instanceof UuidV6);
 
@@ -533,10 +535,12 @@ final class LazyUuidFromString implements UuidInterface
      *                                  a mutable reference to a factory. We use a fixed factory here, so the violation
      *                                  will not have real-world effects, as this object is only instantiated with the
      *                                  default factory settings/features.
+     * @psalm-suppress InaccessibleProperty property {@see $unwrapped} is used as a cache: we don't expose it to the
+     *                                      outside world, so we should be fine here.
      */
     private function unwrap(): UuidInterface
     {
-        return (new UuidFactory())
+        return $this->unwrapped = (new UuidFactory())
             ->fromString($this->uuid);
     }
 }
