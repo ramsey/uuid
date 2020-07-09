@@ -568,6 +568,11 @@ class Uuid implements UuidInterface
      * @return UuidInterface A UuidInterface instance that represents a
      *     version 3 UUID
      *
+     * @psalm-suppress ImpureMethodCall we know that the factory being replaced can lead to massive
+     *                                  havoc across all consumers: that should never happen, and
+     *                                  is generally to be discouraged. Until the factory is kept
+     *                                  un-replaced, this method is effectively pure.
+     *
      * @psalm-pure note: changing the internal factory is an edge case not covered by purity invariants,
      *             but under constant factory setups, this method operates in functionally pure manners
      */
