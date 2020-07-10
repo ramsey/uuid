@@ -20,7 +20,6 @@ use Ramsey\Uuid\Generator\NameGeneratorInterface;
 use Ramsey\Uuid\Generator\RandomGeneratorInterface;
 use Ramsey\Uuid\Generator\TimeGeneratorInterface;
 use Ramsey\Uuid\Provider\NodeProviderInterface;
-use Ramsey\Uuid\Rfc4122\UuidV1;
 use Ramsey\Uuid\Type\Hexadecimal;
 use Ramsey\Uuid\UuidFactory;
 use Ramsey\Uuid\Validator\ValidatorInterface;
@@ -150,10 +149,8 @@ class UuidFactoryTest extends TestCase
     ): void {
         $factory = new UuidFactory();
 
-        /** @var UuidV1 $uuid */
         $uuid = $factory->fromDateTime($dateTime, $node, $clockSeq);
 
-        $this->assertInstanceOf(UuidV1::class, $uuid);
         $this->assertStringMatchesFormat($expectedUuidFormat, $uuid->toString());
         $this->assertSame($expectedTime, $uuid->getDateTime()->format('U.u'));
     }

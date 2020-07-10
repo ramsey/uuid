@@ -11,9 +11,9 @@ use Ramsey\Uuid\Converter\NumberConverterInterface;
 use Ramsey\Uuid\Converter\TimeConverterInterface;
 use Ramsey\Uuid\Exception\DateTimeException;
 use Ramsey\Uuid\Exception\InvalidArgumentException;
+use Ramsey\Uuid\Lazy\LazyUuidFromString;
 use Ramsey\Uuid\Nonstandard\UuidV6;
 use Ramsey\Uuid\Rfc4122\FieldsInterface;
-use Ramsey\Uuid\Rfc4122\UuidV1;
 use Ramsey\Uuid\Test\TestCase;
 use Ramsey\Uuid\Type\Hexadecimal;
 use Ramsey\Uuid\Type\Time;
@@ -123,8 +123,9 @@ class UuidV6Test extends TestCase
      */
     public function testFromUuidV1(string $uuidv6, string $uuidv1): void
     {
-        /** @var UuidV1 $uuid1 */
-        $uuid1 = Uuid::fromString($uuidv1);
+        /** @var LazyUuidFromString $uuid */
+        $uuid = Uuid::fromString($uuidv1);
+        $uuid1 = $uuid->toUuidV1();
         $uuid6 = UuidV6::fromUuidV1($uuid1);
 
         $this->assertSame($uuidv1, $uuid1->toString());

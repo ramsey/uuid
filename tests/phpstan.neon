@@ -24,3 +24,8 @@ parameters:
             message: '#^Comparison operation ">" between 6 and 0 is always true\.$#'
             count: 1
             path: ../src/Generator/CombGenerator.php
+        -
+            # Legacy methods of `Ramsey\Uuid` use interface methods that are NOT defined on `FieldsInterface`
+            message: '#^Call to an undefined method Ramsey\\Uuid\\Fields\\FieldsInterface::get.*$#'
+            count: 9
+            path: ../src/Lazy/LazyUuidFromString.php
