@@ -36,7 +36,7 @@
         "psy/psysh": "^0.10.0",
         "slevomat/coding-standard": "^6.0",
         "squizlabs/php_codesniffer": "^3.5",
-        "vimeo/psalm": "3.9.4"
+        "vimeo/psalm": "3.12.2"
     },
     "suggest": {
         "ext-bcmath": "Enables faster math with arbitrary-precision integers using BCMath.",
