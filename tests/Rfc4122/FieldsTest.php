@@ -210,7 +210,7 @@ class FieldsTest extends TestCase
         $serializedFields = serialize($fields);
         $unserializedFields = unserialize($serializedFields);
 
-        $this->assertEquals($fields, $unserializedFields);
+        $this->assertSame($fields->getBytes(), $unserializedFields->getBytes());
     }
 
     public function testSerializingFieldsWithOldFormat(): void
@@ -220,6 +220,6 @@ class FieldsTest extends TestCase
         $serializedFields = 'C:26:"Ramsey\Uuid\Rfc4122\Fields":24:{s81YauPKRPOYjPTWZsG/TQ==}';
         $unserializedFields = unserialize($serializedFields);
 
-        $this->assertEquals($fields, $unserializedFields);
+        $this->assertSame($fields->getBytes(), $unserializedFields->getBytes());
     }
 }

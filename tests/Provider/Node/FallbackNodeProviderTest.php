@@ -50,7 +50,7 @@ class FallbackNodeProviderTest extends TestCase
         ));
         $node = $provider->getNode();
 
-        $this->assertEquals('57764a07f756', $node);
+        $this->assertSame('57764a07f756', $node->toString());
     }
 
     public function testGetNodeThrowsExceptionWhenNoNodesFound(): void
