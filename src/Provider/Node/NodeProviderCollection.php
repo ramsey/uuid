@@ -15,14 +15,13 @@ declare(strict_types=1);
 namespace Ramsey\Uuid\Provider\Node;
 
 use Ramsey\Collection\AbstractCollection;
-use Ramsey\Collection\CollectionInterface;
 use Ramsey\Uuid\Provider\NodeProviderInterface;
 use Ramsey\Uuid\Type\Hexadecimal;
 
 /**
  * A collection of NodeProviderInterface objects
  */
-class NodeProviderCollection extends AbstractCollection implements CollectionInterface
+class NodeProviderCollection extends AbstractCollection
 {
     public function getType(): string
     {
