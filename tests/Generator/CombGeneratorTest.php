@@ -84,7 +84,7 @@ class CombGeneratorTest extends TestCase
         $generator = new CombGenerator($randomGenerator, $converter);
         $returned = $generator->generate($length);
         $this->assertIsString($returned);
-        $this->assertEquals($expected, $returned);
+        $this->assertSame($expected, $returned);
     }
 
     /**

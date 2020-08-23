@@ -55,7 +55,7 @@ class RandomBytesGeneratorTest extends TestCase
         $bytes = hex2bin($hex);
         AspectMock::func('Ramsey\Uuid\Generator', 'random_bytes', $bytes);
         $generator = new RandomBytesGenerator();
-        $this->assertEquals($bytes, $generator->generate($length));
+        $this->assertSame($bytes, $generator->generate($length));
     }
 
     /**
