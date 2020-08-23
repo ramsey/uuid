@@ -69,10 +69,10 @@ class DceSecurityGeneratorTest extends TestCase
 
         $bytes = $dceSecurityGenerator->generate($providedDomain, $providedId, $providedNode);
 
-        $this->assertSame($expectedId, bin2hex(substr($bytes, 0, 4)));
-        $this->assertSame($expectedDomain, bin2hex(substr($bytes, 9, 1)));
-        $this->assertSame($expectedNode, bin2hex(substr($bytes, 10)));
-        $this->assertSame($expectedTimeMidHi, bin2hex(substr($bytes, 4, 4)));
+        self::assertSame($expectedId, bin2hex(substr($bytes, 0, 4)));
+        self::assertSame($expectedDomain, bin2hex(substr($bytes, 9, 1)));
+        self::assertSame($expectedNode, bin2hex(substr($bytes, 10)));
+        self::assertSame($expectedTimeMidHi, bin2hex(substr($bytes, 4, 4)));
     }
 
     /**
@@ -176,11 +176,11 @@ class DceSecurityGeneratorTest extends TestCase
 
         $hex = bin2hex($bytes);
 
-        $this->assertSame('000003e9', substr($hex, 0, 8));
-        $this->assertSame('5feb01ea', substr($hex, 8, 8));
-        $this->assertSame('00', substr($hex, 16, 2));
-        $this->assertSame('02', substr($hex, 18, 2));
-        $this->assertSame('0123456789ab', substr($hex, 20));
+        self::assertSame('000003e9', substr($hex, 0, 8));
+        self::assertSame('5feb01ea', substr($hex, 8, 8));
+        self::assertSame('00', substr($hex, 16, 2));
+        self::assertSame('02', substr($hex, 18, 2));
+        self::assertSame('0123456789ab', substr($hex, 20));
     }
 
     public function testClockSequenceUpperBounds(): void
@@ -205,11 +205,11 @@ class DceSecurityGeneratorTest extends TestCase
 
         $hex = bin2hex($bytes);
 
-        $this->assertSame('000003e9', substr($hex, 0, 8));
-        $this->assertSame('5feb01ea', substr($hex, 8, 8));
-        $this->assertSame('3f', substr($hex, 16, 2));
-        $this->assertSame('02', substr($hex, 18, 2));
-        $this->assertSame('0123456789ab', substr($hex, 20));
+        self::assertSame('000003e9', substr($hex, 0, 8));
+        self::assertSame('5feb01ea', substr($hex, 8, 8));
+        self::assertSame('3f', substr($hex, 16, 2));
+        self::assertSame('02', substr($hex, 18, 2));
+        self::assertSame('0123456789ab', substr($hex, 20));
     }
 
     public function testExceptionThrownWhenClockSequenceTooLow(): void

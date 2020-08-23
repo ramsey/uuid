@@ -28,6 +28,6 @@ class TimeGeneratorFactoryTest extends TestCase
         $factory = new TimeGeneratorFactory($nodeProvider, $timeConverter, $timeProvider);
         $generator = $factory->getGenerator();
 
-        $this->assertInstanceOf(TimeGeneratorInterface::class, $generator);
+        self::assertInstanceOf(TimeGeneratorInterface::class, $generator);
     }
 }

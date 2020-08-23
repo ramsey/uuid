@@ -85,10 +85,10 @@ class DefaultTimeGeneratorTest extends TestCase
 
     public function testGenerateUsesNodeProviderWhenNodeIsNull(): void
     {
-        $this->nodeProvider->expects($this->once())
+        $this->nodeProvider->expects(self::once())
             ->method('getNode')
             ->willReturn(new Hexadecimal('122f80ca9e06'));
-        $this->timeConverter->expects($this->once())
+        $this->timeConverter->expects(self::once())
             ->method('calculateTime')
             ->with($this->currentTime['sec'], $this->currentTime['usec'])
             ->willReturn($this->calculatedTime);
@@ -102,7 +102,7 @@ class DefaultTimeGeneratorTest extends TestCase
 
     public function testGenerateUsesTimeProvidersCurrentTime(): void
     {
-        $this->timeConverter->expects($this->once())
+        $this->timeConverter->expects(self::once())
             ->method('calculateTime')
             ->with($this->currentTime['sec'], $this->currentTime['usec'])
             ->willReturn($this->calculatedTime);
@@ -116,7 +116,7 @@ class DefaultTimeGeneratorTest extends TestCase
 
     public function testGenerateCalculatesTimeWithConverter(): void
     {
-        $this->timeConverter->expects($this->once())
+        $this->timeConverter->expects(self::once())
             ->method('calculateTime')
             ->with($this->currentTime['sec'], $this->currentTime['usec'])
             ->willReturn($this->calculatedTime);
@@ -150,7 +150,7 @@ class DefaultTimeGeneratorTest extends TestCase
             $this->timeProvider
         );
 
-        $this->assertSame($expectedBytes, $defaultTimeGenerator->generate($this->nodeId, $this->clockSeq));
+        self::assertSame($expectedBytes, $defaultTimeGenerator->generate($this->nodeId, $this->clockSeq));
     }
 
     /**
@@ -160,7 +160,7 @@ class DefaultTimeGeneratorTest extends TestCase
     public function testGenerateUsesRandomSequenceWhenClockSeqNull(): void
     {
         $randomInt = AspectMock::func('Ramsey\Uuid\Generator', 'random_int', 9622);
-        $this->timeConverter->expects($this->once())
+        $this->timeConverter->expects(self::once())
             ->method('calculateTime')
             ->with($this->currentTime['sec'], $this->currentTime['usec'])
             ->willReturn($this->calculatedTime);

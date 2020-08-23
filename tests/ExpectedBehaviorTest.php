@@ -40,38 +40,38 @@ class ExpectedBehaviorTest extends TestCase
     {
         $uuid = call_user_func_array(['Ramsey\Uuid\Uuid', $method], $args);
 
-        $this->assertInstanceOf('Ramsey\Uuid\UuidInterface', $uuid);
-        $this->assertIsInt($uuid->compareTo(Uuid::uuid1()));
-        $this->assertNotSame(0, $uuid->compareTo(Uuid::uuid4()));
-        $this->assertSame(0, $uuid->compareTo(clone $uuid));
-        $this->assertFalse($uuid->equals(new stdClass()));
-        $this->assertTrue($uuid->equals(clone $uuid));
-        $this->assertIsString($uuid->getBytes());
-        $this->assertInstanceOf('Ramsey\Uuid\Converter\NumberConverterInterface', $uuid->getNumberConverter());
-        $this->assertIsString((string) $uuid->getHex());
-        $this->assertIsArray($uuid->getFieldsHex());
-        $this->assertArrayHasKey('time_low', $uuid->getFieldsHex());
-        $this->assertArrayHasKey('time_mid', $uuid->getFieldsHex());
-        $this->assertArrayHasKey('time_hi_and_version', $uuid->getFieldsHex());
-        $this->assertArrayHasKey('clock_seq_hi_and_reserved', $uuid->getFieldsHex());
-        $this->assertArrayHasKey('clock_seq_low', $uuid->getFieldsHex());
-        $this->assertArrayHasKey('node', $uuid->getFieldsHex());
-        $this->assertIsString($uuid->getTimeLowHex());
-        $this->assertIsString($uuid->getTimeMidHex());
-        $this->assertIsString($uuid->getTimeHiAndVersionHex());
-        $this->assertIsString($uuid->getClockSeqHiAndReservedHex());
-        $this->assertIsString($uuid->getClockSeqLowHex());
-        $this->assertIsString($uuid->getNodeHex());
-        $this->assertSame($uuid->getFieldsHex()['time_low'], $uuid->getTimeLowHex());
-        $this->assertSame($uuid->getFieldsHex()['time_mid'], $uuid->getTimeMidHex());
-        $this->assertSame($uuid->getFieldsHex()['time_hi_and_version'], $uuid->getTimeHiAndVersionHex());
-        $this->assertSame($uuid->getFieldsHex()['clock_seq_hi_and_reserved'], $uuid->getClockSeqHiAndReservedHex());
-        $this->assertSame($uuid->getFieldsHex()['clock_seq_low'], $uuid->getClockSeqLowHex());
-        $this->assertSame($uuid->getFieldsHex()['node'], $uuid->getNodeHex());
-        $this->assertSame(substr((string) $uuid->getHex(), 16), $uuid->getLeastSignificantBitsHex());
-        $this->assertSame(substr((string) $uuid->getHex(), 0, 16), $uuid->getMostSignificantBitsHex());
+        self::assertInstanceOf('Ramsey\Uuid\UuidInterface', $uuid);
+        self::assertIsInt($uuid->compareTo(Uuid::uuid1()));
+        self::assertNotSame(0, $uuid->compareTo(Uuid::uuid4()));
+        self::assertSame(0, $uuid->compareTo(clone $uuid));
+        self::assertFalse($uuid->equals(new stdClass()));
+        self::assertTrue($uuid->equals(clone $uuid));
+        self::assertIsString($uuid->getBytes());
+        self::assertInstanceOf('Ramsey\Uuid\Converter\NumberConverterInterface', $uuid->getNumberConverter());
+        self::assertIsString((string) $uuid->getHex());
+        self::assertIsArray($uuid->getFieldsHex());
+        self::assertArrayHasKey('time_low', $uuid->getFieldsHex());
+        self::assertArrayHasKey('time_mid', $uuid->getFieldsHex());
+        self::assertArrayHasKey('time_hi_and_version', $uuid->getFieldsHex());
+        self::assertArrayHasKey('clock_seq_hi_and_reserved', $uuid->getFieldsHex());
+        self::assertArrayHasKey('clock_seq_low', $uuid->getFieldsHex());
+        self::assertArrayHasKey('node', $uuid->getFieldsHex());
+        self::assertIsString($uuid->getTimeLowHex());
+        self::assertIsString($uuid->getTimeMidHex());
+        self::assertIsString($uuid->getTimeHiAndVersionHex());
+        self::assertIsString($uuid->getClockSeqHiAndReservedHex());
+        self::assertIsString($uuid->getClockSeqLowHex());
+        self::assertIsString($uuid->getNodeHex());
+        self::assertSame($uuid->getFieldsHex()['time_low'], $uuid->getTimeLowHex());
+        self::assertSame($uuid->getFieldsHex()['time_mid'], $uuid->getTimeMidHex());
+        self::assertSame($uuid->getFieldsHex()['time_hi_and_version'], $uuid->getTimeHiAndVersionHex());
+        self::assertSame($uuid->getFieldsHex()['clock_seq_hi_and_reserved'], $uuid->getClockSeqHiAndReservedHex());
+        self::assertSame($uuid->getFieldsHex()['clock_seq_low'], $uuid->getClockSeqLowHex());
+        self::assertSame($uuid->getFieldsHex()['node'], $uuid->getNodeHex());
+        self::assertSame(substr((string) $uuid->getHex(), 16), $uuid->getLeastSignificantBitsHex());
+        self::assertSame(substr((string) $uuid->getHex(), 0, 16), $uuid->getMostSignificantBitsHex());
 
-        $this->assertSame(
+        self::assertSame(
             (string) $uuid->getHex(),
             $uuid->getTimeLowHex()
             . $uuid->getTimeMidHex()
@@ -81,7 +81,7 @@ class ExpectedBehaviorTest extends TestCase
             . $uuid->getNodeHex()
         );
 
-        $this->assertSame(
+        self::assertSame(
             (string) $uuid->getHex(),
             $uuid->getFieldsHex()['time_low']
             . $uuid->getFieldsHex()['time_mid']
@@ -91,13 +91,13 @@ class ExpectedBehaviorTest extends TestCase
             . $uuid->getFieldsHex()['node']
         );
 
-        $this->assertIsString($uuid->getUrn());
-        $this->assertStringStartsWith('urn:uuid:', $uuid->getUrn());
-        $this->assertSame('urn:uuid:' . (string) $uuid->getHex(), str_replace('-', '', $uuid->getUrn()));
-        $this->assertSame((string) $uuid->getHex(), str_replace('-', '', $uuid->toString()));
-        $this->assertSame((string) $uuid->getHex(), str_replace('-', '', (string) $uuid));
+        self::assertIsString($uuid->getUrn());
+        self::assertStringStartsWith('urn:uuid:', $uuid->getUrn());
+        self::assertSame('urn:uuid:' . (string) $uuid->getHex(), str_replace('-', '', $uuid->getUrn()));
+        self::assertSame((string) $uuid->getHex(), str_replace('-', '', $uuid->toString()));
+        self::assertSame((string) $uuid->getHex(), str_replace('-', '', (string) $uuid));
 
-        $this->assertSame(
+        self::assertSame(
             $uuid->toString(),
             $uuid->getTimeLowHex() . '-'
             . $uuid->getTimeMidHex() . '-'
@@ -107,7 +107,7 @@ class ExpectedBehaviorTest extends TestCase
             . $uuid->getNodeHex()
         );
 
-        $this->assertSame(
+        self::assertSame(
             (string) $uuid,
             $uuid->getTimeLowHex() . '-'
             . $uuid->getTimeMidHex() . '-'
@@ -117,9 +117,9 @@ class ExpectedBehaviorTest extends TestCase
             . $uuid->getNodeHex()
         );
 
-        $this->assertSame(2, $uuid->getVariant());
-        $this->assertSame((int) substr($method, -1), $uuid->getVersion());
-        $this->assertTrue(ctype_digit((string) $uuid->getInteger()));
+        self::assertSame(2, $uuid->getVariant());
+        self::assertSame((int) substr($method, -1), $uuid->getVersion());
+        self::assertTrue(ctype_digit((string) $uuid->getInteger()));
     }
 
     public function provideStaticCreationMethods()
@@ -143,22 +143,22 @@ class ExpectedBehaviorTest extends TestCase
     {
         $uuid = Uuid::uuid1('00000fffffff', 0xffff);
 
-        $this->assertInstanceOf('DateTimeInterface', $uuid->getDateTime());
-        $this->assertSame('00000fffffff', $uuid->getNodeHex());
-        $this->assertSame('3fff', $uuid->getClockSequenceHex());
-        $this->assertSame('16383', (string) $uuid->getClockSequence());
+        self::assertInstanceOf('DateTimeInterface', $uuid->getDateTime());
+        self::assertSame('00000fffffff', $uuid->getNodeHex());
+        self::assertSame('3fff', $uuid->getClockSequenceHex());
+        self::assertSame('16383', (string) $uuid->getClockSequence());
     }
 
     public function testUuidVersion1MethodBehavior64Bit()
     {
         $uuid = Uuid::uuid1('ffffffffffff', 0xffff);
 
-        $this->assertInstanceOf('DateTimeInterface', $uuid->getDateTime());
-        $this->assertSame('ffffffffffff', $uuid->getNodeHex());
-        $this->assertSame('281474976710655', (string) $uuid->getNode());
-        $this->assertSame('3fff', $uuid->getClockSequenceHex());
-        $this->assertSame('16383', (string) $uuid->getClockSequence());
-        $this->assertTrue(ctype_digit((string) $uuid->getTimestamp()));
+        self::assertInstanceOf('DateTimeInterface', $uuid->getDateTime());
+        self::assertSame('ffffffffffff', $uuid->getNodeHex());
+        self::assertSame('281474976710655', (string) $uuid->getNode());
+        self::assertSame('3fff', $uuid->getClockSequenceHex());
+        self::assertSame('16383', (string) $uuid->getClockSequence());
+        self::assertTrue(ctype_digit((string) $uuid->getTimestamp()));
     }
 
     /**
@@ -166,8 +166,8 @@ class ExpectedBehaviorTest extends TestCase
      */
     public function testIsValid($uuid, $expected)
     {
-        $this->assertSame($expected, Uuid::isValid($uuid), "{$uuid} is not a valid UUID");
-        $this->assertSame($expected, Uuid::isValid(strtoupper($uuid)), strtoupper($uuid) . ' is not a valid UUID');
+        self::assertSame($expected, Uuid::isValid($uuid), "{$uuid} is not a valid UUID");
+        self::assertSame($expected, Uuid::isValid(strtoupper($uuid)), strtoupper($uuid) . ' is not a valid UUID');
     }
 
     public function provideIsValid()
@@ -234,9 +234,9 @@ class ExpectedBehaviorTest extends TestCase
         $serialized = serialize($uuid);
         $unserialized = unserialize($serialized);
 
-        $this->assertSame(0, $uuid->compareTo($unserialized));
-        $this->assertTrue($uuid->equals($unserialized));
-        $this->assertSame("\"{$string}\"", json_encode($uuid));
+        self::assertSame(0, $uuid->compareTo($unserialized));
+        self::assertTrue($uuid->equals($unserialized));
+        self::assertSame("\"{$string}\"", json_encode($uuid));
     }
 
     /**
@@ -260,15 +260,15 @@ class ExpectedBehaviorTest extends TestCase
 
         $uuid = Uuid::fromString($string);
 
-        $this->assertSame($components[0], (string) $uuid->getTimeLow());
-        $this->assertSame($components[1], (string) $uuid->getTimeMid());
-        $this->assertSame($components[2], (string) $uuid->getTimeHiAndVersion());
-        $this->assertSame((string) $clockSeq, (string) $uuid->getClockSequence());
-        $this->assertSame((string) $clockSeqHiAndReserved, (string) $uuid->getClockSeqHiAndReserved());
-        $this->assertSame((string) $clockSeqLow, (string) $uuid->getClockSeqLow());
-        $this->assertSame($components[4], (string) $uuid->getNode());
-        $this->assertSame($leastSignificantBits, (string) $uuid->getLeastSignificantBits());
-        $this->assertSame($mostSignificantBits, (string) $uuid->getMostSignificantBits());
+        self::assertSame($components[0], (string) $uuid->getTimeLow());
+        self::assertSame($components[1], (string) $uuid->getTimeMid());
+        self::assertSame($components[2], (string) $uuid->getTimeHiAndVersion());
+        self::assertSame((string) $clockSeq, (string) $uuid->getClockSequence());
+        self::assertSame((string) $clockSeqHiAndReserved, (string) $uuid->getClockSeqHiAndReserved());
+        self::assertSame((string) $clockSeqLow, (string) $uuid->getClockSeqLow());
+        self::assertSame($components[4], (string) $uuid->getNode());
+        self::assertSame($leastSignificantBits, (string) $uuid->getLeastSignificantBits());
+        self::assertSame($mostSignificantBits, (string) $uuid->getMostSignificantBits());
     }
 
     /**
@@ -280,20 +280,20 @@ class ExpectedBehaviorTest extends TestCase
 
         $uuid = Uuid::fromBytes($bytes);
 
-        $this->assertInstanceOf('Ramsey\Uuid\UuidInterface', $uuid);
-        $this->assertSame($string, $uuid->toString());
-        $this->assertSame($version, $uuid->getVersion());
-        $this->assertSame($variant, $uuid->getVariant());
+        self::assertInstanceOf('Ramsey\Uuid\UuidInterface', $uuid);
+        self::assertSame($string, $uuid->toString());
+        self::assertSame($version, $uuid->getVersion());
+        self::assertSame($variant, $uuid->getVariant());
 
         $components = explode('-', $string);
 
-        $this->assertSame($components[0], $uuid->getTimeLowHex());
-        $this->assertSame($components[1], $uuid->getTimeMidHex());
-        $this->assertSame($components[2], $uuid->getTimeHiAndVersionHex());
-        $this->assertSame($components[3], $uuid->getClockSeqHiAndReservedHex() . $uuid->getClockSeqLowHex());
-        $this->assertSame($components[4], $uuid->getNodeHex());
-        $this->assertSame($integer, (string) $uuid->getInteger());
-        $this->assertSame($bytes, $uuid->getBytes());
+        self::assertSame($components[0], $uuid->getTimeLowHex());
+        self::assertSame($components[1], $uuid->getTimeMidHex());
+        self::assertSame($components[2], $uuid->getTimeHiAndVersionHex());
+        self::assertSame($components[3], $uuid->getClockSeqHiAndReservedHex() . $uuid->getClockSeqLowHex());
+        self::assertSame($components[4], $uuid->getNodeHex());
+        self::assertSame($integer, (string) $uuid->getInteger());
+        self::assertSame($bytes, $uuid->getBytes());
     }
 
     /**
@@ -305,20 +305,20 @@ class ExpectedBehaviorTest extends TestCase
 
         $uuid = Uuid::fromInteger($integer);
 
-        $this->assertInstanceOf('Ramsey\Uuid\UuidInterface', $uuid);
-        $this->assertSame($string, $uuid->toString());
-        $this->assertSame($version, $uuid->getVersion());
-        $this->assertSame($variant, $uuid->getVariant());
+        self::assertInstanceOf('Ramsey\Uuid\UuidInterface', $uuid);
+        self::assertSame($string, $uuid->toString());
+        self::assertSame($version, $uuid->getVersion());
+        self::assertSame($variant, $uuid->getVariant());
 
         $components = explode('-', $string);
 
-        $this->assertSame($components[0], $uuid->getTimeLowHex());
-        $this->assertSame($components[1], $uuid->getTimeMidHex());
-        $this->assertSame($components[2], $uuid->getTimeHiAndVersionHex());
-        $this->assertSame($components[3], $uuid->getClockSeqHiAndReservedHex() . $uuid->getClockSeqLowHex());
-        $this->assertSame($components[4], $uuid->getNodeHex());
-        $this->assertSame($integer, (string) $uuid->getInteger());
-        $this->assertSame($bytes, $uuid->getBytes());
+        self::assertSame($components[0], $uuid->getTimeLowHex());
+        self::assertSame($components[1], $uuid->getTimeMidHex());
+        self::assertSame($components[2], $uuid->getTimeHiAndVersionHex());
+        self::assertSame($components[3], $uuid->getClockSeqHiAndReservedHex() . $uuid->getClockSeqLowHex());
+        self::assertSame($components[4], $uuid->getNodeHex());
+        self::assertSame($integer, (string) $uuid->getInteger());
+        self::assertSame($bytes, $uuid->getBytes());
     }
 
     /**
@@ -330,20 +330,20 @@ class ExpectedBehaviorTest extends TestCase
 
         $uuid = Uuid::fromString($string);
 
-        $this->assertInstanceOf('Ramsey\Uuid\UuidInterface', $uuid);
-        $this->assertSame($string, $uuid->toString());
-        $this->assertSame($version, $uuid->getVersion());
-        $this->assertSame($variant, $uuid->getVariant());
+        self::assertInstanceOf('Ramsey\Uuid\UuidInterface', $uuid);
+        self::assertSame($string, $uuid->toString());
+        self::assertSame($version, $uuid->getVersion());
+        self::assertSame($variant, $uuid->getVariant());
 
         $components = explode('-', $string);
 
-        $this->assertSame($components[0], $uuid->getTimeLowHex());
-        $this->assertSame($components[1], $uuid->getTimeMidHex());
-        $this->assertSame($components[2], $uuid->getTimeHiAndVersionHex());
-        $this->assertSame($components[3], $uuid->getClockSeqHiAndReservedHex() . $uuid->getClockSeqLowHex());
-        $this->assertSame($components[4], $uuid->getNodeHex());
-        $this->assertSame($integer, (string) $uuid->getInteger());
-        $this->assertSame($bytes, $uuid->getBytes());
+        self::assertSame($components[0], $uuid->getTimeLowHex());
+        self::assertSame($components[1], $uuid->getTimeMidHex());
+        self::assertSame($components[2], $uuid->getTimeHiAndVersionHex());
+        self::assertSame($components[3], $uuid->getClockSeqHiAndReservedHex() . $uuid->getClockSeqLowHex());
+        self::assertSame($components[4], $uuid->getNodeHex());
+        self::assertSame($integer, (string) $uuid->getInteger());
+        self::assertSame($bytes, $uuid->getBytes());
     }
 
     public function provideFromStringInteger()
@@ -392,12 +392,12 @@ class ExpectedBehaviorTest extends TestCase
      */
     public function testGetSetFactory()
     {
-        $this->assertInstanceOf('Ramsey\Uuid\UuidFactory', Uuid::getFactory());
+        self::assertInstanceOf('Ramsey\Uuid\UuidFactory', Uuid::getFactory());
 
         $factory = \Mockery::mock('Ramsey\Uuid\UuidFactory');
         Uuid::setFactory($factory);
 
-        $this->assertSame($factory, Uuid::getFactory());
+        self::assertSame($factory, Uuid::getFactory());
     }
 
     /**
@@ -420,13 +420,13 @@ class ExpectedBehaviorTest extends TestCase
 
         Uuid::setFactory($factory);
 
-        $this->assertSame($uuid, Uuid::uuid1('ffffffffffff', 0xffff));
-        $this->assertSame($uuid, Uuid::uuid3(Uuid::NAMESPACE_URL, 'https://example.com/foo'));
-        $this->assertSame($uuid, Uuid::uuid4());
-        $this->assertSame($uuid, Uuid::uuid5(Uuid::NAMESPACE_URL, 'https://example.com/foo'));
-        $this->assertSame($uuid, Uuid::fromBytes(hex2bin('ffffffffffffffffffffffffffffffff')));
-        $this->assertSame($uuid, Uuid::fromString('ffffffff-ffff-ffff-ffff-ffffffffffff'));
-        $this->assertSame($uuid, Uuid::fromInteger('340282366920938463463374607431768211455'));
+        self::assertSame($uuid, Uuid::uuid1('ffffffffffff', 0xffff));
+        self::assertSame($uuid, Uuid::uuid3(Uuid::NAMESPACE_URL, 'https://example.com/foo'));
+        self::assertSame($uuid, Uuid::uuid4());
+        self::assertSame($uuid, Uuid::uuid5(Uuid::NAMESPACE_URL, 'https://example.com/foo'));
+        self::assertSame($uuid, Uuid::fromBytes(hex2bin('ffffffffffffffffffffffffffffffff')));
+        self::assertSame($uuid, Uuid::fromString('ffffffff-ffff-ffff-ffff-ffffffffffff'));
+        self::assertSame($uuid, Uuid::fromInteger('340282366920938463463374607431768211455'));
     }
 
     /**
@@ -446,9 +446,9 @@ class ExpectedBehaviorTest extends TestCase
 
         $uuid = Uuid::uuid1();
 
-        $this->assertInstanceOf('Ramsey\Uuid\UuidInterface', $uuid);
-        $this->assertInstanceOf('Ramsey\Uuid\DegradedUuid', $uuid);
-        $this->assertInstanceOf('Ramsey\Uuid\Converter\Number\DegradedNumberConverter', $uuid->getNumberConverter());
+        self::assertInstanceOf('Ramsey\Uuid\UuidInterface', $uuid);
+        self::assertInstanceOf('Ramsey\Uuid\DegradedUuid', $uuid);
+        self::assertInstanceOf('Ramsey\Uuid\Converter\Number\DegradedNumberConverter', $uuid->getNumberConverter());
     }
 
     /**
@@ -473,10 +473,10 @@ class ExpectedBehaviorTest extends TestCase
 
         $uuid = Uuid::uuid4();
 
-        $this->assertSame('abcd1234', $uuid->toString());
-        $this->assertSame(hex2bin('abcd1234'), $uuid->getBytes());
-        $this->assertSame($mockUuid, Uuid::fromString('f00ba2'));
-        $this->assertSame($mockUuid, Uuid::fromBytes(hex2bin('f00ba2')));
+        self::assertSame('abcd1234', $uuid->toString());
+        self::assertSame(hex2bin('abcd1234'), $uuid->getBytes());
+        self::assertSame($mockUuid, Uuid::fromString('f00ba2'));
+        self::assertSame($mockUuid, Uuid::fromBytes(hex2bin('f00ba2')));
     }
 
     /**
@@ -496,7 +496,7 @@ class ExpectedBehaviorTest extends TestCase
 
         $uuid = Uuid::uuid4();
 
-        $this->assertSame('01234567-abcd-4432-9cba-0123456789ab', $uuid->toString());
+        self::assertSame('01234567-abcd-4432-9cba-0123456789ab', $uuid->toString());
     }
 
     /**
@@ -516,7 +516,7 @@ class ExpectedBehaviorTest extends TestCase
 
         $uuid = Uuid::uuid1();
 
-        $this->assertSame('01234567-abcd-1432-9cba-0123456789ab', $uuid->toString());
+        self::assertSame('01234567-abcd-1432-9cba-0123456789ab', $uuid->toString());
     }
 
     /**
@@ -553,7 +553,7 @@ class ExpectedBehaviorTest extends TestCase
 
         $uuid = Uuid::uuid1(null, 4095);
 
-        $this->assertSame('5e1655be-2710-1bcd-8fff-0123456789ab', $uuid->toString());
+        self::assertSame('5e1655be-2710-1bcd-8fff-0123456789ab', $uuid->toString());
     }
 
     /**
@@ -584,10 +584,10 @@ class ExpectedBehaviorTest extends TestCase
 
         Uuid::setFactory($factory);
 
-        $this->assertSame('aVersion1Uuid', \Ramsey\Uuid\v1('ffffffffffff', 0xffff));
-        $this->assertSame('aVersion3Uuid', \Ramsey\Uuid\v3(Uuid::NAMESPACE_URL, 'https://example.com/foo'));
-        $this->assertSame('aVersion4Uuid', \Ramsey\Uuid\v4());
-        $this->assertSame('aVersion5Uuid', \Ramsey\Uuid\v5(Uuid::NAMESPACE_URL, 'https://example.com/foo'));
+        self::assertSame('aVersion1Uuid', \Ramsey\Uuid\v1('ffffffffffff', 0xffff));
+        self::assertSame('aVersion3Uuid', \Ramsey\Uuid\v3(Uuid::NAMESPACE_URL, 'https://example.com/foo'));
+        self::assertSame('aVersion4Uuid', \Ramsey\Uuid\v4());
+        self::assertSame('aVersion5Uuid', \Ramsey\Uuid\v5(Uuid::NAMESPACE_URL, 'https://example.com/foo'));
     }
 
     /**
@@ -618,11 +618,11 @@ class ExpectedBehaviorTest extends TestCase
         $expectedHex = implode('', $fields);
         $expectedBytes = hex2bin($expectedHex);
 
-        $this->assertInstanceOf('Ramsey\Uuid\UuidInterface', $uuid);
-        $this->assertSame(2, $uuid->getVariant());
-        $this->assertSame(4, $uuid->getVersion());
-        $this->assertSame($expectedBytes, $uuid->getBytes());
-        $this->assertSame($expectedHex, (string) $uuid->getHex());
+        self::assertInstanceOf('Ramsey\Uuid\UuidInterface', $uuid);
+        self::assertSame(2, $uuid->getVariant());
+        self::assertSame(4, $uuid->getVersion());
+        self::assertSame($expectedBytes, $uuid->getBytes());
+        self::assertSame($expectedHex, (string) $uuid->getHex());
     }
 
     /**
@@ -630,7 +630,7 @@ class ExpectedBehaviorTest extends TestCase
      */
     public function testUuidConstants($constantName, $expected)
     {
-        $this->assertSame($expected, constant("Ramsey\\Uuid\\Uuid::{$constantName}"));
+        self::assertSame($expected, constant("Ramsey\\Uuid\\Uuid::{$constantName}"));
     }
 
     public function provideUuidConstantTests()

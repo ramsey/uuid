@@ -55,7 +55,7 @@ class StringCodecTest extends TestCase
 
     public function testEncodeUsesFieldsArray(): void
     {
-        $this->uuid->expects($this->once())
+        $this->uuid->expects(self::once())
             ->method('getFields')
             ->willReturn($this->fields);
         $codec = new StringCodec($this->builder);
@@ -68,7 +68,7 @@ class StringCodecTest extends TestCase
             ->willReturn($this->fields);
         $codec = new StringCodec($this->builder);
         $result = $codec->encode($this->uuid);
-        $this->assertSame($this->uuidString, $result);
+        self::assertSame($this->uuidString, $result);
     }
 
     public function testEncodeBinaryReturnsBinaryString(): void
@@ -83,7 +83,7 @@ class StringCodecTest extends TestCase
 
         $codec = new StringCodec($this->builder);
         $result = $codec->encodeBinary($this->uuid);
-        $this->assertSame($expected, $result);
+        self::assertSame($expected, $result);
     }
 
     public function testDecodeUsesBuilderOnFields(): void
@@ -100,9 +100,9 @@ class StringCodecTest extends TestCase
         $bytes = hex2bin(implode('', $fields));
 
         $string = 'uuid:12345678-1234-4bcd-abef-1234abcd4321';
-        $this->builder->expects($this->once())
+        $this->builder->expects(self::once())
             ->method('build')
-            ->with($this->isInstanceOf(StringCodec::class), $bytes);
+            ->with(self::isInstanceOf(StringCodec::class), $bytes);
         $codec = new StringCodec($this->builder);
         $codec->decode($string);
     }
@@ -123,7 +123,7 @@ class StringCodecTest extends TestCase
             ->willReturn($this->uuid);
         $codec = new StringCodec($this->builder);
         $result = $codec->decode($string);
-        $this->assertSame($this->uuid, $result);
+        self::assertSame($this->uuid, $result);
     }
 
     public function testDecodeBytesThrowsExceptionWhenBytesStringNotSixteenCharacters(): void
@@ -145,6 +145,6 @@ class StringCodecTest extends TestCase
         $this->builder->method('build')
             ->willReturn($this->uuid);
         $result = $codec->decodeBytes($bytes);
-        $this->assertSame($this->uuid, $result);
+        self::assertSame($this->uuid, $result);
     }
 }

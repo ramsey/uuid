@@ -14,6 +14,6 @@ class NameGeneratorFactoryTest extends TestCase
     {
         $factory = new NameGeneratorFactory();
 
-        $this->assertInstanceOf(DefaultNameGenerator::class, $factory->getGenerator());
+        self::assertInstanceOf(DefaultNameGenerator::class, $factory->getGenerator());
     }
 }

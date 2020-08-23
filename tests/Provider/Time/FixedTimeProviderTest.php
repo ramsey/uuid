@@ -15,7 +15,7 @@ class FixedTimeProviderTest extends TestCase
         $time = new Time(1458844556, 200997);
         $provider = new FixedTimeProvider($time);
 
-        $this->assertSame($time, $provider->getTime());
+        self::assertSame($time, $provider->getTime());
     }
 
     public function testGetTimeReturnsTimeAfterChange(): void
@@ -23,19 +23,19 @@ class FixedTimeProviderTest extends TestCase
         $time = new Time(1458844556, 200997);
         $provider = new FixedTimeProvider($time);
 
-        $this->assertSame('1458844556', $provider->getTime()->getSeconds()->toString());
-        $this->assertSame('200997', $provider->getTime()->getMicroseconds()->toString());
+        self::assertSame('1458844556', $provider->getTime()->getSeconds()->toString());
+        self::assertSame('200997', $provider->getTime()->getMicroseconds()->toString());
 
         $provider->setSec(1050804050);
 
-        $this->assertSame('1050804050', $provider->getTime()->getSeconds()->toString());
-        $this->assertSame('200997', $provider->getTime()->getMicroseconds()->toString());
+        self::assertSame('1050804050', $provider->getTime()->getSeconds()->toString());
+        self::assertSame('200997', $provider->getTime()->getMicroseconds()->toString());
 
         $provider->setUsec(30192);
 
-        $this->assertSame('1050804050', $provider->getTime()->getSeconds()->toString());
-        $this->assertSame('30192', $provider->getTime()->getMicroseconds()->toString());
+        self::assertSame('1050804050', $provider->getTime()->getSeconds()->toString());
+        self::assertSame('30192', $provider->getTime()->getMicroseconds()->toString());
 
-        $this->assertNotSame($time, $provider->getTime());
+        self::assertNotSame($time, $provider->getTime());
     }
 }

@@ -82,15 +82,15 @@ class SystemNodeProviderTest extends TestCase
         $node = $provider->getNode();
 
         /* Assert the result match expectations */
-        $this->assertMockFunctions(null, null, ['netstat -ie 2>&1'], ['PHP_OS'], ['disable_functions']);
+        self::assertMockFunctions(null, null, ['netstat -ie 2>&1'], ['PHP_OS'], ['disable_functions']);
 
-        $this->assertSame($expected, $node->toString());
+        self::assertSame($expected, $node->toString());
 
         $message = vsprintf(
             'Node should be a hexadecimal string of 12 characters. Actual node: %s (length: %s)',
             [$node->toString(), strlen($node->toString()),]
         );
-        $this->assertRegExp('/^[A-Fa-f0-9]{12}$/', $node->toString(), $message);
+        self::assertRegExp('/^[A-Fa-f0-9]{12}$/', $node->toString(), $message);
     }
 
     /**
@@ -122,8 +122,8 @@ class SystemNodeProviderTest extends TestCase
         }
 
         /* Assert */
-        $this->assertMockFunctions(null, null, ['netstat -ie 2>&1'], ['PHP_OS'], ['disable_functions']);
-        $this->assertInstanceOf(NodeException::class, $exception);
+        self::assertMockFunctions(null, null, ['netstat -ie 2>&1'], ['PHP_OS'], ['disable_functions']);
+        self::assertInstanceOf(NodeException::class, $exception);
     }
 
     /**
@@ -149,9 +149,9 @@ class SystemNodeProviderTest extends TestCase
         $node = $provider->getNode();
 
         /* Assert */
-        $this->assertMockFunctions(null, null, ['netstat -ie 2>&1'], ['PHP_OS'], ['disable_functions']);
+        self::assertMockFunctions(null, null, ['netstat -ie 2>&1'], ['PHP_OS'], ['disable_functions']);
 
-        $this->assertSame($expected, $node->toString());
+        self::assertSame($expected, $node->toString());
     }
 
     /**
@@ -183,8 +183,8 @@ class SystemNodeProviderTest extends TestCase
         }
 
         /* Assert */
-        $this->assertMockFunctions(null, null, ['netstat -ie 2>&1'], ['PHP_OS'], ['disable_functions']);
-        $this->assertInstanceOf(NodeException::class, $exception);
+        self::assertMockFunctions(null, null, ['netstat -ie 2>&1'], ['PHP_OS'], ['disable_functions']);
+        self::assertInstanceOf(NodeException::class, $exception);
     }
 
     /**
@@ -209,9 +209,9 @@ class SystemNodeProviderTest extends TestCase
         $node = $provider->getNode();
 
         /* Assert */
-        $this->assertMockFunctions(null, null, ['netstat -ie 2>&1'], ['PHP_OS'], ['disable_functions']);
+        self::assertMockFunctions(null, null, ['netstat -ie 2>&1'], ['PHP_OS'], ['disable_functions']);
 
-        $this->assertSame('aabbccddeeff', $node->toString());
+        self::assertSame('aabbccddeeff', $node->toString());
     }
 
     /**
@@ -242,8 +242,8 @@ class SystemNodeProviderTest extends TestCase
         }
 
         /* Assert */
-        $this->assertMockFunctions(null, null, ['netstat -ie 2>&1'], ['PHP_OS'], ['disable_functions']);
-        $this->assertInstanceOf(NodeException::class, $exception);
+        self::assertMockFunctions(null, null, ['netstat -ie 2>&1'], ['PHP_OS'], ['disable_functions']);
+        self::assertInstanceOf(NodeException::class, $exception);
     }
 
     /**
@@ -281,9 +281,9 @@ class SystemNodeProviderTest extends TestCase
         }
 
         /* Assert */
-        $this->assertMockFunctions(null, null, ['netstat -ie 2>&1'], ['PHP_OS'], ['disable_functions']);
-        $this->assertInstanceOf(NodeException::class, $exception1);
-        $this->assertInstanceOf(NodeException::class, $exception2);
+        self::assertMockFunctions(null, null, ['netstat -ie 2>&1'], ['PHP_OS'], ['disable_functions']);
+        self::assertInstanceOf(NodeException::class, $exception1);
+        self::assertInstanceOf(NodeException::class, $exception2);
     }
 
     /**
@@ -322,7 +322,7 @@ class SystemNodeProviderTest extends TestCase
             $fileGetContentsAssert = ['mock address path'];
             $isReadableAssert = $fileGetContentsAssert;
         }
-        $this->assertMockFunctions(
+        self::assertMockFunctions(
             $fileGetContentsAssert,
             $globBodyAssert,
             [$command],
@@ -331,7 +331,7 @@ class SystemNodeProviderTest extends TestCase
             $isReadableAssert
         );
 
-        $this->assertInstanceOf(NodeException::class, $exception);
+        self::assertInstanceOf(NodeException::class, $exception);
     }
 
     /**
@@ -357,9 +357,9 @@ class SystemNodeProviderTest extends TestCase
         $node2 = $provider->getNode();
 
         /* Assert */
-        $this->assertMockFunctions(null, null, ['netstat -ie 2>&1'], ['PHP_OS'], ['disable_functions']);
+        self::assertMockFunctions(null, null, ['netstat -ie 2>&1'], ['PHP_OS'], ['disable_functions']);
 
-        $this->assertSame($node->toString(), $node2->toString());
+        self::assertSame($node->toString(), $node2->toString());
     }
 
     /**
@@ -385,9 +385,9 @@ class SystemNodeProviderTest extends TestCase
         $node2 = $provider->getNode();
 
         /* Assert */
-        $this->assertMockFunctions(null, null, ['netstat -ie 2>&1'], ['PHP_OS'], ['disable_functions']);
+        self::assertMockFunctions(null, null, ['netstat -ie 2>&1'], ['PHP_OS'], ['disable_functions']);
 
-        $this->assertSame($node->toString(), $node2->toString());
+        self::assertSame($node->toString(), $node2->toString());
     }
 
     /**
@@ -433,7 +433,7 @@ class SystemNodeProviderTest extends TestCase
             $iniGetDisableFunctionsAssert = null;
             $isReadableAssert = $fileGetContentsAssert;
         }
-        $this->assertMockFunctions(
+        self::assertMockFunctions(
             $fileGetContentsAssert,
             $globBodyAssert,
             $passthruBodyAssert,
@@ -442,7 +442,7 @@ class SystemNodeProviderTest extends TestCase
             $isReadableAssert
         );
 
-        $this->assertSame('010203040506', $node->toString());
+        self::assertSame('010203040506', $node->toString());
     }
 
     /**
@@ -467,7 +467,7 @@ class SystemNodeProviderTest extends TestCase
         $node = $provider->getNode();
 
         /* Assert */
-        $this->assertMockFunctions(
+        self::assertMockFunctions(
             null,
             ['/sys/class/net/*/address'],
             ['netstat -ie 2>&1'],
@@ -475,7 +475,7 @@ class SystemNodeProviderTest extends TestCase
             ['disable_functions']
         );
 
-        $this->assertSame('010203040506', $node->toString());
+        self::assertSame('010203040506', $node->toString());
     }
 
     /**
@@ -500,7 +500,7 @@ class SystemNodeProviderTest extends TestCase
         $node = $provider->getNode();
 
         /* Assert */
-        $this->assertMockFunctions(
+        self::assertMockFunctions(
             null,
             ['/sys/class/net/*/address'],
             ['netstat -ie 2>&1'],
@@ -508,7 +508,7 @@ class SystemNodeProviderTest extends TestCase
             ['disable_functions']
         );
 
-        $this->assertSame('010203040506', $node->toString());
+        self::assertSame('010203040506', $node->toString());
     }
 
     /**
@@ -534,7 +534,7 @@ class SystemNodeProviderTest extends TestCase
         $node = $provider->getNode();
 
         /* Assert */
-        $this->assertMockFunctions(
+        self::assertMockFunctions(
             null,
             ['/sys/class/net/*/address'],
             ['netstat -ie 2>&1'],
@@ -543,7 +543,7 @@ class SystemNodeProviderTest extends TestCase
             ['mock address path 1', 'mock address path 2']
         );
 
-        $this->assertSame('010203040506', $node->toString());
+        self::assertSame('010203040506', $node->toString());
     }
 
     /**
@@ -572,7 +572,7 @@ class SystemNodeProviderTest extends TestCase
         }
 
         /* Assert */
-        $this->assertMockFunctions(
+        self::assertMockFunctions(
             null,
             null,
             null,
@@ -580,7 +580,7 @@ class SystemNodeProviderTest extends TestCase
             ['disable_functions']
         );
 
-        $this->assertInstanceOf(NodeException::class, $exception);
+        self::assertInstanceOf(NodeException::class, $exception);
     }
 
     /**

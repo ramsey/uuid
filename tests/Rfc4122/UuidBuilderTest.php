@@ -46,8 +46,8 @@ class UuidBuilderTest extends TestCase
         /** @var Fields $fields */
         $fields = $result->getFields();
 
-        $this->assertInstanceOf($expectedClass, $result);
-        $this->assertSame($expectedVersion, $fields->getVersion());
+        self::assertInstanceOf($expectedClass, $result);
+        self::assertSame($expectedVersion, $fields->getVersion());
     }
 
     /**

@@ -21,7 +21,7 @@ class GenericTimeConverterTest extends TestCase
 
         $result = $converter->calculateTime($seconds, $microseconds);
 
-        $this->assertSame($expected, $result->toString());
+        self::assertSame($expected, $result->toString());
     }
 
     /**
@@ -89,8 +89,8 @@ class GenericTimeConverterTest extends TestCase
 
         $result = $converter->convertTime($uuidTimestamp);
 
-        $this->assertSame($unixTimestamp, $result->getSeconds()->toString());
-        $this->assertSame($microseconds, $result->getMicroseconds()->toString());
+        self::assertSame($unixTimestamp, $result->getSeconds()->toString());
+        self::assertSame($microseconds, $result->getMicroseconds()->toString());
     }
 
     /**

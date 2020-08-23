@@ -22,8 +22,8 @@ class HexadecimalTest extends TestCase
     {
         $hexadecimal = new Hexadecimal($value);
 
-        $this->assertSame($expected, $hexadecimal->toString());
-        $this->assertSame($expected, (string) $hexadecimal);
+        self::assertSame($expected, $hexadecimal->toString());
+        self::assertSame($expected, (string) $hexadecimal);
     }
 
     /**
@@ -84,7 +84,7 @@ class HexadecimalTest extends TestCase
         $serializedHexadecimal = serialize($hexadecimal);
         $unserializedHexadecimal = unserialize($serializedHexadecimal);
 
-        $this->assertSame($expected, $unserializedHexadecimal->toString());
+        self::assertSame($expected, $unserializedHexadecimal->toString());
     }
 
     /**
@@ -97,6 +97,6 @@ class HexadecimalTest extends TestCase
         $hexadecimal = new Hexadecimal($value);
         $expectedJson = sprintf('"%s"', $expected);
 
-        $this->assertSame($expectedJson, json_encode($hexadecimal));
+        self::assertSame($expectedJson, json_encode($hexadecimal));
     }
 }

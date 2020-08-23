@@ -109,9 +109,9 @@ class FieldsTest extends TestCase
         $result = $fields->$methodName();
 
         if ($result instanceof Hexadecimal) {
-            $this->assertSame($expectedValue, $result->toString());
+            self::assertSame($expectedValue, $result->toString());
         } else {
-            $this->assertSame($expectedValue, $result);
+            self::assertSame($expectedValue, $result);
         }
     }
 
@@ -199,6 +199,6 @@ class FieldsTest extends TestCase
         $serializedFields = serialize($fields);
         $unserializedFields = unserialize($serializedFields);
 
-        $this->assertSame($fields->getBytes(), $unserializedFields->getBytes());
+        self::assertSame($fields->getBytes(), $unserializedFields->getBytes());
     }
 }

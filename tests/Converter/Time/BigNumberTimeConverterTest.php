@@ -35,8 +35,8 @@ class BigNumberTimeConverterTest extends TestCase
         $converter = new BigNumberTimeConverter();
         $returned = $converter->calculateTime((string) $seconds, (string) $microseconds);
 
-        $this->assertInstanceOf(Hexadecimal::class, $returned);
-        $this->assertSame($expected, $returned->toString());
+        self::assertInstanceOf(Hexadecimal::class, $returned);
+        self::assertSame($expected, $returned->toString());
     }
 
     public function testConvertTime(): void
@@ -44,7 +44,7 @@ class BigNumberTimeConverterTest extends TestCase
         $converter = new BigNumberTimeConverter();
         $returned = $converter->convertTime(new Hexadecimal('1e1c57dff6f8cb0'));
 
-        $this->assertSame('1341368074', $returned->getSeconds()->toString());
+        self::assertSame('1341368074', $returned->getSeconds()->toString());
     }
 
     public function testCalculateTimeThrowsExceptionWhenSecondsIsNotOnlyDigits(): void

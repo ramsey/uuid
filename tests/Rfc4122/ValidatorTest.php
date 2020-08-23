@@ -30,7 +30,7 @@ class ValidatorTest extends TestCase
         $validator = new Validator();
 
         foreach ($variations as $variation) {
-            $this->assertSame($expected, $validator->validate($variation));
+            self::assertSame($expected, $validator->validate($variation));
         }
     }
 
@@ -97,6 +97,6 @@ class ValidatorTest extends TestCase
 
         $validator = new Validator();
 
-        $this->assertSame($expectedPattern, $validator->getPattern());
+        self::assertSame($expectedPattern, $validator->getPattern());
     }
 }

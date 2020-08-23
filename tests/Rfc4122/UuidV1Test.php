@@ -70,8 +70,8 @@ class UuidV1Test extends TestCase
 
         $date = $object->getDateTime();
 
-        $this->assertInstanceOf(DateTimeImmutable::class, $date);
-        $this->assertSame($expected, $date->format('U.u'));
+        self::assertInstanceOf(DateTimeImmutable::class, $date);
+        self::assertSame($expected, $date->format('U.u'));
     }
 
     /**

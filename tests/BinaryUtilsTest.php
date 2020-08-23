@@ -15,8 +15,8 @@ class BinaryUtilsTest extends TestCase
      */
     public function testApplyVersion(int $timeHi, int $version, int $expectedInt, string $expectedHex): void
     {
-        $this->assertSame($expectedInt, BinaryUtils::applyVersion($timeHi, $version));
-        $this->assertSame($expectedHex, dechex(BinaryUtils::applyVersion($timeHi, $version)));
+        self::assertSame($expectedInt, BinaryUtils::applyVersion($timeHi, $version));
+        self::assertSame($expectedHex, dechex(BinaryUtils::applyVersion($timeHi, $version)));
     }
 
     /**
@@ -24,8 +24,8 @@ class BinaryUtilsTest extends TestCase
      */
     public function testApplyVariant(int $clockSeq, int $expectedInt, string $expectedHex): void
     {
-        $this->assertSame($expectedInt, BinaryUtils::applyVariant($clockSeq));
-        $this->assertSame($expectedHex, dechex(BinaryUtils::applyVariant($clockSeq)));
+        self::assertSame($expectedInt, BinaryUtils::applyVariant($clockSeq));
+        self::assertSame($expectedHex, dechex(BinaryUtils::applyVariant($clockSeq)));
     }
 
     /**

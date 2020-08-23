@@ -37,13 +37,13 @@ class BigNumberConverterTest extends TestCase
     {
         $converter = new BigNumberConverter();
 
-        $this->assertSame('65535', $converter->fromHex('ffff'));
+        self::assertSame('65535', $converter->fromHex('ffff'));
     }
 
     public function testToHex(): void
     {
         $converter = new BigNumberConverter();
 
-        $this->assertSame('ffff', $converter->toHex('65535'));
+        self::assertSame('ffff', $converter->toHex('65535'));
     }
 }

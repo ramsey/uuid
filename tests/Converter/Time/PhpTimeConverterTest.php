@@ -38,7 +38,7 @@ class PhpTimeConverterTest extends TestCase
         $converter = new PhpTimeConverter();
         $returned = $converter->calculateTime((string) $seconds, (string) $microseconds);
 
-        $this->assertSame($expected, $returned->toString());
+        self::assertSame($expected, $returned->toString());
     }
 
     public function testCalculateTimeThrowsExceptionWhenSecondsIsNotOnlyDigits(): void
@@ -80,8 +80,8 @@ class PhpTimeConverterTest extends TestCase
 
         $result = $converter->convertTime($uuidTimestamp);
 
-        $this->assertSame($unixTimestamp, $result->getSeconds()->toString());
-        $this->assertSame($microseconds, $result->getMicroseconds()->toString());
+        self::assertSame($unixTimestamp, $result->getSeconds()->toString());
+        self::assertSame($microseconds, $result->getMicroseconds()->toString());
     }
 
     /**
@@ -144,7 +144,7 @@ class PhpTimeConverterTest extends TestCase
 
         $result = $converter->calculateTime($seconds, $microseconds);
 
-        $this->assertSame($expected, $result->toString());
+        self::assertSame($expected, $result->toString());
     }
 
     /**

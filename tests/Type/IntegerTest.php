@@ -24,9 +24,9 @@ class IntegerTest extends TestCase
     {
         $integer = new IntegerObject($value);
 
-        $this->assertSame($expected, $integer->toString());
-        $this->assertSame($expected, (string) $integer);
-        $this->assertSame($expectedIsNegative, $integer->isNegative());
+        self::assertSame($expected, $integer->toString());
+        self::assertSame($expected, (string) $integer);
+        self::assertSame($expectedIsNegative, $integer->isNegative());
     }
 
     /**
@@ -205,7 +205,7 @@ class IntegerTest extends TestCase
         $serializedInteger = serialize($integer);
         $unserializedInteger = unserialize($serializedInteger);
 
-        $this->assertSame($expected, $unserializedInteger->toString());
+        self::assertSame($expected, $unserializedInteger->toString());
     }
 
     /**
@@ -218,6 +218,6 @@ class IntegerTest extends TestCase
         $integer = new IntegerObject($value);
         $expectedJson = sprintf('"%s"', $expected);
 
-        $this->assertSame($expectedJson, json_encode($integer));
+        self::assertSame($expectedJson, json_encode($integer));
     }
 }

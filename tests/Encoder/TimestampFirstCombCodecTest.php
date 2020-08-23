@@ -44,7 +44,7 @@ class TimestampFirstCombCodecTest extends TestCase
 
         $encodedUuid = $this->codec->encode($uuidMock);
 
-        $this->assertSame('0800200c-9a66-11e1-9b21-ff6f8cb0c57d', $encodedUuid);
+        self::assertSame('0800200c-9a66-11e1-9b21-ff6f8cb0c57d', $encodedUuid);
     }
 
     public function testBinaryEncoding(): void
@@ -57,12 +57,12 @@ class TimestampFirstCombCodecTest extends TestCase
 
         $encodedUuid = $this->codec->encodeBinary($uuidMock);
 
-        $this->assertSame(hex2bin('0800200c9a6611e19b21ff6f8cb0c57d'), $encodedUuid);
+        self::assertSame(hex2bin('0800200c9a6611e19b21ff6f8cb0c57d'), $encodedUuid);
     }
 
     public function testDecoding(): void
     {
-        $this->builderMock->expects($this->exactly(1))
+        $this->builderMock->expects(self::exactly(1))
             ->method('build')
             ->with(
                 $this->codec,
@@ -80,7 +80,7 @@ class TimestampFirstCombCodecTest extends TestCase
 
     public function testBinaryDecoding(): void
     {
-        $this->builderMock->expects($this->exactly(1))
+        $this->builderMock->expects(self::exactly(1))
             ->method('build')
             ->with(
                 $this->codec,

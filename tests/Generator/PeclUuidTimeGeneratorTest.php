@@ -23,7 +23,7 @@ class PeclUuidTimeGeneratorTest extends PeclUuidTestCase
         $generator = new PeclUuidTimeGenerator();
         $uuid = $generator->generate();
 
-        $this->assertSame($this->uuidBinary, $uuid);
+        self::assertSame($this->uuidBinary, $uuid);
         $create->verifyInvoked([UUID_TYPE_TIME]);
         $parse->verifyInvoked([$this->uuidString]);
     }
@@ -39,7 +39,7 @@ class PeclUuidTimeGeneratorTest extends PeclUuidTestCase
         $generator = new PeclUuidTimeGenerator();
         $uuid = $generator->generate();
 
-        $this->assertSame($this->uuidBinary, $uuid);
+        self::assertSame($this->uuidBinary, $uuid);
         $create->verifyInvoked([UUID_TYPE_TIME]);
         $parse->verifyInvoked([$this->uuidString]);
     }

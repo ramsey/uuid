@@ -101,19 +101,19 @@ class FallbackBuilderTest extends TestCase
         /** @var BuilderCollection $unserializedBuilderCollection */
         $unserializedBuilderCollection = unserialize($serializedBuilderCollection);
 
-        $this->assertInstanceOf(BuilderCollection::class, $unserializedBuilderCollection);
+        self::assertInstanceOf(BuilderCollection::class, $unserializedBuilderCollection);
 
         /** @var UuidBuilderInterface $builder */
         foreach ($unserializedBuilderCollection as $builder) {
             $codec = new StringCodec($builder);
 
-            $this->assertInstanceOf(UuidBuilderInterface::class, $builder);
+            self::assertInstanceOf(UuidBuilderInterface::class, $builder);
 
             try {
                 $uuid = $builder->build($codec, $bytes);
 
                 if (($uuid instanceof UuidV1) || ($uuid instanceof UuidV2) || ($uuid instanceof UuidV6)) {
-                    $this->assertInstanceOf(DateTimeInterface::class, $uuid->getDateTime());
+                    self::assertInstanceOf(DateTimeInterface::class, $uuid->getDateTime());
                 }
             } catch (UnableToBuildUuidException $exception) {
                 switch ($exception->getMessage()) {

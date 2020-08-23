@@ -37,6 +37,6 @@ class DefaultUuidBuilderTest extends TestCase
         $bytes = (string) hex2bin(implode('', $fields));
 
         $result = $builder->build($codec, $bytes);
-        $this->assertInstanceOf(Uuid::class, $result);
+        self::assertInstanceOf(Uuid::class, $result);
     }
 }

@@ -14,6 +14,6 @@ class RandomGeneratorFactoryTest extends TestCase
     {
         $generator = (new RandomGeneratorFactory())->getGenerator();
 
-        $this->assertInstanceOf(RandomBytesGenerator::class, $generator);
+        self::assertInstanceOf(RandomBytesGenerator::class, $generator);
     }
 }

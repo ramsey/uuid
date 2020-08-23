@@ -31,9 +31,9 @@ class DeprecatedUuidMethodsTraitTest extends TestCase
 
         $uuid = new Uuid($fields, $numberConverter, $codec, $timeConverter);
 
-        $this->assertInstanceOf(DateTimeInterface::class, $uuid->getDateTime());
-        $this->assertSame('2012-07-04T02:14:34+00:00', $uuid->getDateTime()->format('c'));
-        $this->assertSame('1341368074.491000', $uuid->getDateTime()->format('U.u'));
+        self::assertInstanceOf(DateTimeInterface::class, $uuid->getDateTime());
+        self::assertSame('2012-07-04T02:14:34+00:00', $uuid->getDateTime()->format('c'));
+        self::assertSame('1341368074.491000', $uuid->getDateTime()->format('U.u'));
     }
 
     public function testGetDateTimeThrowsException(): void

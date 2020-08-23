@@ -101,14 +101,14 @@ class UuidV2Test extends TestCase
         /** @var FieldsInterface $fields */
         $fields = $uuid->getFields();
 
-        $this->assertSame($expectedDomain, $uuid->getLocalDomain());
-        $this->assertSame($expectedDomainName, $uuid->getLocalDomainName());
-        $this->assertInstanceOf(Integer::class, $uuid->getLocalIdentifier());
-        $this->assertSame($expectedIdentifier, $uuid->getLocalIdentifier()->toString());
-        $this->assertSame($expectedTimestamp, $fields->getTimestamp()->toString());
-        $this->assertInstanceOf(DateTimeInterface::class, $uuid->getDateTime());
-        $this->assertSame($expectedTime, $uuid->getDateTime()->format('U.u'));
-        $this->assertSame('1334567890ab', $fields->getNode()->toString());
+        self::assertSame($expectedDomain, $uuid->getLocalDomain());
+        self::assertSame($expectedDomainName, $uuid->getLocalDomainName());
+        self::assertInstanceOf(Integer::class, $uuid->getLocalIdentifier());
+        self::assertSame($expectedIdentifier, $uuid->getLocalIdentifier()->toString());
+        self::assertSame($expectedTimestamp, $fields->getTimestamp()->toString());
+        self::assertInstanceOf(DateTimeInterface::class, $uuid->getDateTime());
+        self::assertSame($expectedTime, $uuid->getDateTime()->format('U.u'));
+        self::assertSame('1334567890ab', $fields->getNode()->toString());
     }
 
     /**

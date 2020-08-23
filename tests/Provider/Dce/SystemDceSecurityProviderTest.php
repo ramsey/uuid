@@ -38,7 +38,7 @@ class SystemDceSecurityProviderTest extends TestCase
             } catch (DceSecurityException $e) {
                 $caughtException++;
 
-                $this->assertSame(
+                self::assertSame(
                     'Unable to get a user identifier using the system DCE '
                     . 'Security provider; please provide a custom identifier or '
                     . 'use a different provider',
@@ -47,7 +47,7 @@ class SystemDceSecurityProviderTest extends TestCase
             }
         }
 
-        $this->assertSame(5, $caughtException);
+        self::assertSame(5, $caughtException);
     }
 
     /**
@@ -147,9 +147,9 @@ class SystemDceSecurityProviderTest extends TestCase
 
         $uid = $provider->getUid();
 
-        $this->assertInstanceOf(IntegerObject::class, $uid);
-        $this->assertSame($expectedId, $uid->toString());
-        $this->assertSame($uid, $provider->getUid());
+        self::assertInstanceOf(IntegerObject::class, $uid);
+        self::assertSame($expectedId, $uid->toString());
+        self::assertSame($uid, $provider->getUid());
     }
 
     /**
@@ -199,9 +199,9 @@ class SystemDceSecurityProviderTest extends TestCase
 
         $uid = $provider->getUid();
 
-        $this->assertInstanceOf(IntegerObject::class, $uid);
-        $this->assertSame($id, $uid->toString());
-        $this->assertSame($uid, $provider->getUid());
+        self::assertInstanceOf(IntegerObject::class, $uid);
+        self::assertSame($id, $uid->toString());
+        self::assertSame($uid, $provider->getUid());
     }
 
     /**
@@ -227,7 +227,7 @@ class SystemDceSecurityProviderTest extends TestCase
             } catch (DceSecurityException $e) {
                 $caughtException++;
 
-                $this->assertSame(
+                self::assertSame(
                     'Unable to get a group identifier using the system DCE '
                     . 'Security provider; please provide a custom identifier or '
                     . 'use a different provider',
@@ -236,7 +236,7 @@ class SystemDceSecurityProviderTest extends TestCase
             }
         }
 
-        $this->assertSame(5, $caughtException);
+        self::assertSame(5, $caughtException);
     }
 
     /**
@@ -298,9 +298,9 @@ class SystemDceSecurityProviderTest extends TestCase
 
         $gid = $provider->getGid();
 
-        $this->assertInstanceOf(IntegerObject::class, $gid);
-        $this->assertSame($id, $gid->toString());
-        $this->assertSame($gid, $provider->getGid());
+        self::assertInstanceOf(IntegerObject::class, $gid);
+        self::assertSame($id, $gid->toString());
+        self::assertSame($gid, $provider->getGid());
     }
 
     /**
@@ -419,9 +419,9 @@ class SystemDceSecurityProviderTest extends TestCase
 
         $gid = $provider->getGid();
 
-        $this->assertInstanceOf(IntegerObject::class, $gid);
-        $this->assertSame($expectedId, $gid->toString());
-        $this->assertSame($gid, $provider->getGid());
+        self::assertInstanceOf(IntegerObject::class, $gid);
+        self::assertSame($expectedId, $gid->toString());
+        self::assertSame($gid, $provider->getGid());
     }
 
     /**

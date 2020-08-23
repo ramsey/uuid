@@ -70,7 +70,7 @@ class OrderedTimeCodecTest extends TestCase
 
     public function testEncodeUsesFieldsArray(): void
     {
-        $this->uuid->expects($this->once())
+        $this->uuid->expects(self::once())
             ->method('getFields')
             ->willReturn($this->fields);
         $codec = new OrderedTimeCodec($this->builder);
@@ -83,7 +83,7 @@ class OrderedTimeCodecTest extends TestCase
             ->willReturn($this->fields);
         $codec = new OrderedTimeCodec($this->builder);
         $result = $codec->encode($this->uuid);
-        $this->assertSame($this->uuidString, $result);
+        self::assertSame($this->uuidString, $result);
     }
 
     public function testEncodeBinary(): void
@@ -100,7 +100,7 @@ class OrderedTimeCodecTest extends TestCase
 
         $uuid = $factory->fromString($this->uuidString);
 
-        $this->assertSame($expected, $codec->encodeBinary($uuid));
+        self::assertSame($expected, $codec->encodeBinary($uuid));
     }
 
     public function testDecodeBytesThrowsExceptionWhenBytesStringNotSixteenCharacters(): void
@@ -121,7 +121,7 @@ class OrderedTimeCodecTest extends TestCase
             ->willReturn($this->uuid);
         $codec = new OrderedTimeCodec($this->builder);
         $result = $codec->decode($string);
-        $this->assertSame($this->uuid, $result);
+        self::assertSame($this->uuid, $result);
     }
 
     public function testDecodeBytesRearrangesFields(): void
@@ -140,7 +140,7 @@ class OrderedTimeCodecTest extends TestCase
         $expectedUuid = $factory->fromString($this->uuidString);
         $uuidReturned = $codec->decodeBytes($bytes);
 
-        $this->assertTrue($uuidReturned->equals($expectedUuid));
+        self::assertTrue($uuidReturned->equals($expectedUuid));
     }
 
     public function testEncodeBinaryThrowsExceptionForNonRfc4122Uuid(): void

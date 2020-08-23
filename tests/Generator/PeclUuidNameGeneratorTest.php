@@ -41,7 +41,7 @@ class PeclUuidNameGeneratorTest extends TestCase
         $generator = new PeclUuidNameGenerator();
         $generatedBytes = $generator->generate($namespace, $name, $algorithm);
 
-        $this->assertSame(
+        self::assertSame(
             $expectedBytes,
             $generatedBytes,
             'Expected: ' . bin2hex($expectedBytes) . '; Received: ' . bin2hex($generatedBytes)

@@ -19,11 +19,11 @@ class FallbackNodeProviderTest extends TestCase
     public function testGetNodeCallsGetNodeOnEachProviderUntilNodeFound(): void
     {
         $providerWithNode = $this->getMockBuilder(NodeProviderInterface::class)->getMock();
-        $providerWithNode->expects($this->once())
+        $providerWithNode->expects(self::once())
             ->method('getNode')
             ->willReturn(new Hexadecimal('57764a07f756'));
         $providerWithoutNode = $this->getMockBuilder(NodeProviderInterface::class)->getMock();
-        $providerWithoutNode->expects($this->once())
+        $providerWithoutNode->expects(self::once())
             ->method('getNode')
             ->willThrowException(new NodeException());
 
@@ -34,15 +34,15 @@ class FallbackNodeProviderTest extends TestCase
     public function testGetNodeReturnsNodeFromFirstProviderWithNode(): void
     {
         $providerWithoutNode = $this->getMockBuilder(NodeProviderInterface::class)->getMock();
-        $providerWithoutNode->expects($this->once())
+        $providerWithoutNode->expects(self::once())
             ->method('getNode')
             ->willThrowException(new NodeException());
         $providerWithNode = $this->getMockBuilder(NodeProviderInterface::class)->getMock();
-        $providerWithNode->expects($this->once())
+        $providerWithNode->expects(self::once())
             ->method('getNode')
             ->willReturn(new Hexadecimal('57764a07f756'));
         $anotherProviderWithoutNode = $this->getMockBuilder(NodeProviderInterface::class)->getMock();
-        $anotherProviderWithoutNode->expects($this->never())
+        $anotherProviderWithoutNode->expects(self::never())
             ->method('getNode');
 
         $provider = new FallbackNodeProvider(new NodeProviderCollection(
@@ -50,7 +50,7 @@ class FallbackNodeProviderTest extends TestCase
         ));
         $node = $provider->getNode();
 
-        $this->assertSame('57764a07f756', $node->toString());
+        self::assertSame('57764a07f756', $node->toString());
     }
 
     public function testGetNodeThrowsExceptionWhenNoNodesFound(): void
@@ -88,11 +88,11 @@ class FallbackNodeProviderTest extends TestCase
         /** @var NodeProviderCollection $unserializedNodeProviderCollection */
         $unserializedNodeProviderCollection = unserialize($serializedNodeProviderCollection);
 
-        $this->assertInstanceOf(NodeProviderCollection::class, $unserializedNodeProviderCollection);
+        self::assertInstanceOf(NodeProviderCollection::class, $unserializedNodeProviderCollection);
 
         foreach ($unserializedNodeProviderCollection as $nodeProvider) {
-            $this->assertInstanceOf(NodeProviderInterface::class, $nodeProvider);
-            $this->assertInstanceOf(Hexadecimal::class, $nodeProvider->getNode());
+            self::assertInstanceOf(NodeProviderInterface::class, $nodeProvider);
+            self::assertInstanceOf(Hexadecimal::class, $nodeProvider->getNode());
         }
     }
 }

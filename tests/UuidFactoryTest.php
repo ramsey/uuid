@@ -35,8 +35,8 @@ class UuidFactoryTest extends TestCase
 
         $uuid = $factory->fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
 
-        $this->assertSame('ff6f8cb0-c57d-11e1-9b21-0800200c9a66', $uuid->toString());
-        $this->assertSame(hex2bin('ff6f8cb0c57d11e19b210800200c9a66'), $uuid->getBytes());
+        self::assertSame('ff6f8cb0-c57d-11e1-9b21-0800200c9a66', $uuid->toString());
+        self::assertSame(hex2bin('ff6f8cb0c57d11e19b210800200c9a66'), $uuid->getBytes());
     }
 
     public function testParsesGuidCorrectly(): void
@@ -45,8 +45,8 @@ class UuidFactoryTest extends TestCase
 
         $uuid = $factory->fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
 
-        $this->assertSame('ff6f8cb0-c57d-11e1-9b21-0800200c9a66', $uuid->toString());
-        $this->assertSame(hex2bin('b08c6fff7dc5e1119b210800200c9a66'), $uuid->getBytes());
+        self::assertSame('ff6f8cb0-c57d-11e1-9b21-0800200c9a66', $uuid->toString());
+        self::assertSame(hex2bin('b08c6fff7dc5e1119b210800200c9a66'), $uuid->getBytes());
     }
 
     public function testFromStringParsesUuidInLowercase(): void
@@ -57,7 +57,7 @@ class UuidFactoryTest extends TestCase
 
         $uuid = $factory->fromString($uuidUpper);
 
-        $this->assertSame($uuidString, $uuid->toString());
+        self::assertSame($uuidString, $uuid->toString());
     }
 
     public function testGettersReturnValueFromFeatureSet(): void
@@ -87,25 +87,25 @@ class UuidFactoryTest extends TestCase
         ]);
 
         $uuidFactory = new UuidFactory($featureSet);
-        $this->assertSame(
+        self::assertSame(
             $codec,
             $uuidFactory->getCodec(),
             'getCodec did not return CodecInterface from FeatureSet'
         );
 
-        $this->assertSame(
+        self::assertSame(
             $nodeProvider,
             $uuidFactory->getNodeProvider(),
             'getNodeProvider did not return NodeProviderInterface from FeatureSet'
         );
 
-        $this->assertSame(
+        self::assertSame(
             $randomGenerator,
             $uuidFactory->getRandomGenerator(),
             'getRandomGenerator did not return RandomGeneratorInterface from FeatureSet'
         );
 
-        $this->assertSame(
+        self::assertSame(
             $timeGenerator,
             $uuidFactory->getTimeGenerator(),
             'getTimeGenerator did not return TimeGeneratorInterface from FeatureSet'
@@ -119,22 +119,22 @@ class UuidFactoryTest extends TestCase
         /** @var MockObject & CodecInterface $codec */
         $codec = $this->getMockBuilder(CodecInterface::class)->getMock();
         $uuidFactory->setCodec($codec);
-        $this->assertSame($codec, $uuidFactory->getCodec());
+        self::assertSame($codec, $uuidFactory->getCodec());
 
         /** @var MockObject & TimeGeneratorInterface $timeGenerator */
         $timeGenerator = $this->getMockBuilder(TimeGeneratorInterface::class)->getMock();
         $uuidFactory->setTimeGenerator($timeGenerator);
-        $this->assertSame($timeGenerator, $uuidFactory->getTimeGenerator());
+        self::assertSame($timeGenerator, $uuidFactory->getTimeGenerator());
 
         /** @var MockObject & NumberConverterInterface $numberConverter */
         $numberConverter = $this->getMockBuilder(NumberConverterInterface::class)->getMock();
         $uuidFactory->setNumberConverter($numberConverter);
-        $this->assertSame($numberConverter, $uuidFactory->getNumberConverter());
+        self::assertSame($numberConverter, $uuidFactory->getNumberConverter());
 
         /** @var MockObject & UuidBuilderInterface $uuidBuilder */
         $uuidBuilder = $this->getMockBuilder(UuidBuilderInterface::class)->getMock();
         $uuidFactory->setUuidBuilder($uuidBuilder);
-        $this->assertSame($uuidBuilder, $uuidFactory->getUuidBuilder());
+        self::assertSame($uuidBuilder, $uuidFactory->getUuidBuilder());
     }
 
     /**
@@ -151,8 +151,8 @@ class UuidFactoryTest extends TestCase
 
         $uuid = $factory->fromDateTime($dateTime, $node, $clockSeq);
 
-        $this->assertStringMatchesFormat($expectedUuidFormat, $uuid->toString());
-        $this->assertSame($expectedTime, $uuid->getDateTime()->format('U.u'));
+        self::assertStringMatchesFormat($expectedUuidFormat, $uuid->toString());
+        self::assertSame($expectedTime, $uuid->getDateTime()->format('U.u'));
     }
 
     /**
@@ -210,18 +210,18 @@ class UuidFactoryTest extends TestCase
     {
         $factory = new UuidFactory();
 
-        $this->assertInstanceOf(DefaultNameGenerator::class, $factory->getNameGenerator());
+        self::assertInstanceOf(DefaultNameGenerator::class, $factory->getNameGenerator());
     }
 
     public function testFactoryReturnsSetNameGenerator(): void
     {
         $factory = new UuidFactory();
 
-        $this->assertInstanceOf(DefaultNameGenerator::class, $factory->getNameGenerator());
+        self::assertInstanceOf(DefaultNameGenerator::class, $factory->getNameGenerator());
 
         $nameGenerator = Mockery::mock(NameGeneratorInterface::class);
         $factory->setNameGenerator($nameGenerator);
 
-        $this->assertSame($nameGenerator, $factory->getNameGenerator());
+        self::assertSame($nameGenerator, $factory->getNameGenerator());
     }
 }

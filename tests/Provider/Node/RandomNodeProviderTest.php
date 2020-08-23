@@ -37,7 +37,7 @@ class RandomNodeProviderTest extends TestCase
         $provider = new RandomNodeProvider();
         $node = $provider->getNode();
 
-        $this->assertSame($expectedNode, $node->toString());
+        self::assertSame($expectedNode, $node->toString());
         $randomBytes->verifyInvoked([6]);
     }
 
@@ -55,7 +55,7 @@ class RandomNodeProviderTest extends TestCase
         $randomBytes = AspectMock::func('Ramsey\Uuid\Provider\Node', 'random_bytes', $bytes);
         $provider = new RandomNodeProvider();
 
-        $this->assertSame($expectedNode, $provider->getNode()->toString());
+        self::assertSame($expectedNode, $provider->getNode()->toString());
         $randomBytes->verifyInvoked([6]);
     }
 
@@ -74,7 +74,7 @@ class RandomNodeProviderTest extends TestCase
         $randomBytes = AspectMock::func('Ramsey\Uuid\Provider\Node', 'random_bytes', $bytes);
         $provider = new RandomNodeProvider();
 
-        $this->assertSame($expectedNode, $provider->getNode()->toString());
+        self::assertSame($expectedNode, $provider->getNode()->toString());
         $randomBytes->verifyInvoked([6]);
     }
 
@@ -90,7 +90,7 @@ class RandomNodeProviderTest extends TestCase
         $randomBytes = AspectMock::func('Ramsey\Uuid\Provider\Node', 'random_bytes', $bytes);
         $provider = new RandomNodeProvider();
 
-        $this->assertSame($expectedNode, $provider->getNode()->toString());
+        self::assertSame($expectedNode, $provider->getNode()->toString());
         $randomBytes->verifyInvoked([6]);
     }
 
@@ -116,7 +116,7 @@ class RandomNodeProviderTest extends TestCase
         // Recombine the node bytes.
         $node = $nodeMsb . $nodeLsb;
 
-        $this->assertSame('010000000000', $node);
+        self::assertSame('010000000000', $node);
     }
 
     /**

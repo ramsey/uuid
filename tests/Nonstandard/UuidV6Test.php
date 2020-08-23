@@ -71,8 +71,8 @@ class UuidV6Test extends TestCase
 
         $date = $object->getDateTime();
 
-        $this->assertInstanceOf(DateTimeImmutable::class, $date);
-        $this->assertSame($expected, $date->format('U.u'));
+        self::assertInstanceOf(DateTimeImmutable::class, $date);
+        self::assertSame($expected, $date->format('U.u'));
     }
 
     /**
@@ -109,10 +109,10 @@ class UuidV6Test extends TestCase
         $uuid6 = Uuid::fromString($uuidv6);
         $uuid1 = $uuid6->toUuidV1();
 
-        $this->assertSame($uuidv6, $uuid6->toString());
-        $this->assertSame($uuidv1, $uuid1->toString());
+        self::assertSame($uuidv6, $uuid6->toString());
+        self::assertSame($uuidv1, $uuid1->toString());
 
-        $this->assertSame(
+        self::assertSame(
             $uuid6->getDateTime()->format('U.u'),
             $uuid1->getDateTime()->format('U.u')
         );
@@ -128,10 +128,10 @@ class UuidV6Test extends TestCase
         $uuid1 = $uuid->toUuidV1();
         $uuid6 = UuidV6::fromUuidV1($uuid1);
 
-        $this->assertSame($uuidv1, $uuid1->toString());
-        $this->assertSame($uuidv6, $uuid6->toString());
+        self::assertSame($uuidv1, $uuid1->toString());
+        self::assertSame($uuidv6, $uuid6->toString());
 
-        $this->assertSame(
+        self::assertSame(
             $uuid1->getDateTime()->format('U.u'),
             $uuid6->getDateTime()->format('U.u')
         );

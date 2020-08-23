@@ -34,14 +34,14 @@ class TimeTest extends TestCase
 
         $time = new Time(...$params);
 
-        $this->assertSame((string) $seconds, $time->getSeconds()->toString());
+        self::assertSame((string) $seconds, $time->getSeconds()->toString());
 
-        $this->assertSame(
+        self::assertSame(
             (string) $microseconds ?: '0',
             $time->getMicroseconds()->toString()
         );
 
-        $this->assertSame($timeString, (string) $time);
+        self::assertSame($timeString, (string) $time);
     }
 
     /**
@@ -78,9 +78,9 @@ class TimeTest extends TestCase
         $serializedTime = serialize($time);
         $unserializedTime = unserialize($serializedTime);
 
-        $this->assertSame((string) $seconds, $unserializedTime->getSeconds()->toString());
+        self::assertSame((string) $seconds, $unserializedTime->getSeconds()->toString());
 
-        $this->assertSame(
+        self::assertSame(
             (string) $microseconds ?: '0',
             $unserializedTime->getMicroseconds()->toString()
         );
@@ -118,6 +118,6 @@ class TimeTest extends TestCase
 
         $time = new Time(...$params);
 
-        $this->assertSame($expectedJson, json_encode($time));
+        self::assertSame($expectedJson, json_encode($time));
     }
 }

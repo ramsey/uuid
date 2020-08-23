@@ -15,7 +15,7 @@ class GenericNumberConverterTest extends TestCase
         $calculator = new BrickMathCalculator();
         $converter = new GenericNumberConverter($calculator);
 
-        $this->assertSame('65535', $converter->fromHex('ffff'));
+        self::assertSame('65535', $converter->fromHex('ffff'));
     }
 
     public function testToHex(): void
@@ -23,6 +23,6 @@ class GenericNumberConverterTest extends TestCase
         $calculator = new BrickMathCalculator();
         $converter = new GenericNumberConverter($calculator);
 
-        $this->assertSame('ffff', $converter->toHex('65535'));
+        self::assertSame('ffff', $converter->toHex('65535'));
     }
 }

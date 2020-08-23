@@ -54,7 +54,7 @@ class VariantTraitTest extends TestCase
             'getBytes' => $bytes,
         ]);
 
-        $this->assertSame($expectedVariant, $trait->getVariant());
+        self::assertSame($expectedVariant, $trait->getVariant());
     }
 
     /**

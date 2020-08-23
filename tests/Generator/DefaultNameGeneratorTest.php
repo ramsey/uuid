@@ -23,7 +23,7 @@ class DefaultNameGeneratorTest extends TestCase
 
         $generator = new DefaultNameGenerator();
 
-        $this->assertSame($expectedBytes, $generator->generate($namespace, $name, $algorithm));
+        self::assertSame($expectedBytes, $generator->generate($namespace, $name, $algorithm));
     }
 
     /**

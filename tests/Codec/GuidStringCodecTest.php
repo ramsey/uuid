@@ -52,7 +52,7 @@ class GuidStringCodecTest extends TestCase
 
     public function testEncodeUsesFieldsArray(): void
     {
-        $this->uuid->expects($this->once())
+        $this->uuid->expects(self::once())
             ->method('getFields')
             ->willReturn($this->fields);
         $codec = new GuidStringCodec($this->builder);
@@ -65,7 +65,7 @@ class GuidStringCodecTest extends TestCase
             ->willReturn($this->fields);
         $codec = new GuidStringCodec($this->builder);
         $result = $codec->encode($this->uuid);
-        $this->assertSame('12345678-1234-4bcd-abef-1234abcd4321', $result);
+        self::assertSame('12345678-1234-4bcd-abef-1234abcd4321', $result);
     }
 
     public function testEncodeBinary(): void
@@ -81,7 +81,7 @@ class GuidStringCodecTest extends TestCase
 
         $bytes = $codec->encodeBinary($uuid);
 
-        $this->assertSame($expectedBytes, $bytes);
+        self::assertSame($expectedBytes, $bytes);
     }
 
     public function testDecodeReturnsGuid(): void
@@ -94,8 +94,8 @@ class GuidStringCodecTest extends TestCase
         $codec = new GuidStringCodec($builder);
         $guid = $codec->decode($string);
 
-        $this->assertInstanceOf(Guid::class, $guid);
-        $this->assertSame('12345678-1234-4bcd-abef-1234abcd4321', $guid->toString());
+        self::assertInstanceOf(Guid::class, $guid);
+        self::assertSame('12345678-1234-4bcd-abef-1234abcd4321', $guid->toString());
     }
 
     public function testDecodeReturnsUuidFromBuilder(): void
@@ -106,7 +106,7 @@ class GuidStringCodecTest extends TestCase
 
         $codec = new GuidStringCodec($this->builder);
         $result = $codec->decode($string);
-        $this->assertSame($this->uuid, $result);
+        self::assertSame($this->uuid, $result);
     }
 
     public function testDecodeBytesReturnsUuid(): void
@@ -117,6 +117,6 @@ class GuidStringCodecTest extends TestCase
         $this->builder->method('build')
             ->willReturn($this->uuid);
         $result = $codec->decodeBytes($bytes);
-        $this->assertSame($this->uuid, $result);
+        self::assertSame($this->uuid, $result);
     }
 }

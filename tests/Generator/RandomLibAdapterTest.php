@@ -25,7 +25,7 @@ class RandomLibAdapterTest extends TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->assertInstanceOf(RandomLibAdapter::class, new RandomLibAdapter($generator));
+        self::assertInstanceOf(RandomLibAdapter::class, new RandomLibAdapter($generator));
     }
 
     /**
@@ -37,7 +37,7 @@ class RandomLibAdapterTest extends TestCase
         $factory = Mockery::mock('overload:' . RandomLibFactory::class);
         $factory->shouldReceive('getHighStrengthGenerator')->once();
 
-        $this->assertInstanceOf(RandomLibAdapter::class, new RandomLibAdapter());
+        self::assertInstanceOf(RandomLibAdapter::class, new RandomLibAdapter());
     }
 
     public function testGenerateUsesGenerator(): void
@@ -46,7 +46,7 @@ class RandomLibAdapterTest extends TestCase
         $generator = $this->getMockBuilder(Generator::class)
             ->disableOriginalConstructor()
             ->getMock();
-        $generator->expects($this->once())
+        $generator->expects(self::once())
             ->method('generate')
             ->with($length)
             ->willReturn('foo');
@@ -60,12 +60,12 @@ class RandomLibAdapterTest extends TestCase
         $generator = $this->getMockBuilder(Generator::class)
             ->disableOriginalConstructor()
             ->getMock();
-        $generator->expects($this->once())
+        $generator->expects(self::once())
             ->method('generate')
             ->willReturn('random-string');
 
         $adapter = new RandomLibAdapter($generator);
         $result = $adapter->generate(1);
-        $this->assertSame('random-string', $result);
+        self::assertSame('random-string', $result);
     }
 }

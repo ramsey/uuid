@@ -34,7 +34,7 @@ class CombGeneratorTest extends TestCase
 
         /** @var MockObject & RandomGeneratorInterface $randomGenerator */
         $randomGenerator = $this->getMockBuilder(RandomGeneratorInterface::class)->getMock();
-        $randomGenerator->expects($this->once())
+        $randomGenerator->expects(self::once())
             ->method('generate')
             ->with($expectedLength);
 
@@ -52,9 +52,9 @@ class CombGeneratorTest extends TestCase
 
         /** @var MockObject & NumberConverterInterface $converter */
         $converter = $this->getMockBuilder(NumberConverterInterface::class)->getMock();
-        $converter->expects($this->once())
+        $converter->expects(self::once())
             ->method('toHex')
-            ->with($this->isType('string'));
+            ->with(self::isType('string'));
 
         $generator = new CombGenerator($randomGenerator, $converter);
         $generator->generate(10);
@@ -75,7 +75,7 @@ class CombGeneratorTest extends TestCase
         /** @var MockObject & NumberConverterInterface $converter */
         $converter = $this->getMockBuilder(NumberConverterInterface::class)->getMock();
         $converter->method('toHex')
-            ->with($this->isType('string'))
+            ->with(self::isType('string'))
             ->willReturn($timeHash);
 
         $time = str_pad($timeHash, 12, '0', STR_PAD_LEFT);
@@ -83,8 +83,8 @@ class CombGeneratorTest extends TestCase
 
         $generator = new CombGenerator($randomGenerator, $converter);
         $returned = $generator->generate($length);
-        $this->assertIsString($returned);
-        $this->assertSame($expected, $returned);
+        self::assertIsString($returned);
+        self::assertSame($expected, $returned);
     }
 
     /**

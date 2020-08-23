@@ -22,8 +22,8 @@ class FunctionsTest extends TestCase
     {
         $v1 = v1();
 
-        $this->assertIsString($v1);
-        $this->assertSame(Uuid::UUID_TYPE_TIME, Uuid::fromString($v1)->getVersion());
+        self::assertIsString($v1);
+        self::assertSame(Uuid::UUID_TYPE_TIME, Uuid::fromString($v1)->getVersion());
     }
 
     public function testV2ReturnsVersion2UuidString(): void
@@ -38,8 +38,8 @@ class FunctionsTest extends TestCase
         /** @var FieldsInterface $fields */
         $fields = Uuid::fromString($v2)->getFields();
 
-        $this->assertIsString($v2);
-        $this->assertSame(Uuid::UUID_TYPE_DCE_SECURITY, $fields->getVersion());
+        self::assertIsString($v2);
+        self::assertSame(Uuid::UUID_TYPE_DCE_SECURITY, $fields->getVersion());
     }
 
     public function testV3ReturnsVersion3UuidString(): void
@@ -47,16 +47,16 @@ class FunctionsTest extends TestCase
         $ns = Uuid::fromString(Uuid::NAMESPACE_URL);
         $v3 = v3($ns, 'https://example.com/foo');
 
-        $this->assertIsString($v3);
-        $this->assertSame(Uuid::UUID_TYPE_HASH_MD5, Uuid::fromString($v3)->getVersion());
+        self::assertIsString($v3);
+        self::assertSame(Uuid::UUID_TYPE_HASH_MD5, Uuid::fromString($v3)->getVersion());
     }
 
     public function testV4ReturnsVersion4UuidString(): void
     {
         $v4 = v4();
 
-        $this->assertIsString($v4);
-        $this->assertSame(Uuid::UUID_TYPE_RANDOM, Uuid::fromString($v4)->getVersion());
+        self::assertIsString($v4);
+        self::assertSame(Uuid::UUID_TYPE_RANDOM, Uuid::fromString($v4)->getVersion());
     }
 
     public function testV5ReturnsVersion5UuidString(): void
@@ -64,8 +64,8 @@ class FunctionsTest extends TestCase
         $ns = Uuid::fromString(Uuid::NAMESPACE_URL);
         $v5 = v5($ns, 'https://example.com/foo');
 
-        $this->assertIsString($v5);
-        $this->assertSame(Uuid::UUID_TYPE_HASH_SHA1, Uuid::fromString($v5)->getVersion());
+        self::assertIsString($v5);
+        self::assertSame(Uuid::UUID_TYPE_HASH_SHA1, Uuid::fromString($v5)->getVersion());
     }
 
     public function testV6ReturnsVersion6UuidString(): void
@@ -78,7 +78,7 @@ class FunctionsTest extends TestCase
         /** @var FieldsInterface $fields */
         $fields = Uuid::fromString($v6)->getFields();
 
-        $this->assertIsString($v6);
-        $this->assertSame(Uuid::UUID_TYPE_PEABODY, $fields->getVersion());
+        self::assertIsString($v6);
+        self::assertSame(Uuid::UUID_TYPE_PEABODY, $fields->getVersion());
     }
 }

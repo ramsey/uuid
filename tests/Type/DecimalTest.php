@@ -24,9 +24,9 @@ class DecimalTest extends TestCase
     {
         $decimal = new Decimal($value);
 
-        $this->assertSame($expected, $decimal->toString());
-        $this->assertSame($expected, (string) $decimal);
-        $this->assertSame($expectedIsNegative, $decimal->isNegative());
+        self::assertSame($expected, $decimal->toString());
+        self::assertSame($expected, (string) $decimal);
+        self::assertSame($expectedIsNegative, $decimal->isNegative());
     }
 
     /**
@@ -285,7 +285,7 @@ class DecimalTest extends TestCase
         $serializedDecimal = serialize($decimal);
         $unserializedDecimal = unserialize($serializedDecimal);
 
-        $this->assertSame($expected, $unserializedDecimal->toString());
+        self::assertSame($expected, $unserializedDecimal->toString());
     }
 
     /**
@@ -298,6 +298,6 @@ class DecimalTest extends TestCase
         $decimal = new Decimal($value);
         $expectedJson = sprintf('"%s"', $expected);
 
-        $this->assertSame($expectedJson, json_encode($decimal));
+        self::assertSame($expectedJson, json_encode($decimal));
     }
 }

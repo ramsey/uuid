@@ -41,7 +41,7 @@ create a regular UuidV1 instance and pass it.
         $uuid = Uuid::uuid1();
         $myObj = new MyClass();
 
-        $this->assertIsString($myObj->tellTime($uuid));
+        self::assertIsString($myObj->tellTime($uuid));
     }
 
 This might satisfy our testing needs if we only want to assert that the method
@@ -58,7 +58,7 @@ by generating a UUID ahead of time and using it as a known value.
         $uuid = Uuid::fromString('177ef0d8-6630-11ea-b69a-0242ac130003');
         $myObj = new MyClass();
 
-        $this->assertSame('2020-03-14 20:12:12', $myObj->tellTime($uuid));
+        self::assertSame('2020-03-14 20:12:12', $myObj->tellTime($uuid));
     }
 
 .. note::
@@ -129,10 +129,10 @@ and we can even change the value returned by the :php:meth:`uuid1()
         $myObj = new MyClass();
 
         $factory->uuid1 = Uuid::fromString('177ef0d8-6630-11ea-b69a-0242ac130003');
-        $this->assertSame('2020-03-14 20:12:12', $myObj->tellTime());
+        self::assertSame('2020-03-14 20:12:12', $myObj->tellTime());
 
         $factory->uuid1 = Uuid::fromString('13814000-1dd2-11b2-9669-00007ffffffe');
-        $this->assertSame('1970-01-01 00:00:00', $myObj->tellTime());
+        self::assertSame('1970-01-01 00:00:00', $myObj->tellTime());
     }
 
 .. attention::
@@ -184,7 +184,7 @@ object were called.
 
         $myObj = new MyClass();
 
-        $this->assertSame('a test date', $myObj->tellTime($uuid));
+        self::assertSame('a test date', $myObj->tellTime($uuid));
     }
 
 .. note::

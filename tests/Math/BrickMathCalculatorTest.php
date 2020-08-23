@@ -23,7 +23,7 @@ class BrickMathCalculatorTest extends TestCase
 
         $result = $calculator->add($int1, $int2, $int3);
 
-        $this->assertSame('18', $result->toString());
+        self::assertSame('18', $result->toString());
     }
 
     public function testSubtract(): void
@@ -36,7 +36,7 @@ class BrickMathCalculatorTest extends TestCase
 
         $result = $calculator->subtract($int1, $int2, $int3);
 
-        $this->assertSame('-8', $result->toString());
+        self::assertSame('-8', $result->toString());
     }
 
     public function testMultiply(): void
@@ -49,7 +49,7 @@ class BrickMathCalculatorTest extends TestCase
 
         $result = $calculator->multiply($int1, $int2, $int3);
 
-        $this->assertSame('210', $result->toString());
+        self::assertSame('210', $result->toString());
     }
 
     public function testDivide(): void
@@ -62,7 +62,7 @@ class BrickMathCalculatorTest extends TestCase
 
         $result = $calculator->divide(RoundingMode::HALF_UP, 0, $int1, $int2, $int3);
 
-        $this->assertSame('24', $result->toString());
+        self::assertSame('24', $result->toString());
     }
 
     public function testFromBase(): void
@@ -71,8 +71,8 @@ class BrickMathCalculatorTest extends TestCase
 
         $result = $calculator->fromBase('ffffffffffffffffffff', 16);
 
-        $this->assertInstanceOf(IntegerObject::class, $result);
-        $this->assertSame('1208925819614629174706175', $result->toString());
+        self::assertInstanceOf(IntegerObject::class, $result);
+        self::assertSame('1208925819614629174706175', $result->toString());
     }
 
     public function testToBase(): void
@@ -80,7 +80,7 @@ class BrickMathCalculatorTest extends TestCase
         $intValue = new IntegerObject('1208925819614629174706175');
         $calculator = new BrickMathCalculator();
 
-        $this->assertSame('ffffffffffffffffffff', $calculator->toBase($intValue, 16));
+        self::assertSame('ffffffffffffffffffff', $calculator->toBase($intValue, 16));
     }
 
     public function testToHexadecimal(): void
@@ -90,8 +90,8 @@ class BrickMathCalculatorTest extends TestCase
 
         $result = $calculator->toHexadecimal($intValue);
 
-        $this->assertInstanceOf(Hexadecimal::class, $result);
-        $this->assertSame('ffffffffffffffffffff', $result->toString());
+        self::assertInstanceOf(Hexadecimal::class, $result);
+        self::assertSame('ffffffffffffffffffff', $result->toString());
     }
 
     public function testFromBaseThrowsException(): void
