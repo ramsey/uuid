@@ -83,7 +83,7 @@ class OrderedTimeCodecTest extends TestCase
             ->willReturn($this->fields);
         $codec = new OrderedTimeCodec($this->builder);
         $result = $codec->encode($this->uuid);
-        $this->assertEquals($this->uuidString, $result);
+        $this->assertSame($this->uuidString, $result);
     }
 
     public function testEncodeBinary(): void
@@ -121,7 +121,7 @@ class OrderedTimeCodecTest extends TestCase
             ->willReturn($this->uuid);
         $codec = new OrderedTimeCodec($this->builder);
         $result = $codec->decode($string);
-        $this->assertEquals($this->uuid, $result);
+        $this->assertSame($this->uuid, $result);
     }
 
     public function testDecodeBytesRearrangesFields(): void

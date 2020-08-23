@@ -66,6 +66,6 @@ class RandomLibAdapterTest extends TestCase
 
         $adapter = new RandomLibAdapter($generator);
         $result = $adapter->generate(1);
-        $this->assertEquals('random-string', $result);
+        $this->assertSame('random-string', $result);
     }
 }

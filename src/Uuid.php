@@ -19,12 +19,18 @@ use Ramsey\Uuid\Codec\CodecInterface;
 use Ramsey\Uuid\Converter\NumberConverterInterface;
 use Ramsey\Uuid\Converter\TimeConverterInterface;
 use Ramsey\Uuid\Fields\FieldsInterface;
+use Ramsey\Uuid\Lazy\LazyUuidFromString;
 use Ramsey\Uuid\Rfc4122\FieldsInterface as Rfc4122FieldsInterface;
 use Ramsey\Uuid\Type\Hexadecimal;
 use Ramsey\Uuid\Type\Integer as IntegerObject;
 
+use function bin2hex;
+use function preg_match;
 use function str_replace;
 use function strcmp;
+use function strlen;
+use function strtolower;
+use function substr;
 
 /**
  * Uuid provides constants and static methods for working with and generating UUIDs
@@ -195,6 +201,12 @@ class Uuid implements UuidInterface
     private static $factory = null;
 
     /**
+     * @var bool flag to detect if the UUID factory was replaced internally, which disables all optimizations
+     *           for the default/happy path internal scenarios
+     */
+    private static $factoryReplaced = false;
+
+    /**
      * @var CodecInterface
      */
     protected $codec;
@@ -273,7 +285,7 @@ class Uuid implements UuidInterface
      */
     public function serialize(): string
     {
-        return $this->toString();
+        return $this->getBytes();
     }
 
     /**
@@ -286,8 +298,14 @@ class Uuid implements UuidInterface
      */
     public function unserialize($serialized): void
     {
-        /** @var \Ramsey\Uuid\Uuid $uuid */
-        $uuid = self::fromString($serialized);
+        if (strlen($serialized) === 16) {
+            /** @var Uuid $uuid */
+            $uuid = self::getFactory()->fromBytes($serialized);
+        } else {
+            /** @var Uuid $uuid */
+            $uuid = self::getFactory()->fromString($serialized);
+        }
+
         $this->codec = $uuid->codec;
         $this->numberConverter = $uuid->numberConverter;
         $this->fields = $uuid->fields;
@@ -369,6 +387,11 @@ class Uuid implements UuidInterface
      */
     public static function setFactory(UuidFactoryInterface $factory): void
     {
+        // Note: non-strict equality is intentional here. If the factory is configured differently, every assumption
+        //       around purity is broken, and we have to internally decide everything differently.
+        // phpcs:ignore SlevomatCodingStandard.Operators.DisallowEqualOperators.DisallowedNotEqualOperator
+        self::$factoryReplaced = ($factory != new UuidFactory());
+
         self::$factory = $factory;
     }
 
@@ -382,9 +405,31 @@ class Uuid implements UuidInterface
      *
      * @psalm-pure note: changing the internal factory is an edge case not covered by purity invariants,
      *             but under constant factory setups, this method operates in functionally pure manners
+     *
+     * @psalm-suppress ImpureStaticProperty we know that the factory being replaced can lead to massive
+     *                                      havoc across all consumers: that should never happen, and
+     *                                      is generally to be discouraged. Until the factory is kept
+     *                                      un-replaced, this method is effectively pure.
      */
     public static function fromBytes(string $bytes): UuidInterface
     {
+        if (! self::$factoryReplaced && strlen($bytes) === 16) {
+            $base16Uuid = bin2hex($bytes);
+
+            // Note: we are calling `fromString` internally because we don't know if the given `$bytes` is a valid UUID
+            return self::fromString(
+                substr($base16Uuid, 0, 8)
+                . '-'
+                . substr($base16Uuid, 8, 4)
+                . '-'
+                . substr($base16Uuid, 12, 4)
+                . '-'
+                . substr($base16Uuid, 16, 4)
+                . '-'
+                . substr($base16Uuid, 20, 12)
+            );
+        }
+
         return self::getFactory()->fromBytes($bytes);
     }
 
@@ -398,9 +443,18 @@ class Uuid implements UuidInterface
      *
      * @psalm-pure note: changing the internal factory is an edge case not covered by purity invariants,
      *             but under constant factory setups, this method operates in functionally pure manners
+     *
+     * @psalm-suppress ImpureStaticProperty we know that the factory being replaced can lead to massive
+     *                                      havoc across all consumers: that should never happen, and
+     *                                      is generally to be discouraged. Until the factory is kept
+     *                                      un-replaced, this method is effectively pure.
      */
     public static function fromString(string $uuid): UuidInterface
     {
+        if (! self::$factoryReplaced && preg_match(LazyUuidFromString::VALID_REGEX, $uuid) === 1) {
+            return new LazyUuidFromString(strtolower($uuid));
+        }
+
         return self::getFactory()->fromString($uuid);
     }
 
@@ -514,6 +568,11 @@ class Uuid implements UuidInterface
      * @return UuidInterface A UuidInterface instance that represents a
      *     version 3 UUID
      *
+     * @psalm-suppress ImpureMethodCall we know that the factory being replaced can lead to massive
+     *                                  havoc across all consumers: that should never happen, and
+     *                                  is generally to be discouraged. Until the factory is kept
+     *                                  un-replaced, this method is effectively pure.
+     *
      * @psalm-pure note: changing the internal factory is an edge case not covered by purity invariants,
      *             but under constant factory setups, this method operates in functionally pure manners
      */
@@ -545,6 +604,11 @@ class Uuid implements UuidInterface
      *
      * @psalm-pure note: changing the internal factory is an edge case not covered by purity invariants,
      *             but under constant factory setups, this method operates in functionally pure manners
+     *
+     * @psalm-suppress ImpureMethodCall we know that the factory being replaced can lead to massive
+     *                                  havoc across all consumers: that should never happen, and
+     *                                  is generally to be discouraged. Until the factory is kept
+     *                                  un-replaced, this method is effectively pure.
      */
     public static function uuid5($ns, string $name): UuidInterface
     {
