@@ -17,8 +17,10 @@ namespace Ramsey\Uuid;
 use DateTimeInterface;
 use Ramsey\Uuid\Builder\UuidBuilderInterface;
 use Ramsey\Uuid\Codec\CodecInterface;
+use Ramsey\Uuid\Codec\TimestampFirstCombCodec;
 use Ramsey\Uuid\Converter\NumberConverterInterface;
 use Ramsey\Uuid\Converter\TimeConverterInterface;
+use Ramsey\Uuid\Generator\CombGenerator;
 use Ramsey\Uuid\Generator\DceSecurityGeneratorInterface;
 use Ramsey\Uuid\Generator\DefaultTimeGenerator;
 use Ramsey\Uuid\Generator\NameGeneratorInterface;
@@ -385,6 +387,21 @@ class UuidFactory implements UuidFactoryInterface
         $bytes = $this->randomGenerator->generate(16);
 
         return $this->uuidFromBytesAndVersion($bytes, 4);
+    }
+
+    public function uuid4Monotonic(): UuidInterface
+    {
+        $previousCodec = $this->codec;
+        $previousDefaultFeatureSet = $this->isDefaultFeatureSet;
+        $this->setCodec(new TimestampFirstCombCodec($this->uuidBuilder));
+
+        $bytes = (new CombGenerator($this->randomGenerator, $this->numberConverter))->generate(16);
+        $uuid = $this->uuidFromBytesAndVersion($bytes, 4);
+
+        $this->codec = $previousCodec;
+        $this->isDefaultFeatureSet = $previousDefaultFeatureSet;
+
+        return $uuid;
     }
 
     /**

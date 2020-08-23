@@ -21,7 +21,6 @@ use Ramsey\Uuid\Exception\InvalidUuidStringException;
 use Ramsey\Uuid\Exception\UnsupportedOperationException;
 use Ramsey\Uuid\FeatureSet;
 use Ramsey\Uuid\Generator\CombGenerator;
-use Ramsey\Uuid\Generator\RandomGeneratorFactory;
 use Ramsey\Uuid\Generator\RandomGeneratorInterface;
 use Ramsey\Uuid\Guid\Guid;
 use Ramsey\Uuid\Lazy\LazyUuidFromString;
@@ -805,16 +804,40 @@ class UuidTest extends TestCase
     public function testUuid4CombVersion(): void
     {
         $factory = new UuidFactory();
-        $generator = new CombGenerator(
-            (new RandomGeneratorFactory())->getGenerator(),
-            $factory->getNumberConverter()
-        );
-
-        $factory->setRandomGenerator($generator);
-
-        $uuid = $factory->uuid4();
+        $uuid = $factory->uuid4Monotonic();
 
         $this->assertSame(4, $uuid->getVersion());
+    }
+
+    /**
+     * Tests that monotonic UUID version 4s generated within a few seconds of each other have an incrementing prefix
+     * within a few units of each other.
+     */
+    public function testUuid4MonotonicPrefix(): void
+    {
+        $factory = new UuidFactory();
+
+        for ($i = 0; $i < 1000; ++$i) {
+            $uuid = $factory->uuid4Monotonic()->toString();
+            $previousSeconds = $seconds ?? 0;
+            $seconds = hexdec(explode('-', $uuid)[0]);
+
+            // Skip comparison on first iteration.
+            if ($previousSeconds === 0) {
+                continue;
+            }
+
+            self::assertGreaterThanOrEqual(
+                $previousSeconds,
+                $seconds,
+                'Each prefix is greater than or equal to the previous.'
+            );
+            self::assertLessThanOrEqual(
+                $previousSeconds + 2,
+                $seconds,
+                'Each prefix is no more than two seconds ahead of the previous because UUIDs are generated quickly.'
+            );
+        }
     }
 
     /**
