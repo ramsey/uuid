@@ -28,7 +28,7 @@ class PeclUuidRandomGeneratorTest extends PeclUuidTestCase
         $generator = new PeclUuidRandomGenerator();
         $uuid = $generator->generate($this->length);
 
-        $this->assertEquals($this->uuidBinary, $uuid);
+        $this->assertSame($this->uuidBinary, $uuid);
         $create->verifyInvoked([UUID_TYPE_RANDOM]);
         $parse->verifyInvoked([$this->uuidString]);
     }
@@ -44,7 +44,7 @@ class PeclUuidRandomGeneratorTest extends PeclUuidTestCase
         $generator = new PeclUuidRandomGenerator();
         $uuid = $generator->generate($this->length);
 
-        $this->assertEquals($this->uuidBinary, $uuid);
+        $this->assertSame($this->uuidBinary, $uuid);
         $create->verifyInvoked([UUID_TYPE_RANDOM]);
         $parse->verifyInvoked([$this->uuidString]);
     }

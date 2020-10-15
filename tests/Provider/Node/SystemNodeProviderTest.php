@@ -151,7 +151,7 @@ class SystemNodeProviderTest extends TestCase
         /* Assert */
         $this->assertMockFunctions(null, null, ['netstat -ie 2>&1'], ['PHP_OS'], ['disable_functions']);
 
-        $this->assertEquals($expected, $node->toString());
+        $this->assertSame($expected, $node->toString());
     }
 
     /**
@@ -211,7 +211,7 @@ class SystemNodeProviderTest extends TestCase
         /* Assert */
         $this->assertMockFunctions(null, null, ['netstat -ie 2>&1'], ['PHP_OS'], ['disable_functions']);
 
-        $this->assertEquals('aabbccddeeff', $node->toString());
+        $this->assertSame('aabbccddeeff', $node->toString());
     }
 
     /**
@@ -359,7 +359,7 @@ class SystemNodeProviderTest extends TestCase
         /* Assert */
         $this->assertMockFunctions(null, null, ['netstat -ie 2>&1'], ['PHP_OS'], ['disable_functions']);
 
-        $this->assertEquals($node->toString(), $node2->toString());
+        $this->assertSame($node->toString(), $node2->toString());
     }
 
     /**
@@ -387,7 +387,7 @@ class SystemNodeProviderTest extends TestCase
         /* Assert */
         $this->assertMockFunctions(null, null, ['netstat -ie 2>&1'], ['PHP_OS'], ['disable_functions']);
 
-        $this->assertEquals($node->toString(), $node2->toString());
+        $this->assertSame($node->toString(), $node2->toString());
     }
 
     /**
@@ -442,7 +442,7 @@ class SystemNodeProviderTest extends TestCase
             $isReadableAssert
         );
 
-        $this->assertEquals('010203040506', $node->toString());
+        $this->assertSame('010203040506', $node->toString());
     }
 
     /**
@@ -475,7 +475,7 @@ class SystemNodeProviderTest extends TestCase
             ['disable_functions']
         );
 
-        $this->assertEquals('010203040506', $node->toString());
+        $this->assertSame('010203040506', $node->toString());
     }
 
     /**
@@ -508,7 +508,7 @@ class SystemNodeProviderTest extends TestCase
             ['disable_functions']
         );
 
-        $this->assertEquals('010203040506', $node->toString());
+        $this->assertSame('010203040506', $node->toString());
     }
 
     /**
@@ -543,7 +543,7 @@ class SystemNodeProviderTest extends TestCase
             ['mock address path 1', 'mock address path 2']
         );
 
-        $this->assertEquals('010203040506', $node->toString());
+        $this->assertSame('010203040506', $node->toString());
     }
 
     /**

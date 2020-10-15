@@ -75,6 +75,6 @@ class FieldsTest extends TestCase
         $serializedFields = serialize($fields);
         $unserializedFields = unserialize($serializedFields);
 
-        $this->assertEquals($fields, $unserializedFields);
+        $this->assertSame($fields->getBytes(), $unserializedFields->getBytes());
     }
 }
