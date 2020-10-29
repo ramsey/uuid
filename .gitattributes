@@ -2,6 +2,7 @@
 /.github/           export-ignore
 /.gitignore         export-ignore
 /.readthedocs.yml   export-ignore
+/codecov.yml        export-ignore
 /docs/              export-ignore
 /phpbench.json      export-ignore
 /phpcs.xml.dist     export-ignore
