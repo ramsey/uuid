@@ -48,29 +48,7 @@ jobs:
   benchmark:
     name: "Benchmark"
     runs-on: "ubuntu-latest"
-    strategy:
-      matrix:
-        php-version:
-          - "7.2"
-          - "7.3"
-          - "7.4"
-          - "8.0"
-    steps:
-      - uses: "actions/checkout@v2"
-      - uses: "shivammathur/setup-php@v2"
-        with:
-          php-version: "${{ matrix.php-version }}"
-          tools: pecl
-          extensions: bcmath, ctype, gmp
-          coverage: "none"
-          ini-values: "memory_limit=-1"
-      - uses: "ramsey/composer-install@v1"
-      - name: "Run PHPBench"
-        run: "composer phpbench -- --ansi"
-
-  unit-tests:
-    name: "Unit Tests"
-    runs-on: "ubuntu-latest"
+    continue-on-error: ${{ matrix.experimental }}
     strategy:
       fail-fast: false
       matrix:
@@ -78,17 +56,54 @@ jobs:
           - "7.2"
           - "7.3"
           - "7.4"
-          - "8.0"
+        experimental:
+          - false
+        include:
+          - php-version: "8.0"
+            experimental: true
+            composer-options: "--ignore-platform-reqs"
     steps:
       - uses: "actions/checkout@v2"
       - uses: "shivammathur/setup-php@v2"
         with:
           php-version: "${{ matrix.php-version }}"
-          tools: pecl
+          extensions: bcmath, ctype, gmp
+          coverage: "none"
+          ini-values: "memory_limit=-1"
+      - uses: "ramsey/composer-install@v1"
+        with:
+          composer-options: "${{ matrix.composer-options }}"
+      - name: "Run PHPBench"
+        run: "composer phpbench -- --ansi"
+
+  unit-tests:
+    name: "Unit Tests"
+    runs-on: "ubuntu-latest"
+    continue-on-error: ${{ matrix.experimental }}
+    strategy:
+      fail-fast: false
+      matrix:
+        php-version:
+          - "7.2"
+          - "7.3"
+          - "7.4"
+        experimental:
+          - false
+        include:
+          - php-version: "8.0"
+            experimental: true
+            composer-options: "--ignore-platform-reqs"
+    steps:
+      - uses: "actions/checkout@v2"
+      - uses: "shivammathur/setup-php@v2"
+        with:
+          php-version: "${{ matrix.php-version }}"
           extensions: bcmath, ctype, gmp
           coverage: "pcov"
           ini-values: "memory_limit=-1"
       - uses: "ramsey/composer-install@v1"
+        with:
+          composer-options: "${{ matrix.composer-options }}"
       - name: "Run unit tests"
         run: "./vendor/bin/phpunit --verbose --colors=always --coverage-clover build/logs/clover.xml --coverage-text"
       - name: "Publish coverage report to Codecov"
