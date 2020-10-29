@@ -3,7 +3,7 @@ parameters:
     level: max
     paths:
         - .
-    autoload_files:
+    bootstrapFiles:
         - ./phpstan-bootstrap.php
     checkMissingIterableValueType: false
     reportUnmatchedIgnoredErrors: false
