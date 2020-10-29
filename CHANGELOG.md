@@ -21,6 +21,22 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Security
 
 
+## [4.1.1] - 2020-08-18
+
+### Fixed
+
+* Allow use of brick/math version 0.9
+
+
+## [4.1.0] - 2020-07-28
+
+### Changed
+
+* Improve performance of `Uuid::fromString()`, `Uuid::fromBytes()`,
+  `UuidInterface#toString()`, and `UuidInterface#getBytes()`. See PR
+  [#324](https://github.com/ramsey/uuid/pull/324) for more information.
+
+
 ## [4.0.1] - 2020-03-29
 
 ### Fixed
@@ -1182,7 +1198,9 @@ versions leading up to this release.*
 [ramsey/uuid-doctrine]: https://github.com/ramsey/uuid-doctrine
 [ramsey/uuid-console]: https://github.com/ramsey/uuid-console
 
-[unreleased]: https://github.com/ramsey/uuid/compare/4.0.1...HEAD
+[unreleased]: https://github.com/ramsey/uuid/compare/4.1.1...HEAD
+[4.1.1]: https://github.com/ramsey/uuid/compare/4.1.0...4.1.1
+[4.1.0]: https://github.com/ramsey/uuid/compare/4.0.1...4.1.0
 [4.0.1]: https://github.com/ramsey/uuid/compare/4.0.0...4.0.1
 [4.0.0]: https://github.com/ramsey/uuid/compare/4.0.0-beta2...4.0.0
 [4.0.0-beta2]: https://github.com/ramsey/uuid/compare/4.0.0-beta1...4.0.0-beta2

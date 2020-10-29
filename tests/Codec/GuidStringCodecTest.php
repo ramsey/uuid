@@ -106,7 +106,7 @@ class GuidStringCodecTest extends TestCase
 
         $codec = new GuidStringCodec($this->builder);
         $result = $codec->decode($string);
-        $this->assertEquals($this->uuid, $result);
+        $this->assertSame($this->uuid, $result);
     }
 
     public function testDecodeBytesReturnsUuid(): void
@@ -117,6 +117,6 @@ class GuidStringCodecTest extends TestCase
         $this->builder->method('build')
             ->willReturn($this->uuid);
         $result = $codec->decodeBytes($bytes);
-        $this->assertEquals($this->uuid, $result);
+        $this->assertSame($this->uuid, $result);
     }
 }

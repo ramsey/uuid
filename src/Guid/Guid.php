@@ -21,7 +21,6 @@ use Ramsey\Uuid\FeatureSet;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidFactory;
 use Ramsey\Uuid\UuidFactoryInterface;
-use Ramsey\Uuid\UuidInterface;
 
 /**
  * Guid represents a UUID with "native" (little-endian) byte order
@@ -52,7 +51,7 @@ use Ramsey\Uuid\UuidInterface;
  *
  * @psalm-immutable
  */
-final class Guid extends Uuid implements UuidInterface
+final class Guid extends Uuid
 {
     /**
      * @var UuidFactoryInterface|null

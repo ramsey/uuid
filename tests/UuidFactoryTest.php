@@ -20,7 +20,6 @@ use Ramsey\Uuid\Generator\NameGeneratorInterface;
 use Ramsey\Uuid\Generator\RandomGeneratorInterface;
 use Ramsey\Uuid\Generator\TimeGeneratorInterface;
 use Ramsey\Uuid\Provider\NodeProviderInterface;
-use Ramsey\Uuid\Rfc4122\UuidV1;
 use Ramsey\Uuid\Type\Hexadecimal;
 use Ramsey\Uuid\UuidFactory;
 use Ramsey\Uuid\Validator\ValidatorInterface;
@@ -58,7 +57,7 @@ class UuidFactoryTest extends TestCase
 
         $uuid = $factory->fromString($uuidUpper);
 
-        $this->assertEquals($uuidString, $uuid->toString());
+        $this->assertSame($uuidString, $uuid->toString());
     }
 
     public function testGettersReturnValueFromFeatureSet(): void
@@ -120,22 +119,22 @@ class UuidFactoryTest extends TestCase
         /** @var MockObject & CodecInterface $codec */
         $codec = $this->getMockBuilder(CodecInterface::class)->getMock();
         $uuidFactory->setCodec($codec);
-        $this->assertEquals($codec, $uuidFactory->getCodec());
+        $this->assertSame($codec, $uuidFactory->getCodec());
 
         /** @var MockObject & TimeGeneratorInterface $timeGenerator */
         $timeGenerator = $this->getMockBuilder(TimeGeneratorInterface::class)->getMock();
         $uuidFactory->setTimeGenerator($timeGenerator);
-        $this->assertEquals($timeGenerator, $uuidFactory->getTimeGenerator());
+        $this->assertSame($timeGenerator, $uuidFactory->getTimeGenerator());
 
         /** @var MockObject & NumberConverterInterface $numberConverter */
         $numberConverter = $this->getMockBuilder(NumberConverterInterface::class)->getMock();
         $uuidFactory->setNumberConverter($numberConverter);
-        $this->assertEquals($numberConverter, $uuidFactory->getNumberConverter());
+        $this->assertSame($numberConverter, $uuidFactory->getNumberConverter());
 
         /** @var MockObject & UuidBuilderInterface $uuidBuilder */
         $uuidBuilder = $this->getMockBuilder(UuidBuilderInterface::class)->getMock();
         $uuidFactory->setUuidBuilder($uuidBuilder);
-        $this->assertEquals($uuidBuilder, $uuidFactory->getUuidBuilder());
+        $this->assertSame($uuidBuilder, $uuidFactory->getUuidBuilder());
     }
 
     /**
@@ -150,10 +149,8 @@ class UuidFactoryTest extends TestCase
     ): void {
         $factory = new UuidFactory();
 
-        /** @var UuidV1 $uuid */
         $uuid = $factory->fromDateTime($dateTime, $node, $clockSeq);
 
-        $this->assertInstanceOf(UuidV1::class, $uuid);
         $this->assertStringMatchesFormat($expectedUuidFormat, $uuid->toString());
         $this->assertSame($expectedTime, $uuid->getDateTime()->format('U.u'));
     }

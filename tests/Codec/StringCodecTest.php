@@ -68,7 +68,7 @@ class StringCodecTest extends TestCase
             ->willReturn($this->fields);
         $codec = new StringCodec($this->builder);
         $result = $codec->encode($this->uuid);
-        $this->assertEquals($this->uuidString, $result);
+        $this->assertSame($this->uuidString, $result);
     }
 
     public function testEncodeBinaryReturnsBinaryString(): void
@@ -123,7 +123,7 @@ class StringCodecTest extends TestCase
             ->willReturn($this->uuid);
         $codec = new StringCodec($this->builder);
         $result = $codec->decode($string);
-        $this->assertEquals($this->uuid, $result);
+        $this->assertSame($this->uuid, $result);
     }
 
     public function testDecodeBytesThrowsExceptionWhenBytesStringNotSixteenCharacters(): void
@@ -145,6 +145,6 @@ class StringCodecTest extends TestCase
         $this->builder->method('build')
             ->willReturn($this->uuid);
         $result = $codec->decodeBytes($bytes);
-        $this->assertEquals($this->uuid, $result);
+        $this->assertSame($this->uuid, $result);
     }
 }

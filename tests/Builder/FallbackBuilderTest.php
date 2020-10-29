@@ -24,7 +24,6 @@ use Ramsey\Uuid\Rfc4122\UuidBuilder as Rfc4122UuidBuilder;
 use Ramsey\Uuid\Rfc4122\UuidV1;
 use Ramsey\Uuid\Rfc4122\UuidV2;
 use Ramsey\Uuid\Test\TestCase;
-use Ramsey\Uuid\UuidInterface;
 use Ramsey\Uuid\Validator\GenericValidator;
 
 class FallbackBuilderTest extends TestCase
@@ -112,7 +111,6 @@ class FallbackBuilderTest extends TestCase
 
             try {
                 $uuid = $builder->build($codec, $bytes);
-                $this->assertInstanceOf(UuidInterface::class, $uuid);
 
                 if (($uuid instanceof UuidV1) || ($uuid instanceof UuidV2) || ($uuid instanceof UuidV6)) {
                     $this->assertInstanceOf(DateTimeInterface::class, $uuid->getDateTime());

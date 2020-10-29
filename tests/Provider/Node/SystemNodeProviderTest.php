@@ -4,12 +4,11 @@ declare(strict_types=1);
 
 namespace Ramsey\Uuid\Test\Provider\Node;
 
-use AspectMock\Proxy\FuncProxy;
-use AspectMock\Test as AspectMock;
 use Ramsey\Uuid\Exception\InvalidArgumentException;
 use Ramsey\Uuid\Exception\NodeException;
 use Ramsey\Uuid\Provider\Node\SystemNodeProvider;
 use Ramsey\Uuid\Test\TestCase;
+use phpmock\spy\Spy;
 
 use function array_shift;
 use function array_walk;
@@ -18,13 +17,15 @@ use function is_array;
 use function strlen;
 use function vsprintf;
 
+use const GLOB_NOSORT;
+
 /**
  * Tests for the SystemNodeProvider class
  *
  * The class under test make use of various native functions who's output is
  * dictated by which environment PHP runs on. Instead of having to run these
- * tests on each of these environments, the related functions are mocked (using
- * AspectMock). The following functions are concerned:
+ * tests on each of these environments, the related functions are mocked. The
+ * following functions are concerned:
  *
  * - glob
  * - constant
@@ -55,7 +56,7 @@ class SystemNodeProviderTest extends TestCase
     private const PROVIDER_NAMESPACE = 'Ramsey\\Uuid\\Provider\\Node';
 
     /**
-     * @var FuncProxy[]
+     * @var Spy[]
      */
     private $functionProxies = [];
 
@@ -151,7 +152,7 @@ class SystemNodeProviderTest extends TestCase
         /* Assert */
         $this->assertMockFunctions(null, null, ['netstat -ie 2>&1'], ['PHP_OS'], ['disable_functions']);
 
-        $this->assertEquals($expected, $node->toString());
+        $this->assertSame($expected, $node->toString());
     }
 
     /**
@@ -211,7 +212,7 @@ class SystemNodeProviderTest extends TestCase
         /* Assert */
         $this->assertMockFunctions(null, null, ['netstat -ie 2>&1'], ['PHP_OS'], ['disable_functions']);
 
-        $this->assertEquals('aabbccddeeff', $node->toString());
+        $this->assertSame('aabbccddeeff', $node->toString());
     }
 
     /**
@@ -318,7 +319,7 @@ class SystemNodeProviderTest extends TestCase
         $fileGetContentsAssert = null;
         $isReadableAssert = null;
         if ($os === 'Linux') {
-            $globBodyAssert = ['/sys/class/net/*/address'];
+            $globBodyAssert = [['/sys/class/net/*/address', GLOB_NOSORT]];
             $fileGetContentsAssert = ['mock address path'];
             $isReadableAssert = $fileGetContentsAssert;
         }
@@ -359,7 +360,7 @@ class SystemNodeProviderTest extends TestCase
         /* Assert */
         $this->assertMockFunctions(null, null, ['netstat -ie 2>&1'], ['PHP_OS'], ['disable_functions']);
 
-        $this->assertEquals($node->toString(), $node2->toString());
+        $this->assertSame($node->toString(), $node2->toString());
     }
 
     /**
@@ -387,7 +388,7 @@ class SystemNodeProviderTest extends TestCase
         /* Assert */
         $this->assertMockFunctions(null, null, ['netstat -ie 2>&1'], ['PHP_OS'], ['disable_functions']);
 
-        $this->assertEquals($node->toString(), $node2->toString());
+        $this->assertSame($node->toString(), $node2->toString());
     }
 
     /**
@@ -427,7 +428,7 @@ class SystemNodeProviderTest extends TestCase
 
         if ($os === 'Linux') {
             $fileGetContentsAssert = [['mock address path 1'], ['mock address path 2']];
-            $globBodyAssert = ['/sys/class/net/*/address'];
+            $globBodyAssert = [['/sys/class/net/*/address', GLOB_NOSORT]];
             $passthruBodyAssert = null;
             $constantBodyAssert = ['PHP_OS'];
             $iniGetDisableFunctionsAssert = null;
@@ -442,7 +443,7 @@ class SystemNodeProviderTest extends TestCase
             $isReadableAssert
         );
 
-        $this->assertEquals('010203040506', $node->toString());
+        $this->assertSame('010203040506', $node->toString());
     }
 
     /**
@@ -469,13 +470,13 @@ class SystemNodeProviderTest extends TestCase
         /* Assert */
         $this->assertMockFunctions(
             null,
-            ['/sys/class/net/*/address'],
+            [['/sys/class/net/*/address', GLOB_NOSORT]],
             ['netstat -ie 2>&1'],
             ['PHP_OS'],
             ['disable_functions']
         );
 
-        $this->assertEquals('010203040506', $node->toString());
+        $this->assertSame('010203040506', $node->toString());
     }
 
     /**
@@ -502,13 +503,13 @@ class SystemNodeProviderTest extends TestCase
         /* Assert */
         $this->assertMockFunctions(
             null,
-            ['/sys/class/net/*/address'],
+            [['/sys/class/net/*/address', GLOB_NOSORT]],
             ['netstat -ie 2>&1'],
             ['PHP_OS'],
             ['disable_functions']
         );
 
-        $this->assertEquals('010203040506', $node->toString());
+        $this->assertSame('010203040506', $node->toString());
     }
 
     /**
@@ -536,14 +537,14 @@ class SystemNodeProviderTest extends TestCase
         /* Assert */
         $this->assertMockFunctions(
             null,
-            ['/sys/class/net/*/address'],
+            [['/sys/class/net/*/address', GLOB_NOSORT]],
             ['netstat -ie 2>&1'],
             ['PHP_OS'],
             ['disable_functions'],
             ['mock address path 1', 'mock address path 2']
         );
 
-        $this->assertEquals('010203040506', $node->toString());
+        $this->assertSame('010203040506', $node->toString());
     }
 
     /**
@@ -611,7 +612,16 @@ class SystemNodeProviderTest extends TestCase
         ];
 
         array_walk($mockFunction, function ($body, $key): void {
-            $this->functionProxies[$key] = AspectMock::func(self::PROVIDER_NAMESPACE, $key, $body);
+            if (!is_callable($body)) {
+                $body = function () use ($body) {
+                    return $body;
+                };
+            }
+
+            $spy = new Spy(self::PROVIDER_NAMESPACE, $key, $body);
+            $spy->enable();
+
+            $this->functionProxies[$key] = $spy;
         });
     }
 
@@ -621,7 +631,7 @@ class SystemNodeProviderTest extends TestCase
      * Provide a NULL to assert a function is never called.
      *
      * @param array<int, string>|array<int, array<int,string>>|null $fileGetContentsAssert
-     * @param array<int, string>|array<int, array<int,string>>|null $globBodyAssert
+     * @param array<int, array<int, int|string>>|null $globBodyAssert
      * @param array<int, string>|array<int, array<int,string>>|null $passthruBodyAssert
      * @param array<int, string>|array<int, array<int,string>>|null $constantBodyAssert
      * @param array<int, string>|array<int, array<int,string>>|null $iniGetDisableFunctionsAssert
@@ -646,13 +656,21 @@ class SystemNodeProviderTest extends TestCase
 
         array_walk($mockFunctionAsserts, function ($asserts, $key): void {
             if ($asserts === null) {
-                $this->functionProxies[$key]->verifyNeverInvoked();
+                // Assert the function was never invoked.
+                $this->assertEmpty($this->functionProxies[$key]->getInvocations());
             } elseif (is_array($asserts)) {
+                // Assert there was at least one invocation for this function.
+                $this->assertNotEmpty($this->functionProxies[$key]->getInvocations());
+
+                $invokedArgs = [];
+                foreach ($this->functionProxies[$key]->getInvocations() as $invocation) {
+                    $invokedArgs[] = $invocation->getArguments();
+                }
+
                 foreach ($asserts as $assert) {
-                    if (!is_array($assert)) {
-                        $assert = [$assert];
-                    }
-                    $this->functionProxies[$key]->verifyInvoked($assert);
+                    // Assert these args were used to invoke the function.
+                    $assert = is_array($assert) ? $assert : [$assert];
+                    $this->assertContains($assert, $invokedArgs);
                 }
             } else {
                 $error = vsprintf(

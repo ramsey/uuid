@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Ramsey\Uuid\Test\Generator;
 
-use AspectMock\Test as AspectMock;
 use Exception;
 use Ramsey\Uuid\Exception\RandomSourceException;
 use Ramsey\Uuid\Generator\RandomBytesGenerator;
 use Ramsey\Uuid\Test\TestCase;
+use phpmock\mockery\PHPMockery;
 
 use function hex2bin;
 
@@ -33,29 +33,18 @@ class RandomBytesGeneratorTest extends TestCase
      * @runInSeparateProcess
      * @preserveGlobalState disabled
      */
-    public function testGenerateUsesOpenSsl(int $length, string $hex): void
-    {
-        $bytes = hex2bin($hex);
-        $openSsl = AspectMock::func('Ramsey\Uuid\Generator', 'random_bytes', $bytes);
-        $generator = new RandomBytesGenerator();
-
-        $this->assertSame($bytes, $generator->generate($length));
-        $openSsl->verifyInvokedOnce([$length]);
-    }
-
-    /**
-     * @throws Exception
-     *
-     * @dataProvider lengthAndHexDataProvider
-     * @runInSeparateProcess
-     * @preserveGlobalState disabled
-     */
     public function testGenerateReturnsRandomBytes(int $length, string $hex): void
     {
         $bytes = hex2bin($hex);
-        AspectMock::func('Ramsey\Uuid\Generator', 'random_bytes', $bytes);
+
+        PHPMockery::mock('Ramsey\Uuid\Generator', 'random_bytes')
+            ->once()
+            ->with($length)
+            ->andReturn($bytes);
+
         $generator = new RandomBytesGenerator();
-        $this->assertEquals($bytes, $generator->generate($length));
+
+        $this->assertSame($bytes, $generator->generate($length));
     }
 
     /**
@@ -64,9 +53,10 @@ class RandomBytesGeneratorTest extends TestCase
      */
     public function testGenerateThrowsExceptionWhenExceptionThrownByRandombytes(): void
     {
-        AspectMock::func('Ramsey\Uuid\Generator', 'random_bytes', function (): void {
-            throw new Exception('Could not gather sufficient random data');
-        });
+        PHPMockery::mock('Ramsey\Uuid\Generator', 'random_bytes')
+            ->once()
+            ->with(16)
+            ->andThrow(new Exception('Could not gather sufficient random data'));
 
         $generator = new RandomBytesGenerator();
 

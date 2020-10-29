@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Ramsey\Uuid\Test\Generator;
 
 use Exception;
-use PHPUnit\Framework\Error\Error as PHPUnitError;
 use PHPUnit\Framework\MockObject\MockObject;
 use Ramsey\Uuid\Converter\NumberConverterInterface;
 use Ramsey\Uuid\Exception\InvalidArgumentException;
@@ -84,7 +83,7 @@ class CombGeneratorTest extends TestCase
         $generator = new CombGenerator($randomGenerator, $converter);
         $returned = $generator->generate($length);
         $this->assertIsString($returned);
-        $this->assertEquals($expected, $returned);
+        $this->assertSame($expected, $returned);
     }
 
     /**
@@ -127,7 +126,7 @@ class CombGeneratorTest extends TestCase
 
         $generator = new CombGenerator($randomGenerator, $converter);
 
-        $this->expectException(PHPUnitError::class);
+        $this->expectError();
         $generator->generate(7);
     }
 }
