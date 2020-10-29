@@ -28,8 +28,12 @@ class DefaultNameGenerator implements NameGeneratorInterface
     /** @psalm-pure */
     public function generate(UuidInterface $ns, string $name, string $hashAlgorithm): string
     {
-        /** @var string|bool $bytes */
-        $bytes = @hash($hashAlgorithm, $ns->getBytes() . $name, true);
+        try {
+            /** @var string|bool $bytes */
+            $bytes = @hash($hashAlgorithm, $ns->getBytes() . $name, true);
+        } catch (\ValueError $e) {
+            $bytes = false; // keep same behavior than PHP 7
+        }
 
         if ($bytes === false) {
             throw new NameException(sprintf(
