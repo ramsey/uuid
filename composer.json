@@ -32,7 +32,7 @@
         "phpstan/phpstan": "^0.12",
         "phpstan/phpstan-mockery": "^0.12",
         "phpstan/phpstan-phpunit": "^0.12",
-        "phpunit/phpunit": "^8.5",
+        "phpunit/phpunit": "^8.5 || ^9",
         "psy/psysh": "^0.10.0",
         "slevomat/coding-standard": "^6.0",
         "squizlabs/php_codesniffer": "^3.5",
