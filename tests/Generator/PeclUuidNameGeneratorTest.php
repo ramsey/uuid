@@ -29,10 +29,14 @@ class PeclUuidNameGeneratorTest extends TestCase
 
         // Need to add the version and variant, since ext-uuid already includes
         // these in the values returned.
-        $timeHi = (int) unpack('n*', substr($expectedBytes, 6, 2))[1];
+        /** @var array $unpackedTime */
+        $unpackedTime = unpack('n*', substr($expectedBytes, 6, 2));
+        $timeHi = (int) $unpackedTime[1];
         $timeHiAndVersion = pack('n*', BinaryUtils::applyVersion($timeHi, $version));
 
-        $clockSeqHi = (int) unpack('n*', substr($expectedBytes, 8, 2))[1];
+        /** @var array $unpackedClockSeq */
+        $unpackedClockSeq = unpack('n*', substr($expectedBytes, 8, 2));
+        $clockSeqHi = (int) $unpackedClockSeq[1];
         $clockSeqHiAndReserved = pack('n*', BinaryUtils::applyVariant($clockSeqHi));
 
         $expectedBytes = substr_replace($expectedBytes, $timeHiAndVersion, 6, 2);

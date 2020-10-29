@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Ramsey\Uuid\Test\Generator;
 
-use AspectMock\Test as AspectMock;
 use Exception;
 use Mockery;
 use Mockery\MockInterface;
@@ -21,6 +20,7 @@ use Ramsey\Uuid\Provider\TimeProviderInterface;
 use Ramsey\Uuid\Test\TestCase;
 use Ramsey\Uuid\Type\Hexadecimal;
 use Ramsey\Uuid\Type\Time;
+use phpmock\mockery\PHPMockery;
 
 use function hex2bin;
 
@@ -80,7 +80,6 @@ class DefaultTimeGeneratorTest extends TestCase
         parent::tearDown();
         unset($this->timeProvider, $this->nodeProvider, $this->timeConverter);
         Mockery::close();
-        AspectMock::clean();
     }
 
     public function testGenerateUsesNodeProviderWhenNodeIsNull(): void
@@ -159,7 +158,10 @@ class DefaultTimeGeneratorTest extends TestCase
      */
     public function testGenerateUsesRandomSequenceWhenClockSeqNull(): void
     {
-        $randomInt = AspectMock::func('Ramsey\Uuid\Generator', 'random_int', 9622);
+        PHPMockery::mock('Ramsey\Uuid\Generator', 'random_int')
+            ->once()
+            ->with(0, 0x3fff)
+            ->andReturn(9622);
         $this->timeConverter->expects($this->once())
             ->method('calculateTime')
             ->with($this->currentTime['sec'], $this->currentTime['usec'])
@@ -170,7 +172,6 @@ class DefaultTimeGeneratorTest extends TestCase
             $this->timeProvider
         );
         $defaultTimeGenerator->generate($this->nodeId);
-        $randomInt->verifyInvokedOnce([0, 0x3fff]);
     }
 
     /**
@@ -179,9 +180,9 @@ class DefaultTimeGeneratorTest extends TestCase
      */
     public function testGenerateThrowsExceptionWhenExceptionThrownByRandomint(): void
     {
-        AspectMock::func('Ramsey\Uuid\Generator', 'random_int', function (): void {
-            throw new Exception('Could not gather sufficient random data');
-        });
+        PHPMockery::mock('Ramsey\Uuid\Generator', 'random_int')
+            ->once()
+            ->andThrow(new Exception('Could not gather sufficient random data'));
 
         $defaultTimeGenerator = new DefaultTimeGenerator(
             $this->nodeProvider,

@@ -471,10 +471,14 @@ class UuidFactory implements UuidFactoryInterface
      */
     private function uuidFromBytesAndVersion(string $bytes, int $version): UuidInterface
     {
-        $timeHi = (int) unpack('n*', substr($bytes, 6, 2))[1];
+        /** @var array $unpackedTime */
+        $unpackedTime = unpack('n*', substr($bytes, 6, 2));
+        $timeHi = (int) $unpackedTime[1];
         $timeHiAndVersion = pack('n*', BinaryUtils::applyVersion($timeHi, $version));
 
-        $clockSeqHi = (int) unpack('n*', substr($bytes, 8, 2))[1];
+        /** @var array $unpackedClockSeq */
+        $unpackedClockSeq = unpack('n*', substr($bytes, 8, 2));
+        $clockSeqHi = (int) $unpackedClockSeq[1];
         $clockSeqHiAndReserved = pack('n*', BinaryUtils::applyVariant($clockSeqHi));
 
         $bytes = substr_replace($bytes, $timeHiAndVersion, 6, 2);
