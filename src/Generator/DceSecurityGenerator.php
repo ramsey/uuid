@@ -137,8 +137,8 @@ class DceSecurityGenerator implements DceSecurityGeneratorInterface
             );
         }
 
-        $domainByte = pack('n', $localDomain)[1];
-        $identifierBytes = hex2bin(str_pad($identifierHex, 8, '0', STR_PAD_LEFT));
+        $domainByte = (string) pack('n', $localDomain)[1];
+        $identifierBytes = (string) hex2bin(str_pad($identifierHex, 8, '0', STR_PAD_LEFT));
 
         if ($node instanceof Hexadecimal) {
             $node = $node->toString();

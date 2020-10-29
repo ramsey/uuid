@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Ramsey\Uuid\Test\Provider\Node;
 
-use AspectMock\Test as AspectMock;
 use Exception;
 use Ramsey\Uuid\Exception\RandomSourceException;
 use Ramsey\Uuid\Provider\Node\RandomNodeProvider;
 use Ramsey\Uuid\Test\TestCase;
+use phpmock\mockery\PHPMockery;
 
 use function bin2hex;
 use function hex2bin;
@@ -18,12 +18,6 @@ use function substr;
 
 class RandomNodeProviderTest extends TestCase
 {
-    protected function tearDown(): void
-    {
-        parent::tearDown();
-        AspectMock::clean();
-    }
-
     /**
      * @runInSeparateProcess
      * @preserveGlobalState disabled
@@ -33,30 +27,15 @@ class RandomNodeProviderTest extends TestCase
         $bytes = hex2bin('38a675685d50');
         $expectedNode = '39a675685d50';
 
-        $randomBytes = AspectMock::func('Ramsey\Uuid\Provider\Node', 'random_bytes', $bytes);
+        PHPMockery::mock('Ramsey\Uuid\Provider\Node', 'random_bytes')
+            ->once()
+            ->with(6)
+            ->andReturn($bytes);
+
         $provider = new RandomNodeProvider();
         $node = $provider->getNode();
 
         $this->assertSame($expectedNode, $node->toString());
-        $randomBytes->verifyInvoked([6]);
-    }
-
-    /**
-     * @runInSeparateProcess
-     * @preserveGlobalState disabled
-     */
-    public function testGetNodeSetsMulticastBit(): void
-    {
-        $bytes = hex2bin('38a675685d50');
-
-        // Expected node has the multicast bit set, and it wasn't set in the bytes.
-        $expectedNode = '39a675685d50';
-
-        $randomBytes = AspectMock::func('Ramsey\Uuid\Provider\Node', 'random_bytes', $bytes);
-        $provider = new RandomNodeProvider();
-
-        $this->assertSame($expectedNode, $provider->getNode()->toString());
-        $randomBytes->verifyInvoked([6]);
     }
 
     /**
@@ -71,11 +50,14 @@ class RandomNodeProviderTest extends TestCase
         // We expect the same hex value for the node.
         $expectedNode = $bytesHex;
 
-        $randomBytes = AspectMock::func('Ramsey\Uuid\Provider\Node', 'random_bytes', $bytes);
+        PHPMockery::mock('Ramsey\Uuid\Provider\Node', 'random_bytes')
+            ->once()
+            ->with(6)
+            ->andReturn($bytes);
+
         $provider = new RandomNodeProvider();
 
         $this->assertSame($expectedNode, $provider->getNode()->toString());
-        $randomBytes->verifyInvoked([6]);
     }
 
     /**
@@ -87,11 +69,14 @@ class RandomNodeProviderTest extends TestCase
         $bytes = hex2bin('100000000001');
         $expectedNode = '110000000001';
 
-        $randomBytes = AspectMock::func('Ramsey\Uuid\Provider\Node', 'random_bytes', $bytes);
+        PHPMockery::mock('Ramsey\Uuid\Provider\Node', 'random_bytes')
+            ->once()
+            ->with(6)
+            ->andReturn($bytes);
+
         $provider = new RandomNodeProvider();
 
         $this->assertSame($expectedNode, $provider->getNode()->toString());
-        $randomBytes->verifyInvoked([6]);
     }
 
     public function testGetNodeAlwaysSetsMulticastBit(): void
@@ -125,9 +110,9 @@ class RandomNodeProviderTest extends TestCase
      */
     public function testGetNodeThrowsExceptionWhenExceptionThrownByRandombytes(): void
     {
-        AspectMock::func('Ramsey\Uuid\Provider\Node', 'random_bytes', function (): void {
-            throw new Exception('Could not gather sufficient random data');
-        });
+        PHPMockery::mock('Ramsey\Uuid\Provider\Node', 'random_bytes')
+            ->once()
+            ->andThrow(new Exception('Could not gather sufficient random data'));
 
         $provider = new RandomNodeProvider();
 

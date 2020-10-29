@@ -1,0 +1,110 @@
+# https://help.github.com/en/categories/automating-your-workflow-with-github-actions
+
+name: "CI"
+
+on:
+  pull_request:
+  push:
+    branches:
+      - "master"
+
+env:
+  COMPOSER_ROOT_VERSION: "1.99.99"
+
+jobs:
+
+  coding-standards:
+    name: "Coding Standards"
+    runs-on: "ubuntu-latest"
+    steps:
+      - uses: "actions/checkout@v2"
+      - uses: "shivammathur/setup-php@v2"
+        with:
+          php-version: "7.4"
+          coverage: "none"
+          ini-values: "memory_limit=-1"
+      - uses: "ramsey/composer-install@v1"
+      - name: "Run the linter"
+        run: "composer lint -- --colors"
+      - name: "Check coding standards"
+        run: "./vendor/bin/phpcs --colors"
+
+  static-analysis:
+    name: "Static Analysis"
+    runs-on: "ubuntu-latest"
+    steps:
+      - uses: "actions/checkout@v2"
+      - uses: "shivammathur/setup-php@v2"
+        with:
+          php-version: "7.4"
+          coverage: "none"
+          ini-values: "memory_limit=-1"
+      - uses: "ramsey/composer-install@v1"
+      - name: "Run PHPStan"
+        run: "composer phpstan -- --ansi"
+      - name: "Run Psalm"
+        run: "composer psalm -- --shepherd"
+
+  benchmark:
+    name: "Benchmark"
+    runs-on: "ubuntu-latest"
+    continue-on-error: ${{ matrix.experimental }}
+    strategy:
+      fail-fast: false
+      matrix:
+        php-version:
+          - "7.2"
+          - "7.3"
+          - "7.4"
+        experimental:
+          - false
+        include:
+          - php-version: "8.0"
+            experimental: true
+            composer-options: "--ignore-platform-reqs"
+    steps:
+      - uses: "actions/checkout@v2"
+      - uses: "shivammathur/setup-php@v2"
+        with:
+          php-version: "${{ matrix.php-version }}"
+          extensions: bcmath, ctype, gmp
+          coverage: "none"
+          ini-values: "memory_limit=-1"
+      - uses: "ramsey/composer-install@v1"
+        with:
+          composer-options: "${{ matrix.composer-options }}"
+      - name: "Run PHPBench"
+        run: "composer phpbench -- --ansi"
+
+  unit-tests:
+    name: "Unit Tests"
+    runs-on: "ubuntu-latest"
+    continue-on-error: ${{ matrix.experimental }}
+    strategy:
+      fail-fast: false
+      matrix:
+        php-version:
+          - "7.2"
+          - "7.3"
+          - "7.4"
+        experimental:
+          - false
+        include:
+          - php-version: "8.0"
+            experimental: true
+            composer-options: "--ignore-platform-reqs"
+    steps:
+      - uses: "actions/checkout@v2"
+      - uses: "shivammathur/setup-php@v2"
+        with:
+          php-version: "${{ matrix.php-version }}"
+          extensions: bcmath, ctype, gmp
+          coverage: "pcov"
+          ini-values: "memory_limit=-1"
+      - uses: "ramsey/composer-install@v1"
+        with:
+          composer-options: "${{ matrix.composer-options }}"
+      - name: "Run unit tests"
+        run: "./vendor/bin/phpunit --verbose --colors=always --coverage-clover build/logs/clover.xml --coverage-text"
+      - name: "Publish coverage report to Codecov"
+        uses: "codecov/codecov-action@v1"

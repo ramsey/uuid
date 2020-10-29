@@ -5,7 +5,7 @@ parameters:
         - ../src
     checkMissingIterableValueType: false
     reportUnmatchedIgnoredErrors: false
-    autoload_files:
+    bootstrapFiles:
         - ./phpstan-bootstrap.php
     ignoreErrors:
         -
