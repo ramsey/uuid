@@ -127,7 +127,7 @@ class CombGeneratorTest extends TestCase
 
         $generator = new CombGenerator($randomGenerator, $converter);
 
-        $this->expectException(PHPUnitError::class);
+        $this->expectError();
         $generator->generate(7);
     }
 }
