@@ -27,7 +27,7 @@ jobs:
       - name: "Run the linter"
         run: "composer lint -- --colors"
       - name: "Check coding standards"
-        run: "composer phpcs -- --colors"
+        run: "./vendor/bin/phpcs --colors"
 
   static-analysis:
     name: "Static Analysis"
@@ -61,7 +61,7 @@ jobs:
         with:
           php-version: "${{ matrix.php-version }}"
           tools: pecl
-          extensions: bcmath, ctype, gmp, uuid
+          extensions: bcmath, ctype, gmp
           coverage: "none"
           ini-values: "memory_limit=-1"
       - uses: "ramsey/composer-install@v1"
@@ -85,7 +85,7 @@ jobs:
         with:
           php-version: "${{ matrix.php-version }}"
           tools: pecl
-          extensions: bcmath, ctype, gmp, uuid
+          extensions: bcmath, ctype, gmp
           coverage: "pcov"
           ini-values: "memory_limit=-1"
       - uses: "ramsey/composer-install@v1"
