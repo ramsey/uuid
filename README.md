@@ -1,12 +1,20 @@
-# ramsey/uuid
+<h1 align="center">ramsey/uuid</h1>
 
-[![Source Code][badge-source]][source]
-[![Latest Version][badge-release]][release]
-[![Software License][badge-license]][license]
-[![PHP Version][badge-php]][php]
-[![Build Status][badge-build]][build]
-[![Coverage Status][badge-coverage]][coverage]
-[![Total Downloads][badge-downloads]][downloads]
+<p align="center">
+    <strong>A PHP library for generating and working with UUIDs.</strong>
+</p>
+
+<p align="center">
+    <a href="https://github.com/ramsey/uuid"><img src="http://img.shields.io/badge/source-ramsey/uuid-blue.svg?style=flat-square" alt="Source Code"></a>
+    <a href="https://packagist.org/packages/ramsey/uuid"><img src="https://img.shields.io/packagist/v/ramsey/uuid.svg?style=flat-square&label=release" alt="Download Package"></a>
+    <a href="https://php.net"><img src="https://img.shields.io/packagist/php-v/ramsey/uuid.svg?style=flat-square&colorB=%238892BF" alt="PHP Programming Language"></a>
+    <a href="https://github.com/ramsey/uuid/actions?query=workflow%3ACI"><img src="https://img.shields.io/github/workflow/status/ramsey/uuid/CI?label=CI&logo=github&style=flat-square" alt="Build Status"></a>
+    <a href="https://codecov.io/gh/ramsey/uuid"><img src="https://img.shields.io/codecov/c/gh/ramsey/uuid?label=codecov&logo=codecov&style=flat-square" alt="Codecov Code Coverage"></a>
+    <a href="https://shepherd.dev/github/ramsey/uuid"><img src="https://img.shields.io/endpoint?style=flat-square&url=https%3A%2F%2Fshepherd.dev%2Fgithub%2Framsey%2Fuuid%2Fcoverage" alt="Psalm Type Coverage"></a>
+    <a href="https://github.com/ramsey/uuid/blob/master/LICENSE"><img src="https://img.shields.io/packagist/l/ramsey/uuid.svg?style=flat-square&colorB=darkcyan" alt="Read License"></a>
+    <a href="https://packagist.org/packages/ramsey/uuid/stats"><img src="https://img.shields.io/packagist/dt/ramsey/uuid.svg?style=flat-square&colorB=darkmagenta" alt="Package downloads on Packagist"></a>
+    <a href="https://phpc.chat/channel/ramsey"><img src="https://img.shields.io/badge/phpc.chat-%23ramsey-darkslateblue?style=flat-square" alt="Chat with the maintainers"></a>
+</p>
 
 ramsey/uuid is a PHP library for generating and working with universally unique
 identifiers (UUIDs).
@@ -61,19 +69,3 @@ information.
 [pyuuid]: http://docs.python.org/3/library/uuid.html
 [composer]: http://getcomposer.org/
 [contributing.md]: https://github.com/ramsey/uuid/blob/master/.github/CONTRIBUTING.md
-
-[badge-source]: https://img.shields.io/badge/source-ramsey/uuid-blue.svg?style=flat-square
-[badge-release]: https://img.shields.io/packagist/v/ramsey/uuid.svg?style=flat-square&label=release
-[badge-license]: https://img.shields.io/packagist/l/ramsey/uuid.svg?style=flat-square
-[badge-php]: https://img.shields.io/packagist/php-v/ramsey/uuid.svg?style=flat-square
-[badge-build]: https://img.shields.io/travis/ramsey/uuid/master.svg?style=flat-square
-[badge-coverage]: https://img.shields.io/coveralls/github/ramsey/uuid/master.svg?style=flat-square
-[badge-downloads]: https://img.shields.io/packagist/dt/ramsey/uuid.svg?style=flat-square&colorB=mediumvioletred
-
-[source]: https://github.com/ramsey/uuid
-[release]: https://packagist.org/packages/ramsey/uuid
-[license]: https://github.com/ramsey/uuid/blob/master/LICENSE
-[php]: https://php.net
-[build]: https://travis-ci.org/ramsey/uuid
-[coverage]: https://coveralls.io/github/ramsey/uuid?branch=master
-[downloads]: https://packagist.org/packages/ramsey/uuid

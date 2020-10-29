@@ -178,7 +178,7 @@ class SystemDceSecurityProvider implements DceSecurityProviderInterface
         }
 
         /** @var string $sid */
-        $sid = str_getcsv(trim($response))[1] ?? '';
+        $sid = str_getcsv(trim((string) $response))[1] ?? '';
 
         if (($lastHyphen = strrpos($sid, '-')) === false) {
             return '';
@@ -207,7 +207,7 @@ class SystemDceSecurityProvider implements DceSecurityProviderInterface
         }
 
         /** @var string[] $userGroups */
-        $userGroups = preg_split('/\s{2,}/', $response, -1, PREG_SPLIT_NO_EMPTY);
+        $userGroups = preg_split('/\s{2,}/', (string) $response, -1, PREG_SPLIT_NO_EMPTY);
 
         $firstGroup = trim($userGroups[1] ?? '', "* \t\n\r\0\x0B");
 
@@ -222,7 +222,7 @@ class SystemDceSecurityProvider implements DceSecurityProviderInterface
         }
 
         /** @var string[] $userGroup */
-        $userGroup = preg_split('/\s{2,}/', $response, -1, PREG_SPLIT_NO_EMPTY);
+        $userGroup = preg_split('/\s{2,}/', (string) $response, -1, PREG_SPLIT_NO_EMPTY);
 
         $sid = $userGroup[1] ?? '';
 
