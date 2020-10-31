@@ -52,7 +52,8 @@ with or unaddressed by this policy.
 
 ## Encryption Key for security@ramsey.dev
 
-For increased privacy when reporting sensitive issues, you may encrypt your message using the following key:
+For increased privacy when reporting sensitive issues, you may encrypt your
+messages using the following key:
 
 ```
 -----BEGIN PGP PUBLIC KEY BLOCK-----

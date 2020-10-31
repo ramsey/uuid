@@ -9,5 +9,4 @@
 /phpunit.xml.dist   export-ignore
 /resources/         export-ignore
 /SECURITY.md        export-ignore
-/SECURITY.md.sig    export-ignore
 /tests/             export-ignore
