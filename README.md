@@ -56,6 +56,14 @@ frequently asked questions.
 Contributions are welcome! Please read [CONTRIBUTING.md][] for details.
 
 
+## Coordinated Disclosure
+
+Keeping user information safe and secure is a top priority, and we welcome the
+contribution of external security researchers. If you believe you've found a
+security issue in software that is maintained in this repository, please read
+[SECURITY.md][] for instructions on submitting a vulnerability report.
+
+
 ## Copyright and License
 
 The ramsey/uuid library is copyright © [Ben Ramsey](https://benramsey.com/) and
@@ -69,3 +77,4 @@ information.
 [pyuuid]: http://docs.python.org/3/library/uuid.html
 [composer]: http://getcomposer.org/
 [contributing.md]: https://github.com/ramsey/uuid/blob/master/.github/CONTRIBUTING.md
+[security.md]: https://github.com/ramsey/uuid/blob/master/SECURITY.md
