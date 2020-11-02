@@ -78,4 +78,4 @@ information.
 [composer]: http://getcomposer.org/
 [contributing.md]: https://github.com/ramsey/uuid/blob/master/.github/CONTRIBUTING.md
 [security.md]: https://github.com/ramsey/uuid/blob/master/SECURITY.md
-[license] https://github.com/ramsey/uuid/blob/master/LICENSE
+[license]: https://github.com/ramsey/uuid/blob/master/LICENSE
