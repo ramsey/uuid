@@ -1,41 +1,59 @@
-# Security Policy
+<!--
+    This policy was created using the HackerOne Policy Builder:
+    https://hackerone.com/policy-builder/
+ -->
 
-I, Ben Ramsey, take the security of my software products and services seriously, which includes all source code repositories managed through my GitHub account, [@ramsey](https://github.com/ramsey).
+# Vulnerability Disclosure Policy
 
-If you believe you have found a security vulnerability in any repository I own, please report it to me as described below.
+Keeping user information safe and secure is a top priority, and we welcome the
+contribution of external security researchers.
 
-## Reporting Security Issues
+## Scope
 
-**Please do not report security vulnerabilities through public GitHub issues.**
+If you believe you've found a security issue in software that is maintained in
+this repository, we encourage you to notify us.
 
-Instead, please report them to me via <security@ramsey.dev>. If possible, encrypt your message with my PGP encryption key, provided below.
+| Version | In scope | Source code |
+| :-----: | :------: | :---------- |
+| latest  | ✅        | https://github.com/ramsey/uuid |
 
-You should receive a response within 14 days. If for some reason you do not, please follow up via email to ensure I received your original message.
+## How to Submit a Report
 
-Please include the requested information listed below (as much as you can provide) to help me better understand the nature and scope of the possible issue:
+To submit a vulnerability report, please contact us at <security@ramsey.dev>.
+Your submission will be reviewed and validated by a member of our team.
 
-  * Product version containing the issue
-  * Type of issue (e.g. buffer overflow, SQL injection, cross-site scripting, etc.)
-  * Full paths of source file(s) related to the manifestation of the issue
-  * The location of the affected source code (tag/branch/commit or direct URL)
-  * Any special configuration required to reproduce the issue
-  * Step-by-step instructions to reproduce the issue
-  * Proof-of-concept or exploit code (if possible)
-  * Impact of the issue, including how an attacker might exploit the issue
+## Safe Harbor
 
-This information will help me triage your report more quickly.
+We support safe harbor for security researchers who:
 
-## Preferred Languages
+* Make a good faith effort to avoid privacy violations, destruction of data, and
+  interruption or degradation of our services.
+* Only interact with accounts you own or with explicit permission of the account
+  holder. If you do encounter Personally Identifiable Information (PII) contact
+  us immediately, do not proceed with access, and immediately purge any local
+  information.
+* Provide us with a reasonable amount of time to resolve vulnerabilities prior
+  to any disclosure to the public or a third-party.
 
-I prefer all communications in English.
+We will consider activities conducted consistent with this policy to constitute
+"authorized" conduct and will not pursue civil action or initiate a complaint to
+law enforcement. We will help to the extent we can if legal action is initiated
+by a third party against you.
 
-## Policy
+Please submit a report to us before engaging in conduct that may be inconsistent
+with or unaddressed by this policy.
 
-I follow the [Coordinated Vulnerability Disclosure](https://vuls.cert.org/confluence/display/CVD/The+CERT+Guide+to+Coordinated+Vulnerability+Disclosure) process.
+## Preferences
 
-## Encryption Key for `security@ramsey.dev`
+* Please provide detailed reports with reproducible steps and a clearly defined
+  impact.
+* Include the version number of the vulnerable package in your report
+* Social engineering (e.g. phishing, vishing, smishing) is prohibited.
 
-For increased privacy when reporting sensitive issues, you may encrypt your message using the key below:
+## Encryption Key for security@ramsey.dev
+
+For increased privacy when reporting sensitive issues, you may encrypt your
+messages using the following key:
 
 ```
 -----BEGIN PGP PUBLIC KEY BLOCK-----
