@@ -1,0 +1,16 @@
+version: 2
+updates:
+- package-ecosystem: composer
+  directory: "/"
+  schedule:
+    interval: daily
+    time: "11:00"
+  open-pull-requests-limit: 10
+  ignore:
+  - dependency-name: phpbench/phpbench
+    versions:
+    - 1.0.0-alpha4
+    - 1.0.0-alpha6
+    - 1.0.0-alpha7
+    - 1.0.0-alpha8
+    - 1.0.0-alpha9
