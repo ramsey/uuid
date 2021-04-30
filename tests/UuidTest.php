@@ -69,6 +69,23 @@ class UuidTest extends TestCase
         );
     }
 
+    public function fromHexadecimal(): void
+    {
+        $hex = new Hexadecimal('0x1EA78DEB37CE625E8F1A025041000001');
+        $uuid = Uuid::fromHexadecimal($hex);
+        $this->assertInstanceOf(Uuid::class, $uuid);
+        $this->assertEquals('1ea78deb-37ce-625e-8f1a-025041000001', $uuid->toString());
+    }
+
+    public function fromHexadecimalShort(): void
+    {
+        $this->expectException(InvalidUuidStringException::class);
+        $this->expectExceptionMessage('Invalid UUID string:');
+
+        $hex = new Hexadecimal('0x1EA78DEB37CE625E8F1A0250410000');
+        Uuid::fromHexadecimal($hex);
+    }
+
     /**
      * Tests that UUID and GUID's have the same textual representation but not
      * the same binary representation.
