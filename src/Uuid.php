@@ -593,6 +593,16 @@ class Uuid implements UuidInterface
     }
 
     /**
+     * Returns a version 4 (random) UUID with a monotonically increasing timestamp prefix based on the COMB algorithm
+     *
+     * @return UuidInterface A UuidInterface instance that represents a version 4 UUID with monotonic prefix
+     */
+    public static function uuid4Monotonic(): UuidInterface
+    {
+        return self::getFactory()->uuid4Monotonic();
+    }
+
+    /**
      * Returns a version 5 (name-based) UUID based on the SHA-1 hash of a
      * namespace ID and a name
      *
