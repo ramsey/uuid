@@ -285,7 +285,7 @@ class Uuid implements UuidInterface
      */
     public function serialize(): string
     {
-        return $this->getBytes();
+        return $this->getFields()->getBytes();
     }
 
     /**

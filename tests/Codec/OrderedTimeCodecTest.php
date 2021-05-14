@@ -20,12 +20,15 @@ use Ramsey\Uuid\Nonstandard\Fields as NonstandardFields;
 use Ramsey\Uuid\Nonstandard\UuidBuilder;
 use Ramsey\Uuid\Rfc4122\Fields;
 use Ramsey\Uuid\Test\TestCase;
+use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidFactory;
 use Ramsey\Uuid\UuidInterface;
 
 use function hex2bin;
 use function pack;
+use function serialize;
 use function str_replace;
+use function unserialize;
 
 class OrderedTimeCodecTest extends TestCase
 {
@@ -228,5 +231,21 @@ class OrderedTimeCodecTest extends TestCase
         );
 
         $codec->decodeBytes($bytes);
+    }
+
+    public function testSerializationDoesNotUseOrderedTimeCodec(): void
+    {
+        $expected = '9ec692cc-67c8-11eb-ae93-0242ac130002';
+
+        $codec = new OrderedTimeCodec(
+            (new UuidFactory())->getUuidBuilder()
+        );
+        $decoded = $codec->decode($expected);
+        $serialized = serialize($decoded);
+        $unserializedUuid = unserialize($serialized);
+
+        $expectedUuid = Uuid::fromString($expected);
+        $this->assertSame($expectedUuid->getVersion(), $unserializedUuid->getVersion());
+        $this->assertTrue($expectedUuid->equals($unserializedUuid));
     }
 }
