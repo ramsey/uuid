@@ -20,6 +20,8 @@ use Ramsey\Uuid\Type\Hexadecimal;
 
 /**
  * A collection of NodeProviderInterface objects
+ *
+ * @extends AbstractCollection<NodeProviderInterface>
  */
 class NodeProviderCollection extends AbstractCollection
 {
@@ -48,6 +50,11 @@ class NodeProviderCollection extends AbstractCollection
             ],
         ]);
 
-        $this->data = $data;
+        $this->data = array_filter(
+            $data,
+            function ($unserialized): bool {
+                return $unserialized instanceof NodeProviderInterface;
+            }
+        );
     }
 }

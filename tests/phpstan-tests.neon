@@ -27,3 +27,17 @@ parameters:
             message: "#^Function uuid_parse\\(\\) has parameter \\$uuid with no typehint specified\\.$#"
             count: 1
             path: phpstan-bootstrap.php
+        -
+            message: "#^Call to static method Ramsey\\\\Uuid\\\\.+ on a separate line has no effect\\.$#"
+            paths:
+                - *Test.php
+                - benchmark/*Bench.php
+        -
+            message: "#^Call to method Ramsey\\\\Uuid\\\\.+ on a separate line has no effect\\.$#"
+            paths:
+                - Builder/*Test.php
+                - Converter/*Test.php
+                - Generator/*Test.php
+                - Guid/*Test.php
+                - Nonstandard/*Test.php
+                - Rfc4122/*Test.php
