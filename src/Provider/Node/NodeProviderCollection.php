@@ -20,6 +20,8 @@ use Ramsey\Uuid\Type\Hexadecimal;
 
 /**
  * A collection of NodeProviderInterface objects
+ *
+ * @extends AbstractCollection<NodeProviderInterface>
  */
 class NodeProviderCollection extends AbstractCollection
 {
