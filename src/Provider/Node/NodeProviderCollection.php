@@ -50,6 +50,11 @@ class NodeProviderCollection extends AbstractCollection
             ],
         ]);
 
-        $this->data = $data;
+        $this->data = array_filter(
+            $data,
+            function ($unserialized): bool {
+                return $unserialized instanceof NodeProviderInterface;
+            }
+        );
     }
 }
