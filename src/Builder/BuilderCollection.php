@@ -26,6 +26,8 @@ use Traversable;
 
 /**
  * A collection of UuidBuilderInterface objects
+ *
+ * @extends AbstractCollection<UuidBuilderInterface>
  */
 class BuilderCollection extends AbstractCollection
 {
