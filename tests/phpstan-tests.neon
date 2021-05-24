@@ -31,6 +31,7 @@ parameters:
             message: "#^Call to static method Ramsey\\\\Uuid\\\\.+ on a separate line has no effect\\.$#"
             paths:
                 - *Test.php
+                - benchmark/*Bench.php
         -
             message: "#^Call to method Ramsey\\\\Uuid\\\\.+ on a separate line has no effect\\.$#"
             paths:
