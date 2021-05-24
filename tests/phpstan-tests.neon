@@ -28,6 +28,10 @@ parameters:
             count: 1
             path: phpstan-bootstrap.php
         -
+            message: "#^Call to static method Ramsey\\\\Uuid\\\\.+ on a separate line has no effect\\.$#"
+            paths:
+                - *Test.php
+        -
             message: "#^Call to method Ramsey\\\\Uuid\\\\.+ on a separate line has no effect\\.$#"
             paths:
                 - Builder/*Test.php
