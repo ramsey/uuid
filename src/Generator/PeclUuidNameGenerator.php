@@ -35,11 +35,11 @@ class PeclUuidNameGenerator implements NameGeneratorInterface
     {
         switch ($hashAlgorithm) {
             case 'md5':
-                $uuid = (string) uuid_generate_md5($ns->toString(), $name);
+                $uuid = uuid_generate_md5($ns->toString(), $name);
 
                 break;
             case 'sha1':
-                $uuid = (string) uuid_generate_sha1($ns->toString(), $name);
+                $uuid = uuid_generate_sha1($ns->toString(), $name);
 
                 break;
             default:
@@ -49,6 +49,6 @@ class PeclUuidNameGenerator implements NameGeneratorInterface
                 ));
         }
 
-        return (string) uuid_parse($uuid);
+        return uuid_parse($uuid);
     }
 }
