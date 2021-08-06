@@ -1,31 +1,31 @@
 parameters:
-    tmpDir: ../build/cache/phpstan
+    tmpDir: ./build/cache/phpstan
     level: max
     paths:
-        - ../src
+        - ./src
     checkMissingIterableValueType: false
     reportUnmatchedIgnoredErrors: false
     bootstrapFiles:
-        - ./phpstan-bootstrap.php
+        - ./tests/phpstan-bootstrap.php
     ignoreErrors:
         -
             message: '#^Call to function is_int\(\) with float will always evaluate to false\.$#'
             count: 1
-            path: ../src/Converter/Time/PhpTimeConverter.php
+            path: ./src/Converter/Time/PhpTimeConverter.php
         -
             message: '#^Unreachable statement - code above always terminates\.$#'
             count: 1
-            path: ../src/Converter/Time/PhpTimeConverter.php
+            path: ./src/Converter/Time/PhpTimeConverter.php
         -
             message: '#^Comparison operation "<" between int<6, max> and 0 is always false\.$#'
             count: 1
-            path: ../src/Generator/CombGenerator.php
+            path: ./src/Generator/CombGenerator.php
         -
             message: '#^Comparison operation ">" between 6 and 0 is always true\.$#'
             count: 1
-            path: ../src/Generator/CombGenerator.php
+            path: ./src/Generator/CombGenerator.php
         -
             # Legacy methods of `Ramsey\Uuid` use interface methods that are NOT defined on `FieldsInterface`
             message: '#^Call to an undefined method Ramsey\\Uuid\\Fields\\FieldsInterface::get.*$#'
             count: 9
-            path: ../src/Lazy/LazyUuidFromString.php
+            path: ./src/Lazy/LazyUuidFromString.php

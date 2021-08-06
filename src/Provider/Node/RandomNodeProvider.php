@@ -17,6 +17,7 @@ namespace Ramsey\Uuid\Provider\Node;
 use Ramsey\Uuid\Exception\RandomSourceException;
 use Ramsey\Uuid\Provider\NodeProviderInterface;
 use Ramsey\Uuid\Type\Hexadecimal;
+use Throwable;
 
 use function bin2hex;
 use function dechex;
@@ -38,7 +39,7 @@ class RandomNodeProvider implements NodeProviderInterface
     {
         try {
             $nodeBytes = random_bytes(6);
-        } catch (\Throwable $exception) {
+        } catch (Throwable $exception) {
             throw new RandomSourceException(
                 $exception->getMessage(),
                 (int) $exception->getCode(),

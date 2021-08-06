@@ -7,7 +7,7 @@
  * file that was distributed with this source code.
  *
  * @copyright Copyright (c) Ben Ramsey <ben@benramsey.com>
- * @license   http://opensource.org/licenses/MIT MIT
+ * @license http://opensource.org/licenses/MIT MIT
  */
 
 declare(strict_types=1);
@@ -18,6 +18,7 @@ use Ramsey\Uuid\Provider\Node\StaticNodeProvider;
 use Ramsey\Uuid\Type\Hexadecimal;
 use Ramsey\Uuid\Type\Integer as IntegerIdentifier;
 use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 
 final class UuidGenerationBench
 {
@@ -27,7 +28,7 @@ final class UuidGenerationBench
     private $clockSequence;
     /** @var IntegerIdentifier */
     private $localIdentifier;
-    /** @var \Ramsey\Uuid\UuidInterface */
+    /** @var UuidInterface */
     private $namespace;
 
     public function __construct()

@@ -41,7 +41,6 @@ class FallbackNodeProvider implements NodeProviderInterface
     {
         $lastProviderException = null;
 
-        /** @var NodeProviderInterface $provider */
         foreach ($this->nodeProviders as $provider) {
             try {
                 return $provider->getNode();

@@ -7,7 +7,7 @@
  * file that was distributed with this source code.
  *
  * @copyright Copyright (c) Ben Ramsey <ben@benramsey.com>
- * @license   http://opensource.org/licenses/MIT MIT
+ * @license http://opensource.org/licenses/MIT MIT
  */
 
 declare(strict_types=1);
@@ -22,8 +22,8 @@ use function serialize;
 
 final class UuidSerializationBench
 {
-    private const TINY_UUID             = '00000000-0000-0000-0000-000000000001';
-    private const HUGE_UUID             = 'ffffffff-ffff-ffff-ffff-ffffffffffff';
+    private const TINY_UUID = '00000000-0000-0000-0000-000000000001';
+    private const HUGE_UUID = 'ffffffff-ffff-ffff-ffff-ffffffffffff';
     private const UUIDS_TO_BE_SHORTENED = [
         '0ae0cac5-2a40-465c-99ed-3d331b7cf72a',
         '5759b9ce-07b5-4e89-b33a-f864317a2951',
@@ -151,13 +151,13 @@ final class UuidSerializationBench
 
     public function __construct()
     {
-        $this->tinyUuid                   = Uuid::fromString(self::TINY_UUID);
-        $this->hugeUuid                   = Uuid::fromString(self::HUGE_UUID);
-        $this->uuid                       = Uuid::fromString(self::UUIDS_TO_BE_SHORTENED[0]);
-        $this->promiscuousUuids           = array_map([Uuid::class, 'fromString'], self::UUIDS_TO_BE_SHORTENED);
-        $this->serializedTinyUuid         = serialize(Uuid::fromString(self::TINY_UUID));
-        $this->serializedHugeUuid         = serialize(Uuid::fromString(self::HUGE_UUID));
-        $this->serializedUuid             = serialize(Uuid::fromString(self::UUIDS_TO_BE_SHORTENED[0]));
+        $this->tinyUuid = Uuid::fromString(self::TINY_UUID);
+        $this->hugeUuid = Uuid::fromString(self::HUGE_UUID);
+        $this->uuid = Uuid::fromString(self::UUIDS_TO_BE_SHORTENED[0]);
+        $this->promiscuousUuids = array_map([Uuid::class, 'fromString'], self::UUIDS_TO_BE_SHORTENED);
+        $this->serializedTinyUuid = serialize(Uuid::fromString(self::TINY_UUID));
+        $this->serializedHugeUuid = serialize(Uuid::fromString(self::HUGE_UUID));
+        $this->serializedUuid = serialize(Uuid::fromString(self::UUIDS_TO_BE_SHORTENED[0]));
         $this->serializedPromiscuousUuids = array_map(
             'serialize',
             array_map([Uuid::class, 'fromString'], self::UUIDS_TO_BE_SHORTENED)

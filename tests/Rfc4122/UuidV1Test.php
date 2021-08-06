@@ -61,6 +61,8 @@ class UuidV1Test extends TestCase
     }
 
     /**
+     * @param non-empty-string $uuid
+     *
      * @dataProvider provideUuidV1WithOddMicroseconds
      */
     public function testGetDateTimeProperlyHandlesLongMicroseconds(string $uuid, string $expected): void

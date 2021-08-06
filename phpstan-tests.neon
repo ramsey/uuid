@@ -1,0 +1,43 @@
+parameters:
+    tmpDir: ./build/cache/phpstan
+    level: max
+    paths:
+        - ./tests
+    bootstrapFiles:
+        - ./tests/phpstan-bootstrap.php
+    checkMissingIterableValueType: false
+    reportUnmatchedIgnoredErrors: false
+    excludes_analyse:
+        - ./tests/ExpectedBehaviorTest.php
+        - ./tests/phpstan-bootstrap.php
+    ignoreErrors:
+        -
+            message: "#^Function uuid_create\\(\\) has no return typehint specified\\.$#"
+            count: 1
+            path: ./tests/phpstan-bootstrap.php
+        -
+            message: "#^Function uuid_create\\(\\) has parameter \\$uuid_type with no typehint specified\\.$#"
+            count: 1
+            path: ./tests/phpstan-bootstrap.php
+        -
+            message: "#^Function uuid_parse\\(\\) has no return typehint specified\\.$#"
+            count: 1
+            path: ./tests/phpstan-bootstrap.php
+        -
+            message: "#^Function uuid_parse\\(\\) has parameter \\$uuid with no typehint specified\\.$#"
+            count: 1
+            path: ./tests/phpstan-bootstrap.php
+        -
+            message: "#^Call to static method Ramsey\\\\Uuid\\\\.+ on a separate line has no effect\\.$#"
+            paths:
+                - ./tests/*Test.php
+                - ./tests/benchmark/*Bench.php
+        -
+            message: "#^Call to method Ramsey\\\\Uuid\\\\.+ on a separate line has no effect\\.$#"
+            paths:
+                - ./tests/Builder/*Test.php
+                - ./tests/Converter/*Test.php
+                - ./tests/Generator/*Test.php
+                - ./tests/Guid/*Test.php
+                - ./tests/Nonstandard/*Test.php
+                - ./tests/Rfc4122/*Test.php

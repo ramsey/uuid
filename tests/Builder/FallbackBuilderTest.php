@@ -24,7 +24,6 @@ use Ramsey\Uuid\Rfc4122\UuidBuilder as Rfc4122UuidBuilder;
 use Ramsey\Uuid\Rfc4122\UuidV1;
 use Ramsey\Uuid\Rfc4122\UuidV2;
 use Ramsey\Uuid\Test\TestCase;
-use Ramsey\Uuid\Validator\GenericValidator;
 
 class FallbackBuilderTest extends TestCase
 {
@@ -69,7 +68,6 @@ class FallbackBuilderTest extends TestCase
      */
     public function testSerializationOfBuilderCollection(string $bytes): void
     {
-        $validator = new GenericValidator();
         $calculator = new BrickMathCalculator();
         $genericNumberConverter = new GenericNumberConverter($calculator);
         $genericTimeConverter = new GenericTimeConverter($calculator);

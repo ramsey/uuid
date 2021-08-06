@@ -14,6 +14,8 @@ use function hash;
 class DefaultNameGeneratorTest extends TestCase
 {
     /**
+     * @param non-empty-string $ns
+     *
      * @dataProvider provideNamesForHashingTest
      */
     public function testDefaultNameGeneratorHashesName(string $ns, string $name, string $algorithm): void
