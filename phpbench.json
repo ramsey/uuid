@@ -1,8 +1,8 @@
 {
-    "bootstrap":       "vendor/autoload.php",
-    "path":            "tests/benchmark",
-    "retry_threshold": 5,
-    "reports": {
+    "runner.bootstrap": "vendor/autoload.php",
+    "runner.path": "tests/benchmark",
+    "runner.retry_threshold": 5,
+    "report.generators": {
         "report": {
             "extends": "aggregate"
         }
