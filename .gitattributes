@@ -15,6 +15,7 @@
 /docs/                      export-ignore
 /phpbench.json              export-ignore
 /phpcs.xml.dist             export-ignore
+/phpstan-tests.neon         export-ignore
 /phpstan.neon.dist          export-ignore
 /phpunit.xml.dist           export-ignore
 /psalm-baseline.xml         export-ignore
