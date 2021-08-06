@@ -55,24 +55,6 @@
                         "args": ["php"]
                     }
                 ]
-            },
-            {
-                "action": "composer phpstan -- {$STAGED_FILES|of-type:php}",
-                "conditions": [
-                    {
-                        "exec": "\\CaptainHook\\App\\Hook\\Condition\\FileStaged\\OfType",
-                        "args": ["php"]
-                    }
-                ]
-            },
-            {
-                "action": "composer psalm -- {$STAGED_FILES|of-type:php}",
-                "conditions": [
-                    {
-                        "exec": "\\CaptainHook\\App\\Hook\\Condition\\FileStaged\\OfType",
-                        "args": ["php"]
-                    }
-                ]
             }
         ]
     },
