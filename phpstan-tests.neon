@@ -27,5 +27,17 @@ parameters:
             message: "#^Function uuid_parse\\(\\) has parameter \\$uuid with no typehint specified\\.$#"
             count: 1
             path: ./tests/phpstan-bootstrap.php
-        - '#^Call to static method [a-zA-Z0-9\\_]+::[a-zA-Z0-9]+\(\) on a separate line has no effect\.$#'
-        - '#^Call to method [a-zA-Z0-9\\_]+::[a-zA-Z0-9]+\(\) on a separate line has no effect\.$#'
+        -
+            message: "#^Call to static method Ramsey\\\\Uuid\\\\.+ on a separate line has no effect\\.$#"
+            paths:
+                - ./tests/*Test.php
+                - ./tests/benchmark/*Bench.php
+        -
+            message: "#^Call to method Ramsey\\\\Uuid\\\\.+ on a separate line has no effect\\.$#"
+            paths:
+                - ./tests/Builder/*Test.php
+                - ./tests/Converter/*Test.php
+                - ./tests/Generator/*Test.php
+                - ./tests/Guid/*Test.php
+                - ./tests/Nonstandard/*Test.php
+                - ./tests/Rfc4122/*Test.php
