@@ -9,6 +9,7 @@ use Ramsey\Uuid\Codec\CodecInterface;
 use Ramsey\Uuid\Exception\UnableToBuildUuidException;
 use Ramsey\Uuid\Guid\GuidBuilder;
 use Ramsey\Uuid\Test\TestCase;
+use RuntimeException;
 
 class GuidBuilderTest extends TestCase
 {
@@ -19,7 +20,7 @@ class GuidBuilderTest extends TestCase
         $builder = Mockery::mock(GuidBuilder::class);
         $builder->shouldAllowMockingProtectedMethods();
         $builder->shouldReceive('buildFields')->andThrow(
-            \RuntimeException::class,
+            RuntimeException::class,
             'exception thrown'
         );
         $builder->shouldReceive('build')->passthru();

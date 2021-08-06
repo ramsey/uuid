@@ -19,6 +19,8 @@ use function unpack;
 class PeclUuidNameGeneratorTest extends TestCase
 {
     /**
+     * @param non-empty-string $ns
+     *
      * @dataProvider provideNamesForHashingTest
      */
     public function testPeclUuidNameGeneratorHashesName(string $ns, string $name, string $algorithm): void

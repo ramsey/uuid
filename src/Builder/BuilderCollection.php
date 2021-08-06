@@ -26,6 +26,8 @@ use Traversable;
 
 /**
  * A collection of UuidBuilderInterface objects
+ *
+ * @extends AbstractCollection<UuidBuilderInterface>
  */
 class BuilderCollection extends AbstractCollection
 {
@@ -51,10 +53,11 @@ class BuilderCollection extends AbstractCollection
      *     a UuidInterface instance
      *
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
+     * @psalm-suppress RedundantConditionGivenDocblockType
      */
     public function unserialize($serialized): void
     {
-        /** @var mixed[] $data */
+        /** @var array<array-key, UuidBuilderInterface> $data */
         $data = unserialize($serialized, [
             'allowed_classes' => [
                 BrickMathCalculator::class,
@@ -67,6 +70,11 @@ class BuilderCollection extends AbstractCollection
             ],
         ]);
 
-        $this->data = $data;
+        $this->data = array_filter(
+            $data,
+            function ($unserialized): bool {
+                return $unserialized instanceof UuidBuilderInterface;
+            }
+        );
     }
 }

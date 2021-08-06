@@ -177,7 +177,6 @@ class SystemDceSecurityProvider implements DceSecurityProviderInterface
             return '';
         }
 
-        /** @var string $sid */
         $sid = str_getcsv(trim((string) $response))[1] ?? '';
 
         if (($lastHyphen = strrpos($sid, '-')) === false) {

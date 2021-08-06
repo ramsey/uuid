@@ -1,22 +1,14 @@
 <?xml version="1.0"?>
-<ruleset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/squizlabs/PHP_CodeSniffer/3.5.0/phpcs.xsd"
-         name="ramsey/uuid">
+<ruleset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="vendor/squizlabs/php_codesniffer/phpcs.xsd" name="Ramsey">
 
-    <description>ramsey/uuid coding standard</description>
+    <arg name="extensions" value="php"/>
+    <arg name="colors"/>
+    <arg value="sp"/>
 
-    <!--
-        Much of this coding standard is borrowed from chiron/coding-standard:
-        https://github.com/ncou/coding-standard
-    -->
-
-    <!-- Source and tests must follow the coding standard. -->
     <file>./src</file>
     <file>./tests</file>
 
-    <!-- Arguments for the command line runner. -->
-    <arg name="colors"/>
-    <arg value="sp"/>
+    <description>A common coding standard for Ramsey's PHP libraries.</description>
 
     <!-- Rules -->
     <rule ref="PSR12">
@@ -72,6 +64,13 @@
     <!-- Forbid deprecated functions -->
     <rule ref="Generic.PHP.DeprecatedFunctions"/>
 
+    <!-- Allow comments to run longer than 120 characters -->
+    <rule ref="Generic.Files.LineLength">
+        <properties>
+            <property name="ignoreComments" value="true"/>
+        </properties>
+    </rule>
+
     <!-- Forbid a bunch of functions -->
     <rule ref="Generic.PHP.ForbiddenFunctions">
         <properties>
@@ -102,6 +101,9 @@
 
     <!-- Require comma after last element in multi-line array -->
     <rule ref="SlevomatCodingStandard.Arrays.TrailingArrayComma"/>
+
+    <!-- Rules for single-line arrays. -->
+    <rule ref="SlevomatCodingStandard.Arrays.SingleLineArrayWhitespace"/>
 
     <!-- Require presence of constant visibility -->
     <rule ref="SlevomatCodingStandard.Classes.ClassConstantVisibility">
@@ -143,15 +145,8 @@
             <property name="linesCountBetweenDescriptionAndAnnotations" value="1"/>
             <property name="linesCountBetweenAnnotationsGroups" value="1"/>
             <property name="annotationsGroups" type="array">
-                <element value="
-                    @internal,
-                    @deprecated,
-                "/>
-                <element value="
-                    @link,
-                    @see,
-                    @uses,
-                "/>
+                <element value="@internal,@deprecated,"/>
+                <element value="@link,@see,@uses,"/>
                 <element value="@param"/>
                 <element value="@return"/>
                 <element value="@throws"/>
@@ -179,7 +174,11 @@
     <rule ref="SlevomatCodingStandard.Commenting.EmptyComment"/>
 
     <!-- Report invalid format of inline phpDocs with @var -->
-    <rule ref="SlevomatCodingStandard.Commenting.InlineDocCommentDeclaration"/>
+    <rule ref="SlevomatCodingStandard.Commenting.InlineDocCommentDeclaration">
+        <properties>
+            <property name="allowDocCommentAboveReturn" value="true"/>
+        </properties>
+    </rule>
 
     <!-- Report use of the useless @inheritDoc annotation -->
     <rule ref="SlevomatCodingStandard.Commenting.UselessInheritDocComment"/>
@@ -187,11 +186,11 @@
     <!-- Require consistent spacing for control structures (add a line break) -->
     <rule ref="SlevomatCodingStandard.ControlStructures.JumpStatementsSpacing">
         <properties>
-            <property name="tokensToCheck" type="array">
-                <element value="T_RETURN" />
-                <element value="T_THROW" />
-                <element value="T_BREAK" />
-                <element value="T_CONTINUE" />
+            <property name="jumpStatements" type="array">
+                <element value="break"/>
+                <element value="continue"/>
+                <element value="return"/>
+                <element value="throw"/>
             </property>
         </properties>
     </rule>
@@ -237,19 +236,19 @@
     <!-- Forbid multiple use statements on same line -->
     <rule ref="SlevomatCodingStandard.Namespaces.MultipleUsesPerLine"/>
 
-    <!-- Forbid using absolute class name references -->
+    <!-- Forbid using absolute class name references (except global ones) -->
     <rule ref="SlevomatCodingStandard.Namespaces.ReferenceUsedNamesOnly">
         <properties>
             <property name="allowFallbackGlobalConstants" value="false"/>
+            <property name="allowFallbackGlobalFunctions" value="true"/>
+            <property name="allowFullyQualifiedGlobalClasses" value="false"/>
             <property name="allowFullyQualifiedGlobalConstants" value="false"/>
             <property name="allowFullyQualifiedGlobalFunctions" value="false"/>
-            <property name="allowFullyQualifiedExceptions" value="true"/>
-            <property name="allowPartialUses" value="false"/>
-            <property name="fullyQualifiedKeywords" type="array">
-                <element value="T_EXTENDS"/>
-                <element value="T_IMPLEMENTS"/>
-                <element value="T_USE"/>
-            </property>
+            <property name="allowFullyQualifiedNameForCollidingClasses" value="true"/>
+            <property name="allowFullyQualifiedNameForCollidingConstants" value="true"/>
+            <property name="allowFullyQualifiedNameForCollidingFunctions" value="true"/>
+            <property name="allowPartialUses" value="true"/>
+            <property name="searchAnnotations" value="true"/>
         </properties>
     </rule>
 
@@ -278,6 +277,9 @@
     <!-- Forbid weak comparisons -->
     <rule ref="SlevomatCodingStandard.Operators.DisallowEqualOperators"/>
 
+    <!-- Require NOWDOC if string interpolation not used -->
+    <rule ref="SlevomatCodingStandard.PHP.RequireNowdoc"/>
+
     <!-- Forbid 'list(...)' syntax -->
     <rule ref="SlevomatCodingStandard.PHP.ShortList"/>
 
@@ -305,7 +307,19 @@
     </rule>
 
     <!-- Require presence of declare(strict_types=1) -->
-    <rule ref="SlevomatCodingStandard.TypeHints.DeclareStrictTypes.DeclareStrictTypesMissing"/>
+    <rule ref="SlevomatCodingStandard.TypeHints.DeclareStrictTypes">
+        <!-- Ignore whitespace requirements for lines occurring before declare(strict_types=1).
+             In general, we have two lines before this statement, one before the
+             file header comment and one after. The sniff does not count any
+             newlines from the comment block. However, in tests, we don't use
+             file header comments, so we have only one line before this
+             statement. This causes problems, so we just ignore this error. -->
+        <exclude name="SlevomatCodingStandard.TypeHints.DeclareStrictTypes.IncorrectWhitespaceBeforeDeclare"/>
+        <properties>
+            <property name="linesCountAfterDeclare" value="1"/>
+            <property name="spacesCountAroundEqualsSign" value="0"/>
+        </properties>
+    </rule>
 
     <!-- Require use of short versions of scalar types (i.e. int instead of integer) -->
     <rule ref="SlevomatCodingStandard.TypeHints.LongTypeHints"/>
@@ -326,6 +340,9 @@
         <properties>
             <property name="enableObjectTypeHint" value="true"/>
         </properties>
+
+        <!-- We don't want to check for this just yet. -->
+        <exclude name="SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint"/>
     </rule>
     <rule ref="SlevomatCodingStandard.TypeHints.PropertyTypeHint">
         <properties>
@@ -347,8 +364,18 @@
     <!-- Require the return type hint to have one space (i.e. function foo(): ?int) -->
     <rule ref="SlevomatCodingStandard.TypeHints.ReturnTypeHintSpacing"/>
 
+    <!-- For arrow functions, require 1 space after the keyword and before/after the arrow -->
+    <rule ref="SlevomatCodingStandard.Functions.ArrowFunctionDeclaration"/>
+
     <!-- Forbid useless @var for constants -->
     <rule ref="SlevomatCodingStandard.TypeHints.UselessConstantTypeHint"/>
+
+    <!-- Disallow use of super-global variables -->
+    <rule ref="SlevomatCodingStandard.Variables.DisallowSuperGlobalVariable"/>
+
+    <!-- Clean up unnecessary variables -->
+    <rule ref="SlevomatCodingStandard.Variables.UselessVariable"/>
+    <rule ref="SlevomatCodingStandard.Variables.UnusedVariable"/>
 
     <!-- Forbid spaces around square brackets -->
     <rule ref="Squiz.Arrays.ArrayBracketSpacing"/>
@@ -394,7 +421,7 @@
     <!-- Require 1 line before and after function, except at the top and bottom -->
     <rule ref="Squiz.WhiteSpace.FunctionSpacing">
         <properties>
-            <property name="spacing" value="1" />
+            <property name="spacing" value="1"/>
             <property name="spacingBeforeFirst" value="0"/>
             <property name="spacingAfterLast" value="0"/>
         </properties>
@@ -405,6 +432,13 @@
 
     <!-- Require space around logical operators -->
     <rule ref="Squiz.WhiteSpace.LogicalOperatorSpacing"/>
+
+    <rule ref="SlevomatCodingStandard.TypeHints.UnionTypeHintFormat">
+        <properties>
+            <property name="withSpaces" value="yes"/>
+            <property name="nullPosition" value="last"/>
+        </properties>
+    </rule>
 
     <!-- Forbid spaces around '->' operator -->
     <rule ref="Squiz.WhiteSpace.ObjectOperatorSpacing">
@@ -433,7 +467,10 @@
 
     <!-- Force camelCase variables -->
     <rule ref="Squiz.NamingConventions.ValidVariableName">
-        <exclude name="Squiz.NamingConventions.ValidVariableName.PrivateNoUnderscore" />
+        <exclude name="Squiz.NamingConventions.ValidVariableName.PrivateNoUnderscore"/>
     </rule>
+
+    <!-- Checks duplicate spaces anywhere because there aren't sniffs for every part of code to check formatting. -->
+    <rule ref="SlevomatCodingStandard.Whitespaces.DuplicateSpaces"/>
 
 </ruleset>

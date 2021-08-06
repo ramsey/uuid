@@ -20,6 +20,8 @@ use Ramsey\Uuid\Type\Hexadecimal;
 
 /**
  * A collection of NodeProviderInterface objects
+ *
+ * @extends AbstractCollection<NodeProviderInterface>
  */
 class NodeProviderCollection extends AbstractCollection
 {
@@ -35,10 +37,11 @@ class NodeProviderCollection extends AbstractCollection
      *     a UuidInterface instance
      *
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
+     * @psalm-suppress RedundantConditionGivenDocblockType
      */
     public function unserialize($serialized): void
     {
-        /** @var mixed[] $data */
+        /** @var array<array-key, NodeProviderInterface> $data */
         $data = unserialize($serialized, [
             'allowed_classes' => [
                 Hexadecimal::class,
@@ -48,6 +51,11 @@ class NodeProviderCollection extends AbstractCollection
             ],
         ]);
 
-        $this->data = $data;
+        $this->data = array_filter(
+            $data,
+            function ($unserialized): bool {
+                return $unserialized instanceof NodeProviderInterface;
+            }
+        );
     }
 }

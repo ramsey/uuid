@@ -75,6 +75,7 @@ class StringCodec implements CodecInterface
      */
     public function encodeBinary(UuidInterface $uuid): string
     {
+        /** @phpstan-ignore-next-line PHPStan complains that this is not a non-empty-string. */
         return $uuid->getFields()->getBytes();
     }
 
