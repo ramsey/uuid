@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Ramsey\Uuid\Test\Codec;
 
+use InvalidArgumentException;
 use Mockery;
 use PHPUnit\Framework\MockObject\MockObject;
 use Ramsey\Uuid\Builder\UuidBuilderInterface;
@@ -112,7 +113,7 @@ class StringCodecTest extends TestCase
         $string = 'invalid-uuid';
         $codec = new StringCodec($this->builder);
 
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
         $codec->decode($string);
     }
 
@@ -132,7 +133,7 @@ class StringCodecTest extends TestCase
         $bytes = pack('H*', $string);
         $codec = new StringCodec($this->builder);
 
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('$bytes string should contain 16 characters.');
         $codec->decodeBytes($bytes);
     }

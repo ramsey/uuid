@@ -55,7 +55,6 @@ class FallbackBuilder implements UuidBuilderInterface
     {
         $lastBuilderException = null;
 
-        /** @var UuidBuilderInterface $builder */
         foreach ($this->builders as $builder) {
             try {
                 return $builder->build($codec, $bytes);

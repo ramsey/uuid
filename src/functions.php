@@ -29,7 +29,7 @@ use Ramsey\Uuid\Type\Integer as IntegerObject;
  *     could arise when the clock is set backwards in time or if the node ID
  *     changes
  *
- * @return string Version 1 UUID as a string
+ * @return non-empty-string Version 1 UUID as a string
  */
 function v1($node = null, ?int $clockSeq = null): string
 {
@@ -52,7 +52,7 @@ function v1($node = null, ?int $clockSeq = null): string
  *     that could arise when the clock is set backwards in time or if the
  *     node ID changes
  *
- * @return string Version 2 UUID as a string
+ * @return non-empty-string Version 2 UUID as a string
  */
 function v2(
     int $localDomain,
@@ -69,7 +69,10 @@ function v2(
  *
  * @param string|UuidInterface $ns The namespace (must be a valid UUID)
  *
- * @return string Version 3 UUID as a string
+ * @return non-empty-string Version 3 UUID as a string
+ *
+ * @psalm-pure note: changing the internal factory is an edge case not covered by purity invariants,
+ *             but under constant factory setups, this method operates in functionally pure manners
  */
 function v3($ns, string $name): string
 {
@@ -79,7 +82,7 @@ function v3($ns, string $name): string
 /**
  * Returns a version 4 (random) UUID
  *
- * @return string Version 4 UUID as a string
+ * @return non-empty-string Version 4 UUID as a string
  */
 function v4(): string
 {
@@ -92,7 +95,10 @@ function v4(): string
  *
  * @param string|UuidInterface $ns The namespace (must be a valid UUID)
  *
- * @return string Version 5 UUID as a string
+ * @return non-empty-string Version 5 UUID as a string
+ *
+ * @psalm-pure note: changing the internal factory is an edge case not covered by purity invariants,
+ *             but under constant factory setups, this method operates in functionally pure manners
  */
 function v5($ns, string $name): string
 {
@@ -109,7 +115,7 @@ function v5($ns, string $name): string
  *     could arise when the clock is set backwards in time or if the node ID
  *     changes
  *
- * @return string Version 6 UUID as a string
+ * @return non-empty-string Version 6 UUID as a string
  */
 function v6(?Hexadecimal $node = null, ?int $clockSeq = null): string
 {

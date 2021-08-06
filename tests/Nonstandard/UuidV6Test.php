@@ -62,6 +62,8 @@ class UuidV6Test extends TestCase
     }
 
     /**
+     * @param non-empty-string $uuid
+     *
      * @dataProvider provideUuidV6WithOddMicroseconds
      */
     public function testGetDateTimeProperlyHandlesLongMicroseconds(string $uuid, string $expected): void
@@ -101,6 +103,9 @@ class UuidV6Test extends TestCase
     }
 
     /**
+     * @param non-empty-string $uuidv6
+     * @param non-empty-string $uuidv1
+     *
      * @dataProvider provideUuidV1UuidV6Equivalents
      */
     public function testToUuidV1(string $uuidv6, string $uuidv1): void
@@ -119,6 +124,9 @@ class UuidV6Test extends TestCase
     }
 
     /**
+     * @param non-empty-string $uuidv6
+     * @param non-empty-string $uuidv1
+     *
      * @dataProvider provideUuidV1UuidV6Equivalents
      */
     public function testFromUuidV1(string $uuidv6, string $uuidv1): void

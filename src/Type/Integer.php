@@ -120,6 +120,7 @@ final class Integer implements NumberInterface
      * @param string $serialized The serialized string representation of the object
      *
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
+     * @psalm-suppress UnusedMethodCall
      */
     public function unserialize($serialized): void
     {
