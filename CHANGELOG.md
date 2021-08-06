@@ -21,6 +21,19 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Security
 
 
+## 4.2.0 - 2021-08-06
+
+### Added
+
+* Add `Ramsey\Uuid\Exception\UuidExceptionInterface` for all ramsey/uuid
+  exceptions to implement. See [ramsey/uuid#340](https://github.com/ramsey/uuid/pull/340).
+
+### Fixed
+
+* Fix serialization of UUIDs.
+  See [ramsey/uuid#361](https://github.com/ramsey/uuid/pull/361).
+
+
 ## 4.1.1 - 2020-08-18
 
 ### Fixed
