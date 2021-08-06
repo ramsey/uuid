@@ -81,6 +81,7 @@
             "@phpstan",
             "@psalm"
         ],
+        "build:clean": "git clean -fX build/",
         "lint": "parallel-lint src tests",
         "lint:paths": "parallel-lint",
         "phpbench": "phpbench run",
