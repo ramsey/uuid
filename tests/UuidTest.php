@@ -1649,8 +1649,7 @@ class UuidTest extends TestCase
 
         $this->expectException(DateTimeException::class);
         $this->expectExceptionMessage(
-            'DateTimeImmutable::__construct(): Failed to parse time string '
-            . '(@1234567890.1234567) at position 18 (7): Unexpected character'
+            'Failed to parse time string (@1234567890.1234567) at position 18 (7): Unexpected character'
         );
 
         $uuid->getDateTime();
