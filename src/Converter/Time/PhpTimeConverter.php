@@ -111,7 +111,7 @@ class PhpTimeConverter implements TimeConverterInterface
             );
         }
 
-        return new Hexadecimal(str_pad(dechex((int) $uuidTime), 16, '0', STR_PAD_LEFT));
+        return new Hexadecimal(str_pad(dechex($uuidTime), 16, '0', STR_PAD_LEFT));
     }
 
     public function convertTime(Hexadecimal $uuidTimestamp): Time

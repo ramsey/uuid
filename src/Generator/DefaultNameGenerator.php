@@ -16,6 +16,7 @@ namespace Ramsey\Uuid\Generator;
 
 use Ramsey\Uuid\Exception\NameException;
 use Ramsey\Uuid\UuidInterface;
+use ValueError;
 
 use function hash;
 
@@ -31,7 +32,7 @@ class DefaultNameGenerator implements NameGeneratorInterface
         try {
             /** @var string|bool $bytes */
             $bytes = @hash($hashAlgorithm, $ns->getBytes() . $name, true);
-        } catch (\ValueError $e) {
+        } catch (ValueError $e) {
             $bytes = false; // keep same behavior than PHP 7
         }
 

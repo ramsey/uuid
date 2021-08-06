@@ -98,7 +98,6 @@ class FieldsTest extends TestCase
     /**
      * @param string|int $expectedValue
      *
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingAnyTypeHint
      * @dataProvider fieldGetterMethodProvider
      */
     public function testFieldGetterMethods(string $bytes, string $methodName, $expectedValue): void
