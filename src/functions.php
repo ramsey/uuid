@@ -70,6 +70,9 @@ function v2(
  * @param string|UuidInterface $ns The namespace (must be a valid UUID)
  *
  * @return non-empty-string Version 3 UUID as a string
+ *
+ * @psalm-pure note: changing the internal factory is an edge case not covered by purity invariants,
+ *             but under constant factory setups, this method operates in functionally pure manners
  */
 function v3($ns, string $name): string
 {
@@ -93,6 +96,9 @@ function v4(): string
  * @param string|UuidInterface $ns The namespace (must be a valid UUID)
  *
  * @return non-empty-string Version 5 UUID as a string
+ *
+ * @psalm-pure note: changing the internal factory is an edge case not covered by purity invariants,
+ *             but under constant factory setups, this method operates in functionally pure manners
  */
 function v5($ns, string $name): string
 {
