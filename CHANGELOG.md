@@ -21,6 +21,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Security
 
 
+## [3.9.4] - 2021-08-06
+
+### Fixed
+
+* Allow installation of paragonie/random_compat v9.99.100 (for PHP 8 compatibility).
+
+
 ## [3.9.3] - 2020-02-20
 
 ### Fixed
@@ -608,7 +615,8 @@ versions leading up to this release.*
 [ramsey/uuid-doctrine]: https://github.com/ramsey/uuid-doctrine
 [ramsey/uuid-console]: https://github.com/ramsey/uuid-console
 
-[unreleased]: https://github.com/ramsey/uuid/compare/3.9.3...HEAD
+[unreleased]: https://github.com/ramsey/uuid/compare/3.9.4...3.x
+[3.9.4]: https://github.com/ramsey/uuid/compare/3.9.2...3.9.4
 [3.9.3]: https://github.com/ramsey/uuid/compare/3.9.2...3.9.3
 [3.9.2]: https://github.com/ramsey/uuid/compare/3.9.1...3.9.2
 [3.9.1]: https://github.com/ramsey/uuid/compare/3.9.0...3.9.1
