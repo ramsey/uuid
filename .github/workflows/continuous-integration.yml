@@ -1,54 +1,64 @@
-# https://help.github.com/en/categories/automating-your-workflow-with-github-actions
+# GitHub Actions Documentation: https://docs.github.com/en/actions
 
-name: "CI"
+name: "build"
 
-on:
-  pull_request:
-  push:
-    branches:
-      - "master"
+on: ["pull_request", "push"]
 
 env:
   COMPOSER_ROOT_VERSION: "1.99.99"
 
 jobs:
-
   coding-standards:
-    name: "Coding Standards"
+    name: "Coding standards"
     runs-on: "ubuntu-latest"
     steps:
-      - uses: "actions/checkout@v2"
-      - uses: "shivammathur/setup-php@v2"
+      - name: "Checkout repository"
+        uses: "actions/checkout@v2"
+
+      - name: "Install PHP"
+        uses: "shivammathur/setup-php@v2"
         with:
-          php-version: "7.4"
+          php-version: "latest"
+          extensions: bcmath, ctype, gmp
           coverage: "none"
-          ini-values: "memory_limit=-1"
-      - uses: "ramsey/composer-install@v1"
-      - name: "Run the linter"
+
+      - name: "Install dependencies (Composer)"
+        uses: "ramsey/composer-install@v1"
+
+      - name: "Check syntax (php-parallel-lint)"
         run: "composer lint -- --colors"
-      - name: "Check coding standards"
+
+      - name: "Check coding standards (PHP_CodeSniffer)"
         run: "./vendor/bin/phpcs --colors"
 
   static-analysis:
-    name: "Static Analysis"
+    name: "Static analysis"
     runs-on: "ubuntu-latest"
     steps:
-      - uses: "actions/checkout@v2"
-      - uses: "shivammathur/setup-php@v2"
+      - name: "Checkout repository"
+        uses: "actions/checkout@v2"
+
+      - name: "Install PHP"
+        uses: "shivammathur/setup-php@v2"
         with:
-          php-version: "7.4"
+          php-version: "latest"
+          extensions: bcmath, ctype, gmp
           coverage: "none"
-          ini-values: "memory_limit=-1"
-      - uses: "ramsey/composer-install@v1"
-      - name: "Run PHPStan"
+
+      - name: "Install dependencies (Composer)"
+        uses: "ramsey/composer-install@v1"
+
+      - name: "Statically analyze code (PHPStan)"
         run: "composer phpstan -- --ansi"
-      - name: "Run Psalm"
+
+      - name: "Statically analyze code (Psalm)"
         run: "composer psalm -- --shepherd"
 
   benchmark:
     name: "Benchmark"
     runs-on: "ubuntu-latest"
     continue-on-error: ${{ matrix.experimental }}
+
     strategy:
       fail-fast: false
       matrix:
@@ -56,30 +66,65 @@ jobs:
           - "7.2"
           - "7.3"
           - "7.4"
+          - "8.0"
         experimental:
           - false
         include:
-          - php-version: "8.0"
+          - php-version: "8.1"
             experimental: true
-            composer-options: "--ignore-platform-reqs"
+            composer-options: "--ignore-platform-req=php"
+
     steps:
-      - uses: "actions/checkout@v2"
-      - uses: "shivammathur/setup-php@v2"
+      - name: "Checkout repository"
+        uses: "actions/checkout@v2"
+
+      - name: "Install PHP"
+        uses: "shivammathur/setup-php@v2"
         with:
           php-version: "${{ matrix.php-version }}"
           extensions: bcmath, ctype, gmp
           coverage: "none"
           ini-values: "memory_limit=-1"
-      - uses: "ramsey/composer-install@v1"
+
+      - name: "Install dependencies (Composer)"
+        uses: "ramsey/composer-install@v1"
         with:
           composer-options: "${{ matrix.composer-options }}"
+
       - name: "Run PHPBench"
         run: "composer phpbench -- --ansi"
+
+  code-coverage:
+    name: "Code coverage"
+    runs-on: "ubuntu-latest"
+    steps:
+      - name: "Checkout repository"
+        uses: "actions/checkout@v2"
+
+      - name: "Install PHP"
+        uses: "shivammathur/setup-php@v2"
+        with:
+          php-version: "latest"
+          extensions: bcmath, ctype, gmp
+          coverage: "pcov"
+          ini-values: "memory_limit=-1"
+
+      - name: "Install dependencies (Composer)"
+        uses: "ramsey/composer-install@v1"
+        with:
+          dependency-versions: "${{ matrix.dependencies }}"
+
+      - name: "Run unit tests (PHPUnit)"
+        run: "./vendor/bin/phpunit --verbose --colors=always --coverage-text --coverage-clover build/logs/clover.xml"
+
+      - name: "Publish coverage report to Codecov"
+        uses: "codecov/codecov-action@v1"
 
   unit-tests:
     name: "Unit Tests"
     runs-on: "ubuntu-latest"
     continue-on-error: ${{ matrix.experimental }}
+
     strategy:
       fail-fast: false
       matrix:
@@ -87,24 +132,30 @@ jobs:
           - "7.2"
           - "7.3"
           - "7.4"
+          - "8.0"
         experimental:
           - false
         include:
-          - php-version: "8.0"
+          - php-version: "8.1"
             experimental: true
-            composer-options: "--ignore-platform-reqs"
+            composer-options: "--ignore-platform-req=php"
+
     steps:
-      - uses: "actions/checkout@v2"
-      - uses: "shivammathur/setup-php@v2"
+      - name: "Checkout repository"
+        uses: "actions/checkout@v2"
+
+      - name: "Install PHP"
+        uses: "shivammathur/setup-php@v2"
         with:
           php-version: "${{ matrix.php-version }}"
           extensions: bcmath, ctype, gmp
-          coverage: "pcov"
+          coverage: "none"
           ini-values: "memory_limit=-1"
-      - uses: "ramsey/composer-install@v1"
+
+      - name: "Install dependencies (Composer)"
+        uses: "ramsey/composer-install@v1"
         with:
           composer-options: "${{ matrix.composer-options }}"
-      - name: "Run unit tests"
-        run: "./vendor/bin/phpunit --verbose --colors=always --coverage-clover build/logs/clover.xml --coverage-text"
-      - name: "Publish coverage report to Codecov"
-        uses: "codecov/codecov-action@v1"
+
+      - name: "Run unit tests (PHPUnit)"
+        run: "./vendor/bin/phpunit --verbose --colors=always --no-coverage"

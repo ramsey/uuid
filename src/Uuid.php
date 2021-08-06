@@ -238,9 +238,9 @@ class Uuid implements UuidInterface
      * ```
      * use Ramsey\Uuid\Uuid;
      *
-     * $timeBasedUuid     = Uuid::uuid1();
-     * $namespaceMd5Uuid  = Uuid::uuid3(Uuid::NAMESPACE_URL, 'http://php.net/');
-     * $randomUuid        = Uuid::uuid4();
+     * $timeBasedUuid = Uuid::uuid1();
+     * $namespaceMd5Uuid = Uuid::uuid3(Uuid::NAMESPACE_URL, 'http://php.net/');
+     * $randomUuid = Uuid::uuid4();
      * $namespaceSha1Uuid = Uuid::uuid5(Uuid::NAMESPACE_URL, 'http://php.net/');
      * ```
      *
@@ -436,7 +436,7 @@ class Uuid implements UuidInterface
     /**
      * Creates a UUID from the string standard representation
      *
-     * @param string $uuid A hexadecimal string
+     * @param non-empty-string $uuid A hexadecimal string
      *
      * @return UuidInterface A UuidInterface instance created from a hexadecimal
      *     string representation

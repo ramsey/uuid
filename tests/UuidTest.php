@@ -404,7 +404,7 @@ class UuidTest extends TestCase
         $this->expectException(UnsupportedOperationException::class);
         $this->expectExceptionMessage('Not a time-based UUID');
 
-        $ts = $uuid->getTimestamp();
+        $uuid->getTimestamp();
     }
 
     public function testGetTimestampHexFromNonVersion1Uuid(): void
@@ -415,7 +415,7 @@ class UuidTest extends TestCase
         $this->expectException(UnsupportedOperationException::class);
         $this->expectExceptionMessage('Not a time-based UUID');
 
-        $ts = $uuid->getTimestampHex();
+        $uuid->getTimestampHex();
     }
 
     public function testGetUrn(): void
@@ -425,6 +425,8 @@ class UuidTest extends TestCase
     }
 
     /**
+     * @param non-empty-string $uuid
+     *
      * @dataProvider provideVariousVariantUuids
      */
     public function testGetVariantForVariousVariantUuids(string $uuid, int $variant): void
@@ -574,7 +576,7 @@ class UuidTest extends TestCase
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Invalid node value');
 
-        $uuid = Uuid::uuid1('9223372036854775808');
+        Uuid::uuid1('9223372036854775808');
     }
 
     public function testUuid1WithNonHexadecimalNode(): void
@@ -582,7 +584,7 @@ class UuidTest extends TestCase
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Invalid node value');
 
-        $uuid = Uuid::uuid1('db77e160355g');
+        Uuid::uuid1('db77e160355g');
     }
 
     public function testUuid1WithNon48bitNumber(): void
@@ -590,7 +592,7 @@ class UuidTest extends TestCase
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Invalid node value');
 
-        $uuid = Uuid::uuid1('db77e160355ef');
+        Uuid::uuid1('db77e160355ef');
     }
 
     public function testUuid1WithRandomNode(): void
@@ -689,6 +691,9 @@ class UuidTest extends TestCase
      *
      * Taken from the Python UUID tests in
      * http://hg.python.org/cpython/file/2f4c4db9aee5/Lib/test/test_uuid.py
+     *
+     * @param non-empty-string $uuid
+     * @param non-empty-string $ns
      *
      * @dataProvider provideUuid3WithKnownUuids
      */
@@ -822,6 +827,9 @@ class UuidTest extends TestCase
      *
      * Taken from the Python UUID tests in
      * http://hg.python.org/cpython/file/2f4c4db9aee5/Lib/test/test_uuid.py
+     *
+     * @param non-empty-string $uuid
+     * @param non-empty-string $ns
      *
      * @dataProvider provideUuid5WithKnownUuids
      */
@@ -1152,7 +1160,11 @@ class UuidTest extends TestCase
      * This test ensures that Ramsey\Uuid passes the same test cases
      * as the Python UUID library.
      *
+     * @param non-empty-string $string
+     * @param non-empty-string $curly
+     * @param non-empty-string $hex
      * @param string[] $fields
+     * @param non-empty-string $urn
      *
      * @dataProvider providePythonTests
      */
@@ -1527,7 +1539,7 @@ class UuidTest extends TestCase
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Invalid UUID string:');
 
-        $uuid = Uuid::uuid3('', '');
+        Uuid::uuid3('', '');
     }
 
     public function testUuid3WithEmptyName(): void
@@ -1549,7 +1561,7 @@ class UuidTest extends TestCase
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Invalid UUID string:');
 
-        $uuid = Uuid::uuid5('', '');
+        Uuid::uuid5('', '');
     }
 
     public function testUuid5WithEmptyName(): void

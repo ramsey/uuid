@@ -7,7 +7,7 @@
  * file that was distributed with this source code.
  *
  * @copyright Copyright (c) Ben Ramsey <ben@benramsey.com>
- * @license   http://opensource.org/licenses/MIT MIT
+ * @license http://opensource.org/licenses/MIT MIT
  */
 
 declare(strict_types=1);
@@ -242,6 +242,7 @@ final class LazyUuidFromString implements UuidInterface
      */
     public function getBytes(): string
     {
+        /** @phpstan-ignore-next-line PHPStan complains that this is not a non-empty-string. */
         return (string) hex2bin(str_replace('-', '', $this->uuid));
     }
 
@@ -497,7 +498,7 @@ final class LazyUuidFromString implements UuidInterface
     public function getTimestamp(): string
     {
         $instance = ($this->unwrapped ?? $this->unwrap());
-        $fields   = $instance->getFields();
+        $fields = $instance->getFields();
 
         if ($fields->getVersion() !== 1) {
             throw new UnsupportedOperationException('Not a time-based UUID');

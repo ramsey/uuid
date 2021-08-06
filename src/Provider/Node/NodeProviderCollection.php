@@ -20,6 +20,8 @@ use Ramsey\Uuid\Type\Hexadecimal;
 
 /**
  * A collection of NodeProviderInterface objects
+ *
+ * @extends AbstractCollection<NodeProviderInterface>
  */
 class NodeProviderCollection extends AbstractCollection
 {
@@ -38,7 +40,7 @@ class NodeProviderCollection extends AbstractCollection
      */
     public function unserialize($serialized): void
     {
-        /** @var mixed[] $data */
+        /** @var array<array-key, NodeProviderInterface> $data */
         $data = unserialize($serialized, [
             'allowed_classes' => [
                 Hexadecimal::class,
