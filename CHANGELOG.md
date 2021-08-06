@@ -1191,7 +1191,7 @@ versions leading up to this release.*
 [comb sequential uuids]: http://www.informit.com/articles/article.aspx?p=25862&seqNum=7
 [paragonie/random_compat]: https://github.com/paragonie/random_compat
 [collision issue]: https://github.com/ramsey/uuid/issues/80
-[contributor code of conduct]: https://github.com/ramsey/uuid/blob/master/.github/CODE_OF_CONDUCT.md
+[contributor code of conduct]: https://github.com/ramsey/uuid/blob/main/CODE_OF_CONDUCT.md
 [pecl libsodium extension]: http://pecl.php.net/package/libsodium
 [ircmaxell/random-lib]: https://github.com/ircmaxell/RandomLib
 [doctrine field type]: http://doctrine-dbal.readthedocs.org/en/latest/reference/types.html

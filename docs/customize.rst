@@ -47,10 +47,10 @@ Replace the Default Factory
     out how, see :ref:`customize.factory`.
 
 
-.. _UuidFactory: https://github.com/ramsey/uuid/blob/master/src/UuidFactory.php
-.. _FeatureSet: https://github.com/ramsey/uuid/blob/master/src/FeatureSet.php
-.. _codec: https://github.com/ramsey/uuid/tree/master/src/Codec
-.. _builder: https://github.com/ramsey/uuid/tree/master/src/Builder
-.. _converter: https://github.com/ramsey/uuid/tree/master/src/Converter
-.. _provider: https://github.com/ramsey/uuid/tree/master/src/Provider
-.. _generator: https://github.com/ramsey/uuid/tree/master/src/Generator
+.. _UuidFactory: https://github.com/ramsey/uuid/blob/main/src/UuidFactory.php
+.. _FeatureSet: https://github.com/ramsey/uuid/blob/main/src/FeatureSet.php
+.. _codec: https://github.com/ramsey/uuid/tree/main/src/Codec
+.. _builder: https://github.com/ramsey/uuid/tree/main/src/Builder
+.. _converter: https://github.com/ramsey/uuid/tree/main/src/Converter
+.. _provider: https://github.com/ramsey/uuid/tree/main/src/Provider
+.. _generator: https://github.com/ramsey/uuid/tree/main/src/Generator
