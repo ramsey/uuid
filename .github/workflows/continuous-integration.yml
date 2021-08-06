@@ -57,7 +57,6 @@ jobs:
   benchmark:
     name: "Benchmark"
     runs-on: "ubuntu-latest"
-    continue-on-error: ${{ matrix.experimental }}
 
     strategy:
       fail-fast: false
@@ -67,12 +66,6 @@ jobs:
           - "7.3"
           - "7.4"
           - "8.0"
-        experimental:
-          - false
-        include:
-          - php-version: "8.1"
-            experimental: true
-            composer-options: "--ignore-platform-req=php"
 
     steps:
       - name: "Checkout repository"
@@ -88,8 +81,6 @@ jobs:
 
       - name: "Install dependencies (Composer)"
         uses: "ramsey/composer-install@v1"
-        with:
-          composer-options: "${{ matrix.composer-options }}"
 
       - name: "Run PHPBench"
         run: "composer phpbench -- --ansi"
