@@ -612,6 +612,13 @@ The following functionality is deprecated and will be removed in ramsey/uuid
   throws this exception.
 
 
+## 3.9.4 - 2021-08-06
+
+### Fixed
+
+* Allow installation of paragonie/random_compat v9.99.100 (for PHP 8 compatibility).
+
+
 ## 3.9.3 - 2020-02-20
 
 ### Fixed
