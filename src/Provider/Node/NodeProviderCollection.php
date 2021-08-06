@@ -37,6 +37,7 @@ class NodeProviderCollection extends AbstractCollection
      *     a UuidInterface instance
      *
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
+     * @psalm-suppress RedundantConditionGivenDocblockType
      */
     public function unserialize($serialized): void
     {
