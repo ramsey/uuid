@@ -24,6 +24,7 @@ use Ramsey\Uuid\Rfc4122\FieldsInterface as Rfc4122FieldsInterface;
 use Ramsey\Uuid\Type\Hexadecimal;
 use Ramsey\Uuid\Type\Integer as IntegerObject;
 
+use function assert;
 use function bin2hex;
 use function preg_match;
 use function str_replace;
@@ -436,7 +437,7 @@ class Uuid implements UuidInterface
     /**
      * Creates a UUID from the string standard representation
      *
-     * @param non-empty-string $uuid A hexadecimal string
+     * @param string $uuid A hexadecimal string
      *
      * @return UuidInterface A UuidInterface instance created from a hexadecimal
      *     string representation
@@ -452,6 +453,8 @@ class Uuid implements UuidInterface
     public static function fromString(string $uuid): UuidInterface
     {
         if (! self::$factoryReplaced && preg_match(LazyUuidFromString::VALID_REGEX, $uuid) === 1) {
+            assert($uuid !== '');
+
             return new LazyUuidFromString(strtolower($uuid));
         }
 
