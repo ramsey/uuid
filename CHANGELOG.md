@@ -21,6 +21,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Security
 
 
+## 4.2.1 - 2021-08-10
+
+### Fixed
+
+* Fix *soft* BC break with `Uuid::fromString()` signature. The change from
+  `string` to `non-empty-string` on the parameter annotation introduced a
+  BC break for those using static analysis tools. This release reverts this
+  change and provides an assertion to guard against empty strings.
+  See [ramsey/uuid#383](https://github.com/ramsey/uuid/pull/383).
+
+
 ## 4.2.0 - 2021-08-06
 
 ### Added
