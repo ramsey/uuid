@@ -224,9 +224,19 @@ class Uuid implements UuidInterface
      * @return string
      * @link http://php.net/manual/en/class.serializable.php
      */
+    #[\ReturnTypeWillChange]
     public function serialize()
     {
         return $this->toString();
+    }
+
+    /**
+     * @return array
+     */
+    #[\ReturnTypeWillChange]
+    public function __serialize()
+    {
+        return ['string' => $this->toString()];
     }
 
     /**
@@ -236,12 +246,28 @@ class Uuid implements UuidInterface
      * @link http://php.net/manual/en/class.serializable.php
      * @throws InvalidUuidStringException
      */
+    #[\ReturnTypeWillChange]
     public function unserialize($serialized)
     {
         $uuid = self::fromString($serialized);
         $this->codec = $uuid->codec;
         $this->converter = $uuid->converter;
         $this->fields = $uuid->fields;
+    }
+
+    /**
+     * @param array $serialized
+     * @return void
+     * @throws InvalidUuidStringException
+     */
+    #[\ReturnTypeWillChange]
+    public function __unserialize(array $serialized)
+    {
+        if (isset($serialized['string'])) {
+            $this->unserialize($serialized['string']);
+        }
+
+        throw new InvalidUuidStringException();
     }
 
     public function compareTo(UuidInterface $other)
