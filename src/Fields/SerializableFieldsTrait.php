@@ -75,9 +75,11 @@ trait SerializableFieldsTrait
      */
     public function __unserialize(array $data): void
     {
+        // @codeCoverageIgnoreStart
         if (!isset($data['bytes'])) {
             throw new ValueError(sprintf('%s(): Argument #1 ($data) is invalid', __METHOD__));
         }
+        // @codeCoverageIgnoreEnd
 
         $this->unserialize($data['bytes']);
     }

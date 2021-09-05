@@ -121,9 +121,11 @@ final class LazyUuidFromString implements UuidInterface
      */
     public function __unserialize(array $data): void
     {
+        // @codeCoverageIgnoreStart
         if (!isset($data['string'])) {
             throw new ValueError(sprintf('%s(): Argument #1 ($data) is invalid', __METHOD__));
         }
+        // @codeCoverageIgnoreEnd
 
         $this->unserialize($data['string']);
     }
