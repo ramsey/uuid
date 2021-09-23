@@ -6,7 +6,7 @@ parameters:
     checkMissingIterableValueType: false
     reportUnmatchedIgnoredErrors: false
     bootstrapFiles:
-        - ./tests/phpstan-bootstrap.php
+        - ./tests/static-analysis/stubs.php
     ignoreErrors:
         -
             message: '#^Call to function is_int\(\) with float will always evaluate to false\.$#'
