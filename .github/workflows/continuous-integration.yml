@@ -19,7 +19,6 @@ jobs:
         uses: "shivammathur/setup-php@v2"
         with:
           php-version: "7.4" # Unable to support 8 right now
-          extensions: bcmath, ctype, gmp, libsodium, uuid
           coverage: "none"
 
       - name: "Install dependencies (Composer)"
@@ -37,6 +36,11 @@ jobs:
     steps:
       - name: "Checkout repository"
         uses: "actions/checkout@v2"
+
+      - name: "Install dependencies (apt)"
+        run: |
+          sudo apt-get update
+          sudo apt-get -y install bsdmainutils libsodium-dev uuid-dev
 
       - name: "Install PHP"
         uses: "shivammathur/setup-php@v2"
@@ -87,6 +91,11 @@ jobs:
     steps:
       - name: "Checkout repository"
         uses: "actions/checkout@v2"
+
+      - name: "Install dependencies (apt)"
+        run: |
+          sudo apt-get update
+          sudo apt-get -y install bsdmainutils libsodium-dev uuid-dev
 
       - name: "Install PHP"
         uses: "shivammathur/setup-php@v2"
