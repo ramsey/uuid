@@ -29,3 +29,7 @@ parameters:
             message: '#^Call to an undefined method Ramsey\\Uuid\\Fields\\FieldsInterface::get.*$#'
             count: 9
             path: ./src/Lazy/LazyUuidFromString.php
+        -
+            message: '#^Result of \|\| is always false\.$#'
+            count: 1
+            path: ./src/Type/Time.php

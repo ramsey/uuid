@@ -66,6 +66,9 @@ jobs:
           - "7.3"
           - "7.4"
           - "8.0"
+        include:
+          - php-version: "8.1"
+            composer-options: "--ignore-platform-req=php"
 
     steps:
       - name: "Checkout repository"
@@ -88,6 +91,14 @@ jobs:
   code-coverage:
     name: "Code coverage"
     runs-on: "ubuntu-latest"
+
+    strategy:
+      fail-fast: false
+      matrix:
+        php-version:
+          - "7.2"
+          - "8.0"
+
     steps:
       - name: "Checkout repository"
         uses: "actions/checkout@v2"
@@ -114,7 +125,6 @@ jobs:
   unit-tests:
     name: "Unit Tests"
     runs-on: "ubuntu-latest"
-    continue-on-error: ${{ matrix.experimental }}
 
     strategy:
       fail-fast: false
@@ -124,11 +134,8 @@ jobs:
           - "7.3"
           - "7.4"
           - "8.0"
-        experimental:
-          - false
         include:
           - php-version: "8.1"
-            experimental: true
             composer-options: "--ignore-platform-req=php"
 
     steps:
