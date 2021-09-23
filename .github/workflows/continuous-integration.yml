@@ -58,7 +58,7 @@ jobs:
   unit-tests:
     name: "Unit Tests"
     runs-on: "ubuntu-latest"
-    continue-on-error: ${{ matrix.experimental }}
+    # continue-on-error: ${{ matrix.experimental }}
 
     strategy:
       fail-fast: false
