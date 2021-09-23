@@ -94,14 +94,6 @@ jobs:
   code-coverage:
     name: "Code coverage"
     runs-on: "ubuntu-latest"
-
-    strategy:
-      fail-fast: false
-      matrix:
-        php-version:
-          - "7.2"
-          - "8.0"
-
     steps:
       - name: "Checkout repository"
         uses: "actions/checkout@v2"
@@ -132,7 +124,7 @@ jobs:
 
   unit-tests:
     name: "Unit Tests"
-    runs-on: "ubuntu-latest"
+    runs-on: ${{ matrix.operating-system }}
 
     strategy:
       fail-fast: false
@@ -142,11 +134,21 @@ jobs:
           - "7.3"
           - "7.4"
           - "8.0"
+        operating-system:
+          - "ubuntu-latest"
+          - "windows-latest"
         include:
           - php-version: "8.1"
+            operating-system: "ubuntu-latest"
             composer-options: "--ignore-platform-req=php"
 
     steps:
+      - name: "Configure Git (for Windows)"
+        if: ${{ matrix.operating-system == 'windows-latest' }}
+        run: |
+          git config --system core.autocrlf false
+          git config --system core.eol lf
+
       - name: "Checkout repository"
         uses: "actions/checkout@v2"
 
