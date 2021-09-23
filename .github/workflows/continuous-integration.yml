@@ -18,7 +18,7 @@ jobs:
       - name: "Install PHP"
         uses: "shivammathur/setup-php@v2"
         with:
-          php-version: "7.4" # Unable to support 8 right now
+          php-version: "7.4"
           coverage: "none"
 
       - name: "Install dependencies (Composer)"
@@ -46,7 +46,7 @@ jobs:
       - name: "Install PHP"
         uses: "shivammathur/setup-php@v2"
         with:
-          php-version: "7.4" # Unable to support 8 right now
+          php-version: "7.4"
           extensions: "bcmath, ctype, gmp, sodium, uuid"
           coverage: "pcov"
           ini-values: "memory_limit=-1"
@@ -63,7 +63,6 @@ jobs:
   unit-tests:
     name: "Unit Tests"
     runs-on: "ubuntu-latest"
-    continue-on-error: ${{ matrix.experimental }}
 
     strategy:
       fail-fast: false
@@ -78,18 +77,15 @@ jobs:
           - "7.3"
           - "7.4"
           - "8.0"
-        experimental:
-          - false
         include:
-          #- php-version: "8.1"
-          #  experimental: true
-          #  composer-options: "--ignore-platform-req=php"
           - php-version: "5.4"
             extensions: ", libsodium-1.0.7, uuid-1.0.4"
           - php-version: "5.5"
             extensions: ", libsodium-1.0.7, uuid-1.0.4"
           - php-version: "5.6"
             extensions: ", libsodium-1.0.7, uuid-1.0.4"
+          - php-version: "8.1"
+            composer-options: "--ignore-platform-req=php"
 
     steps:
       - name: "Checkout repository"

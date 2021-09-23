@@ -22,6 +22,7 @@ use Ramsey\Uuid\Codec\CodecInterface;
 use Ramsey\Uuid\Exception\InvalidUuidStringException;
 use Ramsey\Uuid\Exception\UnsatisfiedDependencyException;
 use Ramsey\Uuid\Exception\UnsupportedOperationException;
+use ReturnTypeWillChange;
 
 /**
  * Represents a universally unique identifier (UUID), according to RFC 4122.
@@ -224,9 +225,19 @@ class Uuid implements UuidInterface
      * @return string
      * @link http://php.net/manual/en/class.serializable.php
      */
+    #[ReturnTypeWillChange]
     public function serialize()
     {
         return $this->toString();
+    }
+
+    /**
+     * @return array{string: string}
+     */
+    #[ReturnTypeWillChange]
+    public function __serialize()
+    {
+        return ['string' => $this->toString()];
     }
 
     /**
@@ -236,12 +247,30 @@ class Uuid implements UuidInterface
      * @link http://php.net/manual/en/class.serializable.php
      * @throws InvalidUuidStringException
      */
+    #[ReturnTypeWillChange]
     public function unserialize($serialized)
     {
         $uuid = self::fromString($serialized);
         $this->codec = $uuid->codec;
         $this->converter = $uuid->converter;
         $this->fields = $uuid->fields;
+    }
+
+    /**
+     * @param array{string: string} $serialized
+     * @return void
+     * @throws InvalidUuidStringException
+     */
+    #[ReturnTypeWillChange]
+    public function __unserialize(array $serialized)
+    {
+        // @codeCoverageIgnoreStart
+        if (!isset($serialized['string'])) {
+            throw new InvalidUuidStringException();
+        }
+        // @codeCoverageIgnoreEnd
+
+        $this->unserialize($serialized['string']);
     }
 
     public function compareTo(UuidInterface $other)
