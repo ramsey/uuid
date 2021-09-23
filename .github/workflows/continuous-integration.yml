@@ -1,0 +1,108 @@
+# GitHub Actions Documentation: https://docs.github.com/en/actions
+
+name: "build"
+
+on: ["pull_request", "push"]
+
+env:
+  COMPOSER_ROOT_VERSION: "1.99.99"
+
+jobs:
+  coding-standards:
+    name: "Coding standards"
+    runs-on: "ubuntu-latest"
+    steps:
+      - name: "Checkout repository"
+        uses: "actions/checkout@v2"
+
+      - name: "Install PHP"
+        uses: "shivammathur/setup-php@v2"
+        with:
+          php-version: "latest"
+          extensions: bcmath, ctype, gmp, libsodium, uuid
+          coverage: "none"
+
+      - name: "Install dependencies (Composer)"
+        uses: "ramsey/composer-install@v1"
+
+      - name: "Check syntax (php-parallel-lint)"
+        run: "./vendor/bin/parallel-lint src tests --colors"
+
+      - name: "Check coding standards (PHP_CodeSniffer)"
+        run: "./vendor/bin/phpcs src tests --standard=psr2 -sp --colors"
+
+  code-coverage:
+    name: "Code coverage"
+    runs-on: "ubuntu-latest"
+    steps:
+      - name: "Checkout repository"
+        uses: "actions/checkout@v2"
+
+      - name: "Install PHP"
+        uses: "shivammathur/setup-php@v2"
+        with:
+          php-version: "latest"
+          extensions: bcmath, ctype, gmp, libsodium, uuid
+          coverage: "pcov"
+          ini-values: "memory_limit=-1"
+
+      - name: "Install dependencies (Composer)"
+        uses: "ramsey/composer-install@v1"
+
+      - name: "Run unit tests (PHPUnit)"
+        run: "./vendor/bin/phpunit --verbose --colors=always --coverage-text --coverage-clover build/logs/clover.xml"
+
+      - name: "Publish coverage report to Codecov"
+        uses: "codecov/codecov-action@v1"
+
+  unit-tests:
+    name: "Unit Tests"
+    runs-on: "ubuntu-latest"
+    continue-on-error: ${{ matrix.experimental }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        php-version:
+          - "5.4"
+          - "5.5"
+          - "5.6"
+          - "7.0"
+          - "7.1"
+          - "7.2"
+          - "7.3"
+          - "7.4"
+        # Commenting out the following until I can work out a solution for the
+        # development libraries I use, since many of them or their dependencies
+        # do not support PHP 8.
+        #
+        #   - "8.0"
+        # experimental:
+        #   - false
+        # include:
+        #   - php-version: "8.1"
+        #     experimental: true
+        #     composer-options: "--ignore-platform-req=php"
+
+    steps:
+      - name: "Checkout repository"
+        uses: "actions/checkout@v2"
+
+      - name: "Install PHP"
+        uses: "shivammathur/setup-php@v2"
+        with:
+          php-version: "${{ matrix.php-version }}"
+          extensions: bcmath, ctype, gmp, libsodium, uuid
+          coverage: "none"
+          ini-values: "memory_limit=-1"
+
+      - name: "Create the logs directory"
+        run: "mkdir -p build/logs"
+
+      - name: "Install dependencies (Composer)"
+        uses: "ramsey/composer-install@v1"
+        with:
+          composer-options: "${{ matrix.composer-options }}"
+
+      - name: "Run unit tests (PHPUnit)"
+        run: "./vendor/bin/phpunit --verbose --colors=always --no-coverage"

@@ -2,15 +2,15 @@
 
 namespace Ramsey\Uuid\Test\Builder;
 
-use PHPUnit_Framework_TestCase;
 use Ramsey\Uuid\Builder\DegradedUuidBuilder;
+use Ramsey\Uuid\Test\TestCase;
 
 /**
  * Class DegradedUuidBuilderTest
  * @package Ramsey\Uuid\Test\Builder
  * @covers Ramsey\Uuid\Builder\DegradedUuidBuilder
  */
-class DegradedUuidBuilderTest extends PHPUnit_Framework_TestCase
+class DegradedUuidBuilderTest extends TestCase
 {
 
     public function testBuildCreatesUuid()
