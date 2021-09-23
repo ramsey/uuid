@@ -27,7 +27,7 @@ class DefaultTimeGeneratorTest extends TestCase
     /** @var int */
     private $clockSeq = 4066;
 
-    protected function set_up()
+    protected function set_up() // phpcs:ignore
     {
         parent::set_up();
         $this->timeProvider = $this->getMockBuilder('Ramsey\Uuid\Provider\TimeProviderInterface')->getMock();
@@ -37,7 +37,7 @@ class DefaultTimeGeneratorTest extends TestCase
         $this->calculatedTime = ["low" => "83cb98e0", "mid" => "98e0", "hi" => "03cb"];
     }
 
-    protected function tear_down()
+    protected function tear_down() // phpcs:ignore
     {
         parent::tear_down();
         $this->timeProvider = null;

@@ -26,7 +26,7 @@ class OrderedTimeCodecTest extends TestCase
     /** @var string */
     private $optimizedHex = '11d8eebc58e0a7d796690800200c9a66';
 
-    protected function set_up()
+    protected function set_up() // phpcs:ignore
     {
         parent::set_up();
         $this->builder = $this->getMockBuilder('Ramsey\Uuid\Builder\UuidBuilderInterface')->getMock();
@@ -39,7 +39,7 @@ class OrderedTimeCodecTest extends TestCase
             'node' => '0800200c9a66'];
     }
 
-    protected function tear_down()
+    protected function tear_down() // phpcs:ignore
     {
         parent::tear_down();
         $this->builder = null;

@@ -18,7 +18,7 @@ class TimestampFirstCombCodecTest extends TestCase
      */
     private $builderMock;
 
-    protected function set_up()
+    protected function set_up() // phpcs:ignore
     {
         parent::set_up();
         $this->builderMock = $this->getMockBuilder('Ramsey\Uuid\Builder\UuidBuilderInterface')->getMock();

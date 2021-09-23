@@ -14,7 +14,7 @@ use stdClass;
 
 class UuidTest extends TestCase
 {
-    protected function set_up()
+    protected function set_up() // phpcs:ignore
     {
         parent::set_up();
         Uuid::setFactory(new UuidFactory());

@@ -54,11 +54,6 @@ jobs:
       - name: "Install dependencies (Composer)"
         uses: "ramsey/composer-install@v1"
 
-      - name: "Setup PCOV"
-        run: |
-          composer require pcov/clobber
-          vendor/bin/pcov clobber
-
       - name: "Run unit tests (PHPUnit)"
         run: "./vendor/bin/phpunit --verbose --colors=always --coverage-text --coverage-clover build/logs/clover.xml"
 
@@ -86,9 +81,9 @@ jobs:
         experimental:
           - false
         include:
-          - php-version: "8.1"
-            experimental: true
-            composer-options: "--ignore-platform-req=php"
+          #- php-version: "8.1"
+          #  experimental: true
+          #  composer-options: "--ignore-platform-req=php"
           - php-version: "5.4"
             extensions: ", libsodium-1.0.7, uuid-1.0.4"
           - php-version: "5.5"

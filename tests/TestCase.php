@@ -7,7 +7,7 @@ use Yoast\PHPUnitPolyfills\TestCases\TestCase as YoastTestCase;
 
 class TestCase extends YoastTestCase
 {
-    protected function tear_down()
+    protected function tear_down() // phpcs:ignore
     {
         parent::tear_down();
 
