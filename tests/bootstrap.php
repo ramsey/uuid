@@ -1,8 +1,6 @@
 <?php
 // @codingStandardsIgnoreFile
 
-error_reporting(E_ALL & ~E_DEPRECATED);
-
 use AspectMock\Kernel;
 
 require_once __DIR__ . '/../vendor/autoload.php'; // composer autoload
