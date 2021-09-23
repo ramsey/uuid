@@ -29,9 +29,10 @@
     "require-dev": {
         "codeception/aspect-mock": "^1 | ^2",
         "doctrine/annotations": "^1.2",
-        "goaop/framework": "1.0.0-alpha.2 | ^1 | ^2.1",
+        "goaop/framework": "1.0.0-alpha.2 | ^1 | >=2.1.0 <=2.3.2",
         "mockery/mockery": "^0.9.11 | ^1",
         "moontoast/math": "^1.1",
+        "nikic/php-parser": "<=4.5.0",
         "paragonie/random-lib": "^2",
         "php-mock/php-mock-phpunit": "^0.3 | ^1.1",
         "php-parallel-lint/php-parallel-lint": "^1.3",
