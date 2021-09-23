@@ -27,7 +27,7 @@
         "symfony/polyfill-ctype": "^1.8"
     },
     "require-dev": {
-        "codeception/aspect-mock": "^1 | ^2",
+        "codeception/aspect-mock": "^1 | >=2.0.0 <=2.3.2",
         "doctrine/annotations": "^1.2",
         "goaop/framework": "1.0.0-alpha.2 | ^1 | ^2.1",
         "mockery/mockery": "^0.9.11 | ^1",
