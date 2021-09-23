@@ -27,10 +27,9 @@ class DefaultTimeGeneratorTest extends TestCase
     /** @var int */
     private $clockSeq = 4066;
 
-
-    protected function setUp()
+    protected function set_up()
     {
-        parent::setUp();
+        parent::set_up();
         $this->timeProvider = $this->getMockBuilder('Ramsey\Uuid\Provider\TimeProviderInterface')->getMock();
         $this->nodeProvider = $this->getMockBuilder('Ramsey\Uuid\Provider\NodeProviderInterface')->getMock();
         $this->timeConverter = $this->getMockBuilder('Ramsey\Uuid\Converter\TimeConverterInterface')->getMock();
@@ -38,14 +37,12 @@ class DefaultTimeGeneratorTest extends TestCase
         $this->calculatedTime = ["low" => "83cb98e0", "mid" => "98e0", "hi" => "03cb"];
     }
 
-    protected function tearDown()
+    protected function tear_down()
     {
-        parent::tearDown();
+        parent::tear_down();
         $this->timeProvider = null;
         $this->nodeProvider = null;
         $this->timeConverter = null;
-        Mockery::close();
-        AspectMock::clean();
     }
 
     public function testGenerateUsesNodeProviderWhenNodeIsNull()
@@ -125,7 +122,7 @@ class DefaultTimeGeneratorTest extends TestCase
             $this->timeConverter,
             $this->timeProvider
         );
-        $defaultTimeGenerator->generate($this->nodeId, $this->clockSeq);
+        $this->assertIsString($defaultTimeGenerator->generate($this->nodeId, $this->clockSeq));
     }
 
     /**
@@ -170,6 +167,7 @@ class DefaultTimeGeneratorTest extends TestCase
     /**
      * @runInSeparateProcess
      * @preserveGlobalState disabled
+     * @requires PHP < 8
      */
     public function testGenerateUsesRandomSequenceWhenClockSeqNull()
     {

@@ -22,9 +22,9 @@ class GuidStringCodecTest extends TestCase
     /** @var array */
     private $fields;
 
-    protected function setUp()
+    protected function set_up()
     {
-        parent::setUp();
+        parent::set_up();
         $this->builder = $this->getMockBuilder('Ramsey\Uuid\Builder\UuidBuilderInterface')->getMock();
         $this->uuid = $this->getMockBuilder('Ramsey\Uuid\UuidInterface')->getMock();
         $this->fields = ['time_low' => '12345678',
@@ -35,9 +35,9 @@ class GuidStringCodecTest extends TestCase
             'node' => '1234abcd4321'];
     }
 
-    protected function tearDown()
+    protected function tear_down()
     {
-        parent::tearDown();
+        parent::tear_down();
         $this->builder = null;
         $this->fields = null;
         $this->uuid = null;

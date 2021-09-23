@@ -50,6 +50,7 @@ class SystemNodeProviderTest extends TestCase
     /**
      * @runInSeparateProcess
      * @preserveGlobalState disabled
+     * @requires PHP < 8
      *
      * @dataProvider provideValidNetStatOutput
      *
@@ -88,6 +89,7 @@ class SystemNodeProviderTest extends TestCase
     /**
      * @runInSeparateProcess
      * @preserveGlobalState disabled
+     * @requires PHP < 8
      *
      * @dataProvider provideInvalidNetStatOutput
      *
@@ -119,6 +121,7 @@ class SystemNodeProviderTest extends TestCase
     /**
      * @runInSeparateProcess
      * @preserveGlobalState disabled
+     * @requires PHP < 8
      *
      * @dataProvider provideNotationalFormats
      *
@@ -151,6 +154,7 @@ class SystemNodeProviderTest extends TestCase
     /**
      * @runInSeparateProcess
      * @preserveGlobalState disabled
+     * @requires PHP < 8
      *
      * @dataProvider provideInvalidNotationalFormats
      *
@@ -182,6 +186,7 @@ class SystemNodeProviderTest extends TestCase
     /**
      * @runInSeparateProcess
      * @preserveGlobalState disabled
+     * @requires PHP < 8
      */
     public function testGetNodeReturnsFirstMacAddressFound()
     {
@@ -209,6 +214,7 @@ class SystemNodeProviderTest extends TestCase
     /**
      * @runInSeparateProcess
      * @preserveGlobalState disabled
+     * @requires PHP < 8
      */
     public function testGetNodeReturnsFalseWhenNodeIsNotFound()
     {
@@ -236,6 +242,7 @@ class SystemNodeProviderTest extends TestCase
     /**
      * @runInSeparateProcess
      * @preserveGlobalState disabled
+     * @requires PHP < 8
      */
     public function testGetNodeWillNotExecuteSystemCallIfFailedFirstTime()
     {
@@ -262,6 +269,7 @@ class SystemNodeProviderTest extends TestCase
     /**
      * @runInSeparateProcess
      * @preserveGlobalState disabled
+     * @requires PHP < 8
      *
      * @dataProvider provideCommandPerOs
      *
@@ -306,6 +314,7 @@ class SystemNodeProviderTest extends TestCase
     /**
      * @runInSeparateProcess
      * @preserveGlobalState disabled
+     * @requires PHP < 8
      */
     public function testGetNodeReturnsSameNodeUponSubsequentCalls()
     {
@@ -334,6 +343,7 @@ class SystemNodeProviderTest extends TestCase
     /**
      * @runInSeparateProcess
      * @preserveGlobalState disabled
+     * @requires PHP < 8
      */
     public function testSubsequentCallsToGetNodeDoNotRecallIfconfig()
     {
@@ -362,6 +372,7 @@ class SystemNodeProviderTest extends TestCase
     /**
      * @runInSeparateProcess
      * @preserveGlobalState disabled
+     * @requires PHP < 8
      *
      * @dataProvider provideCommandPerOs
      *
@@ -420,6 +431,7 @@ class SystemNodeProviderTest extends TestCase
     /**
      * @runInSeparateProcess
      * @preserveGlobalState disabled
+     * @requires PHP < 8
      */
     public function testCallGetsysfsOnLinuxWhenGlobReturnsFalse()
     {
@@ -453,6 +465,7 @@ class SystemNodeProviderTest extends TestCase
     /**
      * @runInSeparateProcess
      * @preserveGlobalState disabled
+     * @requires PHP < 8
      */
     public function testCallGetsysfsOnLinuxWhenGlobReturnsEmptyArray()
     {
@@ -486,6 +499,7 @@ class SystemNodeProviderTest extends TestCase
     /**
      * @runInSeparateProcess
      * @preserveGlobalState disabled
+     * @requires PHP < 8
      */
     public function testCallGetsysfsOnLinuxWhenGlobFilesAreNotReadable()
     {
@@ -522,6 +536,7 @@ class SystemNodeProviderTest extends TestCase
     /**
      * @runInSeparateProcess
      * @preserveGlobalState disabled
+     * @requires PHP < 8
      */
     public function testGetNodeReturnsFalseWhenPassthruIsDisabled()
     {

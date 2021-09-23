@@ -16,6 +16,8 @@ class PeclUuidTimeGeneratorTest extends PeclUuidTestCase
      * This test is just to check collaboration with the PECL UUID extension - not to check
      * the correctness of the methods defined in that extension.
      * So we are just checking that the UUID methods are called with the right parameters.
+     *
+     * @requires PHP < 8
      */
     public function testGenerateCreatesUuidUsingPeclUuidMethods()
     {
@@ -32,6 +34,8 @@ class PeclUuidTimeGeneratorTest extends PeclUuidTestCase
     /**
      * This test is for the return type of the generate method
      * It ensures that the generate method returns whatever value uuid_parse returns.
+     *
+     * @requires PHP < 8
      */
     public function testGenerateReturnsUuidString()
     {

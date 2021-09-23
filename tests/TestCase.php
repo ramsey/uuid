@@ -3,14 +3,18 @@ namespace Ramsey\Uuid\Test;
 
 use AspectMock\Test as AspectMock;
 use Mockery;
-use PHPUnit\Framework\TestCase as PhpUnitTestCase;
+use Yoast\PHPUnitPolyfills\TestCases\TestCase as YoastTestCase;
 
-class TestCase extends PhpUnitTestCase
+class TestCase extends YoastTestCase
 {
-    protected function tearDown()
+    protected function tear_down()
     {
-        parent::tearDown();
-        AspectMock::clean();
+        parent::tear_down();
+
+        if (PHP_MAJOR_VERSION < 8) {
+            AspectMock::clean();
+        }
+
         Mockery::close();
     }
 

@@ -26,7 +26,11 @@ class RandomLibAdapterTest extends TestCase
         $generator = $this->getMockBuilder('RandomLib\Generator')
             ->disableOriginalConstructor()
             ->getMock();
-        new RandomLibAdapter($generator);
+
+        $this->assertInstanceOf(
+            'Ramsey\Uuid\Generator\RandomGeneratorInterface',
+            new RandomLibAdapter($generator)
+        );
     }
 
     /**
@@ -40,7 +44,10 @@ class RandomLibAdapterTest extends TestCase
             ->once()
             ->getMock();
 
-        new RandomLibAdapter();
+        $this->assertInstanceOf(
+            'Ramsey\Uuid\Generator\RandomGeneratorInterface',
+            new RandomLibAdapter()
+        );
     }
 
     public function testGenerateUsesGenerator()

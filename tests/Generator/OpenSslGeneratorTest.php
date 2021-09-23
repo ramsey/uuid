@@ -26,6 +26,7 @@ class OpenSslGeneratorTest extends TestCase
      * @dataProvider lengthAndHexDataProvider
      * @runInSeparateProcess
      * @preserveGlobalState disabled
+     * @requires PHP < 8
      * @param $length
      * @param $hex
      */
@@ -43,6 +44,7 @@ class OpenSslGeneratorTest extends TestCase
      * @dataProvider lengthAndHexDataProvider
      * @runInSeparateProcess
      * @preserveGlobalState disabled
+     * @requires PHP < 8
      * @param $length
      * @param $hex
      */

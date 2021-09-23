@@ -32,27 +32,27 @@ class ExpectedBehaviorTest extends TestCase
         $uuid = call_user_func_array(['Ramsey\Uuid\Uuid', $method], $args);
 
         $this->assertInstanceOf('Ramsey\Uuid\UuidInterface', $uuid);
-        $this->assertInternalType('int', $uuid->compareTo(Uuid::uuid1()));
+        $this->assertIsInt($uuid->compareTo(Uuid::uuid1()));
         $this->assertNotSame(0, $uuid->compareTo(Uuid::uuid4()));
         $this->assertSame(0, $uuid->compareTo(clone $uuid));
         $this->assertFalse($uuid->equals(new stdClass()));
         $this->assertTrue($uuid->equals(clone $uuid));
-        $this->assertInternalType('string', $uuid->getBytes());
+        $this->assertIsString($uuid->getBytes());
         $this->assertInstanceOf('Ramsey\Uuid\Converter\NumberConverterInterface', $uuid->getNumberConverter());
-        $this->assertInternalType('string', $uuid->getHex());
-        $this->assertInternalType('array', $uuid->getFieldsHex());
+        $this->assertIsString($uuid->getHex());
+        $this->assertIsArray($uuid->getFieldsHex());
         $this->assertArrayHasKey('time_low', $uuid->getFieldsHex());
         $this->assertArrayHasKey('time_mid', $uuid->getFieldsHex());
         $this->assertArrayHasKey('time_hi_and_version', $uuid->getFieldsHex());
         $this->assertArrayHasKey('clock_seq_hi_and_reserved', $uuid->getFieldsHex());
         $this->assertArrayHasKey('clock_seq_low', $uuid->getFieldsHex());
         $this->assertArrayHasKey('node', $uuid->getFieldsHex());
-        $this->assertInternalType('string', $uuid->getTimeLowHex());
-        $this->assertInternalType('string', $uuid->getTimeMidHex());
-        $this->assertInternalType('string', $uuid->getTimeHiAndVersionHex());
-        $this->assertInternalType('string', $uuid->getClockSeqHiAndReservedHex());
-        $this->assertInternalType('string', $uuid->getClockSeqLowHex());
-        $this->assertInternalType('string', $uuid->getNodeHex());
+        $this->assertIsString($uuid->getTimeLowHex());
+        $this->assertIsString($uuid->getTimeMidHex());
+        $this->assertIsString($uuid->getTimeHiAndVersionHex());
+        $this->assertIsString($uuid->getClockSeqHiAndReservedHex());
+        $this->assertIsString($uuid->getClockSeqLowHex());
+        $this->assertIsString($uuid->getNodeHex());
         $this->assertSame($uuid->getFieldsHex()['time_low'], $uuid->getTimeLowHex());
         $this->assertSame($uuid->getFieldsHex()['time_mid'], $uuid->getTimeMidHex());
         $this->assertSame($uuid->getFieldsHex()['time_hi_and_version'], $uuid->getTimeHiAndVersionHex());
@@ -82,7 +82,7 @@ class ExpectedBehaviorTest extends TestCase
             . $uuid->getFieldsHex()['node']
         );
 
-        $this->assertInternalType('string', $uuid->getUrn());
+        $this->assertIsString($uuid->getUrn());
         $this->assertStringStartsWith('urn:uuid:', $uuid->getUrn());
         $this->assertSame('urn:uuid:' . $uuid->getHex(), str_replace('-', '', $uuid->getUrn()));
         $this->assertSame($uuid->getHex(), str_replace('-', '', $uuid->toString()));

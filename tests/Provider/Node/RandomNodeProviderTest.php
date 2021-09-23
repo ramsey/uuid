@@ -8,15 +8,10 @@ use AspectMock\Test as AspectMock;
 
 class RandomNodeProviderTest extends TestCase
 {
-    protected function tearDown()
-    {
-        parent::tearDown();
-        AspectMock::clean();
-    }
-
     /**
      * @runInSeparateProcess
      * @preserveGlobalState disabled
+     * @requires PHP < 8
      */
     public function testGetNodeUsesRandomBytes()
     {
@@ -31,6 +26,7 @@ class RandomNodeProviderTest extends TestCase
     /**
      * @runInSeparateProcess
      * @preserveGlobalState disabled
+     * @requires PHP < 8
      */
     public function testGetNodeSetsMulticastBit()
     {
@@ -48,6 +44,7 @@ class RandomNodeProviderTest extends TestCase
     /**
      * @runInSeparateProcess
      * @preserveGlobalState disabled
+     * @requires PHP < 8
      */
     public function testGetNodeAlreadyHasMulticastBit()
     {
@@ -66,6 +63,7 @@ class RandomNodeProviderTest extends TestCase
     /**
      * @runInSeparateProcess
      * @preserveGlobalState disabled
+     * @requires PHP < 8
      */
     public function testGetNodeSetsMulticastBitForLowNodeValue()
     {

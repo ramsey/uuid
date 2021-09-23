@@ -20,6 +20,7 @@ class SystemTimeProviderTest extends TestCase
     /**
      * @runInSeparateProcess
      * @preserveGlobalState disabled
+     * @requires PHP < 8
      */
     public function testCurrentTimeUsesGettimeofday()
     {

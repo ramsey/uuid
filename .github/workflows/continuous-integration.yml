@@ -68,7 +68,7 @@ jobs:
   unit-tests:
     name: "Unit Tests"
     runs-on: "ubuntu-latest"
-    # continue-on-error: ${{ matrix.experimental }}
+    continue-on-error: ${{ matrix.experimental }}
 
     strategy:
       fail-fast: false
@@ -82,17 +82,13 @@ jobs:
           - "7.2"
           - "7.3"
           - "7.4"
-        # Commenting out the following until I can work out a solution for the
-        # development libraries I use, since many of them or their dependencies
-        # do not support PHP 8.
-        #
-        #   - "8.0"
-        # experimental:
-        #   - false
+          - "8.0"
+        experimental:
+          - false
         include:
-        #   - php-version: "8.1"
-        #     experimental: true
-        #     composer-options: "--ignore-platform-req=php"
+          - php-version: "8.1"
+            experimental: true
+            composer-options: "--ignore-platform-req=php"
           - php-version: "5.4"
             extensions: ", libsodium-1.0.7, uuid-1.0.4"
           - php-version: "5.5"

@@ -12,22 +12,20 @@ use Ramsey\Uuid\Converter\Number\DegradedNumberConverter;
  */
 class DegradedNumberConverterTest extends TestCase
 {
-    /**
-     * @expectedException Ramsey\Uuid\Exception\UnsatisfiedDependencyException
-     */
     public function testConvertingFromHexThrowsException()
     {
         $converter = new DegradedNumberConverter();
 
+        $this->expectException('Ramsey\Uuid\Exception\UnsatisfiedDependencyException');
+
         $converter->fromHex('ffff');
     }
 
-    /**
-     * @expectedException Ramsey\Uuid\Exception\UnsatisfiedDependencyException
-     */
     public function testConvertingToHexThrowsException()
     {
         $converter = new DegradedNumberConverter();
+
+        $this->expectException('Ramsey\Uuid\Exception\UnsatisfiedDependencyException');
 
         $converter->toHex(0);
     }

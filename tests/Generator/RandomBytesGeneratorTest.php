@@ -26,6 +26,7 @@ class RandomBytesGeneratorTest extends TestCase
      * @dataProvider lengthAndHexDataProvider
      * @runInSeparateProcess
      * @preserveGlobalState disabled
+     * @requires PHP < 8
      * @param int $length
      * @param string $hex
      * @throws \Exception
@@ -44,6 +45,7 @@ class RandomBytesGeneratorTest extends TestCase
      * @dataProvider lengthAndHexDataProvider
      * @runInSeparateProcess
      * @preserveGlobalState disabled
+     * @requires PHP < 8
      * @param int $length
      * @param string $hex
      * @throws \Exception
