@@ -18,7 +18,7 @@ jobs:
       - name: "Install PHP"
         uses: "shivammathur/setup-php@v2"
         with:
-          php-version: "latest"
+          php-version: "7.4" # Unable to support 8 right now
           extensions: bcmath, ctype, gmp, libsodium, uuid
           coverage: "none"
 
@@ -41,7 +41,7 @@ jobs:
       - name: "Install PHP"
         uses: "shivammathur/setup-php@v2"
         with:
-          php-version: "latest"
+          php-version: "7.4" # Unable to support 8 right now
           extensions: bcmath, ctype, gmp, libsodium, uuid
           coverage: "pcov"
           ini-values: "memory_limit=-1"
