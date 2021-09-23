@@ -101,7 +101,7 @@ jobs:
         uses: "shivammathur/setup-php@v2"
         with:
           php-version: "${{ matrix.php-version }}"
-          extensions: bcmath, ctype, gmp, libsodium, uuid
+          extensions: bcmath, ctype, gmp, sodium, uuid
           coverage: "none"
           ini-values: "memory_limit=-1"
 
