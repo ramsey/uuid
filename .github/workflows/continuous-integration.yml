@@ -19,7 +19,6 @@ jobs:
         uses: "shivammathur/setup-php@v2"
         with:
           php-version: "latest"
-          extensions: bcmath, ctype, gmp
           coverage: "none"
 
       - name: "Install dependencies (Composer)"
@@ -42,7 +41,6 @@ jobs:
         uses: "shivammathur/setup-php@v2"
         with:
           php-version: "latest"
-          extensions: bcmath, ctype, gmp
           coverage: "none"
 
       - name: "Install dependencies (Composer)"
@@ -74,11 +72,16 @@ jobs:
       - name: "Checkout repository"
         uses: "actions/checkout@v2"
 
+      - name: "Install dependencies (apt)"
+        run: |
+          sudo apt-get update
+          sudo apt-get -y install libsodium-dev uuid-dev
+
       - name: "Install PHP"
         uses: "shivammathur/setup-php@v2"
         with:
           php-version: "${{ matrix.php-version }}"
-          extensions: bcmath, ctype, gmp
+          extensions: bcmath, ctype, gmp, sodium, uuid
           coverage: "none"
           ini-values: "memory_limit=-1"
 
@@ -103,11 +106,16 @@ jobs:
       - name: "Checkout repository"
         uses: "actions/checkout@v2"
 
+      - name: "Install dependencies (apt)"
+        run: |
+          sudo apt-get update
+          sudo apt-get -y install libsodium-dev uuid-dev
+
       - name: "Install PHP"
         uses: "shivammathur/setup-php@v2"
         with:
           php-version: "latest"
-          extensions: bcmath, ctype, gmp
+          extensions: bcmath, ctype, gmp, sodium, uuid
           coverage: "pcov"
           ini-values: "memory_limit=-1"
 
@@ -142,11 +150,16 @@ jobs:
       - name: "Checkout repository"
         uses: "actions/checkout@v2"
 
+      - name: "Install dependencies (apt)"
+        run: |
+          sudo apt-get update
+          sudo apt-get -y install libsodium-dev uuid-dev
+
       - name: "Install PHP"
         uses: "shivammathur/setup-php@v2"
         with:
           php-version: "${{ matrix.php-version }}"
-          extensions: bcmath, ctype, gmp
+          extensions: bcmath, ctype, gmp, sodium, uuid
           coverage: "none"
           ini-values: "memory_limit=-1"
 
