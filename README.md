@@ -178,8 +178,8 @@ information.
 [badge-build]: https://img.shields.io/github/workflow/status/ramsey/uuid/build/3.x.svg?logo=github&style=flat-square
 [badge-coverage]: https://img.shields.io/codecov/c/gh/ramsey/uuid/3.x.svg?style=flat-square&logo=codecov
 
-[source]: https://github.com/ramsey/uuid
-[series]: https://packagist.org/packages/ramsey/uuid/tree/3.x
+[source]: https://github.com/ramsey/uuid/tree/3.x
+[series]: https://packagist.org/packages/ramsey/uuid
 [upgrade]: https://packagist.org/packages/ramsey/uuid
 [license]: https://github.com/ramsey/uuid/blob/master/LICENSE
 [php]: https://php.net
