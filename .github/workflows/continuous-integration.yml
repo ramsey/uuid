@@ -92,10 +92,17 @@ jobs:
             composer-options: "--ignore-platform-req=php"
 
     steps:
+      - name: "Configure Git (for Windows)"
+        if: ${{ matrix.operating-system == 'windows-latest' }}
+        run: |
+          git config --system core.autocrlf false
+          git config --system core.eol lf
+
       - name: "Checkout repository"
         uses: "actions/checkout@v2"
 
       - name: "Install dependencies (apt)"
+        if: ${{ matrix.operating-system == 'ubuntu-latest' }}
         run: |
           sudo apt-get update
           sudo apt-get -y install bsdmainutils libsodium-dev uuid-dev
