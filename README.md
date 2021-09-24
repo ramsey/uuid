@@ -6,9 +6,10 @@
 changed to `ramsey/uuid` and `Ramsey\Uuid`, respectively.*
 
 [![Source Code][badge-source]][source]
-[![Latest Version][badge-release]][release]
-[![Software License][badge-license]][license]
+[![Series][badge-series]][series]
+[![Upgrade][badge-upgrade]][upgrade]
 [![PHP Version][badge-php]][php]
+[![Software License][badge-license]][license]
 [![Build Status][badge-build]][build]
 [![Coverage Status][badge-coverage]][coverage]
 
@@ -170,14 +171,16 @@ information.
 [contributing.md]: https://github.com/ramsey/uuid/blob/master/.github/CONTRIBUTING.md
 
 [badge-source]: https://img.shields.io/badge/source-ramsey/uuid-blue.svg?style=flat-square
-[badge-release]: https://img.shields.io/packagist/v/ramsey/uuid.svg?style=flat-square&label=release
-[badge-license]: https://img.shields.io/packagist/l/ramsey/uuid.svg?style=flat-square
-[badge-php]: https://img.shields.io/packagist/php-v/ramsey/uuid/3.x-dev.svg?style=flat-square
+[badge-series]: https://img.shields.io/badge/series-3.x-darkcyan.svg?style=flat-square
+[badge-upgrade]: https://img.shields.io/packagist/v/ramsey/uuid.svg?style=flat-square&label=upgrade&colorB=darkred
+[badge-license]: https://img.shields.io/packagist/l/ramsey/uuid.svg?style=flat-square&colorB=darkcyan
+[badge-php]: https://img.shields.io/packagist/php-v/ramsey/uuid/3.x-dev.svg?style=flat-square&colorB=%238892BF
 [badge-build]: https://img.shields.io/github/workflow/status/ramsey/uuid/build/3.x.svg?logo=github&style=flat-square
 [badge-coverage]: https://img.shields.io/codecov/c/gh/ramsey/uuid/3.x.svg?style=flat-square&logo=codecov
 
 [source]: https://github.com/ramsey/uuid
-[release]: https://packagist.org/packages/ramsey/uuid
+[series]: https://packagist.org/packages/ramsey/uuid/tree/3.x
+[upgrade]: https://packagist.org/packages/ramsey/uuid
 [license]: https://github.com/ramsey/uuid/blob/master/LICENSE
 [php]: https://php.net
 [build]: https://github.com/ramsey/uuid/actions/workflows/continuous-integration.yml?query=branch%3A3.x
