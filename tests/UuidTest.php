@@ -1878,10 +1878,9 @@ class UuidTest extends TestCase
     {
         Uuid::setFactory(new UuidFactory(new FeatureSet(false, false, true)));
 
-        $uuid = Uuid::uuid1();
-
         $this->expectException('Ramsey\Uuid\Exception\UnsatisfiedDependencyException');
 
+        $uuid = Uuid::uuid1();
         $uuid->getInteger();
     }
 
