@@ -82,10 +82,13 @@ jobs:
           - "windows-latest"
         include:
           - php-version: "5.4"
+            operating-system: "ubuntu-latest"
             extensions: ", libsodium-1.0.7, uuid-1.0.4"
           - php-version: "5.5"
+            operating-system: "ubuntu-latest"
             extensions: ", libsodium-1.0.7, uuid-1.0.4"
           - php-version: "5.6"
+            operating-system: "ubuntu-latest"
             extensions: ", libsodium-1.0.7, uuid-1.0.4"
           - php-version: "8.1"
             operating-system: "ubuntu-latest"
