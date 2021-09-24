@@ -62,7 +62,7 @@ jobs:
 
   unit-tests:
     name: "Unit Tests"
-    runs-on: "ubuntu-latest"
+    runs-on: ${{ matrix.operating-system }}
 
     strategy:
       fail-fast: false
@@ -77,6 +77,9 @@ jobs:
           - "7.3"
           - "7.4"
           - "8.0"
+        operating-system:
+          - "ubuntu-latest"
+          - "windows-latest"
         include:
           - php-version: "5.4"
             extensions: ", libsodium-1.0.7, uuid-1.0.4"
@@ -85,6 +88,7 @@ jobs:
           - php-version: "5.6"
             extensions: ", libsodium-1.0.7, uuid-1.0.4"
           - php-version: "8.1"
+            operating-system: "ubuntu-latest"
             composer-options: "--ignore-platform-req=php"
 
     steps:
