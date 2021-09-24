@@ -90,8 +90,21 @@ jobs:
           - php-version: "5.6"
             operating-system: "ubuntu-latest"
             extensions: ", libsodium-1.0.7, uuid-1.0.4"
+          - php-version: "7.0"
+            extensions: ", sodium, uuid"
+          - php-version: "7.1"
+            extensions: ", sodium, uuid"
+          - php-version: "7.2"
+            extensions: ", sodium, uuid"
+          - php-version: "7.3"
+            extensions: ", sodium, uuid"
+          - php-version: "7.4"
+            extensions: ", sodium, uuid"
+          - php-version: "8.0"
+            extensions: ", sodium, uuid"
           - php-version: "8.1"
             operating-system: "ubuntu-latest"
+            extensions: ", sodium, uuid"
             composer-options: "--ignore-platform-req=php"
 
     steps:
@@ -115,7 +128,7 @@ jobs:
         uses: "shivammathur/setup-php@v2"
         with:
           php-version: "${{ matrix.php-version }}"
-          extensions: "bcmath, ctype, gmp, sodium, uuid ${{ matrix.extensions }}"
+          extensions: "bcmath, ctype, gmp ${{ matrix.extensions }}"
           coverage: "none"
           ini-values: "memory_limit=-1"
 
