@@ -153,6 +153,7 @@ jobs:
         uses: "actions/checkout@v2"
 
       - name: "Install dependencies (apt)"
+        if: ${{ matrix.operating-system == 'ubuntu-latest' }}
         run: |
           sudo apt-get update
           sudo apt-get -y install libsodium-dev uuid-dev
