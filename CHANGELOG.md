@@ -664,6 +664,13 @@ The following functionality is deprecated and will be removed in ramsey/uuid
   throws this exception.
 
 
+## 3.9.6 - 2021-09-25
+
+### Fixed
+
+* Switch back to `^8.0` in the PHP version requirement.
+
+
 ## 3.9.5 - 2021-09-24
 
 ### Fixed
