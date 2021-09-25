@@ -6,7 +6,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 
-## 4.0.3 - 2021-09-25
+## 4.1.3 - 2021-09-25
 
 ### Fixed
 
@@ -34,6 +34,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 * Improve performance of `Uuid::fromString()`, `Uuid::fromBytes()`,
   `UuidInterface#toString()`, and `UuidInterface#getBytes()`. See PR
   [#324](https://github.com/ramsey/uuid/pull/324) for more information.
+
+
+## 4.0.3 - 2021-09-25
+
+### Fixed
+
+* Switch back to `^8.0` in the PHP version requirement.
 
 
 ## 4.0.2 - 2021-09-24
