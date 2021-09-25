@@ -9,7 +9,7 @@
     ],
     "license": "MIT",
     "require": {
-        "php": "^7.2 || ~8.0.0 || ~8.1.0",
+        "php": "^7.2 || ^8.0",
         "ext-json": "*",
         "brick/math": "^0.8 || ^0.9",
         "ramsey/collection": "^1.0",
