@@ -64,9 +64,7 @@ jobs:
           - "7.3"
           - "7.4"
           - "8.0"
-        include:
-          - php-version: "8.1"
-            composer-options: "--ignore-platform-req=php"
+          - "8.1"
 
     steps:
       - name: "Checkout repository"
@@ -134,13 +132,10 @@ jobs:
           - "7.3"
           - "7.4"
           - "8.0"
+          - "8.1"
         operating-system:
           - "ubuntu-latest"
           - "windows-latest"
-        include:
-          - php-version: "8.1"
-            operating-system: "ubuntu-latest"
-            composer-options: "--ignore-platform-req=php"
 
     steps:
       - name: "Configure Git (for Windows)"
