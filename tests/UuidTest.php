@@ -132,6 +132,17 @@ class UuidTest extends TestCase
         Uuid::fromString('');
     }
 
+    public function testFromStringUppercase(): void
+    {
+        $uuid = Uuid::fromString('FF6F8CB0-C57D-11E1-9B21-0800200C9A66');
+        $this->assertSame('ff6f8cb0-c57d-11e1-9b21-0800200c9a66', $uuid->toString());
+    }
+
+    public function testFromStringLazyUuidFromUppercase(): void
+    {
+        $this->assertInstanceOf(LazyUuidFromString::class, Uuid::fromString('FF6F8CB0-C57D-11E1-9B21-0800200C9A66'));
+    }
+
     public function testGetBytes(): void
     {
         $uuid = Uuid::fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
