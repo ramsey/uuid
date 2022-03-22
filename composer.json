@@ -9,12 +9,11 @@
     ],
     "license": "MIT",
     "require": {
-        "php": "^7.2 || ^8.0",
+        "php": "^8.0",
+        "ext-ctype": "*",
         "ext-json": "*",
         "brick/math": "^0.8 || ^0.9",
-        "ramsey/collection": "^1.0",
-        "symfony/polyfill-ctype": "^1.8",
-        "symfony/polyfill-php80": "^1.14"
+        "ramsey/collection": "^1.0"
     },
     "replace": {
         "rhumsaa/uuid": "self.version"
