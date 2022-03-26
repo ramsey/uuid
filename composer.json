@@ -1,22 +1,19 @@
 {
     "name": "ramsey/uuid",
-    "type": "library",
     "description": "A PHP library for generating and working with universally unique identifiers (UUIDs).",
+    "license": "MIT",
+    "type": "library",
     "keywords": [
         "uuid",
         "identifier",
         "guid"
     ],
-    "license": "MIT",
     "require": {
         "php": "^8.0",
         "ext-ctype": "*",
         "ext-json": "*",
         "brick/math": "^0.8 || ^0.9",
         "ramsey/collection": "^1.0"
-    },
-    "replace": {
-        "rhumsaa/uuid": "self.version"
     },
     "require-dev": {
         "captainhook/captainhook": "^5.10",
@@ -40,6 +37,9 @@
         "squizlabs/php_codesniffer": "^3.5",
         "vimeo/psalm": "^4.9"
     },
+    "replace": {
+        "rhumsaa/uuid": "self.version"
+    },
     "suggest": {
         "ext-bcmath": "Enables faster math with arbitrary-precision integers using BCMath.",
         "ext-ctype": "Enables faster processing of character classification using ctype functions.",
@@ -48,17 +48,8 @@
         "paragonie/random-lib": "Provides RandomLib for use with the RandomLibAdapter",
         "ramsey/uuid-doctrine": "Allows the use of Ramsey\\Uuid\\Uuid as Doctrine field type."
     },
-    "config": {
-        "sort-packages": true
-    },
-    "extra": {
-        "branch-alias": {
-            "dev-main": "4.x-dev"
-        },
-        "captainhook": {
-            "force-install": true
-        }
-    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
     "autoload": {
         "psr-4": {
             "Ramsey\\Uuid\\": "src/"
@@ -74,8 +65,23 @@
             "Ramsey\\Uuid\\Test\\": "tests/"
         }
     },
-    "minimum-stability": "dev",
-    "prefer-stable": true,
+    "config": {
+        "allow-plugins": {
+            "captainhook/plugin-composer": true,
+            "ergebnis/composer-normalize": true,
+            "phpstan/extension-installer": true,
+            "dealerdirect/phpcodesniffer-composer-installer": true
+        },
+        "sort-packages": true
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-main": "4.x-dev"
+        },
+        "captainhook": {
+            "force-install": true
+        }
+    },
     "scripts": {
         "analyze": [
             "@phpstan",
