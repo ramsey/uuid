@@ -2,7 +2,7 @@
 <psalm xmlns="https://getpsalm.org/schema/config"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd"
-       totallyTyped="true"
+       errorLevel="1"
        cacheDirectory="./build/cache/psalm"
        errorBaseline="./psalm-baseline.xml">
 
