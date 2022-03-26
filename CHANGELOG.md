@@ -6,6 +6,32 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 
+## 4.3.0 - 2022-03-26
+
+### Changed
+
+* Remove support for PHP 7.2, 7.3, and 7.4. This is not a BC break, since
+  Composer will do the right thing for your environment and select a compatible
+  version of this library.
+* Require `ext-ctype` extension. For applications that run in environments where
+  the `ext-ctype` is not present, please require a polyfill, such as
+  [symfony/polyfill-ctype](https://packagist.org/packages/symfony/polyfill-ctype).
+* Use `iterable<UuidBuilderInterface>` instead of `BuilderCollection` types.
+* Use `iterable<NodeProviderInterface>` instead of `NodeProviderCollection` types.
+
+### Deprecated
+
+The following will be removed in ramsey/uuid 5.0.0:
+
+* `Ramsey\Uuid\Builder\BuilderCollection`
+* `Ramsey\Uuid\Provider\Node\NodeProviderCollection`
+* Dependency on ramsey/collection
+
+### Fixed
+
+* Support valid UUIDs in uppercase in `LazyUuidFromString`.
+
+
 ## 4.2.3 - 2021-09-25
 
 ### Fixed

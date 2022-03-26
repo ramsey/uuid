@@ -10,7 +10,10 @@ Requirements
 
 ramsey/uuid |version| requires the following:
 
-* PHP 7.2+
+* PHP 8.0+
+* `ext-ctype <https://www.php.net/manual/en/book.ctype.php>`_ or a polyfill that
+  provides ext-ctype, such as `symfony/polyfill-ctype
+  <https://packagist.org/packages/symfony/polyfill-ctype>`_
 * `ext-json <https://www.php.net/manual/en/book.json.php>`_
 
 The JSON extension is normally enabled by default, but it is possible to disable
@@ -23,7 +26,6 @@ sources.
 ramsey/uuid recommends installing/enabling the following extensions. While not
 required, these extensions improve the performance of ramsey/uuid.
 
-* `ext-ctype <https://www.php.net/manual/en/book.ctype.php>`_
 * `ext-gmp <https://www.php.net/manual/en/book.gmp.php>`_
 * `ext-bcmath <https://www.php.net/manual/en/book.bc.php>`_
 
