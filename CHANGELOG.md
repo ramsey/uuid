@@ -8,6 +8,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## Unreleased
 
+### Changed
+
+* Remove deprecated `Ramsey\Uuid\Builder\BuilderCollection`.
+* Remove deprecated `Ramsey\Uuid\Generator\RandomLibAdapter`.
+* Remove deprecated `Ramsey\Uuid\Provider\Node\NodeProviderCollection`.
+* Remove dependency on ramsey/collection package.
+
 ### Deprecated
 
 The following will be removed in ramsey/uuid 5.0.0:

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ce3cd44d20ba1daf10d5ab2a9631b702",
+    "content-hash": "750d5b612e8b7071e493692d9caf2a23",
     "packages": [
         {
             "name": "brick/math",
@@ -1420,56 +1420,6 @@
             "time": "2020-07-09T08:09:16+00:00"
         },
         {
-            "name": "ircmaxell/security-lib",
-            "version": "v1.1.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/ircmaxell/SecurityLib.git",
-                "reference": "f3db6de12c20c9bcd1aa3db4353a1bbe0e44e1b5"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/ircmaxell/SecurityLib/zipball/f3db6de12c20c9bcd1aa3db4353a1bbe0e44e1b5",
-                "reference": "f3db6de12c20c9bcd1aa3db4353a1bbe0e44e1b5",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.2"
-            },
-            "require-dev": {
-                "mikey179/vfsstream": "1.1.*"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.0.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-0": {
-                    "SecurityLib": "lib"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Anthony Ferrara",
-                    "email": "ircmaxell@ircmaxell.com",
-                    "homepage": "http://blog.ircmaxell.com"
-                }
-            ],
-            "description": "A Base Security Library",
-            "homepage": "https://github.com/ircmaxell/SecurityLib",
-            "support": {
-                "issues": "https://github.com/ircmaxell/SecurityLib/issues",
-                "source": "https://github.com/ircmaxell/SecurityLib/tree/master"
-            },
-            "time": "2015-03-20T14:31:23+00:00"
-        },
-        {
             "name": "justinrainbow/json-schema",
             "version": "5.2.11",
             "source": {
@@ -2013,71 +1963,6 @@
             "time": "2022-01-17T05:32:27+00:00"
         },
         {
-            "name": "paragonie/random-lib",
-            "version": "v2.0.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/paragonie/RandomLib.git",
-                "reference": "f0ca6a2859b22f7caea9c343e63ffb3ce9b2ffa7"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/paragonie/RandomLib/zipball/f0ca6a2859b22f7caea9c343e63ffb3ce9b2ffa7",
-                "reference": "f0ca6a2859b22f7caea9c343e63ffb3ce9b2ffa7",
-                "shasum": ""
-            },
-            "require": {
-                "ircmaxell/security-lib": "^1.1",
-                "paragonie/random_compat": "^2",
-                "paragonie/sodium_compat": "^1.3",
-                "php": ">=5.3.2"
-            },
-            "require-dev": {
-                "friendsofphp/php-cs-fixer": "^1.11",
-                "mikey179/vfsstream": "^1.6",
-                "phpunit/phpunit": "^4.8 || >=5.0.0 <5.4"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "2.1.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-0": {
-                    "RandomLib": "lib"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Paragon Initiative Enterprises",
-                    "email": "security@paragonie.com",
-                    "homepage": "https://paragonie.com"
-                },
-                {
-                    "name": "Anthony Ferrara",
-                    "email": "ircmaxell@ircmaxell.com",
-                    "homepage": "http://blog.ircmaxell.com"
-                }
-            ],
-            "description": "A Library For Generating Secure Random Numbers",
-            "homepage": "https://github.com/ircmaxell/RandomLib",
-            "keywords": [
-                "cryptography",
-                "random",
-                "random-numbers",
-                "random-strings"
-            ],
-            "support": {
-                "source": "https://github.com/paragonie/RandomLib/tree/v2.0.1"
-            },
-            "time": "2019-12-23T23:03:52+00:00"
-        },
-        {
             "name": "paragonie/random_compat",
             "version": "v2.0.21",
             "source": {
@@ -2130,92 +2015,6 @@
                 "source": "https://github.com/paragonie/random_compat"
             },
             "time": "2022-02-16T17:07:03+00:00"
-        },
-        {
-            "name": "paragonie/sodium_compat",
-            "version": "v1.17.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/paragonie/sodium_compat.git",
-                "reference": "c59cac21abbcc0df06a3dd18076450ea4797b321"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/paragonie/sodium_compat/zipball/c59cac21abbcc0df06a3dd18076450ea4797b321",
-                "reference": "c59cac21abbcc0df06a3dd18076450ea4797b321",
-                "shasum": ""
-            },
-            "require": {
-                "paragonie/random_compat": ">=1",
-                "php": "^5.2.4|^5.3|^5.4|^5.5|^5.6|^7|^8"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "^3|^4|^5|^6|^7|^8|^9"
-            },
-            "suggest": {
-                "ext-libsodium": "PHP < 7.0: Better performance, password hashing (Argon2i), secure memory management (memzero), and better security.",
-                "ext-sodium": "PHP >= 7.0: Better performance, password hashing (Argon2i), secure memory management (memzero), and better security."
-            },
-            "type": "library",
-            "autoload": {
-                "files": [
-                    "autoload.php"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "ISC"
-            ],
-            "authors": [
-                {
-                    "name": "Paragon Initiative Enterprises",
-                    "email": "security@paragonie.com"
-                },
-                {
-                    "name": "Frank Denis",
-                    "email": "jedisct1@pureftpd.org"
-                }
-            ],
-            "description": "Pure PHP implementation of libsodium; uses the PHP extension if it exists",
-            "keywords": [
-                "Authentication",
-                "BLAKE2b",
-                "ChaCha20",
-                "ChaCha20-Poly1305",
-                "Chapoly",
-                "Curve25519",
-                "Ed25519",
-                "EdDSA",
-                "Edwards-curve Digital Signature Algorithm",
-                "Elliptic Curve Diffie-Hellman",
-                "Poly1305",
-                "Pure-PHP cryptography",
-                "RFC 7748",
-                "RFC 8032",
-                "Salpoly",
-                "Salsa20",
-                "X25519",
-                "XChaCha20-Poly1305",
-                "XSalsa20-Poly1305",
-                "Xchacha20",
-                "Xsalsa20",
-                "aead",
-                "cryptography",
-                "ecdh",
-                "elliptic curve",
-                "elliptic curve cryptography",
-                "encryption",
-                "libsodium",
-                "php",
-                "public-key cryptography",
-                "secret-key cryptography",
-                "side-channel resistant"
-            ],
-            "support": {
-                "issues": "https://github.com/paragonie/sodium_compat/issues",
-                "source": "https://github.com/paragonie/sodium_compat/tree/v1.17.0"
-            },
-            "time": "2021-08-10T02:43:50+00:00"
         },
         {
             "name": "phar-io/manifest",
