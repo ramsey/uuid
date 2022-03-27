@@ -23,6 +23,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 * Remove the following deprecated methods from Uuid classes:
   * `getClockSeqHiAndReservedHex()`
   * `getClockSeqLowHex()`
+  * `getClockSequenceHex()`
 * Remove dependency on ramsey/collection package.
 
 

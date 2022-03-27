@@ -88,16 +88,6 @@ trait DeprecatedUuidMethodsTrait
     }
 
     /**
-     * @deprecated Use {@see UuidInterface::getFields()} to get a
-     *     {@see FieldsInterface} instance. If it is a {@see Rfc4122FieldsInterface}
-     *     instance, you may call {@see Rfc4122FieldsInterface::getClockSeq()}.
-     */
-    public function getClockSequenceHex(): string
-    {
-        return $this->fields->getClockSeq()->toString();
-    }
-
-    /**
      * @deprecated This method will be removed in 5.0.0. There is no alternative
      *     recommendation, so plan accordingly.
      */

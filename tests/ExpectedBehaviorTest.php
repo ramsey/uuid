@@ -9,6 +9,7 @@ use Ramsey\Uuid\Generator\CombGenerator;
 use Ramsey\Uuid\Generator\DefaultTimeGenerator;
 use Ramsey\Uuid\Math\BrickMathCalculator;
 use Ramsey\Uuid\Rfc4122\UuidInterface;
+use Ramsey\Uuid\Rfc4122\UuidV1;
 use Ramsey\Uuid\Type\Hexadecimal;
 use Ramsey\Uuid\Type\Time;
 use Ramsey\Uuid\Uuid;
@@ -135,22 +136,24 @@ class ExpectedBehaviorTest extends TestCase
 
     public function testUuidVersion1MethodBehavior()
     {
+        /** @var UuidV1 $uuid */
         $uuid = Uuid::uuid1('00000fffffff', 0xffff);
 
         $this->assertInstanceOf('DateTimeInterface', $uuid->getDateTime());
         $this->assertSame('00000fffffff', $uuid->getNodeHex());
-        $this->assertSame('3fff', $uuid->getClockSequenceHex());
+        $this->assertSame('3fff', $uuid->getFields()->getClockSeq()->toString());
         $this->assertSame('16383', (string) $uuid->getClockSequence());
     }
 
     public function testUuidVersion1MethodBehavior64Bit()
     {
+        /** @var UuidV1 $uuid */
         $uuid = Uuid::uuid1('ffffffffffff', 0xffff);
 
         $this->assertInstanceOf('DateTimeInterface', $uuid->getDateTime());
         $this->assertSame('ffffffffffff', $uuid->getNodeHex());
         $this->assertSame('281474976710655', (string) $uuid->getNode());
-        $this->assertSame('3fff', $uuid->getClockSequenceHex());
+        $this->assertSame('3fff', $uuid->getFields()->getClockSeq()->toString());
         $this->assertSame('16383', (string) $uuid->getClockSequence());
         $this->assertTrue(ctype_digit((string) $uuid->getTimestamp()));
     }

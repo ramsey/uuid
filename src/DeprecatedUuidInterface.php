@@ -40,14 +40,6 @@ interface DeprecatedUuidInterface
     public function getFieldsHex(): array;
 
     /**
-     * @deprecated Use {@see UuidInterface::getFields()} to get a
-     *     {@see FieldsInterface} instance. If it is a
-     *     {@see \Ramsey\Uuid\Rfc4122\FieldsInterface} instance, you may call
-     *     {@see \Ramsey\Uuid\Rfc4122\FieldsInterface::getClockSeq()}.
-     */
-    public function getClockSequenceHex(): string;
-
-    /**
      * @deprecated In ramsey/uuid version 5.0.0, this will be removed from the
      *     interface. It is available at {@see UuidV1::getDateTime()}.
      */

@@ -19,6 +19,7 @@ use Ramsey\Uuid\Generator\RandomGeneratorFactory;
 use Ramsey\Uuid\Generator\RandomGeneratorInterface;
 use Ramsey\Uuid\Guid\Guid;
 use Ramsey\Uuid\Lazy\LazyUuidFromString;
+use Ramsey\Uuid\Nonstandard\UuidV6;
 use Ramsey\Uuid\Provider\Node\RandomNodeProvider;
 use Ramsey\Uuid\Provider\Time\FixedTimeProvider;
 use Ramsey\Uuid\Rfc4122\FieldsInterface;
@@ -181,9 +182,9 @@ class UuidTest extends TestCase
 
     public function testGetClockSequenceHex(): void
     {
-        /** @var Uuid $uuid */
+        /** @var \Ramsey\Uuid\Rfc4122\UuidInterface $uuid */
         $uuid = Uuid::fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
-        $this->assertSame('1b21', $uuid->getClockSequenceHex());
+        $this->assertSame('1b21', $uuid->getFields()->getClockSeq()->toString());
     }
 
     public function testGetDateTime(): void
@@ -636,11 +637,12 @@ class UuidTest extends TestCase
 
     public function testUuid6WithNodeAndClockSequence(): void
     {
+        /** @var UuidV6 $uuid */
         $uuid = Uuid::uuid6(new Hexadecimal('0800200c9a66'), 0x1669);
         $this->assertInstanceOf(DateTimeInterface::class, $uuid->getDateTime());
         $this->assertSame(2, $uuid->getVariant());
         $this->assertSame(6, $uuid->getVersion());
-        $this->assertSame('1669', $uuid->getClockSequenceHex());
+        $this->assertSame('1669', $uuid->getFields()->getClockSeq()->toString());
         $this->assertSame('0800200c9a66', $uuid->getNodeHex());
         $this->assertSame('9669-0800200c9a66', substr($uuid->toString(), 19));
     }
@@ -1226,7 +1228,7 @@ class UuidTest extends TestCase
             if ($uuid->getVersion() === 1) {
                 $this->assertSame($time, $uuid->getTimestampHex());
             }
-            $this->assertSame($clockSeq, $uuid->getClockSequenceHex());
+            $this->assertSame($clockSeq, $uuid->getFields()->getClockSeq()->toString());
             $this->assertSame($variant, $uuid->getVariant());
             $this->assertSame($version, $uuid->getVersion());
         }

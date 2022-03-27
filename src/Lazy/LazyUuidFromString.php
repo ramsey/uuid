@@ -149,13 +149,6 @@ final class LazyUuidFromString implements UuidInterface
     }
 
     /** @psalm-suppress DeprecatedMethod */
-    public function getClockSequenceHex(): string
-    {
-        return ($this->unwrapped ?? $this->unwrap())
-            ->getClockSequenceHex();
-    }
-
-    /** @psalm-suppress DeprecatedMethod */
     public function getDateTime(): DateTimeInterface
     {
         return ($this->unwrapped ?? $this->unwrap())
