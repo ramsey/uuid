@@ -21,6 +21,10 @@ use RandomLib\Generator;
  * RandomLibAdapter generates strings of random binary data using the
  * paragonie/random-lib library
  *
+ * @deprecated This class will be removed in 5.0.0. Use the default
+ *     RandomBytesGenerator or implement your own generator that implements
+ *     RandomGeneratorInterface.
+ *
  * @link https://packagist.org/packages/paragonie/random-lib paragonie/random-lib
  */
 class RandomLibAdapter implements RandomGeneratorInterface
