@@ -50,13 +50,6 @@ interface DeprecatedUuidInterface
      *     alternative, but the same information may be obtained by splitting
      *     in half the value returned by {@see UuidInterface::getHex()}.
      */
-    public function getLeastSignificantBitsHex(): string;
-
-    /**
-     * @deprecated This method will be removed in 5.0.0. There is no direct
-     *     alternative, but the same information may be obtained by splitting
-     *     in half the value returned by {@see UuidInterface::getHex()}.
-     */
     public function getMostSignificantBitsHex(): string;
 
     /**

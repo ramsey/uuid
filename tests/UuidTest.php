@@ -304,21 +304,6 @@ class UuidTest extends TestCase
         $this->assertSame($fields, $uuid->getFieldsHex());
     }
 
-    public function testGetLeastSignificantBits(): void
-    {
-        /** @var Uuid $uuid */
-        $uuid = Uuid::fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
-
-        $this->assertSame('11178224546741000806', $uuid->getLeastSignificantBits());
-    }
-
-    public function testGetLeastSignificantBitsHex(): void
-    {
-        $uuid = Uuid::fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
-
-        $this->assertSame('9b210800200c9a66', $uuid->getLeastSignificantBitsHex());
-    }
-
     public function testGetMostSignificantBits(): void
     {
         /** @var Uuid $uuid */

@@ -148,28 +148,6 @@ trait DeprecatedUuidMethodsTrait
      *     alternative, but the same information may be obtained by splitting
      *     in half the value returned by {@see UuidInterface::getHex()}.
      */
-    public function getLeastSignificantBits(): string
-    {
-        $leastSignificantHex = substr($this->getHex()->toString(), 16);
-
-        return $this->numberConverter->fromHex($leastSignificantHex);
-    }
-
-    /**
-     * @deprecated This method will be removed in 5.0.0. There is no direct
-     *     alternative, but the same information may be obtained by splitting
-     *     in half the value returned by {@see UuidInterface::getHex()}.
-     */
-    public function getLeastSignificantBitsHex(): string
-    {
-        return substr($this->getHex()->toString(), 16);
-    }
-
-    /**
-     * @deprecated This method will be removed in 5.0.0. There is no direct
-     *     alternative, but the same information may be obtained by splitting
-     *     in half the value returned by {@see UuidInterface::getHex()}.
-     */
     public function getMostSignificantBits(): string
     {
         $mostSignificantHex = substr($this->getHex()->toString(), 0, 16);
