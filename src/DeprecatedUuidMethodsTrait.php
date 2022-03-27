@@ -78,16 +78,6 @@ trait DeprecatedUuidMethodsTrait
     /**
      * @deprecated Use {@see UuidInterface::getFields()} to get a
      *     {@see FieldsInterface} instance. If it is a {@see Rfc4122FieldsInterface}
-     *     instance, you may call {@see Rfc4122FieldsInterface::getClockSeqLow()}.
-     */
-    public function getClockSeqLowHex(): string
-    {
-        return $this->fields->getClockSeqLow()->toString();
-    }
-
-    /**
-     * @deprecated Use {@see UuidInterface::getFields()} to get a
-     *     {@see FieldsInterface} instance. If it is a {@see Rfc4122FieldsInterface}
      *     instance, you may call {@see Rfc4122FieldsInterface::getClockSeq()}
      *     and use the arbitrary-precision math library of your choice to
      *     convert it to a string integer.

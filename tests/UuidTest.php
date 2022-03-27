@@ -167,9 +167,9 @@ class UuidTest extends TestCase
 
     public function testGetClockSeqLowHex(): void
     {
-        /** @var Uuid $uuid */
+        /** @var \Ramsey\Uuid\Rfc4122\UuidInterface $uuid */
         $uuid = Uuid::fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
-        $this->assertSame('21', $uuid->getClockSeqLowHex());
+        $this->assertSame('21', $uuid->getFields()->getClockSeqLow()->toString());
     }
 
     public function testGetClockSequence(): void
@@ -1217,7 +1217,10 @@ class UuidTest extends TestCase
                 $fields['clock_seq_hi_and_reserved'],
                 $uuid->getFields()->getClockSeqHiAndReserved()->toString(),
             );
-            $this->assertSame($fields['clock_seq_low'], $uuid->getClockSeqLowHex());
+            $this->assertSame(
+                $fields['clock_seq_low'],
+                $uuid->getFields()->getClockSeqLow()->toString(),
+            );
             $this->assertSame($fields['node'], $uuid->getNodeHex());
             $this->assertSame($urn, $uuid->getUrn());
             if ($uuid->getVersion() === 1) {
