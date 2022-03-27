@@ -4,7 +4,6 @@ parameters:
     paths:
         - ./src
     checkMissingIterableValueType: false
-    reportUnmatchedIgnoredErrors: false
     bootstrapFiles:
         - ./tests/static-analysis/stubs.php
     ignoreErrors:
