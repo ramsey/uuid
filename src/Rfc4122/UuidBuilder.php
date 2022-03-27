@@ -43,7 +43,7 @@ class UuidBuilder implements UuidBuilderInterface
     private $timeConverter;
 
     /**
-     * Constructs the DefaultUuidBuilder
+     * Constructs the UUID builder
      *
      * @param NumberConverterInterface $numberConverter The number converter to
      *     use when constructing the Uuid

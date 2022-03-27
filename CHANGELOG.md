@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 * Remove the following deprecated classes:
   * `Ramsey\Uuid\Builder\BuilderCollection`
+  * `Ramsey\Uuid\Builder\DefaultUuidBuilder`
   * `Ramsey\Uuid\Builder\DegradedUuidBuilder`
   * `Ramsey\Uuid\Converter\Number\BigNumberConverter`
   * `Ramsey\Uuid\Converter\Number\DegradedNumberConverter`
