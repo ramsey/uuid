@@ -15,7 +15,7 @@ use function hex2bin;
 class RandomBytesGeneratorTest extends TestCase
 {
     /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingTraversableTypeHintSpecification
+     * @return array<array{positive-int, string}>
      */
     public function lengthAndHexDataProvider(): array
     {
@@ -27,6 +27,8 @@ class RandomBytesGeneratorTest extends TestCase
     }
 
     /**
+     * @param positive-int $length
+     *
      * @throws Exception
      *
      * @dataProvider lengthAndHexDataProvider

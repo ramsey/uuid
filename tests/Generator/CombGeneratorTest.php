@@ -87,14 +87,16 @@ class CombGeneratorTest extends TestCase
     }
 
     /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingTraversableTypeHintSpecification
+     * @return array<array<positive-int>>
      */
     public function lengthLessThanSix(): array
     {
-        return [[0], [1], [2], [3], [4], [5]];
+        return [[1], [2], [3], [4], [5]];
     }
 
     /**
+     * @param positive-int $length
+     *
      * @throws Exception
      *
      * @dataProvider lengthLessThanSix
