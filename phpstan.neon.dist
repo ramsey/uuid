@@ -4,22 +4,9 @@ parameters:
     paths:
         - ./src
     checkMissingIterableValueType: false
-    reportUnmatchedIgnoredErrors: false
     bootstrapFiles:
         - ./tests/static-analysis/stubs.php
     ignoreErrors:
-        -
-            message: '#^Call to function is_int\(\) with float will always evaluate to false\.$#'
-            count: 1
-            path: ./src/Converter/Time/PhpTimeConverter.php
-        -
-            message: '#^Unreachable statement - code above always terminates\.$#'
-            count: 1
-            path: ./src/Converter/Time/PhpTimeConverter.php
-        -
-            message: '#^Comparison operation "<" between int<6, max> and 0 is always false\.$#'
-            count: 1
-            path: ./src/Generator/CombGenerator.php
         -
             message: '#^Comparison operation ">" between 6 and 0 is always true\.$#'
             count: 1
