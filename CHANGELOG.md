@@ -21,6 +21,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   * `Ramsey\Uuid\DegradedUuid`
   * `Ramsey\Uuid\Generator\RandomLibAdapter`
   * `Ramsey\Uuid\Provider\Node\NodeProviderCollection`
+* Remove the following deprecated methods from Uuid classes:
+  * `getClockSeqHiAndReservedHex()`
 * Remove dependency on ramsey/collection package.
 
 ### Deprecated

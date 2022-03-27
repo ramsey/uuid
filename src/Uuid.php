@@ -18,9 +18,9 @@ use DateTimeInterface;
 use Ramsey\Uuid\Codec\CodecInterface;
 use Ramsey\Uuid\Converter\NumberConverterInterface;
 use Ramsey\Uuid\Converter\TimeConverterInterface;
-use Ramsey\Uuid\Fields\FieldsInterface;
 use Ramsey\Uuid\Lazy\LazyUuidFromString;
 use Ramsey\Uuid\Rfc4122\FieldsInterface as Rfc4122FieldsInterface;
+use Ramsey\Uuid\Rfc4122\UuidInterface as Rfc4122UuidInterface;
 use Ramsey\Uuid\Type\Hexadecimal;
 use Ramsey\Uuid\Type\Integer as IntegerObject;
 use ValueError;
@@ -40,7 +40,7 @@ use function substr;
  *
  * @psalm-immutable
  */
-class Uuid implements UuidInterface
+class Uuid implements Rfc4122UuidInterface
 {
     use DeprecatedUuidMethodsTrait;
 
@@ -369,7 +369,7 @@ class Uuid implements UuidInterface
         return $this->codec->encodeBinary($this);
     }
 
-    public function getFields(): FieldsInterface
+    public function getFields(): Rfc4122FieldsInterface
     {
         return $this->fields;
     }

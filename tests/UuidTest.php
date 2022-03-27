@@ -153,9 +153,9 @@ class UuidTest extends TestCase
 
     public function testGetClockSeqHiAndReservedHex(): void
     {
-        /** @var Uuid $uuid */
+        /** @var \Ramsey\Uuid\Rfc4122\UuidInterface $uuid */
         $uuid = Uuid::fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
-        $this->assertSame('9b', $uuid->getClockSeqHiAndReservedHex());
+        $this->assertSame('9b', $uuid->getFields()->getClockSeqHiAndReserved()->toString());
     }
 
     public function testGetClockSeqLow(): void
@@ -1203,7 +1203,7 @@ class UuidTest extends TestCase
             Uuid::fromInteger($int),
         ];
 
-        /** @var UuidInterface $uuid */
+        /** @var \Ramsey\Uuid\Rfc4122\UuidInterface $uuid */
         foreach ($uuids as $uuid) {
             $this->assertSame($string, $uuid->toString());
             $this->assertSame($hex, $uuid->getHex()->toString());
@@ -1213,7 +1213,10 @@ class UuidTest extends TestCase
             $this->assertSame($fields['time_low'], $uuid->getTimeLowHex());
             $this->assertSame($fields['time_mid'], $uuid->getTimeMidHex());
             $this->assertSame($fields['time_hi_and_version'], $uuid->getTimeHiAndVersionHex());
-            $this->assertSame($fields['clock_seq_hi_and_reserved'], $uuid->getClockSeqHiAndReservedHex());
+            $this->assertSame(
+                $fields['clock_seq_hi_and_reserved'],
+                $uuid->getFields()->getClockSeqHiAndReserved()->toString(),
+            );
             $this->assertSame($fields['clock_seq_low'], $uuid->getClockSeqLowHex());
             $this->assertSame($fields['node'], $uuid->getNodeHex());
             $this->assertSame($urn, $uuid->getUrn());
@@ -1520,7 +1523,7 @@ class UuidTest extends TestCase
     }
 
     /**
-     * @covers Ramsey\Uuid\Uuid::jsonSerialize
+     * @covers \Ramsey\Uuid\Uuid::jsonSerialize
      */
     public function testJsonSerialize(): void
     {

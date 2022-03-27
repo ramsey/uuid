@@ -54,7 +54,6 @@ final class UuidIsImmutable
             $a->getNumberConverter(),
             $a->getHex(),
             $a->getFieldsHex(),
-            $a->getClockSeqHiAndReservedHex(),
             $a->getClockSeqLowHex(),
             $a->getClockSequenceHex(),
             $a->getDateTime(),
@@ -71,11 +70,12 @@ final class UuidIsImmutable
             $a->getVersion(),
             $a->toString(),
             $a->__toString(),
+            $a->getFields(),
         ];
     }
 
     /**
-     * @return UuidInterface[]|bool[]
+     * @return array{UuidInterface, UuidInterface, bool}
      *
      * @psalm-pure
      */

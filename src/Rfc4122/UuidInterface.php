@@ -33,4 +33,6 @@ interface UuidInterface extends BaseUuidInterface
      * @link https://tools.ietf.org/html/rfc4122#section-3 RFC 4122, § 3: Namespace Registration Template
      */
     public function getUrn(): string;
+
+    public function getFields(): FieldsInterface;
 }

@@ -8,6 +8,7 @@ use Ramsey\Uuid\Converter\TimeConverterInterface;
 use Ramsey\Uuid\Generator\CombGenerator;
 use Ramsey\Uuid\Generator\DefaultTimeGenerator;
 use Ramsey\Uuid\Math\BrickMathCalculator;
+use Ramsey\Uuid\Rfc4122\UuidInterface;
 use Ramsey\Uuid\Type\Hexadecimal;
 use Ramsey\Uuid\Type\Time;
 use Ramsey\Uuid\Uuid;
@@ -33,9 +34,9 @@ class ExpectedBehaviorTest extends TestCase
      */
     public function testStaticCreationMethodsAndStandardBehavior($method, $args)
     {
+        /** @var UuidInterface $uuid */
         $uuid = call_user_func_array(['Ramsey\Uuid\Uuid', $method], $args);
 
-        $this->assertInstanceOf('Ramsey\Uuid\UuidInterface', $uuid);
         $this->assertIsInt($uuid->compareTo(Uuid::uuid1()));
         $this->assertNotSame(0, $uuid->compareTo(Uuid::uuid4()));
         $this->assertSame(0, $uuid->compareTo(clone $uuid));
@@ -54,13 +55,13 @@ class ExpectedBehaviorTest extends TestCase
         $this->assertIsString($uuid->getTimeLowHex());
         $this->assertIsString($uuid->getTimeMidHex());
         $this->assertIsString($uuid->getTimeHiAndVersionHex());
-        $this->assertIsString($uuid->getClockSeqHiAndReservedHex());
+        $this->assertIsString($uuid->getFields()->getClockSeqHiAndReserved()->toString());
         $this->assertIsString($uuid->getClockSeqLowHex());
         $this->assertIsString($uuid->getNodeHex());
         $this->assertSame($uuid->getFieldsHex()['time_low'], $uuid->getTimeLowHex());
         $this->assertSame($uuid->getFieldsHex()['time_mid'], $uuid->getTimeMidHex());
         $this->assertSame($uuid->getFieldsHex()['time_hi_and_version'], $uuid->getTimeHiAndVersionHex());
-        $this->assertSame($uuid->getFieldsHex()['clock_seq_hi_and_reserved'], $uuid->getClockSeqHiAndReservedHex());
+        $this->assertSame($uuid->getFieldsHex()['clock_seq_hi_and_reserved'], $uuid->getFields()->getClockSeqHiAndReserved()->toString());
         $this->assertSame($uuid->getFieldsHex()['clock_seq_low'], $uuid->getClockSeqLowHex());
         $this->assertSame($uuid->getFieldsHex()['node'], $uuid->getNodeHex());
         $this->assertSame(substr((string) $uuid->getHex(), 16), $uuid->getLeastSignificantBitsHex());
@@ -71,7 +72,7 @@ class ExpectedBehaviorTest extends TestCase
             $uuid->getTimeLowHex()
             . $uuid->getTimeMidHex()
             . $uuid->getTimeHiAndVersionHex()
-            . $uuid->getClockSeqHiAndReservedHex()
+            . $uuid->getFields()->getClockSeqHiAndReserved()->toString()
             . $uuid->getClockSeqLowHex()
             . $uuid->getNodeHex()
         );
@@ -97,7 +98,7 @@ class ExpectedBehaviorTest extends TestCase
             $uuid->getTimeLowHex() . '-'
             . $uuid->getTimeMidHex() . '-'
             . $uuid->getTimeHiAndVersionHex() . '-'
-            . $uuid->getClockSeqHiAndReservedHex()
+            . $uuid->getFields()->getClockSeqHiAndReserved()->toString()
             . $uuid->getClockSeqLowHex() . '-'
             . $uuid->getNodeHex()
         );
@@ -107,7 +108,7 @@ class ExpectedBehaviorTest extends TestCase
             $uuid->getTimeLowHex() . '-'
             . $uuid->getTimeMidHex() . '-'
             . $uuid->getTimeHiAndVersionHex() . '-'
-            . $uuid->getClockSeqHiAndReservedHex()
+            . $uuid->getFields()->getClockSeqHiAndReserved()->toString()
             . $uuid->getClockSeqLowHex() . '-'
             . $uuid->getNodeHex()
         );
@@ -237,11 +238,12 @@ class ExpectedBehaviorTest extends TestCase
     /**
      * @dataProvider provideFromStringInteger
      */
-    public function testFromBytes($string, $version, $variant, $integer)
+    public function testFromBytes(string $string, ?int $version, int $variant, string $integer): void
     {
         $bytes = hex2bin(str_replace('-', '', $string));
 
-        $uuid = Uuid::fromBytes($bytes);
+        /** @var UuidInterface $uuid */
+        $uuid = Uuid::fromBytes((string) $bytes);
 
         $this->assertInstanceOf('Ramsey\Uuid\UuidInterface', $uuid);
         $this->assertSame($string, $uuid->toString());
@@ -253,7 +255,7 @@ class ExpectedBehaviorTest extends TestCase
         $this->assertSame($components[0], $uuid->getTimeLowHex());
         $this->assertSame($components[1], $uuid->getTimeMidHex());
         $this->assertSame($components[2], $uuid->getTimeHiAndVersionHex());
-        $this->assertSame($components[3], $uuid->getClockSeqHiAndReservedHex() . $uuid->getClockSeqLowHex());
+        $this->assertSame($components[3], $uuid->getFields()->getClockSeqHiAndReserved()->toString() . $uuid->getClockSeqLowHex());
         $this->assertSame($components[4], $uuid->getNodeHex());
         $this->assertSame($integer, (string) $uuid->getInteger());
         $this->assertSame($bytes, $uuid->getBytes());
@@ -262,10 +264,11 @@ class ExpectedBehaviorTest extends TestCase
     /**
      * @dataProvider provideFromStringInteger
      */
-    public function testFromInteger($string, $version, $variant, $integer)
+    public function testFromInteger(string $string, ?int $version, int $variant, string $integer): void
     {
         $bytes = hex2bin(str_replace('-', '', $string));
 
+        /** @var UuidInterface $uuid */
         $uuid = Uuid::fromInteger($integer);
 
         $this->assertInstanceOf('Ramsey\Uuid\UuidInterface', $uuid);
@@ -278,7 +281,7 @@ class ExpectedBehaviorTest extends TestCase
         $this->assertSame($components[0], $uuid->getTimeLowHex());
         $this->assertSame($components[1], $uuid->getTimeMidHex());
         $this->assertSame($components[2], $uuid->getTimeHiAndVersionHex());
-        $this->assertSame($components[3], $uuid->getClockSeqHiAndReservedHex() . $uuid->getClockSeqLowHex());
+        $this->assertSame($components[3], $uuid->getFields()->getClockSeqHiAndReserved()->toString() . $uuid->getClockSeqLowHex());
         $this->assertSame($components[4], $uuid->getNodeHex());
         $this->assertSame($integer, (string) $uuid->getInteger());
         $this->assertSame($bytes, $uuid->getBytes());
@@ -287,10 +290,11 @@ class ExpectedBehaviorTest extends TestCase
     /**
      * @dataProvider provideFromStringInteger
      */
-    public function testFromString($string, $version, $variant, $integer)
+    public function testFromString(string $string, ?int $version, int $variant, string $integer): void
     {
         $bytes = hex2bin(str_replace('-', '', $string));
 
+        /** @var UuidInterface $uuid */
         $uuid = Uuid::fromString($string);
 
         $this->assertInstanceOf('Ramsey\Uuid\UuidInterface', $uuid);
@@ -303,7 +307,7 @@ class ExpectedBehaviorTest extends TestCase
         $this->assertSame($components[0], $uuid->getTimeLowHex());
         $this->assertSame($components[1], $uuid->getTimeMidHex());
         $this->assertSame($components[2], $uuid->getTimeHiAndVersionHex());
-        $this->assertSame($components[3], $uuid->getClockSeqHiAndReservedHex() . $uuid->getClockSeqLowHex());
+        $this->assertSame($components[3], $uuid->getFields()->getClockSeqHiAndReserved()->toString() . $uuid->getClockSeqLowHex());
         $this->assertSame($components[4], $uuid->getNodeHex());
         $this->assertSame($integer, (string) $uuid->getInteger());
         $this->assertSame($bytes, $uuid->getBytes());
