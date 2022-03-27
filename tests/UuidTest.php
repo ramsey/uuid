@@ -7,15 +7,9 @@ namespace Ramsey\Uuid\Test;
 use Brick\Math\BigDecimal;
 use Brick\Math\RoundingMode;
 use DateTimeInterface;
-use Mockery;
 use PHPUnit\Framework\MockObject\MockObject;
-use Ramsey\Uuid\Builder\DefaultUuidBuilder;
-use Ramsey\Uuid\Codec\StringCodec;
 use Ramsey\Uuid\Codec\TimestampFirstCombCodec;
 use Ramsey\Uuid\Codec\TimestampLastCombCodec;
-use Ramsey\Uuid\Converter\Number\BigNumberConverter;
-use Ramsey\Uuid\Converter\TimeConverterInterface;
-use Ramsey\Uuid\Exception\DateTimeException;
 use Ramsey\Uuid\Exception\InvalidArgumentException;
 use Ramsey\Uuid\Exception\InvalidUuidStringException;
 use Ramsey\Uuid\Exception\UnsupportedOperationException;
@@ -616,7 +610,7 @@ class UuidTest extends TestCase
 
     public function testUuid1WithRandomNode(): void
     {
-        Uuid::setFactory(new UuidFactory(new FeatureSet(false, false, false, true)));
+        Uuid::setFactory(new UuidFactory(new FeatureSet(false, false, true)));
 
         $uuid = Uuid::uuid1();
         $this->assertInstanceOf(DateTimeInterface::class, $uuid->getDateTime());
@@ -689,7 +683,7 @@ class UuidTest extends TestCase
 
     public function testUuid6WithRandomNode(): void
     {
-        Uuid::setFactory(new UuidFactory(new FeatureSet(false, false, false, true)));
+        Uuid::setFactory(new UuidFactory(new FeatureSet(false, false, true)));
 
         $uuid = Uuid::uuid6();
         $this->assertInstanceOf(DateTimeInterface::class, $uuid->getDateTime());
@@ -1646,32 +1640,6 @@ class UuidTest extends TestCase
     {
         $uuid = Uuid::fromString('886313e1-3b8a-6372-9b90-0c9aee199e5d');
         $this->assertSame($uuid->getVersion(), Uuid::UUID_TYPE_PEABODY);
-    }
-
-    public function testGetDateTimeThrowsExceptionWhenDateTimeCannotParseDate(): void
-    {
-        $numberConverter = new BigNumberConverter();
-        $timeConverter = Mockery::mock(TimeConverterInterface::class);
-
-        $timeConverter
-            ->shouldReceive('convertTime')
-            ->once()
-            ->andReturn(new Time(1234567890, '1234567'));
-
-        $builder = new DefaultUuidBuilder($numberConverter, $timeConverter);
-        $codec = new StringCodec($builder);
-
-        $factory = new UuidFactory();
-        $factory->setCodec($codec);
-
-        $uuid = $factory->fromString('b1484596-25dc-11ea-978f-2e728ce88125');
-
-        $this->expectException(DateTimeException::class);
-        $this->expectExceptionMessage(
-            'Failed to parse time string (@1234567890.1234567) at position 18 (7): Unexpected character'
-        );
-
-        $uuid->getDateTime();
     }
 
     /**

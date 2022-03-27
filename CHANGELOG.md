@@ -10,9 +10,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Changed
 
-* Remove deprecated `Ramsey\Uuid\Builder\BuilderCollection`.
-* Remove deprecated `Ramsey\Uuid\Generator\RandomLibAdapter`.
-* Remove deprecated `Ramsey\Uuid\Provider\Node\NodeProviderCollection`.
+* Remove the following deprecated classes:
+  * `Ramsey\Uuid\Builder\BuilderCollection`
+  * `Ramsey\Uuid\Builder\DegradedUuidBuilder`
+  * `Ramsey\Uuid\Converter\Number\BigNumberConverter`
+  * `Ramsey\Uuid\Converter\Number\DegradedNumberConverter`
+  * `Ramsey\Uuid\Converter\Time\BigNumberTimeConverter`
+  * `Ramsey\Uuid\Converter\Time\DegradedTimeConverter`
+  * `Ramsey\Uuid\DegradedUuid`
+  * `Ramsey\Uuid\Generator\RandomLibAdapter`
+  * `Ramsey\Uuid\Provider\Node\NodeProviderCollection`
 * Remove dependency on ramsey/collection package.
 
 ### Deprecated

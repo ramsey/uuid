@@ -64,11 +64,6 @@ class FeatureSet
     /**
      * @var bool
      */
-    private $disableBigNumber = false;
-
-    /**
-     * @var bool
-     */
     private $disable64Bit = false;
 
     /**
@@ -145,8 +140,6 @@ class FeatureSet
      * @param bool $useGuids True build UUIDs using the GuidStringCodec
      * @param bool $force32Bit True to force the use of 32-bit functionality
      *     (primarily for testing purposes)
-     * @param bool $forceNoBigNumber True to disable the use of moontoast/math
-     *     (primarily for testing purposes)
      * @param bool $ignoreSystemNode True to disable attempts to check for the
      *     system node ID (primarily for testing purposes)
      * @param bool $enablePecl True to enable the use of the PeclUuidTimeGenerator
@@ -155,11 +148,9 @@ class FeatureSet
     public function __construct(
         bool $useGuids = false,
         bool $force32Bit = false,
-        bool $forceNoBigNumber = false,
         bool $ignoreSystemNode = false,
         bool $enablePecl = false
     ) {
-        $this->disableBigNumber = $forceNoBigNumber;
         $this->disable64Bit = $force32Bit;
         $this->ignoreSystemNode = $ignoreSystemNode;
         $this->enablePecl = $enablePecl;

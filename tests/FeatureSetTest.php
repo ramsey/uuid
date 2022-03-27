@@ -57,7 +57,7 @@ class FeatureSetTest extends TestCase
 
     public function testPeclUuidTimeGeneratorIsSelected(): void
     {
-        $featureSet = new FeatureSet(false, false, false, false, true);
+        $featureSet = new FeatureSet(false, false, false, true);
 
         $this->assertInstanceOf(PeclUuidTimeGenerator::class, $featureSet->getTimeGenerator());
     }

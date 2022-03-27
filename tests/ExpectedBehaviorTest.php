@@ -2,14 +2,9 @@
 
 namespace Ramsey\Uuid\Test;
 
-use Moontoast\Math\BigNumber;
-use Ramsey\Uuid\Builder\DegradedUuidBuilder;
 use Ramsey\Uuid\Codec\CodecInterface;
 use Ramsey\Uuid\Codec\TimestampFirstCombCodec;
-use Ramsey\Uuid\Converter\Number\DegradedNumberConverter;
-use Ramsey\Uuid\Converter\Time\DegradedTimeConverter;
 use Ramsey\Uuid\Converter\TimeConverterInterface;
-use Ramsey\Uuid\DegradedUuid;
 use Ramsey\Uuid\Generator\CombGenerator;
 use Ramsey\Uuid\Generator\DefaultTimeGenerator;
 use Ramsey\Uuid\Math\BrickMathCalculator;
@@ -242,38 +237,6 @@ class ExpectedBehaviorTest extends TestCase
     /**
      * @dataProvider provideFromStringInteger
      */
-    public function testNumericReturnValues($string)
-    {
-        $leastSignificantBitsHex = substr(str_replace('-', '', $string), 16);
-        $mostSignificantBitsHex = substr(str_replace('-', '', $string), 0, 16);
-        $leastSignificantBits = BigNumber::convertToBase10($leastSignificantBitsHex, 16);
-        $mostSignificantBits = BigNumber::convertToBase10($mostSignificantBitsHex, 16);
-
-        $components = explode('-', $string);
-        array_walk($components, function (&$value) {
-            $value = BigNumber::convertToBase10($value, 16);
-        });
-
-        $clockSeq = (int) $components[3] & 0x3fff;
-        $clockSeqHiAndReserved = (int) $components[3] >> 8;
-        $clockSeqLow = (int) $components[3] & 0x00ff;
-
-        $uuid = Uuid::fromString($string);
-
-        $this->assertSame($components[0], (string) $uuid->getTimeLow());
-        $this->assertSame($components[1], (string) $uuid->getTimeMid());
-        $this->assertSame($components[2], (string) $uuid->getTimeHiAndVersion());
-        $this->assertSame((string) $clockSeq, (string) $uuid->getClockSequence());
-        $this->assertSame((string) $clockSeqHiAndReserved, (string) $uuid->getClockSeqHiAndReserved());
-        $this->assertSame((string) $clockSeqLow, (string) $uuid->getClockSeqLow());
-        $this->assertSame($components[4], (string) $uuid->getNode());
-        $this->assertSame($leastSignificantBits, (string) $uuid->getLeastSignificantBits());
-        $this->assertSame($mostSignificantBits, (string) $uuid->getMostSignificantBits());
-    }
-
-    /**
-     * @dataProvider provideFromStringInteger
-     */
     public function testFromBytes($string, $version, $variant, $integer)
     {
         $bytes = hex2bin(str_replace('-', '', $string));
@@ -427,28 +390,6 @@ class ExpectedBehaviorTest extends TestCase
         $this->assertSame($uuid, Uuid::fromBytes(hex2bin('ffffffffffffffffffffffffffffffff')));
         $this->assertSame($uuid, Uuid::fromString('ffffffff-ffff-ffff-ffff-ffffffffffff'));
         $this->assertSame($uuid, Uuid::fromInteger('340282366920938463463374607431768211455'));
-    }
-
-    /**
-     * @runInSeparateProcess
-     * @preserveGlobalState disabled
-     */
-    public function testUsingDegradedFeatures()
-    {
-        $numberConverter = new DegradedNumberConverter();
-        $builder = new DegradedUuidBuilder($numberConverter);
-
-        $factory = new UuidFactory();
-        $factory->setNumberConverter($numberConverter);
-        $factory->setUuidBuilder($builder);
-
-        Uuid::setFactory($factory);
-
-        $uuid = Uuid::uuid1();
-
-        $this->assertInstanceOf('Ramsey\Uuid\UuidInterface', $uuid);
-        $this->assertInstanceOf('Ramsey\Uuid\DegradedUuid', $uuid);
-        $this->assertInstanceOf('Ramsey\Uuid\Converter\Number\DegradedNumberConverter', $uuid->getNumberConverter());
     }
 
     /**
