@@ -26,6 +26,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   * `getClockSequenceHex()`
   * `getLeastSignificantBits()`
   * `getLeastSignificantBitsHex()`
+  * `getMostSignificantBits()`
+  * `getMostSignificantBitsHex()`
 * Remove dependency on ramsey/collection package.
 
 

@@ -56,7 +56,6 @@ final class UuidIsImmutable
             $a->getFieldsHex(),
             $a->getDateTime(),
             $a->getInteger(),
-            $a->getMostSignificantBitsHex(),
             $a->getNodeHex(),
             $a->getTimeHiAndVersionHex(),
             $a->getTimeLowHex(),

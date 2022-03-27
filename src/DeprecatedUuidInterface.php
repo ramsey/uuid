@@ -46,13 +46,6 @@ interface DeprecatedUuidInterface
     public function getDateTime(): DateTimeInterface;
 
     /**
-     * @deprecated This method will be removed in 5.0.0. There is no direct
-     *     alternative, but the same information may be obtained by splitting
-     *     in half the value returned by {@see UuidInterface::getHex()}.
-     */
-    public function getMostSignificantBitsHex(): string;
-
-    /**
      * @deprecated Use {@see UuidInterface::getFields()} to get a
      *     {@see FieldsInterface} instance. If it is a
      *     {@see \Ramsey\Uuid\Rfc4122\FieldsInterface} instance, you may call

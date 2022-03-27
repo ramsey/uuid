@@ -24,7 +24,6 @@ use Ramsey\Uuid\Rfc4122\FieldsInterface as Rfc4122FieldsInterface;
 use Throwable;
 
 use function str_pad;
-use function substr;
 
 use const STR_PAD_LEFT;
 
@@ -141,28 +140,6 @@ trait DeprecatedUuidMethodsTrait
             'clock_seq_low' => $this->fields->getClockSeqLow()->toString(),
             'node' => $this->fields->getNode()->toString(),
         ];
-    }
-
-    /**
-     * @deprecated This method will be removed in 5.0.0. There is no direct
-     *     alternative, but the same information may be obtained by splitting
-     *     in half the value returned by {@see UuidInterface::getHex()}.
-     */
-    public function getMostSignificantBits(): string
-    {
-        $mostSignificantHex = substr($this->getHex()->toString(), 0, 16);
-
-        return $this->numberConverter->fromHex($mostSignificantHex);
-    }
-
-    /**
-     * @deprecated This method will be removed in 5.0.0. There is no direct
-     *     alternative, but the same information may be obtained by splitting
-     *     in half the value returned by {@see UuidInterface::getHex()}.
-     */
-    public function getMostSignificantBitsHex(): string
-    {
-        return substr($this->getHex()->toString(), 0, 16);
     }
 
     /**

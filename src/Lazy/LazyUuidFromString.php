@@ -156,13 +156,6 @@ final class LazyUuidFromString implements UuidInterface
     }
 
     /** @psalm-suppress DeprecatedMethod */
-    public function getMostSignificantBitsHex(): string
-    {
-        return ($this->unwrapped ?? $this->unwrap())
-            ->getMostSignificantBitsHex();
-    }
-
-    /** @psalm-suppress DeprecatedMethod */
     public function getNodeHex(): string
     {
         return ($this->unwrapped ?? $this->unwrap())
@@ -349,24 +342,6 @@ final class LazyUuidFromString implements UuidInterface
                     ->getClockSeq()
                     ->toString()
             );
-    }
-
-    /**
-     * @deprecated This method will be removed in 5.0.0. There is no direct
-     *     alternative, but the same information may be obtained by splitting
-     *     in half the value returned by {@see UuidInterface::getHex()}.
-     *
-     * @psalm-suppress UndefinedInterfaceMethod
-     * @psalm-suppress DeprecatedMethod
-     * @psalm-suppress MixedArgument
-     * @psalm-suppress MixedMethodCall
-     */
-    public function getMostSignificantBits(): string
-    {
-        $instance = ($this->unwrapped ?? $this->unwrap());
-
-        return $instance->getNumberConverter()
-            ->fromHex(substr($instance->getHex()->toString(), 0, 16));
     }
 
     /**

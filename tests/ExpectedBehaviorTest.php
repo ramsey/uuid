@@ -63,7 +63,6 @@ class ExpectedBehaviorTest extends TestCase
         $this->assertSame($uuid->getFieldsHex()['clock_seq_hi_and_reserved'], $uuid->getFields()->getClockSeqHiAndReserved()->toString());
         $this->assertSame($uuid->getFieldsHex()['clock_seq_low'], $uuid->getFields()->getClockSeqLow()->toString());
         $this->assertSame($uuid->getFieldsHex()['node'], $uuid->getNodeHex());
-        $this->assertSame(substr((string) $uuid->getHex(), 0, 16), $uuid->getMostSignificantBitsHex());
 
         $this->assertSame(
             (string) $uuid->getHex(),
