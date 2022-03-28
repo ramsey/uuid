@@ -8,7 +8,8 @@ Nonstandard\\UuidV6
 
 .. php:class:: UuidV6
 
-    Implements :php:interface:`Ramsey\\Uuid\\Rfc4122\\UuidInterface`.
+    Implements :php:interface:`Ramsey\\Uuid\\Rfc4122\\UuidInterface` and
+    :php:interface:`Ramsey\\Uuid\\TimeBasedInterface`.
 
     While in the Nonstandard sub-namespace, UuidV6 implements the same interface
     as the RFC 4122 UUIDs. This is because the definition for version 6 UUIDs is
@@ -17,11 +18,6 @@ Nonstandard\\UuidV6
     UuidV6 represents a :ref:`version 6, ordered-time UUID
     <nonstandard.version6>`. In addition to providing the methods defined on the
     interface, this class additionally provides the following methods.
-
-    .. php:method:: getDateTime()
-
-        :returns: A date object representing the timestamp associated with the UUID
-        :returntype: ``\DateTimeInterface``
 
     .. php:method:: toUuidV1()
 

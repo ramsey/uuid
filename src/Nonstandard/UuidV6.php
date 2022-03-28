@@ -25,6 +25,7 @@ use Ramsey\Uuid\Lazy\LazyUuidFromString;
 use Ramsey\Uuid\Rfc4122\FieldsInterface as Rfc4122FieldsInterface;
 use Ramsey\Uuid\Rfc4122\UuidInterface;
 use Ramsey\Uuid\Rfc4122\UuidV1;
+use Ramsey\Uuid\TimeBasedInterface;
 use Ramsey\Uuid\Uuid;
 use Throwable;
 
@@ -43,7 +44,7 @@ use const STR_PAD_LEFT;
  *
  * @psalm-immutable
  */
-final class UuidV6 extends Uuid implements UuidInterface
+final class UuidV6 extends Uuid implements UuidInterface, TimeBasedInterface
 {
     /**
      * Creates a version 6 (time-based) UUID
@@ -72,13 +73,6 @@ final class UuidV6 extends Uuid implements UuidInterface
         parent::__construct($fields, $numberConverter, $codec, $timeConverter);
     }
 
-    /**
-     * Returns a DateTimeInterface object representing the timestamp associated
-     * with the UUID
-     *
-     * @return DateTimeImmutable A PHP DateTimeImmutable instance representing
-     *     the timestamp of a version 6 UUID
-     */
     public function getDateTime(): DateTimeInterface
     {
         $time = $this->timeConverter->convertTime($this->fields->getTimestamp());

@@ -16,9 +16,11 @@ namespace Ramsey\Uuid\Lazy;
 
 use DateTimeInterface;
 use Ramsey\Uuid\Converter\NumberConverterInterface;
+use Ramsey\Uuid\Exception\UnsupportedOperationException;
 use Ramsey\Uuid\Fields\FieldsInterface;
 use Ramsey\Uuid\Nonstandard\UuidV6;
 use Ramsey\Uuid\Rfc4122\UuidV1;
+use Ramsey\Uuid\TimeBasedInterface;
 use Ramsey\Uuid\Type\Hexadecimal;
 use Ramsey\Uuid\Type\Integer as IntegerObject;
 use Ramsey\Uuid\UuidFactory;
@@ -51,7 +53,7 @@ use function substr;
  * @psalm-suppress UndefinedInterfaceMethod
  * @psalm-suppress DeprecatedMethod
  */
-final class LazyUuidFromString implements UuidInterface
+final class LazyUuidFromString implements UuidInterface, TimeBasedInterface
 {
     public const VALID_REGEX = '/\A[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\z/ms';
     /**
@@ -136,11 +138,15 @@ final class LazyUuidFromString implements UuidInterface
             ->getNumberConverter();
     }
 
-    /** @psalm-suppress DeprecatedMethod */
     public function getDateTime(): DateTimeInterface
     {
-        return ($this->unwrapped ?? $this->unwrap())
-            ->getDateTime();
+        $unwrapped = ($this->unwrapped ?? $this->unwrap());
+
+        if ($unwrapped instanceof TimeBasedInterface) {
+            return $unwrapped->getDateTime();
+        }
+
+        throw new UnsupportedOperationException('Not a time-based UUID');
     }
 
     /** @psalm-suppress DeprecatedMethod */

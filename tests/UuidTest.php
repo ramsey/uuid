@@ -253,6 +253,8 @@ class UuidTest extends TestCase
         // Using a version 4 UUID to test
         $uuid = Uuid::fromString('bf17b594-41f2-474f-bf70-4c90220f75de');
 
+        $this->assertInstanceOf(LazyUuidFromString::class, $uuid);
+
         $this->expectException(UnsupportedOperationException::class);
         $this->expectExceptionMessage('Not a time-based UUID');
 
