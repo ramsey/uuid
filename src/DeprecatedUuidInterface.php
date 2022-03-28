@@ -32,14 +32,6 @@ interface DeprecatedUuidInterface
     public function getNumberConverter(): NumberConverterInterface;
 
     /**
-     * @deprecated Use {@see UuidInterface::getFields()} to get a
-     *     {@see FieldsInterface} instance.
-     *
-     * @return string[]
-     */
-    public function getFieldsHex(): array;
-
-    /**
      * @deprecated In ramsey/uuid version 5.0.0, this will be removed from the
      *     interface. It is available at {@see UuidV1::getDateTime()}.
      */

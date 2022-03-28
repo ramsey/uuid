@@ -267,22 +267,6 @@ class UuidTest extends TestCase
         $this->assertInstanceOf(FieldsInterface::class, $uuid->getFields());
     }
 
-    public function testGetFieldsHex(): void
-    {
-        $fields = [
-            'time_low' => 'ff6f8cb0',
-            'time_mid' => 'c57d',
-            'time_hi_and_version' => '11e1',
-            'clock_seq_hi_and_reserved' => '9b',
-            'clock_seq_low' => '21',
-            'node' => '0800200c9a66',
-        ];
-
-        $uuid = Uuid::fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
-
-        $this->assertSame($fields, $uuid->getFieldsHex());
-    }
-
     public function testGetNodeHex(): void
     {
         /** @var \Ramsey\Uuid\Rfc4122\UuidInterface $uuid */
@@ -1123,7 +1107,6 @@ class UuidTest extends TestCase
             $this->assertSame($hex, $uuid->getHex()->toString());
             $this->assertSame(base64_decode($bytes), $uuid->getBytes());
             $this->assertSame($int, $uuid->getInteger()->toString());
-            $this->assertSame($fields, $uuid->getFieldsHex());
             $this->assertSame($fields['time_low'], $uuid->getFields()->getTimeLow()->toString());
             $this->assertSame($fields['time_mid'], $uuid->getFields()->getTimeMid()->toString());
             $this->assertSame($fields['time_hi_and_version'], $uuid->getFields()->getTimeHiAndVersion()->toString());

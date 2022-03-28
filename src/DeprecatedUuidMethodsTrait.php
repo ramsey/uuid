@@ -89,24 +89,6 @@ trait DeprecatedUuidMethodsTrait
     }
 
     /**
-     * @deprecated Use {@see UuidInterface::getFields()} to get a
-     *     {@see FieldsInterface} instance.
-     *
-     * @return string[]
-     */
-    public function getFieldsHex(): array
-    {
-        return [
-            'time_low' => $this->fields->getTimeLow()->toString(),
-            'time_mid' => $this->fields->getTimeMid()->toString(),
-            'time_hi_and_version' => $this->fields->getTimeHiAndVersion()->toString(),
-            'clock_seq_hi_and_reserved' => $this->fields->getClockSeqHiAndReserved()->toString(),
-            'clock_seq_low' => $this->fields->getClockSeqLow()->toString(),
-            'node' => $this->fields->getNode()->toString(),
-        ];
-    }
-
-    /**
      * @deprecated This has moved to {@see Rfc4122FieldsInterface::getUrn()} and
      *     is available on {@see \Ramsey\Uuid\Rfc4122\UuidV1},
      *     {@see \Ramsey\Uuid\Rfc4122\UuidV3}, {@see \Ramsey\Uuid\Rfc4122\UuidV4},

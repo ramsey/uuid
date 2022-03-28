@@ -136,17 +136,6 @@ final class LazyUuidFromString implements UuidInterface
             ->getNumberConverter();
     }
 
-    /**
-     * {@inheritDoc}
-     *
-     * @psalm-suppress DeprecatedMethod
-     */
-    public function getFieldsHex(): array
-    {
-        return ($this->unwrapped ?? $this->unwrap())
-            ->getFieldsHex();
-    }
-
     /** @psalm-suppress DeprecatedMethod */
     public function getDateTime(): DateTimeInterface
     {

@@ -46,22 +46,6 @@ class ExpectedBehaviorTest extends TestCase
         $this->assertIsString($uuid->getBytes());
         $this->assertInstanceOf('Ramsey\Uuid\Converter\NumberConverterInterface', $uuid->getNumberConverter());
         $this->assertIsString((string) $uuid->getHex());
-        $this->assertIsArray($uuid->getFieldsHex());
-        $this->assertArrayHasKey('time_low', $uuid->getFieldsHex());
-        $this->assertArrayHasKey('time_mid', $uuid->getFieldsHex());
-        $this->assertArrayHasKey('time_hi_and_version', $uuid->getFieldsHex());
-        $this->assertArrayHasKey('clock_seq_hi_and_reserved', $uuid->getFieldsHex());
-        $this->assertArrayHasKey('clock_seq_low', $uuid->getFieldsHex());
-        $this->assertArrayHasKey('node', $uuid->getFieldsHex());
-        $this->assertSame($uuid->getFieldsHex()['time_low'], $uuid->getFields()->getTimeLow()->toString());
-        $this->assertSame($uuid->getFieldsHex()['time_mid'], $uuid->getFields()->getTimeMid()->toString());
-        $this->assertSame(
-            $uuid->getFieldsHex()['time_hi_and_version'],
-            $uuid->getFields()->getTimeHiAndVersion()->toString(),
-        );
-        $this->assertSame($uuid->getFieldsHex()['clock_seq_hi_and_reserved'], $uuid->getFields()->getClockSeqHiAndReserved()->toString());
-        $this->assertSame($uuid->getFieldsHex()['clock_seq_low'], $uuid->getFields()->getClockSeqLow()->toString());
-        $this->assertSame($uuid->getFieldsHex()['node'], $uuid->getFields()->getNode()->toString());
 
         $this->assertSame(
             (string) $uuid->getHex(),
@@ -71,16 +55,6 @@ class ExpectedBehaviorTest extends TestCase
             . $uuid->getFields()->getClockSeqHiAndReserved()->toString()
             . $uuid->getFields()->getClockSeqLow()->toString()
             . $uuid->getFields()->getNode()->toString()
-        );
-
-        $this->assertSame(
-            (string) $uuid->getHex(),
-            $uuid->getFieldsHex()['time_low']
-            . $uuid->getFieldsHex()['time_mid']
-            . $uuid->getFieldsHex()['time_hi_and_version']
-            . $uuid->getFieldsHex()['clock_seq_hi_and_reserved']
-            . $uuid->getFieldsHex()['clock_seq_low']
-            . $uuid->getFieldsHex()['node']
         );
 
         $this->assertIsString($uuid->getUrn());
@@ -547,10 +521,18 @@ class ExpectedBehaviorTest extends TestCase
             $factory->getUuidBuilder()
         ));
 
+        /** @var UuidInterface $uuid */
         $uuid = $factory->uuid4();
 
         // Swap fields according to the rules for TimestampFirstCombCodec.
-        $fields = array_values($uuid->getFieldsHex());
+        $fields =  [
+            $uuid->getFields()->getTimeLow()->toString(),
+            $uuid->getFields()->getTimeMid()->toString(),
+            $uuid->getFields()->getTimeHiAndVersion()->toString(),
+            $uuid->getFields()->getClockSeqHiAndReserved()->toString(),
+            $uuid->getFields()->getClockSeqLow()->toString(),
+            $uuid->getFields()->getNode()->toString(),
+        ];
         $last48Bits = $fields[5];
         $fields[5] = $fields[0] . $fields[1];
         $fields[0] = substr($last48Bits, 0, 8);

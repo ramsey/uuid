@@ -53,7 +53,6 @@ final class UuidIsImmutable
             $a->getBytes(),
             $a->getNumberConverter(),
             $a->getHex(),
-            $a->getFieldsHex(),
             $a->getDateTime(),
             $a->getInteger(),
             $a->getUrn(),
