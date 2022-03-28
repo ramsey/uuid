@@ -42,6 +42,11 @@ UuidInterface
         :returns: The integer representation of the UUID.
         :returntype: Ramsey\\Uuid\\Type\\Integer
 
+    .. php:method:: getUrn()
+
+        :returns: The string standard representation of the UUID as a `URN`_.
+        :returntype: ``string``
+
     .. php:method:: toString()
 
         :returns: The string standard representation of the UUID.
@@ -51,3 +56,5 @@ UuidInterface
 
         :returns: The string standard representation of the UUID.
         :returntype: ``string``
+
+.. _URN: https://tools.ietf.org/html/rfc8141
