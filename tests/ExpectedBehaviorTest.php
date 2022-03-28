@@ -45,9 +45,6 @@ class ExpectedBehaviorTest extends TestCase
         $this->assertSame(0, $uuid->compareTo(clone $uuid));
         $this->assertFalse($uuid->equals(new stdClass()));
         $this->assertTrue($uuid->equals(clone $uuid));
-        $this->assertIsString($uuid->getBytes());
-        $this->assertInstanceOf('Ramsey\Uuid\Converter\NumberConverterInterface', $uuid->getNumberConverter());
-        $this->assertIsString((string) $uuid->getHex());
 
         $this->assertSame(
             (string) $uuid->getHex(),
@@ -59,7 +56,6 @@ class ExpectedBehaviorTest extends TestCase
             . $uuid->getFields()->getNode()->toString()
         );
 
-        $this->assertIsString($uuid->getUrn());
         $this->assertStringStartsWith('urn:uuid:', $uuid->getUrn());
         $this->assertSame('urn:uuid:' . (string) $uuid->getHex(), str_replace('-', '', $uuid->getUrn()));
         $this->assertSame((string) $uuid->getHex(), str_replace('-', '', $uuid->toString()));

@@ -15,7 +15,6 @@ declare(strict_types=1);
 namespace Ramsey\Uuid\Lazy;
 
 use DateTimeInterface;
-use Ramsey\Uuid\Converter\NumberConverterInterface;
 use Ramsey\Uuid\Exception\UnsupportedOperationException;
 use Ramsey\Uuid\Fields\FieldsInterface;
 use Ramsey\Uuid\Nonstandard\UuidV6;
@@ -129,13 +128,6 @@ final class LazyUuidFromString implements UuidInterface, TimeBasedInterface
         // @codeCoverageIgnoreEnd
 
         $this->unserialize($data['string']);
-    }
-
-    /** @psalm-suppress DeprecatedMethod */
-    public function getNumberConverter(): NumberConverterInterface
-    {
-        return ($this->unwrapped ?? $this->unwrap())
-            ->getNumberConverter();
     }
 
     public function getDateTime(): DateTimeInterface
