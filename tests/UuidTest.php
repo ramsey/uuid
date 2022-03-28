@@ -324,17 +324,11 @@ class UuidTest extends TestCase
         $this->assertSame('11e1', $uuid->getFields()->getTimeHiAndVersion()->toString());
     }
 
-    public function testGetTimeLow(): void
-    {
-        /** @var Uuid $uuid */
-        $uuid = Uuid::fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
-        $this->assertSame('4285500592', $uuid->getTimeLow());
-    }
-
     public function testGetTimeLowHex(): void
     {
+        /** @var \Ramsey\Uuid\Rfc4122\UuidInterface $uuid */
         $uuid = Uuid::fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
-        $this->assertSame('ff6f8cb0', $uuid->getTimeLowHex());
+        $this->assertSame('ff6f8cb0', $uuid->getFields()->getTimeLow()->toString());
     }
 
     public function testGetTimeMid(): void
@@ -926,7 +920,7 @@ class UuidTest extends TestCase
         $uuidA = Uuid::uuid1(0x00007ffffffe, 0x1669);
 
         $this->assertSame('c4dbe7e2-097f-11e2-9669-00007ffffffe', (string) $uuidA);
-        $this->assertSame('c4dbe7e2', $uuidA->getTimeLowHex());
+        $this->assertSame('c4dbe7e2', $uuidA->getFields()->getTimeLow()->toString());
         $this->assertSame('097f', $uuidA->getTimeMidHex());
         $this->assertSame('11e2', $uuidA->getFields()->getTimeHiAndVersion()->toString());
 
@@ -937,7 +931,7 @@ class UuidTest extends TestCase
         $uuidB = Uuid::uuid1(0x00007ffffffe, 0x1669);
 
         $this->assertSame('c4b18100-097f-11e2-9669-00007ffffffe', (string) $uuidB);
-        $this->assertSame('c4b18100', $uuidB->getTimeLowHex());
+        $this->assertSame('c4b18100', $uuidB->getFields()->getTimeLow()->toString());
         $this->assertSame('097f', $uuidB->getTimeMidHex());
         $this->assertSame('11e2', $uuidB->getFields()->getTimeHiAndVersion()->toString());
 
@@ -948,7 +942,7 @@ class UuidTest extends TestCase
         $uuidC = Uuid::uuid1(0x00007ffffffe, 0x1669);
 
         $this->assertSame('c54a1776-097f-11e2-9669-00007ffffffe', (string) $uuidC);
-        $this->assertSame('c54a1776', $uuidC->getTimeLowHex());
+        $this->assertSame('c54a1776', $uuidC->getFields()->getTimeLow()->toString());
         $this->assertSame('097f', $uuidC->getTimeMidHex());
         $this->assertSame('11e2', $uuidC->getFields()->getTimeHiAndVersion()->toString());
     }
@@ -967,7 +961,7 @@ class UuidTest extends TestCase
         $uuidA = Uuid::uuid1(0x00007ffffffe, 0x1669);
 
         $this->assertSame('ff9785f6-ffff-1fff-9669-00007ffffffe', (string) $uuidA);
-        $this->assertSame('ff9785f6', $uuidA->getTimeLowHex());
+        $this->assertSame('ff9785f6', $uuidA->getFields()->getTimeLow()->toString());
         $this->assertSame('ffff', $uuidA->getTimeMidHex());
         $this->assertSame('1fff', $uuidA->getFields()->getTimeHiAndVersion()->toString());
 
@@ -982,7 +976,7 @@ class UuidTest extends TestCase
         $uuidB = Uuid::uuid1(0x00007ffffffe, 0x1669);
 
         $this->assertSame('00000000-0000-1000-9669-00007ffffffe', (string) $uuidB);
-        $this->assertSame('00000000', $uuidB->getTimeLowHex());
+        $this->assertSame('00000000', $uuidB->getFields()->getTimeLow()->toString());
         $this->assertSame('0000', $uuidB->getTimeMidHex());
         $this->assertSame('1000', $uuidB->getFields()->getTimeHiAndVersion()->toString());
     }
@@ -1187,7 +1181,7 @@ class UuidTest extends TestCase
             $this->assertSame(base64_decode($bytes), $uuid->getBytes());
             $this->assertSame($int, $uuid->getInteger()->toString());
             $this->assertSame($fields, $uuid->getFieldsHex());
-            $this->assertSame($fields['time_low'], $uuid->getTimeLowHex());
+            $this->assertSame($fields['time_low'], $uuid->getFields()->getTimeLow()->toString());
             $this->assertSame($fields['time_mid'], $uuid->getTimeMidHex());
             $this->assertSame($fields['time_hi_and_version'], $uuid->getFields()->getTimeHiAndVersion()->toString());
             $this->assertSame(

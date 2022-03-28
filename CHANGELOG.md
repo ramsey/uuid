@@ -30,6 +30,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   * `getMostSignificantBitsHex()`
   * `getTimeHiAndVersion()`
   * `getTimeHiAndVersionHex()`
+  * `getTimeLow()`
+  * `getTimeLowHex()`
 * Remove dependency on ramsey/collection package.
 
 

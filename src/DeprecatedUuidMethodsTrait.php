@@ -167,28 +167,6 @@ trait DeprecatedUuidMethodsTrait
     /**
      * @deprecated Use {@see UuidInterface::getFields()} to get a
      *     {@see FieldsInterface} instance. If it is a {@see Rfc4122FieldsInterface}
-     *     instance, you may call {@see Rfc4122FieldsInterface::getTimeLow()}
-     *     and use the arbitrary-precision math library of your choice to
-     *     convert it to a string integer.
-     */
-    public function getTimeLow(): string
-    {
-        return $this->numberConverter->fromHex($this->fields->getTimeLow()->toString());
-    }
-
-    /**
-     * @deprecated Use {@see UuidInterface::getFields()} to get a
-     *     {@see FieldsInterface} instance. If it is a {@see Rfc4122FieldsInterface}
-     *     instance, you may call {@see Rfc4122FieldsInterface::getTimeLow()}.
-     */
-    public function getTimeLowHex(): string
-    {
-        return $this->fields->getTimeLow()->toString();
-    }
-
-    /**
-     * @deprecated Use {@see UuidInterface::getFields()} to get a
-     *     {@see FieldsInterface} instance. If it is a {@see Rfc4122FieldsInterface}
      *     instance, you may call {@see Rfc4122FieldsInterface::getTimeMid()}
      *     and use the arbitrary-precision math library of your choice to
      *     convert it to a string integer.
