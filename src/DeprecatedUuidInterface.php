@@ -46,14 +46,6 @@ interface DeprecatedUuidInterface
     public function getDateTime(): DateTimeInterface;
 
     /**
-     * @deprecated Use {@see UuidInterface::getFields()} to get a
-     *     {@see FieldsInterface} instance. If it is a
-     *     {@see \Ramsey\Uuid\Rfc4122\FieldsInterface} instance, you may call
-     *     {@see \Ramsey\Uuid\Rfc4122\FieldsInterface::getNode()}.
-     */
-    public function getNodeHex(): string;
-
-    /**
      * @deprecated In ramsey/uuid version 5.0.0, this will be removed from this
      *     interface. It has moved to {@see \Ramsey\Uuid\Rfc4122\UuidInterface::getUrn()}.
      */

@@ -143,28 +143,6 @@ trait DeprecatedUuidMethodsTrait
     }
 
     /**
-     * @deprecated Use {@see UuidInterface::getFields()} to get a
-     *     {@see FieldsInterface} instance. If it is a {@see Rfc4122FieldsInterface}
-     *     instance, you may call {@see Rfc4122FieldsInterface::getNode()}
-     *     and use the arbitrary-precision math library of your choice to
-     *     convert it to a string integer.
-     */
-    public function getNode(): string
-    {
-        return $this->numberConverter->fromHex($this->fields->getNode()->toString());
-    }
-
-    /**
-     * @deprecated Use {@see UuidInterface::getFields()} to get a
-     *     {@see FieldsInterface} instance. If it is a {@see Rfc4122FieldsInterface}
-     *     instance, you may call {@see Rfc4122FieldsInterface::getNode()}.
-     */
-    public function getNodeHex(): string
-    {
-        return $this->fields->getNode()->toString();
-    }
-
-    /**
      * @deprecated This has moved to {@see Rfc4122FieldsInterface::getUrn()} and
      *     is available on {@see \Ramsey\Uuid\Rfc4122\UuidV1},
      *     {@see \Ramsey\Uuid\Rfc4122\UuidV3}, {@see \Ramsey\Uuid\Rfc4122\UuidV4},

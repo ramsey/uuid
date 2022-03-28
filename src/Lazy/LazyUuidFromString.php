@@ -155,13 +155,6 @@ final class LazyUuidFromString implements UuidInterface
     }
 
     /** @psalm-suppress DeprecatedMethod */
-    public function getNodeHex(): string
-    {
-        return ($this->unwrapped ?? $this->unwrap())
-            ->getNodeHex();
-    }
-
-    /** @psalm-suppress DeprecatedMethod */
     public function getUrn(): string
     {
         return ($this->unwrapped ?? $this->unwrap())
@@ -311,30 +304,6 @@ final class LazyUuidFromString implements UuidInterface
             ->fromHex(
                 $instance->getFields()
                     ->getClockSeq()
-                    ->toString()
-            );
-    }
-
-    /**
-     * @deprecated Use {@see UuidInterface::getFields()} to get a
-     *     {@see FieldsInterface} instance. If it is a {@see Rfc4122FieldsInterface}
-     *     instance, you may call {@see Rfc4122FieldsInterface::getNode()}
-     *     and use the arbitrary-precision math library of your choice to
-     *     convert it to a string integer.
-     *
-     * @psalm-suppress UndefinedInterfaceMethod
-     * @psalm-suppress DeprecatedMethod
-     * @psalm-suppress MixedArgument
-     * @psalm-suppress MixedMethodCall
-     */
-    public function getNode(): string
-    {
-        $instance = ($this->unwrapped ?? $this->unwrap());
-
-        return $instance->getNumberConverter()
-            ->fromHex(
-                $instance->getFields()
-                    ->getNode()
                     ->toString()
             );
     }

@@ -53,10 +53,6 @@ class ExpectedBehaviorTest extends TestCase
         $this->assertArrayHasKey('clock_seq_hi_and_reserved', $uuid->getFieldsHex());
         $this->assertArrayHasKey('clock_seq_low', $uuid->getFieldsHex());
         $this->assertArrayHasKey('node', $uuid->getFieldsHex());
-        $this->assertIsString($uuid->getFields()->getTimeLow()->toString());
-        $this->assertIsString($uuid->getFields()->getTimeMid()->toString());
-        $this->assertIsString($uuid->getFields()->getTimeHiAndVersion()->toString());
-        $this->assertIsString($uuid->getNodeHex());
         $this->assertSame($uuid->getFieldsHex()['time_low'], $uuid->getFields()->getTimeLow()->toString());
         $this->assertSame($uuid->getFieldsHex()['time_mid'], $uuid->getFields()->getTimeMid()->toString());
         $this->assertSame(
@@ -65,7 +61,7 @@ class ExpectedBehaviorTest extends TestCase
         );
         $this->assertSame($uuid->getFieldsHex()['clock_seq_hi_and_reserved'], $uuid->getFields()->getClockSeqHiAndReserved()->toString());
         $this->assertSame($uuid->getFieldsHex()['clock_seq_low'], $uuid->getFields()->getClockSeqLow()->toString());
-        $this->assertSame($uuid->getFieldsHex()['node'], $uuid->getNodeHex());
+        $this->assertSame($uuid->getFieldsHex()['node'], $uuid->getFields()->getNode()->toString());
 
         $this->assertSame(
             (string) $uuid->getHex(),
@@ -74,7 +70,7 @@ class ExpectedBehaviorTest extends TestCase
             . $uuid->getFields()->getTimeHiAndVersion()->toString()
             . $uuid->getFields()->getClockSeqHiAndReserved()->toString()
             . $uuid->getFields()->getClockSeqLow()->toString()
-            . $uuid->getNodeHex()
+            . $uuid->getFields()->getNode()->toString()
         );
 
         $this->assertSame(
@@ -100,7 +96,7 @@ class ExpectedBehaviorTest extends TestCase
             . $uuid->getFields()->getTimeHiAndVersion()->toString() . '-'
             . $uuid->getFields()->getClockSeqHiAndReserved()->toString()
             . $uuid->getFields()->getClockSeqLow()->toString() . '-'
-            . $uuid->getNodeHex()
+            . $uuid->getFields()->getNode()->toString()
         );
 
         $this->assertSame(
@@ -110,7 +106,7 @@ class ExpectedBehaviorTest extends TestCase
             . $uuid->getFields()->getTimeHiAndVersion()->toString() . '-'
             . $uuid->getFields()->getClockSeqHiAndReserved()->toString()
             . $uuid->getFields()->getClockSeqLow()->toString() . '-'
-            . $uuid->getNodeHex()
+            . $uuid->getFields()->getNode()->toString()
         );
 
         $this->assertSame(2, $uuid->getVariant());
@@ -141,19 +137,7 @@ class ExpectedBehaviorTest extends TestCase
         $uuid = Uuid::uuid1('00000fffffff', 0xffff);
 
         $this->assertInstanceOf('DateTimeInterface', $uuid->getDateTime());
-        $this->assertSame('00000fffffff', $uuid->getNodeHex());
-        $this->assertSame('3fff', $uuid->getFields()->getClockSeq()->toString());
-        $this->assertSame('16383', (string) $uuid->getClockSequence());
-    }
-
-    public function testUuidVersion1MethodBehavior64Bit()
-    {
-        /** @var UuidV1 $uuid */
-        $uuid = Uuid::uuid1('ffffffffffff', 0xffff);
-
-        $this->assertInstanceOf('DateTimeInterface', $uuid->getDateTime());
-        $this->assertSame('ffffffffffff', $uuid->getNodeHex());
-        $this->assertSame('281474976710655', (string) $uuid->getNode());
+        $this->assertSame('00000fffffff', $uuid->getFields()->getNode()->toString());
         $this->assertSame('3fff', $uuid->getFields()->getClockSeq()->toString());
         $this->assertSame('16383', (string) $uuid->getClockSequence());
     }
@@ -261,7 +245,7 @@ class ExpectedBehaviorTest extends TestCase
             $uuid->getFields()->getClockSeqHiAndReserved()->toString()
             . $uuid->getFields()->getClockSeqLow()->toString(),
         );
-        $this->assertSame($components[4], $uuid->getNodeHex());
+        $this->assertSame($components[4], $uuid->getFields()->getNode()->toString());
         $this->assertSame($integer, (string) $uuid->getInteger());
         $this->assertSame($bytes, $uuid->getBytes());
     }
@@ -291,7 +275,7 @@ class ExpectedBehaviorTest extends TestCase
             $uuid->getFields()->getClockSeqHiAndReserved()->toString()
             . $uuid->getFields()->getClockSeqLow()->toString(),
         );
-        $this->assertSame($components[4], $uuid->getNodeHex());
+        $this->assertSame($components[4], $uuid->getFields()->getNode()->toString());
         $this->assertSame($integer, (string) $uuid->getInteger());
         $this->assertSame($bytes, $uuid->getBytes());
     }
@@ -321,7 +305,7 @@ class ExpectedBehaviorTest extends TestCase
             $uuid->getFields()->getClockSeqHiAndReserved()->toString()
             . $uuid->getFields()->getClockSeqLow()->toString(),
         );
-        $this->assertSame($components[4], $uuid->getNodeHex());
+        $this->assertSame($components[4], $uuid->getFields()->getNode()->toString());
         $this->assertSame($integer, (string) $uuid->getInteger());
         $this->assertSame($bytes, $uuid->getBytes());
     }
