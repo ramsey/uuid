@@ -56,7 +56,6 @@ final class UuidIsImmutable
             $a->getDateTime(),
             $a->getInteger(),
             $a->getUrn(),
-            $a->getVariant(),
             $a->getVersion(),
             $a->toString(),
             $a->__toString(),

@@ -83,7 +83,7 @@ class ExpectedBehaviorTest extends TestCase
             . $uuid->getFields()->getNode()->toString()
         );
 
-        $this->assertSame(2, $uuid->getVariant());
+        $this->assertSame(2, $uuid->getFields()->getVariant());
         $this->assertSame((int) substr($method, -1), $uuid->getVersion());
         $this->assertTrue(ctype_digit((string) $uuid->getInteger()));
     }
@@ -206,7 +206,7 @@ class ExpectedBehaviorTest extends TestCase
         $this->assertInstanceOf('Ramsey\Uuid\UuidInterface', $uuid);
         $this->assertSame($string, $uuid->toString());
         $this->assertSame($version, $uuid->getVersion());
-        $this->assertSame($variant, $uuid->getVariant());
+        $this->assertSame($variant, $uuid->getFields()->getVariant());
 
         $components = explode('-', $string);
 
@@ -236,7 +236,7 @@ class ExpectedBehaviorTest extends TestCase
         $this->assertInstanceOf('Ramsey\Uuid\UuidInterface', $uuid);
         $this->assertSame($string, $uuid->toString());
         $this->assertSame($version, $uuid->getVersion());
-        $this->assertSame($variant, $uuid->getVariant());
+        $this->assertSame($variant, $uuid->getFields()->getVariant());
 
         $components = explode('-', $string);
 
@@ -266,7 +266,7 @@ class ExpectedBehaviorTest extends TestCase
         $this->assertInstanceOf('Ramsey\Uuid\UuidInterface', $uuid);
         $this->assertSame($string, $uuid->toString());
         $this->assertSame($version, $uuid->getVersion());
-        $this->assertSame($variant, $uuid->getVariant());
+        $this->assertSame($variant, $uuid->getFields()->getVariant());
 
         $components = explode('-', $string);
 
@@ -542,7 +542,7 @@ class ExpectedBehaviorTest extends TestCase
         $expectedBytes = hex2bin($expectedHex);
 
         $this->assertInstanceOf('Ramsey\Uuid\UuidInterface', $uuid);
-        $this->assertSame(2, $uuid->getVariant());
+        $this->assertSame(2, $uuid->getFields()->getVariant());
         $this->assertSame(4, $uuid->getVersion());
         $this->assertSame($expectedBytes, $uuid->getBytes());
         $this->assertSame($expectedHex, (string) $uuid->getHex());

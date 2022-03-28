@@ -41,14 +41,6 @@ interface DeprecatedUuidInterface
      * @deprecated Use {@see UuidInterface::getFields()} to get a
      *     {@see FieldsInterface} instance. If it is a
      *     {@see \Ramsey\Uuid\Rfc4122\FieldsInterface} instance, you may call
-     *     {@see \Ramsey\Uuid\Rfc4122\FieldsInterface::getVariant()}.
-     */
-    public function getVariant(): ?int;
-
-    /**
-     * @deprecated Use {@see UuidInterface::getFields()} to get a
-     *     {@see FieldsInterface} instance. If it is a
-     *     {@see \Ramsey\Uuid\Rfc4122\FieldsInterface} instance, you may call
      *     {@see \Ramsey\Uuid\Rfc4122\FieldsInterface::getVersion()}.
      */
     public function getVersion(): ?int;
