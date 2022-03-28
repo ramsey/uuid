@@ -36,12 +36,4 @@ interface DeprecatedUuidInterface
      *     interface. It is available at {@see UuidV1::getDateTime()}.
      */
     public function getDateTime(): DateTimeInterface;
-
-    /**
-     * @deprecated Use {@see UuidInterface::getFields()} to get a
-     *     {@see FieldsInterface} instance. If it is a
-     *     {@see \Ramsey\Uuid\Rfc4122\FieldsInterface} instance, you may call
-     *     {@see \Ramsey\Uuid\Rfc4122\FieldsInterface::getVersion()}.
-     */
-    public function getVersion(): ?int;
 }

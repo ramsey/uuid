@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Ramsey\Uuid\Test;
 
 use Ramsey\Uuid\Rfc4122\FieldsInterface;
+use Ramsey\Uuid\Rfc4122\UuidInterface;
 use Ramsey\Uuid\Type\Hexadecimal;
 use Ramsey\Uuid\Type\Integer as IntegerObject;
 use Ramsey\Uuid\Uuid;
@@ -22,8 +23,11 @@ class FunctionsTest extends TestCase
     {
         $v1 = v1();
 
+        /** @var UuidInterface $uuid */
+        $uuid = Uuid::fromString($v1);
+
         $this->assertIsString($v1);
-        $this->assertSame(Uuid::UUID_TYPE_TIME, Uuid::fromString($v1)->getVersion());
+        $this->assertSame(Uuid::UUID_TYPE_TIME, $uuid->getFields()->getVersion());
     }
 
     public function testV2ReturnsVersion2UuidString(): void
@@ -47,16 +51,22 @@ class FunctionsTest extends TestCase
         $ns = Uuid::fromString(Uuid::NAMESPACE_URL);
         $v3 = v3($ns, 'https://example.com/foo');
 
+        /** @var UuidInterface $uuid */
+        $uuid = Uuid::fromString($v3);
+
         $this->assertIsString($v3);
-        $this->assertSame(Uuid::UUID_TYPE_HASH_MD5, Uuid::fromString($v3)->getVersion());
+        $this->assertSame(Uuid::UUID_TYPE_HASH_MD5, $uuid->getFields()->getVersion());
     }
 
     public function testV4ReturnsVersion4UuidString(): void
     {
         $v4 = v4();
 
+        /** @var UuidInterface $uuid */
+        $uuid = Uuid::fromString($v4);
+
         $this->assertIsString($v4);
-        $this->assertSame(Uuid::UUID_TYPE_RANDOM, Uuid::fromString($v4)->getVersion());
+        $this->assertSame(Uuid::UUID_TYPE_RANDOM, $uuid->getFields()->getVersion());
     }
 
     public function testV5ReturnsVersion5UuidString(): void
@@ -64,8 +74,11 @@ class FunctionsTest extends TestCase
         $ns = Uuid::fromString(Uuid::NAMESPACE_URL);
         $v5 = v5($ns, 'https://example.com/foo');
 
+        /** @var UuidInterface $uuid */
+        $uuid = Uuid::fromString($v5);
+
         $this->assertIsString($v5);
-        $this->assertSame(Uuid::UUID_TYPE_HASH_SHA1, Uuid::fromString($v5)->getVersion());
+        $this->assertSame(Uuid::UUID_TYPE_HASH_SHA1, $uuid->getFields()->getVersion());
     }
 
     public function testV6ReturnsVersion6UuidString(): void

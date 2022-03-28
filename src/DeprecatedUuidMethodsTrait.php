@@ -87,15 +87,4 @@ trait DeprecatedUuidMethodsTrait
             throw new DateTimeException($e->getMessage(), (int) $e->getCode(), $e);
         }
     }
-
-    /**
-     * @deprecated Use {@see UuidInterface::getFields()} to get a
-     *     {@see FieldsInterface} instance. If it is a
-     *     {@see \Ramsey\Uuid\Rfc4122\FieldsInterface} instance, you may call
-     *     {@see \Ramsey\Uuid\Rfc4122\FieldsInterface::getVersion()}.
-     */
-    public function getVersion(): ?int
-    {
-        return $this->fields->getVersion();
-    }
 }

@@ -242,10 +242,14 @@ class OrderedTimeCodecTest extends TestCase
         );
         $decoded = $codec->decode($expected);
         $serialized = serialize($decoded);
+
+        /** @var \Ramsey\Uuid\Rfc4122\UuidInterface $unserializedUuid */
         $unserializedUuid = unserialize($serialized);
 
+        /** @var \Ramsey\Uuid\Rfc4122\UuidInterface $expectedUuid */
         $expectedUuid = Uuid::fromString($expected);
-        $this->assertSame($expectedUuid->getVersion(), $unserializedUuid->getVersion());
+
+        $this->assertSame($expectedUuid->getFields()->getVersion(), $unserializedUuid->getFields()->getVersion());
         $this->assertTrue($expectedUuid->equals($unserializedUuid));
     }
 }

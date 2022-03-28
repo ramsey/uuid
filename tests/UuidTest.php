@@ -364,32 +364,37 @@ class UuidTest extends TestCase
 
     public function testGetVersionForVersion1(): void
     {
+        /** @var \Ramsey\Uuid\Rfc4122\UuidInterface $uuid */
         $uuid = Uuid::fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
-        $this->assertSame(1, $uuid->getVersion());
+        $this->assertSame(1, $uuid->getFields()->getVersion());
     }
 
     public function testGetVersionForVersion2(): void
     {
+        /** @var \Ramsey\Uuid\Rfc4122\UuidInterface $uuid */
         $uuid = Uuid::fromString('6fa459ea-ee8a-2ca4-894e-db77e160355e');
-        $this->assertSame(2, $uuid->getVersion());
+        $this->assertSame(2, $uuid->getFields()->getVersion());
     }
 
     public function testGetVersionForVersion3(): void
     {
+        /** @var \Ramsey\Uuid\Rfc4122\UuidInterface $uuid */
         $uuid = Uuid::fromString('6fa459ea-ee8a-3ca4-894e-db77e160355e');
-        $this->assertSame(3, $uuid->getVersion());
+        $this->assertSame(3, $uuid->getFields()->getVersion());
     }
 
     public function testGetVersionForVersion4(): void
     {
+        /** @var \Ramsey\Uuid\Rfc4122\UuidInterface $uuid */
         $uuid = Uuid::fromString('6fabf0bc-603a-42f2-925b-d9f779bd0032');
-        $this->assertSame(4, $uuid->getVersion());
+        $this->assertSame(4, $uuid->getFields()->getVersion());
     }
 
     public function testGetVersionForVersion5(): void
     {
+        /** @var \Ramsey\Uuid\Rfc4122\UuidInterface $uuid */
         $uuid = Uuid::fromString('886313e1-3b8a-5372-9b90-0c9aee199e5d');
-        $this->assertSame(5, $uuid->getVersion());
+        $this->assertSame(5, $uuid->getFields()->getVersion());
     }
 
     public function testToString(): void
@@ -411,7 +416,7 @@ class UuidTest extends TestCase
         $uuid = Uuid::uuid1();
         $this->assertInstanceOf(DateTimeInterface::class, $uuid->getDateTime());
         $this->assertSame(2, $uuid->getFields()->getVariant());
-        $this->assertSame(1, $uuid->getVersion());
+        $this->assertSame(1, $uuid->getFields()->getVersion());
     }
 
     public function testUuid1WithNodeAndClockSequence(): void
@@ -420,7 +425,7 @@ class UuidTest extends TestCase
         $uuid = Uuid::uuid1('0800200c9a66', 0x1669);
         $this->assertInstanceOf(DateTimeInterface::class, $uuid->getDateTime());
         $this->assertSame(2, $uuid->getFields()->getVariant());
-        $this->assertSame(1, $uuid->getVersion());
+        $this->assertSame(1, $uuid->getFields()->getVersion());
         $this->assertSame('1669', $uuid->getFields()->getClockSeq()->toString());
         $this->assertSame('0800200c9a66', $uuid->getFields()->getNode()->toString());
         $this->assertSame('9669-0800200c9a66', substr($uuid->toString(), 19));
@@ -432,7 +437,7 @@ class UuidTest extends TestCase
         $uuid = Uuid::uuid1(new Hexadecimal('0800200c9a66'), 0x1669);
         $this->assertInstanceOf(DateTimeInterface::class, $uuid->getDateTime());
         $this->assertSame(2, $uuid->getFields()->getVariant());
-        $this->assertSame(1, $uuid->getVersion());
+        $this->assertSame(1, $uuid->getFields()->getVersion());
         $this->assertSame('1669', $uuid->getFields()->getClockSeq()->toString());
         $this->assertSame('0800200c9a66', $uuid->getFields()->getNode()->toString());
         $this->assertSame('9669-0800200c9a66', substr($uuid->toString(), 19));
@@ -445,7 +450,7 @@ class UuidTest extends TestCase
 
         $this->assertInstanceOf(DateTimeInterface::class, $uuid->getDateTime());
         $this->assertSame(2, $uuid->getFields()->getVariant());
-        $this->assertSame(1, $uuid->getVersion());
+        $this->assertSame(1, $uuid->getFields()->getVersion());
         $this->assertSame('00007160355e', $uuid->getFields()->getNode()->toString());
     }
 
@@ -456,7 +461,7 @@ class UuidTest extends TestCase
 
         $this->assertInstanceOf(DateTimeInterface::class, $uuid->getDateTime());
         $this->assertSame(2, $uuid->getFields()->getVariant());
-        $this->assertSame(1, $uuid->getVersion());
+        $this->assertSame(1, $uuid->getFields()->getVersion());
         $this->assertSame('00007160355e', $uuid->getFields()->getNode()->toString());
     }
 
@@ -467,7 +472,7 @@ class UuidTest extends TestCase
 
         $this->assertInstanceOf(DateTimeInterface::class, $uuid->getDateTime());
         $this->assertSame(2, $uuid->getFields()->getVariant());
-        $this->assertSame(1, $uuid->getVersion());
+        $this->assertSame(1, $uuid->getFields()->getVersion());
         $this->assertSame('000071b0ad5e', $uuid->getFields()->getNode()->toString());
     }
 
@@ -503,7 +508,7 @@ class UuidTest extends TestCase
         $uuid = Uuid::uuid1();
         $this->assertInstanceOf(DateTimeInterface::class, $uuid->getDateTime());
         $this->assertSame(2, $uuid->getFields()->getVariant());
-        $this->assertSame(1, $uuid->getVersion());
+        $this->assertSame(1, $uuid->getFields()->getVersion());
     }
 
     public function testUuid1WithUserGeneratedRandomNode(): void
@@ -512,7 +517,7 @@ class UuidTest extends TestCase
         $uuid = Uuid::uuid1(new Hexadecimal((string) (new RandomNodeProvider())->getNode()));
         $this->assertInstanceOf(DateTimeInterface::class, $uuid->getDateTime());
         $this->assertSame(2, $uuid->getFields()->getVariant());
-        $this->assertSame(1, $uuid->getVersion());
+        $this->assertSame(1, $uuid->getFields()->getVersion());
     }
 
     public function testUuid6(): void
@@ -521,7 +526,7 @@ class UuidTest extends TestCase
         $uuid = Uuid::uuid6();
         $this->assertInstanceOf(DateTimeInterface::class, $uuid->getDateTime());
         $this->assertSame(2, $uuid->getFields()->getVariant());
-        $this->assertSame(6, $uuid->getVersion());
+        $this->assertSame(6, $uuid->getFields()->getVersion());
     }
 
     public function testUuid6WithNodeAndClockSequence(): void
@@ -530,7 +535,7 @@ class UuidTest extends TestCase
         $uuid = Uuid::uuid6(new Hexadecimal('0800200c9a66'), 0x1669);
         $this->assertInstanceOf(DateTimeInterface::class, $uuid->getDateTime());
         $this->assertSame(2, $uuid->getFields()->getVariant());
-        $this->assertSame(6, $uuid->getVersion());
+        $this->assertSame(6, $uuid->getFields()->getVersion());
         $this->assertSame('1669', $uuid->getFields()->getClockSeq()->toString());
         $this->assertSame('0800200c9a66', $uuid->getFields()->getNode()->toString());
         $this->assertSame('9669-0800200c9a66', substr($uuid->toString(), 19));
@@ -543,7 +548,7 @@ class UuidTest extends TestCase
 
         $this->assertInstanceOf(DateTimeInterface::class, $uuid->getDateTime());
         $this->assertSame(2, $uuid->getFields()->getVariant());
-        $this->assertSame(6, $uuid->getVersion());
+        $this->assertSame(6, $uuid->getFields()->getVersion());
         $this->assertSame('00007160355e', $uuid->getFields()->getNode()->toString());
     }
 
@@ -554,7 +559,7 @@ class UuidTest extends TestCase
 
         $this->assertInstanceOf(DateTimeInterface::class, $uuid->getDateTime());
         $this->assertSame(2, $uuid->getFields()->getVariant());
-        $this->assertSame(6, $uuid->getVersion());
+        $this->assertSame(6, $uuid->getFields()->getVersion());
         $this->assertSame('000071b0ad5e', $uuid->getFields()->getNode()->toString());
     }
 
@@ -582,7 +587,7 @@ class UuidTest extends TestCase
         $uuid = Uuid::uuid6();
         $this->assertInstanceOf(DateTimeInterface::class, $uuid->getDateTime());
         $this->assertSame(2, $uuid->getFields()->getVariant());
-        $this->assertSame(6, $uuid->getVersion());
+        $this->assertSame(6, $uuid->getFields()->getVersion());
     }
 
     public function testUuid6WithUserGeneratedRandomNode(): void
@@ -591,7 +596,7 @@ class UuidTest extends TestCase
         $uuid = Uuid::uuid6(new Hexadecimal((string) (new RandomNodeProvider())->getNode()));
         $this->assertInstanceOf(DateTimeInterface::class, $uuid->getDateTime());
         $this->assertSame(2, $uuid->getFields()->getVariant());
-        $this->assertSame(6, $uuid->getVersion());
+        $this->assertSame(6, $uuid->getFields()->getVersion());
     }
 
     /**
@@ -614,7 +619,7 @@ class UuidTest extends TestCase
         $uobj2 = Uuid::uuid3(Uuid::fromString($ns), $name);
 
         $this->assertSame(2, $uobj1->getFields()->getVariant());
-        $this->assertSame(3, $uobj1->getVersion());
+        $this->assertSame(3, $uobj1->getFields()->getVersion());
         $this->assertSame(Uuid::fromString($uuid)->toString(), $uobj1->toString());
         $this->assertTrue($uobj1->equals($uobj2));
     }
@@ -653,7 +658,7 @@ class UuidTest extends TestCase
         /** @var \Ramsey\Uuid\Rfc4122\UuidInterface $uuid */
         $uuid = Uuid::uuid4();
         $this->assertSame(2, $uuid->getFields()->getVariant());
-        $this->assertSame(4, $uuid->getVersion());
+        $this->assertSame(4, $uuid->getFields()->getVersion());
     }
 
     /**
@@ -729,9 +734,10 @@ class UuidTest extends TestCase
 
         $factory->setRandomGenerator($generator);
 
+        /** @var \Ramsey\Uuid\Rfc4122\UuidInterface $uuid */
         $uuid = $factory->uuid4();
 
-        $this->assertSame(4, $uuid->getVersion());
+        $this->assertSame(4, $uuid->getFields()->getVersion());
     }
 
     /**
@@ -754,7 +760,7 @@ class UuidTest extends TestCase
         $uobj2 = Uuid::uuid5(Uuid::fromString($ns), $name);
 
         $this->assertSame(2, $uobj1->getFields()->getVariant());
-        $this->assertSame(5, $uobj1->getVersion());
+        $this->assertSame(5, $uobj1->getFields()->getVersion());
         $this->assertSame(Uuid::fromString($uuid)->toString(), $uobj1->toString());
         $this->assertTrue($uobj1->equals($uobj2));
     }
@@ -1137,7 +1143,7 @@ class UuidTest extends TestCase
             $this->assertSame($time, $uuid->getFields()->getTimestamp()->toString());
             $this->assertSame($clockSeq, $uuid->getFields()->getClockSeq()->toString());
             $this->assertSame($variant, $uuid->getFields()->getVariant());
-            $this->assertSame($version, $uuid->getVersion());
+            $this->assertSame($version, $uuid->getFields()->getVersion());
         }
     }
 
@@ -1511,8 +1517,9 @@ class UuidTest extends TestCase
      */
     public function testUuidVersionConstantForVersion1(): void
     {
+        /** @var \Ramsey\Uuid\Rfc4122\UuidInterface $uuid */
         $uuid = Uuid::fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
-        $this->assertSame($uuid->getVersion(), Uuid::UUID_TYPE_TIME);
+        $this->assertSame($uuid->getFields()->getVersion(), Uuid::UUID_TYPE_TIME);
     }
 
     /**
@@ -1520,8 +1527,9 @@ class UuidTest extends TestCase
      */
     public function testUuidVersionConstantForVersion2(): void
     {
+        /** @var \Ramsey\Uuid\Rfc4122\UuidInterface $uuid */
         $uuid = Uuid::fromString('6fa459ea-ee8a-2ca4-894e-db77e160355e');
-        $this->assertSame($uuid->getVersion(), Uuid::UUID_TYPE_DCE_SECURITY);
+        $this->assertSame($uuid->getFields()->getVersion(), Uuid::UUID_TYPE_DCE_SECURITY);
     }
 
     /**
@@ -1529,8 +1537,9 @@ class UuidTest extends TestCase
      */
     public function testUuidVersionConstantForVersion3(): void
     {
+        /** @var \Ramsey\Uuid\Rfc4122\UuidInterface $uuid */
         $uuid = Uuid::fromString('6fa459ea-ee8a-3ca4-894e-db77e160355e');
-        $this->assertSame($uuid->getVersion(), Uuid::UUID_TYPE_HASH_MD5);
+        $this->assertSame($uuid->getFields()->getVersion(), Uuid::UUID_TYPE_HASH_MD5);
     }
 
     /**
@@ -1538,8 +1547,9 @@ class UuidTest extends TestCase
      */
     public function testUuidVersionConstantForVersion4(): void
     {
+        /** @var \Ramsey\Uuid\Rfc4122\UuidInterface $uuid */
         $uuid = Uuid::fromString('6fabf0bc-603a-42f2-925b-d9f779bd0032');
-        $this->assertSame($uuid->getVersion(), Uuid::UUID_TYPE_RANDOM);
+        $this->assertSame($uuid->getFields()->getVersion(), Uuid::UUID_TYPE_RANDOM);
     }
 
     /**
@@ -1547,14 +1557,16 @@ class UuidTest extends TestCase
      */
     public function testUuidVersionConstantForVersion5(): void
     {
+        /** @var \Ramsey\Uuid\Rfc4122\UuidInterface $uuid */
         $uuid = Uuid::fromString('886313e1-3b8a-5372-9b90-0c9aee199e5d');
-        $this->assertSame($uuid->getVersion(), Uuid::UUID_TYPE_HASH_SHA1);
+        $this->assertSame($uuid->getFields()->getVersion(), Uuid::UUID_TYPE_HASH_SHA1);
     }
 
     public function testUuidVersionConstantForVersion6(): void
     {
+        /** @var \Ramsey\Uuid\Rfc4122\UuidInterface $uuid */
         $uuid = Uuid::fromString('886313e1-3b8a-6372-9b90-0c9aee199e5d');
-        $this->assertSame($uuid->getVersion(), Uuid::UUID_TYPE_PEABODY);
+        $this->assertSame($uuid->getFields()->getVersion(), Uuid::UUID_TYPE_PEABODY);
     }
 
     /**

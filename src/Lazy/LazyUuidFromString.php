@@ -150,13 +150,6 @@ final class LazyUuidFromString implements UuidInterface
             ->getUrn();
     }
 
-    /** @psalm-suppress DeprecatedMethod */
-    public function getVersion(): ?int
-    {
-        return ($this->unwrapped ?? $this->unwrap())
-            ->getVersion();
-    }
-
     public function compareTo(UuidInterface $other): int
     {
         return ($this->unwrapped ?? $this->unwrap())

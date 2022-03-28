@@ -31,9 +31,11 @@ use stdClass;
 class ExpectedBehaviorTest extends TestCase
 {
     /**
+     * @param mixed[] $args
+     *
      * @dataProvider provideStaticCreationMethods
      */
-    public function testStaticCreationMethodsAndStandardBehavior($method, $args)
+    public function testStaticCreationMethodsAndStandardBehavior(string $method, array $args): void
     {
         /** @var UuidInterface $uuid */
         $uuid = call_user_func_array(['Ramsey\Uuid\Uuid', $method], $args);
@@ -84,7 +86,7 @@ class ExpectedBehaviorTest extends TestCase
         );
 
         $this->assertSame(2, $uuid->getFields()->getVariant());
-        $this->assertSame((int) substr($method, -1), $uuid->getVersion());
+        $this->assertSame((int) substr($method, -1), $uuid->getFields()->getVersion());
         $this->assertTrue(ctype_digit((string) $uuid->getInteger()));
     }
 
@@ -205,7 +207,7 @@ class ExpectedBehaviorTest extends TestCase
 
         $this->assertInstanceOf('Ramsey\Uuid\UuidInterface', $uuid);
         $this->assertSame($string, $uuid->toString());
-        $this->assertSame($version, $uuid->getVersion());
+        $this->assertSame($version, $uuid->getFields()->getVersion());
         $this->assertSame($variant, $uuid->getFields()->getVariant());
 
         $components = explode('-', $string);
@@ -235,7 +237,7 @@ class ExpectedBehaviorTest extends TestCase
 
         $this->assertInstanceOf('Ramsey\Uuid\UuidInterface', $uuid);
         $this->assertSame($string, $uuid->toString());
-        $this->assertSame($version, $uuid->getVersion());
+        $this->assertSame($version, $uuid->getFields()->getVersion());
         $this->assertSame($variant, $uuid->getFields()->getVariant());
 
         $components = explode('-', $string);
@@ -265,7 +267,7 @@ class ExpectedBehaviorTest extends TestCase
 
         $this->assertInstanceOf('Ramsey\Uuid\UuidInterface', $uuid);
         $this->assertSame($string, $uuid->toString());
-        $this->assertSame($version, $uuid->getVersion());
+        $this->assertSame($version, $uuid->getFields()->getVersion());
         $this->assertSame($variant, $uuid->getFields()->getVariant());
 
         $components = explode('-', $string);
@@ -543,7 +545,7 @@ class ExpectedBehaviorTest extends TestCase
 
         $this->assertInstanceOf('Ramsey\Uuid\UuidInterface', $uuid);
         $this->assertSame(2, $uuid->getFields()->getVariant());
-        $this->assertSame(4, $uuid->getVersion());
+        $this->assertSame(4, $uuid->getFields()->getVersion());
         $this->assertSame($expectedBytes, $uuid->getBytes());
         $this->assertSame($expectedHex, (string) $uuid->getHex());
     }
