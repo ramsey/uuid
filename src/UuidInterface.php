@@ -26,10 +26,7 @@ use Serializable;
  *
  * @psalm-immutable
  */
-interface UuidInterface extends
-    DeprecatedUuidInterface,
-    JsonSerializable,
-    Serializable
+interface UuidInterface extends JsonSerializable, Serializable
 {
     /**
      * Returns -1, 0, or 1 if the UUID is less than, equal to, or greater than

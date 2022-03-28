@@ -42,8 +42,6 @@ use function substr;
  */
 class Uuid implements Rfc4122UuidInterface
 {
-    use DeprecatedUuidMethodsTrait;
-
     /**
      * When this namespace is specified, the name string is a fully-qualified
      * domain name
