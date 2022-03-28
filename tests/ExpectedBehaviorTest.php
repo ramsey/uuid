@@ -139,7 +139,6 @@ class ExpectedBehaviorTest extends TestCase
         $this->assertInstanceOf('DateTimeInterface', $uuid->getDateTime());
         $this->assertSame('00000fffffff', $uuid->getFields()->getNode()->toString());
         $this->assertSame('3fff', $uuid->getFields()->getClockSeq()->toString());
-        $this->assertSame('16383', (string) $uuid->getClockSequence());
     }
 
     /**

@@ -12,11 +12,6 @@ parameters:
             count: 1
             path: ./src/Generator/CombGenerator.php
         -
-            # Legacy methods of `Ramsey\Uuid` use interface methods that are NOT defined on `FieldsInterface`
-            message: '#^Call to an undefined method Ramsey\\Uuid\\Fields\\FieldsInterface::get.*$#'
-            count: 3
-            path: ./src/Lazy/LazyUuidFromString.php
-        -
             message: '#^Result of \|\| is always false\.$#'
             count: 1
             path: ./src/Type/Time.php
