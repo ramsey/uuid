@@ -384,6 +384,11 @@ class Uuid implements UuidInterface
         return new IntegerObject($this->numberConverter->fromHex($this->getHex()->toString()));
     }
 
+    public function getUrn(): string
+    {
+        return 'urn:uuid:' . $this->toString();
+    }
+
     /**
      * @psalm-return non-empty-string
      */
