@@ -32,6 +32,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   * `getTimeHiAndVersionHex()`
   * `getTimeLow()`
   * `getTimeLowHex()`
+  * `getTimeMid()`
+  * `getTimeMidHex()`
 * Remove dependency on ramsey/collection package.
 
 

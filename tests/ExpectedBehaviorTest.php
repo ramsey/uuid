@@ -54,11 +54,11 @@ class ExpectedBehaviorTest extends TestCase
         $this->assertArrayHasKey('clock_seq_low', $uuid->getFieldsHex());
         $this->assertArrayHasKey('node', $uuid->getFieldsHex());
         $this->assertIsString($uuid->getFields()->getTimeLow()->toString());
-        $this->assertIsString($uuid->getTimeMidHex());
+        $this->assertIsString($uuid->getFields()->getTimeMid()->toString());
         $this->assertIsString($uuid->getFields()->getTimeHiAndVersion()->toString());
         $this->assertIsString($uuid->getNodeHex());
         $this->assertSame($uuid->getFieldsHex()['time_low'], $uuid->getFields()->getTimeLow()->toString());
-        $this->assertSame($uuid->getFieldsHex()['time_mid'], $uuid->getTimeMidHex());
+        $this->assertSame($uuid->getFieldsHex()['time_mid'], $uuid->getFields()->getTimeMid()->toString());
         $this->assertSame(
             $uuid->getFieldsHex()['time_hi_and_version'],
             $uuid->getFields()->getTimeHiAndVersion()->toString(),
@@ -70,7 +70,7 @@ class ExpectedBehaviorTest extends TestCase
         $this->assertSame(
             (string) $uuid->getHex(),
             $uuid->getFields()->getTimeLow()->toString()
-            . $uuid->getTimeMidHex()
+            . $uuid->getFields()->getTimeMid()->toString()
             . $uuid->getFields()->getTimeHiAndVersion()->toString()
             . $uuid->getFields()->getClockSeqHiAndReserved()->toString()
             . $uuid->getFields()->getClockSeqLow()->toString()
@@ -96,7 +96,7 @@ class ExpectedBehaviorTest extends TestCase
         $this->assertSame(
             $uuid->toString(),
             $uuid->getFields()->getTimeLow()->toString() . '-'
-            . $uuid->getTimeMidHex() . '-'
+            . $uuid->getFields()->getTimeMid()->toString() . '-'
             . $uuid->getFields()->getTimeHiAndVersion()->toString() . '-'
             . $uuid->getFields()->getClockSeqHiAndReserved()->toString()
             . $uuid->getFields()->getClockSeqLow()->toString() . '-'
@@ -106,7 +106,7 @@ class ExpectedBehaviorTest extends TestCase
         $this->assertSame(
             (string) $uuid,
             $uuid->getFields()->getTimeLow()->toString() . '-'
-            . $uuid->getTimeMidHex() . '-'
+            . $uuid->getFields()->getTimeMid()->toString() . '-'
             . $uuid->getFields()->getTimeHiAndVersion()->toString() . '-'
             . $uuid->getFields()->getClockSeqHiAndReserved()->toString()
             . $uuid->getFields()->getClockSeqLow()->toString() . '-'
@@ -255,7 +255,7 @@ class ExpectedBehaviorTest extends TestCase
         $components = explode('-', $string);
 
         $this->assertSame($components[0], $uuid->getFields()->getTimeLow()->toString());
-        $this->assertSame($components[1], $uuid->getTimeMidHex());
+        $this->assertSame($components[1], $uuid->getFields()->getTimeMid()->toString());
         $this->assertSame($components[2], $uuid->getFields()->getTimeHiAndVersion()->toString());
         $this->assertSame(
             $components[3],
@@ -285,7 +285,7 @@ class ExpectedBehaviorTest extends TestCase
         $components = explode('-', $string);
 
         $this->assertSame($components[0], $uuid->getFields()->getTimeLow()->toString());
-        $this->assertSame($components[1], $uuid->getTimeMidHex());
+        $this->assertSame($components[1], $uuid->getFields()->getTimeMid()->toString());
         $this->assertSame($components[2], $uuid->getFields()->getTimeHiAndVersion()->toString());
         $this->assertSame(
             $components[3],
@@ -315,7 +315,7 @@ class ExpectedBehaviorTest extends TestCase
         $components = explode('-', $string);
 
         $this->assertSame($components[0], $uuid->getFields()->getTimeLow()->toString());
-        $this->assertSame($components[1], $uuid->getTimeMidHex());
+        $this->assertSame($components[1], $uuid->getFields()->getTimeMid()->toString());
         $this->assertSame($components[2], $uuid->getFields()->getTimeHiAndVersion()->toString());
         $this->assertSame(
             $components[3],

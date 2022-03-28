@@ -163,13 +163,6 @@ final class LazyUuidFromString implements UuidInterface
     }
 
     /** @psalm-suppress DeprecatedMethod */
-    public function getTimeMidHex(): string
-    {
-        return ($this->unwrapped ?? $this->unwrap())
-            ->getTimeMidHex();
-    }
-
-    /** @psalm-suppress DeprecatedMethod */
     public function getTimestampHex(): string
     {
         return ($this->unwrapped ?? $this->unwrap())
@@ -350,30 +343,6 @@ final class LazyUuidFromString implements UuidInterface
             ->fromHex(
                 $instance->getFields()
                     ->getNode()
-                    ->toString()
-            );
-    }
-
-    /**
-     * @deprecated Use {@see UuidInterface::getFields()} to get a
-     *     {@see FieldsInterface} instance. If it is a {@see Rfc4122FieldsInterface}
-     *     instance, you may call {@see Rfc4122FieldsInterface::getTimeMid()}
-     *     and use the arbitrary-precision math library of your choice to
-     *     convert it to a string integer.
-     *
-     * @psalm-suppress UndefinedInterfaceMethod
-     * @psalm-suppress DeprecatedMethod
-     * @psalm-suppress MixedArgument
-     * @psalm-suppress MixedMethodCall
-     */
-    public function getTimeMid(): string
-    {
-        $instance = ($this->unwrapped ?? $this->unwrap());
-
-        return $instance->getNumberConverter()
-            ->fromHex(
-                $instance->getFields()
-                    ->getTimeMid()
                     ->toString()
             );
     }
