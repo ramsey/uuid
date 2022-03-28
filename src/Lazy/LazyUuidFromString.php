@@ -163,13 +163,6 @@ final class LazyUuidFromString implements UuidInterface
     }
 
     /** @psalm-suppress DeprecatedMethod */
-    public function getTimeHiAndVersionHex(): string
-    {
-        return ($this->unwrapped ?? $this->unwrap())
-            ->getTimeHiAndVersionHex();
-    }
-
-    /** @psalm-suppress DeprecatedMethod */
     public function getTimeLowHex(): string
     {
         return ($this->unwrapped ?? $this->unwrap())
@@ -364,30 +357,6 @@ final class LazyUuidFromString implements UuidInterface
             ->fromHex(
                 $instance->getFields()
                     ->getNode()
-                    ->toString()
-            );
-    }
-
-    /**
-     * @deprecated Use {@see UuidInterface::getFields()} to get a
-     *     {@see FieldsInterface} instance. If it is a {@see Rfc4122FieldsInterface}
-     *     instance, you may call {@see Rfc4122FieldsInterface::getTimeHiAndVersion()}
-     *     and use the arbitrary-precision math library of your choice to
-     *     convert it to a string integer.
-     *
-     * @psalm-suppress UndefinedInterfaceMethod
-     * @psalm-suppress DeprecatedMethod
-     * @psalm-suppress MixedArgument
-     * @psalm-suppress MixedMethodCall
-     */
-    public function getTimeHiAndVersion(): string
-    {
-        $instance = ($this->unwrapped ?? $this->unwrap());
-
-        return $instance->getNumberConverter()
-            ->fromHex(
-                $instance->getFields()
-                    ->getTimeHiAndVersion()
                     ->toString()
             );
     }

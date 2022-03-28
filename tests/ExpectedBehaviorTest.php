@@ -55,11 +55,14 @@ class ExpectedBehaviorTest extends TestCase
         $this->assertArrayHasKey('node', $uuid->getFieldsHex());
         $this->assertIsString($uuid->getTimeLowHex());
         $this->assertIsString($uuid->getTimeMidHex());
-        $this->assertIsString($uuid->getTimeHiAndVersionHex());
+        $this->assertIsString($uuid->getFields()->getTimeHiAndVersion()->toString());
         $this->assertIsString($uuid->getNodeHex());
         $this->assertSame($uuid->getFieldsHex()['time_low'], $uuid->getTimeLowHex());
         $this->assertSame($uuid->getFieldsHex()['time_mid'], $uuid->getTimeMidHex());
-        $this->assertSame($uuid->getFieldsHex()['time_hi_and_version'], $uuid->getTimeHiAndVersionHex());
+        $this->assertSame(
+            $uuid->getFieldsHex()['time_hi_and_version'],
+            $uuid->getFields()->getTimeHiAndVersion()->toString(),
+        );
         $this->assertSame($uuid->getFieldsHex()['clock_seq_hi_and_reserved'], $uuid->getFields()->getClockSeqHiAndReserved()->toString());
         $this->assertSame($uuid->getFieldsHex()['clock_seq_low'], $uuid->getFields()->getClockSeqLow()->toString());
         $this->assertSame($uuid->getFieldsHex()['node'], $uuid->getNodeHex());
@@ -68,7 +71,7 @@ class ExpectedBehaviorTest extends TestCase
             (string) $uuid->getHex(),
             $uuid->getTimeLowHex()
             . $uuid->getTimeMidHex()
-            . $uuid->getTimeHiAndVersionHex()
+            . $uuid->getFields()->getTimeHiAndVersion()->toString()
             . $uuid->getFields()->getClockSeqHiAndReserved()->toString()
             . $uuid->getFields()->getClockSeqLow()->toString()
             . $uuid->getNodeHex()
@@ -94,7 +97,7 @@ class ExpectedBehaviorTest extends TestCase
             $uuid->toString(),
             $uuid->getTimeLowHex() . '-'
             . $uuid->getTimeMidHex() . '-'
-            . $uuid->getTimeHiAndVersionHex() . '-'
+            . $uuid->getFields()->getTimeHiAndVersion()->toString() . '-'
             . $uuid->getFields()->getClockSeqHiAndReserved()->toString()
             . $uuid->getFields()->getClockSeqLow()->toString() . '-'
             . $uuid->getNodeHex()
@@ -104,7 +107,7 @@ class ExpectedBehaviorTest extends TestCase
             (string) $uuid,
             $uuid->getTimeLowHex() . '-'
             . $uuid->getTimeMidHex() . '-'
-            . $uuid->getTimeHiAndVersionHex() . '-'
+            . $uuid->getFields()->getTimeHiAndVersion()->toString() . '-'
             . $uuid->getFields()->getClockSeqHiAndReserved()->toString()
             . $uuid->getFields()->getClockSeqLow()->toString() . '-'
             . $uuid->getNodeHex()
@@ -253,7 +256,7 @@ class ExpectedBehaviorTest extends TestCase
 
         $this->assertSame($components[0], $uuid->getTimeLowHex());
         $this->assertSame($components[1], $uuid->getTimeMidHex());
-        $this->assertSame($components[2], $uuid->getTimeHiAndVersionHex());
+        $this->assertSame($components[2], $uuid->getFields()->getTimeHiAndVersion()->toString());
         $this->assertSame(
             $components[3],
             $uuid->getFields()->getClockSeqHiAndReserved()->toString()
@@ -283,7 +286,7 @@ class ExpectedBehaviorTest extends TestCase
 
         $this->assertSame($components[0], $uuid->getTimeLowHex());
         $this->assertSame($components[1], $uuid->getTimeMidHex());
-        $this->assertSame($components[2], $uuid->getTimeHiAndVersionHex());
+        $this->assertSame($components[2], $uuid->getFields()->getTimeHiAndVersion()->toString());
         $this->assertSame(
             $components[3],
             $uuid->getFields()->getClockSeqHiAndReserved()->toString()
@@ -313,7 +316,7 @@ class ExpectedBehaviorTest extends TestCase
 
         $this->assertSame($components[0], $uuid->getTimeLowHex());
         $this->assertSame($components[1], $uuid->getTimeMidHex());
-        $this->assertSame($components[2], $uuid->getTimeHiAndVersionHex());
+        $this->assertSame($components[2], $uuid->getFields()->getTimeHiAndVersion()->toString());
         $this->assertSame(
             $components[3],
             $uuid->getFields()->getClockSeqHiAndReserved()->toString()

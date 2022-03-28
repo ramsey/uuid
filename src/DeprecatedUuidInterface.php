@@ -57,14 +57,6 @@ interface DeprecatedUuidInterface
      * @deprecated Use {@see UuidInterface::getFields()} to get a
      *     {@see FieldsInterface} instance. If it is a
      *     {@see \Ramsey\Uuid\Rfc4122\FieldsInterface} instance, you may call
-     *     {@see \Ramsey\Uuid\Rfc4122\FieldsInterface::getTimeHiAndVersion()}.
-     */
-    public function getTimeHiAndVersionHex(): string;
-
-    /**
-     * @deprecated Use {@see UuidInterface::getFields()} to get a
-     *     {@see FieldsInterface} instance. If it is a
-     *     {@see \Ramsey\Uuid\Rfc4122\FieldsInterface} instance, you may call
      *     {@see \Ramsey\Uuid\Rfc4122\FieldsInterface::getTimeLow()}.
      */
     public function getTimeLowHex(): string;
