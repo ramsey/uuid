@@ -156,7 +156,6 @@ class ExpectedBehaviorTest extends TestCase
         $this->assertSame('281474976710655', (string) $uuid->getNode());
         $this->assertSame('3fff', $uuid->getFields()->getClockSeq()->toString());
         $this->assertSame('16383', (string) $uuid->getClockSequence());
-        $this->assertTrue(ctype_digit((string) $uuid->getTimestamp()));
     }
 
     /**

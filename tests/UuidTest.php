@@ -338,51 +338,28 @@ class UuidTest extends TestCase
         $this->assertSame('c57d', $uuid->getFields()->getTimeMid()->toString());
     }
 
-    public function testGetTimestamp(): void
-    {
-        // Check for a recent date
-        /** @var Uuid $uuid */
-        $uuid = Uuid::fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
-        $this->assertSame('135606608744910000', $uuid->getTimestamp());
-
-        // Check for an old date
-        /** @var Uuid $uuid */
-        $uuid = Uuid::fromString('0901e600-0154-1000-9b21-0800200c9a66');
-        $this->assertSame('1460440000000', $uuid->getTimestamp());
-    }
-
     public function testGetTimestampHex(): void
     {
         // Check for a recent date
+        /** @var \Ramsey\Uuid\Rfc4122\UuidInterface $uuid */
         $uuid = Uuid::fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
-        $this->assertSame('1e1c57dff6f8cb0', $uuid->getTimestampHex());
+        $this->assertSame('1e1c57dff6f8cb0', $uuid->getFields()->getTimestamp()->toString());
 
         // Check for an old date
+        /** @var \Ramsey\Uuid\Rfc4122\UuidInterface $uuid */
         $uuid = Uuid::fromString('0901e600-0154-1000-9b21-0800200c9a66');
-        $this->assertSame('00001540901e600', $uuid->getTimestampHex());
-    }
-
-    public function testGetTimestampFromNonVersion1Uuid(): void
-    {
-        // Using a version 4 UUID to test
-        /** @var Uuid $uuid */
-        $uuid = Uuid::fromString('bf17b594-41f2-474f-bf70-4c90220f75de');
-
-        $this->expectException(UnsupportedOperationException::class);
-        $this->expectExceptionMessage('Not a time-based UUID');
-
-        $uuid->getTimestamp();
+        $this->assertSame('00001540901e600', $uuid->getFields()->getTimestamp()->toString());
     }
 
     public function testGetTimestampHexFromNonVersion1Uuid(): void
     {
         // Using a version 4 UUID to test
+        /** @var \Ramsey\Uuid\Rfc4122\UuidInterface $uuid */
         $uuid = Uuid::fromString('bf17b594-41f2-474f-bf70-4c90220f75de');
 
-        $this->expectException(UnsupportedOperationException::class);
-        $this->expectExceptionMessage('Not a time-based UUID');
-
-        $uuid->getTimestampHex();
+        // This threw an exception in versions of ramsey/uuid earlier than 5.0.0.
+        // The test is here now to ensure we don't throw an exception.
+        $this->assertSame('74f41f2bf17b594', $uuid->getFields()->getTimestamp()->toString());
     }
 
     public function testGetUrn(): void
@@ -1188,9 +1165,7 @@ class UuidTest extends TestCase
             );
             $this->assertSame($fields['node'], $uuid->getNodeHex());
             $this->assertSame($urn, $uuid->getUrn());
-            if ($uuid->getVersion() === 1) {
-                $this->assertSame($time, $uuid->getTimestampHex());
-            }
+            $this->assertSame($time, $uuid->getFields()->getTimestamp()->toString());
             $this->assertSame($clockSeq, $uuid->getFields()->getClockSeq()->toString());
             $this->assertSame($variant, $uuid->getVariant());
             $this->assertSame($version, $uuid->getVersion());
@@ -1222,7 +1197,7 @@ class UuidTest extends TestCase
                     'node' => '000000000000',
                 ],
                 'urn' => 'urn:uuid:00000000-0000-0000-0000-000000000000',
-                'time' => '0',
+                'time' => '000000000000000',
                 'clock_seq' => '0000',
                 'variant' => Uuid::RESERVED_NCS,
                 'version' => null,

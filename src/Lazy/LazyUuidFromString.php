@@ -16,7 +16,6 @@ namespace Ramsey\Uuid\Lazy;
 
 use DateTimeInterface;
 use Ramsey\Uuid\Converter\NumberConverterInterface;
-use Ramsey\Uuid\Exception\UnsupportedOperationException;
 use Ramsey\Uuid\Fields\FieldsInterface;
 use Ramsey\Uuid\Nonstandard\UuidV6;
 use Ramsey\Uuid\Rfc4122\UuidV1;
@@ -160,13 +159,6 @@ final class LazyUuidFromString implements UuidInterface
     {
         return ($this->unwrapped ?? $this->unwrap())
             ->getNodeHex();
-    }
-
-    /** @psalm-suppress DeprecatedMethod */
-    public function getTimestampHex(): string
-    {
-        return ($this->unwrapped ?? $this->unwrap())
-            ->getTimestampHex();
     }
 
     /** @psalm-suppress DeprecatedMethod */
@@ -345,31 +337,6 @@ final class LazyUuidFromString implements UuidInterface
                     ->getNode()
                     ->toString()
             );
-    }
-
-    /**
-     * @deprecated Use {@see UuidInterface::getFields()} to get a
-     *     {@see FieldsInterface} instance. If it is a {@see Rfc4122FieldsInterface}
-     *     instance, you may call {@see Rfc4122FieldsInterface::getTimestamp()}
-     *     and use the arbitrary-precision math library of your choice to
-     *     convert it to a string integer.
-     *
-     * @psalm-suppress UndefinedInterfaceMethod
-     * @psalm-suppress DeprecatedMethod
-     * @psalm-suppress MixedArgument
-     * @psalm-suppress MixedMethodCall
-     */
-    public function getTimestamp(): string
-    {
-        $instance = ($this->unwrapped ?? $this->unwrap());
-        $fields = $instance->getFields();
-
-        if ($fields->getVersion() !== 1) {
-            throw new UnsupportedOperationException('Not a time-based UUID');
-        }
-
-        return $instance->getNumberConverter()
-            ->fromHex($fields->getTimestamp()->toString());
     }
 
     public function toUuidV1(): UuidV1
