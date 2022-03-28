@@ -169,18 +169,21 @@ class UuidTest extends TestCase
     public function testGetDateTime(): void
     {
         // Check a recent date
+        /** @var UuidV1 $uuid */
         $uuid = Uuid::fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
         $this->assertInstanceOf(DateTimeInterface::class, $uuid->getDateTime());
         $this->assertSame('2012-07-04T02:14:34+00:00', $uuid->getDateTime()->format('c'));
         $this->assertSame('1341368074.491000', $uuid->getDateTime()->format('U.u'));
 
         // Check an old date
+        /** @var UuidV1 $uuid */
         $uuid = Uuid::fromString('0901e600-0154-1000-9b21-0800200c9a66');
         $this->assertInstanceOf(DateTimeInterface::class, $uuid->getDateTime());
         $this->assertSame('1582-10-16T16:34:04+00:00', $uuid->getDateTime()->format('c'));
         $this->assertSame('-12219146756.000000', $uuid->getDateTime()->format('U.u'));
 
         // Check a future date
+        /** @var UuidV1 $uuid */
         $uuid = Uuid::fromString('ff9785f6-ffff-1fff-9669-00007ffffffe');
         $this->assertInstanceOf(DateTimeInterface::class, $uuid->getDateTime());
         $this->assertSame('5236-03-31T21:20:59+00:00', $uuid->getDateTime()->format('c'));
@@ -189,18 +192,21 @@ class UuidTest extends TestCase
         // Check the last possible time supported by v1 UUIDs
         // See inline comments in
         // {@see \Ramsey\Uuid\Test\Converter\Time\GenericTimeConverterTest::provideCalculateTime()}
+        /** @var UuidV1 $uuid */
         $uuid = Uuid::fromString('fffffffa-ffff-1fff-8b1e-acde48001122');
         $this->assertInstanceOf(DateTimeInterface::class, $uuid->getDateTime());
         $this->assertSame('5236-03-31T21:21:00+00:00', $uuid->getDateTime()->format('c'));
         $this->assertSame('103072857660.684697', $uuid->getDateTime()->format('U.u'));
 
         // Check the oldest date
+        /** @var UuidV1 $uuid */
         $uuid = Uuid::fromString('00000000-0000-1000-9669-00007ffffffe');
         $this->assertInstanceOf(DateTimeInterface::class, $uuid->getDateTime());
         $this->assertSame('1582-10-15T00:00:00+00:00', $uuid->getDateTime()->format('c'));
         $this->assertSame('-12219292800.000000', $uuid->getDateTime()->format('U.u'));
 
         // The Unix epoch
+        /** @var UuidV1 $uuid */
         $uuid = Uuid::fromString('13814000-1dd2-11b2-9669-00007ffffffe');
         $this->assertInstanceOf(DateTimeInterface::class, $uuid->getDateTime());
         $this->assertSame('1970-01-01T00:00:00+00:00', $uuid->getDateTime()->format('c'));
@@ -210,18 +216,21 @@ class UuidTest extends TestCase
     public function testGetDateTimeForUuidV6(): void
     {
         // Check a recent date
+        /** @var UuidV6 $uuid */
         $uuid = Uuid::fromString('1e1c57df-f6f8-6cb0-9b21-0800200c9a66');
         $this->assertInstanceOf(DateTimeInterface::class, $uuid->getDateTime());
         $this->assertSame('2012-07-04T02:14:34+00:00', $uuid->getDateTime()->format('c'));
         $this->assertSame('1341368074.491000', $uuid->getDateTime()->format('U.u'));
 
         // Check an old date
+        /** @var UuidV6 $uuid */
         $uuid = Uuid::fromString('00001540-901e-6600-9b21-0800200c9a66');
         $this->assertInstanceOf(DateTimeInterface::class, $uuid->getDateTime());
         $this->assertSame('1582-10-16T16:34:04+00:00', $uuid->getDateTime()->format('c'));
         $this->assertSame('-12219146756.000000', $uuid->getDateTime()->format('U.u'));
 
         // Check a future date
+        /** @var UuidV6 $uuid */
         $uuid = Uuid::fromString('ffffffff-f978-65f6-9669-00007ffffffe');
         $this->assertInstanceOf(DateTimeInterface::class, $uuid->getDateTime());
         $this->assertSame('5236-03-31T21:20:59+00:00', $uuid->getDateTime()->format('c'));
@@ -230,18 +239,21 @@ class UuidTest extends TestCase
         // Check the last possible time supported by UUIDs
         // See inline comments in
         // {@see \Ramsey\Uuid\Test\Converter\Time\GenericTimeConverterTest::provideCalculateTime()}
+        /** @var UuidV6 $uuid */
         $uuid = Uuid::fromString('ffffffff-ffff-6ffa-8b1e-acde48001122');
         $this->assertInstanceOf(DateTimeInterface::class, $uuid->getDateTime());
         $this->assertSame('5236-03-31T21:21:00+00:00', $uuid->getDateTime()->format('c'));
         $this->assertSame('103072857660.684697', $uuid->getDateTime()->format('U.u'));
 
         // Check the oldest date
+        /** @var UuidV6 $uuid */
         $uuid = Uuid::fromString('00000000-0000-6000-9669-00007ffffffe');
         $this->assertInstanceOf(DateTimeInterface::class, $uuid->getDateTime());
         $this->assertSame('1582-10-15T00:00:00+00:00', $uuid->getDateTime()->format('c'));
         $this->assertSame('-12219292800.000000', $uuid->getDateTime()->format('U.u'));
 
         // The Unix epoch
+        /** @var UuidV6 $uuid */
         $uuid = Uuid::fromString('1b21dd21-3814-6000-9669-00007ffffffe');
         $this->assertInstanceOf(DateTimeInterface::class, $uuid->getDateTime());
         $this->assertSame('1970-01-01T00:00:00+00:00', $uuid->getDateTime()->format('c'));
@@ -414,7 +426,7 @@ class UuidTest extends TestCase
 
     public function testUuid1(): void
     {
-        /** @var \Ramsey\Uuid\Rfc4122\UuidInterface $uuid */
+        /** @var UuidV1 $uuid */
         $uuid = Uuid::uuid1();
         $this->assertInstanceOf(DateTimeInterface::class, $uuid->getDateTime());
         $this->assertSame(2, $uuid->getFields()->getVariant());
@@ -423,7 +435,7 @@ class UuidTest extends TestCase
 
     public function testUuid1WithNodeAndClockSequence(): void
     {
-        /** @var \Ramsey\Uuid\Rfc4122\UuidInterface $uuid */
+        /** @var UuidV1 $uuid */
         $uuid = Uuid::uuid1('0800200c9a66', 0x1669);
         $this->assertInstanceOf(DateTimeInterface::class, $uuid->getDateTime());
         $this->assertSame(2, $uuid->getFields()->getVariant());
@@ -435,7 +447,7 @@ class UuidTest extends TestCase
 
     public function testUuid1WithHexadecimalObjectNodeAndClockSequence(): void
     {
-        /** @var \Ramsey\Uuid\Rfc4122\UuidInterface $uuid */
+        /** @var UuidV1 $uuid */
         $uuid = Uuid::uuid1(new Hexadecimal('0800200c9a66'), 0x1669);
         $this->assertInstanceOf(DateTimeInterface::class, $uuid->getDateTime());
         $this->assertSame(2, $uuid->getFields()->getVariant());
@@ -447,7 +459,7 @@ class UuidTest extends TestCase
 
     public function testUuid1WithHexadecimalNode(): void
     {
-        /** @var \Ramsey\Uuid\Rfc4122\UuidInterface $uuid */
+        /** @var UuidV1 $uuid */
         $uuid = Uuid::uuid1('7160355e');
 
         $this->assertInstanceOf(DateTimeInterface::class, $uuid->getDateTime());
@@ -458,7 +470,7 @@ class UuidTest extends TestCase
 
     public function testUuid1WithHexadecimalObjectNode(): void
     {
-        /** @var \Ramsey\Uuid\Rfc4122\UuidInterface $uuid */
+        /** @var UuidV1 $uuid */
         $uuid = Uuid::uuid1(new Hexadecimal('7160355e'));
 
         $this->assertInstanceOf(DateTimeInterface::class, $uuid->getDateTime());
@@ -469,7 +481,7 @@ class UuidTest extends TestCase
 
     public function testUuid1WithMixedCaseHexadecimalNode(): void
     {
-        /** @var \Ramsey\Uuid\Rfc4122\UuidInterface $uuid */
+        /** @var UuidV1 $uuid */
         $uuid = Uuid::uuid1('71B0aD5e');
 
         $this->assertInstanceOf(DateTimeInterface::class, $uuid->getDateTime());
@@ -506,7 +518,7 @@ class UuidTest extends TestCase
     {
         Uuid::setFactory(new UuidFactory(new FeatureSet(false, false, true)));
 
-        /** @var \Ramsey\Uuid\Rfc4122\UuidInterface $uuid */
+        /** @var UuidV1 $uuid */
         $uuid = Uuid::uuid1();
         $this->assertInstanceOf(DateTimeInterface::class, $uuid->getDateTime());
         $this->assertSame(2, $uuid->getFields()->getVariant());
@@ -515,7 +527,7 @@ class UuidTest extends TestCase
 
     public function testUuid1WithUserGeneratedRandomNode(): void
     {
-        /** @var \Ramsey\Uuid\Rfc4122\UuidInterface $uuid */
+        /** @var UuidV1 $uuid */
         $uuid = Uuid::uuid1(new Hexadecimal((string) (new RandomNodeProvider())->getNode()));
         $this->assertInstanceOf(DateTimeInterface::class, $uuid->getDateTime());
         $this->assertSame(2, $uuid->getFields()->getVariant());
@@ -956,7 +968,10 @@ class UuidTest extends TestCase
                 $timeOfDay->setSec($currentTime);
                 $timeOfDay->setUsec($usec);
 
+                /** @var UuidV1 $uuid32 */
                 $uuid32 = $smallIntFactory->uuid1(0x00007ffffffe, 0x1669);
+
+                /** @var UuidV1 $uuid64 */
                 $uuid64 = $factory->uuid1(0x00007ffffffe, 0x1669);
 
                 $this->assertTrue(

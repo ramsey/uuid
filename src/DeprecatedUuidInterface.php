@@ -14,7 +14,6 @@ declare(strict_types=1);
 
 namespace Ramsey\Uuid;
 
-use DateTimeInterface;
 use Ramsey\Uuid\Converter\NumberConverterInterface;
 
 /**
@@ -30,10 +29,4 @@ interface DeprecatedUuidInterface
      *     recommendation, so plan accordingly.
      */
     public function getNumberConverter(): NumberConverterInterface;
-
-    /**
-     * @deprecated In ramsey/uuid version 5.0.0, this will be removed from the
-     *     interface. It is available at {@see UuidV1::getDateTime()}.
-     */
-    public function getDateTime(): DateTimeInterface;
 }

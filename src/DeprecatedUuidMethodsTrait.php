@@ -14,18 +14,7 @@ declare(strict_types=1);
 
 namespace Ramsey\Uuid;
 
-use DateTimeImmutable;
-use DateTimeInterface;
 use Ramsey\Uuid\Converter\NumberConverterInterface;
-use Ramsey\Uuid\Converter\TimeConverterInterface;
-use Ramsey\Uuid\Exception\DateTimeException;
-use Ramsey\Uuid\Exception\UnsupportedOperationException;
-use Ramsey\Uuid\Rfc4122\FieldsInterface as Rfc4122FieldsInterface;
-use Throwable;
-
-use function str_pad;
-
-use const STR_PAD_LEFT;
 
 /**
  * This trait encapsulates deprecated methods for ramsey/uuid; this trait and
@@ -36,19 +25,9 @@ use const STR_PAD_LEFT;
 trait DeprecatedUuidMethodsTrait
 {
     /**
-     * @var Rfc4122FieldsInterface
-     */
-    protected $fields;
-
-    /**
      * @var NumberConverterInterface
      */
     protected $numberConverter;
-
-    /**
-     * @var TimeConverterInterface
-     */
-    protected $timeConverter;
 
     /**
      * @deprecated This method will be removed in 5.0.0. There is no alternative
@@ -57,34 +36,5 @@ trait DeprecatedUuidMethodsTrait
     public function getNumberConverter(): NumberConverterInterface
     {
         return $this->numberConverter;
-    }
-
-    /**
-     * @deprecated In ramsey/uuid version 5.0.0, this will be removed.
-     *     It is available at {@see UuidV1::getDateTime()}.
-     *
-     * @return DateTimeImmutable An immutable instance of DateTimeInterface
-     *
-     * @throws UnsupportedOperationException if UUID is not time-based
-     * @throws DateTimeException if DateTime throws an exception/error
-     */
-    public function getDateTime(): DateTimeInterface
-    {
-        if ($this->fields->getVersion() !== 1) {
-            throw new UnsupportedOperationException('Not a time-based UUID');
-        }
-
-        $time = $this->timeConverter->convertTime($this->fields->getTimestamp());
-
-        try {
-            return new DateTimeImmutable(
-                '@'
-                . $time->getSeconds()->toString()
-                . '.'
-                . str_pad($time->getMicroseconds()->toString(), 6, '0', STR_PAD_LEFT)
-            );
-        } catch (Throwable $e) {
-            throw new DateTimeException($e->getMessage(), (int) $e->getCode(), $e);
-        }
     }
 }
