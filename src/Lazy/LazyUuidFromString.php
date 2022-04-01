@@ -87,15 +87,8 @@ final class LazyUuidFromString implements UuidInterface, TimeBasedInterface
         );
     }
 
-    public function serialize(): string
-    {
-        return $this->uuid;
-    }
-
     /**
-     * @return array{string: string}
-     *
-     * @psalm-return array{string: non-empty-string}
+     * @return array{string: non-empty-string}
      */
     public function __serialize(): array
     {
@@ -103,31 +96,15 @@ final class LazyUuidFromString implements UuidInterface, TimeBasedInterface
     }
 
     /**
-     * {@inheritDoc}
-     *
-     * @param string $serialized
-     *
-     * @psalm-param non-empty-string $serialized
-     */
-    public function unserialize($serialized): void
-    {
-        $this->uuid = $serialized;
-    }
-
-    /**
-     * @param array{string: string} $data
-     *
-     * @psalm-param array{string: non-empty-string} $data
+     * @param array{string?: non-empty-string} $data
      */
     public function __unserialize(array $data): void
     {
-        // @codeCoverageIgnoreStart
         if (!isset($data['string'])) {
             throw new ValueError(sprintf('%s(): Argument #1 ($data) is invalid', __METHOD__));
         }
-        // @codeCoverageIgnoreEnd
 
-        $this->unserialize($data['string']);
+        $this->uuid = $data['string'];
     }
 
     public function getDateTime(): DateTimeInterface

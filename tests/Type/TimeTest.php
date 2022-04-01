@@ -62,13 +62,12 @@ class TimeTest extends TestCase
     }
 
     /**
-     * @param int|float|string $seconds
-     * @param int|float|string|null $microseconds
-     *
      * @dataProvider provideTimeValues
      */
-    public function testSerializeUnserializeTime($seconds, $microseconds): void
-    {
+    public function testSerializeUnserializeTime(
+        int | IntegerObject | string $seconds,
+        int | IntegerObject | string | null $microseconds
+    ): void {
         $params = [$seconds];
         if ($microseconds !== null) {
             $params[] = $microseconds;
@@ -76,6 +75,8 @@ class TimeTest extends TestCase
 
         $time = new Time(...$params);
         $serializedTime = serialize($time);
+
+        /** @var Time $unserializedTime */
         $unserializedTime = unserialize($serializedTime);
 
         $this->assertSame((string) $seconds, $unserializedTime->getSeconds()->toString());
@@ -86,23 +87,10 @@ class TimeTest extends TestCase
         );
     }
 
-    public function testUnserializeOfInvalidValueException(): void
-    {
-        $invalidSerialization = 'C:21:"Ramsey\\Uuid\\Type\\Time":13:{{"foo":"bar"}}';
-
-        $this->expectException(UnsupportedOperationException::class);
-        $this->expectExceptionMessage('Attempted to unserialize an invalid value');
-
-        unserialize($invalidSerialization);
-    }
-
     /**
-     * @param int|float|string $seconds
-     * @param int|float|string|null $microseconds
-     *
      * @dataProvider provideTimeValues
      */
-    public function testJsonSerialize($seconds, $microseconds): void
+    public function testJsonSerialize(int | IntegerObject | string $seconds, int | IntegerObject | string | null $microseconds): void
     {
         $time = [
             'seconds' => (string) $seconds,

@@ -18,7 +18,6 @@ use JsonSerializable;
 use Ramsey\Uuid\Fields\FieldsInterface;
 use Ramsey\Uuid\Type\Hexadecimal;
 use Ramsey\Uuid\Type\Integer as IntegerObject;
-use Serializable;
 
 /**
  * A UUID is a universally unique identifier adhering to an agreed-upon
@@ -26,8 +25,18 @@ use Serializable;
  *
  * @psalm-immutable
  */
-interface UuidInterface extends JsonSerializable, Serializable
+interface UuidInterface extends JsonSerializable
 {
+    /**
+     * @return mixed[]
+     */
+    public function __serialize(): array;
+
+    /**
+     * @param mixed[] $data
+     */
+    public function __unserialize(array $data): void;
+
     /**
      * Returns -1, 0, or 1 if the UUID is less than, equal to, or greater than
      * the other UUID

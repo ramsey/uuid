@@ -38,14 +38,6 @@ trait SerializableFieldsTrait
     abstract public function getBytes(): string;
 
     /**
-     * Returns a string representation of object
-     */
-    public function serialize(): string
-    {
-        return $this->getBytes();
-    }
-
-    /**
      * @return array{bytes: string}
      */
     public function __serialize(): array
@@ -54,33 +46,18 @@ trait SerializableFieldsTrait
     }
 
     /**
-     * Constructs the object from a serialized string representation
-     *
-     * @param string $serialized The serialized string representation of the object
-     *
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
-     * @psalm-suppress UnusedMethodCall
-     */
-    public function unserialize($serialized): void
-    {
-        if (strlen($serialized) === 16) {
-            $this->__construct($serialized);
-        } else {
-            $this->__construct(base64_decode($serialized));
-        }
-    }
-
-    /**
-     * @param array{bytes: string} $data
+     * @param array{bytes?: string} $data
      */
     public function __unserialize(array $data): void
     {
-        // @codeCoverageIgnoreStart
         if (!isset($data['bytes'])) {
             throw new ValueError(sprintf('%s(): Argument #1 ($data) is invalid', __METHOD__));
         }
-        // @codeCoverageIgnoreEnd
 
-        $this->unserialize($data['bytes']);
+        if (strlen($data['bytes']) === 16) {
+            $this->__construct($data['bytes']);
+        } else {
+            $this->__construct(base64_decode($data['bytes']));
+        }
     }
 }

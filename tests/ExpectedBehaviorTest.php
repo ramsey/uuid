@@ -177,11 +177,13 @@ class ExpectedBehaviorTest extends TestCase
     /**
      * @dataProvider provideFromStringInteger
      */
-    public function testSerialization($string)
+    public function testSerialization(string $string): void
     {
         $uuid = Uuid::fromString($string);
 
         $serialized = serialize($uuid);
+
+        /** @var UuidInterface $unserialized */
         $unserialized = unserialize($serialized);
 
         $this->assertSame(0, $uuid->compareTo($unserialized));

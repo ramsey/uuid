@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * phpcs:disable Generic.PHP.DiscourageGoto.Found
+ * phpcs:disable Generic.WhiteSpace.ScopeIndent.IncorrectExact
+ * phpcs:disable Generic.WhiteSpace.ScopeIndent.Incorrect
+ */
+
 declare(strict_types=1);
 
 namespace Ramsey\Uuid;

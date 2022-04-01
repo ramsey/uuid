@@ -35,44 +35,15 @@ use function sprintf;
 final class Decimal implements NumberInterface
 {
     /**
-     * @var string
+     * @var numeric-string
      */
-    private $value;
+    private string $value;
 
-    /**
-     * @var bool
-     */
-    private $isNegative = false;
+    private bool $isNegative = false;
 
-    /**
-     * @param mixed $value The decimal value to store
-     */
-    public function __construct($value)
+    public function __construct(float | int | self | string $value)
     {
-        $value = (string) $value;
-
-        if (!is_numeric($value)) {
-            throw new InvalidArgumentException(
-                'Value must be a signed decimal or a string containing only '
-                . 'digits 0-9 and, optionally, a decimal point or sign (+ or -)'
-            );
-        }
-
-        // Remove the leading +-symbol.
-        if (strpos($value, '+') === 0) {
-            $value = substr($value, 1);
-        }
-
-        // For cases like `-0` or `-0.0000`, convert the value to `0`.
-        if (abs((float) $value) === 0.0) {
-            $value = '0';
-        }
-
-        if (strpos($value, '-') === 0) {
-            $this->isNegative = true;
-        }
-
-        $this->value = $value;
+        $this->value = $value instanceof self ? (string) $value : $this->prepareValue($value);
     }
 
     public function isNegative(): bool
@@ -95,11 +66,6 @@ final class Decimal implements NumberInterface
         return $this->toString();
     }
 
-    public function serialize(): string
-    {
-        return $this->toString();
-    }
-
     /**
      * @return array{string: string}
      */
@@ -109,29 +75,47 @@ final class Decimal implements NumberInterface
     }
 
     /**
-     * Constructs the object from a serialized string representation
-     *
-     * @param string $serialized The serialized string representation of the object
-     *
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
-     * @psalm-suppress UnusedMethodCall
-     */
-    public function unserialize($serialized): void
-    {
-        $this->__construct($serialized);
-    }
-
-    /**
-     * @param array{string: string} $data
+     * @param array{string?: string} $data
      */
     public function __unserialize(array $data): void
     {
-        // @codeCoverageIgnoreStart
         if (!isset($data['string'])) {
             throw new ValueError(sprintf('%s(): Argument #1 ($data) is invalid', __METHOD__));
         }
-        // @codeCoverageIgnoreEnd
 
-        $this->unserialize($data['string']);
+        $this->value = $this->prepareValue($data['string']);
+    }
+
+    /**
+     * @return numeric-string
+     */
+    private function prepareValue(float | int | string $value): string
+    {
+        $value = (string) $value;
+
+        if (!is_numeric($value)) {
+            throw new InvalidArgumentException(
+                'Value must be a signed decimal or a string containing only '
+                . 'digits 0-9 and, optionally, a decimal point or sign (+ or -)'
+            );
+        }
+
+        // Remove the leading +-symbol.
+        if (str_starts_with($value, '+')) {
+            $value = substr($value, 1);
+        }
+
+        // For cases like `-0` or `-0.0000`, convert the value to `0`.
+        if (abs((float) $value) === 0.0) {
+            $value = '0';
+        }
+
+        if (str_starts_with($value, '-')) {
+            $this->isNegative = true;
+        }
+
+        assert(is_numeric($value));
+
+        return $value;
     }
 }

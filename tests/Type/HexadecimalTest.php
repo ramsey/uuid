@@ -74,14 +74,14 @@ class HexadecimalTest extends TestCase
     }
 
     /**
-     * @param mixed $value
-     *
      * @dataProvider provideHex
      */
-    public function testSerializeUnserializeHexadecimal($value, string $expected): void
+    public function testSerializeUnserializeHexadecimal(Hexadecimal | string $value, string $expected): void
     {
         $hexadecimal = new Hexadecimal($value);
         $serializedHexadecimal = serialize($hexadecimal);
+
+        /** @var Hexadecimal $unserializedHexadecimal */
         $unserializedHexadecimal = unserialize($serializedHexadecimal);
 
         $this->assertSame($expected, $unserializedHexadecimal->toString());

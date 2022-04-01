@@ -15,15 +15,24 @@ declare(strict_types=1);
 namespace Ramsey\Uuid\Type;
 
 use JsonSerializable;
-use Serializable;
 
 /**
  * TypeInterface ensures consistency in typed values returned by ramsey/uuid
  *
  * @psalm-immutable
  */
-interface TypeInterface extends JsonSerializable, Serializable
+interface TypeInterface extends JsonSerializable
 {
+    /**
+     * @return mixed[]
+     */
+    public function __serialize(): array;
+
+    /**
+     * @param mixed[] $data
+     */
+    public function __unserialize(array $data): void;
+
     public function toString(): string;
 
     public function __toString(): string;

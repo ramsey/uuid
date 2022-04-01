@@ -254,57 +254,34 @@ class Uuid implements Rfc4122UuidInterface
     }
 
     /**
-     * Converts the UUID to a string for PHP serialization
-     */
-    public function serialize(): string
-    {
-        return $this->getFields()->getBytes();
-    }
-
-    /**
      * @return array{bytes: string}
      */
     public function __serialize(): array
     {
-        return ['bytes' => $this->serialize()];
+        return ['bytes' => $this->getFields()->getBytes()];
     }
 
     /**
-     * Re-constructs the object from its serialized form
-     *
-     * @param string $serialized The serialized PHP string to unserialize into
-     *     a UuidInterface instance
-     *
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
+     * @param array{bytes?: string} $data
      */
-    public function unserialize($serialized): void
+    public function __unserialize(array $data): void
     {
-        if (strlen($serialized) === 16) {
+        if (!isset($data['bytes'])) {
+            throw new ValueError(sprintf('%s(): Argument #1 ($data) is invalid', __METHOD__));
+        }
+
+        if (strlen($data['bytes']) === 16) {
             /** @var Uuid $uuid */
-            $uuid = self::getFactory()->fromBytes($serialized);
+            $uuid = self::getFactory()->fromBytes($data['bytes']);
         } else {
             /** @var Uuid $uuid */
-            $uuid = self::getFactory()->fromString($serialized);
+            $uuid = self::getFactory()->fromString($data['bytes']);
         }
 
         $this->codec = $uuid->codec;
         $this->numberConverter = $uuid->numberConverter;
         $this->fields = $uuid->fields;
         $this->timeConverter = $uuid->timeConverter;
-    }
-
-    /**
-     * @param array{bytes: string} $data
-     */
-    public function __unserialize(array $data): void
-    {
-        // @codeCoverageIgnoreStart
-        if (!isset($data['bytes'])) {
-            throw new ValueError(sprintf('%s(): Argument #1 ($data) is invalid', __METHOD__));
-        }
-        // @codeCoverageIgnoreEnd
-
-        $this->unserialize($data['bytes']);
     }
 
     public function compareTo(UuidInterface $other): int

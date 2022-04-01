@@ -275,14 +275,14 @@ class DecimalTest extends TestCase
     }
 
     /**
-     * @param mixed $value
-     *
      * @dataProvider provideDecimal
      */
-    public function testSerializeUnserializeDecimal($value, string $expected): void
+    public function testSerializeUnserializeDecimal(float | int | Decimal | string $value, string $expected): void
     {
         $decimal = new Decimal($value);
         $serializedDecimal = serialize($decimal);
+
+        /** @var Decimal $unserializedDecimal */
         $unserializedDecimal = unserialize($serializedDecimal);
 
         $this->assertSame($expected, $unserializedDecimal->toString());

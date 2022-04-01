@@ -1472,18 +1472,11 @@ class UuidTest extends TestCase
     {
         $uuid = Uuid::uuid4();
         $serialized = serialize($uuid);
-        $unserializedUuid = unserialize($serialized);
-        $this->assertTrue($uuid->equals($unserializedUuid));
-    }
-
-    public function testSerializeWithOldStringFormat(): void
-    {
-        $serialized = 'C:26:"Ramsey\Uuid\Rfc4122\UuidV4":36:{b3cd586a-e3ca-44f3-988c-f4d666c1bf4d}';
 
         /** @var UuidInterface $unserializedUuid */
         $unserializedUuid = unserialize($serialized);
 
-        $this->assertSame('b3cd586a-e3ca-44f3-988c-f4d666c1bf4d', $unserializedUuid->toString());
+        $this->assertTrue($uuid->equals($unserializedUuid));
     }
 
     public function testUuid3WithEmptyNamespace(): void
