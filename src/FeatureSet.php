@@ -61,80 +61,21 @@ use const PHP_INT_SIZE;
  */
 class FeatureSet
 {
-    /**
-     * @var bool
-     */
-    private $disable64Bit = false;
-
-    /**
-     * @var bool
-     */
-    private $ignoreSystemNode = false;
-
-    /**
-     * @var bool
-     */
-    private $enablePecl = false;
-
-    /**
-     * @var UuidBuilderInterface
-     */
-    private $builder;
-
-    /**
-     * @var CodecInterface
-     */
-    private $codec;
-
-    /**
-     * @var DceSecurityGeneratorInterface
-     */
-    private $dceSecurityGenerator;
-
-    /**
-     * @var NameGeneratorInterface
-     */
-    private $nameGenerator;
-
-    /**
-     * @var NodeProviderInterface
-     */
-    private $nodeProvider;
-
-    /**
-     * @var NumberConverterInterface
-     */
-    private $numberConverter;
-
-    /**
-     * @var TimeConverterInterface
-     */
-    private $timeConverter;
-
-    /**
-     * @var RandomGeneratorInterface
-     */
-    private $randomGenerator;
-
-    /**
-     * @var TimeGeneratorInterface
-     */
-    private $timeGenerator;
-
-    /**
-     * @var TimeProviderInterface
-     */
-    private $timeProvider;
-
-    /**
-     * @var ValidatorInterface
-     */
-    private $validator;
-
-    /**
-     * @var CalculatorInterface
-     */
-    private $calculator;
+    private bool $disable64Bit;
+    private bool $ignoreSystemNode;
+    private bool $enablePecl;
+    private UuidBuilderInterface $builder;
+    private CodecInterface $codec;
+    private DceSecurityGeneratorInterface $dceSecurityGenerator;
+    private NameGeneratorInterface $nameGenerator;
+    private NodeProviderInterface $nodeProvider;
+    private NumberConverterInterface $numberConverter;
+    private TimeConverterInterface $timeConverter;
+    private RandomGeneratorInterface $randomGenerator;
+    private TimeGeneratorInterface $timeGenerator;
+    private TimeProviderInterface $timeProvider;
+    private ValidatorInterface $validator;
+    private CalculatorInterface $calculator;
 
     /**
      * @param bool $useGuids True build UUIDs using the GuidStringCodec

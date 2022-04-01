@@ -46,10 +46,7 @@ final class Fields implements FieldsInterface
     use VariantTrait;
     use VersionTrait;
 
-    /**
-     * @var string
-     */
-    private $bytes;
+    private string $bytes;
 
     /**
      * @param string $bytes A 16-byte binary string representation of a UUID

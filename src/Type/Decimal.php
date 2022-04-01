@@ -17,8 +17,11 @@ namespace Ramsey\Uuid\Type;
 use Ramsey\Uuid\Exception\InvalidArgumentException;
 use ValueError;
 
+use function abs;
+use function assert;
 use function is_numeric;
 use function sprintf;
+use function str_starts_with;
 
 /**
  * A value object representing a decimal
@@ -51,16 +54,25 @@ final class Decimal implements NumberInterface
         return $this->isNegative;
     }
 
+    /**
+     * @return numeric-string
+     */
     public function toString(): string
     {
         return $this->value;
     }
 
+    /**
+     * @return numeric-string
+     */
     public function __toString(): string
     {
         return $this->toString();
     }
 
+    /**
+     * @return numeric-string
+     */
     public function jsonSerialize(): string
     {
         return $this->toString();

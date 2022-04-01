@@ -16,12 +16,15 @@ use function unserialize;
 class IntegerTest extends TestCase
 {
     /**
-     * @param int|float|string $value
+     * @param numeric-string $expected
      *
      * @dataProvider provideInteger
      */
-    public function testIntegerType($value, string $expected, bool $expectedIsNegative): void
-    {
+    public function testIntegerType(
+        float | int | IntegerObject | string $value,
+        string $expected,
+        bool $expectedIsNegative
+    ): void {
         $integer = new IntegerObject($value);
 
         $this->assertSame($expected, $integer->toString());
@@ -30,7 +33,7 @@ class IntegerTest extends TestCase
     }
 
     /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingTraversableTypeHintSpecification
+     * @return array<array{value: float | int | IntegerObject | string, expected: numeric-string, expectedIsNegative: bool}>
      */
     public function provideInteger(): array
     {
@@ -155,15 +158,18 @@ class IntegerTest extends TestCase
                 'expected' => '11386878954224802805705605120',
                 'expectedIsNegative' => false,
             ],
+            [
+                'value' => new IntegerObject('11386878954224802805705605120'),
+                'expected' => '11386878954224802805705605120',
+                'expectedIsNegative' => false,
+            ],
         ];
     }
 
     /**
-     * @param int|float|string $value
-     *
      * @dataProvider provideIntegerBadValues
      */
-    public function testIntegerTypeThrowsExceptionForBadValues($value): void
+    public function testIntegerTypeThrowsExceptionForBadValues(float | int | string $value): void
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage(
@@ -175,7 +181,7 @@ class IntegerTest extends TestCase
     }
 
     /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingTraversableTypeHintSpecification
+     * @return array<array{float | int | string}>
      */
     public function provideIntegerBadValues(): array
     {
@@ -195,26 +201,32 @@ class IntegerTest extends TestCase
     }
 
     /**
-     * @param mixed $value
+     * @param numeric-string $expected
      *
      * @dataProvider provideInteger
      */
-    public function testSerializeUnserializeInteger($value, string $expected): void
-    {
+    public function testSerializeUnserializeInteger(
+        float | int | IntegerObject | string $value,
+        string $expected
+    ): void {
         $integer = new IntegerObject($value);
         $serializedInteger = serialize($integer);
+
+        /** @var IntegerObject $unserializedInteger */
         $unserializedInteger = unserialize($serializedInteger);
 
         $this->assertSame($expected, $unserializedInteger->toString());
     }
 
     /**
-     * @param mixed $value
+     * @param numeric-string $expected
      *
      * @dataProvider provideInteger
      */
-    public function testJsonSerialize($value, string $expected): void
-    {
+    public function testJsonSerialize(
+        float | int | IntegerObject | string $value,
+        string $expected
+    ): void {
         $integer = new IntegerObject($value);
         $expectedJson = sprintf('"%s"', $expected);
 

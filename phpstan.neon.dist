@@ -11,7 +11,3 @@ parameters:
             message: '#^Comparison operation ">" between 6 and 0 is always true\.$#'
             count: 1
             path: ./src/Generator/CombGenerator.php
-        -
-            message: '#^Result of \|\| is always false\.$#'
-            count: 1
-            path: ./src/Type/Time.php

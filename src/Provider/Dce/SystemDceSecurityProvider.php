@@ -150,7 +150,10 @@ class SystemDceSecurityProvider implements DceSecurityProviderInterface
      */
     private function getOs(): string
     {
-        return strtoupper(substr(constant('PHP_OS'), 0, 3));
+        /** @var string $os */
+        $os = constant('PHP_OS');
+
+        return strtoupper(substr($os, 0, 3));
     }
 
     /**

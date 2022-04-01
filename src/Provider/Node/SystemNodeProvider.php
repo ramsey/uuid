@@ -104,8 +104,11 @@ class SystemNodeProvider implements NodeProviderInterface
             return '';
         }
 
+        /** @var string $os */
+        $os = constant('PHP_OS');
+
         ob_start();
-        switch (strtoupper(substr(constant('PHP_OS'), 0, 3))) {
+        switch (strtoupper(substr($os, 0, 3))) {
             case 'WIN':
                 passthru('ipconfig /all 2>&1');
 
@@ -142,7 +145,10 @@ class SystemNodeProvider implements NodeProviderInterface
     {
         $mac = '';
 
-        if (strtoupper(constant('PHP_OS')) === 'LINUX') {
+        /** @var string $os */
+        $os = constant('PHP_OS');
+
+        if (strtoupper($os) === 'LINUX') {
             $addressPaths = glob('/sys/class/net/*/address', GLOB_NOSORT);
 
             if ($addressPaths === false || count($addressPaths) === 0) {
@@ -157,7 +163,7 @@ class SystemNodeProvider implements NodeProviderInterface
                 }
             });
 
-            $macs = array_map('trim', $macs);
+            $macs = array_map(trim(...), $macs); // @phpstan-ignore-line
 
             // Remove invalid entries.
             $macs = array_filter($macs, function (string $address) {

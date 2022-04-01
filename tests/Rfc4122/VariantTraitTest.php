@@ -33,7 +33,7 @@ class VariantTraitTest extends TestCase
     }
 
     /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingTraversableTypeHintSpecification
+     * @return array<array{string}>
      */
     public function invalidBytesProvider(): array
     {
@@ -59,7 +59,7 @@ class VariantTraitTest extends TestCase
     }
 
     /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingTraversableTypeHintSpecification
+     * @return array<array{string, int}>
      */
     public function uuidVariantProvider(): array
     {

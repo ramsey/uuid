@@ -51,18 +51,27 @@ final class Time implements TypeInterface
         return $this->microseconds;
     }
 
+    /**
+     * @return numeric-string
+     */
     public function toString(): string
     {
-        return $this->seconds->toString() . '.' . $this->microseconds->toString();
+        /** @var numeric-string $combined */
+        $combined = $this->seconds->toString() . '.' . $this->microseconds->toString();
+
+        return $combined;
     }
 
+    /**
+     * @return numeric-string
+     */
     public function __toString(): string
     {
         return $this->toString();
     }
 
     /**
-     * @return string[]
+     * @return array{seconds: string, microseconds: string}
      */
     public function jsonSerialize(): array
     {

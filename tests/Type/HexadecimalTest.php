@@ -18,7 +18,7 @@ class HexadecimalTest extends TestCase
     /**
      * @dataProvider provideHex
      */
-    public function testHexadecimalType(string $value, string $expected): void
+    public function testHexadecimalType(Hexadecimal | string $value, string $expected): void
     {
         $hexadecimal = new Hexadecimal($value);
 
@@ -27,7 +27,7 @@ class HexadecimalTest extends TestCase
     }
 
     /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingTraversableTypeHintSpecification
+     * @return array<array{value: Hexadecimal | string, expected: string}>
      */
     public function provideHex(): array
     {
@@ -42,6 +42,10 @@ class HexadecimalTest extends TestCase
             ],
             [
                 'value' => 'ABCDEF',
+                'expected' => 'abcdef',
+            ],
+            [
+                'value' => new Hexadecimal('ABCDEF'),
                 'expected' => 'abcdef',
             ],
         ];
@@ -61,7 +65,7 @@ class HexadecimalTest extends TestCase
     }
 
     /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingTraversableTypeHintSpecification
+     * @return array<array{string}>
      */
     public function provideHexBadValues(): array
     {
@@ -88,11 +92,9 @@ class HexadecimalTest extends TestCase
     }
 
     /**
-     * @param mixed $value
-     *
      * @dataProvider provideHex
      */
-    public function testJsonSerialize($value, string $expected): void
+    public function testJsonSerialize(Hexadecimal | string $value, string $expected): void
     {
         $hexadecimal = new Hexadecimal($value);
         $expectedJson = sprintf('"%s"', $expected);

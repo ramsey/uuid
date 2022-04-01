@@ -30,7 +30,7 @@ class BinaryUtilsTest extends TestCase
     }
 
     /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingTraversableTypeHintSpecification
+     * @return array<array{timeHi: int, version: int, expectedInt: int, expectedHex: string}>
      */
     public function provideVersionTestValues(): array
     {

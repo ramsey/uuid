@@ -16,12 +16,13 @@ use function unserialize;
 class DecimalTest extends TestCase
 {
     /**
-     * @param int|float|string $value
-     *
      * @dataProvider provideDecimal
      */
-    public function testDecimalValueType($value, string $expected, bool $expectedIsNegative): void
-    {
+    public function testDecimalValueType(
+        float | int | Decimal | string $value,
+        string $expected,
+        bool $expectedIsNegative
+    ): void {
         $decimal = new Decimal($value);
 
         $this->assertSame($expected, $decimal->toString());
@@ -30,7 +31,7 @@ class DecimalTest extends TestCase
     }
 
     /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingTraversableTypeHintSpecification
+     * @return array<array{value: float | int | Decimal | string, expected: string, expectedIsNegative: bool}>
      */
     public function provideDecimal(): array
     {
@@ -240,15 +241,18 @@ class DecimalTest extends TestCase
                 'expected' => '1234.56',
                 'expectedIsNegative' => false,
             ],
+            [
+                'value' => new Decimal('+1234.56'),
+                'expected' => '1234.56',
+                'expectedIsNegative' => false,
+            ],
         ];
     }
 
     /**
-     * @param int|float|string $value
-     *
      * @dataProvider provideDecimalBadValues
      */
-    public function testDecimalTypeThrowsExceptionForBadValues($value): void
+    public function testDecimalTypeThrowsExceptionForBadValues(string $value): void
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage(
@@ -260,7 +264,7 @@ class DecimalTest extends TestCase
     }
 
     /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingTraversableTypeHintSpecification
+     * @return array<array{string}>
      */
     public function provideDecimalBadValues(): array
     {
@@ -289,11 +293,9 @@ class DecimalTest extends TestCase
     }
 
     /**
-     * @param mixed $value
-     *
      * @dataProvider provideDecimal
      */
-    public function testJsonSerialize($value, string $expected): void
+    public function testJsonSerialize(float | int | Decimal | string $value, string $expected): void
     {
         $decimal = new Decimal($value);
         $expectedJson = sprintf('"%s"', $expected);

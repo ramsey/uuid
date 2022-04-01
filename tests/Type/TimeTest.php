@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Ramsey\Uuid\Test\Type;
 
-use Ramsey\Uuid\Exception\UnsupportedOperationException;
 use Ramsey\Uuid\Test\TestCase;
+use Ramsey\Uuid\Type\Integer as IntegerObject;
 use Ramsey\Uuid\Type\Time;
 
 use function json_encode;
@@ -15,13 +15,12 @@ use function unserialize;
 class TimeTest extends TestCase
 {
     /**
-     * @param int|float|string $seconds
-     * @param int|float|string|null $microseconds
-     *
      * @dataProvider provideTimeValues
      */
-    public function testTime($seconds, $microseconds): void
-    {
+    public function testTime(
+        int | IntegerObject | string $seconds,
+        int | IntegerObject | string | null $microseconds
+    ): void {
         $params = [$seconds];
         $timeString = (string) $seconds;
 
@@ -45,7 +44,7 @@ class TimeTest extends TestCase
     }
 
     /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingTraversableTypeHintSpecification
+     * @return array<array{seconds: int | IntegerObject | string, microseconds: int | IntegerObject | string | null}>
      */
     public function provideTimeValues(): array
     {
@@ -57,6 +56,14 @@ class TimeTest extends TestCase
             [
                 'seconds' => -12219292800,
                 'microseconds' => 1234,
+            ],
+            [
+                'seconds' => new IntegerObject(103072857659),
+                'microseconds' => null,
+            ],
+            [
+                'seconds' => new IntegerObject(-12219292800),
+                'microseconds' => new IntegerObject(1234),
             ],
         ];
     }
@@ -90,8 +97,10 @@ class TimeTest extends TestCase
     /**
      * @dataProvider provideTimeValues
      */
-    public function testJsonSerialize(int | IntegerObject | string $seconds, int | IntegerObject | string | null $microseconds): void
-    {
+    public function testJsonSerialize(
+        int | IntegerObject | string $seconds,
+        int | IntegerObject | string | null $microseconds
+    ): void {
         $time = [
             'seconds' => (string) $seconds,
             'microseconds' => (string) $microseconds ?: '0',

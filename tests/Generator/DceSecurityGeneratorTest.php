@@ -28,19 +28,14 @@ use function substr;
 class DceSecurityGeneratorTest extends TestCase
 {
     /**
-     * @param mixed $uid
-     * @param mixed $gid
-     * @param mixed $seconds
-     * @param mixed $microseconds
-     *
      * @dataProvider provideValuesForDceSecurityGenerator
      */
     public function testGenerateBytesReplacesBytesWithDceValues(
-        $uid,
-        $gid,
+        int | string $uid,
+        int | string $gid,
         string $node,
-        $seconds,
-        $microseconds,
+        int $seconds,
+        int $microseconds,
         int $providedDomain,
         ?IntegerObject $providedId,
         ?Hexadecimal $providedNode,

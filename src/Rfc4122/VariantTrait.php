@@ -19,8 +19,8 @@ use Ramsey\Uuid\Variant;
 
 use function decbin;
 use function str_pad;
+use function str_starts_with;
 use function strlen;
-use function strpos;
 use function substr;
 use function unpack;
 
