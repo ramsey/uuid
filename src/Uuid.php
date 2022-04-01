@@ -262,13 +262,15 @@ class Uuid implements Rfc4122UuidInterface
     }
 
     /**
-     * @param array{bytes?: string} $data
+     * @inheritDoc
      */
     public function __unserialize(array $data): void
     {
         if (!isset($data['bytes'])) {
             throw new ValueError(sprintf('%s(): Argument #1 ($data) is invalid', __METHOD__));
         }
+
+        assert(is_string($data['bytes']));
 
         if (strlen($data['bytes']) === 16) {
             /** @var Uuid $uuid */

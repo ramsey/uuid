@@ -46,13 +46,15 @@ trait SerializableFieldsTrait
     }
 
     /**
-     * @param array{bytes?: string} $data
+     * @inheritdoc
      */
     public function __unserialize(array $data): void
     {
         if (!isset($data['bytes'])) {
             throw new ValueError(sprintf('%s(): Argument #1 ($data) is invalid', __METHOD__));
         }
+
+        assert(is_string($data['bytes']));
 
         if (strlen($data['bytes']) === 16) {
             $this->__construct($data['bytes']);

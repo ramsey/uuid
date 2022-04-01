@@ -7,7 +7,7 @@
        errorBaseline="./psalm-baseline.xml">
 
     <projectFiles>
-        <directory name="./src" />
+        <directory name="./src"/>
         <directory name="./tests/static-analysis"/>
         <ignoreFiles>
             <file name="./tests/static-analysis/stubs.php"/>
@@ -17,5 +17,9 @@
     <stubs>
         <file name="./tests/static-analysis/stubs.php"/>
     </stubs>
+
+    <plugins>
+        <pluginClass class="Psalm\PhpUnitPlugin\Plugin"/>
+    </plugins>
 
 </psalm>

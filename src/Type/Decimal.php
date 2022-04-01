@@ -87,13 +87,15 @@ final class Decimal implements NumberInterface
     }
 
     /**
-     * @param array{string?: string} $data
+     * @inheritDoc
      */
     public function __unserialize(array $data): void
     {
         if (!isset($data['string'])) {
             throw new ValueError(sprintf('%s(): Argument #1 ($data) is invalid', __METHOD__));
         }
+
+        assert(is_string($data['string']));
 
         $this->value = $this->prepareValue($data['string']);
     }

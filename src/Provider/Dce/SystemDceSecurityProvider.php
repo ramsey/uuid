@@ -42,6 +42,7 @@ class SystemDceSecurityProvider implements DceSecurityProviderInterface
      */
     public function getUid(): IntegerObject
     {
+        /** @var IntegerObject | string | null $uid */
         static $uid = null;
 
         if ($uid instanceof IntegerObject) {
@@ -60,6 +61,8 @@ class SystemDceSecurityProvider implements DceSecurityProviderInterface
             );
         }
 
+        // Do not "inline" the return value; this is necessary to
+        // set the static $uid variable for this method.
         $uid = new IntegerObject($uid);
 
         return $uid;
@@ -72,6 +75,7 @@ class SystemDceSecurityProvider implements DceSecurityProviderInterface
      */
     public function getGid(): IntegerObject
     {
+        /** @var IntegerObject | string | null $gid */
         static $gid = null;
 
         if ($gid instanceof IntegerObject) {
@@ -90,6 +94,8 @@ class SystemDceSecurityProvider implements DceSecurityProviderInterface
             );
         }
 
+        // Do not "inline" the return value; this is necessary to
+        // set the static $uid variable for this method.
         $gid = new IntegerObject($gid);
 
         return $gid;
@@ -150,7 +156,10 @@ class SystemDceSecurityProvider implements DceSecurityProviderInterface
      */
     private function getOs(): string
     {
-        /** @var string $os */
+        /**
+         * @psalm-suppress UnnecessaryVarAnnotation
+         * @var string $os
+         */
         $os = constant('PHP_OS');
 
         return strtoupper(substr($os, 0, 3));

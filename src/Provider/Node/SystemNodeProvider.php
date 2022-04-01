@@ -28,7 +28,6 @@ use function preg_match;
 use function preg_match_all;
 use function reset;
 use function str_replace;
-use function strpos;
 use function strtolower;
 use function strtoupper;
 use function substr;
@@ -100,11 +99,14 @@ class SystemNodeProvider implements NodeProviderInterface
     {
         $disabledFunctions = strtolower((string) ini_get('disable_functions'));
 
-        if (strpos($disabledFunctions, 'passthru') !== false) {
+        if (str_contains($disabledFunctions, 'passthru')) {
             return '';
         }
 
-        /** @var string $os */
+        /**
+         * @psalm-suppress UnnecessaryVarAnnotation
+         * @var string $os
+         */
         $os = constant('PHP_OS');
 
         ob_start();
@@ -145,7 +147,10 @@ class SystemNodeProvider implements NodeProviderInterface
     {
         $mac = '';
 
-        /** @var string $os */
+        /**
+         * @psalm-suppress UnnecessaryVarAnnotation
+         * @var string $os
+         */
         $os = constant('PHP_OS');
 
         if (strtoupper($os) === 'LINUX') {
@@ -155,15 +160,16 @@ class SystemNodeProvider implements NodeProviderInterface
                 return '';
             }
 
+            /** @var string[] $macs */
             $macs = [];
 
             array_walk($addressPaths, function (string $addressPath) use (&$macs): void {
                 if (is_readable($addressPath)) {
-                    $macs[] = file_get_contents($addressPath);
+                    $macs[] = (string) file_get_contents($addressPath);
                 }
             });
 
-            $macs = array_map(trim(...), $macs); // @phpstan-ignore-line
+            $macs = array_map(trim(...), $macs);
 
             // Remove invalid entries.
             $macs = array_filter($macs, function (string $address) {

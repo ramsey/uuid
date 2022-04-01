@@ -93,13 +93,16 @@ final class Time implements TypeInterface
     }
 
     /**
-     * @param array{seconds?: string, microseconds?: string} $data
+     * @inheritDoc
      */
     public function __unserialize(array $data): void
     {
         if (!isset($data['seconds']) || !isset($data['microseconds'])) {
             throw new ValueError(sprintf('%s(): Argument #1 ($data) is invalid', __METHOD__));
         }
+
+        assert(is_string($data['seconds']));
+        assert(is_string($data['microseconds']));
 
         $this->seconds = new IntegerObject($data['seconds']);
         $this->microseconds = new IntegerObject($data['microseconds']);

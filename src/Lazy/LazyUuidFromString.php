@@ -96,13 +96,15 @@ final class LazyUuidFromString implements UuidInterface, TimeBasedInterface
     }
 
     /**
-     * @param array{string?: non-empty-string} $data
+     * @inheritdoc
      */
     public function __unserialize(array $data): void
     {
         if (!isset($data['string'])) {
             throw new ValueError(sprintf('%s(): Argument #1 ($data) is invalid', __METHOD__));
         }
+
+        assert(is_string($data['string']) && $data['string'] !== '');
 
         $this->uuid = $data['string'];
     }
