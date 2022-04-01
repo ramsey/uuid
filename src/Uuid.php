@@ -81,34 +81,6 @@ class Uuid implements Rfc4122UuidInterface
     public const NIL = '00000000-0000-0000-0000-000000000000';
 
     /**
-     * Variant: reserved, NCS backward compatibility
-     *
-     * @link http://tools.ietf.org/html/rfc4122#section-4.1.1 RFC 4122, § 4.1.1: Variant
-     */
-    public const RESERVED_NCS = 0;
-
-    /**
-     * Variant: the UUID layout specified in RFC 4122
-     *
-     * @link http://tools.ietf.org/html/rfc4122#section-4.1.1 RFC 4122, § 4.1.1: Variant
-     */
-    public const RFC_4122 = 2;
-
-    /**
-     * Variant: reserved, Microsoft Corporation backward compatibility
-     *
-     * @link http://tools.ietf.org/html/rfc4122#section-4.1.1 RFC 4122, § 4.1.1: Variant
-     */
-    public const RESERVED_MICROSOFT = 6;
-
-    /**
-     * Variant: reserved for future definition
-     *
-     * @link http://tools.ietf.org/html/rfc4122#section-4.1.1 RFC 4122, § 4.1.1: Variant
-     */
-    public const RESERVED_FUTURE = 7;
-
-    /**
      * @deprecated Use {@see ValidatorInterface::getPattern()} instead.
      */
     public const VALID_PATTERN = '^[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}$';

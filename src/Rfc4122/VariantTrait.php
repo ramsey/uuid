@@ -15,7 +15,7 @@ declare(strict_types=1);
 namespace Ramsey\Uuid\Rfc4122;
 
 use Ramsey\Uuid\Exception\InvalidBytesException;
-use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\Variant;
 
 use function decbin;
 use function str_pad;
@@ -41,18 +41,11 @@ trait VariantTrait
     /**
      * Returns the variant identifier, according to RFC 4122, for the given bytes
      *
-     * The following values may be returned:
-     *
-     * - `0` -- Reserved, NCS backward compatibility.
-     * - `2` -- The variant specified in RFC 4122.
-     * - `6` -- Reserved, Microsoft Corporation backward compatibility.
-     * - `7` -- Reserved for future definition.
-     *
      * @link https://tools.ietf.org/html/rfc4122#section-4.1.1 RFC 4122, § 4.1.1: Variant
      *
-     * @return int The variant identifier, according to RFC 4122
+     * @return Variant The variant identifier, according to RFC 4122
      */
-    public function getVariant(): int
+    public function getVariant(): Variant
     {
         if (strlen($this->getBytes()) !== 16) {
             throw new InvalidBytesException('Invalid number of bytes');
@@ -76,13 +69,13 @@ trait VariantTrait
         $msb = substr($binary, 0, 3);
 
         if ($msb === '111') {
-            $variant = Uuid::RESERVED_FUTURE;
+            $variant = Variant::ReservedFuture;
         } elseif ($msb === '110') {
-            $variant = Uuid::RESERVED_MICROSOFT;
-        } elseif (strpos($msb, '10') === 0) {
-            $variant = Uuid::RFC_4122;
+            $variant = Variant::ReservedMicrosoft;
+        } elseif (str_starts_with($msb, '10')) {
+            $variant = Variant::Rfc4122;
         } else {
-            $variant = Uuid::RESERVED_NCS;
+            $variant = Variant::ReservedNcs;
         }
 
         return $variant;

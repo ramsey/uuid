@@ -2,18 +2,16 @@
 
 namespace Ramsey\Uuid\Test;
 
-use Ramsey\Uuid\Codec\CodecInterface;
 use Ramsey\Uuid\Codec\TimestampFirstCombCodec;
-use Ramsey\Uuid\Converter\TimeConverterInterface;
 use Ramsey\Uuid\Generator\CombGenerator;
 use Ramsey\Uuid\Generator\DefaultTimeGenerator;
-use Ramsey\Uuid\Math\BrickMathCalculator;
 use Ramsey\Uuid\Rfc4122\UuidInterface;
 use Ramsey\Uuid\Rfc4122\UuidV1;
 use Ramsey\Uuid\Type\Hexadecimal;
 use Ramsey\Uuid\Type\Time;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidFactory;
+use Ramsey\Uuid\Variant;
 use stdClass;
 
 /**
@@ -81,7 +79,7 @@ class ExpectedBehaviorTest extends TestCase
             . $uuid->getFields()->getNode()->toString()
         );
 
-        $this->assertSame(2, $uuid->getFields()->getVariant());
+        $this->assertSame(Variant::Rfc4122, $uuid->getFields()->getVariant());
         $this->assertSame((int) substr($method, -1), $uuid->getFields()->getVersion());
         $this->assertTrue(ctype_digit((string) $uuid->getInteger()));
     }
@@ -204,7 +202,7 @@ class ExpectedBehaviorTest extends TestCase
         $this->assertInstanceOf('Ramsey\Uuid\UuidInterface', $uuid);
         $this->assertSame($string, $uuid->toString());
         $this->assertSame($version, $uuid->getFields()->getVersion());
-        $this->assertSame($variant, $uuid->getFields()->getVariant());
+        $this->assertSame(Variant::from($variant), $uuid->getFields()->getVariant());
 
         $components = explode('-', $string);
 
@@ -234,7 +232,7 @@ class ExpectedBehaviorTest extends TestCase
         $this->assertInstanceOf('Ramsey\Uuid\UuidInterface', $uuid);
         $this->assertSame($string, $uuid->toString());
         $this->assertSame($version, $uuid->getFields()->getVersion());
-        $this->assertSame($variant, $uuid->getFields()->getVariant());
+        $this->assertSame(Variant::from($variant), $uuid->getFields()->getVariant());
 
         $components = explode('-', $string);
 
@@ -264,7 +262,7 @@ class ExpectedBehaviorTest extends TestCase
         $this->assertInstanceOf('Ramsey\Uuid\UuidInterface', $uuid);
         $this->assertSame($string, $uuid->toString());
         $this->assertSame($version, $uuid->getFields()->getVersion());
-        $this->assertSame($variant, $uuid->getFields()->getVariant());
+        $this->assertSame(Variant::from($variant), $uuid->getFields()->getVariant());
 
         $components = explode('-', $string);
 
@@ -540,7 +538,7 @@ class ExpectedBehaviorTest extends TestCase
         $expectedBytes = hex2bin($expectedHex);
 
         $this->assertInstanceOf('Ramsey\Uuid\UuidInterface', $uuid);
-        $this->assertSame(2, $uuid->getFields()->getVariant());
+        $this->assertSame(Variant::Rfc4122, $uuid->getFields()->getVariant());
         $this->assertSame(4, $uuid->getFields()->getVersion());
         $this->assertSame($expectedBytes, $uuid->getBytes());
         $this->assertSame($expectedHex, (string) $uuid->getHex());
@@ -562,10 +560,6 @@ class ExpectedBehaviorTest extends TestCase
             ['NAMESPACE_OID', '6ba7b812-9dad-11d1-80b4-00c04fd430c8'],
             ['NAMESPACE_X500', '6ba7b814-9dad-11d1-80b4-00c04fd430c8'],
             ['NIL', '00000000-0000-0000-0000-000000000000'],
-            ['RESERVED_NCS', 0],
-            ['RFC_4122', 2],
-            ['RESERVED_MICROSOFT', 6],
-            ['RESERVED_FUTURE', 7],
             ['VALID_PATTERN', '^[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}$'],
             ['UUID_TYPE_TIME', 1],
             ['UUID_TYPE_IDENTIFIER', 2],

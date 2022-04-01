@@ -31,12 +31,14 @@ class BinaryUtils
      *
      * @psalm-pure
      */
-    public static function applyVariant(int $clockSeq): int
+    public static function applyVariant(int $clockSeq, Variant $variant = Variant::Rfc4122): int
     {
-        $clockSeq = $clockSeq & 0x3fff;
-        $clockSeq |= 0x8000;
-
-        return $clockSeq;
+        return match ($variant) {
+            Variant::ReservedNcs => $clockSeq & 0x7fff,
+            Variant::Rfc4122 => $clockSeq & 0x3fff | 0x8000,
+            Variant::ReservedMicrosoft => $clockSeq & 0x1fff | 0xc000,
+            Variant::ReservedFuture => $clockSeq & 0x1fff | 0xe000,
+        };
     }
 
     /**

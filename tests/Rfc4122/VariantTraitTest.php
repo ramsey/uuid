@@ -9,6 +9,7 @@ use Ramsey\Uuid\Exception\InvalidBytesException;
 use Ramsey\Uuid\Rfc4122\Fields;
 use Ramsey\Uuid\Rfc4122\VariantTrait;
 use Ramsey\Uuid\Test\TestCase;
+use Ramsey\Uuid\Variant;
 
 use function hex2bin;
 use function str_replace;
@@ -54,7 +55,7 @@ class VariantTraitTest extends TestCase
             'getBytes' => $bytes,
         ]);
 
-        $this->assertSame($expectedVariant, $trait->getVariant());
+        $this->assertSame(Variant::from($expectedVariant), $trait->getVariant());
     }
 
     /**

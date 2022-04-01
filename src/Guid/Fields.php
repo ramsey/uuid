@@ -21,7 +21,7 @@ use Ramsey\Uuid\Rfc4122\NilTrait;
 use Ramsey\Uuid\Rfc4122\VariantTrait;
 use Ramsey\Uuid\Rfc4122\VersionTrait;
 use Ramsey\Uuid\Type\Hexadecimal;
-use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\Variant;
 
 use function bin2hex;
 use function dechex;
@@ -189,6 +189,6 @@ final class Fields implements FieldsInterface
 
         $variant = $this->getVariant();
 
-        return $variant === Uuid::RFC_4122 || $variant === Uuid::RESERVED_MICROSOFT;
+        return $variant === Variant::Rfc4122 || $variant === Variant::ReservedMicrosoft;
     }
 }

@@ -18,6 +18,7 @@ use Ramsey\Uuid\Exception\InvalidArgumentException;
 use Ramsey\Uuid\Fields\SerializableFieldsTrait;
 use Ramsey\Uuid\Type\Hexadecimal;
 use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\Variant;
 
 use function bin2hex;
 use function dechex;
@@ -189,6 +190,6 @@ final class Fields implements FieldsInterface
             return true;
         }
 
-        return $this->getVariant() === Uuid::RFC_4122;
+        return $this->getVariant() === Variant::Rfc4122;
     }
 }

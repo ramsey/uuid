@@ -8,6 +8,7 @@ use Ramsey\Uuid\Exception\InvalidArgumentException;
 use Ramsey\Uuid\Rfc4122\Fields;
 use Ramsey\Uuid\Test\TestCase;
 use Ramsey\Uuid\Type\Hexadecimal;
+use Ramsey\Uuid\Variant;
 
 use function hex2bin;
 use function serialize;
@@ -123,7 +124,7 @@ class FieldsTest extends TestCase
             ['ff6f8cb0-c57d-11e1-9b21-0800200c9a66', 'getTimeLow', 'ff6f8cb0'],
             ['ff6f8cb0-c57d-11e1-9b21-0800200c9a66', 'getTimeMid', 'c57d'],
             ['ff6f8cb0-c57d-11e1-9b21-0800200c9a66', 'getTimestamp', '1e1c57dff6f8cb0'],
-            ['ff6f8cb0-c57d-11e1-9b21-0800200c9a66', 'getVariant', 2],
+            ['ff6f8cb0-c57d-11e1-9b21-0800200c9a66', 'getVariant', Variant::Rfc4122],
             ['ff6f8cb0-c57d-11e1-9b21-0800200c9a66', 'getVersion', 1],
             ['ff6f8cb0-c57d-11e1-9b21-0800200c9a66', 'isNil', false],
 
@@ -135,7 +136,7 @@ class FieldsTest extends TestCase
             ['ff6f8cb0-c57d-41e1-ab21-0800200c9a66', 'getTimeLow', 'ff6f8cb0'],
             ['ff6f8cb0-c57d-41e1-ab21-0800200c9a66', 'getTimeMid', 'c57d'],
             ['ff6f8cb0-c57d-41e1-ab21-0800200c9a66', 'getTimestamp', '1e1c57dff6f8cb0'],
-            ['ff6f8cb0-c57d-41e1-ab21-0800200c9a66', 'getVariant', 2],
+            ['ff6f8cb0-c57d-41e1-ab21-0800200c9a66', 'getVariant', Variant::Rfc4122],
             ['ff6f8cb0-c57d-41e1-ab21-0800200c9a66', 'getVersion', 4],
             ['ff6f8cb0-c57d-41e1-ab21-0800200c9a66', 'isNil', false],
 
@@ -147,7 +148,7 @@ class FieldsTest extends TestCase
             ['ff6f8cb0-c57d-31e1-bb21-0800200c9a66', 'getTimeLow', 'ff6f8cb0'],
             ['ff6f8cb0-c57d-31e1-bb21-0800200c9a66', 'getTimeMid', 'c57d'],
             ['ff6f8cb0-c57d-31e1-bb21-0800200c9a66', 'getTimestamp', '1e1c57dff6f8cb0'],
-            ['ff6f8cb0-c57d-31e1-bb21-0800200c9a66', 'getVariant', 2],
+            ['ff6f8cb0-c57d-31e1-bb21-0800200c9a66', 'getVariant', Variant::Rfc4122],
             ['ff6f8cb0-c57d-31e1-bb21-0800200c9a66', 'getVersion', 3],
             ['ff6f8cb0-c57d-31e1-bb21-0800200c9a66', 'isNil', false],
 
@@ -159,7 +160,7 @@ class FieldsTest extends TestCase
             ['ff6f8cb0-c57d-51e1-8b21-0800200c9a66', 'getTimeLow', 'ff6f8cb0'],
             ['ff6f8cb0-c57d-51e1-8b21-0800200c9a66', 'getTimeMid', 'c57d'],
             ['ff6f8cb0-c57d-51e1-8b21-0800200c9a66', 'getTimestamp', '1e1c57dff6f8cb0'],
-            ['ff6f8cb0-c57d-51e1-8b21-0800200c9a66', 'getVariant', 2],
+            ['ff6f8cb0-c57d-51e1-8b21-0800200c9a66', 'getVariant', Variant::Rfc4122],
             ['ff6f8cb0-c57d-51e1-8b21-0800200c9a66', 'getVersion', 5],
             ['ff6f8cb0-c57d-51e1-8b21-0800200c9a66', 'isNil', false],
 
@@ -171,7 +172,7 @@ class FieldsTest extends TestCase
             ['ff6f8cb0-c57d-61e1-8b21-0800200c9a66', 'getTimeLow', 'ff6f8cb0'],
             ['ff6f8cb0-c57d-61e1-8b21-0800200c9a66', 'getTimeMid', 'c57d'],
             ['ff6f8cb0-c57d-61e1-8b21-0800200c9a66', 'getTimestamp', 'ff6f8cb0c57d1e1'],
-            ['ff6f8cb0-c57d-61e1-8b21-0800200c9a66', 'getVariant', 2],
+            ['ff6f8cb0-c57d-61e1-8b21-0800200c9a66', 'getVariant', Variant::Rfc4122],
             ['ff6f8cb0-c57d-61e1-8b21-0800200c9a66', 'getVersion', 6],
             ['ff6f8cb0-c57d-61e1-8b21-0800200c9a66', 'isNil', false],
 
@@ -183,7 +184,7 @@ class FieldsTest extends TestCase
             ['00000000-0000-0000-0000-000000000000', 'getTimeLow', '00000000'],
             ['00000000-0000-0000-0000-000000000000', 'getTimeMid', '0000'],
             ['00000000-0000-0000-0000-000000000000', 'getTimestamp', '000000000000000'],
-            ['00000000-0000-0000-0000-000000000000', 'getVariant', 0],
+            ['00000000-0000-0000-0000-000000000000', 'getVariant', Variant::ReservedNcs],
             ['00000000-0000-0000-0000-000000000000', 'getVersion', null],
             ['00000000-0000-0000-0000-000000000000', 'isNil', true],
 
@@ -195,7 +196,7 @@ class FieldsTest extends TestCase
             ['000001f5-5cde-21ea-8400-0242ac130003', 'getTimeLow', '000001f5'],
             ['000001f5-5cde-21ea-8400-0242ac130003', 'getTimeMid', '5cde'],
             ['000001f5-5cde-21ea-8400-0242ac130003', 'getTimestamp', '1ea5cde00000000'],
-            ['000001f5-5cde-21ea-8400-0242ac130003', 'getVariant', 2],
+            ['000001f5-5cde-21ea-8400-0242ac130003', 'getVariant', Variant::Rfc4122],
             ['000001f5-5cde-21ea-8400-0242ac130003', 'getVersion', 2],
             ['000001f5-5cde-21ea-8400-0242ac130003', 'isNil', false],
         ];

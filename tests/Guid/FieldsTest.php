@@ -8,6 +8,7 @@ use Ramsey\Uuid\Exception\InvalidArgumentException;
 use Ramsey\Uuid\Guid\Fields;
 use Ramsey\Uuid\Test\TestCase;
 use Ramsey\Uuid\Type\Hexadecimal;
+use Ramsey\Uuid\Variant;
 
 use function hex2bin;
 use function serialize;
@@ -132,7 +133,7 @@ class FieldsTest extends TestCase
             ['b08c6fff7dc5e111cb210800200c9a66', 'getTimeLow', 'ff6f8cb0'],
             ['b08c6fff7dc5e111cb210800200c9a66', 'getTimeMid', 'c57d'],
             ['b08c6fff7dc5e111cb210800200c9a66', 'getTimestamp', '1e1c57dff6f8cb0'],
-            ['b08c6fff7dc5e111cb210800200c9a66', 'getVariant', 6],
+            ['b08c6fff7dc5e111cb210800200c9a66', 'getVariant', Variant::ReservedMicrosoft],
             ['b08c6fff7dc5e111cb210800200c9a66', 'getVersion', 1],
             ['b08c6fff7dc5e111cb210800200c9a66', 'isNil', false],
 
@@ -145,7 +146,7 @@ class FieldsTest extends TestCase
             ['b08c6fff7dc5e141db210800200c9a66', 'getTimeLow', 'ff6f8cb0'],
             ['b08c6fff7dc5e141db210800200c9a66', 'getTimeMid', 'c57d'],
             ['b08c6fff7dc5e141db210800200c9a66', 'getTimestamp', '1e1c57dff6f8cb0'],
-            ['b08c6fff7dc5e141db210800200c9a66', 'getVariant', 6],
+            ['b08c6fff7dc5e141db210800200c9a66', 'getVariant', Variant::ReservedMicrosoft],
             ['b08c6fff7dc5e141db210800200c9a66', 'getVersion', 4],
             ['b08c6fff7dc5e141db210800200c9a66', 'isNil', false],
 
@@ -158,7 +159,7 @@ class FieldsTest extends TestCase
             ['b08c6fff7dc5e1318b210800200c9a66', 'getTimeLow', 'ff6f8cb0'],
             ['b08c6fff7dc5e1318b210800200c9a66', 'getTimeMid', 'c57d'],
             ['b08c6fff7dc5e1318b210800200c9a66', 'getTimestamp', '1e1c57dff6f8cb0'],
-            ['b08c6fff7dc5e1318b210800200c9a66', 'getVariant', 2],
+            ['b08c6fff7dc5e1318b210800200c9a66', 'getVariant', Variant::Rfc4122],
             ['b08c6fff7dc5e1318b210800200c9a66', 'getVersion', 3],
             ['b08c6fff7dc5e1318b210800200c9a66', 'isNil', false],
 
@@ -171,7 +172,7 @@ class FieldsTest extends TestCase
             ['b08c6fff7dc5e1519b210800200c9a66', 'getTimeLow', 'ff6f8cb0'],
             ['b08c6fff7dc5e1519b210800200c9a66', 'getTimeMid', 'c57d'],
             ['b08c6fff7dc5e1519b210800200c9a66', 'getTimestamp', '1e1c57dff6f8cb0'],
-            ['b08c6fff7dc5e1519b210800200c9a66', 'getVariant', 2],
+            ['b08c6fff7dc5e1519b210800200c9a66', 'getVariant', Variant::Rfc4122],
             ['b08c6fff7dc5e1519b210800200c9a66', 'getVersion', 5],
             ['b08c6fff7dc5e1519b210800200c9a66', 'isNil', false],
 
@@ -184,7 +185,7 @@ class FieldsTest extends TestCase
             ['00000000000000000000000000000000', 'getTimeLow', '00000000'],
             ['00000000000000000000000000000000', 'getTimeMid', '0000'],
             ['00000000000000000000000000000000', 'getTimestamp', '000000000000000'],
-            ['00000000000000000000000000000000', 'getVariant', 0],
+            ['00000000000000000000000000000000', 'getVariant', Variant::ReservedNcs],
             ['00000000000000000000000000000000', 'getVersion', null],
             ['00000000000000000000000000000000', 'isNil', true],
         ];

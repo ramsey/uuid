@@ -16,6 +16,7 @@ namespace Ramsey\Uuid\Rfc4122;
 
 use Ramsey\Uuid\Fields\FieldsInterface as BaseFieldsInterface;
 use Ramsey\Uuid\Type\Hexadecimal;
+use Ramsey\Uuid\Variant;
 
 /**
  * RFC 4122 defines fields for a specific variant of UUID
@@ -95,7 +96,7 @@ interface FieldsInterface extends BaseFieldsInterface
      *
      * @link http://tools.ietf.org/html/rfc4122#section-4.1.1 RFC 4122, § 4.1.1: Variant
      */
-    public function getVariant(): int;
+    public function getVariant(): Variant;
 
     /**
      * Returns the version

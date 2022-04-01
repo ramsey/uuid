@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Ramsey\Uuid\Test;
 
 use Ramsey\Uuid\BinaryUtils;
+use Ramsey\Uuid\Variant;
 
 use function dechex;
 
@@ -22,10 +23,10 @@ class BinaryUtilsTest extends TestCase
     /**
      * @dataProvider provideVariantTestValues
      */
-    public function testApplyVariant(int $clockSeq, int $expectedInt, string $expectedHex): void
+    public function testApplyVariant(int $clockSeq, Variant $variant, int $expectedInt, string $expectedHex): void
     {
-        $this->assertSame($expectedInt, BinaryUtils::applyVariant($clockSeq));
-        $this->assertSame($expectedHex, dechex(BinaryUtils::applyVariant($clockSeq)));
+        $this->assertSame($expectedInt, BinaryUtils::applyVariant($clockSeq, $variant));
+        $this->assertSame($expectedHex, dechex(BinaryUtils::applyVariant($clockSeq, $variant)));
     }
 
     /**
@@ -128,108 +129,128 @@ class BinaryUtilsTest extends TestCase
     }
 
     /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingTraversableTypeHintSpecification
+     * @return array<array{clockSeq: int, variant: Variant, expectedInt: int, expectedHex: string}>
      */
     public function provideVariantTestValues(): array
     {
         return [
             [
                 'clockSeq' => 0,
+                'variant' => Variant::Rfc4122,
                 'expectedInt' => 32768,
                 'expectedHex' => '8000',
             ],
             [
                 'clockSeq' => 4096,
+                'variant' => Variant::Rfc4122,
                 'expectedInt' => 36864,
                 'expectedHex' => '9000',
             ],
             [
                 'clockSeq' => 8192,
+                'variant' => Variant::Rfc4122,
                 'expectedInt' => 40960,
                 'expectedHex' => 'a000',
             ],
             [
                 'clockSeq' => 12288,
+                'variant' => Variant::Rfc4122,
                 'expectedInt' => 45056,
                 'expectedHex' => 'b000',
             ],
             [
                 'clockSeq' => 4095,
+                'variant' => Variant::Rfc4122,
                 'expectedInt' => 36863,
                 'expectedHex' => '8fff',
             ],
             [
                 'clockSeq' => 8191,
+                'variant' => Variant::Rfc4122,
                 'expectedInt' => 40959,
                 'expectedHex' => '9fff',
             ],
             [
                 'clockSeq' => 12287,
+                'variant' => Variant::Rfc4122,
                 'expectedInt' => 45055,
                 'expectedHex' => 'afff',
             ],
             [
                 'clockSeq' => 16383,
+                'variant' => Variant::Rfc4122,
                 'expectedInt' => 49151,
                 'expectedHex' => 'bfff',
             ],
             [
                 'clockSeq' => 16384,
+                'variant' => Variant::Rfc4122,
                 'expectedInt' => 32768,
                 'expectedHex' => '8000',
             ],
             [
                 'clockSeq' => 20480,
+                'variant' => Variant::Rfc4122,
                 'expectedInt' => 36864,
                 'expectedHex' => '9000',
             ],
             [
                 'clockSeq' => 24576,
+                'variant' => Variant::Rfc4122,
                 'expectedInt' => 40960,
                 'expectedHex' => 'a000',
             ],
             [
                 'clockSeq' => 28672,
+                'variant' => Variant::Rfc4122,
                 'expectedInt' => 45056,
                 'expectedHex' => 'b000',
             ],
             [
                 'clockSeq' => 32768,
+                'variant' => Variant::Rfc4122,
                 'expectedInt' => 32768,
                 'expectedHex' => '8000',
             ],
             [
                 'clockSeq' => 36864,
+                'variant' => Variant::Rfc4122,
                 'expectedInt' => 36864,
                 'expectedHex' => '9000',
             ],
             [
                 'clockSeq' => 40960,
+                'variant' => Variant::Rfc4122,
                 'expectedInt' => 40960,
                 'expectedHex' => 'a000',
             ],
             [
                 'clockSeq' => 45056,
+                'variant' => Variant::Rfc4122,
                 'expectedInt' => 45056,
                 'expectedHex' => 'b000',
             ],
             [
                 'clockSeq' => 36863,
+                'variant' => Variant::Rfc4122,
                 'expectedInt' => 36863,
                 'expectedHex' => '8fff',
             ],
             [
                 'clockSeq' => 40959,
+                'variant' => Variant::Rfc4122,
                 'expectedInt' => 40959,
                 'expectedHex' => '9fff',
             ],
             [
                 'clockSeq' => 45055,
+                'variant' => Variant::Rfc4122,
                 'expectedInt' => 45055,
                 'expectedHex' => 'afff',
             ],
             [
                 'clockSeq' => 49151,
+                'variant' => Variant::Rfc4122,
                 'expectedInt' => 49151,
                 'expectedHex' => 'bfff',
             ],

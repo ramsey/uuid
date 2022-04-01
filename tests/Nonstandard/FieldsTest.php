@@ -8,7 +8,7 @@ use Ramsey\Uuid\Exception\InvalidArgumentException;
 use Ramsey\Uuid\Nonstandard\Fields;
 use Ramsey\Uuid\Test\TestCase;
 use Ramsey\Uuid\Type\Hexadecimal;
-use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\Variant;
 
 use function hex2bin;
 use function serialize;
@@ -60,7 +60,7 @@ class FieldsTest extends TestCase
             ['ff6f8cb0-c57d-91e1-0b21-0800200c9a66', 'getTimeLow', 'ff6f8cb0'],
             ['ff6f8cb0-c57d-91e1-0b21-0800200c9a66', 'getTimeMid', 'c57d'],
             ['ff6f8cb0-c57d-91e1-0b21-0800200c9a66', 'getTimestamp', '1e1c57dff6f8cb0'],
-            ['ff6f8cb0-c57d-91e1-0b21-0800200c9a66', 'getVariant', Uuid::RESERVED_NCS],
+            ['ff6f8cb0-c57d-91e1-0b21-0800200c9a66', 'getVariant', Variant::ReservedNcs],
             ['ff6f8cb0-c57d-91e1-0b21-0800200c9a66', 'getVersion', null],
             ['ff6f8cb0-c57d-91e1-0b21-0800200c9a66', 'isNil', false],
         ];
