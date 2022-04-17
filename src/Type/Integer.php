@@ -18,9 +18,9 @@ use Ramsey\Uuid\Exception\InvalidArgumentException;
 use ValueError;
 
 use function assert;
-use function ctype_digit;
 use function is_numeric;
 use function ltrim;
+use function preg_match;
 use function sprintf;
 use function str_starts_with;
 use function substr;
@@ -110,13 +110,13 @@ final class Integer implements NumberInterface
         $value = (string) $value;
         $sign = '+';
 
-        // If the value contains a sign, remove it for ctype_digit() check.
+        // If the value contains a sign, remove it for digit pattern check.
         if (str_starts_with($value, '-') || str_starts_with($value, '+')) {
             $sign = substr($value, 0, 1);
             $value = substr($value, 1);
         }
 
-        if (!ctype_digit($value)) {
+        if (!preg_match('/^\d+$/', $value)) {
             throw new InvalidArgumentException(
                 'Value must be a signed integer or a string containing only '
                 . 'digits 0-9 and, optionally, a sign (+ or -)'

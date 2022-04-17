@@ -17,7 +17,7 @@ namespace Ramsey\Uuid\Type;
 use Ramsey\Uuid\Exception\InvalidArgumentException;
 use ValueError;
 
-use function ctype_xdigit;
+use function preg_match;
 use function sprintf;
 use function str_starts_with;
 use function strtolower;
@@ -89,7 +89,7 @@ final class Hexadecimal implements TypeInterface
             $value = substr($value, 2);
         }
 
-        if (!ctype_xdigit($value)) {
+        if (!preg_match('/^[A-Fa-f0-9]+$/', $value)) {
             throw new InvalidArgumentException(
                 'Value must be a hexadecimal number'
             );
