@@ -38,7 +38,7 @@ composer require ramsey/uuid
 
 See the documentation for a thorough upgrade guide:
 
-* [Upgrading ramsey/uuid Version 3 to 4](https://uuid.ramsey.dev/en/latest/upgrading/3-to-4.html)
+* [Upgrading ramsey/uuid Version 3 to 4](https://uuid.ramsey.dev/en/4.3.0/upgrading/3-to-4.html)
 
 ## Documentation
 
