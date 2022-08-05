@@ -6,7 +6,6 @@ namespace Ramsey\Uuid\Test\Builder;
 
 use DateTimeInterface;
 use Mockery;
-use Ramsey\Uuid\Builder\BuilderCollection;
 use Ramsey\Uuid\Builder\FallbackBuilder;
 use Ramsey\Uuid\Builder\UuidBuilderInterface;
 use Ramsey\Uuid\Codec\CodecInterface;
@@ -53,7 +52,7 @@ class FallbackBuilderTest extends TestCase
             ->with($codec, $bytes)
             ->andThrow(UnableToBuildUuidException::class);
 
-        $fallbackBuilder = new FallbackBuilder(new BuilderCollection([$builder1, $builder2, $builder3]));
+        $fallbackBuilder = new FallbackBuilder([$builder1, $builder2, $builder3]);
 
         $this->expectException(BuilderNotFoundException::class);
         $this->expectExceptionMessage(
@@ -83,25 +82,16 @@ class FallbackBuilderTest extends TestCase
         $rfc4122Builder2 = new Rfc4122UuidBuilder($genericNumberConverter, $phpTimeConverter);
         $nonstandardBuilder2 = new NonstandardUuidBuilder($genericNumberConverter, $phpTimeConverter);
 
-        $builderCollection = new BuilderCollection(
-            [
-                $guidBuilder,
-                $guidBuilder2,
-                $rfc4122Builder,
-                $rfc4122Builder2,
-                $nonstandardBuilder,
-                $nonstandardBuilder2,
-            ]
-        );
+        /** @var list<UuidBuilderInterface> $unserializedBuilderCollection */
+        $unserializedBuilderCollection = unserialize(serialize([
+            $guidBuilder,
+            $guidBuilder2,
+            $rfc4122Builder,
+            $rfc4122Builder2,
+            $nonstandardBuilder,
+            $nonstandardBuilder2,
+        ]));
 
-        $serializedBuilderCollection = serialize($builderCollection);
-
-        /** @var BuilderCollection $unserializedBuilderCollection */
-        $unserializedBuilderCollection = unserialize($serializedBuilderCollection);
-
-        $this->assertInstanceOf(BuilderCollection::class, $unserializedBuilderCollection);
-
-        /** @var UuidBuilderInterface $builder */
         foreach ($unserializedBuilderCollection as $builder) {
             $codec = new StringCodec($builder);
 

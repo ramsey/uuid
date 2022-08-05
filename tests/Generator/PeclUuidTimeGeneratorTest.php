@@ -5,31 +5,25 @@ declare(strict_types=1);
 namespace Ramsey\Uuid\Test\Generator;
 
 use Ramsey\Uuid\Generator\PeclUuidTimeGenerator;
-use phpmock\mockery\PHPMockery;
+use Ramsey\Uuid\Rfc4122\Fields;
+use Ramsey\Uuid\Test\TestCase;
+use Ramsey\Uuid\Uuid;
 
-use const UUID_TYPE_TIME;
-
-class PeclUuidTimeGeneratorTest extends PeclUuidTestCase
+class PeclUuidTimeGeneratorTest extends TestCase
 {
     /**
-     * @runInSeparateProcess
-     * @preserveGlobalState disabled
+     * @requires extension uuid
      */
     public function testGenerateCreatesUuidUsingPeclUuidMethods(): void
     {
-        PHPMockery::mock('Ramsey\Uuid\Generator', 'uuid_create')
-            ->once()
-            ->with(UUID_TYPE_TIME)
-            ->andReturn($this->uuidString);
-
-        PHPMockery::mock('Ramsey\Uuid\Generator', 'uuid_parse')
-            ->once()
-            ->with($this->uuidString)
-            ->andReturn($this->uuidBinary);
-
         $generator = new PeclUuidTimeGenerator();
-        $uuid = $generator->generate();
+        $bytes = $generator->generate();
+        $uuid = Uuid::fromBytes($bytes);
 
-        $this->assertSame($this->uuidBinary, $uuid);
+        /** @var Fields $fields */
+        $fields = $uuid->getFields();
+
+        $this->assertSame(16, strlen($bytes));
+        $this->assertSame(Uuid::UUID_TYPE_TIME, $fields->getVersion());
     }
 }

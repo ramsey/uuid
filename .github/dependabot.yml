@@ -1,7 +1,13 @@
 version: 2
 updates:
   - package-ecosystem: "composer"
+    allow:
+      - dependency-type: all
     directory: "/"
     schedule:
       interval: "monthly"
     versioning-strategy: "increase-if-necessary"
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "monthly"

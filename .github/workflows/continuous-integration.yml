@@ -13,17 +13,16 @@ jobs:
     runs-on: "ubuntu-latest"
     steps:
       - name: "Checkout repository"
-        uses: "actions/checkout@v2"
+        uses: "actions/checkout@v3"
 
       - name: "Install PHP"
         uses: "shivammathur/setup-php@v2"
         with:
           php-version: "latest"
-          extensions: bcmath, ctype, gmp
           coverage: "none"
 
       - name: "Install dependencies (Composer)"
-        uses: "ramsey/composer-install@v1"
+        uses: "ramsey/composer-install@v2"
 
       - name: "Check syntax (php-parallel-lint)"
         run: "composer lint -- --colors"
@@ -36,17 +35,16 @@ jobs:
     runs-on: "ubuntu-latest"
     steps:
       - name: "Checkout repository"
-        uses: "actions/checkout@v2"
+        uses: "actions/checkout@v3"
 
       - name: "Install PHP"
         uses: "shivammathur/setup-php@v2"
         with:
           php-version: "latest"
-          extensions: bcmath, ctype, gmp
           coverage: "none"
 
       - name: "Install dependencies (Composer)"
-        uses: "ramsey/composer-install@v1"
+        uses: "ramsey/composer-install@v2"
 
       - name: "Statically analyze code (PHPStan)"
         run: "composer phpstan -- --ansi"
@@ -62,25 +60,28 @@ jobs:
       fail-fast: false
       matrix:
         php-version:
-          - "7.2"
-          - "7.3"
-          - "7.4"
           - "8.0"
+          - "8.1"
 
     steps:
       - name: "Checkout repository"
-        uses: "actions/checkout@v2"
+        uses: "actions/checkout@v3"
+
+      - name: "Install dependencies (apt)"
+        run: |
+          sudo apt-get update
+          sudo apt-get -y install libsodium-dev uuid-dev
 
       - name: "Install PHP"
         uses: "shivammathur/setup-php@v2"
         with:
           php-version: "${{ matrix.php-version }}"
-          extensions: bcmath, ctype, gmp
+          extensions: bcmath, ctype, gmp, sodium, uuid
           coverage: "none"
           ini-values: "memory_limit=-1"
 
       - name: "Install dependencies (Composer)"
-        uses: "ramsey/composer-install@v1"
+        uses: "ramsey/composer-install@v2"
 
       - name: "Run PHPBench"
         run: "composer phpbench -- --ansi"
@@ -90,18 +91,23 @@ jobs:
     runs-on: "ubuntu-latest"
     steps:
       - name: "Checkout repository"
-        uses: "actions/checkout@v2"
+        uses: "actions/checkout@v3"
+
+      - name: "Install dependencies (apt)"
+        run: |
+          sudo apt-get update
+          sudo apt-get -y install libsodium-dev uuid-dev
 
       - name: "Install PHP"
         uses: "shivammathur/setup-php@v2"
         with:
           php-version: "latest"
-          extensions: bcmath, ctype, gmp
+          extensions: bcmath, ctype, gmp, sodium, uuid
           coverage: "pcov"
           ini-values: "memory_limit=-1"
 
       - name: "Install dependencies (Composer)"
-        uses: "ramsey/composer-install@v1"
+        uses: "ramsey/composer-install@v2"
         with:
           dependency-versions: "${{ matrix.dependencies }}"
 
@@ -109,42 +115,48 @@ jobs:
         run: "./vendor/bin/phpunit --verbose --colors=always --coverage-text --coverage-clover build/logs/clover.xml"
 
       - name: "Publish coverage report to Codecov"
-        uses: "codecov/codecov-action@v1"
+        uses: "codecov/codecov-action@v3.1.0"
 
   unit-tests:
     name: "Unit Tests"
-    runs-on: "ubuntu-latest"
-    continue-on-error: ${{ matrix.experimental }}
+    runs-on: ${{ matrix.operating-system }}
 
     strategy:
       fail-fast: false
       matrix:
         php-version:
-          - "7.2"
-          - "7.3"
-          - "7.4"
           - "8.0"
-        experimental:
-          - false
-        include:
-          - php-version: "8.1"
-            experimental: true
-            composer-options: "--ignore-platform-req=php"
+          - "8.1"
+        operating-system:
+          - "ubuntu-latest"
+          - "windows-latest"
 
     steps:
+      - name: "Configure Git (for Windows)"
+        if: ${{ matrix.operating-system == 'windows-latest' }}
+        run: |
+          git config --system core.autocrlf false
+          git config --system core.eol lf
+
       - name: "Checkout repository"
-        uses: "actions/checkout@v2"
+        uses: "actions/checkout@v3"
+
+      - name: "Install dependencies (apt)"
+        if: ${{ matrix.operating-system == 'ubuntu-latest' }}
+        run: |
+          sudo apt-get update
+          sudo apt-get -y install libsodium-dev uuid-dev
 
       - name: "Install PHP"
         uses: "shivammathur/setup-php@v2"
         with:
           php-version: "${{ matrix.php-version }}"
-          extensions: bcmath, ctype, gmp
+          extensions: bcmath, ctype, gmp, sodium, uuid
           coverage: "none"
           ini-values: "memory_limit=-1"
 
       - name: "Install dependencies (Composer)"
-        uses: "ramsey/composer-install@v1"
+        uses: "ramsey/composer-install@v2"
         with:
           composer-options: "${{ matrix.composer-options }}"
 

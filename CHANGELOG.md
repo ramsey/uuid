@@ -6,19 +6,54 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 
-## Unreleased
-
-### Added
-
-### Changed
+## 4.3.1 - 2022-03-27
 
 ### Deprecated
 
-### Removed
+The following will be removed in ramsey/uuid 5.0.0:
+
+* `Ramsey\Uuid\Generator\RandomLibAdapter`
+
+
+## 4.3.0 - 2022-03-26
+
+### Changed
+
+* Remove support for PHP 7.2, 7.3, and 7.4. This is not a BC break, since
+  Composer will do the right thing for your environment and select a compatible
+  version of this library.
+* Require `ext-ctype` extension. For applications that run in environments where
+  the `ext-ctype` is not present, please require a polyfill, such as
+  [symfony/polyfill-ctype](https://packagist.org/packages/symfony/polyfill-ctype).
+* Use `iterable<UuidBuilderInterface>` instead of `BuilderCollection` types.
+* Use `iterable<NodeProviderInterface>` instead of `NodeProviderCollection` types.
+
+### Deprecated
+
+The following will be removed in ramsey/uuid 5.0.0:
+
+* `Ramsey\Uuid\Builder\BuilderCollection`
+* `Ramsey\Uuid\Provider\Node\NodeProviderCollection`
+* Dependency on ramsey/collection
 
 ### Fixed
 
-### Security
+* Support valid UUIDs in uppercase in `LazyUuidFromString`.
+
+
+## 4.2.3 - 2021-09-25
+
+### Fixed
+
+* Switch back to `^8.0` in the PHP version requirement.
+
+
+## 4.2.2 - 2021-09-24
+
+### Fixed
+
+* Indicate support for PHP 8.1, using `~8.1.0` to prevent installations on 8.2
+  until the library is ready.
 
 
 ## 4.2.1 - 2021-08-10
@@ -45,6 +80,20 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   See [ramsey/uuid#361](https://github.com/ramsey/uuid/pull/361).
 
 
+## 4.1.3 - 2021-09-25
+
+### Fixed
+
+* Switch back to `^8.0` in the PHP version requirement.
+
+
+## 4.1.2 - 2021-09-24
+
+### Fixed
+
+* Lock 4.1.x to `~8.0.0` to indicate it does not support PHP 8.1.
+
+
 ## 4.1.1 - 2020-08-18
 
 ### Fixed
@@ -59,6 +108,20 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 * Improve performance of `Uuid::fromString()`, `Uuid::fromBytes()`,
   `UuidInterface#toString()`, and `UuidInterface#getBytes()`. See PR
   [#324](https://github.com/ramsey/uuid/pull/324) for more information.
+
+
+## 4.0.3 - 2021-09-25
+
+### Fixed
+
+* Switch back to `^8.0` in the PHP version requirement.
+
+
+## 4.0.2 - 2021-09-24
+
+### Fixed
+
+* Lock 4.0.x to `~8.0.0` to indicate it does not support PHP 8.1.
 
 
 ## 4.0.1 - 2020-03-29
@@ -634,6 +697,21 @@ The following functionality is deprecated and will be removed in ramsey/uuid
   * `Generator\SodiumRandomGenerator`
 * Remove `Exception\UnsatisfiedDependencyException`. This library no longer
   throws this exception.
+
+
+## 3.9.6 - 2021-09-25
+
+### Fixed
+
+* Switch back to `^8.0` in the PHP version requirement.
+
+
+## 3.9.5 - 2021-09-24
+
+### Fixed
+
+* Indicate support for PHP 8.1, using `~8.1.0` to prevent installations on 8.2
+  until the library is ready.
 
 
 ## 3.9.4 - 2021-08-06
