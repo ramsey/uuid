@@ -25,7 +25,7 @@ use Ramsey\Uuid\Type\Integer as IntegerObject;
  * @param Hexadecimal|int|string|null $node A 48-bit number representing the
  *     hardware address; this number may be represented as an integer or a
  *     hexadecimal string
- * @param int $clockSeq A 14-bit number used to help avoid duplicates that
+ * @param int|null $clockSeq A 14-bit number used to help avoid duplicates that
  *     could arise when the clock is set backwards in time or if the node ID
  *     changes
  *
@@ -111,7 +111,7 @@ function v5($ns, string $name): string
  *
  * @param Hexadecimal|null $node A 48-bit number representing the hardware
  *     address
- * @param int $clockSeq A 14-bit number used to help avoid duplicates that
+ * @param int|null $clockSeq A 14-bit number used to help avoid duplicates that
  *     could arise when the clock is set backwards in time or if the node ID
  *     changes
  *

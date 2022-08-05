@@ -29,6 +29,11 @@
       <code>uuid_parse</code>
     </ImpureFunctionCall>
   </file>
+  <file src="src/Guid/Guid.php">
+    <DeprecatedMethod occurrences="1">
+      <code>parent::__construct($fields, $numberConverter, $codec, $timeConverter)</code>
+    </DeprecatedMethod>
+  </file>
   <file src="src/Guid/GuidBuilder.php">
     <ImpureVariable occurrences="3">
       <code>$this</code>
@@ -36,12 +41,22 @@
       <code>$this</code>
     </ImpureVariable>
   </file>
+  <file src="src/Nonstandard/Uuid.php">
+    <DeprecatedMethod occurrences="1">
+      <code>parent::__construct($fields, $numberConverter, $codec, $timeConverter)</code>
+    </DeprecatedMethod>
+  </file>
   <file src="src/Nonstandard/UuidBuilder.php">
     <ImpureVariable occurrences="3">
       <code>$this</code>
       <code>$this</code>
       <code>$this</code>
     </ImpureVariable>
+  </file>
+  <file src="src/Nonstandard/UuidV6.php">
+    <DeprecatedMethod occurrences="1">
+      <code>parent::__construct($fields, $numberConverter, $codec, $timeConverter)</code>
+    </DeprecatedMethod>
   </file>
   <file src="src/Provider/Dce/SystemDceSecurityProvider.php">
     <ForbiddenCode occurrences="5">
@@ -59,6 +74,11 @@
     <MixedArrayAssignment occurrences="1">
       <code>$macs[]</code>
     </MixedArrayAssignment>
+  </file>
+  <file src="src/Rfc4122/NilUuid.php">
+    <DeprecatedMethod occurrences="1">
+      <code>Uuid</code>
+    </DeprecatedMethod>
   </file>
   <file src="src/Rfc4122/UuidBuilder.php">
     <ImpureVariable occurrences="15">
@@ -79,6 +99,31 @@
       <code>$this</code>
     </ImpureVariable>
   </file>
+  <file src="src/Rfc4122/UuidV1.php">
+    <DeprecatedMethod occurrences="1">
+      <code>parent::__construct($fields, $numberConverter, $codec, $timeConverter)</code>
+    </DeprecatedMethod>
+  </file>
+  <file src="src/Rfc4122/UuidV2.php">
+    <DeprecatedMethod occurrences="1">
+      <code>parent::__construct($fields, $numberConverter, $codec, $timeConverter)</code>
+    </DeprecatedMethod>
+  </file>
+  <file src="src/Rfc4122/UuidV3.php">
+    <DeprecatedMethod occurrences="1">
+      <code>parent::__construct($fields, $numberConverter, $codec, $timeConverter)</code>
+    </DeprecatedMethod>
+  </file>
+  <file src="src/Rfc4122/UuidV4.php">
+    <DeprecatedMethod occurrences="1">
+      <code>parent::__construct($fields, $numberConverter, $codec, $timeConverter)</code>
+    </DeprecatedMethod>
+  </file>
+  <file src="src/Rfc4122/UuidV5.php">
+    <DeprecatedMethod occurrences="1">
+      <code>parent::__construct($fields, $numberConverter, $codec, $timeConverter)</code>
+    </DeprecatedMethod>
+  </file>
   <file src="src/Type/Decimal.php">
     <InaccessibleProperty occurrences="1">
       <code>$this-&gt;isNegative</code>
@@ -90,6 +135,21 @@
     </InaccessibleProperty>
   </file>
   <file src="src/Uuid.php">
+    <DeprecatedMethod occurrences="13">
+      <code>self::getFactory()</code>
+      <code>self::getFactory()</code>
+      <code>self::getFactory()</code>
+      <code>self::getFactory()</code>
+      <code>self::getFactory()</code>
+      <code>self::getFactory()</code>
+      <code>self::getFactory()</code>
+      <code>self::getFactory()</code>
+      <code>self::getFactory()</code>
+      <code>self::getFactory()</code>
+      <code>self::getFactory()</code>
+      <code>self::getFactory()</code>
+      <code>self::getFactory()</code>
+    </DeprecatedMethod>
     <ImpureMethodCall occurrences="6">
       <code>getFactory</code>
       <code>getFactory</code>
