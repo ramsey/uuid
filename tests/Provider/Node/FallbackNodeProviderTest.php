@@ -6,7 +6,6 @@ namespace Ramsey\Uuid\Test\Provider\Node;
 
 use Ramsey\Uuid\Exception\NodeException;
 use Ramsey\Uuid\Provider\Node\FallbackNodeProvider;
-use Ramsey\Uuid\Provider\Node\NodeProviderCollection;
 use Ramsey\Uuid\Provider\Node\RandomNodeProvider;
 use Ramsey\Uuid\Provider\Node\StaticNodeProvider;
 use Ramsey\Uuid\Provider\Node\SystemNodeProvider;
@@ -27,7 +26,7 @@ class FallbackNodeProviderTest extends TestCase
             ->method('getNode')
             ->willThrowException(new NodeException());
 
-        $provider = new FallbackNodeProvider(new NodeProviderCollection([$providerWithoutNode, $providerWithNode]));
+        $provider = new FallbackNodeProvider([$providerWithoutNode, $providerWithNode]);
         $provider->getNode();
     }
 
@@ -45,9 +44,7 @@ class FallbackNodeProviderTest extends TestCase
         $anotherProviderWithoutNode->expects($this->never())
             ->method('getNode');
 
-        $provider = new FallbackNodeProvider(new NodeProviderCollection(
-            [$providerWithoutNode, $providerWithNode, $anotherProviderWithoutNode]
-        ));
+        $provider = new FallbackNodeProvider([$providerWithoutNode, $providerWithNode, $anotherProviderWithoutNode]);
         $node = $provider->getNode();
 
         $this->assertSame('57764a07f756', $node->toString());
@@ -59,7 +56,7 @@ class FallbackNodeProviderTest extends TestCase
         $providerWithoutNode->method('getNode')
             ->willThrowException(new NodeException());
 
-        $provider = new FallbackNodeProvider(new NodeProviderCollection([$providerWithoutNode]));
+        $provider = new FallbackNodeProvider([$providerWithoutNode]);
 
         $this->expectException(NodeException::class);
         $this->expectExceptionMessage(
@@ -75,20 +72,12 @@ class FallbackNodeProviderTest extends TestCase
         $randomNodeProvider = new RandomNodeProvider();
         $systemNodeProvider = new SystemNodeProvider();
 
-        $nodeProviderCollection = new NodeProviderCollection(
-            [
-                $staticNodeProvider,
-                $randomNodeProvider,
-                $systemNodeProvider,
-            ]
-        );
-
-        $serializedNodeProviderCollection = serialize($nodeProviderCollection);
-
-        /** @var NodeProviderCollection $unserializedNodeProviderCollection */
-        $unserializedNodeProviderCollection = unserialize($serializedNodeProviderCollection);
-
-        $this->assertInstanceOf(NodeProviderCollection::class, $unserializedNodeProviderCollection);
+        /** @var list<NodeProviderInterface> $unserializedNodeProviderCollection */
+        $unserializedNodeProviderCollection = unserialize(serialize([
+            $staticNodeProvider,
+            $randomNodeProvider,
+            $systemNodeProvider,
+        ]));
 
         foreach ($unserializedNodeProviderCollection as $nodeProvider) {
             $this->assertInstanceOf(NodeProviderInterface::class, $nodeProvider);

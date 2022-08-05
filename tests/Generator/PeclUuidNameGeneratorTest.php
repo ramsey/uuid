@@ -22,6 +22,7 @@ class PeclUuidNameGeneratorTest extends TestCase
      * @param non-empty-string $ns
      *
      * @dataProvider provideNamesForHashingTest
+     * @requires extension uuid
      */
     public function testPeclUuidNameGeneratorHashesName(string $ns, string $name, string $algorithm): void
     {
@@ -55,7 +56,7 @@ class PeclUuidNameGeneratorTest extends TestCase
     }
 
     /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingTraversableTypeHintSpecification
+     * @return array<array{ns: string, name: string, algorithm: string}>
      */
     public function provideNamesForHashingTest(): array
     {
@@ -98,6 +99,7 @@ class PeclUuidNameGeneratorTest extends TestCase
             'Unable to hash namespace and name with algorithm \'aBadAlgorithm\''
         );
 
+        /** @phpstan-ignore-next-line */
         $generator->generate($namespace, 'a test name', 'aBadAlgorithm');
     }
 }

@@ -21,6 +21,11 @@ use Ramsey\Uuid\Type\Hexadecimal;
 /**
  * A collection of NodeProviderInterface objects
  *
+ * @deprecated this class has been deprecated, and will be removed in 5.0.0. The use-case for this class comes from
+ *             a pre-`phpstan/phpstan` and pre-`vimeo/psalm` ecosystem, in which type safety had to be mostly enforced
+ *             at runtime: that is no longer necessary, now that you can safely verify your code to be correct, and use
+ *             more generic types like `iterable<T>` instead.
+ *
  * @extends AbstractCollection<NodeProviderInterface>
  */
 class NodeProviderCollection extends AbstractCollection

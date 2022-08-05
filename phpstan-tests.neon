@@ -4,29 +4,14 @@ parameters:
     paths:
         - ./tests
     bootstrapFiles:
-        - ./tests/phpstan-bootstrap.php
+        - ./tests/static-analysis/stubs.php
     checkMissingIterableValueType: false
     reportUnmatchedIgnoredErrors: false
-    excludes_analyse:
-        - ./tests/ExpectedBehaviorTest.php
-        - ./tests/phpstan-bootstrap.php
+    excludePaths:
+        analyse:
+            - ./tests/ExpectedBehaviorTest.php
+            - ./tests/static-analysis/stubs.php
     ignoreErrors:
-        -
-            message: "#^Function uuid_create\\(\\) has no return typehint specified\\.$#"
-            count: 1
-            path: ./tests/phpstan-bootstrap.php
-        -
-            message: "#^Function uuid_create\\(\\) has parameter \\$uuid_type with no typehint specified\\.$#"
-            count: 1
-            path: ./tests/phpstan-bootstrap.php
-        -
-            message: "#^Function uuid_parse\\(\\) has no return typehint specified\\.$#"
-            count: 1
-            path: ./tests/phpstan-bootstrap.php
-        -
-            message: "#^Function uuid_parse\\(\\) has parameter \\$uuid with no typehint specified\\.$#"
-            count: 1
-            path: ./tests/phpstan-bootstrap.php
         -
             message: "#^Call to static method Ramsey\\\\Uuid\\\\.+ on a separate line has no effect\\.$#"
             paths:

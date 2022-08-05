@@ -336,17 +336,6 @@ trait DeprecatedUuidMethodsTrait
     }
 
     /**
-     * @deprecated This has moved to {@see Rfc4122FieldsInterface::getUrn()} and
-     *     is available on {@see \Ramsey\Uuid\Rfc4122\UuidV1},
-     *     {@see \Ramsey\Uuid\Rfc4122\UuidV3}, {@see \Ramsey\Uuid\Rfc4122\UuidV4},
-     *     and {@see \Ramsey\Uuid\Rfc4122\UuidV5}.
-     */
-    public function getUrn(): string
-    {
-        return 'urn:uuid:' . $this->toString();
-    }
-
-    /**
      * @deprecated Use {@see UuidInterface::getFields()} to get a
      *     {@see FieldsInterface} instance. If it is a
      *     {@see \Ramsey\Uuid\Rfc4122\FieldsInterface} instance, you may call

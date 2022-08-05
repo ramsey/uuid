@@ -464,24 +464,23 @@ $timeConverter`` as its second constructor argument.
 Provider\\Node\\FallbackNodeProvider
 ------------------------------------
 
-Provider\\Node\\FallbackNodeProvider now requires a
-Provider\\Node\\NodeProviderCollection as its constructor parameter. This
-behaves like a typed array.
+Provider\\Node\\FallbackNodeProvider now requires
+``iterable<Ramsey\Uuid\Provider\NodeProviderInterface>`` as its constructor
+parameter.
 
 .. code-block::
 
     use MyPackage\MyCustomNodeProvider;
     use Ramsey\Uuid\Provider\Node\FallbackNodeProvider;
-    use Ramsey\Uuid\Provider\Node\NodeProviderCollection;
     use Ramsey\Uuid\Provider\Node\RandomNodeProvider;
     use Ramsey\Uuid\Provider\Node\SystemNodeProvider;
 
-    $collection = new NodeProviderCollection();
-    $collection[] = new MyCustomNodeProvider();
-    $collection[] = new SystemNodeProvider();
-    $collection[] = new RandomNodeProvider();
+    $nodeProviders = [];
+    $nodeProviders[] = new MyCustomNodeProvider();
+    $nodeProviders[] = new SystemNodeProvider();
+    $nodeProviders[] = new RandomNodeProvider();
 
-    $provider = new FallbackNodeProvider($collection);
+    $provider = new FallbackNodeProvider($nodeProviders);
 
 Provider\\Time\\FixedTimeProvider
 ---------------------------------

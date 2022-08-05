@@ -4,7 +4,16 @@
 Exceptions
 ==========
 
+All exceptions in the :php:ns:`Ramsey\\Uuid` namespace implement
+:php:interface:`Ramsey\\Uuid\\Exception\\UuidExceptionInterface`. This provides
+a base type you may use to catch any and all exceptions that originate from this
+library.
+
 .. php:namespace:: Ramsey\Uuid\Exception
+
+.. php:interface:: UuidExceptionInterface
+
+    This is the interface all exceptions in ramsey/uuid must implement.
 
 .. php:exception:: BuilderNotFoundException
 

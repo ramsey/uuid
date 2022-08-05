@@ -91,7 +91,7 @@ class SystemNodeProviderTest extends TestCase
             'Node should be a hexadecimal string of 12 characters. Actual node: %s (length: %s)',
             [$node->toString(), strlen($node->toString()),]
         );
-        $this->assertRegExp('/^[A-Fa-f0-9]{12}$/', $node->toString(), $message);
+        $this->assertMatchesRegularExpression('/^[A-Fa-f0-9]{12}$/', $node->toString(), $message);
     }
 
     /**

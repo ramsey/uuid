@@ -84,6 +84,14 @@ interface UuidInterface extends
     public function getInteger(): IntegerObject;
 
     /**
+     * Returns the string standard representation of the UUID as a URN
+     *
+     * @link http://en.wikipedia.org/wiki/Uniform_Resource_Name Uniform Resource Name
+     * @link https://tools.ietf.org/html/rfc4122#section-3 RFC 4122, § 3: Namespace Registration Template
+     */
+    public function getUrn(): string;
+
+    /**
      * Returns the string standard representation of the UUID
      *
      * @psalm-return non-empty-string
