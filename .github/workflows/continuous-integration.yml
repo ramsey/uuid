@@ -2,7 +2,21 @@
 
 name: "build"
 
-on: ["pull_request", "push"]
+on:
+  push:
+    branches:
+      - "*.x"
+    tags:
+      - "*"
+  pull_request:
+    branches:
+      - "*.x"
+
+# Cancels all previous workflow runs for the same branch that have not yet completed.
+concurrency:
+  # The concurrency group contains the workflow name and the branch name.
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 env:
   COMPOSER_ROOT_VERSION: "1.99.99"
@@ -54,6 +68,7 @@ jobs:
 
   benchmark:
     name: "Benchmark"
+    needs: ["coding-standards", "static-analysis"]
     runs-on: "ubuntu-latest"
 
     strategy:
@@ -87,6 +102,7 @@ jobs:
 
   code-coverage:
     name: "Code coverage"
+    needs: ["coding-standards", "static-analysis"]
     runs-on: "ubuntu-latest"
     steps:
       - name: "Checkout repository"
@@ -114,10 +130,11 @@ jobs:
         run: "./vendor/bin/phpunit --verbose --colors=always --coverage-text --coverage-clover build/logs/clover.xml"
 
       - name: "Publish coverage report to Codecov"
-        uses: "codecov/codecov-action@v2.1.0"
+        uses: "codecov/codecov-action@v3.1.0"
 
   unit-tests:
     name: "Unit Tests"
+    needs: ["code-coverage"]
     runs-on: ${{ matrix.operating-system }}
 
     strategy:
