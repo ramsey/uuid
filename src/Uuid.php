@@ -23,9 +23,12 @@ use Ramsey\Uuid\Lazy\LazyUuidFromString;
 use Ramsey\Uuid\Rfc4122\FieldsInterface as Rfc4122FieldsInterface;
 use Ramsey\Uuid\Type\Hexadecimal;
 use Ramsey\Uuid\Type\Integer as IntegerObject;
+use ValueError;
 
+use function assert;
 use function bin2hex;
 use function preg_match;
+use function sprintf;
 use function str_replace;
 use function strcmp;
 use function strlen;
@@ -289,6 +292,14 @@ class Uuid implements UuidInterface
     }
 
     /**
+     * @return array{bytes: string}
+     */
+    public function __serialize(): array
+    {
+        return ['bytes' => $this->serialize()];
+    }
+
+    /**
      * Re-constructs the object from its serialized form
      *
      * @param string $serialized The serialized PHP string to unserialize into
@@ -310,6 +321,20 @@ class Uuid implements UuidInterface
         $this->numberConverter = $uuid->numberConverter;
         $this->fields = $uuid->fields;
         $this->timeConverter = $uuid->timeConverter;
+    }
+
+    /**
+     * @param array{bytes: string} $data
+     */
+    public function __unserialize(array $data): void
+    {
+        // @codeCoverageIgnoreStart
+        if (!isset($data['bytes'])) {
+            throw new ValueError(sprintf('%s(): Argument #1 ($data) is invalid', __METHOD__));
+        }
+        // @codeCoverageIgnoreEnd
+
+        $this->unserialize($data['bytes']);
     }
 
     public function compareTo(UuidInterface $other): int
@@ -357,6 +382,11 @@ class Uuid implements UuidInterface
     public function getInteger(): IntegerObject
     {
         return new IntegerObject($this->numberConverter->fromHex($this->getHex()->toString()));
+    }
+
+    public function getUrn(): string
+    {
+        return 'urn:uuid:' . $this->toString();
     }
 
     /**
@@ -436,7 +466,7 @@ class Uuid implements UuidInterface
     /**
      * Creates a UUID from the string standard representation
      *
-     * @param non-empty-string $uuid A hexadecimal string
+     * @param string $uuid A hexadecimal string
      *
      * @return UuidInterface A UuidInterface instance created from a hexadecimal
      *     string representation
@@ -451,8 +481,11 @@ class Uuid implements UuidInterface
      */
     public static function fromString(string $uuid): UuidInterface
     {
+        $uuid = strtolower($uuid);
         if (! self::$factoryReplaced && preg_match(LazyUuidFromString::VALID_REGEX, $uuid) === 1) {
-            return new LazyUuidFromString(strtolower($uuid));
+            assert($uuid !== '');
+
+            return new LazyUuidFromString($uuid);
         }
 
         return static::getFactory()->fromString($uuid);

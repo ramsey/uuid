@@ -1,0 +1,23 @@
+# See https://github.com/ridedott/merge-me-action/
+# This workflow automates merges from patches sent by Dependabot, and
+# only by dependabot, once the other CI workflows pass
+name: Auto-merge Dependabot PRs
+
+on:
+  workflow_run:
+    types:
+      - completed
+    workflows:
+      - "build"
+
+jobs:
+  merge-me:
+    name: Auto-merge Dependabot PRs
+    runs-on: ubuntu-latest
+    steps:
+      - name: Auto-Merge
+        if: ${{ github.event.workflow_run.conclusion == 'success' }}
+        uses: ridedott/merge-me-action@v2
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          MERGE_METHOD: MERGE

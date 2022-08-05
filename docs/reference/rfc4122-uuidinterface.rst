@@ -18,11 +18,3 @@ Rfc4122\\UuidInterface
 
         :returns: The fields that comprise this UUID.
         :returntype: Ramsey\\Uuid\\Rfc4122\\FieldsInterface
-
-    .. php:method:: getUrn()
-
-        :returns: The string standard representation of the UUID as a `URN`_.
-        :returntype: ``string``
-
-
-.. _URN: https://tools.ietf.org/html/rfc8141
