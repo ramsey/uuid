@@ -27,6 +27,8 @@ use Ramsey\Uuid\Type\Time;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidFactory;
 
+use const PHP_VERSION_ID;
+
 class UuidV2Test extends TestCase
 {
     /**
@@ -116,6 +118,9 @@ class UuidV2Test extends TestCase
      */
     public function provideLocalDomainAndIdentifierForTests(): array
     {
+        // https://github.com/php/php-src/issues/7758
+        $isGH7758Fixed = PHP_VERSION_ID >= 80107;
+
         return [
             [
                 'domain' => Uuid::DCE_DOMAIN_PERSON,
@@ -125,7 +130,7 @@ class UuidV2Test extends TestCase
                 'expectedDomainName' => 'person',
                 'expectedIdentifier' => '12345678',
                 'expectedTimestamp' => '1b21dd200000000',
-                'expectedTime' => '-32.723763',
+                'expectedTime' => $isGH7758Fixed ? '-33.276237' : '-32.723763',
             ],
             [
                 'domain' => Uuid::DCE_DOMAIN_GROUP,
@@ -135,7 +140,7 @@ class UuidV2Test extends TestCase
                 'expectedDomainName' => 'group',
                 'expectedIdentifier' => '87654321',
                 'expectedTimestamp' => '1b21dd200000000',
-                'expectedTime' => '-32.723763',
+                'expectedTime' => $isGH7758Fixed ? '-33.276237' : '-32.723763',
             ],
             [
                 'domain' => Uuid::DCE_DOMAIN_ORG,
@@ -145,7 +150,7 @@ class UuidV2Test extends TestCase
                 'expectedDomainName' => 'org',
                 'expectedIdentifier' => '1',
                 'expectedTimestamp' => '1b21dd200000000',
-                'expectedTime' => '-32.723763',
+                'expectedTime' => $isGH7758Fixed ? '-33.276237' : '-32.723763',
             ],
             [
                 'domain' => Uuid::DCE_DOMAIN_PERSON,
