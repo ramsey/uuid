@@ -12,7 +12,7 @@
         "php": "^8.0",
         "ext-ctype": "*",
         "ext-json": "*",
-        "brick/math": "^0.8 || ^0.9",
+        "brick/math": "^0.8 || ^0.9 || ^0.10",
         "ramsey/collection": "^1.0"
     },
     "require-dev": {
@@ -22,7 +22,6 @@
         "doctrine/annotations": "^1.8",
         "ergebnis/composer-normalize": "^2.15",
         "mockery/mockery": "^1.3",
-        "moontoast/math": "^1.1",
         "paragonie/random-lib": "^2",
         "php-mock/php-mock": "^2.2",
         "php-mock/php-mock-mockery": "^1.3",

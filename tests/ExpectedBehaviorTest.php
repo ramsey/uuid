@@ -2,7 +2,7 @@
 
 namespace Ramsey\Uuid\Test;
 
-use Moontoast\Math\BigNumber;
+use Brick\Math\BigInteger;
 use Ramsey\Uuid\Builder\DegradedUuidBuilder;
 use Ramsey\Uuid\Codec\CodecInterface;
 use Ramsey\Uuid\Codec\TimestampFirstCombCodec;
@@ -246,12 +246,12 @@ class ExpectedBehaviorTest extends TestCase
     {
         $leastSignificantBitsHex = substr(str_replace('-', '', $string), 16);
         $mostSignificantBitsHex = substr(str_replace('-', '', $string), 0, 16);
-        $leastSignificantBits = BigNumber::convertToBase10($leastSignificantBitsHex, 16);
-        $mostSignificantBits = BigNumber::convertToBase10($mostSignificantBitsHex, 16);
+        $leastSignificantBits = BigInteger::fromBase($leastSignificantBitsHex, 16)->__toString();
+        $mostSignificantBits = BigInteger::fromBase($mostSignificantBitsHex, 16)->__toString();
 
         $components = explode('-', $string);
         array_walk($components, function (&$value) {
-            $value = BigNumber::convertToBase10($value, 16);
+            $value = BigInteger::fromBase($value, 16)->__toString();
         });
 
         $clockSeq = (int) $components[3] & 0x3fff;
