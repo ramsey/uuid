@@ -9,7 +9,7 @@ Reference
 
     reference/uuid
     reference/uuidinterface
-    reference/timebasedinterface
+    reference/timebaseduuidinterface
     reference/fields-fieldsinterface
     reference/rfc4122-uuidinterface
     reference/rfc4122-fieldsinterface

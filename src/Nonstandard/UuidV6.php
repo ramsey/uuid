@@ -25,7 +25,7 @@ use Ramsey\Uuid\Lazy\LazyUuidFromString;
 use Ramsey\Uuid\Rfc4122\FieldsInterface as Rfc4122FieldsInterface;
 use Ramsey\Uuid\Rfc4122\UuidInterface;
 use Ramsey\Uuid\Rfc4122\UuidV1;
-use Ramsey\Uuid\TimeBasedInterface;
+use Ramsey\Uuid\TimeBasedUuidInterface;
 use Ramsey\Uuid\Uuid;
 use Throwable;
 
@@ -44,7 +44,7 @@ use const STR_PAD_LEFT;
  *
  * @psalm-immutable
  */
-final class UuidV6 extends Uuid implements UuidInterface, TimeBasedInterface
+final class UuidV6 extends Uuid implements UuidInterface, TimeBasedUuidInterface
 {
     /**
      * Creates a version 6 (time-based) UUID

@@ -9,7 +9,7 @@ Nonstandard\\UuidV6
 .. php:class:: UuidV6
 
     Implements :php:interface:`Ramsey\\Uuid\\Rfc4122\\UuidInterface` and
-    :php:interface:`Ramsey\\Uuid\\TimeBasedInterface`.
+    :php:interface:`Ramsey\\Uuid\\TimeBasedUuidInterface`.
 
     While in the Nonstandard sub-namespace, UuidV6 implements the same interface
     as the RFC 4122 UUIDs. This is because the definition for version 6 UUIDs is

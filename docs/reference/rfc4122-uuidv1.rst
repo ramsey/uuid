@@ -9,6 +9,6 @@ Rfc4122\\UuidV1
 .. php:class:: UuidV1
 
     Implements :php:interface:`Ramsey\\Uuid\\Rfc4122\\UuidInterface` and
-    :php:interface:`Ramsey\\Uuid\\TimeBasedInterface`.
+    :php:interface:`Ramsey\\Uuid\\TimeBasedUuidInterface`.
 
     UuidV1 represents a :ref:`version 1, time-based UUID <rfc4122.version1>`.

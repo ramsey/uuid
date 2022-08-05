@@ -9,8 +9,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Added
 
-* Introduce `Ramsey\Uuid\TimeBasedInterface` to represent any UUID based on a
-  date/time value.
+* Introduce `Ramsey\Uuid\TimeBasedUuidInterface` to represent any UUID based on
+  a date/time value.
 
 ### Changed
 

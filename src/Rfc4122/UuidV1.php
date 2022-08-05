@@ -22,7 +22,7 @@ use Ramsey\Uuid\Converter\TimeConverterInterface;
 use Ramsey\Uuid\Exception\DateTimeException;
 use Ramsey\Uuid\Exception\InvalidArgumentException;
 use Ramsey\Uuid\Rfc4122\FieldsInterface as Rfc4122FieldsInterface;
-use Ramsey\Uuid\TimeBasedInterface;
+use Ramsey\Uuid\TimeBasedUuidInterface;
 use Ramsey\Uuid\Uuid;
 use Throwable;
 
@@ -36,7 +36,7 @@ use const STR_PAD_LEFT;
  *
  * @psalm-immutable
  */
-final class UuidV1 extends Uuid implements UuidInterface, TimeBasedInterface
+final class UuidV1 extends Uuid implements UuidInterface, TimeBasedUuidInterface
 {
     /**
      * Creates a version 1 (time-based) UUID

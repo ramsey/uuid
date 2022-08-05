@@ -1,12 +1,12 @@
-.. _reference.timebasedinterface:
+.. _reference.timebaseduuidinterface:
 
-==================
-TimeBasedInterface
-==================
+======================
+TimeBasedUuidInterface
+======================
 
 .. php:namespace:: Ramsey\Uuid
 
-.. php:interface:: TimeBasedInterface
+.. php:interface:: TimeBasedUuidInterface
 
     Defines functionality for time-based UUIDs.
 

@@ -19,7 +19,7 @@ use Ramsey\Uuid\Exception\UnsupportedOperationException;
 use Ramsey\Uuid\Fields\FieldsInterface;
 use Ramsey\Uuid\Nonstandard\UuidV6;
 use Ramsey\Uuid\Rfc4122\UuidV1;
-use Ramsey\Uuid\TimeBasedInterface;
+use Ramsey\Uuid\TimeBasedUuidInterface;
 use Ramsey\Uuid\Type\Hexadecimal;
 use Ramsey\Uuid\Type\Integer as IntegerObject;
 use Ramsey\Uuid\UuidFactory;
@@ -52,7 +52,7 @@ use function substr;
  * @psalm-suppress UndefinedInterfaceMethod
  * @psalm-suppress DeprecatedMethod
  */
-final class LazyUuidFromString implements UuidInterface, TimeBasedInterface
+final class LazyUuidFromString implements TimeBasedUuidInterface
 {
     public const VALID_REGEX = '/\A[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\z/ms';
     /**
@@ -113,7 +113,7 @@ final class LazyUuidFromString implements UuidInterface, TimeBasedInterface
     {
         $unwrapped = ($this->unwrapped ?? $this->unwrap());
 
-        if ($unwrapped instanceof TimeBasedInterface) {
+        if ($unwrapped instanceof TimeBasedUuidInterface) {
             return $unwrapped->getDateTime();
         }
 

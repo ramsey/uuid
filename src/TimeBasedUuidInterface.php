@@ -21,7 +21,7 @@ use DateTimeInterface;
  *
  * @psalm-immutable
  */
-interface TimeBasedInterface
+interface TimeBasedUuidInterface extends UuidInterface
 {
     /**
      * Returns a date object representing the timestamp associated with the UUID
