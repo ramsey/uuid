@@ -34,8 +34,8 @@ final class Time implements TypeInterface
     private IntegerObject $microseconds;
 
     public function __construct(
-        int | string | IntegerObject $seconds,
-        int | string | IntegerObject $microseconds = new IntegerObject(0),
+        int | float | string | IntegerObject $seconds,
+        int | float | string | IntegerObject $microseconds = new IntegerObject(0),
     ) {
         $this->seconds = $seconds instanceof IntegerObject ? $seconds : new IntegerObject($seconds);
         $this->microseconds = $microseconds instanceof IntegerObject ? $microseconds : new IntegerObject($microseconds);

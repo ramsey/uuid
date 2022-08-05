@@ -27,6 +27,7 @@ use function ob_start;
 use function preg_match;
 use function preg_match_all;
 use function reset;
+use function str_contains;
 use function str_replace;
 use function strtolower;
 use function strtoupper;
@@ -177,6 +178,7 @@ class SystemNodeProvider implements NodeProviderInterface
                     && preg_match(self::SYSFS_PATTERN, $address);
             });
 
+            /** @var string|bool $mac */
             $mac = reset($macs);
         }
 

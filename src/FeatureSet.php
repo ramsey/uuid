@@ -73,7 +73,7 @@ class FeatureSet
     private TimeConverterInterface $timeConverter;
     private RandomGeneratorInterface $randomGenerator;
     private TimeGeneratorInterface $timeGenerator;
-    private TimeProviderInterface $timeProvider;
+    private ?TimeProviderInterface $timeProvider;
     private ValidatorInterface $validator;
     private CalculatorInterface $calculator;
 
@@ -224,7 +224,10 @@ class FeatureSet
     public function setNodeProvider(NodeProviderInterface $nodeProvider): void
     {
         $this->nodeProvider = $nodeProvider;
-        $this->timeGenerator = $this->buildTimeGenerator($this->timeProvider);
+
+        if (isset($this->timeProvider)) {
+            $this->timeGenerator = $this->buildTimeGenerator($this->timeProvider);
+        }
     }
 
     /**

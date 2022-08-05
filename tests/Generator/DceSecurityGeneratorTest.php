@@ -44,11 +44,13 @@ class DceSecurityGeneratorTest extends TestCase
         string $expectedNode,
         string $expectedTimeMidHi
     ): void {
+        /** @var DceSecurityProviderInterface $dceSecurityProvider */
         $dceSecurityProvider = Mockery::mock(DceSecurityProviderInterface::class, [
             'getUid' => new IntegerObject($uid),
             'getGid' => new IntegerObject($gid),
         ]);
 
+        /** @var NodeProviderInterface $nodeProvider */
         $nodeProvider = Mockery::mock(NodeProviderInterface::class, [
             'getNode' => new Hexadecimal($node),
         ]);
@@ -71,7 +73,7 @@ class DceSecurityGeneratorTest extends TestCase
     }
 
     /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingTraversableTypeHintSpecification
+     * @return array<array{uid: int|string, node: string, seconds: int, microseconds: int, providedDomain: int, providedId: IntegerObject|null, providedNode: null, expectedId: string, expectedDomain: string, expectedNode: string, expectedTimeMidHi: string}>
      */
     public function provideValuesForDceSecurityGenerator(): array
     {
