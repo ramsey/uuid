@@ -1539,7 +1539,10 @@ class UuidTest extends TestCase
     {
         $uuid = Uuid::uuid4();
         $serialized = serialize($uuid);
+
+        /** @var UuidInterface $unserializedUuid */
         $unserializedUuid = unserialize($serialized);
+
         $this->assertTrue($uuid->equals($unserializedUuid));
     }
 

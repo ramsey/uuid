@@ -127,7 +127,7 @@ class FeatureSet
     private $timeGenerator;
 
     /**
-     * @var TimeProviderInterface
+     * @var TimeProviderInterface|null
      */
     private $timeProvider;
 
@@ -292,7 +292,10 @@ class FeatureSet
     public function setNodeProvider(NodeProviderInterface $nodeProvider): void
     {
         $this->nodeProvider = $nodeProvider;
-        $this->timeGenerator = $this->buildTimeGenerator($this->timeProvider);
+
+        if (isset($this->timeProvider)) {
+            $this->timeGenerator = $this->buildTimeGenerator($this->timeProvider);
+        }
     }
 
     /**

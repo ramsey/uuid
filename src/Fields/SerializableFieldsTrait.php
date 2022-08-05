@@ -71,7 +71,7 @@ trait SerializableFieldsTrait
     }
 
     /**
-     * @param array{bytes: string} $data
+     * @param array{bytes?: string} $data
      */
     public function __unserialize(array $data): void
     {

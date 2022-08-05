@@ -16,7 +16,7 @@ use function unserialize;
 class DecimalTest extends TestCase
 {
     /**
-     * @param int|float|string $value
+     * @param int|float|string|Decimal $value
      *
      * @dataProvider provideDecimal
      */
@@ -30,7 +30,7 @@ class DecimalTest extends TestCase
     }
 
     /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingTraversableTypeHintSpecification
+     * @return array<array{value: int|float|string|Decimal, expected: string, expectedIsNegative: bool}>
      */
     public function provideDecimal(): array
     {
@@ -260,7 +260,7 @@ class DecimalTest extends TestCase
     }
 
     /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingTraversableTypeHintSpecification
+     * @return array<array{0: int|float|string}>
      */
     public function provideDecimalBadValues(): array
     {
@@ -275,7 +275,7 @@ class DecimalTest extends TestCase
     }
 
     /**
-     * @param mixed $value
+     * @param float|int|string|Decimal $value
      *
      * @dataProvider provideDecimal
      */
@@ -283,13 +283,15 @@ class DecimalTest extends TestCase
     {
         $decimal = new Decimal($value);
         $serializedDecimal = serialize($decimal);
+
+        /** @var Decimal $unserializedDecimal */
         $unserializedDecimal = unserialize($serializedDecimal);
 
         $this->assertSame($expected, $unserializedDecimal->toString());
     }
 
     /**
-     * @param mixed $value
+     * @param float|int|string|Decimal $value
      *
      * @dataProvider provideDecimal
      */

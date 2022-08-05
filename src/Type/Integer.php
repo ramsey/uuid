@@ -20,7 +20,7 @@ use ValueError;
 use function ctype_digit;
 use function ltrim;
 use function sprintf;
-use function strpos;
+use function str_starts_with;
 use function substr;
 
 /**
@@ -48,7 +48,7 @@ final class Integer implements NumberInterface
     private $isNegative = false;
 
     /**
-     * @param mixed $value The integer value to store
+     * @param int|float|string|self $value The integer value to store
      */
     public function __construct($value)
     {
@@ -56,7 +56,7 @@ final class Integer implements NumberInterface
         $sign = '+';
 
         // If the value contains a sign, remove it for ctype_digit() check.
-        if (strpos($value, '-') === 0 || strpos($value, '+') === 0) {
+        if (str_starts_with($value, '-') || str_starts_with($value, '+')) {
             $sign = substr($value, 0, 1);
             $value = substr($value, 1);
         }
@@ -138,7 +138,7 @@ final class Integer implements NumberInterface
     }
 
     /**
-     * @param array{string: string} $data
+     * @param array{string?: string} $data
      */
     public function __unserialize(array $data): void
     {

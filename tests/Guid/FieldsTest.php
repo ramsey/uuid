@@ -196,6 +196,8 @@ class FieldsTest extends TestCase
         $fields = new Fields($bytes);
 
         $serializedFields = serialize($fields);
+
+        /** @var Fields $unserializedFields */
         $unserializedFields = unserialize($serializedFields);
 
         $this->assertSame($fields->getBytes(), $unserializedFields->getBytes());
