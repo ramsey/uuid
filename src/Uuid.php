@@ -247,6 +247,10 @@ class Uuid implements UuidInterface
      * $namespaceSha1Uuid = Uuid::uuid5(Uuid::NAMESPACE_URL, 'http://php.net/');
      * ```
      *
+     * @deprecated ramsey/uuid version 5 will no longer allow direct
+     *     instantiation of the base Ramsey\Uuid\Uuid class. Instead, you must
+     *     use factories to create UUID objects.
+     *
      * @param Rfc4122FieldsInterface $fields The fields from which to construct a UUID
      * @param NumberConverterInterface $numberConverter The number converter to use
      *     for converting hex values to/from integers
