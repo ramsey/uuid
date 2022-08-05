@@ -95,11 +95,6 @@ class Uuid implements Rfc4122UuidInterface
     public const UUID_TYPE_DCE_SECURITY = 2;
 
     /**
-     * @deprecated Use {@see Uuid::UUID_TYPE_DCE_SECURITY} instead.
-     */
-    public const UUID_TYPE_IDENTIFIER = 2;
-
-    /**
      * Version 3 (name-based and hashed with MD5) UUID
      *
      * @link https://tools.ietf.org/html/rfc4122#section-4.1.3 RFC 4122, § 4.1.3: Version

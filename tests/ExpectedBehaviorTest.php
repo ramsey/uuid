@@ -566,7 +566,7 @@ class ExpectedBehaviorTest extends TestCase
             ['NAMESPACE_X500', '6ba7b814-9dad-11d1-80b4-00c04fd430c8'],
             ['NIL', '00000000-0000-0000-0000-000000000000'],
             ['UUID_TYPE_TIME', 1],
-            ['UUID_TYPE_IDENTIFIER', 2],
+            ['UUID_TYPE_DCE_SECURITY', 2],
             ['UUID_TYPE_HASH_MD5', 3],
             ['UUID_TYPE_RANDOM', 4],
             ['UUID_TYPE_HASH_SHA1', 5],
