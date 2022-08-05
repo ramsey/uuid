@@ -403,6 +403,9 @@ class Uuid implements UuidInterface
 
     /**
      * Returns the factory used to create UUIDs
+     *
+     * @deprecated ramsey/uuid version 5 will no longer support getting a
+     *     factory instance from the base Ramsey\Uuid\Uuid class.
      */
     public static function getFactory(): UuidFactoryInterface
     {
@@ -415,6 +418,11 @@ class Uuid implements UuidInterface
 
     /**
      * Sets the factory used to create UUIDs
+     *
+     * @deprecated ramsey/uuid version 5 will no longer support setting a
+     *     factory instance on the base Ramsey\Uuid\Uuid class. If you need to
+     *     customize the properties used to build a UUID, use one of the
+     *     dedicated factories that version 5 will introduce.
      *
      * @param UuidFactoryInterface $factory A factory that will be used by this
      *     class to create UUIDs

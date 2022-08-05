@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<files psalm-version="4.10.0@916b098b008f6de4543892b1e0651c1c3b92cbfa">
+<files psalm-version="4.22.0@fc2c6ab4d5fa5d644d8617089f012f3bb84b8703">
   <file src="src/Builder/DegradedUuidBuilder.php">
     <DeprecatedClass occurrences="3">
       <code>DegradedUuid</code>
@@ -38,14 +38,18 @@
       <code>BigNumberTimeConverter</code>
     </DeprecatedClass>
   </file>
+  <file src="src/DegradedUuid.php">
+    <DeprecatedMethod occurrences="1">
+      <code>Uuid</code>
+    </DeprecatedMethod>
+  </file>
   <file src="src/FeatureSet.php">
-    <PropertyNotSetInConstructor occurrences="6">
+    <PropertyNotSetInConstructor occurrences="5">
       <code>$calculator</code>
       <code>$dceSecurityGenerator</code>
       <code>$numberConverter</code>
       <code>$timeConverter</code>
       <code>$timeGenerator</code>
-      <code>$timeProvider</code>
     </PropertyNotSetInConstructor>
   </file>
   <file src="src/Fields/SerializableFieldsTrait.php">
@@ -60,6 +64,11 @@
       <code>uuid_parse</code>
     </ImpureFunctionCall>
   </file>
+  <file src="src/Guid/Guid.php">
+    <DeprecatedMethod occurrences="1">
+      <code>parent::__construct($fields, $numberConverter, $codec, $timeConverter)</code>
+    </DeprecatedMethod>
+  </file>
   <file src="src/Guid/GuidBuilder.php">
     <ImpureVariable occurrences="3">
       <code>$this</code>
@@ -72,12 +81,22 @@
       <code>unserialize</code>
     </UnusedMethodCall>
   </file>
+  <file src="src/Nonstandard/Uuid.php">
+    <DeprecatedMethod occurrences="1">
+      <code>parent::__construct($fields, $numberConverter, $codec, $timeConverter)</code>
+    </DeprecatedMethod>
+  </file>
   <file src="src/Nonstandard/UuidBuilder.php">
     <ImpureVariable occurrences="3">
       <code>$this</code>
       <code>$this</code>
       <code>$this</code>
     </ImpureVariable>
+  </file>
+  <file src="src/Nonstandard/UuidV6.php">
+    <DeprecatedMethod occurrences="1">
+      <code>parent::__construct($fields, $numberConverter, $codec, $timeConverter)</code>
+    </DeprecatedMethod>
   </file>
   <file src="src/Provider/Dce/SystemDceSecurityProvider.php">
     <ForbiddenCode occurrences="5">
@@ -92,12 +111,14 @@
     <MixedArgument occurrences="1">
       <code>$macs</code>
     </MixedArgument>
-    <MixedArrayAccess occurrences="1">
-      <code>$macs</code>
-    </MixedArrayAccess>
     <MixedArrayAssignment occurrences="1">
       <code>$macs[]</code>
     </MixedArrayAssignment>
+  </file>
+  <file src="src/Rfc4122/NilUuid.php">
+    <DeprecatedMethod occurrences="1">
+      <code>Uuid</code>
+    </DeprecatedMethod>
   </file>
   <file src="src/Rfc4122/UuidBuilder.php">
     <ImpureVariable occurrences="15">
@@ -117,6 +138,31 @@
       <code>$this</code>
       <code>$this</code>
     </ImpureVariable>
+  </file>
+  <file src="src/Rfc4122/UuidV1.php">
+    <DeprecatedMethod occurrences="1">
+      <code>parent::__construct($fields, $numberConverter, $codec, $timeConverter)</code>
+    </DeprecatedMethod>
+  </file>
+  <file src="src/Rfc4122/UuidV2.php">
+    <DeprecatedMethod occurrences="1">
+      <code>parent::__construct($fields, $numberConverter, $codec, $timeConverter)</code>
+    </DeprecatedMethod>
+  </file>
+  <file src="src/Rfc4122/UuidV3.php">
+    <DeprecatedMethod occurrences="1">
+      <code>parent::__construct($fields, $numberConverter, $codec, $timeConverter)</code>
+    </DeprecatedMethod>
+  </file>
+  <file src="src/Rfc4122/UuidV4.php">
+    <DeprecatedMethod occurrences="1">
+      <code>parent::__construct($fields, $numberConverter, $codec, $timeConverter)</code>
+    </DeprecatedMethod>
+  </file>
+  <file src="src/Rfc4122/UuidV5.php">
+    <DeprecatedMethod occurrences="1">
+      <code>parent::__construct($fields, $numberConverter, $codec, $timeConverter)</code>
+    </DeprecatedMethod>
   </file>
   <file src="src/Type/Decimal.php">
     <UnusedMethodCall occurrences="1">
@@ -139,6 +185,21 @@
     </UnusedMethodCall>
   </file>
   <file src="src/Uuid.php">
+    <DeprecatedMethod occurrences="13">
+      <code>self::getFactory()</code>
+      <code>self::getFactory()</code>
+      <code>self::getFactory()</code>
+      <code>self::getFactory()</code>
+      <code>self::getFactory()</code>
+      <code>self::getFactory()</code>
+      <code>self::getFactory()</code>
+      <code>self::getFactory()</code>
+      <code>self::getFactory()</code>
+      <code>self::getFactory()</code>
+      <code>self::getFactory()</code>
+      <code>self::getFactory()</code>
+      <code>self::getFactory()</code>
+    </DeprecatedMethod>
     <ImpureMethodCall occurrences="6">
       <code>getFactory</code>
       <code>getFactory</code>
