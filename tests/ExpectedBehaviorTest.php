@@ -549,12 +549,15 @@ class ExpectedBehaviorTest extends TestCase
     /**
      * @dataProvider provideUuidConstantTests
      */
-    public function testUuidConstants($constantName, $expected)
+    public function testUuidConstants(string $constantName, int | string $expected): void
     {
         $this->assertSame($expected, constant("Ramsey\\Uuid\\Uuid::{$constantName}"));
     }
 
-    public function provideUuidConstantTests()
+    /**
+     * @return array<array{string, int | string}>
+     */
+    public function provideUuidConstantTests(): array
     {
         return [
             ['NAMESPACE_DNS', '6ba7b810-9dad-11d1-80b4-00c04fd430c8'],
@@ -562,7 +565,6 @@ class ExpectedBehaviorTest extends TestCase
             ['NAMESPACE_OID', '6ba7b812-9dad-11d1-80b4-00c04fd430c8'],
             ['NAMESPACE_X500', '6ba7b814-9dad-11d1-80b4-00c04fd430c8'],
             ['NIL', '00000000-0000-0000-0000-000000000000'],
-            ['VALID_PATTERN', '^[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}$'],
             ['UUID_TYPE_TIME', 1],
             ['UUID_TYPE_IDENTIFIER', 2],
             ['UUID_TYPE_HASH_MD5', 3],

@@ -81,11 +81,6 @@ class Uuid implements Rfc4122UuidInterface
     public const NIL = '00000000-0000-0000-0000-000000000000';
 
     /**
-     * @deprecated Use {@see ValidatorInterface::getPattern()} instead.
-     */
-    public const VALID_PATTERN = '^[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}$';
-
-    /**
      * Version 1 (time-based) UUID
      *
      * @link https://tools.ietf.org/html/rfc4122#section-4.1.3 RFC 4122, § 4.1.3: Version
