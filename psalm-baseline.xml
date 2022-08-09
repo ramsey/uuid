@@ -39,6 +39,9 @@
     </DeprecatedClass>
   </file>
   <file src="src/DegradedUuid.php">
+    <DeprecatedInterface occurrences="1">
+      <code>DegradedUuid</code>
+    </DeprecatedInterface>
     <DeprecatedMethod occurrences="1">
       <code>Uuid</code>
     </DeprecatedMethod>
@@ -65,6 +68,9 @@
     </ImpureFunctionCall>
   </file>
   <file src="src/Guid/Guid.php">
+    <DeprecatedInterface occurrences="1">
+      <code>Guid</code>
+    </DeprecatedInterface>
     <DeprecatedMethod occurrences="1">
       <code>parent::__construct($fields, $numberConverter, $codec, $timeConverter)</code>
     </DeprecatedMethod>
@@ -77,11 +83,20 @@
     </ImpureVariable>
   </file>
   <file src="src/Lazy/LazyUuidFromString.php">
+    <DeprecatedClass occurrences="1">
+      <code>new UuidFactory()</code>
+    </DeprecatedClass>
+    <DeprecatedInterface occurrences="1">
+      <code>LazyUuidFromString</code>
+    </DeprecatedInterface>
     <UnusedMethodCall occurrences="1">
       <code>unserialize</code>
     </UnusedMethodCall>
   </file>
   <file src="src/Nonstandard/Uuid.php">
+    <DeprecatedInterface occurrences="1">
+      <code>Uuid</code>
+    </DeprecatedInterface>
     <DeprecatedMethod occurrences="1">
       <code>parent::__construct($fields, $numberConverter, $codec, $timeConverter)</code>
     </DeprecatedMethod>
@@ -94,6 +109,9 @@
     </ImpureVariable>
   </file>
   <file src="src/Nonstandard/UuidV6.php">
+    <DeprecatedInterface occurrences="1">
+      <code>UuidV6</code>
+    </DeprecatedInterface>
     <DeprecatedMethod occurrences="1">
       <code>parent::__construct($fields, $numberConverter, $codec, $timeConverter)</code>
     </DeprecatedMethod>
@@ -116,6 +134,9 @@
     </MixedArrayAssignment>
   </file>
   <file src="src/Rfc4122/NilUuid.php">
+    <DeprecatedInterface occurrences="1">
+      <code>NilUuid</code>
+    </DeprecatedInterface>
     <DeprecatedMethod occurrences="1">
       <code>Uuid</code>
     </DeprecatedMethod>
@@ -140,26 +161,41 @@
     </ImpureVariable>
   </file>
   <file src="src/Rfc4122/UuidV1.php">
+    <DeprecatedInterface occurrences="1">
+      <code>UuidV1</code>
+    </DeprecatedInterface>
     <DeprecatedMethod occurrences="1">
       <code>parent::__construct($fields, $numberConverter, $codec, $timeConverter)</code>
     </DeprecatedMethod>
   </file>
   <file src="src/Rfc4122/UuidV2.php">
+    <DeprecatedInterface occurrences="1">
+      <code>UuidV2</code>
+    </DeprecatedInterface>
     <DeprecatedMethod occurrences="1">
       <code>parent::__construct($fields, $numberConverter, $codec, $timeConverter)</code>
     </DeprecatedMethod>
   </file>
   <file src="src/Rfc4122/UuidV3.php">
+    <DeprecatedInterface occurrences="1">
+      <code>UuidV3</code>
+    </DeprecatedInterface>
     <DeprecatedMethod occurrences="1">
       <code>parent::__construct($fields, $numberConverter, $codec, $timeConverter)</code>
     </DeprecatedMethod>
   </file>
   <file src="src/Rfc4122/UuidV4.php">
+    <DeprecatedInterface occurrences="1">
+      <code>UuidV4</code>
+    </DeprecatedInterface>
     <DeprecatedMethod occurrences="1">
       <code>parent::__construct($fields, $numberConverter, $codec, $timeConverter)</code>
     </DeprecatedMethod>
   </file>
   <file src="src/Rfc4122/UuidV5.php">
+    <DeprecatedInterface occurrences="1">
+      <code>UuidV5</code>
+    </DeprecatedInterface>
     <DeprecatedMethod occurrences="1">
       <code>parent::__construct($fields, $numberConverter, $codec, $timeConverter)</code>
     </DeprecatedMethod>
@@ -185,7 +221,16 @@
     </UnusedMethodCall>
   </file>
   <file src="src/Uuid.php">
-    <DeprecatedMethod occurrences="13">
+    <DeprecatedClass occurrences="2">
+      <code>new UuidFactory()</code>
+      <code>new UuidFactory()</code>
+    </DeprecatedClass>
+    <DeprecatedInterface occurrences="1">
+      <code>Uuid</code>
+    </DeprecatedInterface>
+    <DeprecatedMethod occurrences="21">
+      <code>fromDateTime</code>
+      <code>getValidator</code>
       <code>self::getFactory()</code>
       <code>self::getFactory()</code>
       <code>self::getFactory()</code>
@@ -199,7 +244,16 @@
       <code>self::getFactory()</code>
       <code>self::getFactory()</code>
       <code>self::getFactory()</code>
+      <code>uuid1</code>
+      <code>uuid2</code>
+      <code>uuid3</code>
+      <code>uuid4</code>
+      <code>uuid5</code>
+      <code>uuid6</code>
     </DeprecatedMethod>
+    <DeprecatedTrait occurrences="1">
+      <code>DeprecatedUuidMethodsTrait</code>
+    </DeprecatedTrait>
     <ImpureMethodCall occurrences="6">
       <code>getFactory</code>
       <code>getFactory</code>
@@ -213,6 +267,13 @@
     </UnusedMethodCall>
   </file>
   <file src="src/UuidFactory.php">
+    <DeprecatedClass occurrences="2">
+      <code>FeatureSet</code>
+      <code>new FeatureSet()</code>
+    </DeprecatedClass>
+    <DeprecatedInterface occurrences="1">
+      <code>UuidFactory</code>
+    </DeprecatedInterface>
     <ImpurePropertyFetch occurrences="7">
       <code>$this-&gt;codec</code>
       <code>$this-&gt;codec</code>

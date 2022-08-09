@@ -21,6 +21,8 @@ use Ramsey\Uuid\Converter\NumberConverterInterface;
  * This interface encapsulates deprecated methods for ramsey/uuid; this
  * interface and its methods will be removed in ramsey/uuid 5.0.0.
  *
+ * @deprecated This interface and its methods will be removed in ramsey/uuid 5.0.0.
+ *
  * @psalm-immutable
  */
 interface DeprecatedUuidInterface

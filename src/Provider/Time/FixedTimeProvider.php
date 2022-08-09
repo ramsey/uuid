@@ -19,7 +19,7 @@ use Ramsey\Uuid\Type\Integer as IntegerObject;
 use Ramsey\Uuid\Type\Time;
 
 /**
- * FixedTimeProvider uses an known time to provide the time
+ * FixedTimeProvider uses a known time to provide the time
  *
  * This provider allows the use of a previously-generated, or known, time
  * when generating time-based UUIDs.
