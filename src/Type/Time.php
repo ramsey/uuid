@@ -17,7 +17,6 @@ namespace Ramsey\Uuid\Type;
 use Ramsey\Uuid\Exception\UnsupportedOperationException;
 use Ramsey\Uuid\Type\Integer as IntegerObject;
 use ValueError;
-use stdClass;
 
 use function json_decode;
 use function json_encode;
@@ -45,8 +44,8 @@ final class Time implements TypeInterface
     private $microseconds;
 
     /**
-     * @param mixed $seconds
-     * @param mixed $microseconds
+     * @param int|float|string|IntegerObject $seconds
+     * @param int|float|string|IntegerObject $microseconds
      */
     public function __construct($seconds, $microseconds = 0)
     {
@@ -111,20 +110,20 @@ final class Time implements TypeInterface
      */
     public function unserialize($serialized): void
     {
-        /** @var stdClass $time */
-        $time = json_decode($serialized);
+        /** @var array{seconds?: int|float|string, microseconds?: int|float|string} $time */
+        $time = json_decode($serialized, true);
 
-        if (!isset($time->seconds) || !isset($time->microseconds)) {
+        if (!isset($time['seconds']) || !isset($time['microseconds'])) {
             throw new UnsupportedOperationException(
                 'Attempted to unserialize an invalid value'
             );
         }
 
-        $this->__construct($time->seconds, $time->microseconds);
+        $this->__construct($time['seconds'], $time['microseconds']);
     }
 
     /**
-     * @param array{seconds: string, microseconds: string} $data
+     * @param array{seconds?: string, microseconds?: string} $data
      */
     public function __unserialize(array $data): void
     {

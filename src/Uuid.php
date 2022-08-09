@@ -247,6 +247,10 @@ class Uuid implements UuidInterface
      * $namespaceSha1Uuid = Uuid::uuid5(Uuid::NAMESPACE_URL, 'http://php.net/');
      * ```
      *
+     * @deprecated ramsey/uuid version 5 will no longer allow direct
+     *     instantiation of the base Ramsey\Uuid\Uuid class. Instead, you must
+     *     use factories to create UUID objects.
+     *
      * @param Rfc4122FieldsInterface $fields The fields from which to construct a UUID
      * @param NumberConverterInterface $numberConverter The number converter to use
      *     for converting hex values to/from integers
@@ -324,7 +328,7 @@ class Uuid implements UuidInterface
     }
 
     /**
-     * @param array{bytes: string} $data
+     * @param array{bytes?: string} $data
      */
     public function __unserialize(array $data): void
     {
@@ -399,6 +403,9 @@ class Uuid implements UuidInterface
 
     /**
      * Returns the factory used to create UUIDs
+     *
+     * @deprecated ramsey/uuid version 5 will no longer support getting a
+     *     factory instance from the base Ramsey\Uuid\Uuid class.
      */
     public static function getFactory(): UuidFactoryInterface
     {
@@ -411,6 +418,11 @@ class Uuid implements UuidInterface
 
     /**
      * Sets the factory used to create UUIDs
+     *
+     * @deprecated ramsey/uuid version 5 will no longer support setting a
+     *     factory instance on the base Ramsey\Uuid\Uuid class. If you need to
+     *     customize the properties used to build a UUID, use one of the
+     *     dedicated factories that version 5 will introduce.
      *
      * @param UuidFactoryInterface $factory A factory that will be used by this
      *     class to create UUIDs

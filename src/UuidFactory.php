@@ -43,6 +43,10 @@ use function unpack;
 
 use const STR_PAD_LEFT;
 
+/**
+ * @deprecated UuidFactory will go away in ramsey/uuid version 5. Use dedicated
+ *     factories for subtypes instead.
+ */
 class UuidFactory implements UuidFactoryInterface
 {
     /**

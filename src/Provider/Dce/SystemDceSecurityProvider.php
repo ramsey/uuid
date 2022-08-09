@@ -42,6 +42,7 @@ class SystemDceSecurityProvider implements DceSecurityProviderInterface
      */
     public function getUid(): IntegerObject
     {
+        /** @var int|float|string|IntegerObject|null $uid */
         static $uid = null;
 
         if ($uid instanceof IntegerObject) {
@@ -72,6 +73,7 @@ class SystemDceSecurityProvider implements DceSecurityProviderInterface
      */
     public function getGid(): IntegerObject
     {
+        /** @var int|float|string|IntegerObject|null $gid */
         static $gid = null;
 
         if ($gid instanceof IntegerObject) {
@@ -150,7 +152,13 @@ class SystemDceSecurityProvider implements DceSecurityProviderInterface
      */
     private function getOs(): string
     {
-        return strtoupper(substr(constant('PHP_OS'), 0, 3));
+        /**
+         * @psalm-suppress UnnecessaryVarAnnotation
+         * @var string $phpOs
+         */
+        $phpOs = constant('PHP_OS');
+
+        return strtoupper(substr($phpOs, 0, 3));
     }
 
     /**

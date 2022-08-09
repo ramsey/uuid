@@ -18,4 +18,9 @@
         </include>
     </coverage>
 
+    <php>
+        <!-- E_ALL & ~E_DEPRECATED -->
+        <ini name="error_reporting" value="24575"/>
+    </php>
+
 </phpunit>

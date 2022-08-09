@@ -242,6 +242,8 @@ class OrderedTimeCodecTest extends TestCase
         );
         $decoded = $codec->decode($expected);
         $serialized = serialize($decoded);
+
+        /** @var UuidInterface $unserializedUuid */
         $unserializedUuid = unserialize($serialized);
 
         $expectedUuid = Uuid::fromString($expected);

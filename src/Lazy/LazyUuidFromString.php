@@ -115,9 +115,9 @@ final class LazyUuidFromString implements UuidInterface
     }
 
     /**
-     * @param array{string: string} $data
+     * @param array{string?: string} $data
      *
-     * @psalm-param array{string: non-empty-string} $data
+     * @psalm-param array{string?: non-empty-string} $data
      */
     public function __unserialize(array $data): void
     {

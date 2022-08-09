@@ -27,6 +27,8 @@ class RandomBytesGeneratorTest extends TestCase
     }
 
     /**
+     * @param int<1, max> $length
+     *
      * @throws Exception
      *
      * @dataProvider lengthAndHexDataProvider
