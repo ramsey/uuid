@@ -18,4 +18,18 @@ final class ValidUuidIsNonEmpty
 
         throw new InvalidArgumentException('Not a UUID');
     }
+
+    /**
+     * @param non-empty-string $input
+     *
+     * @return non-empty-string
+     */
+    public function givenNonEmptyInputAssertionRemainsValid(string $input): string
+    {
+        if (Uuid::isValid($input)) {
+            return $input;
+        }
+
+        throw new InvalidArgumentException('Not a UUID');
+    }
 }
