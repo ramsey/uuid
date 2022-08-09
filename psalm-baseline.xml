@@ -41,6 +41,11 @@
       <code>$this</code>
     </ImpureVariable>
   </file>
+  <file src="src/Lazy/LazyUuidFromString.php">
+    <DeprecatedClass occurrences="1">
+      <code>new UuidFactory()</code>
+    </DeprecatedClass>
+  </file>
   <file src="src/Nonstandard/Uuid.php">
     <DeprecatedMethod occurrences="1">
       <code>parent::__construct($fields, $numberConverter, $codec, $timeConverter)</code>
@@ -135,7 +140,13 @@
     </InaccessibleProperty>
   </file>
   <file src="src/Uuid.php">
-    <DeprecatedMethod occurrences="13">
+    <DeprecatedClass occurrences="2">
+      <code>new UuidFactory()</code>
+      <code>new UuidFactory()</code>
+    </DeprecatedClass>
+    <DeprecatedMethod occurrences="21">
+      <code>fromDateTime</code>
+      <code>getValidator</code>
       <code>self::getFactory()</code>
       <code>self::getFactory()</code>
       <code>self::getFactory()</code>
@@ -149,6 +160,12 @@
       <code>self::getFactory()</code>
       <code>self::getFactory()</code>
       <code>self::getFactory()</code>
+      <code>uuid1</code>
+      <code>uuid2</code>
+      <code>uuid3</code>
+      <code>uuid4</code>
+      <code>uuid5</code>
+      <code>uuid6</code>
     </DeprecatedMethod>
     <ImpureMethodCall occurrences="6">
       <code>getFactory</code>
@@ -160,6 +177,13 @@
     </ImpureMethodCall>
   </file>
   <file src="src/UuidFactory.php">
+    <DeprecatedClass occurrences="2">
+      <code>FeatureSet</code>
+      <code>new FeatureSet()</code>
+    </DeprecatedClass>
+    <DeprecatedInterface occurrences="1">
+      <code>UuidFactory</code>
+    </DeprecatedInterface>
     <ImpurePropertyFetch occurrences="7">
       <code>$this-&gt;codec</code>
       <code>$this-&gt;codec</code>
