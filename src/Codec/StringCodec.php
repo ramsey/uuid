@@ -68,14 +68,8 @@ class StringCodec implements CodecInterface
             . $fields->getNode()->toString();
     }
 
-    /**
-     * @psalm-return non-empty-string
-     * @psalm-suppress MoreSpecificReturnType we know that the retrieved `string` is never empty
-     * @psalm-suppress LessSpecificReturnStatement we know that the retrieved `string` is never empty
-     */
     public function encodeBinary(UuidInterface $uuid): string
     {
-        /** @phpstan-ignore-next-line PHPStan complains that this is not a non-empty-string. */
         return $uuid->getFields()->getBytes();
     }
 

@@ -35,6 +35,8 @@ interface FieldsInterface
 
     /**
      * Returns the bytes that comprise the fields
+     *
+     * @return non-empty-string
      */
     public function getBytes(): string;
 }
