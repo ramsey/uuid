@@ -14,6 +14,9 @@ declare(strict_types=1);
 
 namespace Ramsey\Uuid\Generator;
 
+use Ramsey\Uuid\Exception\NameException;
+use Ramsey\Uuid\Type\Hexadecimal;
+
 use function uuid_create;
 use function uuid_parse;
 
@@ -27,13 +30,10 @@ use const UUID_TYPE_TIME;
  */
 class PeclUuidTimeGenerator implements TimeGeneratorInterface
 {
-    /**
-     * @inheritDoc
-     */
-    public function generate($node = null, ?int $clockSeq = null): string
+    public function generate(Hexadecimal | int | string | null $node = null, ?int $clockSeq = null): string
     {
         $uuid = uuid_create(UUID_TYPE_TIME);
 
-        return uuid_parse($uuid);
+        return uuid_parse($uuid) ?: throw new NameException('Unable to generate UUID from ext-uuid');
     }
 }

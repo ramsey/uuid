@@ -16,6 +16,8 @@ use function unserialize;
 class HexadecimalTest extends TestCase
 {
     /**
+     * @param Hexadecimal|non-empty-string $value
+     *
      * @dataProvider provideHex
      */
     public function testHexadecimalType(Hexadecimal | string $value, string $expected): void
@@ -27,7 +29,7 @@ class HexadecimalTest extends TestCase
     }
 
     /**
-     * @return array<array{value: Hexadecimal | string, expected: string}>
+     * @return array<array{value: Hexadecimal | non-empty-string, expected: string}>
      */
     public function provideHex(): array
     {
@@ -52,6 +54,8 @@ class HexadecimalTest extends TestCase
     }
 
     /**
+     * @param non-empty-string $value
+     *
      * @dataProvider provideHexBadValues
      */
     public function testHexadecimalTypeThrowsExceptionForBadValues(string $value): void
@@ -78,6 +82,8 @@ class HexadecimalTest extends TestCase
     }
 
     /**
+     * @param Hexadecimal|non-empty-string $value
+     *
      * @dataProvider provideHex
      */
     public function testSerializeUnserializeHexadecimal(Hexadecimal | string $value, string $expected): void
@@ -92,6 +98,8 @@ class HexadecimalTest extends TestCase
     }
 
     /**
+     * @param Hexadecimal|non-empty-string $value
+     *
      * @dataProvider provideHex
      */
     public function testJsonSerialize(Hexadecimal | string $value, string $expected): void

@@ -28,9 +28,9 @@ interface NameGeneratorInterface
      *
      * @param UuidInterface $ns The namespace
      * @param string $name The name to use for creating a UUID
-     * @param string $hashAlgorithm The hashing algorithm to use
+     * @param non-empty-string $hashAlgorithm The hashing algorithm to use
      *
-     * @return string A binary string
+     * @return non-empty-string A binary string
      *
      * @psalm-pure
      */

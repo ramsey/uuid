@@ -32,37 +32,30 @@ use function unserialize;
 
 class OrderedTimeCodecTest extends TestCase
 {
-    /**
-     * @var UuidBuilderInterface & MockObject
-     */
-    private $builder;
+    private UuidBuilderInterface & MockObject $builder;
+    private UuidInterface & MockObject $uuid;
+    private Fields $fields;
 
     /**
-     * @var UuidInterface & MockObject
+     * @var non-empty-string
      */
-    private $uuid;
+    private string $uuidString = '58e0a7d7-eebc-11d8-9669-0800200c9a66';
 
     /**
-     * @var Fields
+     * @var non-empty-string
      */
-    private $fields;
-
-    /**
-     * @var string
-     */
-    private $uuidString = '58e0a7d7-eebc-11d8-9669-0800200c9a66';
-
-    /**
-     * @var string
-     */
-    private $optimizedHex = '11d8eebc58e0a7d796690800200c9a66';
+    private string $optimizedHex = '11d8eebc58e0a7d796690800200c9a66';
 
     protected function setUp(): void
     {
         parent::setUp();
         $this->builder = $this->getMockBuilder(UuidBuilderInterface::class)->getMock();
         $this->uuid = $this->getMockBuilder(UuidInterface::class)->getMock();
-        $this->fields = new Fields((string) hex2bin('58e0a7d7eebc11d896690800200c9a66'));
+
+        /** @var non-empty-string $bytes */
+        $bytes = (string) hex2bin('58e0a7d7eebc11d896690800200c9a66');
+
+        $this->fields = new Fields($bytes);
     }
 
     protected function tearDown(): void
@@ -109,8 +102,10 @@ class OrderedTimeCodecTest extends TestCase
     public function testDecodeBytesThrowsExceptionWhenBytesStringNotSixteenCharacters(): void
     {
         $string = '61';
-        $bytes = pack('H*', $string);
         $codec = new OrderedTimeCodec($this->builder);
+
+        /** @var non-empty-string $bytes */
+        $bytes = pack('H*', $string);
 
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('$bytes string should contain 16 characters.');
@@ -129,6 +124,7 @@ class OrderedTimeCodecTest extends TestCase
 
     public function testDecodeBytesRearrangesFields(): void
     {
+        /** @var non-empty-string $bytes */
         $bytes = (string) hex2bin($this->optimizedHex);
 
         $calculator = new BrickMathCalculator();
@@ -150,7 +146,10 @@ class OrderedTimeCodecTest extends TestCase
     {
         $nonRfc4122Uuid = '58e0a7d7-eebc-11d8-d669-0800200c9a66';
 
-        $fields = new NonstandardFields((string) hex2bin(str_replace('-', '', $nonRfc4122Uuid)));
+        /** @var non-empty-string $bytes */
+        $bytes = (string) hex2bin(str_replace('-', '', $nonRfc4122Uuid));
+
+        $fields = new NonstandardFields($bytes);
         $numberConverter = Mockery::mock(NumberConverterInterface::class);
         $timeConverter = Mockery::mock(TimeConverterInterface::class);
         $builder = new Rfc4122UuidBuilder($numberConverter, $timeConverter);
@@ -195,6 +194,8 @@ class OrderedTimeCodecTest extends TestCase
     public function testDecodeBytesThrowsExceptionsForNonRfc4122Uuid(): void
     {
         $nonRfc4122OptimizedHex = '11d8eebc58e0a7d716690800200c9a66';
+
+        /** @var non-empty-string $bytes */
         $bytes = (string) hex2bin($nonRfc4122OptimizedHex);
 
         $calculator = new BrickMathCalculator();
@@ -215,6 +216,8 @@ class OrderedTimeCodecTest extends TestCase
     public function testDecodeBytesThrowsExceptionsForNonTimeBasedUuid(): void
     {
         $nonTimeBasedOptimizedHex = '41d8eebc58e0a7d796690800200c9a66';
+
+        /** @var non-empty-string $bytes */
         $bytes = (string) hex2bin($nonTimeBasedOptimizedHex);
 
         $numberConverter = Mockery::mock(NumberConverterInterface::class);

@@ -32,34 +32,22 @@ use Throwable;
 class GuidBuilder implements UuidBuilderInterface
 {
     /**
-     * @var NumberConverterInterface
-     */
-    private $numberConverter;
-
-    /**
-     * @var TimeConverterInterface
-     */
-    private $timeConverter;
-
-    /**
      * @param NumberConverterInterface $numberConverter The number converter to
      *     use when constructing the Guid
      * @param TimeConverterInterface $timeConverter The time converter to use
      *     for converting timestamps extracted from a UUID to Unix timestamps
      */
     public function __construct(
-        NumberConverterInterface $numberConverter,
-        TimeConverterInterface $timeConverter
+        private readonly NumberConverterInterface $numberConverter,
+        private readonly TimeConverterInterface $timeConverter,
     ) {
-        $this->numberConverter = $numberConverter;
-        $this->timeConverter = $timeConverter;
     }
 
     /**
      * Builds and returns a Guid
      *
      * @param CodecInterface $codec The codec to use for building this Guid instance
-     * @param string $bytes The byte string from which to construct a UUID
+     * @param non-empty-string $bytes The byte string from which to construct a UUID
      *
      * @return Guid The GuidBuilder returns an instance of Ramsey\Uuid\Guid\Guid
      *
@@ -81,6 +69,8 @@ class GuidBuilder implements UuidBuilderInterface
 
     /**
      * Proxy method to allow injecting a mock, for testing
+     *
+     * @param non-empty-string $bytes
      */
     protected function buildFields(string $bytes): Fields
     {

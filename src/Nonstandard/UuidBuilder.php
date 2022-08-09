@@ -30,34 +30,22 @@ use Throwable;
 class UuidBuilder implements UuidBuilderInterface
 {
     /**
-     * @var NumberConverterInterface
-     */
-    private $numberConverter;
-
-    /**
-     * @var TimeConverterInterface
-     */
-    private $timeConverter;
-
-    /**
      * @param NumberConverterInterface $numberConverter The number converter to
      *     use when constructing the Nonstandard\Uuid
      * @param TimeConverterInterface $timeConverter The time converter to use
      *     for converting timestamps extracted from a UUID to Unix timestamps
      */
     public function __construct(
-        NumberConverterInterface $numberConverter,
-        TimeConverterInterface $timeConverter
+        private readonly NumberConverterInterface $numberConverter,
+        private readonly TimeConverterInterface $timeConverter
     ) {
-        $this->numberConverter = $numberConverter;
-        $this->timeConverter = $timeConverter;
     }
 
     /**
      * Builds and returns a Nonstandard\Uuid
      *
      * @param CodecInterface $codec The codec to use for building this instance
-     * @param string $bytes The byte string from which to construct a UUID
+     * @param non-empty-string $bytes The byte string from which to construct a UUID
      *
      * @return Uuid The Nonstandard\UuidBuilder returns an instance of
      *     Nonstandard\Uuid
@@ -80,6 +68,8 @@ class UuidBuilder implements UuidBuilderInterface
 
     /**
      * Proxy method to allow injecting a mock, for testing
+     *
+     * @param non-empty-string $bytes
      */
     protected function buildFields(string $bytes): Fields
     {

@@ -28,6 +28,9 @@ use function substr;
 class DceSecurityGeneratorTest extends TestCase
 {
     /**
+     * @param non-empty-string $node
+     * @param positive-int $providedDomain
+     *
      * @dataProvider provideValuesForDceSecurityGenerator
      */
     public function testGenerateBytesReplacesBytesWithDceValues(

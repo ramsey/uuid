@@ -50,9 +50,6 @@ class OrderedTimeCodec extends StringCodec
      * fields rearranged for optimized storage
      *
      * @inheritDoc
-     * @psalm-return non-empty-string
-     * @psalm-suppress MoreSpecificReturnType we know that the retrieved `string` is never empty
-     * @psalm-suppress LessSpecificReturnStatement we know that the retrieved `string` is never empty
      */
     public function encodeBinary(UuidInterface $uuid): string
     {
@@ -67,7 +64,6 @@ class OrderedTimeCodec extends StringCodec
 
         $bytes = $uuid->getFields()->getBytes();
 
-        /** @phpstan-ignore-next-line PHPStan complains that this is not a non-empty-string. */
         return $bytes[6] . $bytes[7]
             . $bytes[4] . $bytes[5]
             . $bytes[0] . $bytes[1] . $bytes[2] . $bytes[3]

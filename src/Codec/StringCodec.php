@@ -36,10 +36,7 @@ use function substr;
  */
 class StringCodec implements CodecInterface
 {
-    /**
-     * @var UuidBuilderInterface
-     */
-    private $builder;
+    private UuidBuilderInterface $builder;
 
     /**
      * Constructs a StringCodec
@@ -104,6 +101,8 @@ class StringCodec implements CodecInterface
 
     /**
      * Returns a byte string of the UUID
+     *
+     * @return non-empty-string
      */
     protected function getBytes(string $encodedUuid): string
     {
@@ -127,6 +126,7 @@ class StringCodec implements CodecInterface
             );
         }
 
+        /** @var non-empty-string */
         return (string) hex2bin($parsedUuid);
     }
 }

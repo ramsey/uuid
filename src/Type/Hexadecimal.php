@@ -34,10 +34,13 @@ use function substr;
  */
 final class Hexadecimal implements TypeInterface
 {
-    private string $value;
+    /**
+     * @var non-empty-string
+     */
+    private readonly string $value;
 
     /**
-     * @param string | self $value The hexadecimal value to store
+     * @param non-empty-string|self $value The hexadecimal value to store
      */
     public function __construct(self | string $value)
     {
@@ -51,12 +54,12 @@ final class Hexadecimal implements TypeInterface
 
     public function __toString(): string
     {
-        return $this->toString();
+        return $this->value;
     }
 
     public function jsonSerialize(): string
     {
-        return $this->toString();
+        return $this->value;
     }
 
     /**
@@ -64,7 +67,7 @@ final class Hexadecimal implements TypeInterface
      */
     public function __serialize(): array
     {
-        return ['string' => $this->toString()];
+        return ['string' => $this->value];
     }
 
     /**
@@ -76,11 +79,16 @@ final class Hexadecimal implements TypeInterface
             throw new ValueError(sprintf('%s(): Argument #1 ($data) is invalid', __METHOD__));
         }
 
-        assert(is_string($data['string']));
+        assert(is_string($data['string']) && $data['string'] !== '');
 
         $this->value = $this->prepareValue($data['string']);
     }
 
+    /**
+     * @param non-empty-string $value
+     *
+     * @return non-empty-string
+     */
     private function prepareValue(string $value): string
     {
         $value = strtolower($value);
@@ -95,6 +103,7 @@ final class Hexadecimal implements TypeInterface
             );
         }
 
+        /** @var non-empty-string */
         return $value;
     }
 }

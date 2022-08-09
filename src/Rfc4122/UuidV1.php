@@ -67,7 +67,7 @@ final class UuidV1 extends Uuid implements UuidInterface, TimeBasedUuidInterface
 
     public function getDateTime(): DateTimeInterface
     {
-        $time = $this->timeConverter->convertTime($this->fields->getTimestamp());
+        $time = $this->getTimeConverter()->convertTime($this->getFields()->getTimestamp());
 
         try {
             return new DateTimeImmutable(

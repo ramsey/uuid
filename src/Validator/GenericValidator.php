@@ -31,11 +31,6 @@ final class GenericValidator implements ValidatorInterface
      */
     private const VALID_PATTERN = '\A[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}\z';
 
-    /**
-     * @psalm-return non-empty-string
-     * @psalm-suppress MoreSpecificReturnType we know that the retrieved `string` is never empty
-     * @psalm-suppress LessSpecificReturnStatement we know that the retrieved `string` is never empty
-     */
     public function getPattern(): string
     {
         return self::VALID_PATTERN;

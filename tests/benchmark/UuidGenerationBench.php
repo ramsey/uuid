@@ -22,14 +22,14 @@ use Ramsey\Uuid\UuidInterface;
 
 final class UuidGenerationBench
 {
-    /** @var Hexadecimal */
-    private $node;
-    /** @var int */
-    private $clockSequence;
-    /** @var IntegerIdentifier */
-    private $localIdentifier;
-    /** @var UuidInterface */
-    private $namespace;
+    /**
+     * @var positive-int
+     */
+    private int $clockSequence;
+
+    private Hexadecimal $node;
+    private IntegerIdentifier $localIdentifier;
+    private UuidInterface $namespace;
 
     public function __construct()
     {

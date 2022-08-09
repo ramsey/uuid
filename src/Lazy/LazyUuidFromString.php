@@ -55,21 +55,19 @@ use function substr;
 final class LazyUuidFromString implements TimeBasedUuidInterface
 {
     public const VALID_REGEX = '/\A[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\z/ms';
-    /**
-     * @var string
-     * @psalm-var non-empty-string
-     */
-    private $uuid;
-    /** @var UuidInterface|null */
-    private $unwrapped;
 
-    /** @psalm-param non-empty-string $uuid */
-    public function __construct(string $uuid)
+    private ?UuidInterface $unwrapped = null;
+
+    /**
+     * @psalm-param non-empty-string $uuid
+     */
+    public function __construct(private readonly string $uuid)
     {
-        $this->uuid = $uuid;
     }
 
-    /** @psalm-pure */
+    /**
+     * @psalm-pure
+     */
     public static function fromBytes(string $bytes): self
     {
         $base16Uuid = bin2hex($bytes);
@@ -96,7 +94,7 @@ final class LazyUuidFromString implements TimeBasedUuidInterface
     }
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function __unserialize(array $data): void
     {

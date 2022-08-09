@@ -75,7 +75,7 @@ final class UuidV6 extends Uuid implements UuidInterface, TimeBasedUuidInterface
 
     public function getDateTime(): DateTimeInterface
     {
-        $time = $this->timeConverter->convertTime($this->fields->getTimestamp());
+        $time = $this->getTimeConverter()->convertTime($this->getFields()->getTimestamp());
 
         try {
             return new DateTimeImmutable(
@@ -101,8 +101,11 @@ final class UuidV6 extends Uuid implements UuidInterface, TimeBasedUuidInterface
             . '1' . substr($hex, 0, 3)
             . substr($hex, 16);
 
+        /** @var non-empty-string $bin */
+        $bin = (string) hex2bin($hex);
+
         /** @var LazyUuidFromString $uuid */
-        $uuid = Uuid::fromBytes((string) hex2bin($hex));
+        $uuid = Uuid::fromBytes($bin);
 
         return $uuid->toUuidV1();
     }
@@ -119,8 +122,11 @@ final class UuidV6 extends Uuid implements UuidInterface, TimeBasedUuidInterface
             . '6' . substr($hex, 5, 3)
             . substr($hex, 16);
 
+        /** @var non-empty-string $bin */
+        $bin = (string) hex2bin($hex);
+
         /** @var LazyUuidFromString $uuid */
-        $uuid = Uuid::fromBytes((string) hex2bin($hex));
+        $uuid = Uuid::fromBytes($bin);
 
         return $uuid->toUuidV6();
     }

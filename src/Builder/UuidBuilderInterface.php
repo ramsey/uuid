@@ -28,7 +28,7 @@ interface UuidBuilderInterface
      * Builds and returns a UuidInterface
      *
      * @param CodecInterface $codec The codec to use for building this UuidInterface instance
-     * @param string $bytes The byte string from which to construct a UUID
+     * @param non-empty-string $bytes The byte string from which to construct a UUID
      *
      * @return UuidInterface Implementations may choose to return more specific
      *     instances of UUIDs that implement UuidInterface

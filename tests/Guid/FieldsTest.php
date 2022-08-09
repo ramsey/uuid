@@ -31,6 +31,7 @@ class FieldsTest extends TestCase
      */
     public function testConstructorThrowsExceptionIfNotRfc4122Variant(string $guid): void
     {
+        /** @var non-empty-string $bytes */
         $bytes = (string) hex2bin($guid);
 
         $this->expectException(InvalidArgumentException::class);
@@ -70,6 +71,7 @@ class FieldsTest extends TestCase
      */
     public function testConstructorThrowsExceptionIfInvalidVersion(string $guid): void
     {
+        /** @var non-empty-string $bytes */
         $bytes = (string) hex2bin($guid);
 
         $this->expectException(InvalidArgumentException::class);
@@ -97,12 +99,14 @@ class FieldsTest extends TestCase
     }
 
     /**
-     * @param string|int $expectedValue
-     *
      * @dataProvider fieldGetterMethodProvider
      */
-    public function testFieldGetterMethods(string $bytes, string $methodName, $expectedValue): void
-    {
+    public function testFieldGetterMethods(
+        string $bytes,
+        string $methodName,
+        bool | int | string | Variant | null $expectedValue
+    ): void {
+        /** @var non-empty-string $bytes */
         $bytes = (string) hex2bin($bytes);
         $fields = new Fields($bytes);
 
@@ -193,6 +197,7 @@ class FieldsTest extends TestCase
 
     public function testSerializingFields(): void
     {
+        /** @var non-empty-string $bytes */
         $bytes = (string) hex2bin('b08c6fff7dc5e111cb210800200c9a66');
         $fields = new Fields($bytes);
 

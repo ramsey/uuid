@@ -95,7 +95,7 @@ final class UuidV2 extends Uuid implements UuidInterface
      */
     public function getDateTime(): DateTimeInterface
     {
-        $time = $this->timeConverter->convertTime($this->fields->getTimestamp());
+        $time = $this->getTimeConverter()->convertTime($this->getFields()->getTimestamp());
 
         try {
             return new DateTimeImmutable(
@@ -111,16 +111,21 @@ final class UuidV2 extends Uuid implements UuidInterface
 
     /**
      * Returns the local domain used to create this version 2 UUID
+     *
+     * @return positive-int
      */
     public function getLocalDomain(): int
     {
         $fields = $this->getFields();
 
+        /** @var positive-int */
         return (int) hexdec($fields->getClockSeqLow()->toString());
     }
 
     /**
      * Returns the string name of the local domain
+     *
+     * @return non-empty-string
      */
     public function getLocalDomainName(): string
     {
@@ -135,7 +140,7 @@ final class UuidV2 extends Uuid implements UuidInterface
         $fields = $this->getFields();
 
         return new IntegerObject(
-            $this->numberConverter->fromHex($fields->getTimeLow()->toString())
+            $this->getNumberConverter()->fromHex($fields->getTimeLow()->toString())
         );
     }
 }

@@ -34,6 +34,7 @@ class FieldsTest extends TestCase
      */
     public function testFieldGetterMethods(string $uuid, string $methodName, $expectedValue): void
     {
+        /** @var non-empty-string $bytes */
         $bytes = (string) hex2bin(str_replace('-', '', $uuid));
         $fields = new Fields($bytes);
 
@@ -68,6 +69,7 @@ class FieldsTest extends TestCase
 
     public function testSerializingFields(): void
     {
+        /** @var non-empty-string $bytes */
         $bytes = (string) hex2bin(str_replace('-', '', 'ff6f8cb0-c57d-91e1-0b21-0800200c9a66'));
         $fields = new Fields($bytes);
 

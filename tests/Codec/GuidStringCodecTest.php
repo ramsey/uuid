@@ -21,27 +21,19 @@ use function pack;
 
 class GuidStringCodecTest extends TestCase
 {
-    /**
-     * @var UuidBuilderInterface & MockObject
-     */
-    private $builder;
-
-    /**
-     * @var UuidInterface & MockObject
-     */
-    private $uuid;
-
-    /**
-     * @var Fields
-     */
-    private $fields;
+    private UuidBuilderInterface & MockObject $builder;
+    private UuidInterface & MockObject $uuid;
+    private Fields $fields;
 
     protected function setUp(): void
     {
         parent::setUp();
         $this->builder = $this->getMockBuilder(UuidBuilderInterface::class)->getMock();
         $this->uuid = $this->getMockBuilder(UuidInterface::class)->getMock();
-        $this->fields = new Fields((string) hex2bin('785634123412cd4babef1234abcd4321'));
+
+        /** @var non-empty-string $bytes */
+        $bytes = (string) hex2bin('785634123412cd4babef1234abcd4321');
+        $this->fields = new Fields($bytes);
     }
 
     protected function tearDown(): void
@@ -70,6 +62,7 @@ class GuidStringCodecTest extends TestCase
 
     public function testEncodeBinary(): void
     {
+        /** @var non-empty-string $expectedBytes */
         $expectedBytes = (string) hex2bin('785634123412cd4babef1234abcd4321');
 
         $fields = new Fields($expectedBytes);
@@ -112,7 +105,10 @@ class GuidStringCodecTest extends TestCase
     public function testDecodeBytesReturnsUuid(): void
     {
         $string = '1234567812344bcd4bef1234abcd4321';
+
+        /** @var non-empty-string $bytes */
         $bytes = pack('H*', $string);
+
         $codec = new GuidStringCodec($this->builder);
         $this->builder->method('build')
             ->willReturn($this->uuid);

@@ -36,7 +36,14 @@ class PhpTimeConverterTest extends TestCase
         $expected .= sprintf('%08s', $calculatedTime->and($maskLow)->toBase(16));
 
         $converter = new PhpTimeConverter();
-        $returned = $converter->calculateTime((string) $seconds, (string) $microseconds);
+
+        /** @var numeric-string $numericSeconds */
+        $numericSeconds = (string) $seconds;
+
+        /** @var numeric-string $numericMicroseconds */
+        $numericMicroseconds = (string) $microseconds;
+
+        $returned = $converter->calculateTime($numericSeconds, $numericMicroseconds);
 
         $this->assertSame($expected, $returned->toString());
     }
@@ -134,6 +141,9 @@ class PhpTimeConverterTest extends TestCase
     }
 
     /**
+     * @param numeric-string $seconds
+     * @param numeric-string $microseconds
+     *
      * @dataProvider provideCalculateTime
      */
     public function testCalculateTime(string $seconds, string $microseconds, string $expected): void

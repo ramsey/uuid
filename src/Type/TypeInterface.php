@@ -33,7 +33,13 @@ interface TypeInterface extends JsonSerializable
      */
     public function __unserialize(array $data): void;
 
+    /**
+     * @return non-empty-string
+     */
     public function toString(): string;
 
+    /**
+     * @return non-empty-string
+     */
     public function __toString(): string;
 }

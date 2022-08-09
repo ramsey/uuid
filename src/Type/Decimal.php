@@ -40,7 +40,7 @@ final class Decimal implements NumberInterface
     /**
      * @var numeric-string
      */
-    private string $value;
+    private readonly string $value;
 
     private bool $isNegative = false;
 
@@ -67,7 +67,7 @@ final class Decimal implements NumberInterface
      */
     public function __toString(): string
     {
-        return $this->toString();
+        return $this->value;
     }
 
     /**
@@ -75,7 +75,7 @@ final class Decimal implements NumberInterface
      */
     public function jsonSerialize(): string
     {
-        return $this->toString();
+        return $this->value;
     }
 
     /**
@@ -83,7 +83,7 @@ final class Decimal implements NumberInterface
      */
     public function __serialize(): array
     {
-        return ['string' => $this->toString()];
+        return ['string' => $this->value];
     }
 
     /**

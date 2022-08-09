@@ -61,25 +61,18 @@ class CombGenerator implements RandomGeneratorInterface
 {
     public const TIMESTAMP_BYTES = 6;
 
-    /**
-     * @var RandomGeneratorInterface
-     */
-    private $randomGenerator;
-
-    /**
-     * @var NumberConverterInterface
-     */
-    private $converter;
-
     public function __construct(
-        RandomGeneratorInterface $generator,
-        NumberConverterInterface $numberConverter
+        private readonly RandomGeneratorInterface $generator,
+        private readonly NumberConverterInterface $numberConverter
     ) {
-        $this->converter = $numberConverter;
-        $this->randomGenerator = $generator;
     }
 
     /**
+     * @param positive-int $length The number of bytes of random binary data to
+     *     generate
+     *
+     * @return non-empty-string
+     *
      * @throws InvalidArgumentException if $length is not a positive integer
      *     greater than or equal to CombGenerator::TIMESTAMP_BYTES
      *
@@ -95,16 +88,17 @@ class CombGenerator implements RandomGeneratorInterface
 
         $hash = '';
         if (self::TIMESTAMP_BYTES > 0 && $length > self::TIMESTAMP_BYTES) {
-            $hash = $this->randomGenerator->generate($length - self::TIMESTAMP_BYTES);
+            $hash = $this->generator->generate($length - self::TIMESTAMP_BYTES);
         }
 
         $lsbTime = str_pad(
-            $this->converter->toHex($this->timestamp()),
+            $this->numberConverter->toHex($this->timestamp()),
             self::TIMESTAMP_BYTES * 2,
             '0',
             STR_PAD_LEFT
         );
 
+        /** @var non-empty-string */
         return (string) hex2bin(
             str_pad(
                 bin2hex($hash),
@@ -116,12 +110,15 @@ class CombGenerator implements RandomGeneratorInterface
     }
 
     /**
-     * Returns current timestamp a string integer, precise to 0.00001 seconds
+     * Returns current timestamp as string integer, precise to 0.00001 seconds
+     *
+     * @return numeric-string
      */
     private function timestamp(): string
     {
-        $time = explode(' ', microtime(false));
+        $time = explode(' ', microtime());
 
+        /** @var numeric-string */
         return $time[1] . substr($time[0], 2, 5);
     }
 }

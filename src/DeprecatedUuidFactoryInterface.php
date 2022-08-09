@@ -69,17 +69,17 @@ interface DeprecatedUuidFactoryInterface
      *     methods specific to creating subtypes. Instead, version 5 will use
      *     dedicated factories for each subtype.
      *
-     * @param Hexadecimal|int|string|null $node A 48-bit number representing the
-     *     hardware address; this number may be represented as an integer or a
-     *     hexadecimal string
-     * @param int|null $clockSeq A 14-bit number used to help avoid duplicates
-     *     that could arise when the clock is set backwards in time or if the
-     *     node ID changes
+     * @param Hexadecimal|positive-int|non-empty-string|null $node A 48-bit
+     *     number representing the hardware address; this number may be
+     *     represented as an integer or a hexadecimal string
+     * @param positive-int|null $clockSeq A 14-bit number used to help avoid
+     *     duplicates that could arise when the clock is set backwards in time
+     *     or if the node ID changes
      *
      * @return UuidInterface A UuidInterface instance that represents a
      *     version 1 UUID
      */
-    public function uuid1($node = null, ?int $clockSeq = null): UuidInterface;
+    public function uuid1(Hexadecimal | int | string | null $node = null, ?int $clockSeq = null): UuidInterface;
 
     /**
      * Returns a version 2 (DCE Security) UUID from a local domain, local
@@ -119,7 +119,7 @@ interface DeprecatedUuidFactoryInterface
      *     methods specific to creating subtypes. Instead, version 5 will use
      *     dedicated factories for each subtype.
      *
-     * @param string|UuidInterface $ns The namespace (must be a valid UUID)
+     * @param non-empty-string|UuidInterface $ns The namespace (must be a valid UUID)
      * @param string $name The name to use for creating a UUID
      *
      * @return UuidInterface A UuidInterface instance that represents a
@@ -127,7 +127,7 @@ interface DeprecatedUuidFactoryInterface
      *
      * @psalm-pure
      */
-    public function uuid3($ns, string $name): UuidInterface;
+    public function uuid3(UuidInterface | string $ns, string $name): UuidInterface;
 
     /**
      * Returns a version 4 (random) UUID
@@ -149,7 +149,7 @@ interface DeprecatedUuidFactoryInterface
      *     methods specific to creating subtypes. Instead, version 5 will use
      *     dedicated factories for each subtype.
      *
-     * @param string|UuidInterface $ns The namespace (must be a valid UUID)
+     * @param non-empty-string|UuidInterface $ns The namespace (must be a valid UUID)
      * @param string $name The name to use for creating a UUID
      *
      * @return UuidInterface A UuidInterface instance that represents a
@@ -157,7 +157,7 @@ interface DeprecatedUuidFactoryInterface
      *
      * @psalm-pure
      */
-    public function uuid5($ns, string $name): UuidInterface;
+    public function uuid5(UuidInterface | string $ns, string $name): UuidInterface;
 
     /**
      * Returns a version 6 (ordered-time) UUID from a host ID, sequence number,

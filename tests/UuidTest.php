@@ -125,6 +125,7 @@ class UuidTest extends TestCase
         $this->expectException(InvalidUuidStringException::class);
         $this->expectExceptionMessage('Invalid UUID string: ');
 
+        /** @phpstan-ignore-next-line */
         Uuid::fromString('');
     }
 
@@ -1112,6 +1113,8 @@ class UuidTest extends TestCase
      * @param non-empty-string $string
      * @param non-empty-string $curly
      * @param non-empty-string $hex
+     * @param non-empty-string $bytes
+     * @param numeric-string $int
      * @param string[] $fields
      * @param non-empty-string $urn
      *
@@ -1130,11 +1133,14 @@ class UuidTest extends TestCase
         int $variant,
         ?int $version
     ): void {
+        /** @var non-empty-string $base64DecodedBytes */
+        $base64DecodedBytes = base64_decode($bytes);
+
         $uuids = [
             Uuid::fromString($string),
             Uuid::fromString($curly),
             Uuid::fromString($hex),
-            Uuid::fromBytes(base64_decode($bytes)),
+            Uuid::fromBytes($base64DecodedBytes),
             Uuid::fromString($urn),
             Uuid::fromInteger($int),
         ];
@@ -1143,7 +1149,7 @@ class UuidTest extends TestCase
         foreach ($uuids as $uuid) {
             $this->assertSame($string, $uuid->toString());
             $this->assertSame($hex, $uuid->getHex()->toString());
-            $this->assertSame(base64_decode($bytes), $uuid->getBytes());
+            $this->assertSame($base64DecodedBytes, $uuid->getBytes());
             $this->assertSame($int, $uuid->getInteger()->toString());
             $this->assertSame($fields['time_low'], $uuid->getFields()->getTimeLow()->toString());
             $this->assertSame($fields['time_mid'], $uuid->getFields()->getTimeMid()->toString());
@@ -1484,6 +1490,7 @@ class UuidTest extends TestCase
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Invalid UUID string:');
 
+        /** @phpstan-ignore-next-line */
         Uuid::uuid3('', '');
     }
 
@@ -1506,6 +1513,7 @@ class UuidTest extends TestCase
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Invalid UUID string:');
 
+        /** @phpstan-ignore-next-line */
         Uuid::uuid5('', '');
     }
 

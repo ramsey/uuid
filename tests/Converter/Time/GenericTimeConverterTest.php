@@ -12,6 +12,9 @@ use Ramsey\Uuid\Type\Hexadecimal;
 class GenericTimeConverterTest extends TestCase
 {
     /**
+     * @param numeric-string $seconds
+     * @param numeric-string $microseconds
+     *
      * @dataProvider provideCalculateTime
      */
     public function testCalculateTime(string $seconds, string $microseconds, string $expected): void

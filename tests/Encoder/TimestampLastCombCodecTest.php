@@ -37,7 +37,9 @@ class TimestampLastCombCodecTest extends TestCase
 
     public function testEncoding(): void
     {
-        $fields = new Fields((string) hex2bin('0800200c9a6611e19b21ff6f8cb0c57d'));
+        /** @var non-empty-string $bytes */
+        $bytes = (string) hex2bin('0800200c9a6611e19b21ff6f8cb0c57d');
+        $fields = new Fields($bytes);
 
         $uuidMock = Mockery::mock(UuidInterface::class, [
             'getFields' => $fields,
@@ -96,6 +98,9 @@ class TimestampLastCombCodecTest extends TestCase
                     'node' => 'ff6f8cb0c57d',
                 ]))
             );
-        $this->codec->decodeBytes((string) hex2bin('0800200c9a6611e19b21ff6f8cb0c57d'));
+
+        /** @var non-empty-string $bytes */
+        $bytes = (string) hex2bin('0800200c9a6611e19b21ff6f8cb0c57d');
+        $this->codec->decodeBytes($bytes);
     }
 }

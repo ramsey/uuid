@@ -36,7 +36,9 @@ class TimestampFirstCombCodecTest extends TestCase
 
     public function testEncoding(): void
     {
-        $fields = new Fields((string) hex2bin('ff6f8cb0c57d11e19b210800200c9a66'));
+        /** @var non-empty-string $bytes */
+        $bytes = (string) hex2bin('ff6f8cb0c57d11e19b210800200c9a66');
+        $fields = new Fields($bytes);
 
         $uuidMock = Mockery::mock(UuidInterface::class, [
             'getFields' => $fields,
@@ -49,7 +51,9 @@ class TimestampFirstCombCodecTest extends TestCase
 
     public function testBinaryEncoding(): void
     {
-        $fields = new Fields((string) hex2bin('ff6f8cb0c57d11e19b210800200c9a66'));
+        /** @var non-empty-string $bytes */
+        $bytes = (string) hex2bin('ff6f8cb0c57d11e19b210800200c9a66');
+        $fields = new Fields($bytes);
 
         $uuidMock = Mockery::mock(UuidInterface::class, [
             'getFields' => $fields,
@@ -93,6 +97,9 @@ class TimestampFirstCombCodecTest extends TestCase
                     'node' => '0800200c9a66',
                 ]))
             );
-        $this->codec->decodeBytes((string) hex2bin('0800200c9a6611e19b21ff6f8cb0c57d'));
+
+        /** @var non-empty-string $bytes */
+        $bytes = (string) hex2bin('0800200c9a6611e19b21ff6f8cb0c57d');
+        $this->codec->decodeBytes($bytes);
     }
 }

@@ -40,29 +40,11 @@ use const STR_PAD_LEFT;
  */
 class DefaultTimeGenerator implements TimeGeneratorInterface
 {
-    /**
-     * @var NodeProviderInterface
-     */
-    private $nodeProvider;
-
-    /**
-     * @var TimeConverterInterface
-     */
-    private $timeConverter;
-
-    /**
-     * @var TimeProviderInterface
-     */
-    private $timeProvider;
-
     public function __construct(
-        NodeProviderInterface $nodeProvider,
-        TimeConverterInterface $timeConverter,
-        TimeProviderInterface $timeProvider
+        private readonly NodeProviderInterface $nodeProvider,
+        private readonly TimeConverterInterface $timeConverter,
+        private readonly TimeProviderInterface $timeProvider
     ) {
-        $this->nodeProvider = $nodeProvider;
-        $this->timeConverter = $timeConverter;
-        $this->timeProvider = $timeProvider;
     }
 
     /**
@@ -71,7 +53,7 @@ class DefaultTimeGenerator implements TimeGeneratorInterface
      *
      * @inheritDoc
      */
-    public function generate($node = null, ?int $clockSeq = null): string
+    public function generate(Hexadecimal | int | string | null $node = null, ?int $clockSeq = null): string
     {
         if ($node instanceof Hexadecimal) {
             $node = $node->toString();
@@ -121,13 +103,14 @@ class DefaultTimeGenerator implements TimeGeneratorInterface
      * Uses the node provider given when constructing this instance to get
      * the node ID (usually a MAC address)
      *
-     * @param string|int|null $node A node value that may be used to override the node provider
+     * @param non-empty-string|positive-int|null $node A node value that may be
+     *     used to override the node provider
      *
-     * @return string 6-byte binary string representation of the node
+     * @return non-empty-string 6-byte binary string representation of the node
      *
      * @throws InvalidArgumentException
      */
-    private function getValidNode($node): string
+    private function getValidNode(int | string | null $node): string
     {
         if ($node === null) {
             $node = $this->nodeProvider->getNode();
@@ -142,6 +125,7 @@ class DefaultTimeGenerator implements TimeGeneratorInterface
             throw new InvalidArgumentException('Invalid node value');
         }
 
+        /** @var non-empty-string */
         return (string) hex2bin(str_pad((string) $node, 12, '0', STR_PAD_LEFT));
     }
 }

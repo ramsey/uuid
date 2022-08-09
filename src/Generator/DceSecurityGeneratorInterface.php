@@ -36,18 +36,18 @@ interface DceSecurityGeneratorInterface
      *     given domain; this may be a UID or GID on POSIX systems, if the local
      *     domain is person or group, or it may be a site-defined identifier
      *     if the local domain is org
-     * @param Hexadecimal|null $node A 48-bit number representing the hardware
-     *     address
+     * @param Hexadecimal|positive-int|non-empty-string|null $node A 48-bit
+     *     number representing the hardware address
      * @param int|null $clockSeq A 14-bit number used to help avoid duplicates
      *     that could arise when the clock is set backwards in time or if the
      *     node ID changes
      *
-     * @return string A binary string
+     * @return non-empty-string A binary string
      */
     public function generate(
         int $localDomain,
         ?IntegerObject $localIdentifier = null,
-        ?Hexadecimal $node = null,
+        Hexadecimal | int | string | null $node = null,
         ?int $clockSeq = null
     ): string;
 }

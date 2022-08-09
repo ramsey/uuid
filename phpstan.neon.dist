@@ -11,5 +11,3 @@ parameters:
             message: '#^Comparison operation ">" between 6 and 0 is always true\.$#'
             count: 1
             path: ./src/Generator/CombGenerator.php
-
-        - '#^Method Ramsey\\Uuid\\Generator\\Pecl[A-Za-z]+Generator::generate\(\) should return string but returns string\|false\.$#'

@@ -24,9 +24,7 @@ interface ValidatorInterface
     /**
      * Returns the regular expression pattern used by this validator
      *
-     * @return string The regular expression pattern this validator uses
-     *
-     * @psalm-return non-empty-string
+     * @return non-empty-string The regular expression pattern this validator uses
      */
     public function getPattern(): string;
 

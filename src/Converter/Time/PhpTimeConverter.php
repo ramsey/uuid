@@ -31,7 +31,6 @@ use function strlen;
 use function substr;
 
 use const STR_PAD_LEFT;
-use const STR_PAD_RIGHT;
 
 /**
  * PhpTimeConverter uses built-in PHP functions and standard math operations
@@ -58,35 +57,12 @@ class PhpTimeConverter implements TimeConverterInterface
      */
     private const MICROSECOND_INTERVALS = 10;
 
-    /**
-     * @var CalculatorInterface
-     */
-    private $calculator;
-
-    /**
-     * @var TimeConverterInterface
-     */
-    private $fallbackConverter;
-
-    /**
-     * @var int
-     */
-    private $phpPrecision;
+    private readonly int $phpPrecision;
 
     public function __construct(
-        ?CalculatorInterface $calculator = null,
-        ?TimeConverterInterface $fallbackConverter = null
+        private readonly CalculatorInterface $calculator = new BrickMathCalculator(),
+        private readonly TimeConverterInterface $fallbackConverter = new GenericTimeConverter(new BrickMathCalculator())
     ) {
-        if ($calculator === null) {
-            $calculator = new BrickMathCalculator();
-        }
-
-        if ($fallbackConverter === null) {
-            $fallbackConverter = new GenericTimeConverter($calculator);
-        }
-
-        $this->calculator = $calculator;
-        $this->fallbackConverter = $fallbackConverter;
         $this->phpPrecision = (int) ini_get('precision');
     }
 
@@ -124,7 +100,7 @@ class PhpTimeConverter implements TimeConverterInterface
             / self::SECOND_INTERVALS
         );
 
-        if (count($splitTime) === 0) {
+        if (!isset($splitTime['sec']) || !isset($splitTime['usec'])) {
             return $this->fallbackConverter->convertTime($uuidTimestamp);
         }
 
@@ -132,12 +108,13 @@ class PhpTimeConverter implements TimeConverterInterface
     }
 
     /**
-     * @param int|float $time The time to split into seconds and microseconds
+     * @param float|int $time The time to split into seconds and microseconds
      *
-     * @return string[]
+     * @return array{sec?: numeric-string, usec?: numeric-string}
      */
-    private function splitTime($time): array
+    private function splitTime(float | int $time): array
     {
+        /** @var numeric-string[] $split */
         $split = explode('.', (string) $time, 2);
 
         // If the $time value is a float but $split only has 1 element, then the
@@ -175,9 +152,12 @@ class PhpTimeConverter implements TimeConverterInterface
             }
         }
 
+        /** @var numeric-string $microseconds */
+        $microseconds = str_pad((string) $microseconds, 6, '0');
+
         return [
             'sec' => $split[0],
-            'usec' => str_pad((string) $microseconds, 6, '0', STR_PAD_RIGHT),
+            'usec' => $microseconds,
         ];
     }
 }

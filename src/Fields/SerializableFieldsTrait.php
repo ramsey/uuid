@@ -28,17 +28,19 @@ use function strlen;
 trait SerializableFieldsTrait
 {
     /**
-     * @param string $bytes The bytes that comprise the fields
+     * @param non-empty-string $bytes The bytes that comprise the fields
      */
     abstract public function __construct(string $bytes);
 
     /**
      * Returns the bytes that comprise the fields
+     *
+     * @return non-empty-string
      */
     abstract public function getBytes(): string;
 
     /**
-     * @return array{bytes: string}
+     * @return array{bytes: non-empty-string}
      */
     public function __serialize(): array
     {
@@ -46,7 +48,7 @@ trait SerializableFieldsTrait
     }
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function __unserialize(array $data): void
     {
@@ -54,12 +56,14 @@ trait SerializableFieldsTrait
             throw new ValueError(sprintf('%s(): Argument #1 ($data) is invalid', __METHOD__));
         }
 
-        assert(is_string($data['bytes']));
+        assert(is_string($data['bytes']) && $data['bytes'] !== '');
 
         if (strlen($data['bytes']) === 16) {
             $this->__construct($data['bytes']);
         } else {
-            $this->__construct(base64_decode($data['bytes']));
+            /** @var non-empty-string $bytes */
+            $bytes = base64_decode($data['bytes']);
+            $this->__construct($bytes);
         }
     }
 }

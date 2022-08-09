@@ -26,11 +26,14 @@ use function hash;
  */
 class DefaultNameGenerator implements NameGeneratorInterface
 {
-    /** @psalm-pure */
+    /**
+     * @inheritDoc
+     * @psalm-pure
+     */
     public function generate(UuidInterface $ns, string $name, string $hashAlgorithm): string
     {
         try {
-            /** @var string|bool $bytes */
+            /** @var non-empty-string|false $bytes */
             $bytes = @hash($hashAlgorithm, $ns->getBytes() . $name, true);
         } catch (ValueError $e) {
             $bytes = false; // keep same behavior than PHP 7
@@ -43,6 +46,6 @@ class DefaultNameGenerator implements NameGeneratorInterface
             ));
         }
 
-        return (string) $bytes;
+        return $bytes;
     }
 }

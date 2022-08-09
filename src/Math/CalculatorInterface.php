@@ -28,8 +28,8 @@ interface CalculatorInterface
     /**
      * Returns the sum of all the provided parameters
      *
-     * @param NumberInterface $augend The first addend (the integer being added to)
-     * @param NumberInterface ...$addends The additional integers to a add to the augend
+     * @param NumberInterface $augend The integer being added to
+     * @param NumberInterface ...$addends The additional integers to add to the augend
      *
      * @return NumberInterface The sum of all the parameters
      */
@@ -77,7 +77,7 @@ interface CalculatorInterface
     /**
      * Converts a value from an arbitrary base to a base-10 integer value
      *
-     * @param string $value The value to convert
+     * @param non-empty-string $value The value to convert
      * @param int $base The base to convert from (i.e., 2, 16, 32, etc.)
      *
      * @return IntegerObject The base-10 integer value of the converted value
@@ -90,7 +90,7 @@ interface CalculatorInterface
      * @param IntegerObject $value The integer value to convert
      * @param int $base The base to convert to (i.e., 2, 16, 32, etc.)
      *
-     * @return string The value represented in the specified base
+     * @return non-empty-string The value represented in the specified base
      */
     public function toBase(IntegerObject $value, int $base): string;
 

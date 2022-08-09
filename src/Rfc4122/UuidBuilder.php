@@ -33,16 +33,6 @@ use Throwable;
 class UuidBuilder implements UuidBuilderInterface
 {
     /**
-     * @var NumberConverterInterface
-     */
-    private $numberConverter;
-
-    /**
-     * @var TimeConverterInterface
-     */
-    private $timeConverter;
-
-    /**
      * Constructs the UUID builder
      *
      * @param NumberConverterInterface $numberConverter The number converter to
@@ -51,18 +41,16 @@ class UuidBuilder implements UuidBuilderInterface
      *     for converting timestamps extracted from a UUID to Unix timestamps
      */
     public function __construct(
-        NumberConverterInterface $numberConverter,
-        TimeConverterInterface $timeConverter
+        private readonly NumberConverterInterface $numberConverter,
+        private readonly TimeConverterInterface $timeConverter
     ) {
-        $this->numberConverter = $numberConverter;
-        $this->timeConverter = $timeConverter;
     }
 
     /**
      * Builds and returns a Uuid
      *
      * @param CodecInterface $codec The codec to use for building this Uuid instance
-     * @param string $bytes The byte string from which to construct a UUID
+     * @param non-empty-string $bytes The byte string from which to construct a UUID
      *
      * @return Rfc4122UuidInterface UuidBuilder returns instances of Rfc4122UuidInterface
      *
@@ -103,6 +91,8 @@ class UuidBuilder implements UuidBuilderInterface
 
     /**
      * Proxy method to allow injecting a mock, for testing
+     *
+     * @param non-empty-string $bytes
      */
     protected function buildFields(string $bytes): FieldsInterface
     {

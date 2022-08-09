@@ -33,6 +33,7 @@ class UuidBuilderTest extends TestCase
      */
     public function testBuild(string $uuid, string $expectedClass, int $expectedVersion): void
     {
+        /** @var non-empty-string $bytes */
         $bytes = (string) hex2bin(str_replace('-', '', $uuid));
 
         $calculator = new BrickMathCalculator();
@@ -91,6 +92,7 @@ class UuidBuilderTest extends TestCase
 
     public function testBuildThrowsUnableToBuildException(): void
     {
+        /** @var non-empty-string $bytes */
         $bytes = (string) hex2bin(str_replace('-', '', 'ff6f8cb0-c57d-51e1-9b21-0800200c9a'));
 
         $calculator = new BrickMathCalculator();

@@ -72,6 +72,8 @@ class UuidV2Test extends TestCase
     }
 
     /**
+     * @param positive-int $domain
+     *
      * @dataProvider provideLocalDomainAndIdentifierForTests
      */
     public function testGetLocalDomainAndIdentifier(

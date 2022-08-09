@@ -20,32 +20,24 @@ use function pack;
 
 class StringCodecTest extends TestCase
 {
-    /**
-     * @var UuidBuilderInterface & MockObject
-     */
-    private $builder;
+    private UuidBuilderInterface & MockObject $builder;
+    private UuidInterface & MockObject $uuid;
+    private Fields $fields;
 
     /**
-     * @var UuidInterface & MockObject
+     * @var non-empty-string
      */
-    private $uuid;
-
-    /**
-     * @var Fields
-     */
-    private $fields;
-
-    /**
-     * @var string
-     */
-    private $uuidString = '12345678-1234-4bcd-abef-1234abcd4321';
+    private string $uuidString = '12345678-1234-4bcd-abef-1234abcd4321';
 
     protected function setUp(): void
     {
         parent::setUp();
         $this->builder = $this->getMockBuilder(UuidBuilderInterface::class)->getMock();
         $this->uuid = $this->getMockBuilder(UuidInterface::class)->getMock();
-        $this->fields = new Fields((string) hex2bin('1234567812344bcdabef1234abcd4321'));
+
+        /** @var non-empty-string $bytes */
+        $bytes = (string) hex2bin('1234567812344bcdabef1234abcd4321');
+        $this->fields = new Fields($bytes);
     }
 
     protected function tearDown(): void
@@ -130,7 +122,10 @@ class StringCodecTest extends TestCase
     public function testDecodeBytesThrowsExceptionWhenBytesStringNotSixteenCharacters(): void
     {
         $string = '61';
+
+        /** @var non-empty-string $bytes */
         $bytes = pack('H*', $string);
+
         $codec = new StringCodec($this->builder);
 
         $this->expectException(InvalidArgumentException::class);
@@ -141,7 +136,10 @@ class StringCodecTest extends TestCase
     public function testDecodeBytesReturnsUuid(): void
     {
         $string = '123456781234abcdabef1234abcd4321';
+
+        /** @var non-empty-string $bytes */
         $bytes = pack('H*', $string);
+
         $codec = new StringCodec($this->builder);
         $this->builder->method('build')
             ->willReturn($this->uuid);

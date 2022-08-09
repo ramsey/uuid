@@ -20,6 +20,7 @@ class PeclUuidNameGeneratorTest extends TestCase
 {
     /**
      * @param non-empty-string $ns
+     * @param non-empty-string $algorithm
      *
      * @dataProvider provideNamesForHashingTest
      * @requires extension uuid

@@ -379,7 +379,7 @@ class UuidFactory implements UuidFactoryInterface
      * @inheritDoc
      * @psalm-pure
      */
-    public function uuid3($ns, string $name): UuidInterface
+    public function uuid3(UuidInterface | string $ns, string $name): UuidInterface
     {
         return $this->uuidFromNsAndName($ns, $name, 3, 'md5');
     }
@@ -395,14 +395,14 @@ class UuidFactory implements UuidFactoryInterface
      * @inheritDoc
      * @psalm-pure
      */
-    public function uuid5($ns, string $name): UuidInterface
+    public function uuid5(UuidInterface | string $ns, string $name): UuidInterface
     {
         return $this->uuidFromNsAndName($ns, $name, 5, 'sha1');
     }
 
     public function uuid6(?Hexadecimal $node = null, ?int $clockSeq = null): UuidInterface
     {
-        $nodeHex = $node ? $node->toString() : null;
+        $nodeHex = $node?->toString();
         $bytes = $this->timeGenerator->generate($nodeHex, $clockSeq);
 
         // Rearrange the bytes, according to the UUID version 6 specification.
@@ -413,6 +413,7 @@ class UuidFactory implements UuidFactoryInterface
         // Drop the first four bits, while adding an empty four bits for the
         // version field. This allows us to reconstruct the correct time from
         // the bytes of this UUID.
+        /** @var non-empty-string $v6Bytes */
         $v6Bytes = hex2bin(substr($v6, 1, 12) . '0' . substr($v6, -3));
         $v6Bytes .= substr($bytes, 8);
 
@@ -425,7 +426,7 @@ class UuidFactory implements UuidFactoryInterface
      * Uses the configured builder and codec and the provided byte string to
      * construct a Uuid object.
      *
-     * @param string $bytes The byte string from which to construct a UUID
+     * @param non-empty-string $bytes The byte string from which to construct a UUID
      *
      * @return UuidInterface An instance of UuidInterface, created from the
      *     provided bytes
@@ -440,33 +441,40 @@ class UuidFactory implements UuidFactoryInterface
     /**
      * Returns a version 3 or 5 namespaced Uuid
      *
-     * @param string|UuidInterface $ns The namespace (must be a valid UUID)
+     * @param non-empty-string|UuidInterface $ns The namespace (must be a valid UUID)
      * @param string $name The name to hash together with the namespace
-     * @param int $version The version of UUID to create (3 or 5)
-     * @param string $hashAlgorithm The hashing algorithm to use when hashing
-     *     together the namespace and name
+     * @param positive-int $version The version of UUID to create (3 or 5)
+     * @param non-empty-string $hashAlgorithm The hashing algorithm to use when
+     *     hashing together the namespace and name
      *
      * @return UuidInterface An instance of UuidInterface, created by hashing
      *     together the provided namespace and name
      *
      * @psalm-pure
      */
-    private function uuidFromNsAndName($ns, string $name, int $version, string $hashAlgorithm): UuidInterface
-    {
+    private function uuidFromNsAndName(
+        UuidInterface | string $ns,
+        string $name,
+        int $version,
+        string $hashAlgorithm,
+    ): UuidInterface {
         if (!($ns instanceof UuidInterface)) {
             $ns = $this->fromString($ns);
         }
 
         $bytes = $this->nameGenerator->generate($ns, $name, $hashAlgorithm);
 
-        return $this->uuidFromBytesAndVersion(substr($bytes, 0, 16), $version);
+        /** @var non-empty-string $bytes */
+        $bytes = substr($bytes, 0, 16);
+
+        return $this->uuidFromBytesAndVersion($bytes, $version);
     }
 
     /**
      * Returns an RFC 4122 variant Uuid, created from the provided bytes and version
      *
-     * @param string $bytes The byte string to convert to a UUID
-     * @param int $version The RFC 4122 version to apply to the UUID
+     * @param non-empty-string $bytes The byte string to convert to a UUID
+     * @param positive-int $version The RFC 4122 version to apply to the UUID
      *
      * @return UuidInterface An instance of UuidInterface, created from the
      *     byte string and version
@@ -486,6 +494,8 @@ class UuidFactory implements UuidFactoryInterface
         $clockSeqHiAndReserved = pack('n*', BinaryUtils::applyVariant($clockSeqHi));
 
         $bytes = substr_replace($bytes, $timeHiAndVersion, 6, 2);
+
+        /** @var non-empty-string $bytes */
         $bytes = substr_replace($bytes, $clockSeqHiAndReserved, 8, 2);
 
         if ($this->isDefaultFeatureSet) {

@@ -63,6 +63,8 @@ class FallbackBuilderTest extends TestCase
     }
 
     /**
+     * @param non-empty-string $bytes
+     *
      * @dataProvider provideBytes
      */
     public function testSerializationOfBuilderCollection(string $bytes): void
@@ -118,7 +120,7 @@ class FallbackBuilderTest extends TestCase
     }
 
     /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingTraversableTypeHintSpecification
+     * @return array<array{bytes: string|false}>
      */
     public function provideBytes(): array
     {

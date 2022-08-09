@@ -23,7 +23,7 @@ interface UuidFactoryInterface extends DeprecatedUuidFactoryInterface
     /**
      * Creates a UUID from a byte string
      *
-     * @param string $bytes A binary string
+     * @param non-empty-string $bytes A binary string
      *
      * @return UuidInterface A UuidInterface instance created from a binary
      *     string representation
@@ -35,7 +35,7 @@ interface UuidFactoryInterface extends DeprecatedUuidFactoryInterface
     /**
      * Creates a UUID from a 128-bit integer string
      *
-     * @param string $integer String representation of 128-bit integer
+     * @param numeric-string $integer String representation of 128-bit integer
      *
      * @return UuidInterface A UuidInterface instance created from the string
      *     representation of a 128-bit integer
@@ -47,7 +47,7 @@ interface UuidFactoryInterface extends DeprecatedUuidFactoryInterface
     /**
      * Creates a UUID from the string standard representation
      *
-     * @param string $uuid A hexadecimal string
+     * @param non-empty-string $uuid A hexadecimal string
      *
      * @return UuidInterface A UuidInterface instance created from a hexadecimal
      *     string representation

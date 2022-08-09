@@ -30,8 +30,8 @@ use function sprintf;
  */
 final class Time implements TypeInterface
 {
-    private IntegerObject $seconds;
-    private IntegerObject $microseconds;
+    private readonly IntegerObject $seconds;
+    private readonly IntegerObject $microseconds;
 
     public function __construct(
         int | float | string | IntegerObject $seconds,

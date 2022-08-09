@@ -42,16 +42,9 @@ trait VersionTrait
             return true;
         }
 
-        switch ($this->getVersion()) {
-            case 1:
-            case 2:
-            case 3:
-            case 4:
-            case 5:
-            case 6:
-                return true;
-        }
-
-        return false;
+        return match ($this->getVersion()) {
+            1, 2, 3, 4, 5, 6 => true,
+            default => false,
+        };
     }
 }

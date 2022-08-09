@@ -26,40 +26,26 @@ use function hex2bin;
 
 class DefaultTimeGeneratorTest extends TestCase
 {
-    /**
-     * @var TimeProviderInterface & MockInterface
-     */
-    private $timeProvider;
+    private TimeProviderInterface & MockInterface $timeProvider;
+    private NodeProviderInterface & MockObject $nodeProvider;
+    private TimeConverterInterface & MockObject $timeConverter;
 
     /**
-     * @var NodeProviderInterface & MockObject
+     * @var non-empty-string
      */
-    private $nodeProvider;
-
-    /**
-     * @var TimeConverterInterface & MockObject
-     */
-    private $timeConverter;
-
-    /**
-     * @var string
-     */
-    private $nodeId = '122f80ca9e06';
+    private string $nodeId = '122f80ca9e06';
 
     /**
      * @var int[]
      */
-    private $currentTime;
+    private array $currentTime;
+
+    private Hexadecimal $calculatedTime;
 
     /**
-     * @var Hexadecimal
+     * @var positive-int
      */
-    private $calculatedTime;
-
-    /**
-     * @var int
-     */
-    private $clockSeq = 4066;
+    private int $clockSeq = 4066;
 
     protected function setUp(): void
     {

@@ -21,6 +21,7 @@ use Ramsey\Uuid\Type\Hexadecimal;
 use function dechex;
 use function hexdec;
 use function str_pad;
+use function strlen;
 use function substr;
 
 use const STR_PAD_LEFT;
@@ -32,10 +33,7 @@ use const STR_PAD_LEFT;
  */
 class StaticNodeProvider implements NodeProviderInterface
 {
-    /**
-     * @var Hexadecimal
-     */
-    private $node;
+    private readonly Hexadecimal $node;
 
     /**
      * @param Hexadecimal $node The static node value to use

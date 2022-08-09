@@ -32,10 +32,10 @@ interface TimeConverterInterface
      *
      * @link http://tools.ietf.org/html/rfc4122#section-4.2.2 RFC 4122, § 4.2.2: Generation Details
      *
-     * @param string $seconds A string representation of the number of seconds
-     *     since the Unix epoch for the time to calculate
-     * @param string $microseconds A string representation of the micro-seconds
-     *     associated with the time to calculate
+     * @param numeric-string $seconds A string representation of the number of
+     *     seconds since the Unix epoch for the time to calculate
+     * @param numeric-string $microseconds A string representation of the
+     *     micro-seconds associated with the time to calculate
      *
      * @return Hexadecimal The full UUID timestamp as a Hexadecimal value
      *
