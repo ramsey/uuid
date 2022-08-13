@@ -17,6 +17,8 @@ namespace Ramsey\Uuid;
 /**
  * UuidFactoryInterface defines common functionality all `UuidFactory` instances
  * must implement
+ *
+ * @psalm-immutable
  */
 interface UuidFactoryInterface extends DeprecatedUuidFactoryInterface
 {

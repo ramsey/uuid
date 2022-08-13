@@ -33,6 +33,13 @@ interface UuidInterface extends JsonSerializable
     public function __serialize(): array;
 
     /**
+     * Casts the UUID to the string standard representation
+     *
+     * @psalm-return non-empty-string
+     */
+    public function __toString(): string;
+
+    /**
      * @param mixed[] $data
      */
     public function __unserialize(array $data): void;
@@ -58,7 +65,7 @@ interface UuidInterface extends JsonSerializable
      * Returns true if the UUID is equal to the provided object
      *
      * The result is true if and only if the argument is not null, is a UUID
-     * object, has the same variant, and contains the same value, bit for bit,
+     * object, has the same variant, and contains the same value, bit-for-bit,
      * as the UUID.
      *
      * @param object|null $other An object to test for equality with this UUID
@@ -103,11 +110,4 @@ interface UuidInterface extends JsonSerializable
      * @psalm-return non-empty-string
      */
     public function toString(): string;
-
-    /**
-     * Casts the UUID to the string standard representation
-     *
-     * @psalm-return non-empty-string
-     */
-    public function __toString(): string;
 }

@@ -139,6 +139,8 @@ class UuidFactoryTest extends TestCase
     }
 
     /**
+     * @param int<0, 16383>|null $clockSeq
+     *
      * @dataProvider provideDateTime
      */
     public function testFromDateTime(

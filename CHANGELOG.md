@@ -11,13 +11,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 * Introduce `Ramsey\Uuid\TimeBasedUuidInterface` to represent any UUID based on
   a date/time value.
+* Introduce `Ramsey\Uuid\TimeBasedUuidFactoryInterface` to represent any factory
+  for creating UUIDs based on a date/time value.
 * Introduce `Ramsey\Uuid\Variant` enum to represent the variant field.
 * Introduce `Ramsey\Uuid\Rfc4122\Version` enum to represent the version field.
 * Add new static method `Ramsey\Uuid\BinaryUtils::applyVersionAndVariant()`.
 
 ### Changed
 
-* Remove the following deprecated classes:
+* Remove the following deprecated classes and interfaces:
   * `Ramsey\Uuid\Builder\BuilderCollection`
   * `Ramsey\Uuid\Builder\DefaultUuidBuilder`
   * `Ramsey\Uuid\Builder\DegradedUuidBuilder`
@@ -26,6 +28,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   * `Ramsey\Uuid\Converter\Time\BigNumberTimeConverter`
   * `Ramsey\Uuid\Converter\Time\DegradedTimeConverter`
   * `Ramsey\Uuid\DegradedUuid`
+  * `Ramsey\Uuid\DeprecatedUuidFactoryInterface`
   * `Ramsey\Uuid\Generator\RandomLibAdapter`
   * `Ramsey\Uuid\Provider\Node\NodeProviderCollection`
 * Remove the following deprecated methods from Uuid classes:

@@ -37,9 +37,9 @@ interface DeprecatedUuidFactoryInterface
      * @param DateTimeInterface $dateTime The date and time
      * @param Hexadecimal|null $node A 48-bit number representing the hardware
      *     address
-     * @param int|null $clockSeq A 14-bit number used to help avoid duplicates
-     *     that could arise when the clock is set backwards in time or if the
-     *     node ID changes
+     * @param int<0, 16383>|null $clockSeq A 14-bit number used to help avoid
+     *     duplicates that could arise when the clock is set backwards in time
+     *     or if the node ID changes
      *
      * @return UuidInterface A UuidInterface instance that represents a
      *     version 1 UUID created from a DateTimeInterface instance

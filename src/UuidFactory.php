@@ -44,6 +44,8 @@ use const STR_PAD_LEFT;
 /**
  * @deprecated UuidFactory will go away in ramsey/uuid version 5. Use dedicated
  *     factories for subtypes instead.
+ *
+ * @psalm-suppress MissingImmutableAnnotation
  */
 class UuidFactory implements UuidFactoryInterface
 {
