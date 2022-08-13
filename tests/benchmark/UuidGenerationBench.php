@@ -23,7 +23,7 @@ use Ramsey\Uuid\UuidInterface;
 final class UuidGenerationBench
 {
     /**
-     * @var positive-int
+     * @var int<0, 16383>
      */
     private int $clockSequence;
 

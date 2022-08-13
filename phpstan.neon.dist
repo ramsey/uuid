@@ -11,3 +11,15 @@ parameters:
             message: '#^Comparison operation ">" between 6 and 0 is always true\.$#'
             count: 1
             path: ./src/Generator/CombGenerator.php
+        -
+            message: '#^Result of \|\| is always false\.$#'
+            count: 1
+            path: ./src/Generator/DceSecurityGenerator.php
+        -
+            message: '#^Comparison operation ">" between int<0, 63>\|null and 63 is always false\.$#'
+            count: 1
+            path: ./src/Generator/DceSecurityGenerator.php
+        -
+            message: '#^Comparison operation "<" between int<0, 63>\|null and 0 is always false\.$#'
+            count: 1
+            path: ./src/Generator/DceSecurityGenerator.php

@@ -28,9 +28,9 @@ interface TimeGeneratorInterface
      * @param Hexadecimal|non-empty-string|positive-int|null $node A 48-bit
      *     number representing the hardware address; this number may be
      *     represented as an integer or a hexadecimal string
-     * @param int|null $clockSeq A 14-bit number used to help avoid duplicates
-     *     that could arise when the clock is set backwards in time or if the
-     *     node ID changes
+     * @param int<0, 16383>|null $clockSeq A 14-bit number used to help avoid
+     *     duplicates that could arise when the clock is set backwards in time
+     *     or if the node ID changes
      *
      * @return non-empty-string A binary string
      */

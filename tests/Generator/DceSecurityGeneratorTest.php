@@ -225,6 +225,7 @@ class DceSecurityGeneratorTest extends TestCase
             'Clock sequence out of bounds; it must be a value between 0 and 63'
         );
 
+        // @phpstan-ignore-next-line
         $dceSecurityGenerator->generate(Uuid::DCE_DOMAIN_ORG, null, null, -1);
     }
 
@@ -241,6 +242,7 @@ class DceSecurityGeneratorTest extends TestCase
             'Clock sequence out of bounds; it must be a value between 0 and 63'
         );
 
+        // @phpstan-ignore-next-line
         $dceSecurityGenerator->generate(Uuid::DCE_DOMAIN_ORG, null, null, 64);
     }
 

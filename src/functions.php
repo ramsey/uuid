@@ -25,7 +25,7 @@ use Ramsey\Uuid\Type\Integer as IntegerObject;
  * @param Hexadecimal|positive-int|non-empty-string|null $node A 48-bit number
  *     representing the hardware address; this number may be represented as an
  *     integer or a hexadecimal string
- * @param positive-int|null $clockSeq A 14-bit number used to help avoid
+ * @param int<0, 16383>|null $clockSeq A 14-bit number used to help avoid
  *     duplicates that could arise when the clock is set backwards in time or
  *     if the node ID changes
  *
@@ -48,9 +48,9 @@ function v1(Hexadecimal | int | string | null $node = null, ?int $clockSeq = nul
  *     if the local domain is org
  * @param Hexadecimal|null $node A 48-bit number representing the hardware
  *     address
- * @param int|null $clockSeq A 14-bit number used to help avoid duplicates
- *     that could arise when the clock is set backwards in time or if the
- *     node ID changes
+ * @param int<0, 63>|null $clockSeq A 6-bit number used to help avoid
+ *     duplicates that could arise when the clock is set backwards in time or if
+ *     the node ID changes
  *
  * @return non-empty-string Version 2 UUID as a string
  */
@@ -108,14 +108,14 @@ function v5(UuidInterface | string $ns, string $name): string
 }
 
 /**
- * Returns a version 6 (ordered-time) UUID from a host ID, sequence number,
+ * Returns a version 6 (reordered-time) UUID from a host ID, sequence number,
  * and the current time
  *
  * @param Hexadecimal|null $node A 48-bit number representing the hardware
  *     address
- * @param int|null $clockSeq A 14-bit number used to help avoid duplicates that
- *     could arise when the clock is set backwards in time or if the node ID
- *     changes
+ * @param int<0, 16383>|null $clockSeq A 14-bit number used to help avoid
+ *     duplicates that could arise when the clock is set backwards in time or if
+ *     the node ID changes
  *
  * @return non-empty-string Version 6 UUID as a string
  */

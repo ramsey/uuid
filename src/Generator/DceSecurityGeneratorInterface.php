@@ -38,9 +38,9 @@ interface DceSecurityGeneratorInterface
      *     if the local domain is org
      * @param Hexadecimal|positive-int|non-empty-string|null $node A 48-bit
      *     number representing the hardware address
-     * @param int|null $clockSeq A 14-bit number used to help avoid duplicates
-     *     that could arise when the clock is set backwards in time or if the
-     *     node ID changes
+     * @param int<0, 63>|null $clockSeq A 6-bit number used to help avoid
+     *     duplicates that could arise when the clock is set backwards in time
+     *     or if the node ID changes
      *
      * @return non-empty-string A binary string
      */

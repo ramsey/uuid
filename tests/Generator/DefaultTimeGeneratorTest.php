@@ -43,7 +43,7 @@ class DefaultTimeGeneratorTest extends TestCase
     private Hexadecimal $calculatedTime;
 
     /**
-     * @var positive-int
+     * @var int<0, 16383>
      */
     private int $clockSeq = 4066;
 

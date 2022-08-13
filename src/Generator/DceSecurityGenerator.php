@@ -124,6 +124,7 @@ class DceSecurityGenerator implements DceSecurityGeneratorInterface
 
         // Shift the clock sequence 8 bits to the left, so it matches 0x3f00.
         if ($clockSeq !== null) {
+            /** @var int<0, 16383> $clockSeq */
             $clockSeq = $clockSeq << 8;
         }
 
