@@ -85,12 +85,18 @@ class Uuid implements UuidInterface
     /**
      * Variant: reserved, NCS backward compatibility
      *
+     * @deprecated The Ramsey\Uuid\Variant enum will replace this constant in
+     *     ramsey/uuid version 5.
+     *
      * @link http://tools.ietf.org/html/rfc4122#section-4.1.1 RFC 4122, § 4.1.1: Variant
      */
     public const RESERVED_NCS = 0;
 
     /**
      * Variant: the UUID layout specified in RFC 4122
+     *
+     * @deprecated The Ramsey\Uuid\Variant enum will replace this constant in
+     *     ramsey/uuid version 5.
      *
      * @link http://tools.ietf.org/html/rfc4122#section-4.1.1 RFC 4122, § 4.1.1: Variant
      */
@@ -99,12 +105,18 @@ class Uuid implements UuidInterface
     /**
      * Variant: reserved, Microsoft Corporation backward compatibility
      *
+     * @deprecated The Ramsey\Uuid\Variant enum will replace this constant in
+     *     ramsey/uuid version 5.
+     *
      * @link http://tools.ietf.org/html/rfc4122#section-4.1.1 RFC 4122, § 4.1.1: Variant
      */
     public const RESERVED_MICROSOFT = 6;
 
     /**
      * Variant: reserved for future definition
+     *
+     * @deprecated The Ramsey\Uuid\Variant enum will replace this constant in
+     *     ramsey/uuid version 5.
      *
      * @link http://tools.ietf.org/html/rfc4122#section-4.1.1 RFC 4122, § 4.1.1: Variant
      */
@@ -118,12 +130,18 @@ class Uuid implements UuidInterface
     /**
      * Version 1 (time-based) UUID
      *
+     * @deprecated The Ramsey\Uuid\Version enum will replace this constant in
+     *     ramsey/uuid version 5.
+     *
      * @link https://tools.ietf.org/html/rfc4122#section-4.1.3 RFC 4122, § 4.1.3: Version
      */
     public const UUID_TYPE_TIME = 1;
 
     /**
      * Version 2 (DCE Security) UUID
+     *
+     * @deprecated The Ramsey\Uuid\Version enum will replace this constant in
+     *     ramsey/uuid version 5.
      *
      * @link https://tools.ietf.org/html/rfc4122#section-4.1.3 RFC 4122, § 4.1.3: Version
      */
@@ -137,6 +155,9 @@ class Uuid implements UuidInterface
     /**
      * Version 3 (name-based and hashed with MD5) UUID
      *
+     * @deprecated The Ramsey\Uuid\Version enum will replace this constant in
+     *     ramsey/uuid version 5.
+     *
      * @link https://tools.ietf.org/html/rfc4122#section-4.1.3 RFC 4122, § 4.1.3: Version
      */
     public const UUID_TYPE_HASH_MD5 = 3;
@@ -144,12 +165,18 @@ class Uuid implements UuidInterface
     /**
      * Version 4 (random) UUID
      *
+     * @deprecated The Ramsey\Uuid\Version enum will replace this constant in
+     *     ramsey/uuid version 5.
+     *
      * @link https://tools.ietf.org/html/rfc4122#section-4.1.3 RFC 4122, § 4.1.3: Version
      */
     public const UUID_TYPE_RANDOM = 4;
 
     /**
      * Version 5 (name-based and hashed with SHA1) UUID
+     *
+     * @deprecated The Ramsey\Uuid\Version enum will replace this constant in
+     *     ramsey/uuid version 5.
      *
      * @link https://tools.ietf.org/html/rfc4122#section-4.1.3 RFC 4122, § 4.1.3: Version
      */
@@ -160,6 +187,9 @@ class Uuid implements UuidInterface
      *
      * This is named `UUID_TYPE_PEABODY`, since the specification is still in
      * draft form, and the primary author/editor's name is Brad Peabody.
+     *
+     * @deprecated The Ramsey\Uuid\Version enum will replace this constant in
+     *     ramsey/uuid version 5.
      *
      * @link https://github.com/uuid6/uuid6-ietf-draft UUID version 6 IETF draft
      * @link http://gh.peabody.io/uuidv6/ "Version 6" UUIDs

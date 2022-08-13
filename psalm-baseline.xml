@@ -16,6 +16,12 @@
       <code>$this</code>
     </ImpureVariable>
   </file>
+  <file src="src/Codec/OrderedTimeCodec.php">
+    <DeprecatedConstant occurrences="2">
+      <code>Uuid::UUID_TYPE_TIME</code>
+      <code>Uuid::UUID_TYPE_TIME</code>
+    </DeprecatedConstant>
+  </file>
   <file src="src/Converter/Number/BigNumberConverter.php">
     <ImpureVariable occurrences="2">
       <code>$this</code>
@@ -67,6 +73,12 @@
       <code>uuid_parse</code>
     </ImpureFunctionCall>
   </file>
+  <file src="src/Guid/Fields.php">
+    <DeprecatedConstant occurrences="2">
+      <code>Uuid::RESERVED_MICROSOFT</code>
+      <code>Uuid::RFC_4122</code>
+    </DeprecatedConstant>
+  </file>
   <file src="src/Guid/Guid.php">
     <DeprecatedInterface occurrences="1">
       <code>Guid</code>
@@ -109,6 +121,9 @@
     </ImpureVariable>
   </file>
   <file src="src/Nonstandard/UuidV6.php">
+    <DeprecatedConstant occurrences="1">
+      <code>Uuid::UUID_TYPE_PEABODY</code>
+    </DeprecatedConstant>
     <DeprecatedInterface occurrences="1">
       <code>UuidV6</code>
     </DeprecatedInterface>
@@ -132,6 +147,13 @@
     <MixedArrayAssignment occurrences="1">
       <code>$macs[]</code>
     </MixedArrayAssignment>
+  </file>
+  <file src="src/Rfc4122/Fields.php">
+    <DeprecatedConstant occurrences="3">
+      <code>Uuid::RFC_4122</code>
+      <code>Uuid::UUID_TYPE_DCE_SECURITY</code>
+      <code>Uuid::UUID_TYPE_PEABODY</code>
+    </DeprecatedConstant>
   </file>
   <file src="src/Rfc4122/NilUuid.php">
     <DeprecatedInterface occurrences="1">
@@ -161,6 +183,9 @@
     </ImpureVariable>
   </file>
   <file src="src/Rfc4122/UuidV1.php">
+    <DeprecatedConstant occurrences="1">
+      <code>Uuid::UUID_TYPE_TIME</code>
+    </DeprecatedConstant>
     <DeprecatedInterface occurrences="1">
       <code>UuidV1</code>
     </DeprecatedInterface>
@@ -169,6 +194,9 @@
     </DeprecatedMethod>
   </file>
   <file src="src/Rfc4122/UuidV2.php">
+    <DeprecatedConstant occurrences="1">
+      <code>Uuid::UUID_TYPE_DCE_SECURITY</code>
+    </DeprecatedConstant>
     <DeprecatedInterface occurrences="1">
       <code>UuidV2</code>
     </DeprecatedInterface>
@@ -177,6 +205,9 @@
     </DeprecatedMethod>
   </file>
   <file src="src/Rfc4122/UuidV3.php">
+    <DeprecatedConstant occurrences="1">
+      <code>Uuid::UUID_TYPE_HASH_MD5</code>
+    </DeprecatedConstant>
     <DeprecatedInterface occurrences="1">
       <code>UuidV3</code>
     </DeprecatedInterface>
@@ -185,6 +216,9 @@
     </DeprecatedMethod>
   </file>
   <file src="src/Rfc4122/UuidV4.php">
+    <DeprecatedConstant occurrences="1">
+      <code>Uuid::UUID_TYPE_RANDOM</code>
+    </DeprecatedConstant>
     <DeprecatedInterface occurrences="1">
       <code>UuidV4</code>
     </DeprecatedInterface>
@@ -193,12 +227,23 @@
     </DeprecatedMethod>
   </file>
   <file src="src/Rfc4122/UuidV5.php">
+    <DeprecatedConstant occurrences="1">
+      <code>Uuid::UUID_TYPE_HASH_SHA1</code>
+    </DeprecatedConstant>
     <DeprecatedInterface occurrences="1">
       <code>UuidV5</code>
     </DeprecatedInterface>
     <DeprecatedMethod occurrences="1">
       <code>parent::__construct($fields, $numberConverter, $codec, $timeConverter)</code>
     </DeprecatedMethod>
+  </file>
+  <file src="src/Rfc4122/VariantTrait.php">
+    <DeprecatedConstant occurrences="4">
+      <code>Uuid::RESERVED_FUTURE</code>
+      <code>Uuid::RESERVED_MICROSOFT</code>
+      <code>Uuid::RESERVED_NCS</code>
+      <code>Uuid::RFC_4122</code>
+    </DeprecatedConstant>
   </file>
   <file src="src/Type/Decimal.php">
     <UnusedMethodCall occurrences="1">
