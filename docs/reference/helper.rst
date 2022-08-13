@@ -7,7 +7,7 @@ Helper Functions
 ramsey/uuid additionally provides the following helper functions, which return
 only the string standard representation of a UUID.
 
-.. php:function:: Ramsey\\Uuid\\v1([$node[, $clockSeq]])
+.. php:function:: Ramsey\Uuid\v1([$node[, $clockSeq]])
 
     Generates a string standard representation of a version 1, time-based UUID.
 
@@ -16,7 +16,7 @@ only the string standard representation of a UUID.
     :returns: A string standard representation of a version 1 UUID
     :returntype: string
 
-.. php:function:: Ramsey\\Uuid\\v2($localDomain[, $localIdentifier[, $node[, $clockSeq]]])
+.. php:function:: Ramsey\Uuid\v2($localDomain[, $localIdentifier[, $node[, $clockSeq]]])
 
     Generates a string standard representation of a version 2, DCE Security UUID.
 
@@ -27,7 +27,7 @@ only the string standard representation of a UUID.
     :returns: A string standard representation of a version 2 UUID
     :returntype: string
 
-.. php:function:: Ramsey\\Uuid\\v3($ns, $name)
+.. php:function:: Ramsey\Uuid\v3($ns, $name)
 
     Generates a string standard representation of a version 3, name-based (MD5) UUID.
 
@@ -36,14 +36,14 @@ only the string standard representation of a UUID.
     :returns: A string standard representation of a version 3 UUID
     :returntype: string
 
-.. php:function:: Ramsey\\Uuid\\v4()
+.. php:function:: Ramsey\Uuid\v4()
 
     Generates a string standard representation of a version 4, random UUID.
 
     :returns: A string standard representation of a version 4 UUID
     :returntype: string
 
-.. php:function:: Ramsey\\Uuid\\v5($ns, $name)
+.. php:function:: Ramsey\Uuid\v5($ns, $name)
 
     Generates a string standard representation of a version 5, name-based (SHA-1) UUID.
 
@@ -52,7 +52,7 @@ only the string standard representation of a UUID.
     :returns: A string standard representation of a version 5 UUID
     :returntype: string
 
-.. php:function:: Ramsey\\Uuid\\v6([$node[, $clockSeq]])
+.. php:function:: Ramsey\Uuid\v6([$node[, $clockSeq]])
 
     Generates a string standard representation of a version 6, ordered-time UUID.
 

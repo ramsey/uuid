@@ -6,6 +6,7 @@ namespace Ramsey\Uuid\Test;
 
 use Ramsey\Uuid\Rfc4122\FieldsInterface;
 use Ramsey\Uuid\Rfc4122\UuidInterface;
+use Ramsey\Uuid\Rfc4122\Version;
 use Ramsey\Uuid\Type\Hexadecimal;
 use Ramsey\Uuid\Type\Integer as IntegerObject;
 use Ramsey\Uuid\Uuid;
@@ -27,7 +28,7 @@ class FunctionsTest extends TestCase
         $uuid = Uuid::fromString($v1);
 
         $this->assertIsString($v1);
-        $this->assertSame(Uuid::UUID_TYPE_TIME, $uuid->getFields()->getVersion());
+        $this->assertSame(Version::Time, $uuid->getFields()->getVersion());
     }
 
     public function testV2ReturnsVersion2UuidString(): void
@@ -43,7 +44,7 @@ class FunctionsTest extends TestCase
         $fields = Uuid::fromString($v2)->getFields();
 
         $this->assertIsString($v2);
-        $this->assertSame(Uuid::UUID_TYPE_DCE_SECURITY, $fields->getVersion());
+        $this->assertSame(Version::DceSecurity, $fields->getVersion());
     }
 
     public function testV3ReturnsVersion3UuidString(): void
@@ -55,7 +56,7 @@ class FunctionsTest extends TestCase
         $uuid = Uuid::fromString($v3);
 
         $this->assertIsString($v3);
-        $this->assertSame(Uuid::UUID_TYPE_HASH_MD5, $uuid->getFields()->getVersion());
+        $this->assertSame(Version::HashMd5, $uuid->getFields()->getVersion());
     }
 
     public function testV4ReturnsVersion4UuidString(): void
@@ -66,7 +67,7 @@ class FunctionsTest extends TestCase
         $uuid = Uuid::fromString($v4);
 
         $this->assertIsString($v4);
-        $this->assertSame(Uuid::UUID_TYPE_RANDOM, $uuid->getFields()->getVersion());
+        $this->assertSame(Version::Random, $uuid->getFields()->getVersion());
     }
 
     public function testV5ReturnsVersion5UuidString(): void
@@ -78,7 +79,7 @@ class FunctionsTest extends TestCase
         $uuid = Uuid::fromString($v5);
 
         $this->assertIsString($v5);
-        $this->assertSame(Uuid::UUID_TYPE_HASH_SHA1, $uuid->getFields()->getVersion());
+        $this->assertSame(Version::HashSha1, $uuid->getFields()->getVersion());
     }
 
     public function testV6ReturnsVersion6UuidString(): void
@@ -92,6 +93,6 @@ class FunctionsTest extends TestCase
         $fields = Uuid::fromString($v6)->getFields();
 
         $this->assertIsString($v6);
-        $this->assertSame(Uuid::UUID_TYPE_PEABODY, $fields->getVersion());
+        $this->assertSame(Version::ReorderedTime, $fields->getVersion());
     }
 }

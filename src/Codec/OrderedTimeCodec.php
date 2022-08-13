@@ -17,7 +17,7 @@ namespace Ramsey\Uuid\Codec;
 use Ramsey\Uuid\Exception\InvalidArgumentException;
 use Ramsey\Uuid\Exception\UnsupportedOperationException;
 use Ramsey\Uuid\Rfc4122\FieldsInterface as Rfc4122FieldsInterface;
-use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\Rfc4122\Version;
 use Ramsey\Uuid\UuidInterface;
 
 use function strlen;
@@ -55,7 +55,7 @@ class OrderedTimeCodec extends StringCodec
     {
         if (
             !($uuid->getFields() instanceof Rfc4122FieldsInterface)
-            || $uuid->getFields()->getVersion() !== Uuid::UUID_TYPE_TIME
+            || $uuid->getFields()->getVersion() !== Version::Time
         ) {
             throw new InvalidArgumentException(
                 'Expected RFC 4122 version 1 (time-based) UUID'
@@ -96,7 +96,7 @@ class OrderedTimeCodec extends StringCodec
 
         if (
             !($uuid->getFields() instanceof Rfc4122FieldsInterface)
-            || $uuid->getFields()->getVersion() !== Uuid::UUID_TYPE_TIME
+            || $uuid->getFields()->getVersion() !== Version::Time
         ) {
             throw new UnsupportedOperationException(
                 'Attempting to decode a non-time-based UUID using '

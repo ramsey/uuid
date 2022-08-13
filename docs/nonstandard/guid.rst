@@ -48,7 +48,7 @@ This is best explained by example.
         "Class: %s\nGUID: %s\nVersion: %d\nBytes: %s\n",
         get_class($guid),
         $guid->toString(),
-        $guid->getFields()->getVersion(),
+        $guid->getFields()->getVersion()?->value,
         bin2hex($guid->getBytes())
     );
 
@@ -104,7 +104,7 @@ can take the GUID string representation and convert it into a standard UUID.
         "Class: %s\nUUID: %s\nVersion: %d\nBytes: %s\n",
         get_class($uuid),
         $uuid->toString(),
-        $uuid->getFields()->getVersion(),
+        $uuid->getFields()->getVersion()?->value,
         bin2hex($uuid->getBytes())
     );
 

@@ -20,6 +20,7 @@ use Ramsey\Uuid\Provider\Node\StaticNodeProvider;
 use Ramsey\Uuid\Provider\Time\FixedTimeProvider;
 use Ramsey\Uuid\Rfc4122\FieldsInterface;
 use Ramsey\Uuid\Rfc4122\UuidV2;
+use Ramsey\Uuid\Rfc4122\Version;
 use Ramsey\Uuid\Test\TestCase;
 use Ramsey\Uuid\Type\Hexadecimal;
 use Ramsey\Uuid\Type\Integer;
@@ -34,7 +35,7 @@ class UuidV2Test extends TestCase
     /**
      * @dataProvider provideTestVersions
      */
-    public function testConstructorThrowsExceptionWhenFieldsAreNotValidForType(int $version): void
+    public function testConstructorThrowsExceptionWhenFieldsAreNotValidForType(Version $version): void
     {
         $fields = Mockery::mock(FieldsInterface::class, [
             'getVersion' => $version,
@@ -59,15 +60,13 @@ class UuidV2Test extends TestCase
     public function provideTestVersions(): array
     {
         return [
-            ['version' => 0],
-            ['version' => 1],
-            ['version' => 3],
-            ['version' => 4],
-            ['version' => 5],
-            ['version' => 6],
-            ['version' => 7],
-            ['version' => 8],
-            ['version' => 9],
+            ['version' => Version::Time],
+            ['version' => Version::HashMd5],
+            ['version' => Version::Random],
+            ['version' => Version::HashSha1],
+            ['version' => Version::ReorderedTime],
+            ['version' => Version::UnixTime],
+            ['version' => Version::Custom],
         ];
     }
 

@@ -25,6 +25,7 @@ use Ramsey\Uuid\Lazy\LazyUuidFromString;
 use Ramsey\Uuid\Rfc4122\FieldsInterface as Rfc4122FieldsInterface;
 use Ramsey\Uuid\Rfc4122\UuidInterface;
 use Ramsey\Uuid\Rfc4122\UuidV1;
+use Ramsey\Uuid\Rfc4122\Version;
 use Ramsey\Uuid\TimeBasedUuidInterface;
 use Ramsey\Uuid\Uuid;
 use Throwable;
@@ -63,7 +64,7 @@ final class UuidV6 extends Uuid implements UuidInterface, TimeBasedUuidInterface
         CodecInterface $codec,
         TimeConverterInterface $timeConverter
     ) {
-        if ($fields->getVersion() !== Uuid::UUID_TYPE_PEABODY) {
+        if ($fields->getVersion() !== Version::ReorderedTime) {
             throw new InvalidArgumentException(
                 'Fields used to create a UuidV6 must represent a '
                 . 'version 6 (ordered-time) UUID'

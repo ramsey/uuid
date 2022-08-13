@@ -4,8 +4,9 @@
 Version 1: Time-based
 =====================
 
-A version 1 UUID uses the current time, along with the MAC address (or *node*)
-for a network interface on the local machine. This serves two purposes:
+A version 1 UUID uses a timestamp based on the `Gregorian calendar epoch`_,
+along with the MAC address (or *node*) for a network interface on the local
+machine. This serves two purposes:
 
 1. You can know *when* the identifier was created.
 2. You can know *where* the identifier was created.
@@ -37,7 +38,7 @@ will generate a random node.
     printf(
         "UUID: %s\nVersion: %d\nDate: %s\nNode: %s\n",
         $uuid->toString(),
-        $uuid->getFields()->getVersion(),
+        $uuid->getFields()->getVersion()?->value,
         $uuid->getDateTime()->format('r'),
         $uuid->getFields()->getNode()->toString()
     );
@@ -179,6 +180,7 @@ If you do not need an identifier with a timestamp value embedded in it, see
 :ref:`rfc4122.version4` to learn about random UUIDs.
 
 
+.. _Gregorian calendar epoch: https://en.wikipedia.org/wiki/Gregorian_calendar
 .. _RFC 4122: https://tools.ietf.org/html/rfc4122
 .. _RFC 4122, section 4.5: https://tools.ietf.org/html/rfc4122#section-4.5
 .. _section 4.2 of RFC 4122: https://tools.ietf.org/html/rfc4122#section-4.2

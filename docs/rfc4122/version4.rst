@@ -20,7 +20,7 @@ information, then a version 4 UUID might be perfect for your needs.
     printf(
         "UUID: %s\nVersion: %d\n",
         $uuid->toString(),
-        $uuid->getFields()->getVersion()
+        $uuid->getFields()->getVersion()?->value
     );
 
 This will generate a version 4 UUID and print out its string representation.

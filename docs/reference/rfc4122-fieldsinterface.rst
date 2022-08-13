@@ -60,12 +60,13 @@ Rfc4122\\FieldsInterface
         the value ``2``.
 
         :returns: The UUID variant.
-        :returntype: ``int``
+        :returntype: Ramsey\\Uuid\\Variant
 
     .. php:method:: getVersion()
 
         :returns: The UUID version.
-        :returntype: ``int``
+        :returntype: Ramsey\\Uuid\\Rfc4122\\Version
+        :returntype: ``null``
 
     .. php:method:: isNil()
 

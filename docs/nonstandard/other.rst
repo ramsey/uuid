@@ -27,8 +27,8 @@ as a :php:class:`Ramsey\\Uuid\\Nonstandard\\Uuid`.
         "Class: %s\nUUID: %s\nVersion: %d\nVariant: %s\n",
         get_class($uuid),
         $uuid->toString(),
-        $uuid->getFields()->getVersion(),
-        $uuid->getFields()->getVariant()
+        $uuid->getFields()->getVersion()?->value,
+        $uuid->getFields()->getVariant()?->value
     );
 
 This will create a Nonstandard\\Uuid from the given string and print out a few

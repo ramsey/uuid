@@ -12,30 +12,6 @@ the ramsey/uuid library.
 
 .. php:class:: Uuid
 
-    .. php:const:: UUID_TYPE_TIME
-
-        :ref:`rfc4122.version1` UUID.
-
-    .. php:const:: UUID_TYPE_DCE_SECURITY
-
-        :ref:`rfc4122.version2` UUID.
-
-    .. php:const:: UUID_TYPE_HASH_MD5
-
-        :ref:`rfc4122.version3` UUID.
-
-    .. php:const:: UUID_TYPE_RANDOM
-
-        :ref:`rfc4122.version4` UUID.
-
-    .. php:const:: UUID_TYPE_HASH_SHA1
-
-        :ref:`rfc4122.version5` UUID.
-
-    .. php:const:: UUID_TYPE_PEABODY
-
-        :ref:`nonstandard.version6` UUID.
-
     .. php:const:: NAMESPACE_DNS
 
         The name string is a fully-qualified domain name.
@@ -68,22 +44,6 @@ the ramsey/uuid library.
     .. php:const:: DCE_DOMAIN_ORG
 
         DCE Security organization domain.
-
-    .. php:const:: RESERVED_NCS
-
-        Variant identifier: reserved, NCS backward compatibility.
-
-    .. php:const:: RFC_4122
-
-        Variant identifier: the UUID layout specified in RFC 4122.
-
-    .. php:const:: RESERVED_MICROSOFT
-
-        Variant identifier: reserved, Microsoft Corporation backward compatibility.
-
-    .. php:const:: RESERVED_FUTURE
-
-        Variant identifier: reserved for future definition.
 
     .. php:staticmethod:: uuid1([$node[, $clockSeq]])
 

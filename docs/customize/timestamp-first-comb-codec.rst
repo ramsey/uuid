@@ -41,7 +41,7 @@ coming after the previously-created one, in a proper sort order.
     printf(
         "UUID: %s\nVersion: %d\nBytes: %s\n",
         $timestampFirstComb->toString(),
-        $timestampFirstComb->getFields()->getVersion(),
+        $timestampFirstComb->getFields()->getVersion()?->value,
         bin2hex($timestampFirstComb->getBytes())
     );
 

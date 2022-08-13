@@ -44,7 +44,7 @@ will generate a random node.
     printf(
         "UUID: %s\nVersion: %d\nDate: %s\nNode: %s\nDomain: %s\nID: %s\n",
         $uuid->toString(),
-        $uuid->getFields()->getVersion(),
+        $uuid->getFields()->getVersion()?->value,
         $uuid->getDateTime()->format('r'),
         $uuid->getFields()->getNode()->toString(),
         $uuid->getLocalDomainName(),

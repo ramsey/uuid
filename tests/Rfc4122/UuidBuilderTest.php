@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Ramsey\Uuid\Test\Rfc4122;
 
-use Mockery;
 use Ramsey\Uuid\Codec\StringCodec;
 use Ramsey\Uuid\Converter\Number\GenericNumberConverter;
 use Ramsey\Uuid\Converter\Time\GenericTimeConverter;
@@ -12,13 +11,13 @@ use Ramsey\Uuid\Exception\UnableToBuildUuidException;
 use Ramsey\Uuid\Math\BrickMathCalculator;
 use Ramsey\Uuid\Nonstandard\UuidV6;
 use Ramsey\Uuid\Rfc4122\Fields;
-use Ramsey\Uuid\Rfc4122\FieldsInterface;
 use Ramsey\Uuid\Rfc4122\UuidBuilder;
 use Ramsey\Uuid\Rfc4122\UuidV1;
 use Ramsey\Uuid\Rfc4122\UuidV2;
 use Ramsey\Uuid\Rfc4122\UuidV3;
 use Ramsey\Uuid\Rfc4122\UuidV4;
 use Ramsey\Uuid\Rfc4122\UuidV5;
+use Ramsey\Uuid\Rfc4122\Version;
 use Ramsey\Uuid\Test\TestCase;
 
 use function hex2bin;
@@ -31,7 +30,7 @@ class UuidBuilderTest extends TestCase
      *
      * @dataProvider provideBuildTestValues
      */
-    public function testBuild(string $uuid, string $expectedClass, int $expectedVersion): void
+    public function testBuild(string $uuid, string $expectedClass, Version $expectedVersion): void
     {
         /** @var non-empty-string $bytes */
         $bytes = (string) hex2bin(str_replace('-', '', $uuid));
@@ -60,32 +59,32 @@ class UuidBuilderTest extends TestCase
             [
                 'uuid' => 'ff6f8cb0-c57d-11e1-9b21-0800200c9a66',
                 'expectedClass' => UuidV1::class,
-                'expectedVersion' => 1,
+                'expectedVersion' => Version::Time,
             ],
             [
                 'uuid' => 'ff6f8cb0-c57d-21e1-9b21-0800200c9a66',
                 'expectedClass' => UuidV2::class,
-                'expectedVersion' => 2,
+                'expectedVersion' => Version::DceSecurity,
             ],
             [
                 'uuid' => 'ff6f8cb0-c57d-31e1-9b21-0800200c9a66',
                 'expectedClass' => UuidV3::class,
-                'expectedVersion' => 3,
+                'expectedVersion' => Version::HashMd5,
             ],
             [
                 'uuid' => 'ff6f8cb0-c57d-41e1-9b21-0800200c9a66',
                 'expectedClass' => UuidV4::class,
-                'expectedVersion' => 4,
+                'expectedVersion' => Version::Random,
             ],
             [
                 'uuid' => 'ff6f8cb0-c57d-51e1-9b21-0800200c9a66',
                 'expectedClass' => UuidV5::class,
-                'expectedVersion' => 5,
+                'expectedVersion' => Version::HashSha1,
             ],
             [
                 'uuid' => 'ff6f8cb0-c57d-61e1-9b21-0800200c9a66',
                 'expectedClass' => UuidV6::class,
-                'expectedVersion' => 6,
+                'expectedVersion' => Version::ReorderedTime,
             ],
         ];
     }
@@ -107,27 +106,5 @@ class UuidBuilderTest extends TestCase
         );
 
         $builder->build($codec, $bytes);
-    }
-
-    public function testBuildThrowsUnableToBuildExceptionForIncorrectVersionFields(): void
-    {
-        $fields = Mockery::mock(FieldsInterface::class, [
-            'isNil' => false,
-            'getVersion' => 255,
-        ]);
-
-        $builder = Mockery::mock(UuidBuilder::class);
-        $builder->shouldAllowMockingProtectedMethods();
-        $builder->shouldReceive('buildFields')->andReturn($fields);
-        $builder->shouldReceive('build')->passthru();
-
-        $codec = Mockery::mock(StringCodec::class);
-
-        $this->expectException(UnableToBuildUuidException::class);
-        $this->expectExceptionMessage(
-            'The UUID version in the given fields is not supported by this UUID builder'
-        );
-
-        $builder->build($codec, 'foobar');
     }
 }

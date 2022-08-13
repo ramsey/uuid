@@ -41,7 +41,7 @@ a proper sort order.
     printf(
         "UUID: %s\nVersion: %d\nDate: %s\nNode: %s\nBytes: %s\n",
         $orderedTimeUuid->toString(),
-        $orderedTimeUuid->getFields()->getVersion(),
+        $orderedTimeUuid->getFields()->getVersion()?->value,
         $orderedTimeUuid->getDateTime()->format('r'),
         $orderedTimeUuid->getFields()->getNode()->toString(),
         bin2hex($orderedTimeUuid->getBytes())

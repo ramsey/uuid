@@ -64,7 +64,7 @@ final class UuidV2 extends Uuid implements UuidInterface
         CodecInterface $codec,
         TimeConverterInterface $timeConverter
     ) {
-        if ($fields->getVersion() !== Uuid::UUID_TYPE_DCE_SECURITY) {
+        if ($fields->getVersion() !== Version::DceSecurity) {
             throw new InvalidArgumentException(
                 'Fields used to create a UuidV2 must represent a '
                 . 'version 2 (DCE Security) UUID'

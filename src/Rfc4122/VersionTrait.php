@@ -24,7 +24,7 @@ trait VersionTrait
     /**
      * Returns the version
      */
-    abstract public function getVersion(): ?int;
+    abstract public function getVersion(): ?Version;
 
     /**
      * Returns true if these fields represent a nil UUID
@@ -43,7 +43,8 @@ trait VersionTrait
         }
 
         return match ($this->getVersion()) {
-            1, 2, 3, 4, 5, 6 => true,
+            Version::Time, Version::DceSecurity, Version::HashMd5,
+                Version::Random, Version::HashSha1, Version::ReorderedTime => true,
             default => false,
         };
     }

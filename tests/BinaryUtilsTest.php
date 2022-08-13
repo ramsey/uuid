@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Ramsey\Uuid\Test;
 
 use Ramsey\Uuid\BinaryUtils;
+use Ramsey\Uuid\Rfc4122\Version;
 use Ramsey\Uuid\Variant;
 
 use function dechex;
@@ -14,7 +15,7 @@ class BinaryUtilsTest extends TestCase
     /**
      * @dataProvider provideVersionTestValues
      */
-    public function testApplyVersion(int $timeHi, int $version, int $expectedInt, string $expectedHex): void
+    public function testApplyVersion(int $timeHi, Version $version, int $expectedInt, string $expectedHex): void
     {
         $this->assertSame($expectedInt, BinaryUtils::applyVersion($timeHi, $version));
         $this->assertSame($expectedHex, dechex(BinaryUtils::applyVersion($timeHi, $version)));
@@ -30,98 +31,98 @@ class BinaryUtilsTest extends TestCase
     }
 
     /**
-     * @return array<array{timeHi: int, version: int, expectedInt: int, expectedHex: string}>
+     * @return array<array{timeHi: int, version: Version, expectedInt: int, expectedHex: string}>
      */
     public function provideVersionTestValues(): array
     {
         return [
             [
                 'timeHi' => 1001,
-                'version' => 1,
+                'version' => Version::Time,
                 'expectedInt' => 5097,
                 'expectedHex' => '13e9',
             ],
             [
                 'timeHi' => 1001,
-                'version' => 2,
+                'version' => Version::DceSecurity,
                 'expectedInt' => 9193,
                 'expectedHex' => '23e9',
             ],
             [
                 'timeHi' => 1001,
-                'version' => 3,
+                'version' => Version::HashMd5,
                 'expectedInt' => 13289,
                 'expectedHex' => '33e9',
             ],
             [
                 'timeHi' => 1001,
-                'version' => 4,
+                'version' => Version::Random,
                 'expectedInt' => 17385,
                 'expectedHex' => '43e9',
             ],
             [
                 'timeHi' => 1001,
-                'version' => 5,
+                'version' => Version::HashSha1,
                 'expectedInt' => 21481,
                 'expectedHex' => '53e9',
             ],
             [
                 'timeHi' => 65535,
-                'version' => 1,
+                'version' => Version::Time,
                 'expectedInt' => 8191,
                 'expectedHex' => '1fff',
             ],
             [
                 'timeHi' => 65535,
-                'version' => 2,
+                'version' => Version::DceSecurity,
                 'expectedInt' => 12287,
                 'expectedHex' => '2fff',
             ],
             [
                 'timeHi' => 65535,
-                'version' => 3,
+                'version' => Version::HashMd5,
                 'expectedInt' => 16383,
                 'expectedHex' => '3fff',
             ],
             [
                 'timeHi' => 65535,
-                'version' => 4,
+                'version' => Version::Random,
                 'expectedInt' => 20479,
                 'expectedHex' => '4fff',
             ],
             [
                 'timeHi' => 65535,
-                'version' => 5,
+                'version' => Version::HashSha1,
                 'expectedInt' => 24575,
                 'expectedHex' => '5fff',
             ],
             [
                 'timeHi' => 0,
-                'version' => 1,
+                'version' => Version::Time,
                 'expectedInt' => 4096,
                 'expectedHex' => '1000',
             ],
             [
                 'timeHi' => 0,
-                'version' => 2,
+                'version' => Version::DceSecurity,
                 'expectedInt' => 8192,
                 'expectedHex' => '2000',
             ],
             [
                 'timeHi' => 0,
-                'version' => 3,
+                'version' => Version::HashMd5,
                 'expectedInt' => 12288,
                 'expectedHex' => '3000',
             ],
             [
                 'timeHi' => 0,
-                'version' => 4,
+                'version' => Version::Random,
                 'expectedInt' => 16384,
                 'expectedHex' => '4000',
             ],
             [
                 'timeHi' => 0,
-                'version' => 5,
+                'version' => Version::HashSha1,
                 'expectedInt' => 20480,
                 'expectedHex' => '5000',
             ],

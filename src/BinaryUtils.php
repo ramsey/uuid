@@ -14,6 +14,8 @@ declare(strict_types=1);
 
 namespace Ramsey\Uuid;
 
+use Ramsey\Uuid\Rfc4122\Version;
+
 /**
  * Provides binary math utilities
  */
@@ -48,17 +50,17 @@ class BinaryUtils
      *
      * @param int $timeHi The value of the 16-bit `time_hi_and_version` field
      *     before the RFC 4122 version is applied
-     * @param int $version The RFC 4122 version to apply to the `time_hi` field
+     * @param Version $version The RFC 4122 version to apply to the `time_hi` field
      *
      * @return int The 16-bit time_hi field of the timestamp multiplexed with
      *     the UUID version number
      *
      * @psalm-pure
      */
-    public static function applyVersion(int $timeHi, int $version): int
+    public static function applyVersion(int $timeHi, Version $version): int
     {
         $timeHi = $timeHi & 0x0fff;
-        $timeHi |= $version << 12;
+        $timeHi |= $version->value << 12;
 
         return $timeHi;
     }

@@ -57,7 +57,7 @@ the static generation methods.
     printf(
         "UUID: %s\nVersion: %d\n",
         $uuid->toString(),
-        $uuid->getFields()->getVersion()
+        $uuid->getFields()->getVersion()?->value
     );
 
 This will return an instance of :php:class:`Ramsey\\Uuid\\Rfc4122\\UuidV4`.

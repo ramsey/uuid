@@ -19,6 +19,7 @@ use Ramsey\Uuid\Fields\SerializableFieldsTrait;
 use Ramsey\Uuid\Rfc4122\FieldsInterface;
 use Ramsey\Uuid\Rfc4122\NilTrait;
 use Ramsey\Uuid\Rfc4122\VariantTrait;
+use Ramsey\Uuid\Rfc4122\Version;
 use Ramsey\Uuid\Rfc4122\VersionTrait;
 use Ramsey\Uuid\Type\Hexadecimal;
 use Ramsey\Uuid\Variant;
@@ -175,7 +176,7 @@ final class Fields implements FieldsInterface
         return new Hexadecimal($node);
     }
 
-    public function getVersion(): ?int
+    public function getVersion(): ?Version
     {
         if ($this->isNil()) {
             return null;
@@ -184,7 +185,7 @@ final class Fields implements FieldsInterface
         /** @var array $parts */
         $parts = unpack('n*', $this->bytes);
 
-        return ((int) $parts[4] >> 4) & 0x00f;
+        return Version::tryFrom(((int) $parts[4] >> 4) & 0x00f);
     }
 
     private function isCorrectVariant(): bool

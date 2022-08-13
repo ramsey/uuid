@@ -18,6 +18,7 @@ Reference
     reference/rfc4122-uuidv3
     reference/rfc4122-uuidv4
     reference/rfc4122-uuidv5
+    reference/rfc4122-version
     reference/nonstandard-uuidv6
     reference/guid-fields
     reference/guid-guid
@@ -30,3 +31,4 @@ Reference
     reference/name-based-namespaces
     reference/calculators
     reference/validators
+    reference/variant

@@ -17,7 +17,6 @@ namespace Ramsey\Uuid\Rfc4122;
 use Ramsey\Uuid\Exception\InvalidArgumentException;
 use Ramsey\Uuid\Fields\SerializableFieldsTrait;
 use Ramsey\Uuid\Type\Hexadecimal;
-use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\Variant;
 
 use function bin2hex;
@@ -155,13 +154,13 @@ final class Fields implements FieldsInterface
     {
         /** @var non-empty-string $timestamp */
         $timestamp = match ($this->getVersion()) {
-            Uuid::UUID_TYPE_DCE_SECURITY => sprintf(
+            Version::DceSecurity => sprintf(
                 '%03x%04s%08s',
                 hexdec($this->getTimeHiAndVersion()->toString()) & 0x0fff,
                 $this->getTimeMid()->toString(),
                 ''
             ),
-            Uuid::UUID_TYPE_PEABODY => sprintf(
+            Version::ReorderedTime => sprintf(
                 '%08s%04s%03x',
                 $this->getTimeLow()->toString(),
                 $this->getTimeMid()->toString(),
@@ -178,7 +177,7 @@ final class Fields implements FieldsInterface
         return new Hexadecimal($timestamp);
     }
 
-    public function getVersion(): ?int
+    public function getVersion(): ?Version
     {
         if ($this->isNil()) {
             return null;
@@ -187,7 +186,7 @@ final class Fields implements FieldsInterface
         /** @var array $parts */
         $parts = unpack('n*', $this->bytes);
 
-        return (int) $parts[4] >> 12;
+        return Version::tryFrom((int) $parts[4] >> 12);
     }
 
     private function isCorrectVariant(): bool

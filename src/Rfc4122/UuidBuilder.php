@@ -66,17 +66,17 @@ class UuidBuilder implements UuidBuilderInterface
             }
 
             switch ($fields->getVersion()) {
-                case 1:
+                case Version::Time:
                     return new UuidV1($fields, $this->numberConverter, $codec, $this->timeConverter);
-                case 2:
+                case Version::DceSecurity:
                     return new UuidV2($fields, $this->numberConverter, $codec, $this->timeConverter);
-                case 3:
+                case Version::HashMd5:
                     return new UuidV3($fields, $this->numberConverter, $codec, $this->timeConverter);
-                case 4:
+                case Version::Random:
                     return new UuidV4($fields, $this->numberConverter, $codec, $this->timeConverter);
-                case 5:
+                case Version::HashSha1:
                     return new UuidV5($fields, $this->numberConverter, $codec, $this->timeConverter);
-                case 6:
+                case Version::ReorderedTime:
                     return new UuidV6($fields, $this->numberConverter, $codec, $this->timeConverter);
             }
 

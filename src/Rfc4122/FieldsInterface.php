@@ -115,7 +115,7 @@ interface FieldsInterface extends BaseFieldsInterface
      *
      * @link http://tools.ietf.org/html/rfc4122#section-4.1.3 RFC 4122, § 4.1.3: Version
      */
-    public function getVersion(): ?int;
+    public function getVersion(): ?Version;
 
     /**
      * Returns true if these fields represent a nil UUID

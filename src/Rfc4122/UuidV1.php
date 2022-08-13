@@ -55,7 +55,7 @@ final class UuidV1 extends Uuid implements UuidInterface, TimeBasedUuidInterface
         CodecInterface $codec,
         TimeConverterInterface $timeConverter
     ) {
-        if ($fields->getVersion() !== Uuid::UUID_TYPE_TIME) {
+        if ($fields->getVersion() !== Version::Time) {
             throw new InvalidArgumentException(
                 'Fields used to create a UuidV1 must represent a '
                 . 'version 1 (time-based) UUID'

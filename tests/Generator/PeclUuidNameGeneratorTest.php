@@ -7,6 +7,7 @@ namespace Ramsey\Uuid\Test\Generator;
 use Ramsey\Uuid\BinaryUtils;
 use Ramsey\Uuid\Exception\NameException;
 use Ramsey\Uuid\Generator\PeclUuidNameGenerator;
+use Ramsey\Uuid\Rfc4122\Version;
 use Ramsey\Uuid\Test\TestCase;
 use Ramsey\Uuid\Uuid;
 
@@ -28,7 +29,7 @@ class PeclUuidNameGeneratorTest extends TestCase
     public function testPeclUuidNameGeneratorHashesName(string $ns, string $name, string $algorithm): void
     {
         $namespace = Uuid::fromString($ns);
-        $version = $algorithm === 'md5' ? 3 : 5;
+        $version = $algorithm === 'md5' ? Version::HashMd5 : Version::HashSha1;
         $expectedBytes = substr(hash($algorithm, $namespace->getBytes() . $name, true), 0, 16);
 
         // Need to add the version and variant, since ext-uuid already includes

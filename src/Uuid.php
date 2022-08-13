@@ -81,52 +81,6 @@ class Uuid implements Rfc4122UuidInterface
     public const NIL = '00000000-0000-0000-0000-000000000000';
 
     /**
-     * Version 1 (time-based) UUID
-     *
-     * @link https://tools.ietf.org/html/rfc4122#section-4.1.3 RFC 4122, § 4.1.3: Version
-     */
-    public const UUID_TYPE_TIME = 1;
-
-    /**
-     * Version 2 (DCE Security) UUID
-     *
-     * @link https://tools.ietf.org/html/rfc4122#section-4.1.3 RFC 4122, § 4.1.3: Version
-     */
-    public const UUID_TYPE_DCE_SECURITY = 2;
-
-    /**
-     * Version 3 (name-based and hashed with MD5) UUID
-     *
-     * @link https://tools.ietf.org/html/rfc4122#section-4.1.3 RFC 4122, § 4.1.3: Version
-     */
-    public const UUID_TYPE_HASH_MD5 = 3;
-
-    /**
-     * Version 4 (random) UUID
-     *
-     * @link https://tools.ietf.org/html/rfc4122#section-4.1.3 RFC 4122, § 4.1.3: Version
-     */
-    public const UUID_TYPE_RANDOM = 4;
-
-    /**
-     * Version 5 (name-based and hashed with SHA1) UUID
-     *
-     * @link https://tools.ietf.org/html/rfc4122#section-4.1.3 RFC 4122, § 4.1.3: Version
-     */
-    public const UUID_TYPE_HASH_SHA1 = 5;
-
-    /**
-     * Version 6 (ordered-time) UUID
-     *
-     * This is named `UUID_TYPE_PEABODY`, since the specification is still in
-     * draft form, and the primary author/editor's name is Brad Peabody.
-     *
-     * @link https://github.com/uuid6/uuid6-ietf-draft UUID version 6 IETF draft
-     * @link http://gh.peabody.io/uuidv6/ "Version 6" UUIDs
-     */
-    public const UUID_TYPE_PEABODY = 6;
-
-    /**
      * DCE Security principal domain
      *
      * @link https://pubs.opengroup.org/onlinepubs/9696989899/chap11.htm#tagcjh_14_05_01_01 DCE 1.1, §11.5.1.1

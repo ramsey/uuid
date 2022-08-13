@@ -1,3 +1,3 @@
-Sphinx==2.4.3
-sphinx-rtd-theme==0.4.3
-sphinxcontrib-phpdomain==0.7.0
+Sphinx==4.5.0
+sphinx-rtd-theme==1.0.0
+sphinxcontrib-phpdomain==0.9.0

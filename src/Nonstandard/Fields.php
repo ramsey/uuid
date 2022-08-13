@@ -18,6 +18,7 @@ use Ramsey\Uuid\Exception\InvalidArgumentException;
 use Ramsey\Uuid\Fields\SerializableFieldsTrait;
 use Ramsey\Uuid\Rfc4122\FieldsInterface;
 use Ramsey\Uuid\Rfc4122\VariantTrait;
+use Ramsey\Uuid\Rfc4122\Version;
 use Ramsey\Uuid\Type\Hexadecimal;
 
 use function bin2hex;
@@ -136,7 +137,7 @@ final class Fields implements FieldsInterface
         return new Hexadecimal($timestamp);
     }
 
-    public function getVersion(): ?int
+    public function getVersion(): ?Version
     {
         return null;
     }

@@ -6,6 +6,7 @@ namespace Ramsey\Uuid\Test\Guid;
 
 use Ramsey\Uuid\Exception\InvalidArgumentException;
 use Ramsey\Uuid\Guid\Fields;
+use Ramsey\Uuid\Rfc4122\Version;
 use Ramsey\Uuid\Test\TestCase;
 use Ramsey\Uuid\Type\Hexadecimal;
 use Ramsey\Uuid\Variant;
@@ -104,7 +105,7 @@ class FieldsTest extends TestCase
     public function testFieldGetterMethods(
         string $bytes,
         string $methodName,
-        bool | int | string | Variant | null $expectedValue
+        bool | string | Variant | Version | null $expectedValue
     ): void {
         /** @var non-empty-string $bytes */
         $bytes = (string) hex2bin($bytes);
@@ -138,7 +139,7 @@ class FieldsTest extends TestCase
             ['b08c6fff7dc5e111cb210800200c9a66', 'getTimeMid', 'c57d'],
             ['b08c6fff7dc5e111cb210800200c9a66', 'getTimestamp', '1e1c57dff6f8cb0'],
             ['b08c6fff7dc5e111cb210800200c9a66', 'getVariant', Variant::ReservedMicrosoft],
-            ['b08c6fff7dc5e111cb210800200c9a66', 'getVersion', 1],
+            ['b08c6fff7dc5e111cb210800200c9a66', 'getVersion', Version::Time],
             ['b08c6fff7dc5e111cb210800200c9a66', 'isNil', false],
 
             // For ff6f8cb0-c57d-41e1-db21-0800200c9a66
@@ -151,7 +152,7 @@ class FieldsTest extends TestCase
             ['b08c6fff7dc5e141db210800200c9a66', 'getTimeMid', 'c57d'],
             ['b08c6fff7dc5e141db210800200c9a66', 'getTimestamp', '1e1c57dff6f8cb0'],
             ['b08c6fff7dc5e141db210800200c9a66', 'getVariant', Variant::ReservedMicrosoft],
-            ['b08c6fff7dc5e141db210800200c9a66', 'getVersion', 4],
+            ['b08c6fff7dc5e141db210800200c9a66', 'getVersion', Version::Random],
             ['b08c6fff7dc5e141db210800200c9a66', 'isNil', false],
 
             // For ff6f8cb0-c57d-31e1-8b21-0800200c9a66
@@ -164,7 +165,7 @@ class FieldsTest extends TestCase
             ['b08c6fff7dc5e1318b210800200c9a66', 'getTimeMid', 'c57d'],
             ['b08c6fff7dc5e1318b210800200c9a66', 'getTimestamp', '1e1c57dff6f8cb0'],
             ['b08c6fff7dc5e1318b210800200c9a66', 'getVariant', Variant::Rfc4122],
-            ['b08c6fff7dc5e1318b210800200c9a66', 'getVersion', 3],
+            ['b08c6fff7dc5e1318b210800200c9a66', 'getVersion', Version::HashMd5],
             ['b08c6fff7dc5e1318b210800200c9a66', 'isNil', false],
 
             // For ff6f8cb0-c57d-51e1-9b21-0800200c9a66
@@ -177,7 +178,7 @@ class FieldsTest extends TestCase
             ['b08c6fff7dc5e1519b210800200c9a66', 'getTimeMid', 'c57d'],
             ['b08c6fff7dc5e1519b210800200c9a66', 'getTimestamp', '1e1c57dff6f8cb0'],
             ['b08c6fff7dc5e1519b210800200c9a66', 'getVariant', Variant::Rfc4122],
-            ['b08c6fff7dc5e1519b210800200c9a66', 'getVersion', 5],
+            ['b08c6fff7dc5e1519b210800200c9a66', 'getVersion', Version::HashSha1],
             ['b08c6fff7dc5e1519b210800200c9a66', 'isNil', false],
 
             // For 00000000-0000-0000-0000-000000000000

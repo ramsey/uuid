@@ -27,6 +27,7 @@ use Ramsey\Uuid\Generator\TimeGeneratorInterface;
 use Ramsey\Uuid\Lazy\LazyUuidFromString;
 use Ramsey\Uuid\Provider\NodeProviderInterface;
 use Ramsey\Uuid\Provider\Time\FixedTimeProvider;
+use Ramsey\Uuid\Rfc4122\Version;
 use Ramsey\Uuid\Type\Hexadecimal;
 use Ramsey\Uuid\Type\Integer as IntegerObject;
 use Ramsey\Uuid\Type\Time;
@@ -346,7 +347,7 @@ class UuidFactory implements UuidFactoryInterface
 
         $bytes = $timeGenerator->generate($nodeHex, $clockSeq);
 
-        return $this->uuidFromBytesAndVersion($bytes, 1);
+        return $this->uuidFromBytesAndVersion($bytes, Version::Time);
     }
 
     /**
@@ -356,7 +357,7 @@ class UuidFactory implements UuidFactoryInterface
     {
         $bytes = $this->timeGenerator->generate($node, $clockSeq);
 
-        return $this->uuidFromBytesAndVersion($bytes, 1);
+        return $this->uuidFromBytesAndVersion($bytes, Version::Time);
     }
 
     public function uuid2(
@@ -372,7 +373,7 @@ class UuidFactory implements UuidFactoryInterface
             $clockSeq
         );
 
-        return $this->uuidFromBytesAndVersion($bytes, 2);
+        return $this->uuidFromBytesAndVersion($bytes, Version::DceSecurity);
     }
 
     /**
@@ -381,14 +382,14 @@ class UuidFactory implements UuidFactoryInterface
      */
     public function uuid3(UuidInterface | string $ns, string $name): UuidInterface
     {
-        return $this->uuidFromNsAndName($ns, $name, 3, 'md5');
+        return $this->uuidFromNsAndName($ns, $name, Version::HashMd5, 'md5');
     }
 
     public function uuid4(): UuidInterface
     {
         $bytes = $this->randomGenerator->generate(16);
 
-        return $this->uuidFromBytesAndVersion($bytes, 4);
+        return $this->uuidFromBytesAndVersion($bytes, Version::Random);
     }
 
     /**
@@ -397,7 +398,7 @@ class UuidFactory implements UuidFactoryInterface
      */
     public function uuid5(UuidInterface | string $ns, string $name): UuidInterface
     {
-        return $this->uuidFromNsAndName($ns, $name, 5, 'sha1');
+        return $this->uuidFromNsAndName($ns, $name, Version::HashSha1, 'sha1');
     }
 
     public function uuid6(?Hexadecimal $node = null, ?int $clockSeq = null): UuidInterface
@@ -417,7 +418,7 @@ class UuidFactory implements UuidFactoryInterface
         $v6Bytes = hex2bin(substr($v6, 1, 12) . '0' . substr($v6, -3));
         $v6Bytes .= substr($bytes, 8);
 
-        return $this->uuidFromBytesAndVersion($v6Bytes, 6);
+        return $this->uuidFromBytesAndVersion($v6Bytes, Version::ReorderedTime);
     }
 
     /**
@@ -443,7 +444,7 @@ class UuidFactory implements UuidFactoryInterface
      *
      * @param non-empty-string|UuidInterface $ns The namespace (must be a valid UUID)
      * @param string $name The name to hash together with the namespace
-     * @param positive-int $version The version of UUID to create (3 or 5)
+     * @param Version $version The version of UUID to create (3 or 5)
      * @param non-empty-string $hashAlgorithm The hashing algorithm to use when
      *     hashing together the namespace and name
      *
@@ -455,7 +456,7 @@ class UuidFactory implements UuidFactoryInterface
     private function uuidFromNsAndName(
         UuidInterface | string $ns,
         string $name,
-        int $version,
+        Version $version,
         string $hashAlgorithm,
     ): UuidInterface {
         if (!($ns instanceof UuidInterface)) {
@@ -474,14 +475,14 @@ class UuidFactory implements UuidFactoryInterface
      * Returns an RFC 4122 variant Uuid, created from the provided bytes and version
      *
      * @param non-empty-string $bytes The byte string to convert to a UUID
-     * @param positive-int $version The RFC 4122 version to apply to the UUID
+     * @param Version $version The RFC 4122 version to apply to the UUID
      *
      * @return UuidInterface An instance of UuidInterface, created from the
      *     byte string and version
      *
      * @psalm-pure
      */
-    private function uuidFromBytesAndVersion(string $bytes, int $version): UuidInterface
+    private function uuidFromBytesAndVersion(string $bytes, Version $version): UuidInterface
     {
         /** @var array $unpackedTime */
         $unpackedTime = unpack('n*', substr($bytes, 6, 2));

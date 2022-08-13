@@ -13,6 +13,7 @@ use Ramsey\Uuid\Exception\DateTimeException;
 use Ramsey\Uuid\Exception\InvalidArgumentException;
 use Ramsey\Uuid\Rfc4122\FieldsInterface;
 use Ramsey\Uuid\Rfc4122\UuidV1;
+use Ramsey\Uuid\Rfc4122\Version;
 use Ramsey\Uuid\Test\TestCase;
 use Ramsey\Uuid\Type\Hexadecimal;
 use Ramsey\Uuid\Type\Time;
@@ -23,7 +24,7 @@ class UuidV1Test extends TestCase
     /**
      * @dataProvider provideTestVersions
      */
-    public function testConstructorThrowsExceptionWhenFieldsAreNotValidForType(int $version): void
+    public function testConstructorThrowsExceptionWhenFieldsAreNotValidForType(Version $version): void
     {
         $fields = Mockery::mock(FieldsInterface::class, [
             'getVersion' => $version,
@@ -48,15 +49,13 @@ class UuidV1Test extends TestCase
     public function provideTestVersions(): array
     {
         return [
-            ['version' => 0],
-            ['version' => 2],
-            ['version' => 3],
-            ['version' => 4],
-            ['version' => 5],
-            ['version' => 6],
-            ['version' => 7],
-            ['version' => 8],
-            ['version' => 9],
+            ['version' => Version::DceSecurity],
+            ['version' => Version::HashMd5],
+            ['version' => Version::Random],
+            ['version' => Version::HashSha1],
+            ['version' => Version::ReorderedTime],
+            ['version' => Version::UnixTime],
+            ['version' => Version::Custom],
         ];
     }
 
@@ -104,7 +103,7 @@ class UuidV1Test extends TestCase
     public function testGetDateTimeThrowsException(): void
     {
         $fields = Mockery::mock(FieldsInterface::class, [
-            'getVersion' => 1,
+            'getVersion' => Version::Time,
             'getTimestamp' => new Hexadecimal('0'),
         ]);
 

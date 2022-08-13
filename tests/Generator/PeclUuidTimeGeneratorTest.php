@@ -6,6 +6,7 @@ namespace Ramsey\Uuid\Test\Generator;
 
 use Ramsey\Uuid\Generator\PeclUuidTimeGenerator;
 use Ramsey\Uuid\Rfc4122\Fields;
+use Ramsey\Uuid\Rfc4122\Version;
 use Ramsey\Uuid\Test\TestCase;
 use Ramsey\Uuid\Uuid;
 
@@ -24,6 +25,6 @@ class PeclUuidTimeGeneratorTest extends TestCase
         $fields = $uuid->getFields();
 
         $this->assertSame(16, strlen($bytes));
-        $this->assertSame(Uuid::UUID_TYPE_TIME, $fields->getVersion());
+        $this->assertSame(Version::Time, $fields->getVersion());
     }
 }

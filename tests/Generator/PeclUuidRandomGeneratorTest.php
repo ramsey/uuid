@@ -6,6 +6,7 @@ namespace Ramsey\Uuid\Test\Generator;
 
 use Ramsey\Uuid\Generator\PeclUuidRandomGenerator;
 use Ramsey\Uuid\Rfc4122\Fields;
+use Ramsey\Uuid\Rfc4122\Version;
 use Ramsey\Uuid\Test\TestCase;
 use Ramsey\Uuid\Uuid;
 
@@ -24,6 +25,6 @@ class PeclUuidRandomGeneratorTest extends TestCase
         $fields = $uuid->getFields();
 
         $this->assertSame(16, strlen($bytes));
-        $this->assertSame(Uuid::UUID_TYPE_RANDOM, $fields->getVersion());
+        $this->assertSame(Version::Random, $fields->getVersion());
     }
 }

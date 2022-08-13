@@ -49,7 +49,7 @@ In all other ways, version 6 UUIDs function like version 1 UUIDs.
     printf(
         "UUID: %s\nVersion: %d\nDate: %s\nNode: %s\n",
         $uuid->toString(),
-        $uuid->getFields()->getVersion(),
+        $uuid->getFields()->getVersion()?->value,
         $uuid->getDateTime()->format('r'),
         $uuid->getFields()->getNode()->toString()
     );
