@@ -16,6 +16,11 @@ namespace Ramsey\Uuid;
 
 use Ramsey\Uuid\Rfc4122\Version;
 
+use function pack;
+use function substr;
+use function substr_replace;
+use function unpack;
+
 /**
  * Provides binary math utilities
  */
@@ -63,5 +68,39 @@ class BinaryUtils
         $timeHi |= $version->value << 12;
 
         return $timeHi;
+    }
+
+    /**
+     * Applies the RFC 4122 version number and variant field to the 128-bit
+     * integer (as a 16-byte string) provided
+     *
+     * @param non-empty-string $bytes A 128-bit integer (16-byte string) to
+     *     which the RFC 4122 version number and variant field will be applied,
+     *     making the number a valid UUID
+     * @param Version $version The RFC 4122 version to apply
+     *
+     * @return non-empty-string A 16-byte string with the UUID version and variant applied
+     *
+     * @psalm-pure
+     */
+    public static function applyVersionAndVariant(
+        string $bytes,
+        Version $version,
+        Variant $variant = Variant::Rfc4122
+    ): string {
+        /** @var array $unpackedTime */
+        $unpackedTime = unpack('n*', substr($bytes, 6, 2));
+        $timeHi = (int) $unpackedTime[1];
+        $timeHiAndVersion = pack('n*', self::applyVersion($timeHi, $version));
+
+        /** @var array $unpackedClockSeq */
+        $unpackedClockSeq = unpack('n*', substr($bytes, 8, 2));
+        $clockSeqHi = (int) $unpackedClockSeq[1];
+        $clockSeqHiAndReserved = pack('n*', self::applyVariant($clockSeqHi, $variant));
+
+        $bytes = substr_replace($bytes, $timeHiAndVersion, 6, 2);
+
+        /** @var non-empty-string */
+        return substr_replace($bytes, $clockSeqHiAndReserved, 8, 2);
     }
 }

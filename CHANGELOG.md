@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   a date/time value.
 * Introduce `Ramsey\Uuid\Variant` enum to represent the variant field.
 * Introduce `Ramsey\Uuid\Rfc4122\Version` enum to represent the version field.
+* Add new static method `Ramsey\Uuid\BinaryUtils::applyVersionAndVariant()`.
 
 ### Changed
 

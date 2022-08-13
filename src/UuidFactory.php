@@ -35,12 +35,9 @@ use Ramsey\Uuid\Validator\ValidatorInterface;
 
 use function bin2hex;
 use function hex2bin;
-use function pack;
 use function str_pad;
 use function strtolower;
 use function substr;
-use function substr_replace;
-use function unpack;
 
 use const STR_PAD_LEFT;
 
@@ -484,25 +481,12 @@ class UuidFactory implements UuidFactoryInterface
      */
     private function uuidFromBytesAndVersion(string $bytes, Version $version): UuidInterface
     {
-        /** @var array $unpackedTime */
-        $unpackedTime = unpack('n*', substr($bytes, 6, 2));
-        $timeHi = (int) $unpackedTime[1];
-        $timeHiAndVersion = pack('n*', BinaryUtils::applyVersion($timeHi, $version));
-
-        /** @var array $unpackedClockSeq */
-        $unpackedClockSeq = unpack('n*', substr($bytes, 8, 2));
-        $clockSeqHi = (int) $unpackedClockSeq[1];
-        $clockSeqHiAndReserved = pack('n*', BinaryUtils::applyVariant($clockSeqHi));
-
-        $bytes = substr_replace($bytes, $timeHiAndVersion, 6, 2);
-
-        /** @var non-empty-string $bytes */
-        $bytes = substr_replace($bytes, $clockSeqHiAndReserved, 8, 2);
+        $bytesWithVariantAndVersion = BinaryUtils::applyVersionAndVariant($bytes, $version);
 
         if ($this->isDefaultFeatureSet) {
-            return LazyUuidFromString::fromBytes($bytes);
+            return LazyUuidFromString::fromBytes($bytesWithVariantAndVersion);
         }
 
-        return $this->uuid($bytes);
+        return $this->uuid($bytesWithVariantAndVersion);
     }
 }
