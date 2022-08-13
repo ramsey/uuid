@@ -104,18 +104,6 @@
       <code>parent::__construct($fields, $numberConverter, $codec, $timeConverter)</code>
     </DeprecatedMethod>
   </file>
-  <file src="src/Rfc4122/UuidV1Factory.php">
-    <DeprecatedInterface occurrences="1">
-      <code>UuidV1Factory</code>
-    </DeprecatedInterface>
-    <ImpureMethodCall occurrences="5">
-      <code>format</code>
-      <code>format</code>
-      <code>generate</code>
-      <code>generate</code>
-      <code>getGenerator</code>
-    </ImpureMethodCall>
-  </file>
   <file src="src/Rfc4122/UuidV2.php">
     <DeprecatedMethod occurrences="1">
       <code>parent::__construct($fields, $numberConverter, $codec, $timeConverter)</code>
