@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 * Introduce `Ramsey\Uuid\TimeBasedUuidInterface` to represent any UUID based on
   a date/time value.
+* Introduce `Ramsey\Uuid\Variant` enum to represent the variant field.
+* Introduce `Ramsey\Uuid\Rfc4122\Version` enum to represent the version field.
 
 ### Changed
 
@@ -52,6 +54,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   * `getVariant()`
   * `getVersion()`
 * Remove the following deprecated constants:
+  * `Ramsey\Uuid\Uuid::RESERVED_NCS` (replaced with `Ramsey\Uuid\Variant::ReservedNcs` enum)
+  * `Ramsey\Uuid\Uuid::RFC_4122` (replaced with `Ramsey\Uuid\Variant::Rfc4122` enum)
+  * `Ramsey\Uuid\Uuid::RESERVED_MICROSOFT` (replaced with `Ramsey\Uuid\Variant::ReservedMicrosoft` enum)
+  * `Ramsey\Uuid\Uuid::RESERVED_FUTURE` (replaced with `Ramsey\Uuid\Variant::ReservedFuture` enum)
+  * `Ramsey\Uuid\Uuid::UUID_TYPE_TIME` (replaced with `Ramsey\Uuid\Rfc4122\Version::Time` enum)
+  * `Ramsey\Uuid\Uuid::UUID_TYPE_DCE_SECURITY` (replaced with `Ramsey\Uuid\Rfc4122\Version::DceSecurity` enum)
+  * `Ramsey\Uuid\Uuid::UUID_TYPE_HASH_MD5` (replaced with `Ramsey\Uuid\Rfc4122\Version::HashMd5` enum)
+  * `Ramsey\Uuid\Uuid::UUID_TYPE_RANDOM` (replaced with `Ramsey\Uuid\Rfc4122\Version::Random` enum)
+  * `Ramsey\Uuid\Uuid::UUID_TYPE_HASH_SHA1` (replaced with `Ramsey\Uuid\Rfc4122\Version::HashSha1` enum)
+  * `Ramsey\Uuid\Uuid::UUID_TYPE_PEABODY` (replaced with `Ramsey\Uuid\Rfc4122\Version::ReorderedTime` enum)
   * `Ramsey\Uuid\Uuid::VALID_PATTERN`
 * Remove dependency on ramsey/collection package.
 
