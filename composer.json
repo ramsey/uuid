@@ -32,7 +32,7 @@
         "phpstan/phpstan-mockery": "^1.1",
         "phpstan/phpstan-phpunit": "^1.1",
         "phpunit/phpunit": "^8.5 || ^9",
-        "slevomat/coding-standard": "^7.0",
+        "slevomat/coding-standard": "^8.4",
         "squizlabs/php_codesniffer": "^3.5",
         "vimeo/psalm": "^4.9"
     },
