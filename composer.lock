@@ -1150,35 +1150,35 @@
         },
         {
             "name": "ergebnis/composer-normalize",
-            "version": "2.24.1",
+            "version": "2.28.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ergebnis/composer-normalize.git",
-                "reference": "3d5392cfca3d519412cef3f4817c73d2f60d43fd"
+                "reference": "ec75a2bf751f6fec165e9ea0262655b8ca397e5c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ergebnis/composer-normalize/zipball/3d5392cfca3d519412cef3f4817c73d2f60d43fd",
-                "reference": "3d5392cfca3d519412cef3f4817c73d2f60d43fd",
+                "url": "https://api.github.com/repos/ergebnis/composer-normalize/zipball/ec75a2bf751f6fec165e9ea0262655b8ca397e5c",
+                "reference": "ec75a2bf751f6fec165e9ea0262655b8ca397e5c",
                 "shasum": ""
             },
             "require": {
                 "composer-plugin-api": "^2.0.0",
                 "ergebnis/json-normalizer": "~2.1.0",
                 "ergebnis/json-printer": "^3.2.0",
-                "justinrainbow/json-schema": "^5.2.11",
+                "justinrainbow/json-schema": "^5.2.12",
                 "localheinz/diff": "^1.1.1",
                 "php": "^7.4 || ^8.0"
             },
             "require-dev": {
-                "composer/composer": "^2.2.9",
+                "composer/composer": "^2.3.9",
                 "ergebnis/license": "^1.2.0",
-                "ergebnis/php-cs-fixer-config": "^3.4.0",
+                "ergebnis/php-cs-fixer-config": "^4.4.0",
                 "fakerphp/faker": "^1.19.0",
-                "phpunit/phpunit": "^9.5.19",
-                "psalm/plugin-phpunit": "~0.16.1",
-                "symfony/filesystem": "^5.4.6",
-                "vimeo/psalm": "^4.22.0"
+                "phpunit/phpunit": "^9.5.21",
+                "psalm/plugin-phpunit": "~0.17.0",
+                "symfony/filesystem": "^5.4.9",
+                "vimeo/psalm": "^4.24.0"
             },
             "type": "composer-plugin",
             "extra": {
@@ -1215,13 +1215,7 @@
                 "issues": "https://github.com/ergebnis/composer-normalize/issues",
                 "source": "https://github.com/ergebnis/composer-normalize"
             },
-            "funding": [
-                {
-                    "url": "https://github.com/localheinz",
-                    "type": "github"
-                }
-            ],
-            "time": "2022-03-19T13:37:12+00:00"
+            "time": "2022-07-05T16:09:10+00:00"
         },
         {
             "name": "ergebnis/json-normalizer",
