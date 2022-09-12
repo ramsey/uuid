@@ -85,18 +85,12 @@ class Uuid implements UuidInterface
     /**
      * Variant: reserved, NCS backward compatibility
      *
-     * @deprecated The Ramsey\Uuid\Variant enum will replace this constant in
-     *     ramsey/uuid version 5.
-     *
      * @link http://tools.ietf.org/html/rfc4122#section-4.1.1 RFC 4122, § 4.1.1: Variant
      */
     public const RESERVED_NCS = 0;
 
     /**
      * Variant: the UUID layout specified in RFC 4122
-     *
-     * @deprecated The Ramsey\Uuid\Variant enum will replace this constant in
-     *     ramsey/uuid version 5.
      *
      * @link http://tools.ietf.org/html/rfc4122#section-4.1.1 RFC 4122, § 4.1.1: Variant
      */
@@ -105,18 +99,12 @@ class Uuid implements UuidInterface
     /**
      * Variant: reserved, Microsoft Corporation backward compatibility
      *
-     * @deprecated The Ramsey\Uuid\Variant enum will replace this constant in
-     *     ramsey/uuid version 5.
-     *
      * @link http://tools.ietf.org/html/rfc4122#section-4.1.1 RFC 4122, § 4.1.1: Variant
      */
     public const RESERVED_MICROSOFT = 6;
 
     /**
      * Variant: reserved for future definition
-     *
-     * @deprecated The Ramsey\Uuid\Variant enum will replace this constant in
-     *     ramsey/uuid version 5.
      *
      * @link http://tools.ietf.org/html/rfc4122#section-4.1.1 RFC 4122, § 4.1.1: Variant
      */
@@ -130,18 +118,12 @@ class Uuid implements UuidInterface
     /**
      * Version 1 (time-based) UUID
      *
-     * @deprecated The Ramsey\Uuid\Version enum will replace this constant in
-     *     ramsey/uuid version 5.
-     *
      * @link https://tools.ietf.org/html/rfc4122#section-4.1.3 RFC 4122, § 4.1.3: Version
      */
     public const UUID_TYPE_TIME = 1;
 
     /**
      * Version 2 (DCE Security) UUID
-     *
-     * @deprecated The Ramsey\Uuid\Version enum will replace this constant in
-     *     ramsey/uuid version 5.
      *
      * @link https://tools.ietf.org/html/rfc4122#section-4.1.3 RFC 4122, § 4.1.3: Version
      */
@@ -155,9 +137,6 @@ class Uuid implements UuidInterface
     /**
      * Version 3 (name-based and hashed with MD5) UUID
      *
-     * @deprecated The Ramsey\Uuid\Version enum will replace this constant in
-     *     ramsey/uuid version 5.
-     *
      * @link https://tools.ietf.org/html/rfc4122#section-4.1.3 RFC 4122, § 4.1.3: Version
      */
     public const UUID_TYPE_HASH_MD5 = 3;
@@ -165,18 +144,12 @@ class Uuid implements UuidInterface
     /**
      * Version 4 (random) UUID
      *
-     * @deprecated The Ramsey\Uuid\Version enum will replace this constant in
-     *     ramsey/uuid version 5.
-     *
      * @link https://tools.ietf.org/html/rfc4122#section-4.1.3 RFC 4122, § 4.1.3: Version
      */
     public const UUID_TYPE_RANDOM = 4;
 
     /**
      * Version 5 (name-based and hashed with SHA1) UUID
-     *
-     * @deprecated The Ramsey\Uuid\Version enum will replace this constant in
-     *     ramsey/uuid version 5.
      *
      * @link https://tools.ietf.org/html/rfc4122#section-4.1.3 RFC 4122, § 4.1.3: Version
      */
@@ -276,10 +249,6 @@ class Uuid implements UuidInterface
      * $randomUuid = Uuid::uuid4();
      * $namespaceSha1Uuid = Uuid::uuid5(Uuid::NAMESPACE_URL, 'http://php.net/');
      * ```
-     *
-     * @deprecated ramsey/uuid version 5 will no longer allow direct
-     *     instantiation of the base Ramsey\Uuid\Uuid class. Instead, you must
-     *     use factories to create UUID objects.
      *
      * @param Rfc4122FieldsInterface $fields The fields from which to construct a UUID
      * @param NumberConverterInterface $numberConverter The number converter to use
@@ -433,9 +402,6 @@ class Uuid implements UuidInterface
 
     /**
      * Returns the factory used to create UUIDs
-     *
-     * @deprecated ramsey/uuid version 5 will no longer support getting a
-     *     factory instance from the base Ramsey\Uuid\Uuid class.
      */
     public static function getFactory(): UuidFactoryInterface
     {
@@ -448,11 +414,6 @@ class Uuid implements UuidInterface
 
     /**
      * Sets the factory used to create UUIDs
-     *
-     * @deprecated ramsey/uuid version 5 will no longer support setting a
-     *     factory instance on the base Ramsey\Uuid\Uuid class. If you need to
-     *     customize the properties used to build a UUID, use one of the
-     *     dedicated factories that version 5 will introduce.
      *
      * @param UuidFactoryInterface $factory A factory that will be used by this
      *     class to create UUIDs
