@@ -19,7 +19,7 @@ use Ramsey\Uuid\Type\Hexadecimal;
 use Ramsey\Uuid\Type\Integer as IntegerObject;
 
 /**
- * Returns a version 1 (time-based) UUID from a host ID, sequence number,
+ * Returns a version 1 (Gregorian time) UUID from a host ID, sequence number,
  * and the current time
  *
  * @param Hexadecimal|int|string|null $node A 48-bit number representing the
@@ -106,7 +106,7 @@ function v5($ns, string $name): string
 }
 
 /**
- * Returns a version 6 (ordered-time) UUID from a host ID, sequence number,
+ * Returns a version 6 (reordered time) UUID from a host ID, sequence number,
  * and the current time
  *
  * @param Hexadecimal|null $node A 48-bit number representing the hardware

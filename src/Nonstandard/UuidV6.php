@@ -25,7 +25,7 @@ use Ramsey\Uuid\Rfc4122\UuidV6ConverterTrait;
 use Ramsey\Uuid\Uuid;
 
 /**
- * Reordered-time, or version 6, UUIDs include timestamp, clock sequence, and
+ * Reordered time, or version 6, UUIDs include timestamp, clock sequence, and
  * node values that are combined into a 128-bit unsigned integer
  *
  * @deprecated Use {@see \Ramsey\Uuid\Rfc4122\UuidV6} instead.
@@ -41,7 +41,7 @@ class UuidV6 extends Uuid implements UuidInterface
     use UuidV6ConverterTrait;
 
     /**
-     * Creates a version 6 (reordered-time) UUID
+     * Creates a version 6 (reordered time) UUID
      *
      * @param Rfc4122FieldsInterface $fields The fields from which to construct a UUID
      * @param NumberConverterInterface $numberConverter The number converter to use
@@ -60,7 +60,7 @@ class UuidV6 extends Uuid implements UuidInterface
         if ($fields->getVersion() !== Uuid::UUID_TYPE_REORDERED_TIME) {
             throw new InvalidArgumentException(
                 'Fields used to create a UuidV6 must represent a '
-                . 'version 6 (ordered-time) UUID'
+                . 'version 6 (reordered time) UUID'
             );
         }
 

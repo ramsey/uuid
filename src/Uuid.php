@@ -116,7 +116,7 @@ class Uuid implements UuidInterface
     public const VALID_PATTERN = '^[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}$';
 
     /**
-     * Version 1 (time-based) UUID
+     * Version 1 (Gregorian time) UUID
      *
      * @link https://tools.ietf.org/html/rfc4122#section-4.1.3 RFC 4122, § 4.1.3: Version
      */
@@ -156,20 +156,12 @@ class Uuid implements UuidInterface
     public const UUID_TYPE_HASH_SHA1 = 5;
 
     /**
-     * Version 6 (reordered-time) UUID
-     *
-     * This is named `UUID_TYPE_PEABODY`, since the specification is still in
-     * draft form, and the primary author/editor's name is Brad Peabody.
-     *
      * @deprecated Use {@see Uuid::UUID_TYPE_REORDERED_TIME} instead.
-     *
-     * @link https://github.com/uuid6/uuid6-ietf-draft UUID version 6 IETF draft
-     * @link http://gh.peabody.io/uuidv6/ "Version 6" UUIDs
      */
     public const UUID_TYPE_PEABODY = 6;
 
     /**
-     * Version 6 (reordered-time) UUID
+     * Version 6 (reordered time) UUID
      *
      * @link https://datatracker.ietf.org/doc/html/draft-peabody-dispatch-new-uuid-format-04#section-5.1 UUID Version 6
      */
@@ -555,7 +547,7 @@ class Uuid implements UuidInterface
     }
 
     /**
-     * Returns a version 1 (time-based) UUID from a host ID, sequence number,
+     * Returns a version 1 (Gregorian time) UUID from a host ID, sequence number,
      * and the current time
      *
      * @param Hexadecimal|int|string|null $node A 48-bit number representing the
@@ -660,7 +652,7 @@ class Uuid implements UuidInterface
     }
 
     /**
-     * Returns a version 6 (ordered-time) UUID from a host ID, sequence number,
+     * Returns a version 6 (reordered time) UUID from a host ID, sequence number,
      * and the current time
      *
      * @param Hexadecimal|null $node A 48-bit number representing the hardware

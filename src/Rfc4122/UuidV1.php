@@ -22,7 +22,7 @@ use Ramsey\Uuid\Rfc4122\FieldsInterface as Rfc4122FieldsInterface;
 use Ramsey\Uuid\Uuid;
 
 /**
- * Time-based, or version 1, UUIDs include timestamp, clock sequence, and node
+ * Gregorian time, or version 1, UUIDs include timestamp, clock sequence, and node
  * values that are combined into a 128-bit unsigned integer
  *
  * @psalm-immutable
@@ -32,7 +32,7 @@ final class UuidV1 extends Uuid implements UuidInterface
     use TimeTrait;
 
     /**
-     * Creates a version 1 (time-based) UUID
+     * Creates a version 1 (Gregorian time) UUID
      *
      * @param Rfc4122FieldsInterface $fields The fields from which to construct a UUID
      * @param NumberConverterInterface $numberConverter The number converter to use
