@@ -18,10 +18,11 @@ use Ramsey\Uuid\Codec\CodecInterface;
 use Ramsey\Uuid\Converter\NumberConverterInterface;
 use Ramsey\Uuid\Converter\TimeConverterInterface;
 use Ramsey\Uuid\Exception\InvalidArgumentException;
+use Ramsey\Uuid\Lazy\LazyUuidFromString;
 use Ramsey\Uuid\Rfc4122\FieldsInterface as Rfc4122FieldsInterface;
 use Ramsey\Uuid\Rfc4122\TimeTrait;
 use Ramsey\Uuid\Rfc4122\UuidInterface;
-use Ramsey\Uuid\Rfc4122\UuidV6ConverterTrait;
+use Ramsey\Uuid\Rfc4122\UuidV1;
 use Ramsey\Uuid\Uuid;
 
 /**
@@ -38,7 +39,6 @@ use Ramsey\Uuid\Uuid;
 class UuidV6 extends Uuid implements UuidInterface
 {
     use TimeTrait;
-    use UuidV6ConverterTrait;
 
     /**
      * Creates a version 6 (reordered time) UUID
@@ -65,5 +65,41 @@ class UuidV6 extends Uuid implements UuidInterface
         }
 
         parent::__construct($fields, $numberConverter, $codec, $timeConverter);
+    }
+
+    /**
+     * Converts this UUID into an instance of a version 1 UUID
+     */
+    public function toUuidV1(): UuidV1
+    {
+        $hex = $this->getHex()->toString();
+        $hex = substr($hex, 7, 5)
+            . substr($hex, 13, 3)
+            . substr($hex, 3, 4)
+            . '1' . substr($hex, 0, 3)
+            . substr($hex, 16);
+
+        /** @var LazyUuidFromString $uuid */
+        $uuid = Uuid::fromBytes((string) hex2bin($hex));
+
+        return $uuid->toUuidV1();
+    }
+
+    /**
+     * Converts a version 1 UUID into an instance of a version 6 UUID
+     */
+    public static function fromUuidV1(UuidV1 $uuidV1): \Ramsey\Uuid\Rfc4122\UuidV6
+    {
+        $hex = $uuidV1->getHex()->toString();
+        $hex = substr($hex, 13, 3)
+            . substr($hex, 8, 4)
+            . substr($hex, 0, 5)
+            . '6' . substr($hex, 5, 3)
+            . substr($hex, 16);
+
+        /** @var LazyUuidFromString $uuid */
+        $uuid = Uuid::fromBytes((string) hex2bin($hex));
+
+        return $uuid->toUuidV6();
     }
 }
