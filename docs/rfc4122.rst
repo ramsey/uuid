@@ -13,13 +13,14 @@ RFC 4122 UUIDs
     rfc4122/version3
     rfc4122/version4
     rfc4122/version5
+    rfc4122/version6
 
 `RFC 4122`_ defines five versions of UUID. Each version has different generation
 algorithms and properties. Which one you choose to use depends on your use-case.
 You can find out more about their applications on the specific page for that
 version.
 
-Version 1: Time-based
+Version 1: Gregorian Time
     This version of UUID combines a timestamp, node value (in the form of a MAC
     address from the local computer's network interface), and a clock sequence
     to ensure uniqueness. For more details, see :doc:`rfc4122/version1`.
@@ -43,6 +44,11 @@ Version 5: Named-based (SHA-1)
     This version of UUID hashes together a namespace and a name to create a
     deterministic UUID. The hashing algorithm used is SHA-1. For more details,
     see :doc:`rfc4122/version5`.
+
+Version 6: Reordered Time
+    This version of UUID combines the features of a
+    :ref:`version 1 UUID <rfc4122.version1>` with a *monotonically increasing*
+    UUID. For more details, see :ref:`rfc4122.version6`.
 
 
 .. _RFC 4122: https://tools.ietf.org/html/rfc4122

@@ -96,7 +96,7 @@ library.
     * - :php:meth:`Uuid::uuid5() <Ramsey\\Uuid\\Uuid::uuid5>`
       - This generates a :ref:`rfc4122.version5` UUID.
     * - :php:meth:`Uuid::uuid6() <Ramsey\\Uuid\\Uuid::uuid6>`
-      - This generates a :ref:`nonstandard.version6` UUID.
+      - This generates a :ref:`rfc4122.version6` UUID.
     * - :php:meth:`Uuid::isValid() <Ramsey\\Uuid\\Uuid::isValid>`
       - Checks whether a string is a valid UUID.
     * - :php:meth:`Uuid::fromString() <Ramsey\\Uuid\\Uuid::fromString>`

@@ -6,8 +6,8 @@ Ordered-time Codec
 
 .. hint::
 
-    :ref:`Version 6, ordered-time UUIDs <nonstandard.version6>` are a proposed
-    new version of UUID that take the place of ordered time UUIDs.
+    :ref:`Version 6, reordered time UUIDs <rfc4122.version6>` are a
+    new version of UUID that take the place of ordered-time UUIDs.
 
 UUIDs arrange their bytes according to the standard recommended by `RFC 4122`_.
 Unfortunately, this means the bytes aren't in an arrangement that supports
@@ -15,9 +15,9 @@ sorting by creation time or an otherwise incrementing value. The Percona
 article, "`Storing UUID Values in MySQL`_," explains at length the problems this
 can cause. It also recommends a solution: the *ordered-time UUID*.
 
-RFC 4122 version 1, time-based UUIDs rearrange the bytes of the time fields so
-that the lowest bytes appear first, the middle bytes are next, and the highest
-bytes come last. Logical sorting is not possible with this arrangement.
+RFC 4122 version 1, Gregorian time UUIDs rearrange the bytes of the time fields
+so that the lowest bytes appear first, the middle bytes are next, and the
+highest bytes come last. Logical sorting is not possible with this arrangement.
 
 An ordered-time UUID is a version 1 UUID with the time fields arranged in
 logical order so that the UUIDs can be sorted by creation time. These UUIDs are

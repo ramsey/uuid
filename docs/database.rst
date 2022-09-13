@@ -242,7 +242,7 @@ will become slower and slower.
 To minimize these problems, two solutions have been devised:
 
 1. Timestamp first COMBs
-2. Ordered Time UUIDs
+2. Ordered-time UUIDs
 
 :ref:`customize.timestamp-first-comb-codec` explains the first solution and how
 to use ramsey/uuid to implement it, while :ref:`customize.ordered-time-codec`
@@ -250,8 +250,8 @@ explains how to use ramsey/uuid to implement the second solution.
 
 .. hint::
 
-    :ref:`Version 6, ordered-time UUIDs <nonstandard.version6>` are a proposed
-    new version of UUID that take the place of ordered time UUIDs.
+    :ref:`Version 6, reordered time UUIDs <rfc4122.version6>` are a
+    new version of UUID that take the place of ordered-time UUIDs.
 
 
 .. _ramsey/uuid-doctrine: https://github.com/ramsey/uuid-doctrine
@@ -259,4 +259,3 @@ explains how to use ramsey/uuid to implement the second solution.
 .. _MariaDB: https://mariadb.org
 .. _PHP Data Objects (PDO): https://www.php.net/pdo
 .. _Storing UUID Values in MySQL: https://www.percona.com/blog/2014/12/19/store-uuid-optimized-way/
-.. _Version 6, ordered-time UUIDs: nonstandard.version6

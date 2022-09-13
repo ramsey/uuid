@@ -32,9 +32,13 @@ the ramsey/uuid library.
 
         :ref:`rfc4122.version5` UUID.
 
+    .. php:const:: UUID_TYPE_REORDERED_TIME
+
+        :ref:`rfc4122.version6` UUID.
+
     .. php:const:: UUID_TYPE_PEABODY
 
-        :ref:`nonstandard.version6` UUID.
+        *Deprecated.* Use :php:const:`Uuid::UUID_TYPE_REORDERED_TIME` instead.
 
     .. php:const:: NAMESPACE_DNS
 
@@ -87,7 +91,7 @@ the ramsey/uuid library.
 
     .. php:staticmethod:: uuid1([$node[, $clockSeq]])
 
-        Generates a version 1, time-based UUID. See :ref:`rfc4122.version1`.
+        Generates a version 1, Gregorian time UUID. See :ref:`rfc4122.version1`.
 
         :param Ramsey\\Uuid\\Type\\Hexadecimal|null $node: An optional hexadecimal node to use
         :param int|null $clockSeq: An optional clock sequence to use
@@ -132,12 +136,12 @@ the ramsey/uuid library.
 
     .. php:staticmethod:: uuid6([$node[, $clockSeq]])
 
-        Generates a version 6, ordered-time UUID. See :ref:`nonstandard.version6`.
+        Generates a version 6, reordered time UUID. See :ref:`rfc4122.version6`.
 
         :param Ramsey\\Uuid\\Type\\Hexadecimal|null $node: An optional hexadecimal node to use
         :param int|null $clockSeq: An optional clock sequence to use
         :returns: A version 6 UUID
-        :returntype: Ramsey\\Uuid\\Nonstandard\\UuidV6
+        :returntype: Ramsey\\Uuid\\Rfc4122\\UuidV6
 
     .. php:staticmethod:: fromString($uuid)
 

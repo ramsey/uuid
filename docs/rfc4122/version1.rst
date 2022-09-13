@@ -1,8 +1,8 @@
 .. _rfc4122.version1:
 
-=====================
-Version 1: Time-based
-=====================
+=========================
+Version 1: Gregorian Time
+=========================
 
 A version 1 UUID uses the current time, along with the MAC address (or *node*)
 for a network interface on the local machine. This serves two purposes:
@@ -27,7 +27,7 @@ is running on, using this value as the node. If it cannot find a MAC address, it
 will generate a random node.
 
 .. code-block:: php
-    :caption: Generate a version 1, time-based UUID
+    :caption: Generate a version 1, Gregorian time UUID
     :name: rfc4122.version1.example
 
     use Ramsey\Uuid\Uuid;
@@ -59,7 +59,7 @@ sequence.
 
 .. code-block:: php
     :caption: Provide custom node and clock sequence to create a version 1,
-              time-based UUID
+              Gregorian time UUID
     :name: rfc4122.version1.custom-example
 
     use Ramsey\Uuid\Provider\Node\StaticNodeProvider;
@@ -123,7 +123,7 @@ generate a random node value, and like the StaticNodeProvider, it also sets the
 unicast/multicast bit for you.
 
 .. code-block:: php
-    :caption: Provide a random node value to create a version 1, time-based UUID
+    :caption: Provide a random node value to create a version 1, Gregorian time UUID
     :name: rfc4122.version1.random-example
 
     use Ramsey\Uuid\Provider\Node\RandomNodeProvider;
