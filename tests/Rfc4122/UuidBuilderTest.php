@@ -10,7 +10,7 @@ use Ramsey\Uuid\Converter\Number\GenericNumberConverter;
 use Ramsey\Uuid\Converter\Time\GenericTimeConverter;
 use Ramsey\Uuid\Exception\UnableToBuildUuidException;
 use Ramsey\Uuid\Math\BrickMathCalculator;
-use Ramsey\Uuid\Nonstandard\UuidV6;
+use Ramsey\Uuid\Nonstandard\UuidV6 as NonstandardUuidV6;
 use Ramsey\Uuid\Rfc4122\Fields;
 use Ramsey\Uuid\Rfc4122\FieldsInterface;
 use Ramsey\Uuid\Rfc4122\UuidBuilder;
@@ -19,6 +19,7 @@ use Ramsey\Uuid\Rfc4122\UuidV2;
 use Ramsey\Uuid\Rfc4122\UuidV3;
 use Ramsey\Uuid\Rfc4122\UuidV4;
 use Ramsey\Uuid\Rfc4122\UuidV5;
+use Ramsey\Uuid\Rfc4122\UuidV6;
 use Ramsey\Uuid\Test\TestCase;
 
 use function hex2bin;
@@ -84,6 +85,14 @@ class UuidBuilderTest extends TestCase
             [
                 'uuid' => 'ff6f8cb0-c57d-61e1-9b21-0800200c9a66',
                 'expectedClass' => UuidV6::class,
+                'expectedVersion' => 6,
+            ],
+
+            // The same UUIDv6 will also be of the expected class type
+            // \Ramsey\Uuid\Nonstandard\UuidV6.
+            [
+                'uuid' => 'ff6f8cb0-c57d-61e1-9b21-0800200c9a66',
+                'expectedClass' => NonstandardUuidV6::class,
                 'expectedVersion' => 6,
             ],
         ];

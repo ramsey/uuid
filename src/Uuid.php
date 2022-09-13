@@ -156,18 +156,24 @@ class Uuid implements UuidInterface
     public const UUID_TYPE_HASH_SHA1 = 5;
 
     /**
-     * Version 6 (ordered-time) UUID
+     * Version 6 (reordered-time) UUID
      *
      * This is named `UUID_TYPE_PEABODY`, since the specification is still in
      * draft form, and the primary author/editor's name is Brad Peabody.
      *
-     * @deprecated The Ramsey\Uuid\Version enum will replace this constant in
-     *     ramsey/uuid version 5.
+     * @deprecated Use {@see Uuid::UUID_TYPE_REORDERED_TIME} instead.
      *
      * @link https://github.com/uuid6/uuid6-ietf-draft UUID version 6 IETF draft
      * @link http://gh.peabody.io/uuidv6/ "Version 6" UUIDs
      */
     public const UUID_TYPE_PEABODY = 6;
+
+    /**
+     * Version 6 (reordered-time) UUID
+     *
+     * @link https://datatracker.ietf.org/doc/html/draft-peabody-dispatch-new-uuid-format-04#section-5.1 UUID Version 6
+     */
+    public const UUID_TYPE_REORDERED_TIME = 6;
 
     /**
      * DCE Security principal domain
