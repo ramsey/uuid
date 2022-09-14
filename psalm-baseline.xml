@@ -95,13 +95,10 @@
       <code>$macs[]</code>
     </MixedArrayAssignment>
   </file>
-  <file src="src/Rfc4122/Fields.php">
-    <DeprecatedConstant occurrences="1">
-      <code>Uuid::UUID_TYPE_PEABODY</code>
-    </DeprecatedConstant>
-  </file>
   <file src="src/Rfc4122/UuidBuilder.php">
-    <ImpureVariable occurrences="15">
+    <ImpureVariable occurrences="17">
+      <code>$this</code>
+      <code>$this</code>
       <code>$this</code>
       <code>$this</code>
       <code>$this</code>

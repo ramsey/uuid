@@ -20,6 +20,7 @@ use Ramsey\Uuid\Rfc4122\UuidV3;
 use Ramsey\Uuid\Rfc4122\UuidV4;
 use Ramsey\Uuid\Rfc4122\UuidV5;
 use Ramsey\Uuid\Rfc4122\UuidV6;
+use Ramsey\Uuid\Rfc4122\UuidV7;
 use Ramsey\Uuid\Test\TestCase;
 
 use function hex2bin;
@@ -94,6 +95,12 @@ class UuidBuilderTest extends TestCase
                 'uuid' => 'ff6f8cb0-c57d-61e1-9b21-0800200c9a66',
                 'expectedClass' => NonstandardUuidV6::class,
                 'expectedVersion' => 6,
+            ],
+
+            [
+                'uuid' => 'ff6f8cb0-c57d-71e1-9b21-0800200c9a66',
+                'expectedClass' => UuidV7::class,
+                'expectedVersion' => 7,
             ],
         ];
     }

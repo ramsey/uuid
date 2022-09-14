@@ -98,6 +98,8 @@ class UuidFactory implements UuidFactoryInterface
     /** @var bool whether the feature set was provided from outside, or we can operate under "default" assumptions */
     private $isDefaultFeatureSet;
 
+    private TimeGeneratorInterface $unixTimeGenerator;
+
     /**
      * @param FeatureSet $features A set of available features in the current environment
      */
@@ -117,6 +119,7 @@ class UuidFactory implements UuidFactoryInterface
         $this->timeGenerator = $features->getTimeGenerator();
         $this->uuidBuilder = $features->getBuilder();
         $this->validator = $features->getValidator();
+        $this->unixTimeGenerator = $features->getUnixTimeGenerator();
     }
 
     /**
@@ -342,7 +345,7 @@ class UuidFactory implements UuidFactoryInterface
 
         $bytes = $timeGenerator->generate($nodeHex, $clockSeq);
 
-        return $this->uuidFromBytesAndVersion($bytes, 1);
+        return $this->uuidFromBytesAndVersion($bytes, Uuid::UUID_TYPE_TIME);
     }
 
     /**
@@ -352,7 +355,7 @@ class UuidFactory implements UuidFactoryInterface
     {
         $bytes = $this->timeGenerator->generate($node, $clockSeq);
 
-        return $this->uuidFromBytesAndVersion($bytes, 1);
+        return $this->uuidFromBytesAndVersion($bytes, Uuid::UUID_TYPE_TIME);
     }
 
     public function uuid2(
@@ -368,7 +371,7 @@ class UuidFactory implements UuidFactoryInterface
             $clockSeq
         );
 
-        return $this->uuidFromBytesAndVersion($bytes, 2);
+        return $this->uuidFromBytesAndVersion($bytes, Uuid::UUID_TYPE_DCE_SECURITY);
     }
 
     /**
@@ -377,14 +380,14 @@ class UuidFactory implements UuidFactoryInterface
      */
     public function uuid3($ns, string $name): UuidInterface
     {
-        return $this->uuidFromNsAndName($ns, $name, 3, 'md5');
+        return $this->uuidFromNsAndName($ns, $name, Uuid::UUID_TYPE_HASH_MD5, 'md5');
     }
 
     public function uuid4(): UuidInterface
     {
         $bytes = $this->randomGenerator->generate(16);
 
-        return $this->uuidFromBytesAndVersion($bytes, 4);
+        return $this->uuidFromBytesAndVersion($bytes, Uuid::UUID_TYPE_RANDOM);
     }
 
     /**
@@ -393,7 +396,7 @@ class UuidFactory implements UuidFactoryInterface
      */
     public function uuid5($ns, string $name): UuidInterface
     {
-        return $this->uuidFromNsAndName($ns, $name, 5, 'sha1');
+        return $this->uuidFromNsAndName($ns, $name, Uuid::UUID_TYPE_HASH_SHA1, 'sha1');
     }
 
     public function uuid6(?Hexadecimal $node = null, ?int $clockSeq = null): UuidInterface
@@ -412,7 +415,18 @@ class UuidFactory implements UuidFactoryInterface
         $v6Bytes = hex2bin(substr($v6, 1, 12) . '0' . substr($v6, -3));
         $v6Bytes .= substr($bytes, 8);
 
-        return $this->uuidFromBytesAndVersion($v6Bytes, 6);
+        return $this->uuidFromBytesAndVersion($v6Bytes, Uuid::UUID_TYPE_REORDERED_TIME);
+    }
+
+    /**
+     * Returns a version 7 (Unix Epoch time) UUID
+     *
+     * @return UuidInterface A UuidInterface instance that represents a
+     *     version 7 UUID
+     */
+    public function uuid7(): UuidInterface
+    {
+        return $this->uuidFromBytesAndVersion($this->unixTimeGenerator->generate(), Uuid::UUID_TYPE_UNIX_TIME);
     }
 
     /**

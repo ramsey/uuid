@@ -18,6 +18,7 @@ use DateTimeInterface;
 use Ramsey\Uuid\Codec\CodecInterface;
 use Ramsey\Uuid\Converter\NumberConverterInterface;
 use Ramsey\Uuid\Converter\TimeConverterInterface;
+use Ramsey\Uuid\Exception\UnsupportedOperationException;
 use Ramsey\Uuid\Fields\FieldsInterface;
 use Ramsey\Uuid\Lazy\LazyUuidFromString;
 use Ramsey\Uuid\Rfc4122\FieldsInterface as Rfc4122FieldsInterface;
@@ -27,6 +28,7 @@ use ValueError;
 
 use function assert;
 use function bin2hex;
+use function method_exists;
 use function preg_match;
 use function sprintf;
 use function str_replace;
@@ -166,6 +168,13 @@ class Uuid implements UuidInterface
      * @link https://datatracker.ietf.org/doc/html/draft-peabody-dispatch-new-uuid-format-04#section-5.1 UUID Version 6
      */
     public const UUID_TYPE_REORDERED_TIME = 6;
+
+    /**
+     * Version 7 (Unix Epoch time) UUID
+     *
+     * @link https://datatracker.ietf.org/doc/html/draft-peabody-dispatch-new-uuid-format-04#section-5.2 UUID Version 7
+     */
+    public const UUID_TYPE_UNIX_TIME = 7;
 
     /**
      * DCE Security principal domain
@@ -669,5 +678,25 @@ class Uuid implements UuidInterface
         ?int $clockSeq = null
     ): UuidInterface {
         return self::getFactory()->uuid6($node, $clockSeq);
+    }
+
+    /**
+     * Returns a version 7 (Unix Epoch time) UUID
+     *
+     * @return UuidInterface A UuidInterface instance that represents a
+     *     version 7 UUID
+     */
+    public static function uuid7(): UuidInterface
+    {
+        $factory = self::getFactory();
+
+        if (method_exists($factory, 'uuid7')) {
+            /** @var UuidInterface */
+            return $factory->uuid7();
+        }
+
+        throw new UnsupportedOperationException(
+            'The provided factory does not support the uuid7() method',
+        );
     }
 }

@@ -84,9 +84,13 @@ class FieldsTest extends TestCase
     {
         return [
             ['ff6f8cb0-c57d-01e1-8b21-0800200c9a66'],
-            ['ff6f8cb0-c57d-71e1-9b21-0800200c9a66'],
-            ['ff6f8cb0-c57d-81e1-ab21-0800200c9a66'],
             ['ff6f8cb0-c57d-91e1-bb21-0800200c9a66'],
+            ['ff6f8cb0-c57d-a1e1-9b21-0800200c9a66'],
+            ['ff6f8cb0-c57d-b1e1-ab21-0800200c9a66'],
+            ['ff6f8cb0-c57d-c1e1-ab21-0800200c9a66'],
+            ['ff6f8cb0-c57d-d1e1-ab21-0800200c9a66'],
+            ['ff6f8cb0-c57d-e1e1-ab21-0800200c9a66'],
+            ['ff6f8cb0-c57d-f1e1-ab21-0800200c9a66'],
         ];
     }
 
@@ -198,6 +202,18 @@ class FieldsTest extends TestCase
             ['000001f5-5cde-21ea-8400-0242ac130003', 'getVariant', 2],
             ['000001f5-5cde-21ea-8400-0242ac130003', 'getVersion', 2],
             ['000001f5-5cde-21ea-8400-0242ac130003', 'isNil', false],
+
+            ['018339f0-1b83-71e1-9b21-0800200c9a66', 'getClockSeq', '1b21'],
+            ['018339f0-1b83-71e1-9b21-0800200c9a66', 'getClockSeqHiAndReserved', '9b'],
+            ['018339f0-1b83-71e1-9b21-0800200c9a66', 'getClockSeqLow', '21'],
+            ['018339f0-1b83-71e1-9b21-0800200c9a66', 'getNode', '0800200c9a66'],
+            ['018339f0-1b83-71e1-9b21-0800200c9a66', 'getTimeHiAndVersion', '71e1'],
+            ['018339f0-1b83-71e1-9b21-0800200c9a66', 'getTimeLow', '018339f0'],
+            ['018339f0-1b83-71e1-9b21-0800200c9a66', 'getTimeMid', '1b83'],
+            ['018339f0-1b83-71e1-9b21-0800200c9a66', 'getTimestamp', '000018339f01b83'],
+            ['018339f0-1b83-71e1-9b21-0800200c9a66', 'getVariant', 2],
+            ['018339f0-1b83-71e1-9b21-0800200c9a66', 'getVersion', 7],
+            ['018339f0-1b83-71e1-9b21-0800200c9a66', 'isNil', false],
         ];
     }
 

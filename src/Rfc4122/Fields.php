@@ -150,12 +150,23 @@ final class Fields implements FieldsInterface
                 );
 
                 break;
-            case Uuid::UUID_TYPE_PEABODY:
+            case Uuid::UUID_TYPE_REORDERED_TIME:
                 $timestamp = sprintf(
                     '%08s%04s%03x',
                     $this->getTimeLow()->toString(),
                     $this->getTimeMid()->toString(),
                     hexdec($this->getTimeHiAndVersion()->toString()) & 0x0fff
+                );
+
+                break;
+            case Uuid::UUID_TYPE_UNIX_TIME:
+                // The Unix timestamp in version 7 UUIDs is a 48-bit number,
+                // but for consistency, we will return a 60-bit number, padded
+                // to the left with zeros.
+                $timestamp = sprintf(
+                    '%011s%04s',
+                    $this->getTimeLow()->toString(),
+                    $this->getTimeMid()->toString(),
                 );
 
                 break;

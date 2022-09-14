@@ -8,6 +8,7 @@ use Brick\Math\BigDecimal;
 use Brick\Math\RoundingMode;
 use DateTimeInterface;
 use Mockery;
+use Mockery\MockInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use Ramsey\Uuid\Builder\DefaultUuidBuilder;
 use Ramsey\Uuid\Codec\StringCodec;
@@ -33,6 +34,7 @@ use Ramsey\Uuid\Type\Hexadecimal;
 use Ramsey\Uuid\Type\Time;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidFactory;
+use Ramsey\Uuid\UuidFactoryInterface;
 use Ramsey\Uuid\UuidInterface;
 use Ramsey\Uuid\Validator\GenericValidator;
 use Ramsey\Uuid\Validator\ValidatorInterface;
@@ -703,6 +705,27 @@ class UuidTest extends TestCase
         $this->assertInstanceOf(DateTimeInterface::class, $uuid->getDateTime());
         $this->assertSame(2, $uuid->getVariant());
         $this->assertSame(6, $uuid->getVersion());
+    }
+
+    public function testUuid7(): void
+    {
+        $uuid = Uuid::uuid7();
+        $this->assertInstanceOf(DateTimeInterface::class, $uuid->getDateTime());
+        $this->assertSame(2, $uuid->getVariant());
+        $this->assertSame(7, $uuid->getVersion());
+    }
+
+    public function testUuid7ThrowsExceptionForUnsupportedFactory(): void
+    {
+        /** @var UuidFactoryInterface&MockInterface $factory */
+        $factory = Mockery::mock(UuidFactoryInterface::class);
+
+        Uuid::setFactory($factory);
+
+        $this->expectException(UnsupportedOperationException::class);
+        $this->expectExceptionMessage('The provided factory does not support the uuid7() method');
+
+        Uuid::uuid7();
     }
 
     /**
@@ -1649,6 +1672,13 @@ class UuidTest extends TestCase
     {
         $uuid = Uuid::fromString('886313e1-3b8a-6372-9b90-0c9aee199e5d');
         $this->assertSame($uuid->getVersion(), Uuid::UUID_TYPE_PEABODY);
+        $this->assertSame($uuid->getVersion(), Uuid::UUID_TYPE_REORDERED_TIME);
+    }
+
+    public function testUuidVersionConstantForVersion7(): void
+    {
+        $uuid = Uuid::fromString('886313e1-3b8a-7372-9b90-0c9aee199e5d');
+        $this->assertSame($uuid->getVersion(), Uuid::UUID_TYPE_UNIX_TIME);
     }
 
     public function testGetDateTimeThrowsExceptionWhenDateTimeCannotParseDate(): void

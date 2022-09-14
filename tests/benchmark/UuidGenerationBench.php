@@ -99,4 +99,9 @@ final class UuidGenerationBench
     {
         Uuid::uuid6($this->node, $this->clockSequence);
     }
+
+    public function benchUuid7Generation(): void
+    {
+        Uuid::uuid7();
+    }
 }
