@@ -52,7 +52,7 @@ class UnixTimeConverterTest extends TestCase
                 'microseconds' => '999000',
             ],
 
-            // This is the last possible time supported by v7 UUIDs.
+            // This is the last possible time supported by v7 UUIDs (2 ^ 48 - 1).
             // 10889-08-02 05:31:50.655 +00:00
             [
                 'uuidTimestamp' => new Hexadecimal('ffffffffffff'),
@@ -155,7 +155,7 @@ class UnixTimeConverterTest extends TestCase
                 'expected' => '000000000000',
             ],
 
-            // This is the last possible time supported by v7 UUIDs:
+            // This is the last possible time supported by v7 UUIDs (2 ^ 48 - 1):
             // 10889-08-02 05:31:50.655 +00:00
             [
                 'seconds' => '281474976710',

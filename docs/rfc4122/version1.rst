@@ -4,6 +4,12 @@
 Version 1: Gregorian Time
 =========================
 
+.. attention::
+
+    If you need a time-based UUID, and you don't need the other features
+    included in version 1 UUIDs, we recommend using
+    :ref:`version 7 UUIDs <rfc4122.version7>`.
+
 A version 1 UUID uses the current time, along with the MAC address (or *node*)
 for a network interface on the local machine. This serves two purposes:
 

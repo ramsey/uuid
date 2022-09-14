@@ -683,16 +683,20 @@ class Uuid implements UuidInterface
     /**
      * Returns a version 7 (Unix Epoch time) UUID
      *
+     * @param DateTimeInterface|null $dateTime An optional date/time from which
+     *     to create the version 7 UUID. If not provided, the UUID is generated
+     *     using the current date/time.
+     *
      * @return UuidInterface A UuidInterface instance that represents a
      *     version 7 UUID
      */
-    public static function uuid7(): UuidInterface
+    public static function uuid7(?DateTimeInterface $dateTime = null): UuidInterface
     {
         $factory = self::getFactory();
 
         if (method_exists($factory, 'uuid7')) {
             /** @var UuidInterface */
-            return $factory->uuid7();
+            return $factory->uuid7($dateTime);
         }
 
         throw new UnsupportedOperationException(

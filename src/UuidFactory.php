@@ -18,13 +18,16 @@ use DateTimeInterface;
 use Ramsey\Uuid\Builder\UuidBuilderInterface;
 use Ramsey\Uuid\Codec\CodecInterface;
 use Ramsey\Uuid\Converter\NumberConverterInterface;
+use Ramsey\Uuid\Converter\Time\UnixTimeConverter;
 use Ramsey\Uuid\Converter\TimeConverterInterface;
 use Ramsey\Uuid\Generator\DceSecurityGeneratorInterface;
 use Ramsey\Uuid\Generator\DefaultTimeGenerator;
 use Ramsey\Uuid\Generator\NameGeneratorInterface;
 use Ramsey\Uuid\Generator\RandomGeneratorInterface;
 use Ramsey\Uuid\Generator\TimeGeneratorInterface;
+use Ramsey\Uuid\Generator\UnixTimeGenerator;
 use Ramsey\Uuid\Lazy\LazyUuidFromString;
+use Ramsey\Uuid\Math\BrickMathCalculator;
 use Ramsey\Uuid\Provider\NodeProviderInterface;
 use Ramsey\Uuid\Provider\Time\FixedTimeProvider;
 use Ramsey\Uuid\Type\Hexadecimal;
@@ -421,12 +424,32 @@ class UuidFactory implements UuidFactoryInterface
     /**
      * Returns a version 7 (Unix Epoch time) UUID
      *
+     * @param DateTimeInterface|null $dateTime An optional date/time from which
+     *     to create the version 7 UUID. If not provided, the UUID is generated
+     *     using the current date/time.
+     *
      * @return UuidInterface A UuidInterface instance that represents a
      *     version 7 UUID
      */
-    public function uuid7(): UuidInterface
+    public function uuid7(?DateTimeInterface $dateTime = null): UuidInterface
     {
-        return $this->uuidFromBytesAndVersion($this->unixTimeGenerator->generate(), Uuid::UUID_TYPE_UNIX_TIME);
+        if ($dateTime !== null) {
+            $timeProvider = new FixedTimeProvider(
+                new Time($dateTime->format('U'), $dateTime->format('u'))
+            );
+
+            $timeGenerator = new UnixTimeGenerator(
+                new UnixTimeConverter(new BrickMathCalculator()),
+                $timeProvider,
+                $this->randomGenerator,
+            );
+
+            $bytes = $timeGenerator->generate();
+        } else {
+            $bytes = $this->unixTimeGenerator->generate();
+        }
+
+        return $this->uuidFromBytesAndVersion($bytes, Uuid::UUID_TYPE_UNIX_TIME);
     }
 
     /**

@@ -4,10 +4,12 @@
 Ordered-time Codec
 ==================
 
-.. hint::
+.. attention::
 
-    :ref:`Version 6, reordered time UUIDs <rfc4122.version6>` are a
-    new version of UUID that take the place of ordered-time UUIDs.
+    :ref:`Version 6, reordered time UUIDs <rfc4122.version6>` are a new version
+    of UUID that eliminate the need for the ordered-time codec. If you aren't
+    currently using the ordered-time codec, and you need time-based, sortable
+    UUIDs, consider using version 6 UUIDs.
 
 UUIDs arrange their bytes according to the standard recommended by `RFC 4122`_.
 Unfortunately, this means the bytes aren't in an arrangement that supports

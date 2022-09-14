@@ -6,6 +6,7 @@ namespace Ramsey\Uuid\Test;
 
 use Brick\Math\BigDecimal;
 use Brick\Math\RoundingMode;
+use DateTimeImmutable;
 use DateTimeInterface;
 use Mockery;
 use Mockery\MockInterface;
@@ -726,6 +727,20 @@ class UuidTest extends TestCase
         $this->expectExceptionMessage('The provided factory does not support the uuid7() method');
 
         Uuid::uuid7();
+    }
+
+    public function testUuid7WithDateTime(): void
+    {
+        $dateTime = new DateTimeImmutable('@281474976710.655');
+
+        $uuid = Uuid::uuid7($dateTime);
+        $this->assertInstanceOf(DateTimeInterface::class, $uuid->getDateTime());
+        $this->assertSame(2, $uuid->getVariant());
+        $this->assertSame(7, $uuid->getVersion());
+        $this->assertSame(
+            '10889-08-02T05:31:50.655+00:00',
+            $uuid->getDateTime()->format(DateTimeInterface::RFC3339_EXTENDED),
+        );
     }
 
     /**

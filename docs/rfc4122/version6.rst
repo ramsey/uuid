@@ -11,6 +11,12 @@ Version 6: Reordered Time
     through the IETF process, the version 6 format is not expected to change
     in any way that breaks compatibility.
 
+.. attention::
+
+    If you need a time-based UUID, and you don't need the other features
+    included in version 6 UUIDs, we recommend using
+    :ref:`version 7 UUIDs <rfc4122.version7>`.
+
 Version 6 UUIDs solve `two problems that have long existed`_ with the use of
 :ref:`version 1 <rfc4122.version1>` UUIDs:
 
@@ -199,7 +205,7 @@ machines, see :ref:`rfc4122.version6.nodes`.
 
 If you do not need an identifier with a node value embedded in it, but you still
 need the benefit of a monotonically increasing unique identifier, see
-:ref:`customize.timestamp-first-comb-codec`.
+:ref:`rfc4122.version7`.
 
 
 .. _Internet-Draft under review: https://datatracker.ietf.org/doc/draft-peabody-dispatch-new-uuid-format/
