@@ -73,10 +73,15 @@ class UuidBuilder implements UuidBuilderInterface
     public function build(CodecInterface $codec, string $bytes): UuidInterface
     {
         try {
+            /** @var Fields $fields */
             $fields = $this->buildFields($bytes);
 
             if ($fields->isNil()) {
                 return new NilUuid($fields, $this->numberConverter, $codec, $this->timeConverter);
+            }
+
+            if ($fields->isMax()) {
+                return new MaxUuid($fields, $this->numberConverter, $codec, $this->timeConverter);
             }
 
             switch ($fields->getVersion()) {

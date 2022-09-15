@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace Ramsey\Uuid\Benchmark;
 
+use DateTimeImmutable;
 use Ramsey\Uuid\Provider\Node\StaticNodeProvider;
 use Ramsey\Uuid\Type\Hexadecimal;
 use Ramsey\Uuid\Type\Integer as IntegerIdentifier;
@@ -103,5 +104,10 @@ final class UuidGenerationBench
     public function benchUuid7Generation(): void
     {
         Uuid::uuid7();
+    }
+
+    public function benchUuid7GenerationWithDateTime(): void
+    {
+        Uuid::uuid7(new DateTimeImmutable('@1663203901.667000'));
     }
 }

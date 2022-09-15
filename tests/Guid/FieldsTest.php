@@ -139,6 +139,7 @@ class FieldsTest extends TestCase
             ['b08c6fff7dc5e111cb210800200c9a66', 'getVariant', 6],
             ['b08c6fff7dc5e111cb210800200c9a66', 'getVersion', 1],
             ['b08c6fff7dc5e111cb210800200c9a66', 'isNil', false],
+            ['b08c6fff7dc5e111cb210800200c9a66', 'isMax', false],
 
             // For ff6f8cb0-c57d-41e1-db21-0800200c9a66
             ['b08c6fff7dc5e141db210800200c9a66', 'getClockSeq', '1b21'],
@@ -152,6 +153,7 @@ class FieldsTest extends TestCase
             ['b08c6fff7dc5e141db210800200c9a66', 'getVariant', 6],
             ['b08c6fff7dc5e141db210800200c9a66', 'getVersion', 4],
             ['b08c6fff7dc5e141db210800200c9a66', 'isNil', false],
+            ['b08c6fff7dc5e141db210800200c9a66', 'isMax', false],
 
             // For ff6f8cb0-c57d-31e1-8b21-0800200c9a66
             ['b08c6fff7dc5e1318b210800200c9a66', 'getClockSeq', '0b21'],
@@ -165,6 +167,7 @@ class FieldsTest extends TestCase
             ['b08c6fff7dc5e1318b210800200c9a66', 'getVariant', 2],
             ['b08c6fff7dc5e1318b210800200c9a66', 'getVersion', 3],
             ['b08c6fff7dc5e1318b210800200c9a66', 'isNil', false],
+            ['b08c6fff7dc5e1318b210800200c9a66', 'isMax', false],
 
             // For ff6f8cb0-c57d-51e1-9b21-0800200c9a66
             ['b08c6fff7dc5e1519b210800200c9a66', 'getClockSeq', '1b21'],
@@ -178,6 +181,7 @@ class FieldsTest extends TestCase
             ['b08c6fff7dc5e1519b210800200c9a66', 'getVariant', 2],
             ['b08c6fff7dc5e1519b210800200c9a66', 'getVersion', 5],
             ['b08c6fff7dc5e1519b210800200c9a66', 'isNil', false],
+            ['b08c6fff7dc5e1519b210800200c9a66', 'isMax', false],
 
             // For 00000000-0000-0000-0000-000000000000
             ['00000000000000000000000000000000', 'getClockSeq', '0000'],
@@ -188,9 +192,24 @@ class FieldsTest extends TestCase
             ['00000000000000000000000000000000', 'getTimeLow', '00000000'],
             ['00000000000000000000000000000000', 'getTimeMid', '0000'],
             ['00000000000000000000000000000000', 'getTimestamp', '000000000000000'],
-            ['00000000000000000000000000000000', 'getVariant', 0],
+            ['00000000000000000000000000000000', 'getVariant', 2],
             ['00000000000000000000000000000000', 'getVersion', null],
             ['00000000000000000000000000000000', 'isNil', true],
+            ['00000000000000000000000000000000', 'isMax', false],
+
+            // For ffffffff-ffff-ffff-ffff-ffffffffffff
+            ['ffffffffffffffffffffffffffffffff', 'getClockSeq', 'ffff'],
+            ['ffffffffffffffffffffffffffffffff', 'getClockSeqHiAndReserved', 'ff'],
+            ['ffffffffffffffffffffffffffffffff', 'getClockSeqLow', 'ff'],
+            ['ffffffffffffffffffffffffffffffff', 'getNode', 'ffffffffffff'],
+            ['ffffffffffffffffffffffffffffffff', 'getTimeHiAndVersion', 'ffff'],
+            ['ffffffffffffffffffffffffffffffff', 'getTimeLow', 'ffffffff'],
+            ['ffffffffffffffffffffffffffffffff', 'getTimeMid', 'ffff'],
+            ['ffffffffffffffffffffffffffffffff', 'getTimestamp', 'fffffffffffffff'],
+            ['ffffffffffffffffffffffffffffffff', 'getVariant', 2],
+            ['ffffffffffffffffffffffffffffffff', 'getVersion', null],
+            ['ffffffffffffffffffffffffffffffff', 'isNil', false],
+            ['ffffffffffffffffffffffffffffffff', 'isMax', true],
         ];
     }
 

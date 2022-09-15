@@ -29,6 +29,11 @@ trait VersionTrait
     abstract public function getVersion(): ?int;
 
     /**
+     * Returns true if these fields represent a max UUID
+     */
+    abstract public function isMax(): bool;
+
+    /**
      * Returns true if these fields represent a nil UUID
      */
     abstract public function isNil(): bool;
@@ -40,7 +45,7 @@ trait VersionTrait
      */
     private function isCorrectVersion(): bool
     {
-        if ($this->isNil()) {
+        if ($this->isNil() || $this->isMax()) {
             return true;
         }
 

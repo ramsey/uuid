@@ -23,6 +23,8 @@ class VariantTraitTest extends TestCase
         /** @var Fields $trait */
         $trait = Mockery::mock(VariantTrait::class, [
             'getBytes' => $bytes,
+            'isMax' => false,
+            'isNil' => false,
         ]);
 
         $this->expectException(InvalidBytesException::class);
@@ -52,6 +54,8 @@ class VariantTraitTest extends TestCase
         /** @var Fields $trait */
         $trait = Mockery::mock(VariantTrait::class, [
             'getBytes' => $bytes,
+            'isMax' => false,
+            'isNil' => false,
         ]);
 
         $this->assertSame($expectedVariant, $trait->getVariant());

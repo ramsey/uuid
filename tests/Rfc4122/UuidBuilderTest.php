@@ -13,6 +13,8 @@ use Ramsey\Uuid\Math\BrickMathCalculator;
 use Ramsey\Uuid\Nonstandard\UuidV6 as NonstandardUuidV6;
 use Ramsey\Uuid\Rfc4122\Fields;
 use Ramsey\Uuid\Rfc4122\FieldsInterface;
+use Ramsey\Uuid\Rfc4122\MaxUuid;
+use Ramsey\Uuid\Rfc4122\NilUuid;
 use Ramsey\Uuid\Rfc4122\UuidBuilder;
 use Ramsey\Uuid\Rfc4122\UuidV1;
 use Ramsey\Uuid\Rfc4122\UuidV2;
@@ -33,7 +35,7 @@ class UuidBuilderTest extends TestCase
      *
      * @dataProvider provideBuildTestValues
      */
-    public function testBuild(string $uuid, string $expectedClass, int $expectedVersion): void
+    public function testBuild(string $uuid, string $expectedClass, ?int $expectedVersion): void
     {
         $bytes = (string) hex2bin(str_replace('-', '', $uuid));
 
@@ -58,6 +60,16 @@ class UuidBuilderTest extends TestCase
     public function provideBuildTestValues(): array
     {
         return [
+            [
+                'uuid' => '00000000-0000-0000-0000-000000000000',
+                'expectedClass' => NilUuid::class,
+                'expectedVersion' => null,
+            ],
+            [
+                'uuid' => 'ffffffff-ffff-ffff-ffff-ffffffffffff',
+                'expectedClass' => MaxUuid::class,
+                'expectedVersion' => null,
+            ],
             [
                 'uuid' => 'ff6f8cb0-c57d-11e1-9b21-0800200c9a66',
                 'expectedClass' => UuidV1::class,
@@ -127,6 +139,7 @@ class UuidBuilderTest extends TestCase
     {
         $fields = Mockery::mock(FieldsInterface::class, [
             'isNil' => false,
+            'isMax' => false,
             'getVersion' => 255,
         ]);
 

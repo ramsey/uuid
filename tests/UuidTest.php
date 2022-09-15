@@ -29,6 +29,7 @@ use Ramsey\Uuid\Guid\Guid;
 use Ramsey\Uuid\Lazy\LazyUuidFromString;
 use Ramsey\Uuid\Provider\Node\RandomNodeProvider;
 use Ramsey\Uuid\Provider\Time\FixedTimeProvider;
+use Ramsey\Uuid\Rfc4122\Fields;
 use Ramsey\Uuid\Rfc4122\FieldsInterface;
 use Ramsey\Uuid\Rfc4122\UuidV1;
 use Ramsey\Uuid\Type\Hexadecimal;
@@ -144,6 +145,30 @@ class UuidTest extends TestCase
     public function testFromStringLazyUuidFromUppercase(): void
     {
         $this->assertInstanceOf(LazyUuidFromString::class, Uuid::fromString('FF6F8CB0-C57D-11E1-9B21-0800200C9A66'));
+    }
+
+    public function testFromStringWithNilUuid(): void
+    {
+        $uuid = Uuid::fromString(Uuid::NIL);
+
+        /** @var Fields $fields */
+        $fields = $uuid->getFields();
+
+        $this->assertSame('00000000-0000-0000-0000-000000000000', $uuid->toString());
+        $this->assertTrue($fields->isNil());
+        $this->assertFalse($fields->isMax());
+    }
+
+    public function testFromStringWithMaxUuid(): void
+    {
+        $uuid = Uuid::fromString(Uuid::MAX);
+
+        /** @var Fields $fields */
+        $fields = $uuid->getFields();
+
+        $this->assertSame('ffffffff-ffff-ffff-ffff-ffffffffffff', $uuid->toString());
+        $this->assertFalse($fields->isNil());
+        $this->assertTrue($fields->isMax());
     }
 
     public function testGetBytes(): void
@@ -1297,7 +1322,13 @@ class UuidTest extends TestCase
                 'urn' => 'urn:uuid:00000000-0000-0000-0000-000000000000',
                 'time' => '0',
                 'clock_seq' => '0000',
-                'variant' => Uuid::RESERVED_NCS,
+                // This is a departure from the Python tests. The Python tests
+                // are technically "correct" because all bits are set to zero,
+                // so it stands to reason that the variant is also zero, but
+                // that leads to this being considered a "Reserved NCS" variant,
+                // and that is not the case. RFC 4122 defines this special UUID,
+                // so it is an RFC 4122 variant.
+                'variant' => Uuid::RFC_4122,
                 'version' => null,
             ],
             [
@@ -1556,8 +1587,20 @@ class UuidTest extends TestCase
                 ],
                 'urn' => 'urn:uuid:ffffffff-ffff-ffff-ffff-ffffffffffff',
                 'time' => 'fffffffffffffff',
-                'clock_seq' => '3fff',
-                'variant' => Uuid::RESERVED_FUTURE,
+                // This is a departure from the Python tests. The Python tests
+                // are technically "correct" because all bits are set to one,
+                // which ends up calculating the variant as 7, or "Reserved
+                // Future," but that is not the case, and now that max UUIDs
+                // are defined as a special type, within the RFC 4122 variant
+                // rules, we also consider it an RFC 4122 variant.
+                //
+                // Similarly, Python's tests think the clock sequence should be
+                // 0x3fff because of the bit shifting performed on this field.
+                // However, since all the bits in this UUID are defined as being
+                // set to one, we will consider the clock sequence as 0xffff,
+                // which all bits set to one.
+                'clock_seq' => 'ffff',
+                'variant' => Uuid::RFC_4122,
                 'version' => null,
             ],
         ];

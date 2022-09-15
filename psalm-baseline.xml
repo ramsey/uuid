@@ -96,7 +96,9 @@
     </MixedArrayAssignment>
   </file>
   <file src="src/Rfc4122/UuidBuilder.php">
-    <ImpureVariable occurrences="17">
+    <ImpureVariable occurrences="19">
+      <code>$this</code>
+      <code>$this</code>
       <code>$this</code>
       <code>$this</code>
       <code>$this</code>

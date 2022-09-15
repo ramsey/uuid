@@ -58,6 +58,12 @@ trait VariantTrait
             throw new InvalidBytesException('Invalid number of bytes');
         }
 
+        if ($this->isMax() || $this->isNil()) {
+            // RFC 4122 defines these special types of UUID, so we will consider
+            // them as belonging to the RFC 4122 variant.
+            return Uuid::RFC_4122;
+        }
+
         /** @var array $parts */
         $parts = unpack('n*', $this->getBytes());
 

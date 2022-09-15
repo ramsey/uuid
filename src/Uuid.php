@@ -85,6 +85,14 @@ class Uuid implements UuidInterface
     public const NIL = '00000000-0000-0000-0000-000000000000';
 
     /**
+     * The max UUID is a special form of UUID that is specified to have all 128
+     * bits set to one
+     *
+     * @link https://datatracker.ietf.org/doc/html/draft-peabody-dispatch-new-uuid-format-04#section-5.4 Max UUID
+     */
+    public const MAX = 'ffffffff-ffff-ffff-ffff-ffffffffffff';
+
+    /**
      * Variant: reserved, NCS backward compatibility
      *
      * @link http://tools.ietf.org/html/rfc4122#section-4.1.1 RFC 4122, § 4.1.1: Variant
