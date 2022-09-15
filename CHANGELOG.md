@@ -6,6 +6,47 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 
+## 4.5.0 - 2022-09-15
+
+### Added
+
+* Promote version 6, reordered time UUIDs from the `Nonstandard` namespace to
+  the `Rfc4122` namespace. Version 6 UUIDs are defined in
+  [New UUID Formats, section 5.1][version6]. While still an Internet-Draft
+  version 6 is stable and unlikely to change in any way that breaks compatibility.
+* Add support for version 7, Unix Epoch time UUIDs, as defined in
+  [New UUID Formats, section 5.2][version7]. While still an Internet-Draft,
+  version 7 is stable and unlikely to change in any way that breaks compatibility.
+  * Use `Ramsey\Uuid\Uuid::uuid7()` to generate version 7 UUIDs.
+  * Version 7 UUIDs are of type `Ramsey\Uuid\Rfc4122\UuidV7`.
+  * The constant `Ramsey\Uuid\Uuid::UUID_TYPE_UNIX_TIME` exists for version
+    7 UUIDs.
+* Add `Ramsey\Uuid\Converter\Time\UnixTimeConverter` and
+  `Ramsey\Uuid\Generator\UnixTimeGenerator` to support version 7 UUID generation.
+* Add support for [max UUIDs][] through `Ramsey\Uuid\Uuid::MAX` and
+  `Ramsey\Uuid\Rfc4122\MaxUuid`.
+
+### Changed
+
+* The lowest version of brick/math allowed is now `^0.8.8`.
+
+### Deprecated
+
+The following will be removed in ramsey/uuid 5.0.0:
+
+* `Ramsey\Uuid\Nonstandard\UuidV6` is deprecated in favor of
+  `Ramsey\Uuid\Rfc4122\UuidV6`.
+* `Ramsey\Uuid\Uuid::UUID_TYPE_PEABODY`; use
+  `Ramsey\Uuid\Uuid::UUID_TYPE_REORDERED_TIME` instead.
+
+### Fixed
+
+* For `Ramsey\Uuid\Uuid::isValid()`, Psalm now asserts the UUID is a
+  non-empty-string when it is valid.
+* Nil UUIDs are properly treated as RFC 4122 variants, and `getVariant()` now
+  returns a `2` when called on a nil UUID.
+
+
 ## 4.4.0 - 2022-08-05
 
 ### Changed
@@ -1315,3 +1356,6 @@ versions leading up to this release.*
 [doctrine field type]: http://doctrine-dbal.readthedocs.org/en/latest/reference/types.html
 [ramsey/uuid-doctrine]: https://github.com/ramsey/uuid-doctrine
 [ramsey/uuid-console]: https://github.com/ramsey/uuid-console
+[version6]: https://datatracker.ietf.org/doc/html/draft-peabody-dispatch-new-uuid-format-04#section-5.1
+[version7]: https://datatracker.ietf.org/doc/html/draft-peabody-dispatch-new-uuid-format-04#section-5.2
+[max uuids]: https://datatracker.ietf.org/doc/html/draft-peabody-dispatch-new-uuid-format-04#section-5.4
