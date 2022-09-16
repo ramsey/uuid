@@ -101,3 +101,8 @@ html_context = {
     "github_version": version,
     "conf_py_path": "/docs/",
 }
+
+current_year = datetime.date.today().strftime('%Y')
+rst_prolog = """
+.. |current_year| replace:: {0}
+""".format(current_year)
