@@ -49,17 +49,12 @@ trait VersionTrait
             return true;
         }
 
-        switch ($this->getVersion()) {
-            case Uuid::UUID_TYPE_TIME:
-            case Uuid::UUID_TYPE_DCE_SECURITY:
-            case Uuid::UUID_TYPE_HASH_MD5:
-            case Uuid::UUID_TYPE_RANDOM:
-            case Uuid::UUID_TYPE_HASH_SHA1:
-            case Uuid::UUID_TYPE_REORDERED_TIME:
-            case Uuid::UUID_TYPE_UNIX_TIME:
-                return true;
-        }
-
-        return false;
+        return match ($this->getVersion()) {
+            Uuid::UUID_TYPE_TIME, Uuid::UUID_TYPE_DCE_SECURITY,
+            Uuid::UUID_TYPE_HASH_MD5, Uuid::UUID_TYPE_RANDOM,
+            Uuid::UUID_TYPE_HASH_SHA1, Uuid::UUID_TYPE_REORDERED_TIME,
+            Uuid::UUID_TYPE_UNIX_TIME => true,
+            default => false,
+        };
     }
 }

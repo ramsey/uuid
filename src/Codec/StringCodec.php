@@ -37,18 +37,12 @@ use function substr;
 class StringCodec implements CodecInterface
 {
     /**
-     * @var UuidBuilderInterface
-     */
-    private $builder;
-
-    /**
      * Constructs a StringCodec
      *
      * @param UuidBuilderInterface $builder The builder to use when encoding UUIDs
      */
-    public function __construct(UuidBuilderInterface $builder)
+    public function __construct(private UuidBuilderInterface $builder)
     {
-        $this->builder = $builder;
     }
 
     public function encode(UuidInterface $uuid): string

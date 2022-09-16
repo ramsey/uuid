@@ -21,7 +21,6 @@ use Ramsey\Uuid\Type\Integer as IntegerObject;
 use function escapeshellarg;
 use function preg_split;
 use function str_getcsv;
-use function strpos;
 use function strrpos;
 use function strtolower;
 use function strtoupper;
@@ -106,15 +105,10 @@ class SystemDceSecurityProvider implements DceSecurityProviderInterface
             return '';
         }
 
-        switch ($this->getOs()) {
-            case 'WIN':
-                return $this->getWindowsUid();
-            case 'DAR':
-            case 'FRE':
-            case 'LIN':
-            default:
-                return trim((string) shell_exec('id -u'));
-        }
+        return match ($this->getOs()) {
+            'WIN' => $this->getWindowsUid(),
+            default => trim((string) shell_exec('id -u')),
+        };
     }
 
     /**
@@ -126,15 +120,10 @@ class SystemDceSecurityProvider implements DceSecurityProviderInterface
             return '';
         }
 
-        switch ($this->getOs()) {
-            case 'WIN':
-                return $this->getWindowsGid();
-            case 'DAR':
-            case 'FRE':
-            case 'LIN':
-            default:
-                return trim((string) shell_exec('id -g'));
-        }
+        return match ($this->getOs()) {
+            'WIN' => $this->getWindowsGid(),
+            default => trim((string) shell_exec('id -g')),
+        };
     }
 
     /**
@@ -144,7 +133,7 @@ class SystemDceSecurityProvider implements DceSecurityProviderInterface
     {
         $disabledFunctions = strtolower((string) ini_get('disable_functions'));
 
-        return strpos($disabledFunctions, 'shell_exec') === false;
+        return !str_contains($disabledFunctions, 'shell_exec');
     }
 
     /**

@@ -17,7 +17,7 @@ parameters:
             count: 9
             path: ./src/Lazy/LazyUuidFromString.php
         -
-            message: '#^Property Ramsey\\Uuid\\FeatureSet::\$disableBigNumber is never read, only written#'
+            message: '#^Constructor of class Ramsey\\Uuid\\FeatureSet has an unused parameter \$forceNoBigNumber\.#'
             count: 1
             path: ./src/FeatureSet.php
 

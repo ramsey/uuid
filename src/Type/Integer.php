@@ -40,17 +40,11 @@ final class Integer implements NumberInterface
     /**
      * @psalm-var numeric-string
      */
-    private $value;
+    private string $value;
 
-    /**
-     * @var bool
-     */
-    private $isNegative = false;
+    private bool $isNegative = false;
 
-    /**
-     * @param int|float|string|self $value The integer value to store
-     */
-    public function __construct($value)
+    public function __construct(float | int | string | self $value)
     {
         $value = (string) $value;
         $sign = '+';
@@ -127,14 +121,13 @@ final class Integer implements NumberInterface
     /**
      * Constructs the object from a serialized string representation
      *
-     * @param string $serialized The serialized string representation of the object
+     * @param string $data The serialized string representation of the object
      *
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
      * @psalm-suppress UnusedMethodCall
      */
-    public function unserialize($serialized): void
+    public function unserialize(string $data): void
     {
-        $this->__construct($serialized);
+        $this->__construct($data);
     }
 
     /**

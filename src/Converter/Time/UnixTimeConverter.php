@@ -36,11 +36,8 @@ class UnixTimeConverter implements TimeConverterInterface
 {
     private const MILLISECONDS = 1000;
 
-    private CalculatorInterface $calculator;
-
-    public function __construct(CalculatorInterface $calculator)
+    public function __construct(private CalculatorInterface $calculator)
     {
-        $this->calculator = $calculator;
     }
 
     public function calculateTime(string $seconds, string $microseconds): Hexadecimal

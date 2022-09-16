@@ -30,15 +30,7 @@ use Ramsey\Uuid\UuidInterface;
  */
 class DegradedUuidBuilder implements UuidBuilderInterface
 {
-    /**
-     * @var NumberConverterInterface
-     */
-    private $numberConverter;
-
-    /**
-     * @var TimeConverterInterface
-     */
-    private $timeConverter;
+    private TimeConverterInterface $timeConverter;
 
     /**
      * @param NumberConverterInterface $numberConverter The number converter to
@@ -47,10 +39,9 @@ class DegradedUuidBuilder implements UuidBuilderInterface
      *     for converting timestamps extracted from a UUID to Unix timestamps
      */
     public function __construct(
-        NumberConverterInterface $numberConverter,
+        private NumberConverterInterface $numberConverter,
         ?TimeConverterInterface $timeConverter = null
     ) {
-        $this->numberConverter = $numberConverter;
         $this->timeConverter = $timeConverter ?: new DegradedTimeConverter();
     }
 

@@ -34,8 +34,6 @@ use Throwable;
  */
 class UuidBuilder implements UuidBuilderInterface
 {
-    private NumberConverterInterface $numberConverter;
-    private TimeConverterInterface $timeConverter;
     private TimeConverterInterface $unixTimeConverter;
 
     /**
@@ -51,12 +49,10 @@ class UuidBuilder implements UuidBuilderInterface
      *     to Unix timestamps
      */
     public function __construct(
-        NumberConverterInterface $numberConverter,
-        TimeConverterInterface $timeConverter,
+        private NumberConverterInterface $numberConverter,
+        private TimeConverterInterface $timeConverter,
         ?TimeConverterInterface $unixTimeConverter = null
     ) {
-        $this->numberConverter = $numberConverter;
-        $this->timeConverter = $timeConverter;
         $this->unixTimeConverter = $unixTimeConverter ?? new UnixTimeConverter(new BrickMathCalculator());
     }
 

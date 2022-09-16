@@ -47,27 +47,20 @@ final class Fields implements FieldsInterface
     use VersionTrait;
 
     /**
-     * @var string
-     */
-    private $bytes;
-
-    /**
      * @param string $bytes A 16-byte binary string representation of a UUID
      *
      * @throws InvalidArgumentException if the byte string is not exactly 16 bytes
      * @throws InvalidArgumentException if the byte string does not represent an RFC 4122 UUID
      * @throws InvalidArgumentException if the byte string does not contain a valid version
      */
-    public function __construct(string $bytes)
+    public function __construct(private string $bytes)
     {
-        if (strlen($bytes) !== 16) {
+        if (strlen($this->bytes) !== 16) {
             throw new InvalidArgumentException(
                 'The byte string must be 16 bytes long; '
-                . 'received ' . strlen($bytes) . ' bytes'
+                . 'received ' . strlen($this->bytes) . ' bytes'
             );
         }
-
-        $this->bytes = $bytes;
 
         if (!$this->isCorrectVariant()) {
             throw new InvalidArgumentException(
@@ -147,44 +140,34 @@ final class Fields implements FieldsInterface
      */
     public function getTimestamp(): Hexadecimal
     {
-        switch ($this->getVersion()) {
-            case Uuid::UUID_TYPE_DCE_SECURITY:
-                $timestamp = sprintf(
-                    '%03x%04s%08s',
-                    hexdec($this->getTimeHiAndVersion()->toString()) & 0x0fff,
-                    $this->getTimeMid()->toString(),
-                    ''
-                );
-
-                break;
-            case Uuid::UUID_TYPE_REORDERED_TIME:
-                $timestamp = sprintf(
-                    '%08s%04s%03x',
-                    $this->getTimeLow()->toString(),
-                    $this->getTimeMid()->toString(),
-                    hexdec($this->getTimeHiAndVersion()->toString()) & 0x0fff
-                );
-
-                break;
-            case Uuid::UUID_TYPE_UNIX_TIME:
-                // The Unix timestamp in version 7 UUIDs is a 48-bit number,
-                // but for consistency, we will return a 60-bit number, padded
-                // to the left with zeros.
-                $timestamp = sprintf(
-                    '%011s%04s',
-                    $this->getTimeLow()->toString(),
-                    $this->getTimeMid()->toString(),
-                );
-
-                break;
-            default:
-                $timestamp = sprintf(
-                    '%03x%04s%08s',
-                    hexdec($this->getTimeHiAndVersion()->toString()) & 0x0fff,
-                    $this->getTimeMid()->toString(),
-                    $this->getTimeLow()->toString()
-                );
-        }
+        $timestamp = match ($this->getVersion()) {
+            Uuid::UUID_TYPE_DCE_SECURITY => sprintf(
+                '%03x%04s%08s',
+                hexdec($this->getTimeHiAndVersion()->toString()) & 0x0fff,
+                $this->getTimeMid()->toString(),
+                ''
+            ),
+            Uuid::UUID_TYPE_REORDERED_TIME => sprintf(
+                '%08s%04s%03x',
+                $this->getTimeLow()->toString(),
+                $this->getTimeMid()->toString(),
+                hexdec($this->getTimeHiAndVersion()->toString()) & 0x0fff
+            ),
+            // The Unix timestamp in version 7 UUIDs is a 48-bit number,
+            // but for consistency, we will return a 60-bit number, padded
+            // to the left with zeros.
+            Uuid::UUID_TYPE_UNIX_TIME => sprintf(
+                '%011s%04s',
+                $this->getTimeLow()->toString(),
+                $this->getTimeMid()->toString(),
+            ),
+            default => sprintf(
+                '%03x%04s%08s',
+                hexdec($this->getTimeHiAndVersion()->toString()) & 0x0fff,
+                $this->getTimeMid()->toString(),
+                $this->getTimeLow()->toString()
+            ),
+        };
 
         return new Hexadecimal($timestamp);
     }
@@ -195,10 +178,10 @@ final class Fields implements FieldsInterface
             return null;
         }
 
-        /** @var array $parts */
+        /** @var int[] $parts */
         $parts = unpack('n*', $this->bytes);
 
-        return (int) $parts[4] >> 12;
+        return $parts[4] >> 12;
     }
 
     private function isCorrectVariant(): bool

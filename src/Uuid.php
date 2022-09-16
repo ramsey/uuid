@@ -216,38 +216,19 @@ class Uuid implements UuidInterface
         self::DCE_DOMAIN_ORG => 'org',
     ];
 
-    /**
-     * @var UuidFactoryInterface|null
-     */
-    private static $factory = null;
+    private static ?UuidFactoryInterface $factory = null;
 
     /**
-     * @var bool flag to detect if the UUID factory was replaced internally, which disables all optimizations
-     *           for the default/happy path internal scenarios
+     * @var bool flag to detect if the UUID factory was replaced internally,
+     *     which disables all optimizations for the default/happy path internal
+     *     scenarios
      */
-    private static $factoryReplaced = false;
+    private static bool $factoryReplaced = false;
 
-    /**
-     * @var CodecInterface
-     */
-    protected $codec;
-
-    /**
-     * The fields that make up this UUID
-     *
-     * @var Rfc4122FieldsInterface
-     */
-    protected $fields;
-
-    /**
-     * @var NumberConverterInterface
-     */
-    protected $numberConverter;
-
-    /**
-     * @var TimeConverterInterface
-     */
-    protected $timeConverter;
+    protected CodecInterface $codec;
+    protected NumberConverterInterface $numberConverter;
+    protected Rfc4122FieldsInterface $fields;
+    protected TimeConverterInterface $timeConverter;
 
     /**
      * Creates a universally unique identifier (UUID) from an array of fields
@@ -320,19 +301,17 @@ class Uuid implements UuidInterface
     /**
      * Re-constructs the object from its serialized form
      *
-     * @param string $serialized The serialized PHP string to unserialize into
+     * @param string $data The serialized PHP string to unserialize into
      *     a UuidInterface instance
-     *
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
      */
-    public function unserialize($serialized): void
+    public function unserialize(string $data): void
     {
-        if (strlen($serialized) === 16) {
+        if (strlen($data) === 16) {
             /** @var Uuid $uuid */
-            $uuid = self::getFactory()->fromBytes($serialized);
+            $uuid = self::getFactory()->fromBytes($data);
         } else {
             /** @var Uuid $uuid */
-            $uuid = self::getFactory()->fromString($serialized);
+            $uuid = self::getFactory()->fromString($data);
         }
 
         $this->codec = $uuid->codec;

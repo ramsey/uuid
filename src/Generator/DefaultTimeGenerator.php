@@ -40,29 +40,11 @@ use const STR_PAD_LEFT;
  */
 class DefaultTimeGenerator implements TimeGeneratorInterface
 {
-    /**
-     * @var NodeProviderInterface
-     */
-    private $nodeProvider;
-
-    /**
-     * @var TimeConverterInterface
-     */
-    private $timeConverter;
-
-    /**
-     * @var TimeProviderInterface
-     */
-    private $timeProvider;
-
     public function __construct(
-        NodeProviderInterface $nodeProvider,
-        TimeConverterInterface $timeConverter,
-        TimeProviderInterface $timeProvider
+        private NodeProviderInterface $nodeProvider,
+        private TimeConverterInterface $timeConverter,
+        private TimeProviderInterface $timeProvider
     ) {
-        $this->nodeProvider = $nodeProvider;
-        $this->timeConverter = $timeConverter;
-        $this->timeProvider = $timeProvider;
     }
 
     /**
@@ -121,13 +103,13 @@ class DefaultTimeGenerator implements TimeGeneratorInterface
      * Uses the node provider given when constructing this instance to get
      * the node ID (usually a MAC address)
      *
-     * @param string|int|null $node A node value that may be used to override the node provider
+     * @param int|string|null $node A node value that may be used to override the node provider
      *
      * @return string 6-byte binary string representation of the node
      *
      * @throws InvalidArgumentException
      */
-    private function getValidNode($node): string
+    private function getValidNode(int | string | null $node): string
     {
         if ($node === null) {
             $node = $this->nodeProvider->getNode();

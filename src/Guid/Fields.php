@@ -52,27 +52,20 @@ final class Fields implements FieldsInterface
     use VersionTrait;
 
     /**
-     * @var string
-     */
-    private $bytes;
-
-    /**
      * @param string $bytes A 16-byte binary string representation of a UUID
      *
      * @throws InvalidArgumentException if the byte string is not exactly 16 bytes
      * @throws InvalidArgumentException if the byte string does not represent a GUID
      * @throws InvalidArgumentException if the byte string does not contain a valid version
      */
-    public function __construct(string $bytes)
+    public function __construct(private string $bytes)
     {
-        if (strlen($bytes) !== 16) {
+        if (strlen($this->bytes) !== 16) {
             throw new InvalidArgumentException(
                 'The byte string must be 16 bytes long; '
-                . 'received ' . strlen($bytes) . ' bytes'
+                . 'received ' . strlen($this->bytes) . ' bytes'
             );
         }
-
-        $this->bytes = $bytes;
 
         if (!$this->isCorrectVariant()) {
             throw new InvalidArgumentException(

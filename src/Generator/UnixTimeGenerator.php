@@ -25,18 +25,11 @@ use function hex2bin;
  */
 class UnixTimeGenerator implements TimeGeneratorInterface
 {
-    private RandomGeneratorInterface $randomGenerator;
-    private TimeConverterInterface $timeConverter;
-    private TimeProviderInterface $timeProvider;
-
     public function __construct(
-        TimeConverterInterface $timeConverter,
-        TimeProviderInterface $timeProvider,
-        RandomGeneratorInterface $randomGenerator
+        private TimeConverterInterface $timeConverter,
+        private TimeProviderInterface $timeProvider,
+        private RandomGeneratorInterface $randomGenerator
     ) {
-        $this->timeConverter = $timeConverter;
-        $this->timeProvider = $timeProvider;
-        $this->randomGenerator = $randomGenerator;
     }
 
     /**

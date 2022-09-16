@@ -48,63 +48,26 @@ use const STR_PAD_LEFT;
 
 class UuidFactory implements UuidFactoryInterface
 {
-    /**
-     * @var CodecInterface
-     */
-    private $codec;
-
-    /**
-     * @var DceSecurityGeneratorInterface
-     */
-    private $dceSecurityGenerator;
-
-    /**
-     * @var NameGeneratorInterface
-     */
-    private $nameGenerator;
-
-    /**
-     * @var NodeProviderInterface
-     */
-    private $nodeProvider;
-
-    /**
-     * @var NumberConverterInterface
-     */
-    private $numberConverter;
-
-    /**
-     * @var RandomGeneratorInterface
-     */
-    private $randomGenerator;
-
-    /**
-     * @var TimeConverterInterface
-     */
-    private $timeConverter;
-
-    /**
-     * @var TimeGeneratorInterface
-     */
-    private $timeGenerator;
-
-    /**
-     * @var UuidBuilderInterface
-     */
-    private $uuidBuilder;
-
-    /**
-     * @var ValidatorInterface
-     */
-    private $validator;
-
-    /** @var bool whether the feature set was provided from outside, or we can operate under "default" assumptions */
-    private $isDefaultFeatureSet;
-
+    private CodecInterface $codec;
+    private DceSecurityGeneratorInterface $dceSecurityGenerator;
+    private NameGeneratorInterface $nameGenerator;
+    private NodeProviderInterface $nodeProvider;
+    private NumberConverterInterface $numberConverter;
+    private RandomGeneratorInterface $randomGenerator;
+    private TimeConverterInterface $timeConverter;
+    private TimeGeneratorInterface $timeGenerator;
     private TimeGeneratorInterface $unixTimeGenerator;
+    private UuidBuilderInterface $uuidBuilder;
+    private ValidatorInterface $validator;
 
     /**
-     * @param FeatureSet $features A set of available features in the current environment
+     * @var bool whether the feature set was provided from outside, or we can
+     *     operate under "default" assumptions
+     */
+    private bool $isDefaultFeatureSet;
+
+    /**
+     * @param FeatureSet|null $features A set of available features in the current environment
      */
     public function __construct(?FeatureSet $features = null)
     {
@@ -484,8 +447,12 @@ class UuidFactory implements UuidFactoryInterface
      *
      * @psalm-pure
      */
-    private function uuidFromNsAndName($ns, string $name, int $version, string $hashAlgorithm): UuidInterface
-    {
+    private function uuidFromNsAndName(
+        UuidInterface | string $ns,
+        string $name,
+        int $version,
+        string $hashAlgorithm
+    ): UuidInterface {
         if (!($ns instanceof UuidInterface)) {
             $ns = $this->fromString($ns);
         }
