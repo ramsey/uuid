@@ -17,12 +17,13 @@ namespace Ramsey\Uuid\Codec;
 use Ramsey\Uuid\Builder\UuidBuilderInterface;
 use Ramsey\Uuid\Exception\InvalidArgumentException;
 use Ramsey\Uuid\Exception\InvalidUuidStringException;
-use Ramsey\Uuid\Rfc4122\FieldsInterface;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
+use function bin2hex;
 use function hex2bin;
 use function implode;
+use function sprintf;
 use function str_replace;
 use function strlen;
 use function substr;
@@ -47,19 +48,17 @@ class StringCodec implements CodecInterface
 
     public function encode(UuidInterface $uuid): string
     {
-        /** @var FieldsInterface $fields */
-        $fields = $uuid->getFields();
+        $hex = bin2hex($uuid->getFields()->getBytes());
 
-        return $fields->getTimeLow()->toString()
-            . '-'
-            . $fields->getTimeMid()->toString()
-            . '-'
-            . $fields->getTimeHiAndVersion()->toString()
-            . '-'
-            . $fields->getClockSeqHiAndReserved()->toString()
-            . $fields->getClockSeqLow()->toString()
-            . '-'
-            . $fields->getNode()->toString();
+        /** @var non-empty-string */
+        return sprintf(
+            '%08s-%04s-%04s-%04s-%012s',
+            substr($hex, 0, 8),
+            substr($hex, 8, 4),
+            substr($hex, 12, 4),
+            substr($hex, 16, 4),
+            substr($hex, 20),
+        );
     }
 
     /**
