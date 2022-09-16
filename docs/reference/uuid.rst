@@ -40,6 +40,10 @@ the ramsey/uuid library.
 
         *Deprecated.* Use :php:const:`Uuid::UUID_TYPE_REORDERED_TIME` instead.
 
+    .. php:const:: UUID_TYPE_UNIX_TIME
+
+        :ref:`rfc4122.version7` UUID.
+
     .. php:const:: NAMESPACE_DNS
 
         The name string is a fully-qualified domain name.
@@ -142,6 +146,14 @@ the ramsey/uuid library.
         :param int|null $clockSeq: An optional clock sequence to use
         :returns: A version 6 UUID
         :returntype: Ramsey\\Uuid\\Rfc4122\\UuidV6
+
+    .. php:staticmethod:: uuid7([$dateTime])
+
+        Generates a version 7, Unix Epoch time UUID. See :ref:`rfc4122.version7`.
+
+        :param DateTimeInterface|null $dateTime: The date from which to create the UUID instance
+        :returns: A version 7 UUID
+        :returntype: Ramsey\\Uuid\\Rfc4122\\UuidV7
 
     .. php:staticmethod:: fromString($uuid)
 

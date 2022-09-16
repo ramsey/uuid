@@ -6,6 +6,13 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 
+## 4.5.1 - 2022-09-16
+
+### Fixed
+
+* Update RFC 4122 validator to recognize version 6 and 7 UUIDs.
+
+
 ## 4.5.0 - 2022-09-15
 
 ### Added
