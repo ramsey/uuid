@@ -109,6 +109,7 @@ interface FieldsInterface extends BaseFieldsInterface
      * 4. Randomly generated UUID
      * 5. Name-based UUID hashed with SHA-1
      * 6. Reordered time UUID
+     * 7. Unix Epoch time UUID
      *
      * This returns `null` if the UUID is not an RFC 4122 variant, since version
      * is only meaningful for this variant.
