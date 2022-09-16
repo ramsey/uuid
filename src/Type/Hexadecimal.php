@@ -17,10 +17,8 @@ namespace Ramsey\Uuid\Type;
 use Ramsey\Uuid\Exception\InvalidArgumentException;
 use ValueError;
 
-use function ctype_xdigit;
+use function preg_match;
 use function sprintf;
-use function str_starts_with;
-use function strtolower;
 use function substr;
 
 /**
@@ -37,23 +35,11 @@ final class Hexadecimal implements TypeInterface
     private string $value;
 
     /**
-     * @param string $value The hexadecimal value to store
+     * @param self|string $value The hexadecimal value to store
      */
-    public function __construct(string $value)
+    public function __construct(self | string $value)
     {
-        $value = strtolower($value);
-
-        if (str_starts_with($value, '0x')) {
-            $value = substr($value, 2);
-        }
-
-        if (!ctype_xdigit($value)) {
-            throw new InvalidArgumentException(
-                'Value must be a hexadecimal number'
-            );
-        }
-
-        $this->value = $value;
+        $this->value = $value instanceof self ? (string) $value : $this->prepareValue($value);
     }
 
     public function toString(): string
@@ -108,5 +94,22 @@ final class Hexadecimal implements TypeInterface
         // @codeCoverageIgnoreEnd
 
         $this->unserialize($data['string']);
+    }
+
+    private function prepareValue(string $value): string
+    {
+        $value = strtolower($value);
+
+        if (str_starts_with($value, '0x')) {
+            $value = substr($value, 2);
+        }
+
+        if (!preg_match('/^[A-Fa-f0-9]+$/', $value)) {
+            throw new InvalidArgumentException(
+                'Value must be a hexadecimal number'
+            );
+        }
+
+        return $value;
     }
 }

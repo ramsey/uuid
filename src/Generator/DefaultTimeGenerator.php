@@ -23,11 +23,11 @@ use Ramsey\Uuid\Provider\TimeProviderInterface;
 use Ramsey\Uuid\Type\Hexadecimal;
 use Throwable;
 
-use function ctype_xdigit;
 use function dechex;
 use function hex2bin;
 use function is_int;
 use function pack;
+use function preg_match;
 use function sprintf;
 use function str_pad;
 use function strlen;
@@ -120,7 +120,7 @@ class DefaultTimeGenerator implements TimeGeneratorInterface
             $node = dechex($node);
         }
 
-        if (!ctype_xdigit((string) $node) || strlen((string) $node) > 12) {
+        if (!preg_match('/^[A-Fa-f0-9]+$/', (string) $node) || strlen((string) $node) > 12) {
             throw new InvalidArgumentException('Invalid node value');
         }
 

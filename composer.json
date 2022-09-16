@@ -10,7 +10,6 @@
     ],
     "require": {
         "php": "^8.0",
-        "ext-ctype": "*",
         "ext-json": "*",
         "brick/math": "^0.8.8 || ^0.9 || ^0.10",
         "ramsey/collection": "^1.0"
@@ -42,7 +41,6 @@
     },
     "suggest": {
         "ext-bcmath": "Enables faster math with arbitrary-precision integers using BCMath.",
-        "ext-ctype": "Enables faster processing of character classification using ctype functions.",
         "ext-gmp": "Enables faster math with arbitrary-precision integers using GMP.",
         "ext-uuid": "Enables the use of PeclUuidTimeGenerator and PeclUuidRandomGenerator.",
         "paragonie/random-lib": "Provides RandomLib for use with the RandomLibAdapter",

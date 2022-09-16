@@ -119,7 +119,7 @@ class ExpectedBehaviorTest extends TestCase
 
         $this->assertSame(2, $uuid->getVariant());
         $this->assertSame((int) substr($method, -1), $uuid->getVersion());
-        $this->assertTrue(ctype_digit((string) $uuid->getInteger()));
+        $this->assertSame(1, preg_match('/^\d+$/', (string) $uuid->getInteger()));
     }
 
     public function provideStaticCreationMethods()
@@ -158,7 +158,7 @@ class ExpectedBehaviorTest extends TestCase
         $this->assertSame('281474976710655', (string) $uuid->getNode());
         $this->assertSame('3fff', $uuid->getClockSequenceHex());
         $this->assertSame('16383', (string) $uuid->getClockSequence());
-        $this->assertTrue(ctype_digit((string) $uuid->getTimestamp()));
+        $this->assertSame(1, preg_match('/^\d+$/', (string) $uuid->getTimestamp()));
     }
 
     /**
