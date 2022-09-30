@@ -289,6 +289,11 @@ final class LazyUuidFromString implements UuidInterface
             ->getInteger();
     }
 
+    public function getKey(): string
+    {
+        return $this->uuid;
+    }
+
     public function toString(): string
     {
         return $this->uuid;
