@@ -288,15 +288,14 @@ final class LazyUuidFromString implements UuidInterface
         return ($this->unwrapped ?? $this->unwrap())
             ->getInteger();
     }
-
-    public function getKey(): string
+    /**
+     * Get the value of the model's primary key.
+     *
+     * @return mixed
+     */
+    public function getKey()
     {
-        return $this->uuid;
-    }
-
-    public function toString(): string
-    {
-        return $this->uuid;
+        return $this->id;
     }
 
     public function __toString(): string
