@@ -768,6 +768,65 @@ class UuidTest extends TestCase
         );
     }
 
+    public function testUuid7SettingTheClockBackwards(): void
+    {
+        $dates = [
+            new DateTimeImmutable('now'),
+            new DateTimeImmutable('last year'),
+            new DateTimeImmutable('1979-01-01 00:00:00.000000'),
+        ];
+
+        foreach ($dates as $dateTime) {
+            $previous = Uuid::uuid7($dateTime);
+            for ($i = 0; $i < 25; $i++) {
+                $uuid = Uuid::uuid7($dateTime);
+                $this->assertGreaterThan(0, $uuid->compareTo($previous));
+                $this->assertSame($dateTime->format('Y-m-d H:i'), $uuid->getDateTime()->format('Y-m-d H:i'));
+                $previous = $uuid;
+            }
+        }
+    }
+
+    public function testUuid7WithMinimumDateTime(): void
+    {
+        $dateTime = new DateTimeImmutable('1979-01-01 00:00:00.000000');
+
+        $uuid = Uuid::uuid7($dateTime);
+        $this->assertInstanceOf(DateTimeInterface::class, $uuid->getDateTime());
+        $this->assertSame(2, $uuid->getVariant());
+        $this->assertSame(7, $uuid->getVersion());
+        $this->assertSame(
+            '1979-01-01T00:00:00.000+00:00',
+            $uuid->getDateTime()->format(DateTimeInterface::RFC3339_EXTENDED),
+        );
+    }
+
+    public function testUuid7EachUuidIsMonotonicallyIncreasing(): void
+    {
+        $previous = Uuid::uuid7();
+
+        for ($i = 0; $i < 25; $i++) {
+            $uuid = Uuid::uuid7();
+            $now = gmdate('Y-m-d H:i');
+            $this->assertGreaterThan(0, $uuid->compareTo($previous));
+            $this->assertSame($now, $uuid->getDateTime()->format('Y-m-d H:i'));
+            $previous = $uuid;
+        }
+    }
+
+    public function testUuid7EachUuidFromSameDateTimeIsMonotonicallyIncreasing(): void
+    {
+        $dateTime = new DateTimeImmutable();
+        $previous = Uuid::uuid7($dateTime);
+
+        for ($i = 0; $i < 25; $i++) {
+            $uuid = Uuid::uuid7($dateTime);
+            $this->assertGreaterThan(0, $uuid->compareTo($previous));
+            $this->assertSame($dateTime->format('Y-m-d H:i'), $uuid->getDateTime()->format('Y-m-d H:i'));
+            $previous = $uuid;
+        }
+    }
+
     /**
      * Tests known version-3 UUIDs
      *
