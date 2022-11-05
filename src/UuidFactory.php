@@ -401,6 +401,27 @@ class UuidFactory implements UuidFactoryInterface
     }
 
     /**
+     * Returns a version 8 (Custom) UUID
+     *
+     * The bytes provided may contain any value according to your application's
+     * needs. Be aware, however, that other applications may not understand the
+     * semantics of the value.
+     *
+     * @param string $bytes A 16-byte octet string. This is an open blob
+     *     of data that you may fill with 128 bits of information. Be aware,
+     *     however, bits 48 through 51 will be replaced with the UUID version
+     *     field, and bits 64 and 65 will be replaced with the UUID variant. You
+     *     MUST NOT rely on these bits for your application needs.
+     *
+     * @return UuidInterface A UuidInterface instance that represents a
+     *     version 8 UUID
+     */
+    public function uuid8(string $bytes): UuidInterface
+    {
+        return $this->uuidFromBytesAndVersion($bytes, Uuid::UUID_TYPE_CUSTOM);
+    }
+
+    /**
      * Returns a Uuid created from the provided byte string
      *
      * Uses the configured builder and codec and the provided byte string to

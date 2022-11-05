@@ -827,6 +827,26 @@ class UuidTest extends TestCase
         }
     }
 
+    public function testUuid8(): void
+    {
+        $uuid = Uuid::uuid8("\x00\x11\x22\x33\x44\x55\x66\x77\x88\x99\xaa\xbb\xcc\xdd\xee\xff");
+        $this->assertSame(2, $uuid->getVariant());
+        $this->assertSame(8, $uuid->getVersion());
+    }
+
+    public function testUuid8ThrowsExceptionForUnsupportedFactory(): void
+    {
+        /** @var UuidFactoryInterface&MockInterface $factory */
+        $factory = Mockery::mock(UuidFactoryInterface::class);
+
+        Uuid::setFactory($factory);
+
+        $this->expectException(UnsupportedOperationException::class);
+        $this->expectExceptionMessage('The provided factory does not support the uuid8() method');
+
+        Uuid::uuid8("\x00\x11\x22\x33\x44\x55\x66\x77\x88\x99\xaa\xbb\xcc\xdd\xee\xff");
+    }
+
     /**
      * Tests known version-3 UUIDs
      *

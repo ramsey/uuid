@@ -15,6 +15,7 @@ RFC 4122 UUIDs
     rfc4122/version5
     rfc4122/version6
     rfc4122/version7
+    rfc4122/version8
 
 `RFC 4122`_ defines five versions of UUID, while a `new Internet-Draft under
 review`_ defines three new versions. Each version has different generation
@@ -57,6 +58,10 @@ Version 7: Unix Epoch Time
     sortable UUID without the privacy and entropy concerns associated with
     version 1 and version 6 UUIDs. For more details, see :ref:`rfc4122.version7`.
 
+Version 8: Custom
+    This version of UUID allows applications to generate custom identifiers in
+    an RFC-compatible format. For more details, see :doc:`rfc4122/version8`.
+
 
 .. _RFC 4122: https://tools.ietf.org/html/rfc4122
-.. _new Internet-Draft under review: https://datatracker.ietf.org/doc/html/draft-peabody-dispatch-new-uuid-format-04
+.. _new Internet-Draft under review: https://datatracker.ietf.org/doc/html/draft-ietf-uuidrev-rfc4122bis-00
