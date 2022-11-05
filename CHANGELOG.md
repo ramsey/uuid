@@ -6,6 +6,23 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 
+## 4.6.0 - 2022-11-05
+
+### Added
+
+* Add support for version 8, Unix Epoch time UUIDs, as defined in
+  [draft-ietf-uuidrev-rfc4122bis-00, section 5.8][version8]. While still an
+  Internet-Draft, version 8 is stable and unlikely to change in any way that
+  breaks compatibility.
+  * Use `Ramsey\Uuid\Uuid::uuid8()` to generate version 8 UUIDs.
+  * Version 8 UUIDs are of type `Ramsey\Uuid\Rfc4122\UuidV8`.
+  * The constant `Ramsey\Uuid\Uuid::UUID_TYPE_CUSTOM` exists for version 8 UUIDs.
+
+### Fixed
+
+* Ensure monotonicity of version 7 UUIDs.
+
+
 ## 4.5.1 - 2022-09-16
 
 ### Fixed
@@ -19,11 +36,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 * Promote version 6, reordered time UUIDs from the `Nonstandard` namespace to
   the `Rfc4122` namespace. Version 6 UUIDs are defined in
-  [New UUID Formats, section 5.1][version6]. While still an Internet-Draft
-  version 6 is stable and unlikely to change in any way that breaks compatibility.
+  [draft-ietf-uuidrev-rfc4122bis-00, section 5.6][version6]. While still an
+  Internet-Draft version 6 is stable and unlikely to change in any way that
+  breaks compatibility.
 * Add support for version 7, Unix Epoch time UUIDs, as defined in
-  [New UUID Formats, section 5.2][version7]. While still an Internet-Draft,
-  version 7 is stable and unlikely to change in any way that breaks compatibility.
+  [draft-ietf-uuidrev-rfc4122bis-00, section 5.7][version7]. While still an
+  Internet-Draft, version 7 is stable and unlikely to change in any way that
+  breaks compatibility.
   * Use `Ramsey\Uuid\Uuid::uuid7()` to generate version 7 UUIDs.
   * Version 7 UUIDs are of type `Ramsey\Uuid\Rfc4122\UuidV7`.
   * The constant `Ramsey\Uuid\Uuid::UUID_TYPE_UNIX_TIME` exists for version
@@ -1363,6 +1382,7 @@ versions leading up to this release.*
 [doctrine field type]: http://doctrine-dbal.readthedocs.org/en/latest/reference/types.html
 [ramsey/uuid-doctrine]: https://github.com/ramsey/uuid-doctrine
 [ramsey/uuid-console]: https://github.com/ramsey/uuid-console
-[version6]: https://datatracker.ietf.org/doc/html/draft-peabody-dispatch-new-uuid-format-04#section-5.1
-[version7]: https://datatracker.ietf.org/doc/html/draft-peabody-dispatch-new-uuid-format-04#section-5.2
+[version6]: https://datatracker.ietf.org/doc/html/draft-ietf-uuidrev-rfc4122bis-00#section-5.6
+[version7]: https://datatracker.ietf.org/doc/html/draft-ietf-uuidrev-rfc4122bis-00#section-5.7
+[version8]: https://datatracker.ietf.org/doc/html/draft-ietf-uuidrev-rfc4122bis-00#section-5.8
 [max uuids]: https://datatracker.ietf.org/doc/html/draft-peabody-dispatch-new-uuid-format-04#section-5.4
