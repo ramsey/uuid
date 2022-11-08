@@ -47,11 +47,6 @@
       <code>$timeGenerator</code>
     </PropertyNotSetInConstructor>
   </file>
-  <file src="src/Fields/SerializableFieldsTrait.php">
-    <UnusedMethodCall occurrences="1">
-      <code>unserialize</code>
-    </UnusedMethodCall>
-  </file>
   <file src="src/Generator/PeclUuidNameGenerator.php">
     <ImpureFunctionCall occurrences="3">
       <code>uuid_generate_md5</code>
@@ -65,11 +60,6 @@
       <code>$this</code>
       <code>$this</code>
     </ImpureVariable>
-  </file>
-  <file src="src/Lazy/LazyUuidFromString.php">
-    <UnusedMethodCall occurrences="1">
-      <code>unserialize</code>
-    </UnusedMethodCall>
   </file>
   <file src="src/Nonstandard/UuidBuilder.php">
     <ImpureVariable occurrences="3">
@@ -96,7 +86,9 @@
     </MixedArrayAssignment>
   </file>
   <file src="src/Rfc4122/UuidBuilder.php">
-    <ImpureVariable occurrences="19">
+    <ImpureVariable occurrences="21">
+      <code>$this</code>
+      <code>$this</code>
       <code>$this</code>
       <code>$this</code>
       <code>$this</code>
@@ -122,11 +114,6 @@
     <DeprecatedClass occurrences="1">
       <code>NonstandardUuidV6</code>
     </DeprecatedClass>
-  </file>
-  <file src="src/Type/Decimal.php">
-    <UnusedMethodCall occurrences="1">
-      <code>unserialize</code>
-    </UnusedMethodCall>
   </file>
   <file src="src/Type/Hexadecimal.php">
     <UnusedMethodCall occurrences="1">

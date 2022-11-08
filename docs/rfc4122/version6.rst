@@ -208,6 +208,6 @@ need the benefit of a monotonically increasing unique identifier, see
 :ref:`rfc4122.version7`.
 
 
-.. _Internet-Draft under review: https://datatracker.ietf.org/doc/draft-peabody-dispatch-new-uuid-format/
+.. _Internet-Draft under review: https://datatracker.ietf.org/doc/html/draft-ietf-uuidrev-rfc4122bis-00#section-5.6
 .. _two problems that have long existed: https://www.percona.com/blog/2014/12/19/store-uuid-optimized-way/
 .. _RFC 4122: https://tools.ietf.org/html/rfc4122

@@ -19,6 +19,7 @@ Reference
     reference/rfc4122-uuidv5
     reference/rfc4122-uuidv6
     reference/rfc4122-uuidv7
+    reference/rfc4122-uuidv8
     reference/guid-fields
     reference/guid-guid
     reference/nonstandard-fields

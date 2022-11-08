@@ -53,7 +53,7 @@ trait VersionTrait
             Uuid::UUID_TYPE_TIME, Uuid::UUID_TYPE_DCE_SECURITY,
             Uuid::UUID_TYPE_HASH_MD5, Uuid::UUID_TYPE_RANDOM,
             Uuid::UUID_TYPE_HASH_SHA1, Uuid::UUID_TYPE_REORDERED_TIME,
-            Uuid::UUID_TYPE_UNIX_TIME => true,
+            Uuid::UUID_TYPE_UNIX_TIME, Uuid::UUID_TYPE_CUSTOM => true,
             default => false,
         };
     }
