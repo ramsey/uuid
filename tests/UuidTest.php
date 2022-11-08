@@ -1146,6 +1146,14 @@ class UuidTest extends TestCase
         $factory->setValidator(new GenericValidator());
     }
 
+    /**
+     * Unless pass null
+     */
+    public function testIsValidReturnsFalseOnNull(): void
+    {
+        $this->assertFalse(Uuid::isValid(null));
+    }
+
     public function testUsingNilAsValidUuid(): void
     {
         self::assertSame(

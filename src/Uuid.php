@@ -537,8 +537,12 @@ class Uuid implements UuidInterface
      *
      * @psalm-assert-if-true non-empty-string $uuid
      */
-    public static function isValid(string $uuid): bool
+    public static function isValid(?string $uuid): bool
     {
+        if ($uuid === null) {
+            return false;
+        }
+
         return self::getFactory()->getValidator()->validate($uuid);
     }
 
