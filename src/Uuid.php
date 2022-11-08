@@ -528,7 +528,7 @@ class Uuid implements UuidInterface
     /**
      * Returns true if the provided string is a valid UUID
      *
-     * @param string|null $uuid A string to validate as a UUID
+     * @param string $uuid A string to validate as a UUID
      *
      * @return bool True if the string is a valid UUID, false otherwise
      *
@@ -537,7 +537,7 @@ class Uuid implements UuidInterface
      *
      * @psalm-assert-if-true non-empty-string $uuid
      */
-    public static function isValid(?string $uuid): bool
+    public static function isValid(string $uuid): bool
     {
         return self::getFactory()->getValidator()->validate($uuid);
     }

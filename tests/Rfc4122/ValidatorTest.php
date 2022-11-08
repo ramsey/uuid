@@ -16,19 +16,15 @@ class ValidatorTest extends TestCase
     /**
      * @dataProvider provideValuesForValidation
      */
-    public function testValidate(?string $value, bool $expected): void
+    public function testValidate(string $value, bool $expected): void
     {
         $variations = [];
         $variations[] = $value;
-        if ($value !== null) {
-            $variations[] = 'urn:uuid:' . $value;
-            $variations[] = '{' . $value . '}';
-        }
+        $variations[] = 'urn:uuid:' . $value;
+        $variations[] = '{' . $value . '}';
 
         foreach ($variations as $variation) {
-            if ($variation !== null) {
-                $variations[] = strtoupper($variation);
-            }
+            $variations[] = strtoupper($variation);
         }
 
         $validator = new Validator();
@@ -110,10 +106,6 @@ class ValidatorTest extends TestCase
             [
                 'value' => 'FFFFFFFF-FFFF-FFFF-FFFF-FFFFFFFFFFFF',
                 'expected' => true,
-            ],
-            [
-                'value' => null,
-                'expected' => false,
             ],
         ]);
     }

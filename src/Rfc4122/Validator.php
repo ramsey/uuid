@@ -40,12 +40,8 @@ final class Validator implements ValidatorInterface
         return self::VALID_PATTERN;
     }
 
-    public function validate(?string $uuid): bool
+    public function validate(string $uuid): bool
     {
-        if ($uuid === null) {
-            return false;
-        }
-
         $uuid = str_replace(['urn:', 'uuid:', 'URN:', 'UUID:', '{', '}'], '', $uuid);
         $uuid = strtolower($uuid);
 
