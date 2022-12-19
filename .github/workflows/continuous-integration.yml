@@ -13,7 +13,7 @@ jobs:
     runs-on: "ubuntu-latest"
     steps:
       - name: "Checkout repository"
-        uses: "actions/checkout@v2"
+        uses: "actions/checkout@v3"
 
       - name: "Install PHP"
         uses: "shivammathur/setup-php@v2"
@@ -22,7 +22,7 @@ jobs:
           coverage: "none"
 
       - name: "Install dependencies (Composer)"
-        uses: "ramsey/composer-install@v1"
+        uses: "ramsey/composer-install@v2"
 
       - name: "Check syntax (php-parallel-lint)"
         run: "./vendor/bin/parallel-lint src tests --colors"
@@ -35,7 +35,7 @@ jobs:
     runs-on: "ubuntu-latest"
     steps:
       - name: "Checkout repository"
-        uses: "actions/checkout@v2"
+        uses: "actions/checkout@v3"
 
       - name: "Install dependencies (apt)"
         run: |
@@ -52,13 +52,13 @@ jobs:
           ini-values: "memory_limit=-1"
 
       - name: "Install dependencies (Composer)"
-        uses: "ramsey/composer-install@v1"
+        uses: "ramsey/composer-install@v2"
 
       - name: "Run unit tests (PHPUnit)"
         run: "./vendor/bin/phpunit --verbose --colors=always --coverage-text --coverage-clover build/logs/clover.xml"
 
       - name: "Publish coverage report to Codecov"
-        uses: "codecov/codecov-action@v1"
+        uses: "codecov/codecov-action@v3"
 
   unit-tests:
     name: "Unit Tests"
@@ -77,6 +77,8 @@ jobs:
           - "7.3"
           - "7.4"
           - "8.0"
+          - "8.1"
+          - "8.2"
         operating-system:
           - "ubuntu-latest"
           - "windows-latest"
@@ -103,9 +105,9 @@ jobs:
           - php-version: "8.0"
             extensions: ", sodium, uuid"
           - php-version: "8.1"
-            operating-system: "ubuntu-latest"
             extensions: ", sodium, uuid"
-            composer-options: "--ignore-platform-req=php"
+          - php-version: "8.2"
+            extensions: ", sodium, uuid"
 
     steps:
       - name: "Configure Git (for Windows)"
@@ -115,7 +117,7 @@ jobs:
           git config --system core.eol lf
 
       - name: "Checkout repository"
-        uses: "actions/checkout@v2"
+        uses: "actions/checkout@v3"
 
       - name: "Install dependencies (apt)"
         if: ${{ matrix.operating-system == 'ubuntu-latest' }}
@@ -133,7 +135,7 @@ jobs:
           ini-values: "memory_limit=-1"
 
       - name: "Install dependencies (Composer)"
-        uses: "ramsey/composer-install@v1"
+        uses: "ramsey/composer-install@v2"
         with:
           composer-options: "${{ matrix.composer-options }}"
 
