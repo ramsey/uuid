@@ -56,22 +56,23 @@ trait SerializableFieldsTrait
     /**
      * Constructs the object from a serialized string representation
      *
-     * @param string $serialized The serialized string representation of the object
+     * @param string $data The serialized string representation of the object
      *
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
      * @psalm-suppress UnusedMethodCall
      */
-    public function unserialize($serialized): void
+    public function unserialize(string $data): void
     {
-        if (strlen($serialized) === 16) {
-            $this->__construct($serialized);
+        if (strlen($data) === 16) {
+            $this->__construct($data);
         } else {
-            $this->__construct(base64_decode($serialized));
+            $this->__construct(base64_decode($data));
         }
     }
 
     /**
-     * @param array{bytes: string} $data
+     * @param array{bytes?: string} $data
+     *
+     * @psalm-suppress UnusedMethodCall
      */
     public function __unserialize(array $data): void
     {

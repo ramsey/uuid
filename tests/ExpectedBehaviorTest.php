@@ -119,7 +119,7 @@ class ExpectedBehaviorTest extends TestCase
 
         $this->assertSame(2, $uuid->getVariant());
         $this->assertSame((int) substr($method, -1), $uuid->getVersion());
-        $this->assertTrue(ctype_digit((string) $uuid->getInteger()));
+        $this->assertSame(1, preg_match('/^\d+$/', (string) $uuid->getInteger()));
     }
 
     public function provideStaticCreationMethods()
@@ -158,7 +158,7 @@ class ExpectedBehaviorTest extends TestCase
         $this->assertSame('281474976710655', (string) $uuid->getNode());
         $this->assertSame('3fff', $uuid->getClockSequenceHex());
         $this->assertSame('16383', (string) $uuid->getClockSequence());
-        $this->assertTrue(ctype_digit((string) $uuid->getTimestamp()));
+        $this->assertSame(1, preg_match('/^\d+$/', (string) $uuid->getTimestamp()));
     }
 
     /**
@@ -198,6 +198,7 @@ class ExpectedBehaviorTest extends TestCase
 
             // Non RFC 4122 UUIDs
             ['ffffffff-ffff-ffff-ffff-ffffffffffff', true],
+            ['00000000-0000-0000-0000-000000000000', true],
             ['ff6f8cb0-c57d-01e1-0b21-0800200c9a66', true],
             ['ff6f8cb0-c57d-01e1-1b21-0800200c9a66', true],
             ['ff6f8cb0-c57d-01e1-2b21-0800200c9a66', true],
@@ -254,7 +255,12 @@ class ExpectedBehaviorTest extends TestCase
             $value = BigInteger::fromBase($value, 16)->__toString();
         });
 
-        $clockSeq = (int) $components[3] & 0x3fff;
+        if (strtolower($string) === Uuid::MAX) {
+            $clockSeq = (int) $components[3];
+        } else {
+            $clockSeq = (int) $components[3] & 0x3fff;
+        }
+
         $clockSeqHiAndReserved = (int) $components[3] >> 8;
         $clockSeqLow = (int) $components[3] & 0x00ff;
 
@@ -349,7 +355,7 @@ class ExpectedBehaviorTest extends TestCase
     public function provideFromStringInteger()
     {
         return [
-            ['00000000-0000-0000-0000-000000000000', null, 0, '0'],
+            ['00000000-0000-0000-0000-000000000000', null, 2, '0'],
             ['ff6f8cb0-c57d-11e1-8b21-0800200c9a66', 1, 2, '339532337419071774304650190139318639206'],
             ['ff6f8cb0-c57d-11e1-9b21-0800200c9a66', 1, 2, '339532337419071774305803111643925486182'],
             ['ff6f8cb0-c57d-11e1-ab21-0800200c9a66', 1, 2, '339532337419071774306956033148532333158'],
@@ -382,7 +388,7 @@ class ExpectedBehaviorTest extends TestCase
             ['ff6f8cb0-c57d-01e1-db21-0800200c9a66', null, 6, '339532337419071698752551071748029454950'],
             ['ff6f8cb0-c57d-01e1-eb21-0800200c9a66', null, 7, '339532337419071698753703993252636301926'],
             ['ff6f8cb0-c57d-01e1-fb21-0800200c9a66', null, 7, '339532337419071698754856914757243148902'],
-            ['ffffffff-ffff-ffff-ffff-ffffffffffff', null, 7, '340282366920938463463374607431768211455'],
+            ['ffffffff-ffff-ffff-ffff-ffffffffffff', null, 2, '340282366920938463463374607431768211455'],
         ];
     }
 
@@ -641,6 +647,7 @@ class ExpectedBehaviorTest extends TestCase
             ['NAMESPACE_OID', '6ba7b812-9dad-11d1-80b4-00c04fd430c8'],
             ['NAMESPACE_X500', '6ba7b814-9dad-11d1-80b4-00c04fd430c8'],
             ['NIL', '00000000-0000-0000-0000-000000000000'],
+            ['MAX', 'ffffffff-ffff-ffff-ffff-ffffffffffff'],
             ['RESERVED_NCS', 0],
             ['RFC_4122', 2],
             ['RESERVED_MICROSOFT', 6],
@@ -651,6 +658,8 @@ class ExpectedBehaviorTest extends TestCase
             ['UUID_TYPE_HASH_MD5', 3],
             ['UUID_TYPE_RANDOM', 4],
             ['UUID_TYPE_HASH_SHA1', 5],
+            ['UUID_TYPE_REORDERED_TIME', 6],
+            ['UUID_TYPE_UNIX_TIME', 7],
         ];
     }
 }

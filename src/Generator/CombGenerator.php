@@ -61,22 +61,10 @@ class CombGenerator implements RandomGeneratorInterface
 {
     public const TIMESTAMP_BYTES = 6;
 
-    /**
-     * @var RandomGeneratorInterface
-     */
-    private $randomGenerator;
-
-    /**
-     * @var NumberConverterInterface
-     */
-    private $converter;
-
     public function __construct(
-        RandomGeneratorInterface $generator,
-        NumberConverterInterface $numberConverter
+        private RandomGeneratorInterface $generator,
+        private NumberConverterInterface $numberConverter
     ) {
-        $this->converter = $numberConverter;
-        $this->randomGenerator = $generator;
     }
 
     /**
@@ -95,11 +83,11 @@ class CombGenerator implements RandomGeneratorInterface
 
         $hash = '';
         if (self::TIMESTAMP_BYTES > 0 && $length > self::TIMESTAMP_BYTES) {
-            $hash = $this->randomGenerator->generate($length - self::TIMESTAMP_BYTES);
+            $hash = $this->generator->generate($length - self::TIMESTAMP_BYTES);
         }
 
         $lsbTime = str_pad(
-            $this->converter->toHex($this->timestamp()),
+            $this->numberConverter->toHex($this->timestamp()),
             self::TIMESTAMP_BYTES * 2,
             '0',
             STR_PAD_LEFT

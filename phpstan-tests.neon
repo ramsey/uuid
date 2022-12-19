@@ -26,3 +26,7 @@ parameters:
                 - ./tests/Guid/*Test.php
                 - ./tests/Nonstandard/*Test.php
                 - ./tests/Rfc4122/*Test.php
+        -
+            message: "#^Method Ramsey\\\\Uuid\\\\.+ should return non-empty-string but returns string\\.$#"
+            paths:
+                - ./tests/static-analysis/ValidUuidIsNonEmpty.php

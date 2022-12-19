@@ -10,6 +10,7 @@ use Ramsey\Uuid\Converter\TimeConverterInterface;
 use Ramsey\Uuid\FeatureSet;
 use Ramsey\Uuid\Generator\DefaultNameGenerator;
 use Ramsey\Uuid\Generator\PeclUuidTimeGenerator;
+use Ramsey\Uuid\Generator\UnixTimeGenerator;
 use Ramsey\Uuid\Guid\GuidBuilder;
 use Ramsey\Uuid\Math\BrickMathCalculator;
 use Ramsey\Uuid\Provider\NodeProviderInterface;
@@ -76,5 +77,12 @@ class FeatureSetTest extends TestCase
         $featureSet->setNodeProvider($nodeProvider);
 
         $this->assertSame($nodeProvider, $featureSet->getNodeProvider());
+    }
+
+    public function testGetUnixTimeGenerator(): void
+    {
+        $featureSet = new FeatureSet();
+
+        $this->assertInstanceOf(UnixTimeGenerator::class, $featureSet->getUnixTimeGenerator());
     }
 }

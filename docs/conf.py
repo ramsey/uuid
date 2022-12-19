@@ -35,7 +35,7 @@ def get_version():
 # -- Project information -----------------------------------------------------
 
 project = 'ramsey/uuid'
-copyright = '2020, Ben Ramsey'
+copyright = '2012-{year}, Ben Ramsey'.format(year = datetime.date.today().strftime('%Y'))
 author = 'Ben Ramsey'
 
 version = get_version().strip()
@@ -101,3 +101,8 @@ html_context = {
     "github_version": version,
     "conf_py_path": "/docs/",
 }
+
+current_year = datetime.date.today().strftime('%Y')
+rst_prolog = """
+.. |current_year| replace:: {0}
+""".format(current_year)

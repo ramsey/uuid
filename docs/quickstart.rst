@@ -11,9 +11,6 @@ Requirements
 ramsey/uuid |version| requires the following:
 
 * PHP 8.0+
-* `ext-ctype <https://www.php.net/manual/en/book.ctype.php>`_ or a polyfill that
-  provides ext-ctype, such as `symfony/polyfill-ctype
-  <https://packagist.org/packages/symfony/polyfill-ctype>`_
 * `ext-json <https://www.php.net/manual/en/book.json.php>`_
 
 The JSON extension is normally enabled by default, but it is possible to disable
@@ -96,7 +93,9 @@ library.
     * - :php:meth:`Uuid::uuid5() <Ramsey\\Uuid\\Uuid::uuid5>`
       - This generates a :ref:`rfc4122.version5` UUID.
     * - :php:meth:`Uuid::uuid6() <Ramsey\\Uuid\\Uuid::uuid6>`
-      - This generates a :ref:`nonstandard.version6` UUID.
+      - This generates a :ref:`rfc4122.version6` UUID.
+    * - :php:meth:`Uuid::uuid7() <Ramsey\\Uuid\\Uuid::uuid7>`
+      - This generates a :ref:`rfc4122.version7` UUID.
     * - :php:meth:`Uuid::isValid() <Ramsey\\Uuid\\Uuid::isValid>`
       - Checks whether a string is a valid UUID.
     * - :php:meth:`Uuid::fromString() <Ramsey\\Uuid\\Uuid::fromString>`

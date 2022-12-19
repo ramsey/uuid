@@ -37,7 +37,7 @@ class UuidV6Test extends TestCase
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage(
             'Fields used to create a UuidV6 must represent a '
-            . 'version 6 (ordered-time) UUID'
+            . 'version 6 (reordered time) UUID'
         );
 
         new UuidV6($fields, $numberConverter, $codec, $timeConverter);

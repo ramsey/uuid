@@ -17,6 +17,7 @@ namespace Ramsey\Uuid\Guid;
 use Ramsey\Uuid\Exception\InvalidArgumentException;
 use Ramsey\Uuid\Fields\SerializableFieldsTrait;
 use Ramsey\Uuid\Rfc4122\FieldsInterface;
+use Ramsey\Uuid\Rfc4122\MaxTrait;
 use Ramsey\Uuid\Rfc4122\NilTrait;
 use Ramsey\Uuid\Rfc4122\VariantTrait;
 use Ramsey\Uuid\Rfc4122\VersionTrait;
@@ -44,15 +45,11 @@ use const STR_PAD_LEFT;
  */
 final class Fields implements FieldsInterface
 {
+    use MaxTrait;
     use NilTrait;
     use SerializableFieldsTrait;
     use VariantTrait;
     use VersionTrait;
-
-    /**
-     * @var string
-     */
-    private $bytes;
 
     /**
      * @param string $bytes A 16-byte binary string representation of a UUID
@@ -61,16 +58,14 @@ final class Fields implements FieldsInterface
      * @throws InvalidArgumentException if the byte string does not represent a GUID
      * @throws InvalidArgumentException if the byte string does not contain a valid version
      */
-    public function __construct(string $bytes)
+    public function __construct(private string $bytes)
     {
-        if (strlen($bytes) !== 16) {
+        if (strlen($this->bytes) !== 16) {
             throw new InvalidArgumentException(
                 'The byte string must be 16 bytes long; '
-                . 'received ' . strlen($bytes) . ' bytes'
+                . 'received ' . strlen($this->bytes) . ' bytes'
             );
         }
-
-        $this->bytes = $bytes;
 
         if (!$this->isCorrectVariant()) {
             throw new InvalidArgumentException(
@@ -149,7 +144,13 @@ final class Fields implements FieldsInterface
 
     public function getClockSeq(): Hexadecimal
     {
-        $clockSeq = hexdec(bin2hex(substr($this->bytes, 8, 2))) & 0x3fff;
+        if ($this->isMax()) {
+            $clockSeq = 0xffff;
+        } elseif ($this->isNil()) {
+            $clockSeq = 0x0000;
+        } else {
+            $clockSeq = hexdec(bin2hex(substr($this->bytes, 8, 2))) & 0x3fff;
+        }
 
         return new Hexadecimal(str_pad(dechex($clockSeq), 4, '0', STR_PAD_LEFT));
     }
@@ -171,7 +172,7 @@ final class Fields implements FieldsInterface
 
     public function getVersion(): ?int
     {
-        if ($this->isNil()) {
+        if ($this->isNil() || $this->isMax()) {
             return null;
         }
 
@@ -183,7 +184,7 @@ final class Fields implements FieldsInterface
 
     private function isCorrectVariant(): bool
     {
-        if ($this->isNil()) {
+        if ($this->isNil() || $this->isMax()) {
             return true;
         }
 

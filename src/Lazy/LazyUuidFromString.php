@@ -18,8 +18,8 @@ use DateTimeInterface;
 use Ramsey\Uuid\Converter\NumberConverterInterface;
 use Ramsey\Uuid\Exception\UnsupportedOperationException;
 use Ramsey\Uuid\Fields\FieldsInterface;
-use Ramsey\Uuid\Nonstandard\UuidV6;
 use Ramsey\Uuid\Rfc4122\UuidV1;
+use Ramsey\Uuid\Rfc4122\UuidV6;
 use Ramsey\Uuid\Type\Hexadecimal;
 use Ramsey\Uuid\Type\Integer as IntegerObject;
 use Ramsey\Uuid\UuidFactory;
@@ -55,18 +55,14 @@ use function substr;
 final class LazyUuidFromString implements UuidInterface
 {
     public const VALID_REGEX = '/\A[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\z/ms';
-    /**
-     * @var string
-     * @psalm-var non-empty-string
-     */
-    private $uuid;
-    /** @var UuidInterface|null */
-    private $unwrapped;
 
-    /** @psalm-param non-empty-string $uuid */
-    public function __construct(string $uuid)
+    private ?UuidInterface $unwrapped = null;
+
+    /**
+     * @psalm-param non-empty-string $uuid
+     */
+    public function __construct(private string $uuid)
     {
-        $this->uuid = $uuid;
     }
 
     /** @psalm-pure */
@@ -105,19 +101,20 @@ final class LazyUuidFromString implements UuidInterface
     /**
      * {@inheritDoc}
      *
-     * @param string $serialized
+     * @param string $data
      *
-     * @psalm-param non-empty-string $serialized
+     * @psalm-param non-empty-string $data
      */
-    public function unserialize($serialized): void
+    public function unserialize(string $data): void
     {
-        $this->uuid = $serialized;
+        $this->uuid = $data;
     }
 
     /**
-     * @param array{string: string} $data
+     * @param array{string?: string} $data
      *
-     * @psalm-param array{string: non-empty-string} $data
+     * @psalm-param array{string?: non-empty-string} $data
+     * @psalm-suppress UnusedMethodCall
      */
     public function __unserialize(array $data): void
     {

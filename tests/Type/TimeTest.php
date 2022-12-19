@@ -6,6 +6,7 @@ namespace Ramsey\Uuid\Test\Type;
 
 use Ramsey\Uuid\Exception\UnsupportedOperationException;
 use Ramsey\Uuid\Test\TestCase;
+use Ramsey\Uuid\Type\Integer as IntegerObject;
 use Ramsey\Uuid\Type\Time;
 
 use function json_encode;
@@ -15,8 +16,8 @@ use function unserialize;
 class TimeTest extends TestCase
 {
     /**
-     * @param int|float|string $seconds
-     * @param int|float|string|null $microseconds
+     * @param int|float|string|IntegerObject $seconds
+     * @param int|float|string|IntegerObject|null $microseconds
      *
      * @dataProvider provideTimeValues
      */
@@ -27,9 +28,9 @@ class TimeTest extends TestCase
 
         if ($microseconds !== null) {
             $params[] = $microseconds;
-            $timeString .= ".{$microseconds}";
+            $timeString .= sprintf('.%06s', (string) $microseconds);
         } else {
-            $timeString .= '.0';
+            $timeString .= '.000000';
         }
 
         $time = new Time(...$params);
@@ -45,7 +46,7 @@ class TimeTest extends TestCase
     }
 
     /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingTraversableTypeHintSpecification
+     * @return array<array{seconds: int|float|string|IntegerObject, microseconds: int|float|string|IntegerObject|null}>
      */
     public function provideTimeValues(): array
     {
@@ -62,8 +63,8 @@ class TimeTest extends TestCase
     }
 
     /**
-     * @param int|float|string $seconds
-     * @param int|float|string|null $microseconds
+     * @param int|float|string|IntegerObject $seconds
+     * @param int|float|string|IntegerObject|null $microseconds
      *
      * @dataProvider provideTimeValues
      */
@@ -76,6 +77,8 @@ class TimeTest extends TestCase
 
         $time = new Time(...$params);
         $serializedTime = serialize($time);
+
+        /** @var Time $unserializedTime */
         $unserializedTime = unserialize($serializedTime);
 
         $this->assertSame((string) $seconds, $unserializedTime->getSeconds()->toString());
@@ -97,8 +100,8 @@ class TimeTest extends TestCase
     }
 
     /**
-     * @param int|float|string $seconds
-     * @param int|float|string|null $microseconds
+     * @param int|float|string|IntegerObject $seconds
+     * @param int|float|string|IntegerObject|null $microseconds
      *
      * @dataProvider provideTimeValues
      */

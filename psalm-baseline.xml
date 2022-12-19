@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<files psalm-version="4.10.0@916b098b008f6de4543892b1e0651c1c3b92cbfa">
+<files psalm-version="4.27.0@faf106e717c37b8c81721845dba9de3d8deed8ff">
   <file src="src/Builder/DegradedUuidBuilder.php">
     <DeprecatedClass occurrences="3">
       <code>DegradedUuid</code>
@@ -39,19 +39,13 @@
     </DeprecatedClass>
   </file>
   <file src="src/FeatureSet.php">
-    <PropertyNotSetInConstructor occurrences="6">
+    <PropertyNotSetInConstructor occurrences="5">
       <code>$calculator</code>
       <code>$dceSecurityGenerator</code>
       <code>$numberConverter</code>
       <code>$timeConverter</code>
       <code>$timeGenerator</code>
-      <code>$timeProvider</code>
     </PropertyNotSetInConstructor>
-  </file>
-  <file src="src/Fields/SerializableFieldsTrait.php">
-    <UnusedMethodCall occurrences="1">
-      <code>unserialize</code>
-    </UnusedMethodCall>
   </file>
   <file src="src/Generator/PeclUuidNameGenerator.php">
     <ImpureFunctionCall occurrences="3">
@@ -66,11 +60,6 @@
       <code>$this</code>
       <code>$this</code>
     </ImpureVariable>
-  </file>
-  <file src="src/Lazy/LazyUuidFromString.php">
-    <UnusedMethodCall occurrences="1">
-      <code>unserialize</code>
-    </UnusedMethodCall>
   </file>
   <file src="src/Nonstandard/UuidBuilder.php">
     <ImpureVariable occurrences="3">
@@ -92,15 +81,18 @@
     <MixedArgument occurrences="1">
       <code>$macs</code>
     </MixedArgument>
-    <MixedArrayAccess occurrences="1">
-      <code>$macs</code>
-    </MixedArrayAccess>
     <MixedArrayAssignment occurrences="1">
       <code>$macs[]</code>
     </MixedArrayAssignment>
   </file>
   <file src="src/Rfc4122/UuidBuilder.php">
-    <ImpureVariable occurrences="15">
+    <ImpureVariable occurrences="21">
+      <code>$this</code>
+      <code>$this</code>
+      <code>$this</code>
+      <code>$this</code>
+      <code>$this</code>
+      <code>$this</code>
       <code>$this</code>
       <code>$this</code>
       <code>$this</code>
@@ -118,10 +110,10 @@
       <code>$this</code>
     </ImpureVariable>
   </file>
-  <file src="src/Type/Decimal.php">
-    <UnusedMethodCall occurrences="1">
-      <code>unserialize</code>
-    </UnusedMethodCall>
+  <file src="src/Rfc4122/UuidV6.php">
+    <DeprecatedClass occurrences="1">
+      <code>NonstandardUuidV6</code>
+    </DeprecatedClass>
   </file>
   <file src="src/Type/Hexadecimal.php">
     <UnusedMethodCall occurrences="1">
@@ -139,6 +131,9 @@
     </UnusedMethodCall>
   </file>
   <file src="src/Uuid.php">
+    <DeprecatedTrait occurrences="1">
+      <code>DeprecatedUuidMethodsTrait</code>
+    </DeprecatedTrait>
     <ImpureMethodCall occurrences="6">
       <code>getFactory</code>
       <code>getFactory</code>

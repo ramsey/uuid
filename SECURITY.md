@@ -29,9 +29,9 @@ contribution of external security researchers.
 If you believe you've found a security issue in software that is maintained in
 this repository, we encourage you to notify us.
 
-| Version      | In scope | Source code |
-| ------------ | -------- | ----------- |
-| latest (4.x) | ✅       | https://github.com/ramsey/uuid/tree/main |
+| Version      | In scope | Source code                             |
+| ------------ | -------- |-----------------------------------------|
+| latest (4.x) | ✅       | https://github.com/ramsey/uuid/tree/4.x |
 | 3.9          | ✅       | https://github.com/ramsey/uuid/tree/3.x |
 | 3.8          | ✅       | https://github.com/ramsey/uuid/tree/3.x |
 

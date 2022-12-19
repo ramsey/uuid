@@ -17,6 +17,8 @@ parameters:
             count: 9
             path: ./src/Lazy/LazyUuidFromString.php
         -
-            message: '#^Result of \|\| is always false\.$#'
+            message: '#^Constructor of class Ramsey\\Uuid\\FeatureSet has an unused parameter \$forceNoBigNumber\.#'
             count: 1
-            path: ./src/Type/Time.php
+            path: ./src/FeatureSet.php
+
+        - '#^Method Ramsey\\Uuid\\Generator\\Pecl[A-Za-z]+Generator::generate\(\) should return string but returns string\|false\.$#'
