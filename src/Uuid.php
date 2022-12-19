@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace Ramsey\Uuid;
 
+use BadMethodCallException;
 use DateTimeInterface;
 use Ramsey\Uuid\Codec\CodecInterface;
 use Ramsey\Uuid\Converter\NumberConverterInterface;
@@ -524,16 +525,21 @@ class Uuid implements UuidInterface
      *
      * @psalm-pure note: changing the internal factory is an edge case not covered by purity invariants,
      *             but under constant factory setups, this method operates in functionally pure manners
+     * @psalm-suppress MixedInferredReturnType,MixedReturnStatement
      */
     public static function fromHexadecimal(Hexadecimal $hex): UuidInterface
     {
         $factory = self::getFactory();
-        
-        if (\method_exists($factory, 'fromHexadecimal')) {
+
+        if (method_exists($factory, 'fromHexadecimal')) {
+            /**
+             * @phpstan-ignore-next-line
+             * @psalm-suppress UndefinedInterfaceMethod
+             */
             return self::getFactory()->fromHexadecimal($hex);
         }
 
-        throw new \BadMethodCallException('The method fromHexadecimal() does not exist on the provided factory');
+        throw new BadMethodCallException('The method fromHexadecimal() does not exist on the provided factory');
     }
 
     /**
@@ -549,6 +555,7 @@ class Uuid implements UuidInterface
      */
     public static function fromInteger(string $integer): UuidInterface
     {
+        /** @psalm-suppress ImpureMethodCall */
         return self::getFactory()->fromInteger($integer);
     }
 
@@ -566,6 +573,7 @@ class Uuid implements UuidInterface
      */
     public static function isValid(string $uuid): bool
     {
+        /** @psalm-suppress ImpureMethodCall */
         return self::getFactory()->getValidator()->validate($uuid);
     }
 
@@ -576,7 +584,7 @@ class Uuid implements UuidInterface
      * @param Hexadecimal|int|string|null $node A 48-bit number representing the
      *     hardware address; this number may be represented as an integer or a
      *     hexadecimal string
-     * @param int $clockSeq A 14-bit number used to help avoid duplicates that
+     * @param int|null $clockSeq A 14-bit number used to help avoid duplicates that
      *     could arise when the clock is set backwards in time or if the node ID
      *     changes
      *
@@ -680,7 +688,7 @@ class Uuid implements UuidInterface
      *
      * @param Hexadecimal|null $node A 48-bit number representing the hardware
      *     address
-     * @param int $clockSeq A 14-bit number used to help avoid duplicates that
+     * @param int|null $clockSeq A 14-bit number used to help avoid duplicates that
      *     could arise when the clock is set backwards in time or if the node ID
      *     changes
      *

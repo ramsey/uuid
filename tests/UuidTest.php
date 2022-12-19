@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Ramsey\Uuid\Test;
 
+use BadMethodCallException;
 use Brick\Math\BigDecimal;
 use Brick\Math\RoundingMode;
 use DateTimeImmutable;
@@ -73,7 +74,7 @@ class UuidTest extends TestCase
         );
     }
 
-    public function fromHexadecimal(): void
+    public function testFromHexadecimal(): void
     {
         $hex = new Hexadecimal('0x1EA78DEB37CE625E8F1A025041000001');
         $uuid = Uuid::fromHexadecimal($hex);
@@ -81,12 +82,26 @@ class UuidTest extends TestCase
         $this->assertEquals('1ea78deb-37ce-625e-8f1a-025041000001', $uuid->toString());
     }
 
-    public function fromHexadecimalShort(): void
+    public function testFromHexadecimalShort(): void
     {
+        $hex = new Hexadecimal('0x1EA78DEB37CE625E8F1A0250410000');
+
         $this->expectException(InvalidUuidStringException::class);
         $this->expectExceptionMessage('Invalid UUID string:');
 
-        $hex = new Hexadecimal('0x1EA78DEB37CE625E8F1A0250410000');
+        Uuid::fromHexadecimal($hex);
+    }
+
+    public function testFromHexadecimalThrowsWhenMethodDoesNotExist(): void
+    {
+        $factory = Mockery::mock(UuidFactoryInterface::class);
+        Uuid::setFactory($factory);
+
+        $hex = new Hexadecimal('0x1EA78DEB37CE625E8F1A025041000001');
+
+        $this->expectException(BadMethodCallException::class);
+        $this->expectExceptionMessage('The method fromHexadecimal() does not exist on the provided factory');
+
         Uuid::fromHexadecimal($hex);
     }
 

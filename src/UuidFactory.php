@@ -444,6 +444,7 @@ class UuidFactory implements UuidFactoryInterface
      */
     public function uuid(string $bytes): UuidInterface
     {
+        /** @psalm-suppress ImpurePropertyFetch */
         return $this->uuidBuilder->build($this->codec, $bytes);
     }
 
@@ -506,6 +507,7 @@ class UuidFactory implements UuidFactoryInterface
             return LazyUuidFromString::fromBytes($bytes);
         }
 
+        /** @psalm-suppress ImpureVariable */
         return $this->uuid($bytes);
     }
 }
