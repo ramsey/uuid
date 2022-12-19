@@ -135,7 +135,11 @@ class SystemNodeProvider implements NodeProviderInterface
 
         $node = '';
         if (preg_match_all(self::IFCONFIG_PATTERN, $ifconfig, $matches, PREG_PATTERN_ORDER)) {
-            $node = $matches[1][0] ?? '';
+            foreach ($matches[1] as $iface) {
+                if ($iface !== '00-00-00-00-00-00') {
+                    $node = $iface;
+                }
+            }
         }
 
         return $node;
