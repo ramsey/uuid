@@ -88,7 +88,7 @@ class Uuid implements UuidInterface
      * The max UUID is a special form of UUID that is specified to have all 128
      * bits set to one
      *
-     * @link https://datatracker.ietf.org/doc/html/draft-peabody-dispatch-new-uuid-format-04#section-5.4 Max UUID
+     * @link https://datatracker.ietf.org/doc/html/draft-ietf-uuidrev-rfc4122bis-00#section-5.10 Max UUID
      */
     public const MAX = 'ffffffff-ffff-ffff-ffff-ffffffffffff';
 
@@ -173,16 +173,21 @@ class Uuid implements UuidInterface
     /**
      * Version 6 (reordered time) UUID
      *
-     * @link https://datatracker.ietf.org/doc/html/draft-peabody-dispatch-new-uuid-format-04#section-5.1 UUID Version 6
+     * @link https://datatracker.ietf.org/doc/html/draft-ietf-uuidrev-rfc4122bis-00#section-5.6 UUID Version 6
      */
     public const UUID_TYPE_REORDERED_TIME = 6;
 
     /**
      * Version 7 (Unix Epoch time) UUID
      *
-     * @link https://datatracker.ietf.org/doc/html/draft-peabody-dispatch-new-uuid-format-04#section-5.2 UUID Version 7
+     * @link https://datatracker.ietf.org/doc/html/draft-ietf-uuidrev-rfc4122bis-00#section-5.7 UUID Version 7
      */
     public const UUID_TYPE_UNIX_TIME = 7;
+
+    /**
+     * @link https://datatracker.ietf.org/doc/html/draft-ietf-uuidrev-rfc4122bis-00#section-5.8 UUID Version 8
+     */
+    public const UUID_TYPE_CUSTOM = 8;
 
     /**
      * DCE Security principal domain
@@ -688,6 +693,36 @@ class Uuid implements UuidInterface
 
         throw new UnsupportedOperationException(
             'The provided factory does not support the uuid7() method',
+        );
+    }
+
+    /**
+     * Returns a version 8 (custom) UUID
+     *
+     * The bytes provided may contain any value according to your application's
+     * needs. Be aware, however, that other applications may not understand the
+     * semantics of the value.
+     *
+     * @param string $bytes A 16-byte octet string. This is an open blob
+     *     of data that you may fill with 128 bits of information. Be aware,
+     *     however, bits 48 through 51 will be replaced with the UUID version
+     *     field, and bits 64 and 65 will be replaced with the UUID variant. You
+     *     MUST NOT rely on these bits for your application needs.
+     *
+     * @return UuidInterface A UuidInterface instance that represents a
+     *     version 8 UUID
+     */
+    public static function uuid8(string $bytes): UuidInterface
+    {
+        $factory = self::getFactory();
+
+        if (method_exists($factory, 'uuid8')) {
+            /** @var UuidInterface */
+            return $factory->uuid8($bytes);
+        }
+
+        throw new UnsupportedOperationException(
+            'The provided factory does not support the uuid8() method',
         );
     }
 }

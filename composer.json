@@ -90,8 +90,8 @@
         "phpcbf": "phpcbf -vpw --cache=build/cache/phpcs.cache",
         "phpcs": "phpcs --cache=build/cache/phpcs.cache",
         "phpstan": [
-            "phpstan analyse --no-progress",
-            "phpstan analyse -c phpstan-tests.neon --no-progress"
+            "phpstan analyse --no-progress --memory-limit=1G",
+            "phpstan analyse -c phpstan-tests.neon --no-progress --memory-limit=1G"
         ],
         "phpunit": "phpunit --verbose --colors=always",
         "phpunit-coverage": "phpunit --verbose --colors=always --coverage-html build/coverage",

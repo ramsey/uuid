@@ -167,7 +167,7 @@ This will print something like this:
     ULID, unless it was converted from a version 7 UUID.
 
 .. _ULIDs: https://github.com/ulid/spec
-.. _Internet-Draft under review: https://datatracker.ietf.org/doc/html/draft-peabody-dispatch-new-uuid-format-04#section-5.2
+.. _Internet-Draft under review: https://datatracker.ietf.org/doc/html/draft-ietf-uuidrev-rfc4122bis-00#section-5.7
 .. _two problems that have long existed: https://www.percona.com/blog/2014/12/19/store-uuid-optimized-way/
 .. _Crockford's Base 32 algorithm: https://www.crockford.com/base32.html
 .. _tuupola/base32: https://packagist.org/packages/tuupola/base32

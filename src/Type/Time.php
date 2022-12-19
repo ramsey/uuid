@@ -56,7 +56,7 @@ final class Time implements TypeInterface
 
     public function toString(): string
     {
-        return $this->seconds->toString() . '.' . $this->microseconds->toString();
+        return $this->seconds->toString() . '.' . sprintf('%06s', $this->microseconds->toString());
     }
 
     public function __toString(): string

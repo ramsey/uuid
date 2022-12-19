@@ -48,7 +48,7 @@ class ValidatorTest extends TestCase
     public function provideValuesForValidation(): array
     {
         $hexMutations = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 'a', 'b', 'c', 'd', 'e', 'f'];
-        $trueVersions = [1, 2, 3, 4, 5, 6, 7];
+        $trueVersions = [1, 2, 3, 4, 5, 6, 7, 8];
         $trueVariants = [8, 9, 'a', 'b'];
 
         $testValues = [];
@@ -113,7 +113,7 @@ class ValidatorTest extends TestCase
     public function testGetPattern(): void
     {
         $expectedPattern = '\A[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-'
-            . '[1-7][0-9A-Fa-f]{3}-[ABab89][0-9A-Fa-f]{3}-[0-9A-Fa-f]{12}\z';
+            . '[1-8][0-9A-Fa-f]{3}-[ABab89][0-9A-Fa-f]{3}-[0-9A-Fa-f]{12}\z';
 
         $validator = new Validator();
 

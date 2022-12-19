@@ -22,19 +22,22 @@ use Ramsey\Uuid\Rfc4122\FieldsInterface as Rfc4122FieldsInterface;
 use Ramsey\Uuid\Uuid;
 
 /**
- * Unix Epoch time, or version 7, UUIDs include a timestamp in milliseconds
- * since the Unix Epoch, along with random bytes
+ * Version 8, Custom UUIDs provide an RFC 4122 compatible format for
+ * experimental or vendor-specific uses
  *
- * @link https://datatracker.ietf.org/doc/html/draft-ietf-uuidrev-rfc4122bis-00#section-5.7 UUID Version 7
+ * The only requirement for version 8 UUIDs is that the version and variant bits
+ * must be set. Otherwise, implementations are free to set the other bits
+ * according to their needs. As a result, the uniqueness of version 8 UUIDs is
+ * implementation-specific and should not be assumed.
+ *
+ * @link https://datatracker.ietf.org/doc/html/draft-ietf-uuidrev-rfc4122bis-00#section-5.8 UUID Version 8
  *
  * @psalm-immutable
  */
-final class UuidV7 extends Uuid implements UuidInterface
+final class UuidV8 extends Uuid implements UuidInterface
 {
-    use TimeTrait;
-
     /**
-     * Creates a version 7 (Unix Epoch time) UUID
+     * Creates a version 8 (custom) UUID
      *
      * @param Rfc4122FieldsInterface $fields The fields from which to construct a UUID
      * @param NumberConverterInterface $numberConverter The number converter to use
@@ -50,10 +53,10 @@ final class UuidV7 extends Uuid implements UuidInterface
         CodecInterface $codec,
         TimeConverterInterface $timeConverter
     ) {
-        if ($fields->getVersion() !== Uuid::UUID_TYPE_UNIX_TIME) {
+        if ($fields->getVersion() !== Uuid::UUID_TYPE_CUSTOM) {
             throw new InvalidArgumentException(
-                'Fields used to create a UuidV7 must represent a '
-                . 'version 7 (Unix Epoch time) UUID'
+                'Fields used to create a UuidV8 must represent a '
+                . 'version 8 (custom) UUID'
             );
         }
 

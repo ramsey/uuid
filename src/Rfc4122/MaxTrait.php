@@ -20,7 +20,7 @@ namespace Ramsey\Uuid\Rfc4122;
  * The max UUID is special form of UUID that is specified to have all 128 bits
  * set to one. It is the inverse of the nil UUID.
  *
- * @link https://datatracker.ietf.org/doc/html/draft-peabody-dispatch-new-uuid-format-04#section-5.4 Max UUID
+ * @link https://datatracker.ietf.org/doc/html/draft-ietf-uuidrev-rfc4122bis-00#section-5.10 Max UUID
  *
  * @psalm-immutable
  */

@@ -8,6 +8,7 @@ use DateTimeImmutable;
 use DateTimeInterface;
 use Ramsey\Uuid\Rfc4122\FieldsInterface;
 use Ramsey\Uuid\Rfc4122\UuidV7;
+use Ramsey\Uuid\Rfc4122\UuidV8;
 use Ramsey\Uuid\Type\Hexadecimal;
 use Ramsey\Uuid\Type\Integer as IntegerObject;
 use Ramsey\Uuid\Uuid;
@@ -19,6 +20,7 @@ use function Ramsey\Uuid\v4;
 use function Ramsey\Uuid\v5;
 use function Ramsey\Uuid\v6;
 use function Ramsey\Uuid\v7;
+use function Ramsey\Uuid\v8;
 
 class FunctionsTest extends TestCase
 {
@@ -117,5 +119,19 @@ class FunctionsTest extends TestCase
         $this->assertSame(Uuid::UUID_TYPE_UNIX_TIME, $fields->getVersion());
         $this->assertInstanceOf(DateTimeInterface::class, $uuid->getDateTime());
         $this->assertSame(1663195473, $uuid->getDateTime()->getTimestamp());
+    }
+
+    public function testV8ReturnsVersion8UuidString(): void
+    {
+        $v8 = v8("\x00\x11\x22\x33\x44\x55\x66\x77\x88\x99\xaa\xbb\xcc\xdd\xee\xff");
+
+        /** @var UuidV8 $uuid */
+        $uuid = Uuid::fromString($v8);
+
+        /** @var FieldsInterface $fields */
+        $fields = $uuid->getFields();
+
+        $this->assertIsString($v8);
+        $this->assertSame(Uuid::UUID_TYPE_CUSTOM, $fields->getVersion());
     }
 }

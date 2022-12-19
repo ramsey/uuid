@@ -4,36 +4,201 @@ declare(strict_types=1);
 
 namespace Ramsey\Uuid\Test\Generator;
 
+use DateTimeImmutable;
 use Mockery;
 use Mockery\MockInterface;
-use Ramsey\Uuid\Converter\Time\UnixTimeConverter;
+use Ramsey\Uuid\Generator\RandomBytesGenerator;
 use Ramsey\Uuid\Generator\RandomGeneratorInterface;
 use Ramsey\Uuid\Generator\UnixTimeGenerator;
-use Ramsey\Uuid\Math\BrickMathCalculator;
-use Ramsey\Uuid\Provider\TimeProviderInterface;
 use Ramsey\Uuid\Test\TestCase;
-use Ramsey\Uuid\Type\Time;
 
 class UnixTimeGeneratorTest extends TestCase
 {
+    /**
+     * @runInSeparateProcess since values are stored statically on the class
+     * @preserveGlobalState disabled
+     */
     public function testGenerate(): void
     {
-        $unixTimeConverter = new UnixTimeConverter(new BrickMathCalculator());
-
-        /** @var TimeProviderInterface&MockInterface $timeProvider */
-        $timeProvider = Mockery::mock(TimeProviderInterface::class, [
-            'getTime' => new Time('1578612359', '521023'),
-        ]);
+        $dateTime = new DateTimeImmutable('@1578612359.521023');
+        $expectedBytes = "\x01\x6f\x8c\xa1\x01\x61\x03\x00\xff\x00\xff\x00\xff\x00\xff\x00";
 
         /** @var RandomGeneratorInterface&MockInterface $randomGenerator */
         $randomGenerator = Mockery::mock(RandomGeneratorInterface::class);
-        $randomGenerator->expects()->generate(10)->andReturns("\xff\x00\xff\x00\xff\x00\xff\x00\xff\x00");
-
-        $unixTimeGenerator = new UnixTimeGenerator($unixTimeConverter, $timeProvider, $randomGenerator);
-
-        $this->assertSame(
-            "\x01\x6f\x8c\xa1\x01\x61\xff\x00\xff\x00\xff\x00\xff\x00\xff\x00",
-            $unixTimeGenerator->generate(),
+        $randomGenerator->expects()->generate(16)->andReturns(
+            "\xff\x00\xff\x00\xff\x00\xff\x00\xff\x00\xff\x00\xff\x00\xff\x00",
         );
+
+        $unixTimeGenerator = new UnixTimeGenerator($randomGenerator);
+
+        $bytes = $unixTimeGenerator->generate(null, null, $dateTime);
+
+        $this->assertSame($expectedBytes, $bytes);
+    }
+
+    /**
+     * @runInSeparateProcess since values are stored statically on the class
+     * @preserveGlobalState disabled
+     */
+    public function testGenerateProducesMonotonicResults(): void
+    {
+        $randomGenerator = new RandomBytesGenerator();
+        $unixTimeGenerator = new UnixTimeGenerator($randomGenerator);
+
+        $previous = '';
+        for ($i = 0; $i < 25; $i++) {
+            $bytes = $unixTimeGenerator->generate();
+            $this->assertTrue($bytes > $previous);
+        }
+    }
+
+    /**
+     * @runInSeparateProcess since values are stored statically on the class
+     * @preserveGlobalState disabled
+     */
+    public function testGenerateProducesMonotonicResultsWithSameDate(): void
+    {
+        $dateTime = new DateTimeImmutable('now');
+        $randomGenerator = new RandomBytesGenerator();
+        $unixTimeGenerator = new UnixTimeGenerator($randomGenerator);
+
+        $previous = '';
+        for ($i = 0; $i < 25; $i++) {
+            $bytes = $unixTimeGenerator->generate(null, null, $dateTime);
+            $this->assertTrue($bytes > $previous);
+        }
+    }
+
+    /**
+     * @runInSeparateProcess since values are stored statically on the class
+     * @preserveGlobalState disabled
+     */
+    public function testGenerateProducesMonotonicResultsFor32BitPath(): void
+    {
+        $randomGenerator = new RandomBytesGenerator();
+        $unixTimeGenerator = new UnixTimeGenerator($randomGenerator, 4);
+
+        $previous = '';
+        for ($i = 0; $i < 25; $i++) {
+            $bytes = $unixTimeGenerator->generate();
+            $this->assertTrue($bytes > $previous);
+        }
+    }
+
+    /**
+     * @runInSeparateProcess since values are stored statically on the class
+     * @preserveGlobalState disabled
+     */
+    public function testGenerateProducesMonotonicResultsWithSameDateFor32BitPath(): void
+    {
+        $dateTime = new DateTimeImmutable('now');
+        $randomGenerator = new RandomBytesGenerator();
+        $unixTimeGenerator = new UnixTimeGenerator($randomGenerator, 4);
+
+        $previous = '';
+        for ($i = 0; $i < 25; $i++) {
+            $bytes = $unixTimeGenerator->generate(null, null, $dateTime);
+            $this->assertTrue($bytes > $previous);
+        }
+    }
+
+    /**
+     * @runInSeparateProcess since values are stored statically on the class
+     * @preserveGlobalState disabled
+     */
+    public function testGenerateProducesMonotonicResultsStartingWithAllBitsSet(): void
+    {
+        /** @var RandomGeneratorInterface&MockInterface $randomGenerator */
+        $randomGenerator = Mockery::mock(RandomGeneratorInterface::class);
+        $randomGenerator->expects()->generate(16)->andReturns(
+            "\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff",
+        );
+        $randomGenerator->expects()->generate(10)->times(24)->andReturns(
+            "\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff",
+        );
+
+        $unixTimeGenerator = new UnixTimeGenerator($randomGenerator);
+
+        $previous = '';
+        for ($i = 0; $i < 25; $i++) {
+            $bytes = $unixTimeGenerator->generate();
+            $this->assertTrue($bytes > $previous);
+        }
+    }
+
+    /**
+     * @runInSeparateProcess since values are stored statically on the class
+     * @preserveGlobalState disabled
+     */
+    public function testGenerateProducesMonotonicResultsStartingWithAllBitsSetWithSameDate(): void
+    {
+        $dateTime = new DateTimeImmutable('now');
+
+        /** @var RandomGeneratorInterface&MockInterface $randomGenerator */
+        $randomGenerator = Mockery::mock(RandomGeneratorInterface::class);
+        $randomGenerator->expects()->generate(16)->andReturns(
+            "\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff",
+        );
+        $randomGenerator->expects()->generate(10)->times(24)->andReturns(
+            "\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff",
+        );
+
+        $unixTimeGenerator = new UnixTimeGenerator($randomGenerator);
+
+        $previous = '';
+        for ($i = 0; $i < 25; $i++) {
+            $bytes = $unixTimeGenerator->generate(null, null, $dateTime);
+            $this->assertTrue($bytes > $previous);
+        }
+    }
+
+    /**
+     * @runInSeparateProcess since values are stored statically on the class
+     * @preserveGlobalState disabled
+     */
+    public function testGenerateProducesMonotonicResultsStartingWithAllBitsSetFor32BitPath(): void
+    {
+        /** @var RandomGeneratorInterface&MockInterface $randomGenerator */
+        $randomGenerator = Mockery::mock(RandomGeneratorInterface::class);
+        $randomGenerator->expects()->generate(16)->andReturns(
+            "\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff",
+        );
+        $randomGenerator->expects()->generate(10)->times(24)->andReturns(
+            "\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff",
+        );
+
+        $unixTimeGenerator = new UnixTimeGenerator($randomGenerator, 4);
+
+        $previous = '';
+        for ($i = 0; $i < 25; $i++) {
+            $bytes = $unixTimeGenerator->generate();
+            $this->assertTrue($bytes > $previous);
+        }
+    }
+
+    /**
+     * @runInSeparateProcess since values are stored statically on the class
+     * @preserveGlobalState disabled
+     */
+    public function testGenerateProducesMonotonicResultsStartingWithAllBitsSetWithSameDateFor32BitPath(): void
+    {
+        $dateTime = new DateTimeImmutable('now');
+
+        /** @var RandomGeneratorInterface&MockInterface $randomGenerator */
+        $randomGenerator = Mockery::mock(RandomGeneratorInterface::class);
+        $randomGenerator->expects()->generate(16)->andReturns(
+            "\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff",
+        );
+        $randomGenerator->expects()->generate(10)->times(24)->andReturns(
+            "\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff",
+        );
+
+        $unixTimeGenerator = new UnixTimeGenerator($randomGenerator, 4);
+
+        $previous = '';
+        for ($i = 0; $i < 25; $i++) {
+            $bytes = $unixTimeGenerator->generate(null, null, $dateTime);
+            $this->assertTrue($bytes > $previous);
+        }
     }
 }
