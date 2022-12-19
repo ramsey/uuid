@@ -722,6 +722,7 @@ class SystemNodeProviderTest extends TestCase
             'Without leading whitespace' => ['AA-BB-CC-DD-EE-FF '],
             'Without trailing linebreak' => ["\nAA-BB-CC-DD-EE-FF"],
             'Without trailing whitespace' => [' AA-BB-CC-DD-EE-FF'],
+            'All zero MAC address' => ['00-00-00-00-00-00'],
         ];
     }
 
@@ -741,6 +742,7 @@ class SystemNodeProviderTest extends TestCase
             ['01-23-45:67:89:ab'],
             ['01-23-45-67:89:ab'],
             ['01-23-45-67-89:ab'],
+            ['00:00:00:00:00:00'],
         ];
     }
 
@@ -808,6 +810,10 @@ TXT
                 EHC29: flags=0<> mtu 0
                 XHC20: flags=0<> mtu 0
                 EHC26: flags=0<> mtu 0
+                aa0: flags=8863<UP,BROADCAST,SMART,RUNNING,SIMPLEX,MULTICAST> mtu 1500
+                    options=10b<RXCSUM,TXCSUM,VLAN_HWTAGGING,AV>
+                    ether 00:00:00:00:00:00
+                    status: active
                 en0: flags=8863<UP,BROADCAST,SMART,RUNNING,SIMPLEX,MULTICAST> mtu 1500
                     options=10b<RXCSUM,TXCSUM,VLAN_HWTAGGING,AV>
                     ether 10:dd:b1:b4:e4:8e
@@ -874,6 +880,12 @@ TXT
                    WINS Proxy Enabled. . . . . . . . : No
                    DNS Suffix Search List. . . . . . : network.lan
 
+                Some kind of adapter:
+
+                   Connection-specific DNS Suffix  . : network.foo
+                   Description . . . . . . . . . . . : Some Adapter
+                   Physical Address. . . . . . . . . : 00-00-00-00-00-00
+
                 Ethernet adapter Ethernet:
 
                    Connection-specific DNS Suffix  . : network.lan
@@ -906,6 +918,7 @@ TXT
             ],
             'Full output - FreeBSD' => [<<<'TXT'
                 Name    Mtu Network       Address              Ipkts Ierrs Idrop    Opkts Oerrs  Coll
+                aa0       0 <Link#0>      00:00:00:00:00:00        0     0     0        0     0     0
                 em0    1500 <Link#1>      08:00:27:71:a1:00    65514     0     0    42918     0     0
                 em1    1500 <Link#2>      08:00:27:d0:60:a0     1199     0     0      535     0     0
                 lo0   16384 <Link#3>      lo0                      4     0     0        4     0     0
@@ -930,7 +943,6 @@ TXT
             'FF:FF:FF:FF:FF:FF' => ["\nFF:FF:FF:FF:FF:FF\n", 'ffffffffffff'],
 
             /* Incorrect variations that are also accepted */
-            'Local host' => ["\n00:00:00:00:00:00\n", '000000000000'],
             'Too long -- extra character' => ["\nABC-01-23-45-67-89\n", 'bc0123456789'],
             'Too long -- extra tuple' => ["\n01-AA-BB-CC-DD-EE-FF\n", '01aabbccddee'],
         ];
