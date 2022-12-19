@@ -175,7 +175,7 @@ information.
 [badge-upgrade]: https://img.shields.io/packagist/v/ramsey/uuid.svg?style=flat-square&label=upgrade&colorB=darkred
 [badge-license]: https://img.shields.io/packagist/l/ramsey/uuid.svg?style=flat-square&colorB=darkcyan
 [badge-php]: https://img.shields.io/packagist/php-v/ramsey/uuid/3.x-dev.svg?style=flat-square&colorB=%238892BF
-[badge-build]: https://img.shields.io/github/workflow/status/ramsey/uuid/build/3.x.svg?logo=github&style=flat-square
+[badge-build]: https://img.shields.io/github/actions/workflow/status/ramsey/uuid/continuous-integration.yml?branch=3.x&logo=github&style=flat-square
 [badge-coverage]: https://img.shields.io/codecov/c/gh/ramsey/uuid/3.x.svg?style=flat-square&logo=codecov
 
 [source]: https://github.com/ramsey/uuid/tree/3.x
