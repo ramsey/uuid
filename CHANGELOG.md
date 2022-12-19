@@ -775,6 +775,13 @@ The following functionality is deprecated and will be removed in ramsey/uuid
   throws this exception.
 
 
+## 3.9.7 - 2022-12-19
+
+### Fixed
+
+* Add `#[ReturnTypeWillChange]` to `Uuid::jsonSerialize()` method.
+
+
 ## 3.9.6 - 2021-09-25
 
 ### Fixed
