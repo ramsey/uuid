@@ -6,6 +6,13 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 
+## 3.9.7 - 2022-12-19
+
+### Fixed
+
+* Add `#[ReturnTypeWillChange]` to `Uuid::jsonSerialize()` method.
+
+
 ## 3.9.6 - 2021-09-25
 
 ### Fixed
