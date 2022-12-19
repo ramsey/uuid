@@ -6,6 +6,18 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 
+## 4.7.0 - 2022-12-19
+
+### Added
+
+* Add `Uuid::fromHexadecimal()` and `UuidFactory::fromHexadecimal()`. These
+  methods are not required by the interfaces.
+
+### Fixed
+
+* Ignore MAC addresses consisting of all zeroes (i.e., `00:00:00:00:00:00`).
+
+
 ## 4.6.0 - 2022-11-05
 
 ### Added
