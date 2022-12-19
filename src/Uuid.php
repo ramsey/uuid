@@ -527,7 +527,13 @@ class Uuid implements UuidInterface
      */
     public static function fromHexadecimal(Hexadecimal $hex): UuidInterface
     {
-        return self::getFactory()->fromHexadecimal($hex);
+        $factory = self::getFactory();
+        
+        if (\method_exists($factory, 'fromHexadecimal')) {
+            return self::getFactory()->fromHexadecimal($hex);
+        }
+
+        throw new \BadMethodCallException('The method fromHexadecimal() does not exist on the provided factory');
     }
 
     /**
