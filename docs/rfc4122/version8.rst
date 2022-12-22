@@ -8,7 +8,7 @@ Version 8: Custom
 
     Version 8, custom UUIDs are a new format of UUID, proposed in an
     `Internet-Draft under review`_ at the IETF. While the draft is still going
-    through the IETF process, the version 7 format is not expected to change
+    through the IETF process, the version 8 format is not expected to change
     in any way that breaks compatibility.
 
 Version 8 UUIDs allow applications to create custom UUIDs in an RFC-compatible
