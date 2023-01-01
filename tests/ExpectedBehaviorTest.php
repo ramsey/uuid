@@ -82,7 +82,7 @@ class ExpectedBehaviorTest extends TestCase
 
         $this->assertSame(Variant::Rfc4122, $uuid->getFields()->getVariant());
         $this->assertSame(Version::tryFrom((int) substr($method, -1)), $uuid->getFields()->getVersion());
-        $this->assertTrue(ctype_digit((string) $uuid->getInteger()));
+        $this->assertSame(1, preg_match('/^\d+$/', (string) $uuid->getInteger()));
     }
 
     public function provideStaticCreationMethods()
@@ -149,6 +149,7 @@ class ExpectedBehaviorTest extends TestCase
 
             // Non RFC 4122 UUIDs
             ['ffffffff-ffff-ffff-ffff-ffffffffffff', true],
+            ['00000000-0000-0000-0000-000000000000', true],
             ['ff6f8cb0-c57d-01e1-0b21-0800200c9a66', true],
             ['ff6f8cb0-c57d-01e1-1b21-0800200c9a66', true],
             ['ff6f8cb0-c57d-01e1-2b21-0800200c9a66', true],
@@ -285,7 +286,7 @@ class ExpectedBehaviorTest extends TestCase
     public function provideFromStringInteger()
     {
         return [
-            ['00000000-0000-0000-0000-000000000000', null, 0, '0'],
+            ['00000000-0000-0000-0000-000000000000', null, 2, '0'],
             ['ff6f8cb0-c57d-11e1-8b21-0800200c9a66', 1, 2, '339532337419071774304650190139318639206'],
             ['ff6f8cb0-c57d-11e1-9b21-0800200c9a66', 1, 2, '339532337419071774305803111643925486182'],
             ['ff6f8cb0-c57d-11e1-ab21-0800200c9a66', 1, 2, '339532337419071774306956033148532333158'],
@@ -318,7 +319,7 @@ class ExpectedBehaviorTest extends TestCase
             ['ff6f8cb0-c57d-01e1-db21-0800200c9a66', null, 6, '339532337419071698752551071748029454950'],
             ['ff6f8cb0-c57d-01e1-eb21-0800200c9a66', null, 7, '339532337419071698753703993252636301926'],
             ['ff6f8cb0-c57d-01e1-fb21-0800200c9a66', null, 7, '339532337419071698754856914757243148902'],
-            ['ffffffff-ffff-ffff-ffff-ffffffffffff', null, 7, '340282366920938463463374607431768211455'],
+            ['ffffffff-ffff-ffff-ffff-ffffffffffff', null, 2, '340282366920938463463374607431768211455'],
         ];
     }
 
@@ -566,6 +567,7 @@ class ExpectedBehaviorTest extends TestCase
             ['NAMESPACE_OID', '6ba7b812-9dad-11d1-80b4-00c04fd430c8'],
             ['NAMESPACE_X500', '6ba7b814-9dad-11d1-80b4-00c04fd430c8'],
             ['NIL', '00000000-0000-0000-0000-000000000000'],
+            ['MAX', 'ffffffff-ffff-ffff-ffff-ffffffffffff'],
         ];
     }
 }

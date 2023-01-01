@@ -26,9 +26,9 @@ class TimeTest extends TestCase
 
         if ($microseconds !== null) {
             $params[] = $microseconds;
-            $timeString .= ".{$microseconds}";
+            $timeString .= sprintf('.%06s', (string) $microseconds);
         } else {
-            $timeString .= '.0';
+            $timeString .= '.000000';
         }
 
         $time = new Time(...$params);

@@ -24,6 +24,7 @@ use Ramsey\Uuid\Generator\DefaultTimeGenerator;
 use Ramsey\Uuid\Generator\NameGeneratorInterface;
 use Ramsey\Uuid\Generator\RandomGeneratorInterface;
 use Ramsey\Uuid\Generator\TimeGeneratorInterface;
+use Ramsey\Uuid\Generator\UnixTimeGenerator;
 use Ramsey\Uuid\Lazy\LazyUuidFromString;
 use Ramsey\Uuid\Provider\NodeProviderInterface;
 use Ramsey\Uuid\Provider\Time\FixedTimeProvider;
@@ -42,68 +43,30 @@ use function substr;
 use const STR_PAD_LEFT;
 
 /**
- * @deprecated UuidFactory will go away in ramsey/uuid version 5. Use dedicated
- *     factories for subtypes instead.
- *
  * @psalm-suppress MissingImmutableAnnotation
  */
 class UuidFactory implements UuidFactoryInterface
 {
+    private CodecInterface $codec;
+    private DceSecurityGeneratorInterface $dceSecurityGenerator;
+    private NameGeneratorInterface $nameGenerator;
+    private NodeProviderInterface $nodeProvider;
+    private NumberConverterInterface $numberConverter;
+    private RandomGeneratorInterface $randomGenerator;
+    private TimeConverterInterface $timeConverter;
+    private TimeGeneratorInterface $timeGenerator;
+    private TimeGeneratorInterface $unixTimeGenerator;
+    private UuidBuilderInterface $uuidBuilder;
+    private ValidatorInterface $validator;
+
     /**
-     * @var CodecInterface
+     * @var bool whether the feature set was provided from outside, or we can
+     *     operate under "default" assumptions
      */
-    private $codec;
+    private bool $isDefaultFeatureSet;
 
     /**
-     * @var DceSecurityGeneratorInterface
-     */
-    private $dceSecurityGenerator;
-
-    /**
-     * @var NameGeneratorInterface
-     */
-    private $nameGenerator;
-
-    /**
-     * @var NodeProviderInterface
-     */
-    private $nodeProvider;
-
-    /**
-     * @var NumberConverterInterface
-     */
-    private $numberConverter;
-
-    /**
-     * @var RandomGeneratorInterface
-     */
-    private $randomGenerator;
-
-    /**
-     * @var TimeConverterInterface
-     */
-    private $timeConverter;
-
-    /**
-     * @var TimeGeneratorInterface
-     */
-    private $timeGenerator;
-
-    /**
-     * @var UuidBuilderInterface
-     */
-    private $uuidBuilder;
-
-    /**
-     * @var ValidatorInterface
-     */
-    private $validator;
-
-    /** @var bool whether the feature set was provided from outside, or we can operate under "default" assumptions */
-    private $isDefaultFeatureSet;
-
-    /**
-     * @param FeatureSet $features A set of available features in the current environment
+     * @param FeatureSet|null $features A set of available features in the current environment
      */
     public function __construct(?FeatureSet $features = null)
     {
@@ -121,6 +84,7 @@ class UuidFactory implements UuidFactoryInterface
         $this->timeGenerator = $features->getTimeGenerator();
         $this->uuidBuilder = $features->getBuilder();
         $this->validator = $features->getValidator();
+        $this->unixTimeGenerator = $features->getUnixTimeGenerator();
     }
 
     /**
@@ -350,9 +314,14 @@ class UuidFactory implements UuidFactoryInterface
     }
 
     /**
-     * @inheritDoc
+     * @psalm-pure
      */
-    public function uuid1($node = null, ?int $clockSeq = null): UuidInterface
+    public function fromHexadecimal(Hexadecimal $hex): UuidInterface
+    {
+        return $this->codec->decode($hex->__toString());
+    }
+
+    public function uuid1(Hexadecimal | int | string | null $node = null, ?int $clockSeq = null): UuidInterface
     {
         $bytes = $this->timeGenerator->generate($node, $clockSeq);
 
@@ -421,6 +390,45 @@ class UuidFactory implements UuidFactoryInterface
     }
 
     /**
+     * Returns a version 7 (Unix Epoch time) UUID
+     *
+     * @param DateTimeInterface|null $dateTime An optional date/time from which
+     *     to create the version 7 UUID. If not provided, the UUID is generated
+     *     using the current date/time.
+     *
+     * @return UuidInterface A UuidInterface instance that represents a
+     *     version 7 UUID
+     */
+    public function uuid7(?DateTimeInterface $dateTime = null): UuidInterface
+    {
+        assert($this->unixTimeGenerator instanceof UnixTimeGenerator);
+        $bytes = $this->unixTimeGenerator->generate(null, null, $dateTime);
+
+        return $this->uuidFromBytesAndVersion($bytes, Version::UnixTime);
+    }
+
+    /**
+     * Returns a version 8 (Custom) UUID
+     *
+     * The bytes provided may contain any value according to your application's
+     * needs. Be aware, however, that other applications may not understand the
+     * semantics of the value.
+     *
+     * @param non-empty-string $bytes A 16-byte octet string. This is an open blob
+     *     of data that you may fill with 128 bits of information. Be aware,
+     *     however, bits 48 through 51 will be replaced with the UUID version
+     *     field, and bits 64 and 65 will be replaced with the UUID variant. You
+     *     MUST NOT rely on these bits for your application needs.
+     *
+     * @return UuidInterface A UuidInterface instance that represents a
+     *     version 8 UUID
+     */
+    public function uuid8(string $bytes): UuidInterface
+    {
+        return $this->uuidFromBytesAndVersion($bytes, Version::Custom);
+    }
+
+    /**
      * Returns a Uuid created from the provided byte string
      *
      * Uses the configured builder and codec and the provided byte string to
@@ -435,6 +443,7 @@ class UuidFactory implements UuidFactoryInterface
      */
     public function uuid(string $bytes): UuidInterface
     {
+        /** @psalm-suppress ImpurePropertyFetch */
         return $this->uuidBuilder->build($this->codec, $bytes);
     }
 

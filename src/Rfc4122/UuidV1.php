@@ -14,32 +14,26 @@ declare(strict_types=1);
 
 namespace Ramsey\Uuid\Rfc4122;
 
-use DateTimeImmutable;
-use DateTimeInterface;
 use Ramsey\Uuid\Codec\CodecInterface;
 use Ramsey\Uuid\Converter\NumberConverterInterface;
 use Ramsey\Uuid\Converter\TimeConverterInterface;
-use Ramsey\Uuid\Exception\DateTimeException;
 use Ramsey\Uuid\Exception\InvalidArgumentException;
 use Ramsey\Uuid\Rfc4122\FieldsInterface as Rfc4122FieldsInterface;
 use Ramsey\Uuid\TimeBasedUuidInterface;
 use Ramsey\Uuid\Uuid;
-use Throwable;
-
-use function str_pad;
-
-use const STR_PAD_LEFT;
 
 /**
- * Time-based, or version 1, UUIDs include timestamp, clock sequence, and node
+ * Gregorian time, or version 1, UUIDs include timestamp, clock sequence, and node
  * values that are combined into a 128-bit unsigned integer
  *
  * @psalm-immutable
  */
 final class UuidV1 extends Uuid implements UuidInterface, TimeBasedUuidInterface
 {
+    use TimeTrait;
+
     /**
-     * Creates a version 1 (time-based) UUID
+     * Creates a version 1 (Gregorian time) UUID
      *
      * @param Rfc4122FieldsInterface $fields The fields from which to construct a UUID
      * @param NumberConverterInterface $numberConverter The number converter to use
@@ -63,21 +57,5 @@ final class UuidV1 extends Uuid implements UuidInterface, TimeBasedUuidInterface
         }
 
         parent::__construct($fields, $numberConverter, $codec, $timeConverter);
-    }
-
-    public function getDateTime(): DateTimeInterface
-    {
-        $time = $this->getTimeConverter()->convertTime($this->getFields()->getTimestamp());
-
-        try {
-            return new DateTimeImmutable(
-                '@'
-                . $time->getSeconds()->toString()
-                . '.'
-                . str_pad($time->getMicroseconds()->toString(), 6, '0', STR_PAD_LEFT)
-            );
-        } catch (Throwable $e) {
-            throw new DateTimeException($e->getMessage(), (int) $e->getCode(), $e);
-        }
     }
 }

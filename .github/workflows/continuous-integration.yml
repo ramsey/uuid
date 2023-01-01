@@ -76,6 +76,7 @@ jobs:
       matrix:
         php-version:
           - "8.1"
+          - "8.2"
 
     steps:
       - name: "Checkout repository"
@@ -90,7 +91,7 @@ jobs:
         uses: "shivammathur/setup-php@v2"
         with:
           php-version: "${{ matrix.php-version }}"
-          extensions: bcmath, ctype, gmp, sodium, uuid
+          extensions: bcmath, gmp, sodium, uuid
           coverage: "none"
           ini-values: "memory_limit=-1"
 
@@ -117,7 +118,7 @@ jobs:
         uses: "shivammathur/setup-php@v2"
         with:
           php-version: "latest"
-          extensions: bcmath, ctype, gmp, sodium, uuid
+          extensions: bcmath, gmp, sodium, uuid
           coverage: "pcov"
           ini-values: "memory_limit=-1"
 
@@ -130,7 +131,7 @@ jobs:
         run: "./vendor/bin/phpunit --verbose --colors=always --coverage-text --coverage-clover build/logs/clover.xml"
 
       - name: "Publish coverage report to Codecov"
-        uses: "codecov/codecov-action@v3.1.0"
+        uses: "codecov/codecov-action@v3.1.1"
 
   unit-tests:
     name: "Unit Tests"
@@ -142,6 +143,7 @@ jobs:
       matrix:
         php-version:
           - "8.1"
+          - "8.2"
         operating-system:
           - "ubuntu-latest"
           - "windows-latest"
@@ -166,7 +168,7 @@ jobs:
         uses: "shivammathur/setup-php@v2"
         with:
           php-version: "${{ matrix.php-version }}"
-          extensions: bcmath, ctype, gmp, sodium, uuid
+          extensions: bcmath, gmp, sodium, uuid
           coverage: "none"
           ini-values: "memory_limit=-1"
 

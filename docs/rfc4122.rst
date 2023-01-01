@@ -13,13 +13,16 @@ RFC 4122 UUIDs
     rfc4122/version3
     rfc4122/version4
     rfc4122/version5
+    rfc4122/version6
+    rfc4122/version7
+    rfc4122/version8
 
-`RFC 4122`_ defines five versions of UUID. Each version has different generation
-algorithms and properties. Which one you choose to use depends on your use-case.
-You can find out more about their applications on the specific page for that
-version.
+`RFC 4122`_ defines five versions of UUID, while a `new Internet-Draft under
+review`_ defines three new versions. Each version has different generation
+algorithms and properties. Which one you choose depends on your use-case. You
+can find out more about their applications on the specific page for that version.
 
-Version 1: Time-based
+Version 1: Gregorian Time
     This version of UUID combines a timestamp, node value (in the form of a MAC
     address from the local computer's network interface), and a clock sequence
     to ensure uniqueness. For more details, see :doc:`rfc4122/version1`.
@@ -44,5 +47,21 @@ Version 5: Named-based (SHA-1)
     deterministic UUID. The hashing algorithm used is SHA-1. For more details,
     see :doc:`rfc4122/version5`.
 
+Version 6: Reordered Time
+    This version of UUID combines the features of a
+    :ref:`version 1 UUID <rfc4122.version1>` with a *monotonically increasing*
+    UUID. For more details, see :ref:`rfc4122.version6`.
+
+Version 7: Unix Epoch Time
+    This version of UUID combines a timestamp--based on milliseconds elapsed
+    since the Unix Epoch--and random bytes to create a monotonically increasing,
+    sortable UUID without the privacy and entropy concerns associated with
+    version 1 and version 6 UUIDs. For more details, see :ref:`rfc4122.version7`.
+
+Version 8: Custom
+    This version of UUID allows applications to generate custom identifiers in
+    an RFC-compatible format. For more details, see :doc:`rfc4122/version8`.
+
 
 .. _RFC 4122: https://tools.ietf.org/html/rfc4122
+.. _new Internet-Draft under review: https://datatracker.ietf.org/doc/html/draft-ietf-uuidrev-rfc4122bis-00

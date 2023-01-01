@@ -86,7 +86,12 @@ class OrderedTimeCodec extends StringCodec
             );
         }
 
-        // Rearrange the bytes to their original order.
+        /**
+         * Rearrange the bytes to their original order.
+         *
+         * @psalm-suppress UnnecessaryVarAnnotation
+         * @phpstan-var non-empty-string $rearrangedBytes
+         */
         $rearrangedBytes = $bytes[4] . $bytes[5] . $bytes[6] . $bytes[7]
             . $bytes[2] . $bytes[3]
             . $bytes[0] . $bytes[1]

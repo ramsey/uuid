@@ -18,10 +18,10 @@ use Ramsey\Uuid\Exception\UnableToBuildUuidException;
 use Ramsey\Uuid\Guid\GuidBuilder;
 use Ramsey\Uuid\Math\BrickMathCalculator;
 use Ramsey\Uuid\Nonstandard\UuidBuilder as NonstandardUuidBuilder;
-use Ramsey\Uuid\Nonstandard\UuidV6;
 use Ramsey\Uuid\Rfc4122\UuidBuilder as Rfc4122UuidBuilder;
 use Ramsey\Uuid\Rfc4122\UuidV1;
 use Ramsey\Uuid\Rfc4122\UuidV2;
+use Ramsey\Uuid\Rfc4122\UuidV6;
 use Ramsey\Uuid\Test\TestCase;
 
 class FallbackBuilderTest extends TestCase

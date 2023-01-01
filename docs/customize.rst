@@ -22,8 +22,8 @@ to replace just about any `builder`_, `codec`_, `converter`_, `generator`_,
 
 Ordered-time Codec
     The ordered-time codec exists to rearrange the bytes of a version 1,
-    time-based UUID so that the timestamp portion of the UUID is monotonically
-    increasing. To learn more, see :ref:`customize.ordered-time-codec`.
+    Gregorian time UUID so that the timestamp portion of the UUID is
+    monotonically increasing. To learn more, see :ref:`customize.ordered-time-codec`.
 
 Timestamp-first COMB Codec
     The timestamp-first COMB codec replaces part of a version 4, random UUID

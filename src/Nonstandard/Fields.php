@@ -146,4 +146,9 @@ final class Fields implements FieldsInterface
     {
         return false;
     }
+
+    public function isMax(): bool
+    {
+        return false;
+    }
 }

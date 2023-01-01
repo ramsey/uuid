@@ -4,12 +4,20 @@ declare(strict_types=1);
 
 namespace Ramsey\Uuid\Test;
 
+use BadMethodCallException;
 use Brick\Math\BigDecimal;
 use Brick\Math\RoundingMode;
+use DateTimeImmutable;
 use DateTimeInterface;
+use Mockery;
+use Mockery\MockInterface;
 use PHPUnit\Framework\MockObject\MockObject;
+use Ramsey\Uuid\Codec\StringCodec;
 use Ramsey\Uuid\Codec\TimestampFirstCombCodec;
 use Ramsey\Uuid\Codec\TimestampLastCombCodec;
+use Ramsey\Uuid\Converter\Number\GenericNumberConverter;
+use Ramsey\Uuid\Converter\TimeConverterInterface;
+use Ramsey\Uuid\Exception\DateTimeException;
 use Ramsey\Uuid\Exception\InvalidArgumentException;
 use Ramsey\Uuid\Exception\InvalidUuidStringException;
 use Ramsey\Uuid\Exception\UnsupportedOperationException;
@@ -19,16 +27,22 @@ use Ramsey\Uuid\Generator\RandomGeneratorFactory;
 use Ramsey\Uuid\Generator\RandomGeneratorInterface;
 use Ramsey\Uuid\Guid\Guid;
 use Ramsey\Uuid\Lazy\LazyUuidFromString;
+use Ramsey\Uuid\Math\BrickMathCalculator;
 use Ramsey\Uuid\Nonstandard\UuidV6;
 use Ramsey\Uuid\Provider\Node\RandomNodeProvider;
 use Ramsey\Uuid\Provider\Time\FixedTimeProvider;
+use Ramsey\Uuid\Rfc4122\Fields;
 use Ramsey\Uuid\Rfc4122\FieldsInterface;
+use Ramsey\Uuid\Rfc4122\UuidBuilder;
 use Ramsey\Uuid\Rfc4122\UuidV1;
+use Ramsey\Uuid\Rfc4122\UuidV7;
+use Ramsey\Uuid\Rfc4122\UuidV8;
 use Ramsey\Uuid\Rfc4122\Version;
 use Ramsey\Uuid\Type\Hexadecimal;
 use Ramsey\Uuid\Type\Time;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidFactory;
+use Ramsey\Uuid\UuidFactoryInterface;
 use Ramsey\Uuid\UuidInterface;
 use Ramsey\Uuid\Validator\GenericValidator;
 use Ramsey\Uuid\Validator\ValidatorInterface;
@@ -64,6 +78,37 @@ class UuidTest extends TestCase
             Uuid::fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66')
                 ->toString()
         );
+    }
+
+    public function testFromHexadecimal(): void
+    {
+        $hex = new Hexadecimal('0x1EA78DEB37CE625E8F1A025041000001');
+        $uuid = Uuid::fromHexadecimal($hex);
+        $this->assertInstanceOf(Uuid::class, $uuid);
+        $this->assertEquals('1ea78deb-37ce-625e-8f1a-025041000001', $uuid->toString());
+    }
+
+    public function testFromHexadecimalShort(): void
+    {
+        $hex = new Hexadecimal('0x1EA78DEB37CE625E8F1A0250410000');
+
+        $this->expectException(InvalidUuidStringException::class);
+        $this->expectExceptionMessage('Invalid UUID string:');
+
+        Uuid::fromHexadecimal($hex);
+    }
+
+    public function testFromHexadecimalThrowsWhenMethodDoesNotExist(): void
+    {
+        $factory = Mockery::mock(UuidFactoryInterface::class);
+        Uuid::setFactory($factory);
+
+        $hex = new Hexadecimal('0x1EA78DEB37CE625E8F1A025041000001');
+
+        $this->expectException(BadMethodCallException::class);
+        $this->expectExceptionMessage('The method fromHexadecimal() does not exist on the provided factory');
+
+        Uuid::fromHexadecimal($hex);
     }
 
     /**
@@ -139,6 +184,30 @@ class UuidTest extends TestCase
     public function testFromStringLazyUuidFromUppercase(): void
     {
         $this->assertInstanceOf(LazyUuidFromString::class, Uuid::fromString('FF6F8CB0-C57D-11E1-9B21-0800200C9A66'));
+    }
+
+    public function testFromStringWithNilUuid(): void
+    {
+        $uuid = Uuid::fromString(Uuid::NIL);
+
+        /** @var Fields $fields */
+        $fields = $uuid->getFields();
+
+        $this->assertSame('00000000-0000-0000-0000-000000000000', $uuid->toString());
+        $this->assertTrue($fields->isNil());
+        $this->assertFalse($fields->isMax());
+    }
+
+    public function testFromStringWithMaxUuid(): void
+    {
+        $uuid = Uuid::fromString(Uuid::MAX);
+
+        /** @var Fields $fields */
+        $fields = $uuid->getFields();
+
+        $this->assertSame('ffffffff-ffff-ffff-ffff-ffffffffffff', $uuid->toString());
+        $this->assertFalse($fields->isNil());
+        $this->assertTrue($fields->isMax());
     }
 
     public function testGetBytes(): void
@@ -614,6 +683,133 @@ class UuidTest extends TestCase
         $this->assertInstanceOf(DateTimeInterface::class, $uuid->getDateTime());
         $this->assertSame(Variant::Rfc4122, $uuid->getFields()->getVariant());
         $this->assertSame(Version::ReorderedTime, $uuid->getFields()->getVersion());
+    }
+
+    public function testUuid7(): void
+    {
+        /** @var UuidV7 $uuid */
+        $uuid = Uuid::uuid7();
+        $this->assertInstanceOf(DateTimeInterface::class, $uuid->getDateTime());
+        $this->assertSame(Variant::Rfc4122, $uuid->getFields()->getVariant());
+        $this->assertSame(Version::UnixTime, $uuid->getFields()->getVersion());
+    }
+
+    public function testUuid7ThrowsExceptionForUnsupportedFactory(): void
+    {
+        /** @var UuidFactoryInterface&MockInterface $factory */
+        $factory = Mockery::mock(UuidFactoryInterface::class);
+
+        Uuid::setFactory($factory);
+
+        $this->expectException(UnsupportedOperationException::class);
+        $this->expectExceptionMessage('The provided factory does not support the uuid7() method');
+
+        Uuid::uuid7();
+    }
+
+    public function testUuid7WithDateTime(): void
+    {
+        $dateTime = new DateTimeImmutable('@281474976710.655');
+
+        /** @var UuidV7 $uuid */
+        $uuid = Uuid::uuid7($dateTime);
+        $this->assertInstanceOf(DateTimeInterface::class, $uuid->getDateTime());
+        $this->assertSame(Variant::Rfc4122, $uuid->getFields()->getVariant());
+        $this->assertSame(Version::UnixTime, $uuid->getFields()->getVersion());
+        $this->assertSame(
+            '10889-08-02T05:31:50.655+00:00',
+            $uuid->getDateTime()->format(DateTimeInterface::RFC3339_EXTENDED),
+        );
+    }
+
+    public function testUuid7SettingTheClockBackwards(): void
+    {
+        $dates = [
+            new DateTimeImmutable('now'),
+            new DateTimeImmutable('last year'),
+            new DateTimeImmutable('1979-01-01 00:00:00.000000'),
+        ];
+
+        foreach ($dates as $dateTime) {
+            /** @var UuidV7 $previous */
+            $previous = Uuid::uuid7($dateTime);
+
+            for ($i = 0; $i < 25; $i++) {
+                /** @var UuidV7 $uuid */
+                $uuid = Uuid::uuid7($dateTime);
+                $this->assertGreaterThan(0, $uuid->compareTo($previous));
+                $this->assertSame($dateTime->format('Y-m-d H:i'), $uuid->getDateTime()->format('Y-m-d H:i'));
+                $previous = $uuid;
+            }
+        }
+    }
+
+    public function testUuid7WithMinimumDateTime(): void
+    {
+        $dateTime = new DateTimeImmutable('1979-01-01 00:00:00.000000');
+
+        /** @var UuidV7 $uuid */
+        $uuid = Uuid::uuid7($dateTime);
+        $this->assertInstanceOf(DateTimeInterface::class, $uuid->getDateTime());
+        $this->assertSame(Variant::Rfc4122, $uuid->getFields()->getVariant());
+        $this->assertSame(Version::UnixTime, $uuid->getFields()->getVersion());
+
+        $this->assertSame(
+            '1979-01-01T00:00:00.000+00:00',
+            $uuid->getDateTime()->format(DateTimeInterface::RFC3339_EXTENDED),
+        );
+    }
+
+    public function testUuid7EachUuidIsMonotonicallyIncreasing(): void
+    {
+        /** @var UuidV7 $previous */
+        $previous = Uuid::uuid7();
+
+        for ($i = 0; $i < 25; $i++) {
+            /** @var UuidV7 $uuid */
+            $uuid = Uuid::uuid7();
+            $now = gmdate('Y-m-d H:i');
+            $this->assertGreaterThan(0, $uuid->compareTo($previous));
+            $this->assertSame($now, $uuid->getDateTime()->format('Y-m-d H:i'));
+            $previous = $uuid;
+        }
+    }
+
+    public function testUuid7EachUuidFromSameDateTimeIsMonotonicallyIncreasing(): void
+    {
+        $dateTime = new DateTimeImmutable();
+
+        /** @var UuidV7 $previous */
+        $previous = Uuid::uuid7($dateTime);
+
+        for ($i = 0; $i < 25; $i++) {
+            /** @var UuidV7 $uuid */
+            $uuid = Uuid::uuid7($dateTime);
+            $this->assertGreaterThan(0, $uuid->compareTo($previous));
+            $this->assertSame($dateTime->format('Y-m-d H:i'), $uuid->getDateTime()->format('Y-m-d H:i'));
+            $previous = $uuid;
+        }
+    }
+
+    public function testUuid8(): void
+    {
+        /** @var UuidV8 $uuid */
+        $uuid = Uuid::uuid8("\x00\x11\x22\x33\x44\x55\x66\x77\x88\x99\xaa\xbb\xcc\xdd\xee\xff");
+        $this->assertSame(Variant::Rfc4122, $uuid->getFields()->getVariant());
+        $this->assertSame(Version::Custom, $uuid->getFields()->getVersion());
+    }
+
+    public function testUuid8ThrowsExceptionForUnsupportedFactory(): void
+    {
+        /** @var UuidFactoryInterface&MockInterface $factory */
+        $factory = Mockery::mock(UuidFactoryInterface::class);
+
+        Uuid::setFactory($factory);
+
+        $this->expectException(UnsupportedOperationException::class);
+        $this->expectExceptionMessage('The provided factory does not support the uuid8() method');
+
+        Uuid::uuid8("\x00\x11\x22\x33\x44\x55\x66\x77\x88\x99\xaa\xbb\xcc\xdd\xee\xff");
     }
 
     /**
@@ -1199,7 +1395,13 @@ class UuidTest extends TestCase
                 'urn' => 'urn:uuid:00000000-0000-0000-0000-000000000000',
                 'time' => '000000000000000',
                 'clock_seq' => '0000',
-                'variant' => Variant::ReservedNcs,
+                // This is a departure from the Python tests. The Python tests
+                // are technically "correct" because all bits are set to zero,
+                // so it stands to reason that the variant is also zero, but
+                // that leads to this being considered a "Reserved NCS" variant,
+                // and that is not the case. RFC 4122 defines this special UUID,
+                // so it is an RFC 4122 variant.
+                'variant' => Variant::Rfc4122,
                 'version' => null,
             ],
             [
@@ -1458,8 +1660,20 @@ class UuidTest extends TestCase
                 ],
                 'urn' => 'urn:uuid:ffffffff-ffff-ffff-ffff-ffffffffffff',
                 'time' => 'fffffffffffffff',
-                'clock_seq' => '3fff',
-                'variant' => Variant::ReservedFuture,
+                // This is a departure from the Python tests. The Python tests
+                // are technically "correct" because all bits are set to one,
+                // which ends up calculating the variant as 7, or "Reserved
+                // Future," but that is not the case, and now that max UUIDs
+                // are defined as a special type, within the RFC 4122 variant
+                // rules, we also consider it an RFC 4122 variant.
+                //
+                // Similarly, Python's tests think the clock sequence should be
+                // 0x3fff because of the bit shifting performed on this field.
+                // However, since all the bits in this UUID are defined as being
+                // set to one, we will consider the clock sequence as 0xffff,
+                // which all bits set to one.
+                'clock_seq' => 'ffff',
+                'variant' => Variant::Rfc4122,
                 'version' => null,
             ],
         ];
@@ -1587,6 +1801,42 @@ class UuidTest extends TestCase
         /** @var \Ramsey\Uuid\Rfc4122\UuidInterface $uuid */
         $uuid = Uuid::fromString('886313e1-3b8a-6372-9b90-0c9aee199e5d');
         $this->assertSame($uuid->getFields()->getVersion(), Version::ReorderedTime);
+    }
+
+    public function testUuidVersionConstantForVersion7(): void
+    {
+        /** @var \Ramsey\Uuid\Rfc4122\UuidInterface $uuid */
+        $uuid = Uuid::fromString('886313e1-3b8a-7372-9b90-0c9aee199e5d');
+        $this->assertSame($uuid->getFields()->getVersion(), Version::UnixTime);
+    }
+
+    public function testGetDateTimeThrowsExceptionWhenDateTimeCannotParseDate(): void
+    {
+        $numberConverter = new GenericNumberConverter(new BrickMathCalculator());
+        $timeConverter = Mockery::mock(TimeConverterInterface::class);
+
+        $timeConverter
+            ->shouldReceive('convertTime')
+            ->once()
+            ->andReturn(new Time(1234567890, '1234567'));
+
+        $builder = new UuidBuilder($numberConverter, $timeConverter);
+        $codec = new StringCodec($builder);
+
+        $factory = new UuidFactory();
+        $factory->setCodec($codec);
+
+        $uuid = $factory->fromString('b1484596-25dc-11ea-978f-2e728ce88125');
+
+        $this->expectException(DateTimeException::class);
+        $this->expectExceptionMessage(
+            'Failed to parse time string (@1234567890.1234567) at position 18 (7): Unexpected character'
+        );
+
+        /**
+         * @phpstan-ignore-next-line
+         */
+        $uuid->getDateTime();
     }
 
     /**

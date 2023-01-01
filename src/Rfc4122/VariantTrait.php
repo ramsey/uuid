@@ -51,7 +51,13 @@ trait VariantTrait
             throw new InvalidBytesException('Invalid number of bytes');
         }
 
-        /** @var array $parts */
+        if ($this->isMax() || $this->isNil()) {
+            // RFC 4122 defines these special types of UUID, so we will consider
+            // them as belonging to the RFC 4122 variant.
+            return Variant::Rfc4122;
+        }
+
+        /** @var int[] $parts */
         $parts = unpack('n*', $this->getBytes());
 
         // $parts[5] is a 16-bit, unsigned integer containing the variant bits
@@ -60,7 +66,7 @@ trait VariantTrait
         // three characters (three most-significant bits) to determine the
         // variant.
         $binary = str_pad(
-            decbin((int) $parts[5]),
+            decbin($parts[5]),
             16,
             '0',
             STR_PAD_LEFT
@@ -69,15 +75,13 @@ trait VariantTrait
         $msb = substr($binary, 0, 3);
 
         if ($msb === '111') {
-            $variant = Variant::ReservedFuture;
+            return Variant::ReservedFuture;
         } elseif ($msb === '110') {
-            $variant = Variant::ReservedMicrosoft;
+            return Variant::ReservedMicrosoft;
         } elseif (str_starts_with($msb, '10')) {
-            $variant = Variant::Rfc4122;
-        } else {
-            $variant = Variant::ReservedNcs;
+            return Variant::Rfc4122;
         }
 
-        return $variant;
+        return Variant::ReservedNcs;
     }
 }

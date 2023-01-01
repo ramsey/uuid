@@ -17,6 +17,7 @@ namespace Ramsey\Uuid\Guid;
 use Ramsey\Uuid\Exception\InvalidArgumentException;
 use Ramsey\Uuid\Fields\SerializableFieldsTrait;
 use Ramsey\Uuid\Rfc4122\FieldsInterface;
+use Ramsey\Uuid\Rfc4122\MaxTrait;
 use Ramsey\Uuid\Rfc4122\NilTrait;
 use Ramsey\Uuid\Rfc4122\VariantTrait;
 use Ramsey\Uuid\Rfc4122\Version;
@@ -45,6 +46,7 @@ use const STR_PAD_LEFT;
  */
 final class Fields implements FieldsInterface
 {
+    use MaxTrait;
     use NilTrait;
     use SerializableFieldsTrait;
     use VariantTrait;
@@ -146,10 +148,15 @@ final class Fields implements FieldsInterface
 
     public function getClockSeq(): Hexadecimal
     {
-        $clockSeq = hexdec(bin2hex(substr($this->bytes, 8, 2))) & 0x3fff;
-        $clockSeqHex = str_pad(dechex($clockSeq), 4, '0', STR_PAD_LEFT);
+        if ($this->isMax()) {
+            $clockSeq = 0xffff;
+        } elseif ($this->isNil()) {
+            $clockSeq = 0x0000;
+        } else {
+            $clockSeq = hexdec(bin2hex(substr($this->bytes, 8, 2))) & 0x3fff;
+        }
 
-        return new Hexadecimal($clockSeqHex);
+        return new Hexadecimal(str_pad(dechex($clockSeq), 4, '0', STR_PAD_LEFT));
     }
 
     public function getClockSeqHiAndReserved(): Hexadecimal
@@ -178,7 +185,7 @@ final class Fields implements FieldsInterface
 
     public function getVersion(): ?Version
     {
-        if ($this->isNil()) {
+        if ($this->isNil() || $this->isMax()) {
             return null;
         }
 
@@ -190,7 +197,7 @@ final class Fields implements FieldsInterface
 
     private function isCorrectVariant(): bool
     {
-        if ($this->isNil()) {
+        if ($this->isNil() || $this->isMax()) {
             return true;
         }
 

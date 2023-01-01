@@ -30,6 +30,7 @@
         "phpstan/phpstan-phpunit": "^1.1",
         "phpunit/phpunit": "^9.5",
         "psalm/plugin-phpunit": "^0.16.1",
+        "ramsey/composer-repl": "^1.4",
         "slevomat/coding-standard": "^8.4",
         "squizlabs/php_codesniffer": "^3.5",
         "vimeo/psalm": "^4.22"
@@ -65,7 +66,8 @@
             "captainhook/plugin-composer": true,
             "ergebnis/composer-normalize": true,
             "phpstan/extension-installer": true,
-            "dealerdirect/phpcodesniffer-composer-installer": true
+            "dealerdirect/phpcodesniffer-composer-installer": true,
+            "ramsey/composer-repl": true
         },
         "sort-packages": true
     },
@@ -86,8 +88,8 @@
         "phpcbf": "phpcbf -vpw --cache=build/cache/phpcs.cache",
         "phpcs": "phpcs --cache=build/cache/phpcs.cache",
         "phpstan": [
-            "phpstan analyse --no-progress",
-            "phpstan analyse -c phpstan-tests.neon --no-progress"
+            "phpstan analyse --no-progress --memory-limit=1G",
+            "phpstan analyse -c phpstan-tests.neon --no-progress --memory-limit=1G"
         ],
         "phpunit": "phpunit --verbose --colors=always",
         "phpunit-coverage": "phpunit --verbose --colors=always --coverage-html build/coverage",

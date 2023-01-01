@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<files psalm-version="4.22.0@fc2c6ab4d5fa5d644d8617089f012f3bb84b8703">
+<files psalm-version="4.30.0@d0bc6e25d89f649e4f36a534f330f8bb4643dd69">
   <file src="src/Builder/FallbackBuilder.php">
     <ImpureMethodCall occurrences="1"/>
     <ImpureVariable occurrences="1">
@@ -13,13 +13,12 @@
     </ImpureVariable>
   </file>
   <file src="src/FeatureSet.php">
-    <PropertyNotSetInConstructor occurrences="6">
+    <PropertyNotSetInConstructor occurrences="5">
       <code>$calculator</code>
       <code>$dceSecurityGenerator</code>
       <code>$numberConverter</code>
       <code>$timeConverter</code>
       <code>$timeGenerator</code>
-      <code>$timeProvider</code>
     </PropertyNotSetInConstructor>
   </file>
   <file src="src/Generator/PeclUuidNameGenerator.php">
@@ -29,11 +28,6 @@
       <code>uuid_parse</code>
     </ImpureFunctionCall>
   </file>
-  <file src="src/Guid/Guid.php">
-    <DeprecatedMethod occurrences="1">
-      <code>parent::__construct($fields, $numberConverter, $codec, $timeConverter)</code>
-    </DeprecatedMethod>
-  </file>
   <file src="src/Guid/GuidBuilder.php">
     <ImpureVariable occurrences="3">
       <code>$this</code>
@@ -41,27 +35,12 @@
       <code>$this</code>
     </ImpureVariable>
   </file>
-  <file src="src/Lazy/LazyUuidFromString.php">
-    <DeprecatedClass occurrences="1">
-      <code>new UuidFactory()</code>
-    </DeprecatedClass>
-  </file>
-  <file src="src/Nonstandard/Uuid.php">
-    <DeprecatedMethod occurrences="1">
-      <code>parent::__construct($fields, $numberConverter, $codec, $timeConverter)</code>
-    </DeprecatedMethod>
-  </file>
   <file src="src/Nonstandard/UuidBuilder.php">
     <ImpureVariable occurrences="3">
       <code>$this</code>
       <code>$this</code>
       <code>$this</code>
     </ImpureVariable>
-  </file>
-  <file src="src/Nonstandard/UuidV6.php">
-    <DeprecatedMethod occurrences="1">
-      <code>parent::__construct($fields, $numberConverter, $codec, $timeConverter)</code>
-    </DeprecatedMethod>
   </file>
   <file src="src/Provider/Dce/SystemDceSecurityProvider.php">
     <ForbiddenCode occurrences="5">
@@ -81,7 +60,13 @@
     </MixedArrayAssignment>
   </file>
   <file src="src/Rfc4122/UuidBuilder.php">
-    <ImpureVariable occurrences="15">
+    <ImpureVariable occurrences="21">
+      <code>$this</code>
+      <code>$this</code>
+      <code>$this</code>
+      <code>$this</code>
+      <code>$this</code>
+      <code>$this</code>
       <code>$this</code>
       <code>$this</code>
       <code>$this</code>
@@ -99,69 +84,17 @@
       <code>$this</code>
     </ImpureVariable>
   </file>
-  <file src="src/Rfc4122/UuidV1.php">
-    <DeprecatedMethod occurrences="1">
-      <code>parent::__construct($fields, $numberConverter, $codec, $timeConverter)</code>
-    </DeprecatedMethod>
-  </file>
-  <file src="src/Rfc4122/UuidV2.php">
-    <DeprecatedMethod occurrences="1">
-      <code>parent::__construct($fields, $numberConverter, $codec, $timeConverter)</code>
-    </DeprecatedMethod>
-  </file>
-  <file src="src/Rfc4122/UuidV3.php">
-    <DeprecatedMethod occurrences="1">
-      <code>parent::__construct($fields, $numberConverter, $codec, $timeConverter)</code>
-    </DeprecatedMethod>
-  </file>
-  <file src="src/Rfc4122/UuidV4.php">
-    <DeprecatedMethod occurrences="1">
-      <code>parent::__construct($fields, $numberConverter, $codec, $timeConverter)</code>
-    </DeprecatedMethod>
-  </file>
-  <file src="src/Rfc4122/UuidV5.php">
-    <DeprecatedMethod occurrences="1">
-      <code>parent::__construct($fields, $numberConverter, $codec, $timeConverter)</code>
-    </DeprecatedMethod>
+  <file src="src/Rfc4122/UuidV6.php">
+    <DeprecatedClass occurrences="1">
+      <code>NonstandardUuidV6</code>
+    </DeprecatedClass>
   </file>
   <file src="src/Type/Decimal.php">
     <InaccessibleProperty occurrences="1">
       <code>$this-&gt;isNegative</code>
     </InaccessibleProperty>
   </file>
-  <file src="src/Type/Integer.php">
-    <InaccessibleProperty occurrences="1">
-      <code>$this-&gt;isNegative</code>
-    </InaccessibleProperty>
-  </file>
   <file src="src/Uuid.php">
-    <DeprecatedClass occurrences="2">
-      <code>new UuidFactory()</code>
-      <code>new UuidFactory()</code>
-    </DeprecatedClass>
-    <DeprecatedMethod occurrences="21">
-      <code>fromDateTime</code>
-      <code>getValidator</code>
-      <code>self::getFactory()</code>
-      <code>self::getFactory()</code>
-      <code>self::getFactory()</code>
-      <code>self::getFactory()</code>
-      <code>self::getFactory()</code>
-      <code>self::getFactory()</code>
-      <code>self::getFactory()</code>
-      <code>self::getFactory()</code>
-      <code>self::getFactory()</code>
-      <code>self::getFactory()</code>
-      <code>self::getFactory()</code>
-      <code>self::getFactory()</code>
-      <code>self::getFactory()</code>
-      <code>uuid1</code>
-      <code>uuid2</code>
-      <code>uuid3</code>
-      <code>uuid4</code>
-      <code>uuid5</code>
-      <code>uuid6</code>
-    </DeprecatedMethod>
     <ImpureMethodCall occurrences="6">
       <code>getFactory</code>
       <code>getFactory</code>
@@ -172,23 +105,16 @@
     </ImpureMethodCall>
   </file>
   <file src="src/UuidFactory.php">
-    <DeprecatedClass occurrences="2">
-      <code>FeatureSet</code>
-      <code>new FeatureSet()</code>
-    </DeprecatedClass>
-    <DeprecatedInterface occurrences="1">
-      <code>UuidFactory</code>
-    </DeprecatedInterface>
-    <ImpurePropertyFetch occurrences="7">
+    <ImpurePropertyFetch occurrences="6">
       <code>$this-&gt;codec</code>
       <code>$this-&gt;codec</code>
       <code>$this-&gt;codec</code>
       <code>$this-&gt;isDefaultFeatureSet</code>
       <code>$this-&gt;nameGenerator</code>
       <code>$this-&gt;numberConverter</code>
-      <code>$this-&gt;uuidBuilder</code>
     </ImpurePropertyFetch>
-    <ImpureVariable occurrences="13">
+    <ImpureVariable occurrences="14">
+      <code>$this</code>
       <code>$this</code>
       <code>$this</code>
       <code>$this</code>

@@ -40,6 +40,7 @@ use const STR_PAD_LEFT;
  */
 final class Fields implements FieldsInterface
 {
+    use MaxTrait;
     use NilTrait;
     use SerializableFieldsTrait;
     use VariantTrait;
@@ -81,10 +82,15 @@ final class Fields implements FieldsInterface
 
     public function getClockSeq(): Hexadecimal
     {
-        $clockSeq = hexdec(bin2hex(substr($this->bytes, 8, 2))) & 0x3fff;
-        $clockSeqHex = str_pad(dechex($clockSeq), 4, '0', STR_PAD_LEFT);
+        if ($this->isMax()) {
+            $clockSeq = 0xffff;
+        } elseif ($this->isNil()) {
+            $clockSeq = 0x0000;
+        } else {
+            $clockSeq = hexdec(bin2hex(substr($this->bytes, 8, 2))) & 0x3fff;
+        }
 
-        return new Hexadecimal($clockSeqHex);
+        return new Hexadecimal(str_pad(dechex($clockSeq), 4, '0', STR_PAD_LEFT));
     }
 
     public function getClockSeqHiAndReserved(): Hexadecimal
@@ -166,6 +172,14 @@ final class Fields implements FieldsInterface
                 $this->getTimeMid()->toString(),
                 hexdec($this->getTimeHiAndVersion()->toString()) & 0x0fff
             ),
+            // The Unix timestamp in version 7 UUIDs is a 48-bit number,
+            // but for consistency, we will return a 60-bit number, padded
+            // to the left with zeros.
+            Version::UnixTime => sprintf(
+                '%011s%04s',
+                $this->getTimeLow()->toString(),
+                $this->getTimeMid()->toString(),
+            ),
             default => sprintf(
                 '%03x%04s%08s',
                 hexdec($this->getTimeHiAndVersion()->toString()) & 0x0fff,
@@ -179,19 +193,19 @@ final class Fields implements FieldsInterface
 
     public function getVersion(): ?Version
     {
-        if ($this->isNil()) {
+        if ($this->isNil() || $this->isMax()) {
             return null;
         }
 
-        /** @var array $parts */
+        /** @var int[] $parts */
         $parts = unpack('n*', $this->bytes);
 
-        return Version::tryFrom((int) $parts[4] >> 12);
+        return Version::tryFrom($parts[4] >> 12);
     }
 
     private function isCorrectVariant(): bool
     {
-        if ($this->isNil()) {
+        if ($this->isNil() || $this->isMax()) {
             return true;
         }
 

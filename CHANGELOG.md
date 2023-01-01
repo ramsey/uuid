@@ -72,6 +72,92 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 * Remove dependency on ramsey/collection package.
 
 
+## 4.7.1 - 2022-12-31
+
+### Fixed
+
+* Allow the use of ramsey/collection ^2.0 with ramsey/uuid.
+
+
+## 4.7.0 - 2022-12-19
+
+### Added
+
+* Add `Uuid::fromHexadecimal()` and `UuidFactory::fromHexadecimal()`. These
+  methods are not required by the interfaces.
+
+### Fixed
+
+* Ignore MAC addresses consisting of all zeroes (i.e., `00:00:00:00:00:00`).
+
+
+## 4.6.0 - 2022-11-05
+
+### Added
+
+* Add support for version 8, Unix Epoch time UUIDs, as defined in
+  [draft-ietf-uuidrev-rfc4122bis-00, section 5.8][version8]. While still an
+  Internet-Draft, version 8 is stable and unlikely to change in any way that
+  breaks compatibility.
+  * Use `Ramsey\Uuid\Uuid::uuid8()` to generate version 8 UUIDs.
+  * Version 8 UUIDs are of type `Ramsey\Uuid\Rfc4122\UuidV8`.
+  * The constant `Ramsey\Uuid\Uuid::UUID_TYPE_CUSTOM` exists for version 8 UUIDs.
+
+### Fixed
+
+* Ensure monotonicity of version 7 UUIDs.
+
+
+## 4.5.1 - 2022-09-16
+
+### Fixed
+
+* Update RFC 4122 validator to recognize version 6 and 7 UUIDs.
+
+
+## 4.5.0 - 2022-09-15
+
+### Added
+
+* Promote version 6, reordered time UUIDs from the `Nonstandard` namespace to
+  the `Rfc4122` namespace. Version 6 UUIDs are defined in
+  [draft-ietf-uuidrev-rfc4122bis-00, section 5.6][version6]. While still an
+  Internet-Draft version 6 is stable and unlikely to change in any way that
+  breaks compatibility.
+* Add support for version 7, Unix Epoch time UUIDs, as defined in
+  [draft-ietf-uuidrev-rfc4122bis-00, section 5.7][version7]. While still an
+  Internet-Draft, version 7 is stable and unlikely to change in any way that
+  breaks compatibility.
+  * Use `Ramsey\Uuid\Uuid::uuid7()` to generate version 7 UUIDs.
+  * Version 7 UUIDs are of type `Ramsey\Uuid\Rfc4122\UuidV7`.
+  * The constant `Ramsey\Uuid\Uuid::UUID_TYPE_UNIX_TIME` exists for version
+    7 UUIDs.
+* Add `Ramsey\Uuid\Converter\Time\UnixTimeConverter` and
+  `Ramsey\Uuid\Generator\UnixTimeGenerator` to support version 7 UUID generation.
+* Add support for [max UUIDs][] through `Ramsey\Uuid\Uuid::MAX` and
+  `Ramsey\Uuid\Rfc4122\MaxUuid`.
+
+### Changed
+
+* The lowest version of brick/math allowed is now `^0.8.8`.
+
+### Deprecated
+
+The following will be removed in ramsey/uuid 5.0.0:
+
+* `Ramsey\Uuid\Nonstandard\UuidV6` is deprecated in favor of
+  `Ramsey\Uuid\Rfc4122\UuidV6`.
+* `Ramsey\Uuid\Uuid::UUID_TYPE_PEABODY`; use
+  `Ramsey\Uuid\Uuid::UUID_TYPE_REORDERED_TIME` instead.
+
+### Fixed
+
+* For `Ramsey\Uuid\Uuid::isValid()`, Psalm now asserts the UUID is a
+  non-empty-string when it is valid.
+* Nil UUIDs are properly treated as RFC 4122 variants, and `getVariant()` now
+  returns a `2` when called on a nil UUID.
+
+
 ## 4.4.0 - 2022-08-05
 
 ### Changed
@@ -774,6 +860,13 @@ The following functionality is deprecated and will be removed in ramsey/uuid
   throws this exception.
 
 
+## 3.9.7 - 2022-12-19
+
+### Fixed
+
+* Add `#[ReturnTypeWillChange]` to `Uuid::jsonSerialize()` method.
+
+
 ## 3.9.6 - 2021-09-25
 
 ### Fixed
@@ -1381,3 +1474,7 @@ versions leading up to this release.*
 [doctrine field type]: http://doctrine-dbal.readthedocs.org/en/latest/reference/types.html
 [ramsey/uuid-doctrine]: https://github.com/ramsey/uuid-doctrine
 [ramsey/uuid-console]: https://github.com/ramsey/uuid-console
+[version6]: https://datatracker.ietf.org/doc/html/draft-ietf-uuidrev-rfc4122bis-00#section-5.6
+[version7]: https://datatracker.ietf.org/doc/html/draft-ietf-uuidrev-rfc4122bis-00#section-5.7
+[version8]: https://datatracker.ietf.org/doc/html/draft-ietf-uuidrev-rfc4122bis-00#section-5.8
+[max uuids]: https://datatracker.ietf.org/doc/html/draft-peabody-dispatch-new-uuid-format-04#section-5.4

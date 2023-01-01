@@ -47,7 +47,7 @@ the ramsey/uuid library.
 
     .. php:staticmethod:: uuid1([$node[, $clockSeq]])
 
-        Generates a version 1, time-based UUID. See :ref:`rfc4122.version1`.
+        Generates a version 1, Gregorian time UUID. See :ref:`rfc4122.version1`.
 
         :param Ramsey\\Uuid\\Type\\Hexadecimal|null $node: An optional hexadecimal node to use
         :param int|null $clockSeq: An optional clock sequence to use
@@ -92,12 +92,20 @@ the ramsey/uuid library.
 
     .. php:staticmethod:: uuid6([$node[, $clockSeq]])
 
-        Generates a version 6, ordered-time UUID. See :ref:`nonstandard.version6`.
+        Generates a version 6, reordered time UUID. See :ref:`rfc4122.version6`.
 
         :param Ramsey\\Uuid\\Type\\Hexadecimal|null $node: An optional hexadecimal node to use
         :param int|null $clockSeq: An optional clock sequence to use
         :returns: A version 6 UUID
-        :returntype: Ramsey\\Uuid\\Nonstandard\\UuidV6
+        :returntype: Ramsey\\Uuid\\Rfc4122\\UuidV6
+
+    .. php:staticmethod:: uuid7([$dateTime])
+
+        Generates a version 7, Unix Epoch time UUID. See :ref:`rfc4122.version7`.
+
+        :param DateTimeInterface|null $dateTime: The date from which to create the UUID instance
+        :returns: A version 7 UUID
+        :returntype: Ramsey\\Uuid\\Rfc4122\\UuidV7
 
     .. php:staticmethod:: fromString($uuid)
 

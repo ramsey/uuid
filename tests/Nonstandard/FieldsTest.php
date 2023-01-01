@@ -64,6 +64,7 @@ class FieldsTest extends TestCase
             ['ff6f8cb0-c57d-91e1-0b21-0800200c9a66', 'getVariant', Variant::ReservedNcs],
             ['ff6f8cb0-c57d-91e1-0b21-0800200c9a66', 'getVersion', null],
             ['ff6f8cb0-c57d-91e1-0b21-0800200c9a66', 'isNil', false],
+            ['ff6f8cb0-c57d-91e1-0b21-0800200c9a66', 'isMax', false],
         ];
     }
 

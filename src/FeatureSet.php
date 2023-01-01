@@ -35,6 +35,7 @@ use Ramsey\Uuid\Generator\RandomGeneratorFactory;
 use Ramsey\Uuid\Generator\RandomGeneratorInterface;
 use Ramsey\Uuid\Generator\TimeGeneratorFactory;
 use Ramsey\Uuid\Generator\TimeGeneratorInterface;
+use Ramsey\Uuid\Generator\UnixTimeGenerator;
 use Ramsey\Uuid\Guid\GuidBuilder;
 use Ramsey\Uuid\Math\BrickMathCalculator;
 use Ramsey\Uuid\Math\CalculatorInterface;
@@ -58,26 +59,22 @@ use const PHP_INT_SIZE;
  *
  * A feature set is used by UuidFactory to determine the available features and
  * capabilities of the environment.
- *
- * @deprecated This class will go away in ramsey/uuid version 5.
  */
 class FeatureSet
 {
-    private bool $disable64Bit;
-    private bool $ignoreSystemNode;
-    private bool $enablePecl;
-    private UuidBuilderInterface $builder;
+    private ?TimeProviderInterface $timeProvider = null;
+    private CalculatorInterface $calculator;
     private CodecInterface $codec;
     private DceSecurityGeneratorInterface $dceSecurityGenerator;
     private NameGeneratorInterface $nameGenerator;
     private NodeProviderInterface $nodeProvider;
     private NumberConverterInterface $numberConverter;
-    private TimeConverterInterface $timeConverter;
     private RandomGeneratorInterface $randomGenerator;
+    private TimeConverterInterface $timeConverter;
     private TimeGeneratorInterface $timeGenerator;
-    private ?TimeProviderInterface $timeProvider;
+    private TimeGeneratorInterface $unixTimeGenerator;
+    private UuidBuilderInterface $builder;
     private ValidatorInterface $validator;
-    private CalculatorInterface $calculator;
 
     /**
      * @param bool $useGuids True build UUIDs using the GuidStringCodec
@@ -90,23 +87,22 @@ class FeatureSet
      */
     public function __construct(
         bool $useGuids = false,
-        bool $force32Bit = false,
-        bool $ignoreSystemNode = false,
-        bool $enablePecl = false
+        private bool $force32Bit = false,
+        private bool $ignoreSystemNode = false,
+        private bool $enablePecl = false
     ) {
-        $this->disable64Bit = $force32Bit;
-        $this->ignoreSystemNode = $ignoreSystemNode;
-        $this->enablePecl = $enablePecl;
-
+        $this->randomGenerator = $this->buildRandomGenerator();
         $this->setCalculator(new BrickMathCalculator());
         $this->builder = $this->buildUuidBuilder($useGuids);
         $this->codec = $this->buildCodec($useGuids);
         $this->nodeProvider = $this->buildNodeProvider();
         $this->nameGenerator = $this->buildNameGenerator();
-        $this->randomGenerator = $this->buildRandomGenerator();
         $this->setTimeProvider(new SystemTimeProvider());
         $this->setDceSecurityProvider(new SystemDceSecurityProvider());
         $this->validator = new GenericValidator();
+
+        assert($this->timeProvider !== null);
+        $this->unixTimeGenerator = $this->buildUnixTimeGenerator();
     }
 
     /**
@@ -187,6 +183,14 @@ class FeatureSet
     public function getTimeGenerator(): TimeGeneratorInterface
     {
         return $this->timeGenerator;
+    }
+
+    /**
+     * Returns the Unix Epoch time generator configured for this environment
+     */
+    public function getUnixTimeGenerator(): TimeGeneratorInterface
+    {
+        return $this->unixTimeGenerator;
     }
 
     /**
@@ -331,6 +335,14 @@ class FeatureSet
     }
 
     /**
+     * Returns a Unix Epoch time generator configured for this environment
+     */
+    private function buildUnixTimeGenerator(): TimeGeneratorInterface
+    {
+        return new UnixTimeGenerator($this->randomGenerator);
+    }
+
+    /**
      * Returns a name generator configured for this environment
      */
     private function buildNameGenerator(): NameGeneratorInterface
@@ -378,6 +390,6 @@ class FeatureSet
      */
     private function is64BitSystem(): bool
     {
-        return PHP_INT_SIZE === 8 && !$this->disable64Bit;
+        return PHP_INT_SIZE === 8 && !$this->force32Bit;
     }
 }

@@ -49,6 +49,7 @@ trait SerializableFieldsTrait
 
     /**
      * @inheritDoc
+     * @psalm-suppress UnusedMethodCall
      */
     public function __unserialize(array $data): void
     {

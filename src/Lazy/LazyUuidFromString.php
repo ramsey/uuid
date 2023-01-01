@@ -17,8 +17,8 @@ namespace Ramsey\Uuid\Lazy;
 use DateTimeInterface;
 use Ramsey\Uuid\Exception\UnsupportedOperationException;
 use Ramsey\Uuid\Fields\FieldsInterface;
-use Ramsey\Uuid\Nonstandard\UuidV6;
 use Ramsey\Uuid\Rfc4122\UuidV1;
+use Ramsey\Uuid\Rfc4122\UuidV6;
 use Ramsey\Uuid\TimeBasedUuidInterface;
 use Ramsey\Uuid\Type\Hexadecimal;
 use Ramsey\Uuid\Type\Integer as IntegerObject;
@@ -95,6 +95,7 @@ final class LazyUuidFromString implements TimeBasedUuidInterface
 
     /**
      * @inheritDoc
+     * @psalm-suppress UnusedMethodCall
      */
     public function __unserialize(array $data): void
     {

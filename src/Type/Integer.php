@@ -22,7 +22,6 @@ use function is_numeric;
 use function ltrim;
 use function preg_match;
 use function sprintf;
-use function str_starts_with;
 use function substr;
 
 /**
@@ -134,6 +133,8 @@ final class Integer implements NumberInterface
         // Add the negative sign back to the value.
         if ($sign === '-' && $value !== '0') {
             $value = $sign . $value;
+
+            /** @psalm-suppress InaccessibleProperty */
             $this->isNegative = true;
         }
 

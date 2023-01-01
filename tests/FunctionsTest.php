@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Ramsey\Uuid\Test;
 
+use DateTimeImmutable;
+use DateTimeInterface;
 use Ramsey\Uuid\Rfc4122\FieldsInterface;
 use Ramsey\Uuid\Rfc4122\UuidInterface;
+use Ramsey\Uuid\Rfc4122\UuidV7;
+use Ramsey\Uuid\Rfc4122\UuidV8;
 use Ramsey\Uuid\Rfc4122\Version;
 use Ramsey\Uuid\Type\Hexadecimal;
 use Ramsey\Uuid\Type\Integer as IntegerObject;
@@ -17,6 +21,8 @@ use function Ramsey\Uuid\v3;
 use function Ramsey\Uuid\v4;
 use function Ramsey\Uuid\v5;
 use function Ramsey\Uuid\v6;
+use function Ramsey\Uuid\v7;
+use function Ramsey\Uuid\v8;
 
 class FunctionsTest extends TestCase
 {
@@ -94,5 +100,52 @@ class FunctionsTest extends TestCase
 
         $this->assertIsString($v6);
         $this->assertSame(Version::ReorderedTime, $fields->getVersion());
+    }
+
+    public function testV7ReturnsVersion7UuidString(): void
+    {
+        $v7 = v7();
+
+        /** @var UuidV7 $uuid */
+        $uuid = Uuid::fromString($v7);
+
+        /** @var FieldsInterface $fields */
+        $fields = $uuid->getFields();
+
+        $this->assertIsString($v7);
+        $this->assertSame(Version::UnixTime, $fields->getVersion());
+        $this->assertInstanceOf(DateTimeInterface::class, $uuid->getDateTime());
+    }
+
+    public function testV7WithCustomDateTimeReturnsVersion7UuidString(): void
+    {
+        $dateTime = new DateTimeImmutable('2022-09-14T22:44:33+00:00');
+
+        $v7 = v7($dateTime);
+
+        /** @var UuidV7 $uuid */
+        $uuid = Uuid::fromString($v7);
+
+        /** @var FieldsInterface $fields */
+        $fields = $uuid->getFields();
+
+        $this->assertIsString($v7);
+        $this->assertSame(Version::UnixTime, $fields->getVersion());
+        $this->assertInstanceOf(DateTimeInterface::class, $uuid->getDateTime());
+        $this->assertSame(1663195473, $uuid->getDateTime()->getTimestamp());
+    }
+
+    public function testV8ReturnsVersion8UuidString(): void
+    {
+        $v8 = v8("\x00\x11\x22\x33\x44\x55\x66\x77\x88\x99\xaa\xbb\xcc\xdd\xee\xff");
+
+        /** @var UuidV8 $uuid */
+        $uuid = Uuid::fromString($v8);
+
+        /** @var FieldsInterface $fields */
+        $fields = $uuid->getFields();
+
+        $this->assertIsString($v8);
+        $this->assertSame(Version::Custom, $fields->getVersion());
     }
 }

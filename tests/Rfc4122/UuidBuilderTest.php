@@ -9,14 +9,19 @@ use Ramsey\Uuid\Converter\Number\GenericNumberConverter;
 use Ramsey\Uuid\Converter\Time\GenericTimeConverter;
 use Ramsey\Uuid\Exception\UnableToBuildUuidException;
 use Ramsey\Uuid\Math\BrickMathCalculator;
-use Ramsey\Uuid\Nonstandard\UuidV6;
+use Ramsey\Uuid\Nonstandard\UuidV6 as NonstandardUuidV6;
 use Ramsey\Uuid\Rfc4122\Fields;
+use Ramsey\Uuid\Rfc4122\MaxUuid;
+use Ramsey\Uuid\Rfc4122\NilUuid;
 use Ramsey\Uuid\Rfc4122\UuidBuilder;
 use Ramsey\Uuid\Rfc4122\UuidV1;
 use Ramsey\Uuid\Rfc4122\UuidV2;
 use Ramsey\Uuid\Rfc4122\UuidV3;
 use Ramsey\Uuid\Rfc4122\UuidV4;
 use Ramsey\Uuid\Rfc4122\UuidV5;
+use Ramsey\Uuid\Rfc4122\UuidV6;
+use Ramsey\Uuid\Rfc4122\UuidV7;
+use Ramsey\Uuid\Rfc4122\UuidV8;
 use Ramsey\Uuid\Rfc4122\Version;
 use Ramsey\Uuid\Test\TestCase;
 
@@ -30,7 +35,7 @@ class UuidBuilderTest extends TestCase
      *
      * @dataProvider provideBuildTestValues
      */
-    public function testBuild(string $uuid, string $expectedClass, Version $expectedVersion): void
+    public function testBuild(string $uuid, string $expectedClass, ?Version $expectedVersion): void
     {
         /** @var non-empty-string $bytes */
         $bytes = (string) hex2bin(str_replace('-', '', $uuid));
@@ -56,6 +61,16 @@ class UuidBuilderTest extends TestCase
     public function provideBuildTestValues(): array
     {
         return [
+            [
+                'uuid' => '00000000-0000-0000-0000-000000000000',
+                'expectedClass' => NilUuid::class,
+                'expectedVersion' => null,
+            ],
+            [
+                'uuid' => 'ffffffff-ffff-ffff-ffff-ffffffffffff',
+                'expectedClass' => MaxUuid::class,
+                'expectedVersion' => null,
+            ],
             [
                 'uuid' => 'ff6f8cb0-c57d-11e1-9b21-0800200c9a66',
                 'expectedClass' => UuidV1::class,
@@ -85,6 +100,26 @@ class UuidBuilderTest extends TestCase
                 'uuid' => 'ff6f8cb0-c57d-61e1-9b21-0800200c9a66',
                 'expectedClass' => UuidV6::class,
                 'expectedVersion' => Version::ReorderedTime,
+            ],
+
+            // The same UUIDv6 will also be of the expected class type
+            // \Ramsey\Uuid\Nonstandard\UuidV6.
+            [
+                'uuid' => 'ff6f8cb0-c57d-61e1-9b21-0800200c9a66',
+                'expectedClass' => NonstandardUuidV6::class,
+                'expectedVersion' => Version::ReorderedTime,
+            ],
+
+            [
+                'uuid' => 'ff6f8cb0-c57d-71e1-9b21-0800200c9a66',
+                'expectedClass' => UuidV7::class,
+                'expectedVersion' => Version::UnixTime,
+            ],
+
+            [
+                'uuid' => 'ff6f8cb0-c57d-81e1-9b21-0800200c9a66',
+                'expectedClass' => UuidV8::class,
+                'expectedVersion' => Version::Custom,
             ],
         ];
     }
