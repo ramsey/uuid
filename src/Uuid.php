@@ -569,7 +569,7 @@ class Uuid implements UuidInterface
      * @psalm-pure note: changing the internal factory is an edge case not covered by purity invariants,
      *             but under constant factory setups, this method operates in functionally pure manners
      *
-     * @psalm-assert-if-true non-empty-string $uuid
+     * @psalm-assert-if-true =non-empty-string $uuid
      */
     public static function isValid(string $uuid): bool
     {
