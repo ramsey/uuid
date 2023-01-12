@@ -72,12 +72,24 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 * Remove dependency on ramsey/collection package.
 
 
-## 4.7.2 - 2023-01-11
+## 4.7.3 - 2023-01-12
+
+### Fixed
+
+* The original 4.7.2 tag accidentally pointed to a commit in the 5.x branch. I
+  have replaced the 4.7.2 tag with a new tag that points to the correct commit,
+  but I am creating this tag to help notify users and automated processes who
+  might have already updated to the bad 4.7.2 tag.
+
+
+## 4.7.2 - 2023-01-12
 
 ### Fixed
 
 * Amend Psalm assertion syntax on `Uuid::isValid()` to prevent incorrect type
   inference ([#486](https://github.com/ramsey/uuid/pull/486)).
+* Re-tagged with the correct commit hash, since the first tag was pointing to
+  a commit in the 5.x branch.
 
 
 ## 4.7.1 - 2022-12-31
