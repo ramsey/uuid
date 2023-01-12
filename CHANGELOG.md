@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## 4.7.2 - 2023-01-11
+
+### Fixed
+
+* Amend Psalm assertion syntax on `Uuid::isValid()` to prevent incorrect type
+  inference ([#486](https://github.com/ramsey/uuid/pull/486)).
+
 
 ## 4.7.1 - 2022-12-31
 
