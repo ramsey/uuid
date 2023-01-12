@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+
+## 4.7.3 - 2023-01-12
+
+### Fixed
+
+* The original 4.7.2 tag accidentally pointed to a commit in the 5.x branch. I
+  have replaced the 4.7.2 tag with a new tag that points to the correct commit,
+  but I am creating this tag to help notify users and automated processes who
+  might have already updated to the bad 4.7.2 tag.
+
+
 ## 4.7.2 - 2023-01-12
 
 ### Fixed
