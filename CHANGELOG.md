@@ -72,6 +72,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 * Remove dependency on ramsey/collection package.
 
 
+## 4.7.2 - 2023-01-11
+
+### Fixed
+
+* Amend Psalm assertion syntax on `Uuid::isValid()` to prevent incorrect type
+  inference ([#486](https://github.com/ramsey/uuid/pull/486)).
+
+
 ## 4.7.1 - 2022-12-31
 
 ### Fixed

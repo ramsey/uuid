@@ -32,4 +32,13 @@ final class ValidUuidIsNonEmpty
 
         throw new InvalidArgumentException('Not a UUID');
     }
+
+    public function givenInvalidInputValueRemainsAString(string $input): string
+    {
+        if (Uuid::isValid($input)) {
+            return 'It Worked!';
+        }
+
+        return $input;
+    }
 }
