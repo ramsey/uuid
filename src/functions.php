@@ -150,7 +150,7 @@ function v7(?DateTimeInterface $dateTime = null): string
  *     field, and bits 64 and 65 will be replaced with the UUID variant. You
  *     MUST NOT rely on these bits for your application needs.
  *
- * @return non-empty-string Version 7 UUID as a string
+ * @return non-empty-string Version 8 UUID as a string
  */
 function v8(string $bytes): string
 {
