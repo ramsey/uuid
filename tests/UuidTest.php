@@ -41,6 +41,7 @@ use Ramsey\Uuid\UuidFactoryInterface;
 use Ramsey\Uuid\UuidInterface;
 use Ramsey\Uuid\Validator\GenericValidator;
 use Ramsey\Uuid\Validator\ValidatorInterface;
+use Stringable;
 use stdClass;
 
 use function base64_decode;
@@ -575,11 +576,19 @@ class UuidTest extends TestCase
         $uuid = Uuid::fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
         $this->assertSame('ff6f8cb0-c57d-11e1-9b21-0800200c9a66', $uuid->toString());
         $this->assertSame('ff6f8cb0-c57d-11e1-9b21-0800200c9a66', (string) $uuid);
+        $this->assertSame(
+            'ff6f8cb0-c57d-11e1-9b21-0800200c9a66',
+            (static fn (Stringable $uuid) => (string) $uuid)($uuid)
+        );
 
         // Check with an old date
         $uuid = Uuid::fromString('0901e600-0154-1000-9b21-0800200c9a66');
         $this->assertSame('0901e600-0154-1000-9b21-0800200c9a66', $uuid->toString());
         $this->assertSame('0901e600-0154-1000-9b21-0800200c9a66', (string) $uuid);
+        $this->assertSame(
+            '0901e600-0154-1000-9b21-0800200c9a66',
+            (static fn (Stringable $uuid) => (string) $uuid)($uuid)
+        );
     }
 
     public function testUuid1(): void
