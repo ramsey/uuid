@@ -5,6 +5,7 @@ namespace Ramsey\Uuid\Test;
 use Brick\Math\BigInteger;
 use Ramsey\Uuid\Builder\DegradedUuidBuilder;
 use Ramsey\Uuid\Codec\CodecInterface;
+use Ramsey\Uuid\Codec\OrderedTimeCodec;
 use Ramsey\Uuid\Codec\TimestampFirstCombCodec;
 use Ramsey\Uuid\Converter\Number\DegradedNumberConverter;
 use Ramsey\Uuid\Converter\Time\DegradedTimeConverter;
@@ -74,21 +75,21 @@ class ExpectedBehaviorTest extends TestCase
         $this->assertSame(
             (string) $uuid->getHex(),
             $uuid->getTimeLowHex()
-            . $uuid->getTimeMidHex()
-            . $uuid->getTimeHiAndVersionHex()
-            . $uuid->getClockSeqHiAndReservedHex()
-            . $uuid->getClockSeqLowHex()
-            . $uuid->getNodeHex()
+                . $uuid->getTimeMidHex()
+                . $uuid->getTimeHiAndVersionHex()
+                . $uuid->getClockSeqHiAndReservedHex()
+                . $uuid->getClockSeqLowHex()
+                . $uuid->getNodeHex()
         );
 
         $this->assertSame(
             (string) $uuid->getHex(),
             $uuid->getFieldsHex()['time_low']
-            . $uuid->getFieldsHex()['time_mid']
-            . $uuid->getFieldsHex()['time_hi_and_version']
-            . $uuid->getFieldsHex()['clock_seq_hi_and_reserved']
-            . $uuid->getFieldsHex()['clock_seq_low']
-            . $uuid->getFieldsHex()['node']
+                . $uuid->getFieldsHex()['time_mid']
+                . $uuid->getFieldsHex()['time_hi_and_version']
+                . $uuid->getFieldsHex()['clock_seq_hi_and_reserved']
+                . $uuid->getFieldsHex()['clock_seq_low']
+                . $uuid->getFieldsHex()['node']
         );
 
         $this->assertIsString($uuid->getUrn());
@@ -100,21 +101,21 @@ class ExpectedBehaviorTest extends TestCase
         $this->assertSame(
             $uuid->toString(),
             $uuid->getTimeLowHex() . '-'
-            . $uuid->getTimeMidHex() . '-'
-            . $uuid->getTimeHiAndVersionHex() . '-'
-            . $uuid->getClockSeqHiAndReservedHex()
-            . $uuid->getClockSeqLowHex() . '-'
-            . $uuid->getNodeHex()
+                . $uuid->getTimeMidHex() . '-'
+                . $uuid->getTimeHiAndVersionHex() . '-'
+                . $uuid->getClockSeqHiAndReservedHex()
+                . $uuid->getClockSeqLowHex() . '-'
+                . $uuid->getNodeHex()
         );
 
         $this->assertSame(
             (string) $uuid,
             $uuid->getTimeLowHex() . '-'
-            . $uuid->getTimeMidHex() . '-'
-            . $uuid->getTimeHiAndVersionHex() . '-'
-            . $uuid->getClockSeqHiAndReservedHex()
-            . $uuid->getClockSeqLowHex() . '-'
-            . $uuid->getNodeHex()
+                . $uuid->getTimeMidHex() . '-'
+                . $uuid->getTimeHiAndVersionHex() . '-'
+                . $uuid->getClockSeqHiAndReservedHex()
+                . $uuid->getClockSeqLowHex() . '-'
+                . $uuid->getNodeHex()
         );
 
         $this->assertSame(2, $uuid->getVariant());
@@ -234,6 +235,30 @@ class ExpectedBehaviorTest extends TestCase
 
         $serialized = serialize($uuid);
         $unserialized = unserialize($serialized);
+
+        $this->assertSame(0, $uuid->compareTo($unserialized));
+        $this->assertTrue($uuid->equals($unserialized));
+        $this->assertSame("\"{$string}\"", json_encode($uuid));
+    }
+
+    /**
+     * @dataProvider provideFromStringInteger
+     */
+    public function testSerializationWithOrderedTimeCodec($string)
+    {
+        $factory = new UuidFactory();
+        $factory->setCodec(new OrderedTimeCodec(
+            $factory->getUuidBuilder()
+        ));
+
+        $previousFactory = Uuid::getFactory();
+        Uuid::setFactory($factory);
+        $uuid = Uuid::fromString($string);
+
+        $serialized = serialize($uuid);
+        $unserialized = unserialize($serialized);
+
+        Uuid::setFactory($previousFactory);
 
         $this->assertSame(0, $uuid->compareTo($unserialized));
         $this->assertTrue($uuid->equals($unserialized));
