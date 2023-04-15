@@ -18,6 +18,7 @@ use JsonSerializable;
 use Ramsey\Uuid\Fields\FieldsInterface;
 use Ramsey\Uuid\Type\Hexadecimal;
 use Ramsey\Uuid\Type\Integer as IntegerObject;
+use Stringable;
 
 /**
  * A UUID is a universally unique identifier adhering to an agreed-upon
@@ -25,7 +26,7 @@ use Ramsey\Uuid\Type\Integer as IntegerObject;
  *
  * @psalm-immutable
  */
-interface UuidInterface extends JsonSerializable
+interface UuidInterface extends JsonSerializable, Stringable
 {
     /**
      * @return mixed[]

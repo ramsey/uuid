@@ -72,6 +72,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 * Remove dependency on ramsey/collection package.
 
 
+## 4.7.4 - 2023-04-15
+
+### Fixed
+
+* Allow brick/math version `^0.11`.
+* Add explicit `Stringable` interface to `UuidInterface`.
+* Fix namespace conflict reported in [#490](https://github.com/ramsey/uuid/issues/490).
+* Fix unserialize error with `OrderedTimeCodec` reported in
+  [#494](https://github.com/ramsey/uuid/issues/494).
+
+
 ## 4.7.3 - 2023-01-12
 
 ### Fixed

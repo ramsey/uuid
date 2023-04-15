@@ -332,20 +332,20 @@ class Uuid implements Rfc4122UuidInterface
      */
     public static function fromBytes(string $bytes): UuidInterface
     {
-        if (! self::$factoryReplaced && strlen($bytes) === 16) {
+        if (!self::$factoryReplaced && strlen($bytes) === 16) {
             $base16Uuid = bin2hex($bytes);
 
             // Note: we are calling `fromString` internally because we don't know if the given `$bytes` is a valid UUID
             return self::fromString(
                 substr($base16Uuid, 0, 8)
-                . '-'
-                . substr($base16Uuid, 8, 4)
-                . '-'
-                . substr($base16Uuid, 12, 4)
-                . '-'
-                . substr($base16Uuid, 16, 4)
-                . '-'
-                . substr($base16Uuid, 20, 12)
+                    . '-'
+                    . substr($base16Uuid, 8, 4)
+                    . '-'
+                    . substr($base16Uuid, 12, 4)
+                    . '-'
+                    . substr($base16Uuid, 16, 4)
+                    . '-'
+                    . substr($base16Uuid, 20, 12)
             );
         }
 
@@ -371,7 +371,7 @@ class Uuid implements Rfc4122UuidInterface
     public static function fromString(string $uuid): UuidInterface
     {
         $uuid = strtolower($uuid);
-        if (! self::$factoryReplaced && preg_match(LazyUuidFromString::VALID_REGEX, $uuid) === 1) {
+        if (!self::$factoryReplaced && preg_match(LazyUuidFromString::VALID_REGEX, $uuid) === 1) {
             /** @psalm-suppress DocblockTypeContradiction */
             assert($uuid !== '');
 

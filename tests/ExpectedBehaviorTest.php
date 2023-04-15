@@ -48,11 +48,11 @@ class ExpectedBehaviorTest extends TestCase
         $this->assertSame(
             (string) $uuid->getHex(),
             $uuid->getFields()->getTimeLow()->toString()
-            . $uuid->getFields()->getTimeMid()->toString()
-            . $uuid->getFields()->getTimeHiAndVersion()->toString()
-            . $uuid->getFields()->getClockSeqHiAndReserved()->toString()
-            . $uuid->getFields()->getClockSeqLow()->toString()
-            . $uuid->getFields()->getNode()->toString()
+                . $uuid->getFields()->getTimeMid()->toString()
+                . $uuid->getFields()->getTimeHiAndVersion()->toString()
+                . $uuid->getFields()->getClockSeqHiAndReserved()->toString()
+                . $uuid->getFields()->getClockSeqLow()->toString()
+                . $uuid->getFields()->getNode()->toString()
         );
 
         $this->assertStringStartsWith('urn:uuid:', $uuid->getUrn());
@@ -63,21 +63,21 @@ class ExpectedBehaviorTest extends TestCase
         $this->assertSame(
             $uuid->toString(),
             $uuid->getFields()->getTimeLow()->toString() . '-'
-            . $uuid->getFields()->getTimeMid()->toString() . '-'
-            . $uuid->getFields()->getTimeHiAndVersion()->toString() . '-'
-            . $uuid->getFields()->getClockSeqHiAndReserved()->toString()
-            . $uuid->getFields()->getClockSeqLow()->toString() . '-'
-            . $uuid->getFields()->getNode()->toString()
+                . $uuid->getFields()->getTimeMid()->toString() . '-'
+                . $uuid->getFields()->getTimeHiAndVersion()->toString() . '-'
+                . $uuid->getFields()->getClockSeqHiAndReserved()->toString()
+                . $uuid->getFields()->getClockSeqLow()->toString() . '-'
+                . $uuid->getFields()->getNode()->toString()
         );
 
         $this->assertSame(
             (string) $uuid,
             $uuid->getFields()->getTimeLow()->toString() . '-'
-            . $uuid->getFields()->getTimeMid()->toString() . '-'
-            . $uuid->getFields()->getTimeHiAndVersion()->toString() . '-'
-            . $uuid->getFields()->getClockSeqHiAndReserved()->toString()
-            . $uuid->getFields()->getClockSeqLow()->toString() . '-'
-            . $uuid->getFields()->getNode()->toString()
+                . $uuid->getFields()->getTimeMid()->toString() . '-'
+                . $uuid->getFields()->getTimeHiAndVersion()->toString() . '-'
+                . $uuid->getFields()->getClockSeqHiAndReserved()->toString()
+                . $uuid->getFields()->getClockSeqLow()->toString() . '-'
+                . $uuid->getFields()->getNode()->toString()
         );
 
         $this->assertSame(Variant::Rfc4122, $uuid->getFields()->getVariant());
