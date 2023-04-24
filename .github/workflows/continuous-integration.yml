@@ -132,7 +132,7 @@ jobs:
         run: "./vendor/bin/phpunit --verbose --colors=always --coverage-text --coverage-clover build/logs/clover.xml"
 
       - name: "Publish coverage report to Codecov"
-        uses: "codecov/codecov-action@v3.1.2"
+        uses: "codecov/codecov-action@v3.1.3"
 
   unit-tests:
     name: "Unit Tests"
