@@ -27,7 +27,7 @@ jobs:
     runs-on: "ubuntu-latest"
     steps:
       - name: "Checkout repository"
-        uses: "actions/checkout@v3"
+        uses: "actions/checkout@v4"
 
       - name: "Install PHP"
         uses: "shivammathur/setup-php@v2"
@@ -49,7 +49,7 @@ jobs:
     runs-on: "ubuntu-latest"
     steps:
       - name: "Checkout repository"
-        uses: "actions/checkout@v3"
+        uses: "actions/checkout@v4"
 
       - name: "Install PHP"
         uses: "shivammathur/setup-php@v2"
@@ -81,7 +81,7 @@ jobs:
 
     steps:
       - name: "Checkout repository"
-        uses: "actions/checkout@v3"
+        uses: "actions/checkout@v4"
 
       - name: "Install dependencies (apt)"
         run: |
@@ -108,7 +108,7 @@ jobs:
     runs-on: "ubuntu-latest"
     steps:
       - name: "Checkout repository"
-        uses: "actions/checkout@v3"
+        uses: "actions/checkout@v4"
 
       - name: "Install dependencies (apt)"
         run: |
@@ -158,7 +158,7 @@ jobs:
           git config --system core.eol lf
 
       - name: "Checkout repository"
-        uses: "actions/checkout@v3"
+        uses: "actions/checkout@v4"
 
       - name: "Install dependencies (apt)"
         if: ${{ matrix.operating-system == 'ubuntu-latest' }}
