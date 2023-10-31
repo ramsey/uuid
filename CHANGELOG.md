@@ -464,7 +464,7 @@ The following functionality is deprecated and will be removed in ramsey/uuid
   for these fields. You may use the new `Math\CalculatorInterface::toIntegerValue()`
   method to convert the `Type\Hexadecimal` instances to instances of
   `Type\Integer`. This library provides `Math\BrickMathCalculator`, which may be
-  used for this purpose, or you may use the arbitrary-precision arithemetic
+  used for this purpose, or you may use the arbitrary-precision arithmetic
   library of your choice.
   * `getClockSeqHiAndReserved()`
   * `getClockSeqLow()`
