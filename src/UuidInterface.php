@@ -46,7 +46,7 @@ interface UuidInterface extends
      *
      * @param UuidInterface $other The UUID to compare
      *
-     * @return int -1, 0, or 1 if the UUID is less than, equal to, or greater than $other
+     * @return int<-1,1> -1, 0, or 1 if the UUID is less than, equal to, or greater than $other
      */
     public function compareTo(UuidInterface $other): int;
 
