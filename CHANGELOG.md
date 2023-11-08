@@ -6,6 +6,16 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 
+## 4.7.5 - 2023-11-08
+
+### Fixed
+
+* Protect against UUIDv7 collisions within the same millisecond, as reported
+  in [#518](https://github.com/ramsey/uuid/issues/518) and fixed in
+  [#522](https://github.com/ramsey/uuid/pull/522).
+* Improve the return type hint for `UuidInterface::compareTo()`.
+
+
 ## 4.7.4 - 2023-04-15
 
 ### Fixed
