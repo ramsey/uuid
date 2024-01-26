@@ -163,6 +163,14 @@ the ramsey/uuid library.
         :param string $uuid: The string standard representation of a UUID
         :returntype: Ramsey\\Uuid\\UuidInterface
 
+    .. php:staticmethod:: fromStrictString($uuid)
+
+        Creates a UUID from a valid string representation, validated against
+        the isValid method.
+
+        :param string $uuid: The string standard representation of a UUID
+        :returntype: Ramsey\\Uuid\\UuidInterface
+
     .. php:staticmethod:: fromBytes($bytes)
 
         Creates an instance of UuidInterface from a 16-byte string.
