@@ -100,7 +100,7 @@ library.
       - Checks whether a string is a valid UUID.
     * - :php:meth:`Uuid::fromString() <Ramsey\\Uuid\\Uuid::fromString>`
       - Creates a UUID instance from a string UUID.
-    * - :php:meth:`Uuid::fromStrictString() <Ramsey\\Uuid\\Uuid::fromString>`
+    * - :php:meth:`Uuid::fromStrictString() <Ramsey\\Uuid\\Uuid::fromStrictString>`
       - Creates a UUID from a valid string representation.
     * - :php:meth:`Uuid::fromBytes() <Ramsey\\Uuid\\Uuid::fromBytes>`
       - Creates a UUID instance from a 16-byte string.
