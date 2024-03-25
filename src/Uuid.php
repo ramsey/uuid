@@ -19,6 +19,7 @@ use DateTimeInterface;
 use Ramsey\Uuid\Codec\CodecInterface;
 use Ramsey\Uuid\Converter\NumberConverterInterface;
 use Ramsey\Uuid\Converter\TimeConverterInterface;
+use Ramsey\Uuid\Exception\InvalidUuidStringException;
 use Ramsey\Uuid\Exception\UnsupportedOperationException;
 use Ramsey\Uuid\Fields\FieldsInterface;
 use Ramsey\Uuid\Lazy\LazyUuidFromString;
@@ -492,6 +493,28 @@ class Uuid implements UuidInterface
         }
 
         return self::getFactory()->fromString($uuid);
+    }
+
+    /**
+     * Creates a UUID from a valid string representation, validated against the isValid method
+     *
+     * @param string $uuid A valid UUID string representation
+     *
+     * @return UuidInterface A UuidInterface instance created from a valid UUID
+     *     string representation
+     *
+     * @throws InvalidUuidStringException
+     *
+     * @psalm-pure note: changing the internal factory is an edge case not covered by purity invariants,
+     *             but under constant factory setups, this method operates in functionally pure manners
+     */
+    public static function fromStrictString(string $uuid): UuidInterface
+    {
+        if (! self::isValid($uuid)) {
+            throw new InvalidUuidStringException('Invalid UUID string: ' . $uuid);
+        }
+
+        return self::fromString($uuid);
     }
 
     /**

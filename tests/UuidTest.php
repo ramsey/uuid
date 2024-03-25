@@ -73,6 +73,34 @@ class UuidTest extends TestCase
             Uuid::fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66')
                 ->toString()
         );
+
+        $this->assertSame(
+            '00000000-0000-0000-0000-000000000000',
+            Uuid::fromString('00000000000000000000000000000000')
+                ->toString()
+        );
+    }
+
+    public function testFromStrictString(): void
+    {
+        $this->assertSame(
+            'ff6f8cb0-c57d-11e1-9b21-0800200c9a66',
+            Uuid::fromStrictString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66')
+                ->toString()
+        );
+
+        $this->assertSame(
+            '00000000-0000-0000-0000-000000000000',
+            Uuid::fromStrictString('00000000-0000-0000-0000-000000000000')
+                ->toString()
+        );
+    }
+
+    public function testFromStrictStringWithInvalidUuidString(): void
+    {
+        $this->expectException(InvalidUuidStringException::class);
+
+        Uuid::fromStrictString('00000000000000000000000000000000');
     }
 
     public function testFromHexadecimal(): void

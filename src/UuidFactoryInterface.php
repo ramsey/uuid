@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace Ramsey\Uuid;
 
 use DateTimeInterface;
+use Ramsey\Uuid\Exception\InvalidUuidStringException;
 use Ramsey\Uuid\Type\Hexadecimal;
 use Ramsey\Uuid\Type\Integer as IntegerObject;
 use Ramsey\Uuid\Validator\ValidatorInterface;
@@ -79,6 +80,20 @@ interface UuidFactoryInterface
      * @psalm-pure
      */
     public function fromString(string $uuid): UuidInterface;
+
+    /**
+     * Creates a UUID from a valid string representation, validated against the isValid method
+     *
+     * @param string $uuid A valid UUID string representation
+     *
+     * @return UuidInterface A UuidInterface instance created from a valid UUID
+     *     string representation
+     *
+     * @throws InvalidUuidStringException
+     *
+     * @psalm-pure
+     */
+    public function fromStrictString(string $uuid): UuidInterface;
 
     /**
      * Returns the validator to use for the factory
