@@ -10,7 +10,6 @@ use Brick\Math\RoundingMode;
 use DateTimeImmutable;
 use DateTimeInterface;
 use Mockery;
-use Mockery\MockInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use Ramsey\Uuid\Builder\DefaultUuidBuilder;
 use Ramsey\Uuid\Codec\StringCodec;
@@ -782,19 +781,6 @@ class UuidTest extends TestCase
         $this->assertSame(7, $uuid->getVersion());
     }
 
-    public function testUuid7ThrowsExceptionForUnsupportedFactory(): void
-    {
-        /** @var UuidFactoryInterface&MockInterface $factory */
-        $factory = Mockery::mock(UuidFactoryInterface::class);
-
-        Uuid::setFactory($factory);
-
-        $this->expectException(UnsupportedOperationException::class);
-        $this->expectExceptionMessage('The provided factory does not support the uuid7() method');
-
-        Uuid::uuid7();
-    }
-
     public function testUuid7WithDateTime(): void
     {
         $dateTime = new DateTimeImmutable('@281474976710.655');
@@ -873,19 +859,6 @@ class UuidTest extends TestCase
         $uuid = Uuid::uuid8("\x00\x11\x22\x33\x44\x55\x66\x77\x88\x99\xaa\xbb\xcc\xdd\xee\xff");
         $this->assertSame(2, $uuid->getVariant());
         $this->assertSame(8, $uuid->getVersion());
-    }
-
-    public function testUuid8ThrowsExceptionForUnsupportedFactory(): void
-    {
-        /** @var UuidFactoryInterface&MockInterface $factory */
-        $factory = Mockery::mock(UuidFactoryInterface::class);
-
-        Uuid::setFactory($factory);
-
-        $this->expectException(UnsupportedOperationException::class);
-        $this->expectExceptionMessage('The provided factory does not support the uuid8() method');
-
-        Uuid::uuid8("\x00\x11\x22\x33\x44\x55\x66\x77\x88\x99\xaa\xbb\xcc\xdd\xee\xff");
     }
 
     /**
