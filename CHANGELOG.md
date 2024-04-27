@@ -6,6 +6,13 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 
+## 4.7.6 - 2024-04-27
+
+### Fixed
+
+* Allow brick/math version `^0.12`.
+
+
 ## 4.7.5 - 2023-11-08
 
 ### Fixed
