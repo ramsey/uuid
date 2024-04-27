@@ -36,7 +36,7 @@ jobs:
           coverage: "none"
 
       - name: "Install dependencies (Composer)"
-        uses: "ramsey/composer-install@v2"
+        uses: "ramsey/composer-install@v3"
 
       - name: "Check syntax (php-parallel-lint)"
         run: "composer lint -- --colors"
@@ -58,7 +58,7 @@ jobs:
           coverage: "none"
 
       - name: "Install dependencies (Composer)"
-        uses: "ramsey/composer-install@v2"
+        uses: "ramsey/composer-install@v3"
 
       - name: "Statically analyze code (PHPStan)"
         run: "composer phpstan -- --ansi"
@@ -104,7 +104,7 @@ jobs:
           ini-values: "memory_limit=-1"
 
       - name: "Install dependencies (Composer)"
-        uses: "ramsey/composer-install@v2"
+        uses: "ramsey/composer-install@v3"
         with:
           dependency-versions: "${{ matrix.dependency-versions }}"
 
@@ -133,7 +133,7 @@ jobs:
           ini-values: "memory_limit=-1"
 
       - name: "Install dependencies (Composer)"
-        uses: "ramsey/composer-install@v2"
+        uses: "ramsey/composer-install@v3"
         with:
           dependency-versions: "${{ matrix.dependencies }}"
 
@@ -141,7 +141,7 @@ jobs:
         run: "./vendor/bin/phpunit --verbose --colors=always --coverage-text --coverage-clover build/logs/clover.xml"
 
       - name: "Publish coverage report to Codecov"
-        uses: "codecov/codecov-action@v3.1.4"
+        uses: "codecov/codecov-action@v4.3.0"
 
   unit-tests:
     name: "Unit Tests"
@@ -191,7 +191,7 @@ jobs:
           ini-values: "memory_limit=-1"
 
       - name: "Install dependencies (Composer)"
-        uses: "ramsey/composer-install@v2"
+        uses: "ramsey/composer-install@v3"
         with:
           dependency-versions: "${{ matrix.dependency-versions }}"
 
