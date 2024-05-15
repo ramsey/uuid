@@ -76,6 +76,14 @@ UuidFactoryInterface
         :param string $uuid: The string standard representation of a UUID
         :returntype: Ramsey\\Uuid\\UuidInterface
 
+    .. php:method:: fromStrictString($uuid)
+
+        Creates a UUID from a valid string representation, validated against
+        the isValid method.
+
+        :param string $uuid: The string standard representation of a UUID
+        :returntype: Ramsey\\Uuid\\UuidInterface
+
     .. php:method:: fromBytes($bytes)
 
         Creates an instance of UuidInterface from a 16-byte string.
