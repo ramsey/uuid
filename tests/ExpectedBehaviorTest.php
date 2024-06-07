@@ -377,6 +377,31 @@ class ExpectedBehaviorTest extends TestCase
         $this->assertSame($bytes, $uuid->getBytes());
     }
 
+    /**
+     * @dataProvider provideFromStringInteger
+     */
+    public function testTryFromString($string, $version, $variant, $integer)
+    {
+        $bytes = hex2bin(str_replace('-', '', $string));
+
+        $uuid = Uuid::tryFromString($string);
+
+        $this->assertInstanceOf('Ramsey\Uuid\UuidInterface', $uuid);
+        $this->assertSame($string, $uuid->toString());
+        $this->assertSame($version, $uuid->getVersion());
+        $this->assertSame($variant, $uuid->getVariant());
+
+        $components = explode('-', $string);
+
+        $this->assertSame($components[0], $uuid->getTimeLowHex());
+        $this->assertSame($components[1], $uuid->getTimeMidHex());
+        $this->assertSame($components[2], $uuid->getTimeHiAndVersionHex());
+        $this->assertSame($components[3], $uuid->getClockSeqHiAndReservedHex() . $uuid->getClockSeqLowHex());
+        $this->assertSame($components[4], $uuid->getNodeHex());
+        $this->assertSame($integer, (string) $uuid->getInteger());
+        $this->assertSame($bytes, $uuid->getBytes());
+    }
+
     public function provideFromStringInteger()
     {
         return [
