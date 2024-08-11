@@ -18,7 +18,8 @@ namespace Ramsey\Uuid;
 use DateTimeInterface;
 use Ramsey\Uuid\Type\Hexadecimal;
 use Ramsey\Uuid\Type\Integer as IntegerObject;
-
+use MongoDB\BSON\Binary;
+use \Ramsey\Uuid\Uuid;
 /**
  * Returns a version 1 (Gregorian time) UUID from a host ID, sequence number,
  * and the current time
@@ -155,4 +156,55 @@ function v7(?DateTimeInterface $dateTime = null): string
 function v8(string $bytes): string
 {
     return Uuid::uuid8($bytes)->toString();
+}
+
+
+/**
+ * Converts a UUID string to a MongoDB BSON Binary object.
+ *
+ * @param string $value The UUID string to be converted.
+ * @return MongoDB\BSON\Binary The MongoDB BSON Binary object representing the UUID.
+ */
+function mongodb_uuid($value)
+{
+    // Create a new UUID object from the provided string
+    $uuid = \Ramsey\Uuid\Uuid::fromString($value);
+
+    // Get the byte representation of the UUID
+    $bytes = $uuid->getBytes();
+
+    // Return a new MongoDB BSON Binary object with the UUID bytes and the TYPE_UUID type
+    return new MongoDB\BSON\Binary($bytes, MongoDB\BSON\Binary::TYPE_UUID);
+}
+
+/**
+ * Converts a MongoDB BSON Binary object representing a UUID to a string.
+ *
+ * @param MongoDB\BSON\Binary $uuid The MongoDB BSON Binary object representing the UUID.
+ * @return string The UUID in string format.
+ */
+function mongodb_uuid_to_string($uuid)
+{
+    // Create a new UUID object from the bytes of the provided BSON Binary object
+    $uuidObject = \Ramsey\Uuid\Uuid::fromBytes($uuid);
+
+    // Return the UUID in string format
+    return $uuidObject->toString();
+}
+
+/**
+ * Generates a new UUID and returns it as a MongoDB BSON Binary object.
+ *
+ * @return MongoDB\BSON\Binary The MongoDB BSON Binary object representing the new UUID.
+ */
+function mongodb_uuid_generate()
+{
+    // Generate a new UUID version 4 (random UUID)
+    $uuid = \Ramsey\Uuid\Uuid::uuid4();
+
+    // Get the byte representation of the UUID
+    $bytes = $uuid->getBytes();
+
+    // Return a new MongoDB BSON Binary object with the UUID bytes and the TYPE_UUID type
+    return new MongoDB\BSON\Binary($bytes, MongoDB\BSON\Binary::TYPE_UUID);
 }
