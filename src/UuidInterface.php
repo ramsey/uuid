@@ -111,4 +111,14 @@ interface UuidInterface extends JsonSerializable, Stringable
      * @psalm-return non-empty-string
      */
     public function toString(): string;
+
+    /**
+     * @return array{bytes: string}
+     */
+    public function __serialize(): array;
+
+    /**
+     * @param array{bytes?: string} $data
+     */
+    public function __unserialize(array $data): void;
 }
