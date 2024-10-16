@@ -204,6 +204,29 @@ class UuidTest extends TestCase
         $this->assertTrue($fields->isMax());
     }
 
+    public function testTryFromString(): void
+    {
+        $this->assertSame(
+            'ff6f8cb0-c57d-11e1-9b21-0800200c9a66',
+            Uuid::tryFromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66')?->toString()
+        );
+    }
+
+    public function testTryFromStringNull(): void
+    {
+        $this->assertNull(Uuid::tryFromString(null));
+    }
+
+    public function testTryFromStringEmptyString(): void
+    {
+        $this->assertNull(Uuid::tryFromString(''));
+    }
+
+    public function testTryFromStringInvalidString(): void
+    {
+        $this->assertNull(Uuid::tryFromString('invalid-string'));
+    }
+
     public function testGetBytes(): void
     {
         $uuid = Uuid::fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
@@ -1727,7 +1750,7 @@ class UuidTest extends TestCase
     }
 
     /**
-     * @covers Ramsey\Uuid\Uuid::jsonSerialize
+     * @covers \Ramsey\Uuid\Uuid::jsonSerialize
      */
     public function testJsonSerialize(): void
     {
