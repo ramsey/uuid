@@ -444,6 +444,9 @@ class ExpectedBehaviorTest extends TestCase
             'uuid3' => $uuid,
             'uuid4' => $uuid,
             'uuid5' => $uuid,
+            'uuid6' => $uuid,
+            'uuid7' => $uuid,
+            'uuid8' => $uuid,
             'fromBytes' => $uuid,
             'fromString' => $uuid,
             'fromInteger' => $uuid,
@@ -455,6 +458,9 @@ class ExpectedBehaviorTest extends TestCase
         $this->assertSame($uuid, Uuid::uuid3(Uuid::NAMESPACE_URL, 'https://example.com/foo'));
         $this->assertSame($uuid, Uuid::uuid4());
         $this->assertSame($uuid, Uuid::uuid5(Uuid::NAMESPACE_URL, 'https://example.com/foo'));
+        $this->assertSame($uuid, Uuid::uuid6());
+        $this->assertSame($uuid, Uuid::uuid7());
+        $this->assertSame($uuid, Uuid::uuid8(hex2bin('ffffffffffffffffffffffffffffffff')));
         $this->assertSame($uuid, Uuid::fromBytes(hex2bin('ffffffffffffffffffffffffffffffff')));
         $this->assertSame($uuid, Uuid::fromString('ffffffff-ffff-ffff-ffff-ffffffffffff'));
         $this->assertSame($uuid, Uuid::fromInteger('340282366920938463463374607431768211455'));
