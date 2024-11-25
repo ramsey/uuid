@@ -17,7 +17,7 @@ jobs:
     steps:
       - name: Auto-Merge
         if: ${{ github.event.workflow_run.conclusion == 'success' }}
-        uses: ridedott/merge-me-action@v2.10.108
+        uses: ridedott/merge-me-action@v2.10.111
         with:
           # This must be used as GitHub Actions token does not support pushing
           # to protected branches.
