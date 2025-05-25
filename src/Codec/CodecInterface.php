@@ -19,7 +19,7 @@ use Ramsey\Uuid\UuidInterface;
 /**
  * A codec encodes and decodes a UUID according to defined rules
  *
- * @psalm-immutable
+ * @immutable
  */
 interface CodecInterface
 {

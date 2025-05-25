@@ -32,8 +32,6 @@ use function str_starts_with;
  *
  * To support values as true decimals and not as floats or doubles, we store the
  * decimals as strings.
- *
- * @psalm-immutable
  */
 final class Decimal implements NumberInterface
 {

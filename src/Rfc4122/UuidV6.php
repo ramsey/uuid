@@ -23,7 +23,7 @@ use Ramsey\Uuid\TimeBasedUuidInterface;
  *
  * @link https://datatracker.ietf.org/doc/html/draft-ietf-uuidrev-rfc4122bis-00#section-5.6 UUID Version 6
  *
- * @psalm-immutable
+ * @immutable
  */
 final class UuidV6 extends NonstandardUuidV6 implements UuidInterface, TimeBasedUuidInterface
 {

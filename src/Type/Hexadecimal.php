@@ -30,7 +30,7 @@ use function substr;
  * returned from ramsey/uuid methods as strings are truly hexadecimal and not some
  * other kind of string.
  *
- * @psalm-immutable
+ * @immutable
  */
 final class Hexadecimal implements TypeInterface
 {

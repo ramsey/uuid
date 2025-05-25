@@ -63,9 +63,6 @@ jobs:
       - name: "Statically analyze code (PHPStan)"
         run: "composer phpstan -- --ansi"
 
-      - name: "Statically analyze code (Psalm)"
-        run: "composer psalm -- --shepherd"
-
   benchmark:
     name: "Benchmark"
     needs: ["coding-standards", "static-analysis"]

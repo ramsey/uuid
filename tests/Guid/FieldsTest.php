@@ -28,6 +28,8 @@ class FieldsTest extends TestCase
     }
 
     /**
+     * @param non-empty-string $guid
+     *
      * @dataProvider nonRfc4122GuidVariantProvider
      */
     public function testConstructorThrowsExceptionIfNotRfc4122Variant(string $guid): void
@@ -47,7 +49,7 @@ class FieldsTest extends TestCase
     /**
      * These values are already in GUID byte order, for easy testing.
      *
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingTraversableTypeHintSpecification
+     * @return array<array{0: non-empty-string}>
      */
     public function nonRfc4122GuidVariantProvider(): array
     {
@@ -68,6 +70,8 @@ class FieldsTest extends TestCase
     }
 
     /**
+     * @param non-empty-string $guid
+     *
      * @dataProvider invalidVersionProvider
      */
     public function testConstructorThrowsExceptionIfInvalidVersion(string $guid): void
@@ -84,7 +88,7 @@ class FieldsTest extends TestCase
     }
 
     /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingTraversableTypeHintSpecification
+     * @return array<array{0: non-empty-string}>
      */
     public function invalidVersionProvider(): array
     {
@@ -104,12 +108,16 @@ class FieldsTest extends TestCase
     }
 
     /**
+     * @param non-empty-string $bytes
+     * @param non-empty-string $methodName
+     * @param Variant | Version | bool | non-empty-string | null $expectedValue
+     *
      * @dataProvider fieldGetterMethodProvider
      */
     public function testFieldGetterMethods(
         string $bytes,
         string $methodName,
-        bool | string | Variant | Version | null $expectedValue
+        Variant | Version | bool | string | null $expectedValue,
     ): void {
         /** @var non-empty-string $bytes */
         $bytes = (string) hex2bin($bytes);
@@ -125,7 +133,11 @@ class FieldsTest extends TestCase
     }
 
     /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingTraversableTypeHintSpecification
+     * @return array<array{
+     *     0: non-empty-string,
+     *     1: non-empty-string,
+     *     2: Variant | Version | bool | non-empty-string | null,
+     * }>
      */
     public function fieldGetterMethodProvider(): array
     {

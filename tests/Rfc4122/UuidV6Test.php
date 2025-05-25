@@ -62,6 +62,7 @@ class UuidV6Test extends TestCase
 
     /**
      * @param non-empty-string $uuid
+     * @param non-empty-string $expected
      *
      * @dataProvider provideUuidV6WithOddMicroseconds
      */
@@ -77,7 +78,7 @@ class UuidV6Test extends TestCase
     }
 
     /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingTraversableTypeHintSpecification
+     * @return array<array{uuid: non-empty-string, expected: non-empty-string}>
      */
     public function provideUuidV6WithOddMicroseconds(): array
     {
@@ -145,7 +146,7 @@ class UuidV6Test extends TestCase
     }
 
     /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingTraversableTypeHintSpecification
+     * @return array<array{uuidv6: non-empty-string, uuidv1: non-empty-string}>
      */
     public function provideUuidV1UuidV6Equivalents(): array
     {

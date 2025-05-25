@@ -26,7 +26,7 @@ use const STR_PAD_LEFT;
 /**
  * Provides common functionality for getting the time from a time-based UUID
  *
- * @psalm-immutable
+ * @immutable
  */
 trait TimeTrait
 {

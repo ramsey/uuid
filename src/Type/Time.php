@@ -26,7 +26,7 @@ use function sprintf;
  * by ramsey/uuid are truly timestamp integers and not some other kind of string
  * or integer.
  *
- * @psalm-immutable
+ * @immutable
  */
 final class Time implements TypeInterface
 {
@@ -56,8 +56,11 @@ final class Time implements TypeInterface
      */
     public function toString(): string
     {
+        /** @var numeric-string $microseconds */
+        $microseconds = sprintf('%06s', $this->microseconds->toString());
+
         /** @var numeric-string */
-        return $this->seconds->toString() . '.' . sprintf('%06s', $this->microseconds->toString());
+        return "{$this->seconds->toString()}.$microseconds";
     }
 
     /**

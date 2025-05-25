@@ -35,8 +35,6 @@ class BinaryUtils
      *     variant is applied
      *
      * @return int The 16-bit clock sequence multiplexed with the UUID variant
-     *
-     * @psalm-pure
      */
     public static function applyVariant(int $clockSeq, Variant $variant = Variant::Rfc4122): int
     {
@@ -59,8 +57,6 @@ class BinaryUtils
      *
      * @return int The 16-bit time_hi field of the timestamp multiplexed with
      *     the UUID version number
-     *
-     * @psalm-pure
      */
     public static function applyVersion(int $timeHi, Version $version): int
     {
@@ -80,22 +76,20 @@ class BinaryUtils
      * @param Version $version The RFC 4122 version to apply
      *
      * @return non-empty-string A 16-byte string with the UUID version and variant applied
-     *
-     * @psalm-pure
      */
     public static function applyVersionAndVariant(
         string $bytes,
         Version $version,
         Variant $variant = Variant::Rfc4122
     ): string {
-        /** @var array $unpackedTime */
+        /** @var int[] $unpackedTime */
         $unpackedTime = unpack('n*', substr($bytes, 6, 2));
-        $timeHi = (int) $unpackedTime[1];
+        $timeHi = $unpackedTime[1];
         $timeHiAndVersion = pack('n*', self::applyVersion($timeHi, $version));
 
-        /** @var array $unpackedClockSeq */
+        /** @var int[] $unpackedClockSeq */
         $unpackedClockSeq = unpack('n*', substr($bytes, 8, 2));
-        $clockSeqHi = (int) $unpackedClockSeq[1];
+        $clockSeqHi = $unpackedClockSeq[1];
         $clockSeqHiAndReserved = pack('n*', self::applyVariant($clockSeqHi, $variant));
 
         $bytes = substr_replace($bytes, $timeHiAndVersion, 6, 2);

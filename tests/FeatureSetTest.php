@@ -46,6 +46,7 @@ class FeatureSetTest extends TestCase
     {
         $featureSet = new FeatureSet();
 
+        /** @phpstan-ignore method.alreadyNarrowedType */
         $this->assertInstanceOf(TimeConverterInterface::class, $featureSet->getTimeConverter());
     }
 

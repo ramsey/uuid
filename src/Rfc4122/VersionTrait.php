@@ -17,7 +17,7 @@ namespace Ramsey\Uuid\Rfc4122;
 /**
  * Provides common functionality for handling the version, as defined by RFC 4122
  *
- * @psalm-immutable
+ * @immutable
  */
 trait VersionTrait
 {

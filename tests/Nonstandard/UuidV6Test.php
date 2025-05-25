@@ -45,7 +45,7 @@ class UuidV6Test extends TestCase
     }
 
     /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingTraversableTypeHintSpecification
+     * @return array<array{version: Version}>
      */
     public function provideTestVersions(): array
     {
@@ -77,7 +77,7 @@ class UuidV6Test extends TestCase
     }
 
     /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingTraversableTypeHintSpecification
+     * @return array<array{uuid: non-empty-string, expected: non-empty-string}>
      */
     public function provideUuidV6WithOddMicroseconds(): array
     {
@@ -145,7 +145,7 @@ class UuidV6Test extends TestCase
     }
 
     /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingTraversableTypeHintSpecification
+     * @return array<array{uuidv6: non-empty-string, uuidv1: non-empty-string}>
      */
     public function provideUuidV1UuidV6Equivalents(): array
     {

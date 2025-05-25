@@ -77,6 +77,9 @@ class PhpTimeConverterTest extends TestCase
     }
 
     /**
+     * @param numeric-string $unixTimestamp
+     * @param numeric-string $microseconds
+     *
      * @dataProvider provideConvertTime
      */
     public function testConvertTime(Hexadecimal $uuidTimestamp, string $unixTimestamp, string $microseconds): void
@@ -92,7 +95,7 @@ class PhpTimeConverterTest extends TestCase
     }
 
     /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingTraversableTypeHintSpecification
+     * @return array<array{uuidTimestamp: Hexadecimal, unixTimestamp: numeric-string, microseconds: numeric-string}>
      */
     public function provideConvertTime(): array
     {
@@ -143,6 +146,7 @@ class PhpTimeConverterTest extends TestCase
     /**
      * @param numeric-string $seconds
      * @param numeric-string $microseconds
+     * @param non-empty-string $expected
      *
      * @dataProvider provideCalculateTime
      */
@@ -158,7 +162,7 @@ class PhpTimeConverterTest extends TestCase
     }
 
     /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingTraversableTypeHintSpecification
+     * @return array<array{seconds: numeric-string, microseconds: numeric-string, expected: non-empty-string}>
      */
     public function provideCalculateTime(): array
     {

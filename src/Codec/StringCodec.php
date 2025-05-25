@@ -33,7 +33,7 @@ use function substr;
  *
  * @link http://tools.ietf.org/html/rfc4122
  *
- * @psalm-immutable
+ * @immutable
  */
 class StringCodec implements CodecInterface
 {
@@ -61,6 +61,9 @@ class StringCodec implements CodecInterface
         );
     }
 
+    /**
+     * @return non-empty-string
+     */
     public function encodeBinary(UuidInterface $uuid): string
     {
         return $uuid->getFields()->getBytes();

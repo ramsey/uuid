@@ -31,12 +31,12 @@ use function unpack;
 use const STR_PAD_LEFT;
 
 /**
- * RFC 4122 variant UUIDs are comprised of a set of named fields
+ * RFC 4122 variant UUIDs consist of a set of named fields
  *
  * Internally, this class represents the fields together as a 16-byte binary
  * string.
  *
- * @psalm-immutable
+ * @immutable
  */
 final class Fields implements FieldsInterface
 {

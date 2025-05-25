@@ -19,7 +19,7 @@ use DateTimeInterface;
 /**
  * Time-based UUIDs are derived from a date/time value
  *
- * @psalm-immutable
+ * @immutable
  */
 interface TimeBasedUuidInterface extends UuidInterface
 {

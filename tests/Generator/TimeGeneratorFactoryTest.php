@@ -28,6 +28,7 @@ class TimeGeneratorFactoryTest extends TestCase
         $factory = new TimeGeneratorFactory($nodeProvider, $timeConverter, $timeProvider);
         $generator = $factory->getGenerator();
 
+        /** @phpstan-ignore method.alreadyNarrowedType */
         $this->assertInstanceOf(TimeGeneratorInterface::class, $generator);
     }
 }

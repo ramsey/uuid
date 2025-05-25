@@ -22,7 +22,7 @@ use Ramsey\Uuid\Type\Integer as IntegerObject;
  * GenericNumberConverter uses the provided calculator to convert decimal
  * numbers to and from hexadecimal values
  *
- * @psalm-immutable
+ * @immutable
  */
 class GenericNumberConverter implements NumberConverterInterface
 {
@@ -30,17 +30,11 @@ class GenericNumberConverter implements NumberConverterInterface
     {
     }
 
-    /**
-     * @psalm-pure
-     */
     public function fromHex(string $hex): string
     {
         return $this->calculator->fromBase($hex, 16)->toString();
     }
 
-    /**
-     * @psalm-pure
-     */
     public function toHex(string $number): string
     {
         return $this->calculator->toBase(new IntegerObject($number), 16);

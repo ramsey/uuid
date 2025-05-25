@@ -37,7 +37,7 @@ use const STR_PAD_LEFT;
  * available to the PHP programming language to provide facilities for
  * converting parts of time into representations that may be used in UUIDs
  *
- * @psalm-immutable
+ * @immutable
  */
 class PhpTimeConverter implements TimeConverterInterface
 {
@@ -79,7 +79,7 @@ class PhpTimeConverter implements TimeConverterInterface
 
         // Check to see whether we've overflowed the max/min integer size.
         // If so, we will default to a different time converter.
-        /** @psalm-suppress RedundantCondition */
+        // @phpstan-ignore function.alreadyNarrowedType (the integer value might have overflowed)
         if (!is_int($uuidTime)) {
             return $this->fallbackConverter->calculateTime(
                 $seconds->toString(),

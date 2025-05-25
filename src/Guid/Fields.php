@@ -38,11 +38,11 @@ use function unpack;
 use const STR_PAD_LEFT;
 
 /**
- * GUIDs are comprised of a set of named fields, according to RFC 4122
+ * GUIDs consist of a set of named fields, according to RFC 4122
  *
  * @see Guid
  *
- * @psalm-immutable
+ * @immutable
  */
 final class Fields implements FieldsInterface
 {
@@ -90,7 +90,7 @@ final class Fields implements FieldsInterface
     public function getTimeLow(): Hexadecimal
     {
         // Swap the bytes from little endian to network byte order.
-        /** @var array{mixed, non-empty-string} $hex */
+        /** @var non-empty-string[] $hex */
         $hex = unpack(
             'H*',
             pack(
@@ -106,7 +106,7 @@ final class Fields implements FieldsInterface
     public function getTimeMid(): Hexadecimal
     {
         // Swap the bytes from little endian to network byte order.
-        /** @var array{mixed, non-empty-string} $hex */
+        /** @var non-empty-string[] $hex */
         $hex = unpack(
             'H*',
             pack(
@@ -121,7 +121,7 @@ final class Fields implements FieldsInterface
     public function getTimeHiAndVersion(): Hexadecimal
     {
         // Swap the bytes from little endian to network byte order.
-        /** @var array{mixed, non-empty-string} $hex */
+        /** @var non-empty-string[] $hex */
         $hex = unpack(
             'H*',
             pack(
@@ -189,10 +189,10 @@ final class Fields implements FieldsInterface
             return null;
         }
 
-        /** @var array $parts */
+        /** @var int[] $parts */
         $parts = unpack('n*', $this->bytes);
 
-        return Version::tryFrom(((int) $parts[4] >> 4) & 0x00f);
+        return Version::tryFrom(($parts[4] >> 4) & 0x00f);
     }
 
     private function isCorrectVariant(): bool

@@ -27,7 +27,7 @@ use Ramsey\Uuid\Type\NumberInterface;
 /**
  * A calculator using the brick/math library for arbitrary-precision arithmetic
  *
- * @psalm-immutable
+ * @immutable
  */
 final class BrickMathCalculator implements CalculatorInterface
 {

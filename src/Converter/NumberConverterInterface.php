@@ -18,7 +18,7 @@ namespace Ramsey\Uuid\Converter;
  * A number converter converts UUIDs from hexadecimal characters into
  * representations of integers and vice versa
  *
- * @psalm-immutable
+ * @immutable
  */
 interface NumberConverterInterface
 {
@@ -27,13 +27,11 @@ interface NumberConverterInterface
      * the number
      *
      * The integer representation returned is a string representation of the
-     * integer, to accommodate unsigned integers greater than PHP_INT_MAX.
+     *  integer to accommodate unsigned integers greater than PHP_INT_MAX.
      *
      * @param non-empty-string $hex The hexadecimal string representation to convert
      *
      * @return numeric-string String representation of an integer
-     *
-     * @psalm-pure
      */
     public function fromHex(string $hex): string;
 
@@ -46,8 +44,6 @@ interface NumberConverterInterface
      *     greater than PHP_INT_MAX.
      *
      * @return non-empty-string Hexadecimal string
-     *
-     * @psalm-pure
      */
     public function toHex(string $number): string;
 }

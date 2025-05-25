@@ -20,7 +20,7 @@ use Ramsey\Uuid\UuidInterface;
 /**
  * A UUID builder builds instances of UuidInterface
  *
- * @psalm-immutable
+ * @immutable
  */
 interface UuidBuilderInterface
 {
@@ -32,8 +32,6 @@ interface UuidBuilderInterface
      *
      * @return UuidInterface Implementations may choose to return more specific
      *     instances of UUIDs that implement UuidInterface
-     *
-     * @psalm-pure
      */
     public function build(CodecInterface $codec, string $bytes): UuidInterface;
 }

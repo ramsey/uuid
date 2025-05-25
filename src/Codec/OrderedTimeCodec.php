@@ -41,7 +41,7 @@ use function substr;
  *
  * @link https://www.percona.com/blog/2014/12/19/store-uuid-optimized-way/ Storing UUID Values in MySQL
  *
- * @psalm-immutable
+ * @immutable
  */
 class OrderedTimeCodec extends StringCodec
 {
@@ -49,7 +49,7 @@ class OrderedTimeCodec extends StringCodec
      * Returns a binary string representation of a UUID, with the timestamp
      * fields rearranged for optimized storage
      *
-     * @inheritDoc
+     * @return non-empty-string
      */
     public function encodeBinary(UuidInterface $uuid): string
     {
@@ -86,12 +86,7 @@ class OrderedTimeCodec extends StringCodec
             );
         }
 
-        /**
-         * Rearrange the bytes to their original order.
-         *
-         * @psalm-suppress UnnecessaryVarAnnotation
-         * @phpstan-var non-empty-string $rearrangedBytes
-         */
+        // Rearrange the bytes to their original order.
         $rearrangedBytes = $bytes[4] . $bytes[5] . $bytes[6] . $bytes[7]
             . $bytes[2] . $bytes[3]
             . $bytes[0] . $bytes[1]

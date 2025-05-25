@@ -146,10 +146,7 @@ class SystemDceSecurityProvider implements DceSecurityProviderInterface
      */
     private function getOs(): string
     {
-        /**
-         * @psalm-suppress UnnecessaryVarAnnotation
-         * @var string $os
-         */
+        /** @var string $os */
         $os = constant('PHP_OS');
 
         return strtoupper(substr($os, 0, 3));
@@ -207,9 +204,7 @@ class SystemDceSecurityProvider implements DceSecurityProviderInterface
             return '';
         }
 
-        /** @var string[] $userGroups */
         $userGroups = preg_split('/\s{2,}/', (string) $response, -1, PREG_SPLIT_NO_EMPTY);
-
         $firstGroup = trim($userGroups[1] ?? '', "* \t\n\r\0\x0B");
 
         if ($firstGroup === '') {
@@ -222,9 +217,7 @@ class SystemDceSecurityProvider implements DceSecurityProviderInterface
             return '';
         }
 
-        /** @var string[] $userGroup */
         $userGroup = preg_split('/\s{2,}/', (string) $response, -1, PREG_SPLIT_NO_EMPTY);
-
         $sid = $userGroup[1] ?? '';
 
         if (($lastHyphen = strrpos($sid, '-')) === false) {

@@ -35,7 +35,7 @@ class VariantTraitTest extends TestCase
     }
 
     /**
-     * @return array<array{string}>
+     * @return array<array{0: non-empty-string}>
      */
     public function invalidBytesProvider(): array
     {
@@ -63,7 +63,7 @@ class VariantTraitTest extends TestCase
     }
 
     /**
-     * @return array<array{string, int}>
+     * @return array<array{0: non-empty-string, 1: int}>
      */
     public function uuidVariantProvider(): array
     {

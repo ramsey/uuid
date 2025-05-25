@@ -46,7 +46,7 @@ class BinaryUtilsTest extends TestCase
     }
 
     /**
-     * @return array<array{timeHi: int, version: Version, expectedInt: int, expectedHex: string}>
+     * @return array<array{timeHi: int, version: Version, expectedInt: int, expectedHex: non-empty-string}>
      */
     public function provideVersionTestValues(): array
     {
@@ -199,7 +199,7 @@ class BinaryUtilsTest extends TestCase
     }
 
     /**
-     * @return array<array{clockSeq: int, variant: Variant, expectedInt: int, expectedHex: string}>
+     * @return array<array{clockSeq: int, variant: Variant, expectedInt: int, expectedHex: non-empty-string}>
      */
     public function provideVariantTestValues(): array
     {

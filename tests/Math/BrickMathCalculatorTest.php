@@ -8,7 +8,6 @@ use Ramsey\Uuid\Exception\InvalidArgumentException;
 use Ramsey\Uuid\Math\BrickMathCalculator;
 use Ramsey\Uuid\Math\RoundingMode;
 use Ramsey\Uuid\Test\TestCase;
-use Ramsey\Uuid\Type\Hexadecimal;
 use Ramsey\Uuid\Type\Integer as IntegerObject;
 
 class BrickMathCalculatorTest extends TestCase
@@ -71,7 +70,6 @@ class BrickMathCalculatorTest extends TestCase
 
         $result = $calculator->fromBase('ffffffffffffffffffff', 16);
 
-        $this->assertInstanceOf(IntegerObject::class, $result);
         $this->assertSame('1208925819614629174706175', $result->toString());
     }
 
@@ -90,7 +88,6 @@ class BrickMathCalculatorTest extends TestCase
 
         $result = $calculator->toHexadecimal($intValue);
 
-        $this->assertInstanceOf(Hexadecimal::class, $result);
         $this->assertSame('ffffffffffffffffffff', $result->toString());
     }
 

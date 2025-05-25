@@ -1,25 +1,13 @@
 parameters:
     tmpDir: ./build/cache/phpstan
     level: max
+    treatPhpDocTypesAsCertain: false
     paths:
         - ./src
-    checkMissingIterableValueType: false
+        - ./tests
     bootstrapFiles:
         - ./tests/static-analysis/stubs.php
-    ignoreErrors:
-        -
-            message: '#^Comparison operation ">" between 6 and 0 is always true\.$#'
-            count: 1
-            path: ./src/Generator/CombGenerator.php
-        -
-            message: '#^Result of \|\| is always false\.$#'
-            count: 1
-            path: ./src/Generator/DceSecurityGenerator.php
-        -
-            message: '#^Comparison operation ">" between int<0, 63>\|null and 63 is always false\.$#'
-            count: 1
-            path: ./src/Generator/DceSecurityGenerator.php
-        -
-            message: '#^Comparison operation "<" between int<0, 63>\|null and 0 is always false\.$#'
-            count: 1
-            path: ./src/Generator/DceSecurityGenerator.php
+    excludePaths:
+        analyse:
+            - ./tests/ExpectedBehaviorTest.php
+            - ./tests/static-analysis/stubs.php

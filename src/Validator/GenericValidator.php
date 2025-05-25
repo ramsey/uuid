@@ -22,7 +22,7 @@ use function str_replace;
 /**
  * GenericValidator validates strings as UUIDs of any variant
  *
- * @psalm-immutable
+ * @immutable
  */
 final class GenericValidator implements ValidatorInterface
 {
@@ -31,6 +31,9 @@ final class GenericValidator implements ValidatorInterface
      */
     private const VALID_PATTERN = '\A[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}\z';
 
+    /**
+     * @return non-empty-string
+     */
     public function getPattern(): string
     {
         return self::VALID_PATTERN;

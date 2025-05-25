@@ -21,7 +21,7 @@ use Ramsey\Uuid\Type\Hexadecimal;
  * TimeBasedUuidFactoryInterface defines common functionality all factories for
  * time-based UUIDs must implement
  *
- * @psalm-immutable
+ * @immutable
  */
 interface TimeBasedUuidFactoryInterface extends UuidFactoryInterface
 {
@@ -37,8 +37,6 @@ interface TimeBasedUuidFactoryInterface extends UuidFactoryInterface
      *
      * @return UuidInterface A UuidInterface instance that represents a
      *     UUID created from a DateTimeInterface instance
-     *
-     * @psalm-pure
      */
     public function fromDateTime(
         DateTimeInterface $dateTime,

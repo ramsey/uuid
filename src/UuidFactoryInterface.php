@@ -20,10 +20,10 @@ use Ramsey\Uuid\Type\Integer as IntegerObject;
 use Ramsey\Uuid\Validator\ValidatorInterface;
 
 /**
- * UuidFactoryInterface defines common functionality all `UuidFactory` instances
+ * UuidFactoryInterface defines the common functionality all `UuidFactory` instances
  * must implement
  *
- * @psalm-immutable
+ * @immutable
  */
 interface UuidFactoryInterface
 {
@@ -34,8 +34,6 @@ interface UuidFactoryInterface
      *
      * @return UuidInterface A UuidInterface instance created from a binary
      *     string representation
-     *
-     * @psalm-pure
      */
     public function fromBytes(string $bytes): UuidInterface;
 
@@ -65,8 +63,6 @@ interface UuidFactoryInterface
      *
      * @return UuidInterface A UuidInterface instance created from the string
      *     representation of a 128-bit integer
-     *
-     * @psalm-pure
      */
     public function fromInteger(string $integer): UuidInterface;
 
@@ -77,15 +73,11 @@ interface UuidFactoryInterface
      *
      * @return UuidInterface A UuidInterface instance created from a hexadecimal
      *     string representation
-     *
-     * @psalm-pure
      */
     public function fromString(string $uuid): UuidInterface;
 
     /**
-     * Returns the validator to use for the factory
-     *
-     * @psalm-mutation-free
+     * Returns the validator used by the factory
      */
     public function getValidator(): ValidatorInterface;
 
@@ -140,8 +132,6 @@ interface UuidFactoryInterface
      *
      * @return UuidInterface A UuidInterface instance that represents a
      *     version 3 UUID
-     *
-     * @psalm-pure
      */
     public function uuid3(UuidInterface | string $ns, string $name): UuidInterface;
 
@@ -162,8 +152,6 @@ interface UuidFactoryInterface
      *
      * @return UuidInterface A UuidInterface instance that represents a
      *     version 5 UUID
-     *
-     * @psalm-pure
      */
     public function uuid5(UuidInterface | string $ns, string $name): UuidInterface;
 

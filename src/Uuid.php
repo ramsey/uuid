@@ -42,12 +42,12 @@ use function substr;
 /**
  * Uuid provides constants and static methods for working with and generating UUIDs
  *
- * @psalm-immutable
+ * @immutable
  */
 class Uuid implements Rfc4122UuidInterface
 {
     /**
-     * When this namespace is specified, the name string is a fully-qualified
+     * When this namespace is specified, the name string is a fully qualified
      * domain name
      *
      * @link http://tools.ietf.org/html/rfc4122#appendix-C RFC 4122, Appendix C: Some Name Space IDs
@@ -124,12 +124,16 @@ class Uuid implements Rfc4122UuidInterface
         self::DCE_DOMAIN_ORG => 'org',
     ];
 
+    /**
+     * @phpstan-ignore property.readOnlyByPhpDocDefaultValue
+     */
     private static ?UuidFactoryInterface $factory = null;
 
     /**
      * @var bool flag to detect if the UUID factory was replaced internally,
      *     which disables all optimizations for the default/happy path internal
      *     scenarios
+     * @phpstan-ignore property.readOnlyByPhpDocDefaultValue
      */
     private static bool $factoryReplaced = false;
 
@@ -166,7 +170,7 @@ class Uuid implements Rfc4122UuidInterface
     }
 
     /**
-     * @psalm-return non-empty-string
+     * @return non-empty-string
      */
     public function __toString(): string
     {
@@ -238,6 +242,9 @@ class Uuid implements Rfc4122UuidInterface
         return $this->compareTo($other) === 0;
     }
 
+    /**
+     * @return non-empty-string
+     */
     public function getBytes(): string
     {
         return $this->codec->encodeBinary($this);
@@ -266,6 +273,9 @@ class Uuid implements Rfc4122UuidInterface
         return 'urn:uuid:' . $this->toString();
     }
 
+    /**
+     * @return non-empty-string
+     */
     public function toString(): string
     {
         return $this->codec->encode($this);
@@ -324,13 +334,6 @@ class Uuid implements Rfc4122UuidInterface
      *     string representation
      *
      * @throws InvalidArgumentException
-     *
-     * @psalm-pure note: changing the internal factory is an edge case not covered by purity invariants,
-     *             but under constant factory setups, this method operates in functionally pure manners
-     * @psalm-suppress ImpureStaticProperty we know that the factory being replaced can lead to massive
-     *                                      havoc across all consumers: that should never happen, and
-     *                                      is generally to be discouraged. Until the factory is kept
-     *                                      un-replaced, this method is effectively pure.
      */
     public static function fromBytes(string $bytes): UuidInterface
     {
@@ -363,19 +366,11 @@ class Uuid implements Rfc4122UuidInterface
      *     string representation
      *
      * @throws InvalidArgumentException
-     *
-     * @psalm-pure note: changing the internal factory is an edge case not covered by purity invariants,
-     *             but under constant factory setups, this method operates in functionally pure manners
-     * @psalm-suppress ImpureStaticProperty we know that the factory being replaced can lead to massive
-     *                                      havoc across all consumers: that should never happen, and
-     *                                      is generally to be discouraged. Until the factory is kept
-     *                                      un-replaced, this method is effectively pure.
      */
     public static function fromString(string $uuid): UuidInterface
     {
         $uuid = strtolower($uuid);
         if (!self::$factoryReplaced && preg_match(LazyUuidFromString::VALID_REGEX, $uuid) === 1) {
-            /** @psalm-suppress DocblockTypeContradiction */
             assert($uuid !== '');
 
             return new LazyUuidFromString($uuid);
@@ -411,24 +406,19 @@ class Uuid implements Rfc4122UuidInterface
      * @param Hexadecimal $hex Hexadecimal object representing a hexadecimal number
      *
      * @return UuidInterface A UuidInterface instance created from the Hexadecimal
-     * object representing a hexadecimal number
+     *     object representing a hexadecimal number
      *
      * @throws InvalidArgumentException
-     *
-     * @psalm-pure note: changing the internal factory is an edge case not covered by purity invariants,
-     *             but under constant factory setups, this method operates in functionally pure manners
-     * @psalm-suppress MixedInferredReturnType,MixedReturnStatement
      */
     public static function fromHexadecimal(Hexadecimal $hex): UuidInterface
     {
         $factory = self::getFactory();
 
         if (method_exists($factory, 'fromHexadecimal')) {
-            /**
-             * @phpstan-ignore-next-line
-             * @psalm-suppress UndefinedInterfaceMethod
-             */
-            return self::getFactory()->fromHexadecimal($hex);
+            $uuid = $factory->fromHexadecimal($hex);
+            assert($uuid instanceof UuidInterface);
+
+            return $uuid;
         }
 
         throw new BadMethodCallException('The method fromHexadecimal() does not exist on the provided factory');
@@ -443,13 +433,9 @@ class Uuid implements Rfc4122UuidInterface
      *     representation of a 128-bit integer
      *
      * @throws InvalidArgumentException
-     *
-     * @psalm-pure note: changing the internal factory is an edge case not covered by purity invariants,
-     *             but under constant factory setups, this method operates in functionally pure manners
      */
     public static function fromInteger(string $integer): UuidInterface
     {
-        /** @psalm-suppress ImpureMethodCall */
         return self::getFactory()->fromInteger($integer);
     }
 
@@ -460,14 +446,10 @@ class Uuid implements Rfc4122UuidInterface
      *
      * @return bool True if the string is a valid UUID, false otherwise
      *
-     * @psalm-pure note: changing the internal factory is an edge case not covered by purity invariants,
-     *             but under constant factory setups, this method operates in functionally pure manners
-     *
-     * @psalm-assert-if-true =non-empty-string $uuid
+     * @phpstan-assert-if-true =non-empty-string $uuid
      */
     public static function isValid(string $uuid): bool
     {
-        /** @psalm-suppress ImpureMethodCall */
         return self::getFactory()->getValidator()->validate($uuid);
     }
 
@@ -528,14 +510,6 @@ class Uuid implements Rfc4122UuidInterface
      *
      * @return UuidInterface A UuidInterface instance that represents a
      *     version 3 UUID
-     *
-     * @psalm-suppress ImpureMethodCall we know that the factory being replaced can lead to massive
-     *                                  havoc across all consumers: that should never happen, and
-     *                                  is generally to be discouraged. Until the factory is kept
-     *                                  un-replaced, this method is effectively pure.
-     *
-     * @psalm-pure note: changing the internal factory is an edge case not covered by purity invariants,
-     *             but under constant factory setups, this method operates in functionally pure manners
      */
     public static function uuid3(UuidInterface | string $ns, string $name): UuidInterface
     {
@@ -562,14 +536,6 @@ class Uuid implements Rfc4122UuidInterface
      *
      * @return UuidInterface A UuidInterface instance that represents a
      *     version 5 UUID
-     *
-     * @psalm-pure note: changing the internal factory is an edge case not covered by purity invariants,
-     *             but under constant factory setups, this method operates in functionally pure manners
-     *
-     * @psalm-suppress ImpureMethodCall we know that the factory being replaced can lead to massive
-     *                                  havoc across all consumers: that should never happen, and
-     *                                  is generally to be discouraged. Until the factory is kept
-     *                                  un-replaced, this method is effectively pure.
      */
     public static function uuid5(UuidInterface | string $ns, string $name): UuidInterface
     {

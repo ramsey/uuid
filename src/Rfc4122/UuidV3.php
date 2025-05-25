@@ -22,10 +22,10 @@ use Ramsey\Uuid\Rfc4122\FieldsInterface as Rfc4122FieldsInterface;
 use Ramsey\Uuid\Uuid;
 
 /**
- * Version 3 UUIDs are named-based, using combination of a namespace and name
+ * Version 3 UUIDs are named-based, using a combination of a namespace and name
  * that are hashed into a 128-bit unsigned integer using MD5
  *
- * @psalm-immutable
+ * @immutable
  */
 final class UuidV3 extends Uuid implements UuidInterface
 {

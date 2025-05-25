@@ -26,26 +26,15 @@ use function hash;
  */
 class DefaultNameGenerator implements NameGeneratorInterface
 {
-    /**
-     * @inheritDoc
-     * @psalm-pure
-     */
     public function generate(UuidInterface $ns, string $name, string $hashAlgorithm): string
     {
         try {
-            /** @var non-empty-string|false $bytes */
-            $bytes = @hash($hashAlgorithm, $ns->getBytes() . $name, true);
+            return hash($hashAlgorithm, $ns->getBytes() . $name, true);
         } catch (ValueError $e) {
-            $bytes = false; // keep same behavior than PHP 7
+            throw new NameException(
+                message: sprintf('Unable to hash namespace and name with algorithm \'%s\'', $hashAlgorithm),
+                previous: $e,
+            );
         }
-
-        if ($bytes === false) {
-            throw new NameException(sprintf(
-                'Unable to hash namespace and name with algorithm \'%s\'',
-                $hashAlgorithm
-            ));
-        }
-
-        return $bytes;
     }
 }

@@ -55,7 +55,7 @@ class UuidV2Test extends TestCase
     }
 
     /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingTraversableTypeHintSpecification
+     * @return array<array{version: Version}>
      */
     public function provideTestVersions(): array
     {
@@ -115,7 +115,17 @@ class UuidV2Test extends TestCase
     }
 
     /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingTraversableTypeHintSpecification
+     * phpcs:ignore SlevomatCodingStandard.TypeHints.LongTypeHints.UsedLongTypeHint
+     * @return array<array{
+     *     domain: int,
+     *     identifier: Integer,
+     *     time: Time,
+     *     expectedDomain: int,
+     *     expectedDomainName: non-empty-string,
+     *     expectedIdentifier: non-empty-string,
+     *     expectedTimestamp: non-empty-string,
+     *     expectedTime: non-empty-string,
+     * }>
      */
     public function provideLocalDomainAndIdentifierForTests(): array
     {

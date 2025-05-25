@@ -21,7 +21,7 @@ use Ramsey\Uuid\Type\NumberInterface;
 /**
  * A calculator performs arithmetic operations on numbers
  *
- * @psalm-immutable
+ * @immutable
  */
 interface CalculatorInterface
 {

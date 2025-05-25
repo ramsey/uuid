@@ -17,7 +17,7 @@ namespace Ramsey\Uuid\Validator;
 /**
  * A validator validates a string as a proper UUID
  *
- * @psalm-immutable
+ * @immutable
  */
 interface ValidatorInterface
 {

@@ -22,7 +22,7 @@ use Ramsey\Uuid\Uuid as BaseUuid;
 /**
  * Nonstandard\Uuid is a UUID that doesn't conform to RFC 4122
  *
- * @psalm-immutable
+ * @immutable
  */
 final class Uuid extends BaseUuid
 {
