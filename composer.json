@@ -14,7 +14,7 @@
         "brick/math": "^0.8.8 || ^0.9 || ^0.10 || ^0.11 || ^0.12"
     },
     "require-dev": {
-        "captainhook/captainhook": "^5.10",
+        "captainhook/captainhook": "^5.25",
         "captainhook/plugin-composer": "^5.3",
         "dealerdirect/phpcodesniffer-composer-installer": "^0.7.0",
         "doctrine/annotations": "^1.8",
