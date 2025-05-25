@@ -19,6 +19,7 @@ use DateTimeInterface;
 use Ramsey\Uuid\Codec\CodecInterface;
 use Ramsey\Uuid\Converter\NumberConverterInterface;
 use Ramsey\Uuid\Converter\TimeConverterInterface;
+use Ramsey\Uuid\Exception\InvalidArgumentException;
 use Ramsey\Uuid\Exception\UnsupportedOperationException;
 use Ramsey\Uuid\Lazy\LazyUuidFromString;
 use Ramsey\Uuid\Rfc4122\FieldsInterface as Rfc4122FieldsInterface;
@@ -322,9 +323,10 @@ class Uuid implements Rfc4122UuidInterface
      * @return UuidInterface A UuidInterface instance created from a binary
      *     string representation
      *
+     * @throws InvalidArgumentException
+     *
      * @psalm-pure note: changing the internal factory is an edge case not covered by purity invariants,
      *             but under constant factory setups, this method operates in functionally pure manners
-     *
      * @psalm-suppress ImpureStaticProperty we know that the factory being replaced can lead to massive
      *                                      havoc across all consumers: that should never happen, and
      *                                      is generally to be discouraged. Until the factory is kept
@@ -360,9 +362,10 @@ class Uuid implements Rfc4122UuidInterface
      * @return UuidInterface A UuidInterface instance created from a hexadecimal
      *     string representation
      *
+     * @throws InvalidArgumentException
+     *
      * @psalm-pure note: changing the internal factory is an edge case not covered by purity invariants,
      *             but under constant factory setups, this method operates in functionally pure manners
-     *
      * @psalm-suppress ImpureStaticProperty we know that the factory being replaced can lead to massive
      *                                      havoc across all consumers: that should never happen, and
      *                                      is generally to be discouraged. Until the factory is kept
@@ -410,6 +413,8 @@ class Uuid implements Rfc4122UuidInterface
      * @return UuidInterface A UuidInterface instance created from the Hexadecimal
      * object representing a hexadecimal number
      *
+     * @throws InvalidArgumentException
+     *
      * @psalm-pure note: changing the internal factory is an edge case not covered by purity invariants,
      *             but under constant factory setups, this method operates in functionally pure manners
      * @psalm-suppress MixedInferredReturnType,MixedReturnStatement
@@ -436,6 +441,8 @@ class Uuid implements Rfc4122UuidInterface
      *
      * @return UuidInterface A UuidInterface instance created from the string
      *     representation of a 128-bit integer
+     *
+     * @throws InvalidArgumentException
      *
      * @psalm-pure note: changing the internal factory is an edge case not covered by purity invariants,
      *             but under constant factory setups, this method operates in functionally pure manners

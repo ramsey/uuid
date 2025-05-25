@@ -449,7 +449,7 @@ class SystemDceSecurityProviderTest extends TestCase
                 'expectedId' => '546',
             ],
             [
-                'netUserReponse' => 'Local Group Memberships   Some Group  Another Group',
+                'netUserResponse' => 'Local Group Memberships   Some Group  Another Group',
                 'wmicGroupResponse' => 'Some Group    S-1-5-80-19088743-1985229328-4294967295-1324',
                 'expectedGroup' => 'Some Group',
                 'expectedId' => '1324',
