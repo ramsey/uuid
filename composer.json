@@ -22,7 +22,7 @@
         "php-mock/php-mock": "^2.6",
         "php-mock/php-mock-mockery": "^1.5",
         "php-parallel-lint/php-parallel-lint": "^1.4.0",
-        "phpbench/phpbench": "^1.4",
+        "phpbench/phpbench": "^1.2.14",
         "phpstan/extension-installer": "^1.4",
         "phpstan/phpstan": "^2.1",
         "phpstan/phpstan-mockery": "^2.0",

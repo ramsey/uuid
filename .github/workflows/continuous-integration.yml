@@ -38,6 +38,8 @@ jobs:
 
       - name: "Install dependencies (Composer)"
         uses: "ramsey/composer-install@v3"
+        with:
+          dependency-versions: "highest"
 
       - name: "Check syntax (php-parallel-lint)"
         run: "composer dev:lint:syntax"
@@ -61,6 +63,8 @@ jobs:
 
       - name: "Install dependencies (Composer)"
         uses: "ramsey/composer-install@v3"
+        with:
+          dependency-versions: "highest"
 
       - name: "Statically analyze code (PHPStan)"
         run: "composer dev:analyze:phpstan"
@@ -98,7 +102,7 @@ jobs:
       - name: "Install dependencies (Composer)"
         uses: "ramsey/composer-install@v3"
         with:
-          dependency-versions: "${{ matrix.dependency-versions }}"
+          dependency-versions: "highest"
 
       - name: "Run benchmarks (PHPBench)"
         run: "composer dev:bench"
@@ -128,7 +132,7 @@ jobs:
       - name: "Install dependencies (Composer)"
         uses: "ramsey/composer-install@v3"
         with:
-          dependency-versions: "${{ matrix.dependencies }}"
+          dependency-versions: "highest"
 
       - name: "Run unit tests (PHPUnit)"
         run: "composer dev:test:coverage:ci"
@@ -159,7 +163,7 @@ jobs:
           - "ubuntu-latest"
           - "windows-latest"
         dependency-versions:
-          - "lowest"
+          - "locked"
           - "highest"
 
     steps:
