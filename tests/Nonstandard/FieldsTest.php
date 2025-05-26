@@ -28,12 +28,17 @@ class FieldsTest extends TestCase
     }
 
     /**
-     * @param string|int $expectedValue
+     * @param non-empty-string $uuid
+     * @param non-empty-string $methodName
+     * @param non-empty-string | int | bool | null $expectedValue
      *
      * @dataProvider fieldGetterMethodProvider
      */
-    public function testFieldGetterMethods(string $uuid, string $methodName, $expectedValue): void
-    {
+    public function testFieldGetterMethods(
+        string $uuid,
+        string $methodName,
+        bool | int | string | null $expectedValue,
+    ): void {
         $bytes = (string) hex2bin(str_replace('-', '', $uuid));
         $fields = new Fields($bytes);
 
@@ -47,7 +52,7 @@ class FieldsTest extends TestCase
     }
 
     /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingTraversableTypeHintSpecification
+     * @return array<array{0: non-empty-string, 1: non-empty-string, 2: non-empty-string | int | bool | null}>
      */
     public function fieldGetterMethodProvider(): array
     {

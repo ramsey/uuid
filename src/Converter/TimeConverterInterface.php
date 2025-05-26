@@ -21,7 +21,7 @@ use Ramsey\Uuid\Type\Time;
  * A time converter converts timestamps into representations that may be used
  * in UUIDs
  *
- * @psalm-immutable
+ * @immutable
  */
 interface TimeConverterInterface
 {
@@ -38,8 +38,6 @@ interface TimeConverterInterface
      *     associated with the time to calculate
      *
      * @return Hexadecimal The full UUID timestamp as a Hexadecimal value
-     *
-     * @psalm-pure
      */
     public function calculateTime(string $seconds, string $microseconds): Hexadecimal;
 
@@ -51,8 +49,6 @@ interface TimeConverterInterface
      *     since UTC 00:00:00.00, 15 October 1582.
      *
      * @return Time An instance of {@see Time}
-     *
-     * @psalm-pure
      */
     public function convertTime(Hexadecimal $uuidTimestamp): Time;
 }

@@ -25,7 +25,7 @@ use Ramsey\Uuid\Uuid;
  * Gregorian time, or version 1, UUIDs include timestamp, clock sequence, and node
  * values that are combined into a 128-bit unsigned integer
  *
- * @psalm-immutable
+ * @immutable
  */
 final class UuidV1 extends Uuid implements UuidInterface
 {

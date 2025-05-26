@@ -35,7 +35,6 @@ class BigNumberTimeConverterTest extends TestCase
         $converter = new BigNumberTimeConverter();
         $returned = $converter->calculateTime((string) $seconds, (string) $microseconds);
 
-        $this->assertInstanceOf(Hexadecimal::class, $returned);
         $this->assertSame($expected, $returned->toString());
     }
 

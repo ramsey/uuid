@@ -1,6 +1,6 @@
 # GitHub Actions Documentation: https://docs.github.com/en/actions
 
-name: "build"
+name: "Continuous Integration"
 
 on:
   push:
@@ -25,6 +25,7 @@ jobs:
   coding-standards:
     name: "Coding standards"
     runs-on: "ubuntu-latest"
+
     steps:
       - name: "Checkout repository"
         uses: "actions/checkout@v4"
@@ -37,16 +38,19 @@ jobs:
 
       - name: "Install dependencies (Composer)"
         uses: "ramsey/composer-install@v3"
+        with:
+          dependency-versions: "highest"
 
       - name: "Check syntax (php-parallel-lint)"
-        run: "composer lint -- --colors"
+        run: "composer dev:lint:syntax"
 
       - name: "Check coding standards (PHP_CodeSniffer)"
-        run: "./vendor/bin/phpcs --colors"
+        run: "composer dev:lint:style"
 
   static-analysis:
     name: "Static analysis"
     runs-on: "ubuntu-latest"
+
     steps:
       - name: "Checkout repository"
         uses: "actions/checkout@v4"
@@ -59,12 +63,11 @@ jobs:
 
       - name: "Install dependencies (Composer)"
         uses: "ramsey/composer-install@v3"
+        with:
+          dependency-versions: "highest"
 
       - name: "Statically analyze code (PHPStan)"
-        run: "composer phpstan -- --ansi"
-
-      - name: "Statically analyze code (Psalm)"
-        run: "composer psalm -- --shepherd"
+        run: "composer dev:analyze:phpstan"
 
   benchmark:
     name: "Benchmark"
@@ -80,12 +83,6 @@ jobs:
           - "8.2"
           - "8.3"
           - "8.4"
-        include:
-          # Keep the locked version by default
-          - dependency-versions: "locked"
-          # For PHP 8.0, installing with --prefer-highest to use brick/math v0.11
-          - php-version: "8.0"
-            dependency-versions: "highest"
 
     steps:
       - name: "Checkout repository"
@@ -107,15 +104,16 @@ jobs:
       - name: "Install dependencies (Composer)"
         uses: "ramsey/composer-install@v3"
         with:
-          dependency-versions: "${{ matrix.dependency-versions }}"
+          dependency-versions: "highest"
 
-      - name: "Run PHPBench"
-        run: "composer phpbench -- --ansi"
+      - name: "Run benchmarks (PHPBench)"
+        run: "composer dev:bench"
 
   code-coverage:
     name: "Code coverage"
     needs: ["coding-standards", "static-analysis"]
     runs-on: "ubuntu-latest"
+
     steps:
       - name: "Checkout repository"
         uses: "actions/checkout@v4"
@@ -130,19 +128,26 @@ jobs:
         with:
           php-version: "latest"
           extensions: bcmath, gmp, sodium, uuid
-          coverage: "pcov"
+          coverage: "xdebug"
           ini-values: "memory_limit=-1"
 
       - name: "Install dependencies (Composer)"
         uses: "ramsey/composer-install@v3"
         with:
-          dependency-versions: "${{ matrix.dependencies }}"
+          dependency-versions: "highest"
 
       - name: "Run unit tests (PHPUnit)"
-        run: "./vendor/bin/phpunit --verbose --colors=always --coverage-text --coverage-clover build/logs/clover.xml"
+        run: "composer dev:test:coverage:ci"
 
       - name: "Publish coverage report to Codecov"
-        uses: "codecov/codecov-action@v5.0.2"
+        uses: "codecov/codecov-action@v5"
+
+      - name: "Upload test results to Codecov"
+        if: ${{ !cancelled() }}
+        uses: "codecov/test-results-action@v1"
+        with:
+          disable_search: true
+          file: "./build/junit.xml"
 
   unit-tests:
     name: "Unit Tests"
@@ -161,12 +166,9 @@ jobs:
         operating-system:
           - "ubuntu-latest"
           - "windows-latest"
-        include:
-          # Keep the locked version by default
-          - dependency-versions: "locked"
-          # For PHP 8.0, installing with --prefer-highest to use brick/math v0.11
-          - php-version: "8.0"
-            dependency-versions: "highest"
+        dependency-versions:
+          - "locked"
+          - "highest"
 
     steps:
       - name: "Configure Git (for Windows)"
@@ -198,4 +200,4 @@ jobs:
           dependency-versions: "${{ matrix.dependency-versions }}"
 
       - name: "Run unit tests (PHPUnit)"
-        run: "./vendor/bin/phpunit --verbose --colors=always --no-coverage"
+        run: "composer dev:test:unit"

@@ -21,7 +21,7 @@ class TestCase extends PhpUnitTestCase
 
     public static function isLittleEndianSystem(): bool
     {
-        /** @var array $unpacked */
+        /** @var int[] $unpacked */
         $unpacked = unpack('v', pack('S', 0x00FF));
 
         return current($unpacked) === 0x00FF;

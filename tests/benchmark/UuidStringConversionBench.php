@@ -132,28 +132,23 @@ final class UuidStringConversionBench
     /** @var UuidInterface */
     private $uuid;
     /**
-     * @var UuidInterface[]
-     * @psalm-var non-empty-list<UuidInterface>
+     * @var non-empty-list<UuidInterface>
      */
     private $promiscuousUuids;
     /**
-     * @var string
-     * @psalm-var non-empty-string
+     * @var non-empty-string
      */
     private $tinyUuidBytes;
     /**
-     * @var string
-     * @psalm-var non-empty-string
+     * @var non-empty-string
      */
     private $hugeUuidBytes;
     /**
-     * @var string
-     * @psalm-var non-empty-string
+     * @var non-empty-string
      */
     private $uuidBytes;
     /**
-     * @var string[]
-     * @psalm-var non-empty-list<non-empty-string>
+     * @var non-empty-list<non-empty-string>
      */
     private $promiscuousUuidsBytes;
 

@@ -12,6 +12,8 @@ use Ramsey\Uuid\Type\Hexadecimal;
 class StaticNodeProviderTest extends TestCase
 {
     /**
+     * @param non-empty-string $expectedNode
+     *
      * @dataProvider provideNodeForTest
      */
     public function testStaticNode(Hexadecimal $node, string $expectedNode): void
@@ -22,7 +24,7 @@ class StaticNodeProviderTest extends TestCase
     }
 
     /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingTraversableTypeHintSpecification
+     * @return array<array{node: Hexadecimal, expectedNode: non-empty-string}>
      */
     public function provideNodeForTest(): array
     {
