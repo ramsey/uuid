@@ -25,7 +25,7 @@ use Stringable;
  * A UUID is a universally unique identifier adhering to an agreed-upon
  * representation format and standard for generation
  *
- * @psalm-immutable
+ * @immutable
  */
 interface UuidInterface extends
     DeprecatedUuidInterface,
@@ -66,7 +66,7 @@ interface UuidInterface extends
     /**
      * Returns the binary string representation of the UUID
      *
-     * @psalm-return non-empty-string
+     * @return non-empty-string
      */
     public function getBytes(): string;
 
@@ -96,14 +96,14 @@ interface UuidInterface extends
     /**
      * Returns the string standard representation of the UUID
      *
-     * @psalm-return non-empty-string
+     * @return non-empty-string
      */
     public function toString(): string;
 
     /**
      * Casts the UUID to the string standard representation
      *
-     * @psalm-return non-empty-string
+     * @return non-empty-string
      */
     public function __toString(): string;
 }

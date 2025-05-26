@@ -33,15 +33,18 @@ use function substr;
  * To support large integers beyond PHP_INT_MAX and PHP_INT_MIN on both 64-bit
  * and 32-bit systems, we store the integers as strings.
  *
- * @psalm-immutable
+ * @immutable
  */
 final class Integer implements NumberInterface
 {
     /**
-     * @psalm-var numeric-string
+     * @var numeric-string
      */
     private string $value;
 
+    /**
+     * @phpstan-ignore property.readOnlyByPhpDocDefaultValue
+     */
     private bool $isNegative = false;
 
     public function __construct(float | int | string | self $value)
@@ -55,7 +58,7 @@ final class Integer implements NumberInterface
     }
 
     /**
-     * @psalm-return numeric-string
+     * @return numeric-string
      */
     public function toString(): string
     {
@@ -63,7 +66,7 @@ final class Integer implements NumberInterface
     }
 
     /**
-     * @psalm-return numeric-string
+     * @return numeric-string
      */
     public function __toString(): string
     {
@@ -92,8 +95,6 @@ final class Integer implements NumberInterface
      * Constructs the object from a serialized string representation
      *
      * @param string $data The serialized string representation of the object
-     *
-     * @psalm-suppress UnusedMethodCall
      */
     public function unserialize(string $data): void
     {
@@ -147,7 +148,7 @@ final class Integer implements NumberInterface
         if ($sign === '-' && $value !== '0') {
             $value = $sign . $value;
 
-            /** @psalm-suppress InaccessibleProperty */
+            /** @phpstan-ignore property.readOnlyByPhpDocAssignNotInConstructor */
             $this->isNegative = true;
         }
 

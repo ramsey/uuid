@@ -19,7 +19,7 @@ use Ramsey\Uuid\UuidInterface;
 /**
  * A codec encodes and decodes a UUID according to defined rules
  *
- * @psalm-immutable
+ * @immutable
  */
 interface CodecInterface
 {
@@ -29,9 +29,7 @@ interface CodecInterface
      * @param UuidInterface $uuid The UUID for which to create a hexadecimal
      *     string representation
      *
-     * @return string Hexadecimal string representation of a UUID
-     *
-     * @psalm-return non-empty-string
+     * @return non-empty-string Hexadecimal string representation of a UUID
      */
     public function encode(UuidInterface $uuid): string;
 
@@ -41,9 +39,7 @@ interface CodecInterface
      * @param UuidInterface $uuid The UUID for which to create a binary string
      *     representation
      *
-     * @return string Binary string representation of a UUID
-     *
-     * @psalm-return non-empty-string
+     * @return non-empty-string Binary string representation of a UUID
      */
     public function encodeBinary(UuidInterface $uuid): string;
 

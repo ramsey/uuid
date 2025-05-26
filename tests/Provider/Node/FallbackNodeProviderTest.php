@@ -81,7 +81,6 @@ class FallbackNodeProviderTest extends TestCase
 
         foreach ($unserializedNodeProviderCollection as $nodeProvider) {
             $this->assertInstanceOf(NodeProviderInterface::class, $nodeProvider);
-            $this->assertInstanceOf(Hexadecimal::class, $nodeProvider->getNode());
         }
     }
 }

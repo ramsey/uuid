@@ -26,6 +26,8 @@ class FieldsTest extends TestCase
     }
 
     /**
+     * @param non-empty-string $guid
+     *
      * @dataProvider nonRfc4122GuidVariantProvider
      */
     public function testConstructorThrowsExceptionIfNotRfc4122Variant(string $guid): void
@@ -44,7 +46,7 @@ class FieldsTest extends TestCase
     /**
      * These values are already in GUID byte order, for easy testing.
      *
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingTraversableTypeHintSpecification
+     * @return array<array{0: non-empty-string}>
      */
     public function nonRfc4122GuidVariantProvider(): array
     {
@@ -65,6 +67,8 @@ class FieldsTest extends TestCase
     }
 
     /**
+     * @param non-empty-string $guid
+     *
      * @dataProvider invalidVersionProvider
      */
     public function testConstructorThrowsExceptionIfInvalidVersion(string $guid): void
@@ -80,7 +84,7 @@ class FieldsTest extends TestCase
     }
 
     /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingTraversableTypeHintSpecification
+     * @return array<array{0: non-empty-string}>
      */
     public function invalidVersionProvider(): array
     {
@@ -100,12 +104,17 @@ class FieldsTest extends TestCase
     }
 
     /**
-     * @param string|int $expectedValue
+     * @param non-empty-string $bytes
+     * @param non-empty-string $methodName
+     * @param non-empty-string | bool | int | null $expectedValue
      *
      * @dataProvider fieldGetterMethodProvider
      */
-    public function testFieldGetterMethods(string $bytes, string $methodName, $expectedValue): void
-    {
+    public function testFieldGetterMethods(
+        string $bytes,
+        string $methodName,
+        bool | int | string | null $expectedValue,
+    ): void {
         $bytes = (string) hex2bin($bytes);
         $fields = new Fields($bytes);
 
@@ -119,7 +128,7 @@ class FieldsTest extends TestCase
     }
 
     /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingTraversableTypeHintSpecification
+     * @return array<array{0: non-empty-string, 1: non-empty-string, 2: non-empty-string | int | bool | null}>
      */
     public function fieldGetterMethodProvider(): array
     {

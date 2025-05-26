@@ -15,26 +15,23 @@
         "ramsey/collection": "^1.2 || ^2.0"
     },
     "require-dev": {
-        "captainhook/captainhook": "^5.10",
+        "captainhook/captainhook": "^5.25",
         "captainhook/plugin-composer": "^5.3",
-        "dealerdirect/phpcodesniffer-composer-installer": "^0.7.0",
-        "doctrine/annotations": "^1.8",
-        "ergebnis/composer-normalize": "^2.15",
-        "mockery/mockery": "^1.3",
+        "dealerdirect/phpcodesniffer-composer-installer": "^1.0",
+        "ergebnis/composer-normalize": "^2.47",
+        "mockery/mockery": "^1.6",
         "paragonie/random-lib": "^2",
-        "php-mock/php-mock": "^2.2",
-        "php-mock/php-mock-mockery": "^1.3",
-        "php-parallel-lint/php-parallel-lint": "^1.1",
-        "phpbench/phpbench": "^1.0",
-        "phpstan/extension-installer": "^1.1",
-        "phpstan/phpstan": "^1.8",
-        "phpstan/phpstan-mockery": "^1.1",
-        "phpstan/phpstan-phpunit": "^1.1",
-        "phpunit/phpunit": "^8.5 || ^9",
-        "ramsey/composer-repl": "^1.4",
-        "slevomat/coding-standard": "^8.4",
-        "squizlabs/php_codesniffer": "^3.5",
-        "vimeo/psalm": "^4.9"
+        "php-mock/php-mock": "^2.6",
+        "php-mock/php-mock-mockery": "^1.5",
+        "php-parallel-lint/php-parallel-lint": "^1.4.0",
+        "phpbench/phpbench": "^1.2.14",
+        "phpstan/extension-installer": "^1.4",
+        "phpstan/phpstan": "^2.1",
+        "phpstan/phpstan-mockery": "^2.0",
+        "phpstan/phpstan-phpunit": "^2.0",
+        "phpunit/phpunit": "^9.6",
+        "slevomat/coding-standard": "^8.18",
+        "squizlabs/php_codesniffer": "^3.13"
     },
     "replace": {
         "rhumsaa/uuid": "self.version"
@@ -66,10 +63,9 @@
     "config": {
         "allow-plugins": {
             "captainhook/plugin-composer": true,
-            "ergebnis/composer-normalize": true,
-            "phpstan/extension-installer": true,
             "dealerdirect/phpcodesniffer-composer-installer": true,
-            "ramsey/composer-repl": true
+            "ergebnis/composer-normalize": true,
+            "phpstan/extension-installer": true
         },
         "sort-packages": true
     },
@@ -79,30 +75,41 @@
         }
     },
     "scripts": {
-        "analyze": [
-            "@phpstan",
-            "@psalm"
+        "dev:analyze": "@dev:analyze:phpstan",
+        "dev:analyze:phpstan": "phpstan analyse --ansi --memory-limit 1G",
+        "dev:bench": "@php -d 'error_reporting=24575' vendor/bin/phpbench run",
+        "dev:build:clean": "git clean -fX build/",
+        "dev:lint": [
+            "@dev:lint:syntax",
+            "@dev:lint:style"
         ],
-        "build:clean": "git clean -fX build/",
-        "lint": "parallel-lint src tests",
-        "lint:paths": "parallel-lint",
-        "phpbench": "phpbench run",
-        "phpcbf": "phpcbf -vpw --cache=build/cache/phpcs.cache",
-        "phpcs": "phpcs --cache=build/cache/phpcs.cache",
-        "phpstan": [
-            "phpstan analyse --no-progress --memory-limit=1G",
-            "phpstan analyse -c phpstan-tests.neon --no-progress --memory-limit=1G"
+        "dev:lint:fix": "phpcbf --cache=build/cache/phpcs.cache",
+        "dev:lint:style": "phpcs --cache=build/cache/phpcs.cache --colors",
+        "dev:lint:syntax": "parallel-lint --colors src/ tests/",
+        "dev:test": [
+            "@dev:lint",
+            "@dev:bench",
+            "@dev:analyze",
+            "@dev:test:unit"
         ],
-        "phpunit": "phpunit --verbose --colors=always",
-        "phpunit-coverage": "phpunit --verbose --colors=always --coverage-html build/coverage",
-        "psalm": "psalm --show-info=false --config=psalm.xml",
-        "test": [
-            "@lint",
-            "@phpbench",
-            "@phpcs",
-            "@phpstan",
-            "@psalm",
-            "@phpunit"
-        ]
+        "dev:test:coverage:ci": "@php -d 'xdebug.mode=coverage' vendor/bin/phpunit --colors=always --coverage-text --coverage-clover build/coverage/clover.xml --coverage-cobertura build/coverage/cobertura.xml --coverage-crap4j build/coverage/crap4j.xml --coverage-xml build/coverage/coverage-xml --log-junit build/junit.xml",
+        "dev:test:coverage:html": "@php -d 'xdebug.mode=coverage' vendor/bin/phpunit --colors=always --coverage-html build/coverage/coverage-html/",
+        "dev:test:unit": "phpunit --colors=always",
+        "test": "@dev:test"
+    },
+    "scripts-descriptions": {
+        "dev:analyze": "Runs all static analysis checks.",
+        "dev:analyze:phpstan": "Runs the PHPStan static analyzer.",
+        "dev:bench": "Runs PHPBench benchmark tests.",
+        "dev:build:clean": "Cleans the build/ directory.",
+        "dev:lint": "Runs all linting checks.",
+        "dev:lint:fix": "Auto-fixes coding standards issues, if possible.",
+        "dev:lint:style": "Checks for coding standards issues.",
+        "dev:lint:syntax": "Checks for syntax errors.",
+        "dev:test": "Runs linting, static analysis, and unit tests.",
+        "dev:test:coverage:ci": "Runs unit tests and generates CI coverage reports.",
+        "dev:test:coverage:html": "Runs unit tests and generates HTML coverage report.",
+        "dev:test:unit": "Runs unit tests.",
+        "test": "Runs linting, static analysis, and unit tests."
     }
 }

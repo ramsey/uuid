@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Ramsey\Uuid\Test;
 
-use DateTimeInterface;
 use Mockery;
 use Ramsey\Uuid\Codec\CodecInterface;
 use Ramsey\Uuid\Converter\NumberConverterInterface;
@@ -31,7 +30,6 @@ class DeprecatedUuidMethodsTraitTest extends TestCase
 
         $uuid = new Uuid($fields, $numberConverter, $codec, $timeConverter);
 
-        $this->assertInstanceOf(DateTimeInterface::class, $uuid->getDateTime());
         $this->assertSame('2012-07-04T02:14:34+00:00', $uuid->getDateTime()->format('c'));
         $this->assertSame('1341368074.491000', $uuid->getDateTime()->format('U.u'));
     }

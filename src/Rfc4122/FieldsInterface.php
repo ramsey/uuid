@@ -35,7 +35,7 @@ use Ramsey\Uuid\Type\Hexadecimal;
  *
  * @link http://tools.ietf.org/html/rfc4122#section-4.1 RFC 4122, § 4.1: Format
  *
- * @psalm-immutable
+ * @immutable
  */
 interface FieldsInterface extends BaseFieldsInterface
 {

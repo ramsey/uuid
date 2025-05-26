@@ -46,14 +46,12 @@ use function substr_replace;
  *
  * @link https://www.informit.com/articles/printerfriendly/25862 The Cost of GUIDs as Primary Keys
  *
- * @psalm-immutable
+ * @immutable
  */
 class TimestampFirstCombCodec extends StringCodec
 {
     /**
-     * @psalm-return non-empty-string
-     * @psalm-suppress MoreSpecificReturnType we know that the retrieved `string` is never empty
-     * @psalm-suppress LessSpecificReturnStatement we know that the retrieved `string` is never empty
+     * @return non-empty-string
      */
     public function encode(UuidInterface $uuid): string
     {
@@ -70,9 +68,7 @@ class TimestampFirstCombCodec extends StringCodec
     }
 
     /**
-     * @psalm-return non-empty-string
-     * @psalm-suppress MoreSpecificReturnType we know that the retrieved `string` is never empty
-     * @psalm-suppress LessSpecificReturnStatement we know that the retrieved `string` is never empty
+     * @return non-empty-string
      */
     public function encodeBinary(UuidInterface $uuid): string
     {

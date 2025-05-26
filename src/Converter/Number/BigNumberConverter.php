@@ -23,7 +23,7 @@ use Ramsey\Uuid\Math\BrickMathCalculator;
  *
  * @deprecated Transition to {@see GenericNumberConverter}.
  *
- * @psalm-immutable
+ * @immutable
  */
 class BigNumberConverter implements NumberConverterInterface
 {
@@ -34,19 +34,11 @@ class BigNumberConverter implements NumberConverterInterface
         $this->converter = new GenericNumberConverter(new BrickMathCalculator());
     }
 
-    /**
-     * @inheritDoc
-     * @psalm-pure
-     */
     public function fromHex(string $hex): string
     {
         return $this->converter->fromHex($hex);
     }
 
-    /**
-     * @inheritDoc
-     * @psalm-pure
-     */
     public function toHex(string $number): string
     {
         return $this->converter->toHex($number);

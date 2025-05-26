@@ -29,7 +29,7 @@ use const STR_PAD_LEFT;
 /**
  * Provides common functionality for handling the variant, as defined by RFC 4122
  *
- * @psalm-immutable
+ * @immutable
  */
 trait VariantTrait
 {

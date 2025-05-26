@@ -30,7 +30,7 @@ use const STR_PAD_LEFT;
  * UnixTimeConverter converts Unix Epoch timestamps to/from hexadecimal values
  * consisting of milliseconds elapsed since the Unix Epoch
  *
- * @psalm-immutable
+ * @immutable
  */
 class UnixTimeConverter implements TimeConverterInterface
 {

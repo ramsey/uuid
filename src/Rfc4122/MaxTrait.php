@@ -22,7 +22,7 @@ namespace Ramsey\Uuid\Rfc4122;
  *
  * @link https://datatracker.ietf.org/doc/html/draft-ietf-uuidrev-rfc4122bis-00#section-5.10 Max UUID
  *
- * @psalm-immutable
+ * @immutable
  */
 trait MaxTrait
 {
