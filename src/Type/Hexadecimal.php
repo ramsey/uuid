@@ -28,10 +28,13 @@ use function substr;
  * returned from ramsey/uuid methods as strings are truly hexadecimal and not some
  * other kind of string.
  *
- * @psalm-immutable
+ * @immutable
  */
 final class Hexadecimal implements TypeInterface
 {
+    /**
+     * @var non-empty-string
+     */
     private string $value;
 
     /**
@@ -42,21 +45,33 @@ final class Hexadecimal implements TypeInterface
         $this->value = $value instanceof self ? (string) $value : $this->prepareValue($value);
     }
 
+    /**
+     * @psalm-return non-empty-string
+     */
     public function toString(): string
     {
         return $this->value;
     }
 
+    /**
+     * @psalm-return non-empty-string
+     */
     public function __toString(): string
     {
         return $this->toString();
     }
 
+    /**
+     * @psalm-return non-empty-string
+     */
     public function jsonSerialize(): string
     {
         return $this->toString();
     }
 
+    /**
+     * @psalm-return non-empty-string
+     */
     public function serialize(): string
     {
         return $this->toString();
@@ -74,8 +89,6 @@ final class Hexadecimal implements TypeInterface
      * Constructs the object from a serialized string representation
      *
      * @param string $data The serialized string representation of the object
-     *
-     * @psalm-suppress UnusedMethodCall
      */
     public function unserialize(string $data): void
     {
@@ -96,6 +109,9 @@ final class Hexadecimal implements TypeInterface
         $this->unserialize($data['string']);
     }
 
+    /**
+     * @psalm-return non-empty-string
+     */
     private function prepareValue(string $value): string
     {
         $value = strtolower($value);
@@ -110,6 +126,7 @@ final class Hexadecimal implements TypeInterface
             );
         }
 
+        /** @var non-empty-string */
         return $value;
     }
 }

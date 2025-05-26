@@ -26,7 +26,7 @@ use Ramsey\Uuid\UuidInterface;
  * @deprecated DegradedUuid instances are no longer necessary to support 32-bit
  *     systems. Transition to {@see DefaultUuidBuilder}.
  *
- * @psalm-immutable
+ * @immutable
  */
 class DegradedUuidBuilder implements UuidBuilderInterface
 {
@@ -52,8 +52,6 @@ class DegradedUuidBuilder implements UuidBuilderInterface
      * @param string $bytes The byte string from which to construct a UUID
      *
      * @return DegradedUuid The DegradedUuidBuild returns an instance of Ramsey\Uuid\DegradedUuid
-     *
-     * @psalm-pure
      */
     public function build(CodecInterface $codec, string $bytes): UuidInterface
     {

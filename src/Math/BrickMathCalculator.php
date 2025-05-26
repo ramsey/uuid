@@ -27,7 +27,7 @@ use Ramsey\Uuid\Type\NumberInterface;
 /**
  * A calculator using the brick/math library for arbitrary-precision arithmetic
  *
- * @psalm-immutable
+ * @immutable
  */
 final class BrickMathCalculator implements CalculatorInterface
 {
@@ -136,9 +136,11 @@ final class BrickMathCalculator implements CalculatorInterface
 
     /**
      * Maps ramsey/uuid rounding modes to those used by brick/math
+     *
+     * @return BrickMathRounding::*
      */
-    private function getBrickRoundingMode(int $roundingMode): int
+    private function getBrickRoundingMode(int $roundingMode)
     {
-        return self::ROUNDING_MODE_MAP[$roundingMode] ?? 0;
+        return self::ROUNDING_MODE_MAP[$roundingMode] ?? BrickMathRounding::UNNECESSARY;
     }
 }

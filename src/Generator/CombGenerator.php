@@ -81,7 +81,13 @@ class CombGenerator implements RandomGeneratorInterface
             );
         }
 
+        if ($length % 2 !== 0) {
+            throw new InvalidArgumentException('Length must be an even number');
+        }
+
         $hash = '';
+
+        /** @phpstan-ignore greater.alwaysTrue (TIMESTAMP_BYTES constant could change in child classes) */
         if (self::TIMESTAMP_BYTES > 0 && $length > self::TIMESTAMP_BYTES) {
             $hash = $this->generator->generate($length - self::TIMESTAMP_BYTES);
         }

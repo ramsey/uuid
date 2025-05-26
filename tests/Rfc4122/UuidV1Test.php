@@ -43,7 +43,7 @@ class UuidV1Test extends TestCase
     }
 
     /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingTraversableTypeHintSpecification
+     * @return array<array{version: int}>
      */
     public function provideTestVersions(): array
     {
@@ -62,6 +62,7 @@ class UuidV1Test extends TestCase
 
     /**
      * @param non-empty-string $uuid
+     * @param numeric-string $expected
      *
      * @dataProvider provideUuidV1WithOddMicroseconds
      */
@@ -77,7 +78,7 @@ class UuidV1Test extends TestCase
     }
 
     /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingTraversableTypeHintSpecification
+     * @return array<array{uuid: non-empty-string, expected: numeric-string}>
      */
     public function provideUuidV1WithOddMicroseconds(): array
     {

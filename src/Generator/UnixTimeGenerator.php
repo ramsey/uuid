@@ -142,7 +142,7 @@ class UnixTimeGenerator implements TimeGeneratorInterface
             self::$seedIndex = 21;
         }
 
-        self::$rand[5] = 0xffff & $carry = self::$rand[5] + (self::$seedParts[self::$seedIndex--] & 0xffffff);
+        self::$rand[5] = 0xffff & $carry = self::$rand[5] + 1 + (self::$seedParts[self::$seedIndex--] & 0xffffff);
         self::$rand[4] = 0xffff & $carry = self::$rand[4] + ($carry >> 16);
         self::$rand[3] = 0xffff & $carry = self::$rand[3] + ($carry >> 16);
         self::$rand[2] = 0xffff & $carry = self::$rand[2] + ($carry >> 16);

@@ -26,6 +26,7 @@ class RandomLibAdapterTest extends TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
+        /** @phpstan-ignore method.alreadyNarrowedType */
         $this->assertInstanceOf(RandomLibAdapter::class, new RandomLibAdapter($generator));
     }
 
@@ -33,7 +34,7 @@ class RandomLibAdapterTest extends TestCase
      * @runInSeparateProcess
      * @preserveGlobalState disabled
      */
-    public function testAdapterWithoutGeneratorGreatesGenerator(): void
+    public function testAdapterWithoutGeneratorCreatesGenerator(): void
     {
         $generator = Mockery::mock(Generator::class);
 
@@ -41,6 +42,7 @@ class RandomLibAdapterTest extends TestCase
         $factory = Mockery::mock('overload:' . RandomLibFactory::class);
         $factory->expects()->getHighStrengthGenerator()->andReturns($generator);
 
+        /** @phpstan-ignore method.alreadyNarrowedType */
         $this->assertInstanceOf(RandomLibAdapter::class, new RandomLibAdapter());
     }
 

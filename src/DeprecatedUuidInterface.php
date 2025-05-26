@@ -20,7 +20,7 @@ use Ramsey\Uuid\Converter\NumberConverterInterface;
 /**
  * This interface encapsulates deprecated methods for ramsey/uuid
  *
- * @psalm-immutable
+ * @immutable
  */
 interface DeprecatedUuidInterface
 {
