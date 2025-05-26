@@ -34,6 +34,6 @@ class PeclUuidTimeGenerator implements TimeGeneratorInterface
     {
         $uuid = uuid_create(UUID_TYPE_TIME);
 
-        return uuid_parse($uuid);
+        return (string) uuid_parse($uuid);
     }
 }

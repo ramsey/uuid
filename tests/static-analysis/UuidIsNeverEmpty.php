@@ -22,13 +22,13 @@ use Ramsey\Uuid\UuidInterface;
  */
 final class UuidIsNeverEmpty
 {
-    /** @psalm-return non-empty-string */
+    /** @return non-empty-string */
     public function bytesAreNeverEmpty(UuidInterface $uuid): string
     {
         return $uuid->getBytes();
     }
 
-    /** @psalm-return non-empty-string */
+    /** @return non-empty-string */
     public function stringIsNeverEmpty(UuidInterface $uuid): string
     {
         return $uuid->toString();

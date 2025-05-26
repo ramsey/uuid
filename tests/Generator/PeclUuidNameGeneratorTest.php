@@ -32,14 +32,14 @@ class PeclUuidNameGeneratorTest extends TestCase
 
         // Need to add the version and variant, since ext-uuid already includes
         // these in the values returned.
-        /** @var array $unpackedTime */
+        /** @var int[] $unpackedTime */
         $unpackedTime = unpack('n*', substr($expectedBytes, 6, 2));
-        $timeHi = (int) $unpackedTime[1];
+        $timeHi = $unpackedTime[1];
         $timeHiAndVersion = pack('n*', BinaryUtils::applyVersion($timeHi, $version));
 
-        /** @var array $unpackedClockSeq */
+        /** @var int[] $unpackedClockSeq */
         $unpackedClockSeq = unpack('n*', substr($expectedBytes, 8, 2));
-        $clockSeqHi = (int) $unpackedClockSeq[1];
+        $clockSeqHi = $unpackedClockSeq[1];
         $clockSeqHiAndReserved = pack('n*', BinaryUtils::applyVariant($clockSeqHi));
 
         $expectedBytes = substr_replace($expectedBytes, $timeHiAndVersion, 6, 2);
@@ -99,7 +99,6 @@ class PeclUuidNameGeneratorTest extends TestCase
             'Unable to hash namespace and name with algorithm \'aBadAlgorithm\''
         );
 
-        /** @phpstan-ignore-next-line */
         $generator->generate($namespace, 'a test name', 'aBadAlgorithm');
     }
 }

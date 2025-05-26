@@ -30,7 +30,7 @@ use Throwable;
 /**
  * UuidBuilder builds instances of RFC 4122 UUIDs
  *
- * @psalm-immutable
+ * @immutable
  */
 class UuidBuilder implements UuidBuilderInterface
 {
@@ -63,8 +63,6 @@ class UuidBuilder implements UuidBuilderInterface
      * @param string $bytes The byte string from which to construct a UUID
      *
      * @return Rfc4122UuidInterface UuidBuilder returns instances of Rfc4122UuidInterface
-     *
-     * @psalm-pure
      */
     public function build(CodecInterface $codec, string $bytes): UuidInterface
     {

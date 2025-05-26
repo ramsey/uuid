@@ -28,8 +28,6 @@ class BinaryUtils
      *     variant is applied
      *
      * @return int The 16-bit clock sequence multiplexed with the UUID variant
-     *
-     * @psalm-pure
      */
     public static function applyVariant(int $clockSeq): int
     {
@@ -50,8 +48,6 @@ class BinaryUtils
      *
      * @return int The 16-bit time_hi field of the timestamp multiplexed with
      *     the UUID version number
-     *
-     * @psalm-pure
      */
     public static function applyVersion(int $timeHi, int $version): int
     {

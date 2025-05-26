@@ -12,6 +12,10 @@ use Ramsey\Uuid\Type\Hexadecimal;
 class GenericTimeConverterTest extends TestCase
 {
     /**
+     * @param numeric-string $seconds
+     * @param numeric-string $microseconds
+     * @param non-empty-string $expected
+     *
      * @dataProvider provideCalculateTime
      */
     public function testCalculateTime(string $seconds, string $microseconds, string $expected): void
@@ -25,7 +29,7 @@ class GenericTimeConverterTest extends TestCase
     }
 
     /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingTraversableTypeHintSpecification
+     * @return array<array{seconds: numeric-string, microseconds: numeric-string, expected: non-empty-string}>
      */
     public function provideCalculateTime(): array
     {
@@ -80,6 +84,9 @@ class GenericTimeConverterTest extends TestCase
     }
 
     /**
+     * @param numeric-string $unixTimestamp
+     * @param numeric-string $microseconds
+     *
      * @dataProvider provideConvertTime
      */
     public function testConvertTime(Hexadecimal $uuidTimestamp, string $unixTimestamp, string $microseconds): void
@@ -94,7 +101,7 @@ class GenericTimeConverterTest extends TestCase
     }
 
     /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingTraversableTypeHintSpecification
+     * @return array<array{uuidTimestamp: Hexadecimal, unixTimestamp: numeric-string, microseconds: numeric-string}>
      */
     public function provideConvertTime(): array
     {

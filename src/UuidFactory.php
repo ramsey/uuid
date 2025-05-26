@@ -240,9 +240,6 @@ class UuidFactory implements UuidFactoryInterface
         $this->uuidBuilder = $builder;
     }
 
-    /**
-     * @psalm-mutation-free
-     */
     public function getValidator(): ValidatorInterface
     {
         return $this->validator;
@@ -261,17 +258,11 @@ class UuidFactory implements UuidFactoryInterface
         $this->validator = $validator;
     }
 
-    /**
-     * @psalm-pure
-     */
     public function fromBytes(string $bytes): UuidInterface
     {
         return $this->codec->decodeBytes($bytes);
     }
 
-    /**
-     * @psalm-pure
-     */
     public function fromString(string $uuid): UuidInterface
     {
         $uuid = strtolower($uuid);
@@ -279,9 +270,6 @@ class UuidFactory implements UuidFactoryInterface
         return $this->codec->decode($uuid);
     }
 
-    /**
-     * @psalm-pure
-     */
     public function fromInteger(string $integer): UuidInterface
     {
         $hex = $this->numberConverter->toHex($integer);
@@ -312,9 +300,6 @@ class UuidFactory implements UuidFactoryInterface
         return $this->uuidFromBytesAndVersion($bytes, Uuid::UUID_TYPE_TIME);
     }
 
-    /**
-     * @psalm-pure
-     */
     public function fromHexadecimal(Hexadecimal $hex): UuidInterface
     {
         return $this->codec->decode($hex->__toString());
@@ -348,7 +333,6 @@ class UuidFactory implements UuidFactoryInterface
 
     /**
      * @inheritDoc
-     * @psalm-pure
      */
     public function uuid3($ns, string $name): UuidInterface
     {
@@ -364,7 +348,6 @@ class UuidFactory implements UuidFactoryInterface
 
     /**
      * @inheritDoc
-     * @psalm-pure
      */
     public function uuid5($ns, string $name): UuidInterface
     {
@@ -439,12 +422,9 @@ class UuidFactory implements UuidFactoryInterface
      *
      * @return UuidInterface An instance of UuidInterface, created from the
      *     provided bytes
-     *
-     * @psalm-pure
      */
     public function uuid(string $bytes): UuidInterface
     {
-        /** @psalm-suppress ImpurePropertyFetch */
         return $this->uuidBuilder->build($this->codec, $bytes);
     }
 
@@ -459,8 +439,6 @@ class UuidFactory implements UuidFactoryInterface
      *
      * @return UuidInterface An instance of UuidInterface, created by hashing
      *     together the provided namespace and name
-     *
-     * @psalm-pure
      */
     private function uuidFromNsAndName(
         UuidInterface | string $ns,
@@ -485,19 +463,17 @@ class UuidFactory implements UuidFactoryInterface
      *
      * @return UuidInterface An instance of UuidInterface, created from the
      *     byte string and version
-     *
-     * @psalm-pure
      */
     private function uuidFromBytesAndVersion(string $bytes, int $version): UuidInterface
     {
-        /** @var array $unpackedTime */
+        /** @var int[] $unpackedTime */
         $unpackedTime = unpack('n*', substr($bytes, 6, 2));
-        $timeHi = (int) $unpackedTime[1];
+        $timeHi = $unpackedTime[1];
         $timeHiAndVersion = pack('n*', BinaryUtils::applyVersion($timeHi, $version));
 
-        /** @var array $unpackedClockSeq */
+        /** @var int[] $unpackedClockSeq */
         $unpackedClockSeq = unpack('n*', substr($bytes, 8, 2));
-        $clockSeqHi = (int) $unpackedClockSeq[1];
+        $clockSeqHi = $unpackedClockSeq[1];
         $clockSeqHiAndReserved = pack('n*', BinaryUtils::applyVariant($clockSeqHi));
 
         $bytes = substr_replace($bytes, $timeHiAndVersion, 6, 2);
@@ -507,7 +483,6 @@ class UuidFactory implements UuidFactoryInterface
             return LazyUuidFromString::fromBytes($bytes);
         }
 
-        /** @psalm-suppress ImpureVariable */
         return $this->uuid($bytes);
     }
 }

@@ -44,7 +44,7 @@ namespace Ramsey\Uuid\Codec;
  *
  * @link https://www.informit.com/articles/printerfriendly/25862 The Cost of GUIDs as Primary Keys
  *
- * @psalm-immutable
+ * @immutable
  */
 class TimestampLastCombCodec extends StringCodec
 {
