@@ -15,6 +15,7 @@ class SystemTimeProviderTest extends TestCase
         $provider = new SystemTimeProvider();
         $time = $provider->getTime();
 
+        /** @phpstan-ignore method.alreadyNarrowedType */
         $this->assertInstanceOf(Time::class, $time);
     }
 }

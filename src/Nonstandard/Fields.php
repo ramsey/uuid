@@ -40,7 +40,7 @@ use const STR_PAD_LEFT;
  * Internally, this class represents the fields together as a 16-byte binary
  * string.
  *
- * @psalm-immutable
+ * @immutable
  */
 final class Fields implements FieldsInterface
 {

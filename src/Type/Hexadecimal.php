@@ -28,7 +28,7 @@ use function substr;
  * returned from ramsey/uuid methods as strings are truly hexadecimal and not some
  * other kind of string.
  *
- * @psalm-immutable
+ * @immutable
  */
 final class Hexadecimal implements TypeInterface
 {
@@ -74,8 +74,6 @@ final class Hexadecimal implements TypeInterface
      * Constructs the object from a serialized string representation
      *
      * @param string $data The serialized string representation of the object
-     *
-     * @psalm-suppress UnusedMethodCall
      */
     public function unserialize(string $data): void
     {

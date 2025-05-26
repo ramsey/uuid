@@ -30,7 +30,6 @@ use function uuid_parse;
  */
 class PeclUuidNameGenerator implements NameGeneratorInterface
 {
-    /** @psalm-pure */
     public function generate(UuidInterface $ns, string $name, string $hashAlgorithm): string
     {
         $uuid = match ($hashAlgorithm) {
@@ -44,6 +43,6 @@ class PeclUuidNameGenerator implements NameGeneratorInterface
             ),
         };
 
-        return uuid_parse($uuid);
+        return (string) uuid_parse($uuid);
     }
 }

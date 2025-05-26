@@ -32,7 +32,7 @@ use const STR_PAD_LEFT;
  *
  * @deprecated This trait and its methods will be removed in ramsey/uuid 5.0.0.
  *
- * @psalm-immutable
+ * @immutable
  */
 trait DeprecatedUuidMethodsTrait
 {

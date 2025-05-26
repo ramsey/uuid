@@ -15,6 +15,8 @@ class DefaultNameGeneratorTest extends TestCase
 {
     /**
      * @param non-empty-string $ns
+     * @param non-empty-string $name
+     * @param non-empty-string $algorithm
      *
      * @dataProvider provideNamesForHashingTest
      */
@@ -29,7 +31,7 @@ class DefaultNameGeneratorTest extends TestCase
     }
 
     /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingTraversableTypeHintSpecification
+     * @return array<array{ns: non-empty-string, name: non-empty-string, algorithm: non-empty-string}>
      */
     public function provideNamesForHashingTest(): array
     {

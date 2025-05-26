@@ -27,7 +27,7 @@ use Ramsey\Uuid\Uuid;
  *
  * @link https://datatracker.ietf.org/doc/html/draft-ietf-uuidrev-rfc4122bis-00#section-5.7 UUID Version 7
  *
- * @psalm-immutable
+ * @immutable
  */
 final class UuidV7 extends Uuid implements UuidInterface
 {

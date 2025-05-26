@@ -29,7 +29,7 @@ class BinaryUtilsTest extends TestCase
     }
 
     /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingTraversableTypeHintSpecification
+     * @return array<array{timeHi: int, version: int, expectedInt: int, expectedHex: non-empty-string}>
      */
     public function provideVersionTestValues(): array
     {
@@ -128,7 +128,7 @@ class BinaryUtilsTest extends TestCase
     }
 
     /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingTraversableTypeHintSpecification
+     * @return array<array{clockSeq: int, expectedInt: int, expectedHex: non-empty-string}>
      */
     public function provideVariantTestValues(): array
     {

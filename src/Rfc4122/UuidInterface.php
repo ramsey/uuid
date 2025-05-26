@@ -22,7 +22,7 @@ use Ramsey\Uuid\UuidInterface as BaseUuidInterface;
  *
  * @link https://tools.ietf.org/html/rfc4122 RFC 4122
  *
- * @psalm-immutable
+ * @immutable
  */
 interface UuidInterface extends BaseUuidInterface
 {

@@ -29,13 +29,11 @@ use Ramsey\Uuid\UuidInterface;
  */
 final class UuidIsImmutable
 {
-    /** @psalm-pure */
     public static function pureCompareTo(UuidInterface $a, UuidInterface $b): int
     {
         return $a->compareTo($b);
     }
 
-    /** @psalm-pure */
     public static function pureEquals(UuidInterface $a, ?object $b): bool
     {
         return $a->equals($b);
@@ -43,9 +41,6 @@ final class UuidIsImmutable
 
     /**
      * @return mixed[]
-     *
-     * @psalm-pure
-     * @psalm-suppress DeprecatedMethod
      */
     public static function pureGetters(UuidInterface $a): array
     {
@@ -76,8 +71,6 @@ final class UuidIsImmutable
 
     /**
      * @return UuidInterface[]|bool[]
-     *
-     * @psalm-pure
      */
     public static function pureStaticUuidApi(): array
     {
@@ -90,7 +83,6 @@ final class UuidIsImmutable
         ];
     }
 
-    /** @psalm-pure */
     public static function uuid3IsPure(): UuidInterface
     {
         return Uuid::uuid3(
@@ -99,7 +91,6 @@ final class UuidIsImmutable
         );
     }
 
-    /** @psalm-pure */
     public static function uuid5IsPure(): UuidInterface
     {
         return Uuid::uuid5(
