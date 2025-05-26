@@ -6,6 +6,7 @@ namespace Ramsey\Uuid\Test\Rfc4122;
 
 use DateTimeInterface;
 use Mockery;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Ramsey\Uuid\Codec\CodecInterface;
 use Ramsey\Uuid\Converter\Number\GenericNumberConverter;
 use Ramsey\Uuid\Converter\NumberConverterInterface;
@@ -30,9 +31,7 @@ use Ramsey\Uuid\UuidFactory;
 
 class UuidV2Test extends TestCase
 {
-    /**
-     * @dataProvider provideTestVersions
-     */
+    #[DataProvider('provideTestVersions')]
     public function testConstructorThrowsExceptionWhenFieldsAreNotValidForType(Version $version): void
     {
         $fields = Mockery::mock(FieldsInterface::class, [
@@ -55,7 +54,7 @@ class UuidV2Test extends TestCase
     /**
      * @return array<array{version: Version}>
      */
-    public function provideTestVersions(): array
+    public static function provideTestVersions(): array
     {
         return [
             ['version' => Version::Time],
@@ -70,9 +69,8 @@ class UuidV2Test extends TestCase
 
     /**
      * @param positive-int $domain
-     *
-     * @dataProvider provideLocalDomainAndIdentifierForTests
      */
+    #[DataProvider('provideLocalDomainAndIdentifierForTests')]
     public function testGetLocalDomainAndIdentifier(
         int $domain,
         IntegerObject $identifier,
@@ -124,7 +122,7 @@ class UuidV2Test extends TestCase
      *     expectedTime: non-empty-string,
      * }>
      */
-    public function provideLocalDomainAndIdentifierForTests(): array
+    public static function provideLocalDomainAndIdentifierForTests(): array
     {
         return [
             [

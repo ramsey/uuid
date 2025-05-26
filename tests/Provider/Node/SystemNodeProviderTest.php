@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Ramsey\Uuid\Test\Provider\Node;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\PreserveGlobalState;
+use PHPUnit\Framework\Attributes\RunInSeparateProcess;
 use Ramsey\Uuid\Exception\InvalidArgumentException;
 use Ramsey\Uuid\Exception\NodeException;
 use Ramsey\Uuid\Provider\Node\SystemNodeProvider;
@@ -58,13 +61,11 @@ class SystemNodeProviderTest extends TestCase
     /**
      * @var Spy[]
      */
-    private $functionProxies = [];
+    private array $functionProxies = [];
 
-    /**
-     * @runInSeparateProcess
-     * @preserveGlobalState disabled
-     * @dataProvider provideValidNetStatOutput
-     */
+    #[RunInSeparateProcess]
+    #[PreserveGlobalState(false)]
+    #[DataProvider('provideValidNetStatOutput')]
     public function testGetNodeReturnsSystemNodeFromMacAddress(string $netstatOutput, string $expected): void
     {
         /* Arrange mocks for native functions */
@@ -94,11 +95,9 @@ class SystemNodeProviderTest extends TestCase
         $this->assertMatchesRegularExpression('/^[A-Fa-f0-9]{12}$/', $node->toString(), $message);
     }
 
-    /**
-     * @runInSeparateProcess
-     * @preserveGlobalState disabled
-     * @dataProvider provideInvalidNetStatOutput
-     */
+    #[RunInSeparateProcess]
+    #[PreserveGlobalState(false)]
+    #[DataProvider('provideInvalidNetStatOutput')]
     public function testGetNodeShouldNotReturnsSystemNodeForInvalidMacAddress(string $netstatOutput): void
     {
         /* Arrange */
@@ -127,11 +126,9 @@ class SystemNodeProviderTest extends TestCase
         $this->assertInstanceOf(NodeException::class, $exception);
     }
 
-    /**
-     * @runInSeparateProcess
-     * @preserveGlobalState disabled
-     * @dataProvider provideNotationalFormats
-     */
+    #[RunInSeparateProcess]
+    #[PreserveGlobalState(false)]
+    #[DataProvider('provideNotationalFormats')]
     public function testGetNodeReturnsNodeStrippedOfNotationalFormatting(string $formatted, string $expected): void
     {
         /* Arrange */
@@ -155,11 +152,9 @@ class SystemNodeProviderTest extends TestCase
         $this->assertSame($expected, $node->toString());
     }
 
-    /**
-     * @runInSeparateProcess
-     * @preserveGlobalState disabled
-     * @dataProvider provideInvalidNotationalFormats
-     */
+    #[RunInSeparateProcess]
+    #[PreserveGlobalState(false)]
+    #[DataProvider('provideInvalidNotationalFormats')]
     public function testGetNodeDoesNotAcceptIncorrectNotationalFormatting(string $formatted): void
     {
         /* Arrange */
@@ -188,10 +183,8 @@ class SystemNodeProviderTest extends TestCase
         $this->assertInstanceOf(NodeException::class, $exception);
     }
 
-    /**
-     * @runInSeparateProcess
-     * @preserveGlobalState disabled
-     */
+    #[RunInSeparateProcess]
+    #[PreserveGlobalState(false)]
     public function testGetNodeReturnsFirstMacAddressFound(): void
     {
         /* Arrange */
@@ -215,10 +208,8 @@ class SystemNodeProviderTest extends TestCase
         $this->assertSame('aabbccddeeff', $node->toString());
     }
 
-    /**
-     * @runInSeparateProcess
-     * @preserveGlobalState disabled
-     */
+    #[RunInSeparateProcess]
+    #[PreserveGlobalState(false)]
     public function testGetNodeReturnsFalseWhenNodeIsNotFound(): void
     {
         /* Arrange */
@@ -247,10 +238,8 @@ class SystemNodeProviderTest extends TestCase
         $this->assertInstanceOf(NodeException::class, $exception);
     }
 
-    /**
-     * @runInSeparateProcess
-     * @preserveGlobalState disabled
-     */
+    #[RunInSeparateProcess]
+    #[PreserveGlobalState(false)]
     public function testGetNodeWillNotExecuteSystemCallIfFailedFirstTime(): void
     {
         /* Arrange */
@@ -287,11 +276,9 @@ class SystemNodeProviderTest extends TestCase
         $this->assertInstanceOf(NodeException::class, $exception2);
     }
 
-    /**
-     * @runInSeparateProcess
-     * @preserveGlobalState disabled
-     * @dataProvider provideCommandPerOs
-     */
+    #[RunInSeparateProcess]
+    #[PreserveGlobalState(false)]
+    #[DataProvider('provideCommandPerOs')]
     public function testGetNodeGetsNetworkInterfaceConfig(string $os, string $command): void
     {
         /* Arrange */
@@ -335,10 +322,8 @@ class SystemNodeProviderTest extends TestCase
         $this->assertInstanceOf(NodeException::class, $exception);
     }
 
-    /**
-     * @runInSeparateProcess
-     * @preserveGlobalState disabled
-     */
+    #[RunInSeparateProcess]
+    #[PreserveGlobalState(false)]
     public function testGetNodeReturnsSameNodeUponSubsequentCalls(): void
     {
         /* Arrange */
@@ -363,10 +348,8 @@ class SystemNodeProviderTest extends TestCase
         $this->assertSame($node->toString(), $node2->toString());
     }
 
-    /**
-     * @runInSeparateProcess
-     * @preserveGlobalState disabled
-     */
+    #[RunInSeparateProcess]
+    #[PreserveGlobalState(false)]
     public function testSubsequentCallsToGetNodeDoNotRecallIfconfig(): void
     {
         /* Arrange */
@@ -391,11 +374,9 @@ class SystemNodeProviderTest extends TestCase
         $this->assertSame($node->toString(), $node2->toString());
     }
 
-    /**
-     * @runInSeparateProcess
-     * @preserveGlobalState disabled
-     * @dataProvider provideCommandPerOs
-     */
+    #[RunInSeparateProcess]
+    #[PreserveGlobalState(false)]
+    #[DataProvider('provideCommandPerOs')]
     public function testCallGetsysfsOnLinux(string $os, string $command): void
     {
         /* Arrange */
@@ -447,10 +428,8 @@ class SystemNodeProviderTest extends TestCase
         $this->assertSame('010203040506', $node->toString());
     }
 
-    /**
-     * @runInSeparateProcess
-     * @preserveGlobalState disabled
-     */
+    #[RunInSeparateProcess]
+    #[PreserveGlobalState(false)]
     public function testCallGetsysfsOnLinuxWhenGlobReturnsFalse(): void
     {
         /* Arrange */
@@ -480,10 +459,8 @@ class SystemNodeProviderTest extends TestCase
         $this->assertSame('010203040506', $node->toString());
     }
 
-    /**
-     * @runInSeparateProcess
-     * @preserveGlobalState disabled
-     */
+    #[RunInSeparateProcess]
+    #[PreserveGlobalState(false)]
     public function testCallGetsysfsOnLinuxWhenGlobReturnsEmptyArray(): void
     {
         /* Arrange */
@@ -513,10 +490,8 @@ class SystemNodeProviderTest extends TestCase
         $this->assertSame('010203040506', $node->toString());
     }
 
-    /**
-     * @runInSeparateProcess
-     * @preserveGlobalState disabled
-     */
+    #[RunInSeparateProcess]
+    #[PreserveGlobalState(false)]
     public function testCallGetsysfsOnLinuxWhenGlobFilesAreNotReadable(): void
     {
         /* Arrange */
@@ -548,10 +523,8 @@ class SystemNodeProviderTest extends TestCase
         $this->assertSame('010203040506', $node->toString());
     }
 
-    /**
-     * @runInSeparateProcess
-     * @preserveGlobalState disabled
-     */
+    #[RunInSeparateProcess]
+    #[PreserveGlobalState(false)]
     public function testGetNodeReturnsFalseWhenPassthruIsDisabled(): void
     {
         /* Arrange */
@@ -587,21 +560,14 @@ class SystemNodeProviderTest extends TestCase
 
     /**
      * Replaces the return value for functions with the given value or callback.
-     *
-     * @param callback|mixed|null $fileGetContentsBody
-     * @param callback|mixed|null $globBody
-     * @param callback|mixed|null $passthruBody
-     * @param callback|mixed|null $constantBody
-     * @param callback|mixed|null $iniGetDisableFunctionsBody
-     * @param callback|mixed|null $isReadableBody
      */
     private function arrangeMockFunctions(
-        $fileGetContentsBody,
-        $globBody,
-        $passthruBody,
-        $constantBody,
-        $iniGetDisableFunctionsBody,
-        $isReadableBody = true
+        mixed $fileGetContentsBody,
+        mixed $globBody,
+        mixed $passthruBody,
+        mixed $constantBody,
+        mixed $iniGetDisableFunctionsBody,
+        mixed $isReadableBody = true
     ): void {
         $mockFunction = [
             self::MOCK_FILE_GET_CONTENTS => $fileGetContentsBody,
@@ -689,7 +655,7 @@ class SystemNodeProviderTest extends TestCase
      *
      * @return array<string, array{0: non-empty-string, 1: non-empty-string}>
      */
-    public function provideCommandPerOs(): array
+    public static function provideCommandPerOs(): array
     {
         return [
             'windows' => ['Windows', 'ipconfig /all 2>&1'],
@@ -706,7 +672,7 @@ class SystemNodeProviderTest extends TestCase
      *
      * @return array<string, array{0: non-empty-string}>
      */
-    public function provideInvalidNetStatOutput(): array
+    public static function provideInvalidNetStatOutput(): array
     {
         return [
             'Not an octal value' => [
@@ -732,7 +698,7 @@ class SystemNodeProviderTest extends TestCase
      *
      * @return array<array{0: non-empty-string}>
      */
-    public function provideInvalidNotationalFormats(): array
+    public static function provideInvalidNotationalFormats(): array
     {
         return [
             ['01:23-45-67-89-ab'],
@@ -752,7 +718,7 @@ class SystemNodeProviderTest extends TestCase
      *
      * @return array<array{0: non-empty-string, 1: non-empty-string}>
      */
-    public function provideNotationalFormats(): array
+    public static function provideNotationalFormats(): array
     {
         return [
             ['01-23-45-67-89-ab', '0123456789ab'],
@@ -765,7 +731,7 @@ class SystemNodeProviderTest extends TestCase
      *
      * @return array<string, array{0: non-empty-string, 1: non-empty-string}>
      */
-    public function provideValidNetStatOutput(): array
+    public static function provideValidNetStatOutput(): array
     {
         return [
             /* Full output of related command */

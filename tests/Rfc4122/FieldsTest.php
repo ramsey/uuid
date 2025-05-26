@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Ramsey\Uuid\Test\Rfc4122;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use Ramsey\Uuid\Exception\InvalidArgumentException;
 use Ramsey\Uuid\Rfc4122\Fields;
 use Ramsey\Uuid\Rfc4122\Version;
@@ -30,9 +31,8 @@ class FieldsTest extends TestCase
 
     /**
      * @param non-empty-string $uuid
-     *
-     * @dataProvider nonRfc4122VariantProvider
      */
+    #[DataProvider('nonRfc4122VariantProvider')]
     public function testConstructorThrowsExceptionIfNotRfc4122Variant(string $uuid): void
     {
         /** @var non-empty-string $bytes */
@@ -49,7 +49,7 @@ class FieldsTest extends TestCase
     /**
      * @return array<array{0: non-empty-string}>
      */
-    public function nonRfc4122VariantProvider(): array
+    public static function nonRfc4122VariantProvider(): array
     {
         return [
             ['ff6f8cb0-c57d-11e1-0b21-0800200c9a66'],
@@ -69,9 +69,8 @@ class FieldsTest extends TestCase
 
     /**
      * @param non-empty-string $uuid
-     *
-     * @dataProvider invalidVersionProvider
      */
+    #[DataProvider('invalidVersionProvider')]
     public function testConstructorThrowsExceptionIfInvalidVersion(string $uuid): void
     {
         /** @var non-empty-string $bytes */
@@ -88,7 +87,7 @@ class FieldsTest extends TestCase
     /**
      * @return array<array{0: non-empty-string}>
      */
-    public function invalidVersionProvider(): array
+    public static function invalidVersionProvider(): array
     {
         return [
             ['ff6f8cb0-c57d-01e1-8b21-0800200c9a66'],
@@ -106,9 +105,8 @@ class FieldsTest extends TestCase
      * @param non-empty-string $uuid
      * @param non-empty-string $methodName
      * @param Variant | Version | bool | non-empty-string | null $expectedValue
-     *
-     * @dataProvider fieldGetterMethodProvider
      */
+    #[DataProvider('fieldGetterMethodProvider')]
     public function testFieldGetterMethods(
         string $uuid,
         string $methodName,
@@ -134,7 +132,7 @@ class FieldsTest extends TestCase
      *     2: Variant | Version | bool | non-empty-string | null,
      * }>
      */
-    public function fieldGetterMethodProvider(): array
+    public static function fieldGetterMethodProvider(): array
     {
         return [
             ['ff6f8cb0-c57d-11e1-9b21-0800200c9a66', 'getClockSeq', '1b21'],

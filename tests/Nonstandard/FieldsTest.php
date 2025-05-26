@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Ramsey\Uuid\Test\Nonstandard;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use Ramsey\Uuid\Exception\InvalidArgumentException;
 use Ramsey\Uuid\Nonstandard\Fields;
 use Ramsey\Uuid\Test\TestCase;
@@ -31,9 +32,8 @@ class FieldsTest extends TestCase
      * @param non-empty-string $uuid
      * @param non-empty-string $methodName
      * @param Variant | bool | non-empty-string | null $expectedValue
-     *
-     * @dataProvider fieldGetterMethodProvider
      */
+    #[DataProvider('fieldGetterMethodProvider')]
     public function testFieldGetterMethods(
         string $uuid,
         string $methodName,
@@ -55,7 +55,7 @@ class FieldsTest extends TestCase
     /**
      * @return array<array{0: non-empty-string, 1: non-empty-string, 2: Variant | bool | non-empty-string | null}>
      */
-    public function fieldGetterMethodProvider(): array
+    public static function fieldGetterMethodProvider(): array
     {
         return [
             ['ff6f8cb0-c57d-91e1-0b21-0800200c9a66', 'getClockSeq', '0b21'],

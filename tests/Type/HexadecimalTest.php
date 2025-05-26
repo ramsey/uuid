@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Ramsey\Uuid\Test\Type;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use Ramsey\Uuid\Exception\InvalidArgumentException;
 use Ramsey\Uuid\Test\TestCase;
 use Ramsey\Uuid\Type\Hexadecimal;
@@ -17,9 +18,8 @@ class HexadecimalTest extends TestCase
 {
     /**
      * @param Hexadecimal|non-empty-string $value
-     *
-     * @dataProvider provideHex
      */
+    #[DataProvider('provideHex')]
     public function testHexadecimalType(Hexadecimal | string $value, string $expected): void
     {
         $hexadecimal = new Hexadecimal($value);
@@ -31,7 +31,7 @@ class HexadecimalTest extends TestCase
     /**
      * @return array<array{value: Hexadecimal | non-empty-string, expected: string}>
      */
-    public function provideHex(): array
+    public static function provideHex(): array
     {
         return [
             [
@@ -55,9 +55,8 @@ class HexadecimalTest extends TestCase
 
     /**
      * @param non-empty-string $value
-     *
-     * @dataProvider provideHexBadValues
      */
+    #[DataProvider('provideHexBadValues')]
     public function testHexadecimalTypeThrowsExceptionForBadValues(string $value): void
     {
         $this->expectException(InvalidArgumentException::class);
@@ -71,7 +70,7 @@ class HexadecimalTest extends TestCase
     /**
      * @return array<array{string}>
      */
-    public function provideHexBadValues(): array
+    public static function provideHexBadValues(): array
     {
         return [
             ['-123456.789'],
@@ -83,9 +82,8 @@ class HexadecimalTest extends TestCase
 
     /**
      * @param Hexadecimal|non-empty-string $value
-     *
-     * @dataProvider provideHex
      */
+    #[DataProvider('provideHex')]
     public function testSerializeUnserializeHexadecimal(Hexadecimal | string $value, string $expected): void
     {
         $hexadecimal = new Hexadecimal($value);
@@ -99,9 +97,8 @@ class HexadecimalTest extends TestCase
 
     /**
      * @param Hexadecimal|non-empty-string $value
-     *
-     * @dataProvider provideHex
      */
+    #[DataProvider('provideHex')]
     public function testJsonSerialize(Hexadecimal | string $value, string $expected): void
     {
         $hexadecimal = new Hexadecimal($value);

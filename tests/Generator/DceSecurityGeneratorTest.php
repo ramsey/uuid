@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Ramsey\Uuid\Test\Generator;
 
 use Mockery;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Ramsey\Uuid\Converter\Number\GenericNumberConverter;
 use Ramsey\Uuid\Converter\NumberConverterInterface;
 use Ramsey\Uuid\Converter\Time\GenericTimeConverter;
@@ -30,9 +31,8 @@ class DceSecurityGeneratorTest extends TestCase
     /**
      * @param non-empty-string $node
      * @param positive-int $providedDomain
-     *
-     * @dataProvider provideValuesForDceSecurityGenerator
      */
+    #[DataProvider('provideValuesForDceSecurityGenerator')]
     public function testGenerateBytesReplacesBytesWithDceValues(
         int | string $uid,
         int | string $gid,
@@ -78,7 +78,7 @@ class DceSecurityGeneratorTest extends TestCase
     /**
      * @return array<array{uid: int|string, node: string, seconds: int, microseconds: int, providedDomain: int, providedId: IntegerObject|null, providedNode: null, expectedId: string, expectedDomain: string, expectedNode: string, expectedTimeMidHi: string}>
      */
-    public function provideValuesForDceSecurityGenerator(): array
+    public static function provideValuesForDceSecurityGenerator(): array
     {
         return [
             [

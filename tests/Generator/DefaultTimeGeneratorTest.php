@@ -7,6 +7,8 @@ namespace Ramsey\Uuid\Test\Generator;
 use Exception;
 use Mockery;
 use Mockery\MockInterface;
+use PHPUnit\Framework\Attributes\PreserveGlobalState;
+use PHPUnit\Framework\Attributes\RunInSeparateProcess;
 use PHPUnit\Framework\MockObject\MockObject;
 use Ramsey\Uuid\BinaryUtils;
 use Ramsey\Uuid\Converter\TimeConverterInterface;
@@ -113,10 +115,8 @@ class DefaultTimeGeneratorTest extends TestCase
         $defaultTimeGenerator->generate($this->nodeId, $this->clockSeq);
     }
 
-    /**
-     * @runInSeparateProcess
-     * @preserveGlobalState disabled
-     */
+    #[RunInSeparateProcess]
+    #[PreserveGlobalState(false)]
     public function testGenerateDoesNotApplyVersionAndVariant(): void
     {
         $expectedBytes = hex2bin('83cb98e098e003cb0fe2122f80ca9e06');
@@ -138,10 +138,8 @@ class DefaultTimeGeneratorTest extends TestCase
         $this->assertSame($expectedBytes, $defaultTimeGenerator->generate($this->nodeId, $this->clockSeq));
     }
 
-    /**
-     * @runInSeparateProcess
-     * @preserveGlobalState disabled
-     */
+    #[RunInSeparateProcess]
+    #[PreserveGlobalState(false)]
     public function testGenerateUsesRandomSequenceWhenClockSeqNull(): void
     {
         PHPMockery::mock('Ramsey\Uuid\Generator', 'random_int')
@@ -160,10 +158,8 @@ class DefaultTimeGeneratorTest extends TestCase
         $defaultTimeGenerator->generate($this->nodeId);
     }
 
-    /**
-     * @runInSeparateProcess
-     * @preserveGlobalState disabled
-     */
+    #[RunInSeparateProcess]
+    #[PreserveGlobalState(false)]
     public function testGenerateThrowsExceptionWhenExceptionThrownByRandomint(): void
     {
         PHPMockery::mock('Ramsey\Uuid\Generator', 'random_int')

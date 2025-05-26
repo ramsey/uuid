@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Ramsey\Uuid\Test\Type;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use Ramsey\Uuid\Exception\InvalidArgumentException;
 use Ramsey\Uuid\Test\TestCase;
 use Ramsey\Uuid\Type\Integer as IntegerObject;
@@ -17,13 +18,12 @@ class IntegerTest extends TestCase
 {
     /**
      * @param numeric-string $expected
-     *
-     * @dataProvider provideInteger
      */
+    #[DataProvider('provideInteger')]
     public function testIntegerType(
         float | int | IntegerObject | string $value,
         string $expected,
-        bool $expectedIsNegative
+        bool $expectedIsNegative,
     ): void {
         $integer = new IntegerObject($value);
 
@@ -35,7 +35,7 @@ class IntegerTest extends TestCase
     /**
      * @return array<array{value: float | int | IntegerObject | string, expected: numeric-string, expectedIsNegative: bool}>
      */
-    public function provideInteger(): array
+    public static function provideInteger(): array
     {
         return [
             [
@@ -166,9 +166,7 @@ class IntegerTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider provideIntegerBadValues
-     */
+    #[DataProvider('provideIntegerBadValues')]
     public function testIntegerTypeThrowsExceptionForBadValues(float | int | string $value): void
     {
         $this->expectException(InvalidArgumentException::class);
@@ -183,7 +181,7 @@ class IntegerTest extends TestCase
     /**
      * @return array<array{float | int | string}>
      */
-    public function provideIntegerBadValues(): array
+    public static function provideIntegerBadValues(): array
     {
         return [
             [-9223372036854775809], // String value is "-9.2233720368548E+18"
@@ -202,12 +200,12 @@ class IntegerTest extends TestCase
 
     /**
      * @param numeric-string $expected
-     *
-     * @dataProvider provideInteger
      */
+    #[DataProvider('provideInteger')]
     public function testSerializeUnserializeInteger(
         float | int | IntegerObject | string $value,
-        string $expected
+        string $expected,
+        bool $expectedIsNegative,
     ): void {
         $integer = new IntegerObject($value);
         $serializedInteger = serialize($integer);
@@ -220,12 +218,12 @@ class IntegerTest extends TestCase
 
     /**
      * @param numeric-string $expected
-     *
-     * @dataProvider provideInteger
      */
+    #[DataProvider('provideInteger')]
     public function testJsonSerialize(
         float | int | IntegerObject | string $value,
-        string $expected
+        string $expected,
+        bool $expectedIsNegative,
     ): void {
         $integer = new IntegerObject($value);
         $expectedJson = sprintf('"%s"', $expected);

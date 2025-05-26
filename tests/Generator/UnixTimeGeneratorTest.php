@@ -7,6 +7,8 @@ namespace Ramsey\Uuid\Test\Generator;
 use DateTimeImmutable;
 use Mockery;
 use Mockery\MockInterface;
+use PHPUnit\Framework\Attributes\PreserveGlobalState;
+use PHPUnit\Framework\Attributes\RunInSeparateProcess;
 use Ramsey\Uuid\Generator\RandomBytesGenerator;
 use Ramsey\Uuid\Generator\RandomGeneratorInterface;
 use Ramsey\Uuid\Generator\UnixTimeGenerator;
@@ -14,10 +16,8 @@ use Ramsey\Uuid\Test\TestCase;
 
 class UnixTimeGeneratorTest extends TestCase
 {
-    /**
-     * @runInSeparateProcess since values are stored statically on the class
-     * @preserveGlobalState disabled
-     */
+    #[RunInSeparateProcess]
+    #[PreserveGlobalState(false)]
     public function testGenerate(): void
     {
         $dateTime = new DateTimeImmutable('@1578612359.521023');
@@ -36,10 +36,8 @@ class UnixTimeGeneratorTest extends TestCase
         $this->assertSame($expectedBytes, $bytes);
     }
 
-    /**
-     * @runInSeparateProcess since values are stored statically on the class
-     * @preserveGlobalState disabled
-     */
+    #[RunInSeparateProcess]
+    #[PreserveGlobalState(false)]
     public function testGenerateProducesMonotonicResults(): void
     {
         $randomGenerator = new RandomBytesGenerator();
@@ -52,10 +50,8 @@ class UnixTimeGeneratorTest extends TestCase
         }
     }
 
-    /**
-     * @runInSeparateProcess since values are stored statically on the class
-     * @preserveGlobalState disabled
-     */
+    #[RunInSeparateProcess]
+    #[PreserveGlobalState(false)]
     public function testGenerateProducesMonotonicResultsWithSameDate(): void
     {
         $dateTime = new DateTimeImmutable('now');
@@ -69,10 +65,8 @@ class UnixTimeGeneratorTest extends TestCase
         }
     }
 
-    /**
-     * @runInSeparateProcess since values are stored statically on the class
-     * @preserveGlobalState disabled
-     */
+    #[RunInSeparateProcess]
+    #[PreserveGlobalState(false)]
     public function testGenerateProducesMonotonicResultsFor32BitPath(): void
     {
         $randomGenerator = new RandomBytesGenerator();
@@ -85,10 +79,8 @@ class UnixTimeGeneratorTest extends TestCase
         }
     }
 
-    /**
-     * @runInSeparateProcess since values are stored statically on the class
-     * @preserveGlobalState disabled
-     */
+    #[RunInSeparateProcess]
+    #[PreserveGlobalState(false)]
     public function testGenerateProducesMonotonicResultsWithSameDateFor32BitPath(): void
     {
         $dateTime = new DateTimeImmutable('now');
@@ -102,10 +94,8 @@ class UnixTimeGeneratorTest extends TestCase
         }
     }
 
-    /**
-     * @runInSeparateProcess since values are stored statically on the class
-     * @preserveGlobalState disabled
-     */
+    #[RunInSeparateProcess]
+    #[PreserveGlobalState(false)]
     public function testGenerateProducesMonotonicResultsStartingWithAllBitsSet(): void
     {
         /** @var RandomGeneratorInterface&MockInterface $randomGenerator */
@@ -126,10 +116,8 @@ class UnixTimeGeneratorTest extends TestCase
         }
     }
 
-    /**
-     * @runInSeparateProcess since values are stored statically on the class
-     * @preserveGlobalState disabled
-     */
+    #[RunInSeparateProcess]
+    #[PreserveGlobalState(false)]
     public function testGenerateProducesMonotonicResultsStartingWithAllBitsSetWithSameDate(): void
     {
         $dateTime = new DateTimeImmutable('now');
@@ -152,10 +140,8 @@ class UnixTimeGeneratorTest extends TestCase
         }
     }
 
-    /**
-     * @runInSeparateProcess since values are stored statically on the class
-     * @preserveGlobalState disabled
-     */
+    #[RunInSeparateProcess]
+    #[PreserveGlobalState(false)]
     public function testGenerateProducesMonotonicResultsStartingWithAllBitsSetFor32BitPath(): void
     {
         /** @var RandomGeneratorInterface&MockInterface $randomGenerator */
@@ -176,10 +162,8 @@ class UnixTimeGeneratorTest extends TestCase
         }
     }
 
-    /**
-     * @runInSeparateProcess since values are stored statically on the class
-     * @preserveGlobalState disabled
-     */
+    #[RunInSeparateProcess]
+    #[PreserveGlobalState(false)]
     public function testGenerateProducesMonotonicResultsStartingWithAllBitsSetWithSameDateFor32BitPath(): void
     {
         $dateTime = new DateTimeImmutable('now');

@@ -8,6 +8,7 @@ use DateTime;
 use DateTimeImmutable;
 use DateTimeInterface;
 use Mockery;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\MockObject\MockObject;
 use Ramsey\Uuid\Builder\UuidBuilderInterface;
 use Ramsey\Uuid\Codec\CodecInterface;
@@ -142,9 +143,8 @@ class UuidFactoryTest extends TestCase
 
     /**
      * @param int<0, 16383>|null $clockSeq
-     *
-     * @dataProvider provideDateTime
      */
+    #[DataProvider('provideDateTime')]
     public function testFromDateTime(
         DateTimeInterface $dateTime,
         ?Hexadecimal $node,
@@ -164,7 +164,7 @@ class UuidFactoryTest extends TestCase
     /**
      * @return array<array{0: DateTimeInterface, 1: Hexadecimal | null, 2: int | null, 3: string, 4: string}>
      */
-    public function provideDateTime(): array
+    public static function provideDateTime(): array
     {
         return [
             [

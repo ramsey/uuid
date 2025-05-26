@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Ramsey\Uuid\Test\Provider\Node;
 
 use Exception;
+use PHPUnit\Framework\Attributes\PreserveGlobalState;
+use PHPUnit\Framework\Attributes\RunInSeparateProcess;
 use Ramsey\Uuid\Exception\RandomSourceException;
 use Ramsey\Uuid\Provider\Node\RandomNodeProvider;
 use Ramsey\Uuid\Test\TestCase;
@@ -18,10 +20,8 @@ use function substr;
 
 class RandomNodeProviderTest extends TestCase
 {
-    /**
-     * @runInSeparateProcess
-     * @preserveGlobalState disabled
-     */
+    #[RunInSeparateProcess]
+    #[PreserveGlobalState(false)]
     public function testGetNodeUsesRandomBytes(): void
     {
         $bytes = hex2bin('38a675685d50');
@@ -38,10 +38,8 @@ class RandomNodeProviderTest extends TestCase
         $this->assertSame($expectedNode, $node->toString());
     }
 
-    /**
-     * @runInSeparateProcess
-     * @preserveGlobalState disabled
-     */
+    #[RunInSeparateProcess]
+    #[PreserveGlobalState(false)]
     public function testGetNodeAlreadyHasMulticastBit(): void
     {
         $bytesHex = '4161a1ff5d50';
@@ -60,10 +58,8 @@ class RandomNodeProviderTest extends TestCase
         $this->assertSame($expectedNode, $provider->getNode()->toString());
     }
 
-    /**
-     * @runInSeparateProcess
-     * @preserveGlobalState disabled
-     */
+    #[RunInSeparateProcess]
+    #[PreserveGlobalState(false)]
     public function testGetNodeSetsMulticastBitForLowNodeValue(): void
     {
         $bytes = hex2bin('100000000001');
@@ -104,10 +100,8 @@ class RandomNodeProviderTest extends TestCase
         $this->assertSame('010000000000', $node);
     }
 
-    /**
-     * @runInSeparateProcess
-     * @preserveGlobalState disabled
-     */
+    #[RunInSeparateProcess]
+    #[PreserveGlobalState(false)]
     public function testGetNodeThrowsExceptionWhenExceptionThrownByRandombytes(): void
     {
         PHPMockery::mock('Ramsey\Uuid\Provider\Node', 'random_bytes')

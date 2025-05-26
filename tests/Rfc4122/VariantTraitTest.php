@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Ramsey\Uuid\Test\Rfc4122;
 
 use Mockery;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Ramsey\Uuid\Exception\InvalidBytesException;
 use Ramsey\Uuid\Rfc4122\Fields;
 use Ramsey\Uuid\Rfc4122\VariantTrait;
@@ -16,9 +17,7 @@ use function str_replace;
 
 class VariantTraitTest extends TestCase
 {
-    /**
-     * @dataProvider invalidBytesProvider
-     */
+    #[DataProvider('invalidBytesProvider')]
     public function testGetVariantThrowsExceptionForWrongNumberOfBytes(string $bytes): void
     {
         /** @var Fields $trait */
@@ -37,7 +36,7 @@ class VariantTraitTest extends TestCase
     /**
      * @return array<array{0: non-empty-string}>
      */
-    public function invalidBytesProvider(): array
+    public static function invalidBytesProvider(): array
     {
         return [
             ['not16Bytes_abcd'],
@@ -45,9 +44,7 @@ class VariantTraitTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider uuidVariantProvider
-     */
+    #[DataProvider('uuidVariantProvider')]
     public function testGetVariant(string $uuid, int $expectedVariant): void
     {
         $bytes = (string) hex2bin(str_replace('-', '', $uuid));
@@ -65,7 +62,7 @@ class VariantTraitTest extends TestCase
     /**
      * @return array<array{0: non-empty-string, 1: int}>
      */
-    public function uuidVariantProvider(): array
+    public static function uuidVariantProvider(): array
     {
         return [
             ['ff6f8cb0-c57d-11e1-0b21-0800200c9a66', 0],

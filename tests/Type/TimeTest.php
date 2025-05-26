@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Ramsey\Uuid\Test\Type;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use Ramsey\Uuid\Test\TestCase;
 use Ramsey\Uuid\Type\Integer as IntegerObject;
 use Ramsey\Uuid\Type\Time;
@@ -14,9 +15,7 @@ use function unserialize;
 
 class TimeTest extends TestCase
 {
-    /**
-     * @dataProvider provideTimeValues
-     */
+    #[DataProvider('provideTimeValues')]
     public function testTime(
         int | IntegerObject | string $seconds,
         int | IntegerObject | string | null $microseconds
@@ -46,7 +45,7 @@ class TimeTest extends TestCase
     /**
      * @return array<array{seconds: int | IntegerObject | string, microseconds: int | IntegerObject | string | null}>
      */
-    public function provideTimeValues(): array
+    public static function provideTimeValues(): array
     {
         return [
             [
@@ -68,9 +67,7 @@ class TimeTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider provideTimeValues
-     */
+    #[DataProvider('provideTimeValues')]
     public function testSerializeUnserializeTime(
         int | IntegerObject | string $seconds,
         int | IntegerObject | string | null $microseconds
@@ -94,9 +91,7 @@ class TimeTest extends TestCase
         );
     }
 
-    /**
-     * @dataProvider provideTimeValues
-     */
+    #[DataProvider('provideTimeValues')]
     public function testJsonSerialize(
         int | IntegerObject | string $seconds,
         int | IntegerObject | string | null $microseconds

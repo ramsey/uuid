@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Ramsey\Uuid\Test;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use Ramsey\Uuid\BinaryUtils;
 use Ramsey\Uuid\Rfc4122\Version;
 use Ramsey\Uuid\Variant;
@@ -14,18 +15,14 @@ use function hex2bin;
 
 class BinaryUtilsTest extends TestCase
 {
-    /**
-     * @dataProvider provideVersionTestValues
-     */
+    #[DataProvider('provideVersionTestValues')]
     public function testApplyVersion(int $timeHi, Version $version, int $expectedInt, string $expectedHex): void
     {
         $this->assertSame($expectedInt, BinaryUtils::applyVersion($timeHi, $version));
         $this->assertSame($expectedHex, dechex(BinaryUtils::applyVersion($timeHi, $version)));
     }
 
-    /**
-     * @dataProvider provideVariantTestValues
-     */
+    #[DataProvider('provideVariantTestValues')]
     public function testApplyVariant(int $clockSeq, Variant $variant, int $expectedInt, string $expectedHex): void
     {
         $this->assertSame($expectedInt, BinaryUtils::applyVariant($clockSeq, $variant));
@@ -34,9 +31,8 @@ class BinaryUtilsTest extends TestCase
 
     /**
      * @param non-empty-string $bytes
-     *
-     * @dataProvider provideVersionAndVariantTestValues
      */
+    #[DataProvider('provideVersionAndVariantTestValues')]
     public function testApplyVersionAndVariant(
         string $bytes,
         Version $version,
@@ -48,7 +44,7 @@ class BinaryUtilsTest extends TestCase
     /**
      * @return array<array{timeHi: int, version: Version, expectedInt: int, expectedHex: non-empty-string}>
      */
-    public function provideVersionTestValues(): array
+    public static function provideVersionTestValues(): array
     {
         return [
             [
@@ -201,7 +197,7 @@ class BinaryUtilsTest extends TestCase
     /**
      * @return array<array{clockSeq: int, variant: Variant, expectedInt: int, expectedHex: non-empty-string}>
      */
-    public function provideVariantTestValues(): array
+    public static function provideVariantTestValues(): array
     {
         return [
             [
@@ -330,7 +326,7 @@ class BinaryUtilsTest extends TestCase
     /**
      * @return array<array{bytes: non-empty-string, version: Version, expectedHex: non-empty-string}>
      */
-    public function provideVersionAndVariantTestValues(): array
+    public static function provideVersionAndVariantTestValues(): array
     {
         /** @var non-empty-string $bytes */
         $bytes = hex2bin('426a25b74e975e743af1700fa4e42455');

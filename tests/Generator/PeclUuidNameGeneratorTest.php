@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Ramsey\Uuid\Test\Generator;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\RequiresPhpExtension;
 use Ramsey\Uuid\BinaryUtils;
 use Ramsey\Uuid\Exception\NameException;
 use Ramsey\Uuid\Generator\PeclUuidNameGenerator;
@@ -22,10 +24,9 @@ class PeclUuidNameGeneratorTest extends TestCase
     /**
      * @param non-empty-string $ns
      * @param non-empty-string $algorithm
-     *
-     * @dataProvider provideNamesForHashingTest
-     * @requires extension uuid
      */
+    #[DataProvider('provideNamesForHashingTest')]
+    #[RequiresPhpExtension('uuid')]
     public function testPeclUuidNameGeneratorHashesName(string $ns, string $name, string $algorithm): void
     {
         $namespace = Uuid::fromString($ns);
@@ -60,7 +61,7 @@ class PeclUuidNameGeneratorTest extends TestCase
     /**
      * @return array<array{ns: string, name: string, algorithm: string}>
      */
-    public function provideNamesForHashingTest(): array
+    public static function provideNamesForHashingTest(): array
     {
         return [
             [

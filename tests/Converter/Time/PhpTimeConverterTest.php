@@ -6,6 +6,7 @@ namespace Ramsey\Uuid\Test\Converter\Time;
 
 use Brick\Math\BigInteger;
 use Mockery;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Ramsey\Uuid\Converter\Time\GenericTimeConverter;
 use Ramsey\Uuid\Converter\Time\PhpTimeConverter;
 use Ramsey\Uuid\Exception\InvalidArgumentException;
@@ -79,9 +80,8 @@ class PhpTimeConverterTest extends TestCase
     /**
      * @param numeric-string $unixTimestamp
      * @param numeric-string $microseconds
-     *
-     * @dataProvider provideConvertTime
      */
+    #[DataProvider('provideConvertTime')]
     public function testConvertTime(Hexadecimal $uuidTimestamp, string $unixTimestamp, string $microseconds): void
     {
         $calculator = new BrickMathCalculator();
@@ -97,7 +97,7 @@ class PhpTimeConverterTest extends TestCase
     /**
      * @return array<array{uuidTimestamp: Hexadecimal, unixTimestamp: numeric-string, microseconds: numeric-string}>
      */
-    public function provideConvertTime(): array
+    public static function provideConvertTime(): array
     {
         return [
             [
@@ -147,9 +147,8 @@ class PhpTimeConverterTest extends TestCase
      * @param numeric-string $seconds
      * @param numeric-string $microseconds
      * @param non-empty-string $expected
-     *
-     * @dataProvider provideCalculateTime
      */
+    #[DataProvider('provideCalculateTime')]
     public function testCalculateTime(string $seconds, string $microseconds, string $expected): void
     {
         $calculator = new BrickMathCalculator();
@@ -164,7 +163,7 @@ class PhpTimeConverterTest extends TestCase
     /**
      * @return array<array{seconds: numeric-string, microseconds: numeric-string, expected: non-empty-string}>
      */
-    public function provideCalculateTime(): array
+    public static function provideCalculateTime(): array
     {
         return [
             [

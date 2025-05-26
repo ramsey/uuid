@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Ramsey\Uuid\Test\Builder;
 
 use Mockery;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Ramsey\Uuid\Builder\FallbackBuilder;
 use Ramsey\Uuid\Builder\UuidBuilderInterface;
 use Ramsey\Uuid\Codec\CodecInterface;
@@ -63,9 +64,8 @@ class FallbackBuilderTest extends TestCase
 
     /**
      * @param non-empty-string $bytes
-     *
-     * @dataProvider provideBytes
      */
+    #[DataProvider('provideBytes')]
     public function testSerializationOfBuilderCollection(string $bytes): void
     {
         $calculator = new BrickMathCalculator();
@@ -121,7 +121,7 @@ class FallbackBuilderTest extends TestCase
     /**
      * @return array<array{bytes: string}>
      */
-    public function provideBytes(): array
+    public static function provideBytes(): array
     {
         return [
             [

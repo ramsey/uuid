@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Ramsey\Uuid\Test\Generator;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use Ramsey\Uuid\Exception\NameException;
 use Ramsey\Uuid\Generator\DefaultNameGenerator;
 use Ramsey\Uuid\Test\TestCase;
@@ -17,9 +18,8 @@ class DefaultNameGeneratorTest extends TestCase
      * @param non-empty-string $ns
      * @param non-empty-string $name
      * @param non-empty-string $algorithm
-     *
-     * @dataProvider provideNamesForHashingTest
      */
+    #[DataProvider('provideNamesForHashingTest')]
     public function testDefaultNameGeneratorHashesName(string $ns, string $name, string $algorithm): void
     {
         $namespace = Uuid::fromString($ns);
@@ -33,7 +33,7 @@ class DefaultNameGeneratorTest extends TestCase
     /**
      * @return array<array{ns: non-empty-string, name: non-empty-string, algorithm: non-empty-string}>
      */
-    public function provideNamesForHashingTest(): array
+    public static function provideNamesForHashingTest(): array
     {
         return [
             [

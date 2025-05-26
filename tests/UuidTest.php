@@ -11,6 +11,7 @@ use DateTimeImmutable;
 use DateTimeInterface;
 use Mockery;
 use Mockery\MockInterface;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\MockObject\MockObject;
 use Ramsey\Uuid\Codec\StringCodec;
 use Ramsey\Uuid\Codec\TimestampFirstCombCodec;
@@ -402,9 +403,8 @@ class UuidTest extends TestCase
 
     /**
      * @param non-empty-string $uuid
-     *
-     * @dataProvider provideVariousVariantUuids
      */
+    #[DataProvider('provideVariousVariantUuids')]
     public function testGetVariantForVariousVariantUuids(string $uuid, Variant $variant): void
     {
         /** @var \Ramsey\Uuid\Rfc4122\UuidInterface $uuidInstance */
@@ -415,7 +415,7 @@ class UuidTest extends TestCase
     /**
      * @return array<array{0: non-empty-string, 1: Variant}>
      */
-    public function provideVariousVariantUuids(): array
+    public static function provideVariousVariantUuids(): array
     {
         return [
             ['ff6f8cb0-c57d-11e1-0b21-0800200c9a66', Variant::ReservedNcs],
@@ -806,9 +806,8 @@ class UuidTest extends TestCase
      * @param non-empty-string $uuid
      * @param non-empty-string $ns
      * @param non-empty-string $name
-     *
-     * @dataProvider provideUuid3WithKnownUuids
      */
+    #[DataProvider('provideUuid3WithKnownUuids')]
     public function testUuid3WithKnownUuids(string $uuid, string $ns, string $name): void
     {
         /** @var \Ramsey\Uuid\Rfc4122\UuidInterface $uobj1 */
@@ -826,7 +825,7 @@ class UuidTest extends TestCase
     /**
      * @return array<array{uuid: non-empty-string, ns: non-empty-string, name: non-empty-string}>
      */
-    public function provideUuid3WithKnownUuids(): array
+    public static function provideUuid3WithKnownUuids(): array
     {
         return [
             [
@@ -948,9 +947,8 @@ class UuidTest extends TestCase
      * @param non-empty-string $uuid
      * @param non-empty-string $ns
      * @param non-empty-string $name
-     *
-     * @dataProvider provideUuid5WithKnownUuids
      */
+    #[DataProvider('provideUuid5WithKnownUuids')]
     public function testUuid5WithKnownUuids(string $uuid, string $ns, string $name): void
     {
         /** @var \Ramsey\Uuid\Rfc4122\UuidInterface $uobj1 */
@@ -968,7 +966,7 @@ class UuidTest extends TestCase
     /**
      * @return array<array{uuid: non-empty-string, ns: non-empty-string, name: non-empty-string}>
      */
-    public function provideUuid5WithKnownUuids(): array
+    public static function provideUuid5WithKnownUuids(): array
     {
         return [
             [
@@ -1303,9 +1301,8 @@ class UuidTest extends TestCase
      * @param non-empty-string $urn
      * @param non-empty-string $time
      * @param non-empty-string $clockSeq
-     *
-     * @dataProvider providePythonTests
      */
+    #[DataProvider('providePythonTests')]
     public function testUuidPassesPythonTests(
         string $string,
         string $curly,
@@ -1370,12 +1367,12 @@ class UuidTest extends TestCase
      *     fields: array<string, string>,
      *     urn: non-empty-string,
      *     time: non-empty-string,
-     *     clock_seq: non-empty-string,
+     *     clockSeq: non-empty-string,
      *     variant: Variant,
      *     version: Version | null,
      * }>
      */
-    public function providePythonTests(): array
+    public static function providePythonTests(): array
     {
         // This array is taken directly from the Python tests, more or less.
         return [
@@ -1395,7 +1392,7 @@ class UuidTest extends TestCase
                 ],
                 'urn' => 'urn:uuid:00000000-0000-0000-0000-000000000000',
                 'time' => '000000000000000',
-                'clock_seq' => '0000',
+                'clockSeq' => '0000',
                 // This is a departure from the Python tests. The Python tests
                 // are technically "correct" because all bits are set to zero,
                 // so it stands to reason that the variant is also zero, but
@@ -1421,7 +1418,7 @@ class UuidTest extends TestCase
                 ],
                 'urn' => 'urn:uuid:00010203-0405-0607-0809-0a0b0c0d0e0f',
                 'time' => '607040500010203',
-                'clock_seq' => '0809',
+                'clockSeq' => '0809',
                 'variant' => Variant::ReservedNcs,
                 'version' => null,
             ],
@@ -1441,7 +1438,7 @@ class UuidTest extends TestCase
                 ],
                 'urn' => 'urn:uuid:02d9e6d5-9467-382e-8f9b-9300a64ac3cd',
                 'time' => '82e946702d9e6d5',
-                'clock_seq' => '0f9b',
+                'clockSeq' => '0f9b',
                 'variant' => Variant::Rfc4122,
                 'version' => Version::HashMd5,
             ],
@@ -1461,7 +1458,7 @@ class UuidTest extends TestCase
                 ],
                 'urn' => 'urn:uuid:12345678-1234-5678-1234-567812345678',
                 'time' => '678123412345678',
-                'clock_seq' => '1234',
+                'clockSeq' => '1234',
                 'variant' => Variant::ReservedNcs,
                 'version' => null,
             ],
@@ -1481,7 +1478,7 @@ class UuidTest extends TestCase
                 ],
                 'urn' => 'urn:uuid:6ba7b810-9dad-11d1-80b4-00c04fd430c8',
                 'time' => '1d19dad6ba7b810',
-                'clock_seq' => '00b4',
+                'clockSeq' => '00b4',
                 'variant' => Variant::Rfc4122,
                 'version' => Version::Time,
             ],
@@ -1501,7 +1498,7 @@ class UuidTest extends TestCase
                 ],
                 'urn' => 'urn:uuid:6ba7b811-9dad-11d1-80b4-00c04fd430c8',
                 'time' => '1d19dad6ba7b811',
-                'clock_seq' => '00b4',
+                'clockSeq' => '00b4',
                 'variant' => Variant::Rfc4122,
                 'version' => Version::Time,
             ],
@@ -1521,7 +1518,7 @@ class UuidTest extends TestCase
                 ],
                 'urn' => 'urn:uuid:6ba7b812-9dad-11d1-80b4-00c04fd430c8',
                 'time' => '1d19dad6ba7b812',
-                'clock_seq' => '00b4',
+                'clockSeq' => '00b4',
                 'variant' => Variant::Rfc4122,
                 'version' => Version::Time,
             ],
@@ -1541,7 +1538,7 @@ class UuidTest extends TestCase
                 ],
                 'urn' => 'urn:uuid:6ba7b814-9dad-11d1-80b4-00c04fd430c8',
                 'time' => '1d19dad6ba7b814',
-                'clock_seq' => '00b4',
+                'clockSeq' => '00b4',
                 'variant' => Variant::Rfc4122,
                 'version' => Version::Time,
             ],
@@ -1561,7 +1558,7 @@ class UuidTest extends TestCase
                 ],
                 'urn' => 'urn:uuid:7d444840-9dc0-11d1-b245-5ffdce74fad2',
                 'time' => '1d19dc07d444840',
-                'clock_seq' => '3245',
+                'clockSeq' => '3245',
                 'variant' => Variant::Rfc4122,
                 'version' => Version::Time,
             ],
@@ -1581,7 +1578,7 @@ class UuidTest extends TestCase
                 ],
                 'urn' => 'urn:uuid:e902893a-9d22-3c7e-a7b8-d6e313b71d9f',
                 'time' => 'c7e9d22e902893a',
-                'clock_seq' => '27b8',
+                'clockSeq' => '27b8',
                 'variant' => Variant::Rfc4122,
                 'version' => Version::HashMd5,
             ],
@@ -1601,7 +1598,7 @@ class UuidTest extends TestCase
                 ],
                 'urn' => 'urn:uuid:eb424026-6f54-4ef8-a4d0-bb658a1fc6cf',
                 'time' => 'ef86f54eb424026',
-                'clock_seq' => '24d0',
+                'clockSeq' => '24d0',
                 'variant' => Variant::Rfc4122,
                 'version' => Version::Random,
             ],
@@ -1621,7 +1618,7 @@ class UuidTest extends TestCase
                 ],
                 'urn' => 'urn:uuid:f81d4fae-7dec-11d0-a765-00a0c91e6bf6',
                 'time' => '1d07decf81d4fae',
-                'clock_seq' => '2765',
+                'clockSeq' => '2765',
                 'variant' => Variant::Rfc4122,
                 'version' => Version::Time,
             ],
@@ -1641,7 +1638,7 @@ class UuidTest extends TestCase
                 ],
                 'urn' => 'urn:uuid:fffefdfc-fffe-fffe-fffe-fffefdfcfbfa',
                 'time' => 'ffefffefffefdfc',
-                'clock_seq' => '3ffe',
+                'clockSeq' => '3ffe',
                 'variant' => Variant::ReservedFuture,
                 'version' => null,
             ],
@@ -1673,16 +1670,13 @@ class UuidTest extends TestCase
                 // However, since all the bits in this UUID are defined as being
                 // set to one, we will consider the clock sequence as 0xffff,
                 // which all bits set to one.
-                'clock_seq' => 'ffff',
+                'clockSeq' => 'ffff',
                 'variant' => Variant::Rfc4122,
                 'version' => null,
             ],
         ];
     }
 
-    /**
-     * @covers \Ramsey\Uuid\Uuid::jsonSerialize
-     */
     public function testJsonSerialize(): void
     {
         $uuid = Uuid::uuid1();
@@ -1747,9 +1741,6 @@ class UuidTest extends TestCase
         $this->assertSame('b6c54489-38a0-5f50-a60a-fd8d76219cae', $uuid->toString());
     }
 
-    /**
-     * @depends testGetVersionForVersion1
-     */
     public function testUuidVersionConstantForVersion1(): void
     {
         /** @var \Ramsey\Uuid\Rfc4122\UuidInterface $uuid */
@@ -1757,9 +1748,6 @@ class UuidTest extends TestCase
         $this->assertSame($uuid->getFields()->getVersion(), Version::Time);
     }
 
-    /**
-     * @depends testGetVersionForVersion2
-     */
     public function testUuidVersionConstantForVersion2(): void
     {
         /** @var \Ramsey\Uuid\Rfc4122\UuidInterface $uuid */
@@ -1767,9 +1755,6 @@ class UuidTest extends TestCase
         $this->assertSame($uuid->getFields()->getVersion(), Version::DceSecurity);
     }
 
-    /**
-     * @depends testGetVersionForVersion3
-     */
     public function testUuidVersionConstantForVersion3(): void
     {
         /** @var \Ramsey\Uuid\Rfc4122\UuidInterface $uuid */
@@ -1777,9 +1762,6 @@ class UuidTest extends TestCase
         $this->assertSame($uuid->getFields()->getVersion(), Version::HashMd5);
     }
 
-    /**
-     * @depends testGetVersionForVersion4
-     */
     public function testUuidVersionConstantForVersion4(): void
     {
         /** @var \Ramsey\Uuid\Rfc4122\UuidInterface $uuid */
@@ -1787,9 +1769,6 @@ class UuidTest extends TestCase
         $this->assertSame($uuid->getFields()->getVersion(), Version::Random);
     }
 
-    /**
-     * @depends testGetVersionForVersion5
-     */
     public function testUuidVersionConstantForVersion5(): void
     {
         /** @var \Ramsey\Uuid\Rfc4122\UuidInterface $uuid */
@@ -1842,9 +1821,8 @@ class UuidTest extends TestCase
 
     /**
      * @param array<int | string> $args
-     *
-     * @dataProvider provideStaticMethods
      */
+    #[DataProvider('provideStaticMethods')]
     public function testStaticCreationMethodsReturnSpecificUuidInstances(
         string $staticMethod,
         array $args = []
@@ -1854,9 +1832,8 @@ class UuidTest extends TestCase
 
     /**
      * @param array<int | string> $args
-     *
-     * @dataProvider provideStaticMethods
      */
+    #[DataProvider('provideStaticMethods')]
     public function testUuidInstancesBuiltFromStringAreEquivalentToTheirGeneratedCounterparts(
         string $staticMethod,
         array $args = []
@@ -1872,9 +1849,8 @@ class UuidTest extends TestCase
 
     /**
      * @param array<int | string> $args
-     *
-     * @dataProvider provideStaticMethods
      */
+    #[DataProvider('provideStaticMethods')]
     public function testUuidInstancesBuiltFromBytesAreEquivalentToTheirGeneratedCounterparts(
         string $staticMethod,
         array $args = []
@@ -1891,7 +1867,7 @@ class UuidTest extends TestCase
     /**
      * @return array<array{0: string, 1?: array<int | string>}>
      */
-    public function provideStaticMethods(): array
+    public static function provideStaticMethods(): array
     {
         return [
             ['uuid1'],

@@ -6,6 +6,7 @@ namespace Ramsey\Uuid\Test\Rfc4122;
 
 use DateTimeImmutable;
 use Mockery;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Ramsey\Uuid\Codec\CodecInterface;
 use Ramsey\Uuid\Converter\NumberConverterInterface;
 use Ramsey\Uuid\Converter\TimeConverterInterface;
@@ -21,9 +22,7 @@ use Ramsey\Uuid\Uuid;
 
 class UuidV7Test extends TestCase
 {
-    /**
-     * @dataProvider provideTestVersions
-     */
+    #[DataProvider('provideTestVersions')]
     public function testConstructorThrowsExceptionWhenFieldsAreNotValidForType(Version $version): void
     {
         $fields = Mockery::mock(FieldsInterface::class, [
@@ -46,7 +45,7 @@ class UuidV7Test extends TestCase
     /**
      * @return array<array{version: Version}>
      */
-    public function provideTestVersions(): array
+    public static function provideTestVersions(): array
     {
         return [
             ['version' => Version::Time],
@@ -61,9 +60,8 @@ class UuidV7Test extends TestCase
 
     /**
      * @param non-empty-string $uuid
-     *
-     * @dataProvider provideUuidV7WithMicroseconds
      */
+    #[DataProvider('provideUuidV7WithMicroseconds')]
     public function testGetDateTimeProperlyHandlesMicroseconds(string $uuid, string $expected): void
     {
         /** @var UuidV7 $object */
@@ -78,7 +76,7 @@ class UuidV7Test extends TestCase
     /**
      * @return array<array{uuid: string, expected: numeric-string}>
      */
-    public function provideUuidV7WithMicroseconds(): array
+    public static function provideUuidV7WithMicroseconds(): array
     {
         return [
             [

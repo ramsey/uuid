@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Ramsey\Uuid\Test\Type;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use Ramsey\Uuid\Exception\InvalidArgumentException;
 use Ramsey\Uuid\Test\TestCase;
 use Ramsey\Uuid\Type\Decimal;
@@ -15,9 +16,7 @@ use function unserialize;
 
 class DecimalTest extends TestCase
 {
-    /**
-     * @dataProvider provideDecimal
-     */
+    #[DataProvider('provideDecimal')]
     public function testDecimalValueType(
         float | int | Decimal | string $value,
         string $expected,
@@ -33,7 +32,7 @@ class DecimalTest extends TestCase
     /**
      * @return array<array{value: float | int | Decimal | string, expected: string, expectedIsNegative: bool}>
      */
-    public function provideDecimal(): array
+    public static function provideDecimal(): array
     {
         return [
             [
@@ -249,9 +248,7 @@ class DecimalTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider provideDecimalBadValues
-     */
+    #[DataProvider('provideDecimalBadValues')]
     public function testDecimalTypeThrowsExceptionForBadValues(string $value): void
     {
         $this->expectException(InvalidArgumentException::class);
@@ -266,7 +263,7 @@ class DecimalTest extends TestCase
     /**
      * @return array<array{string}>
      */
-    public function provideDecimalBadValues(): array
+    public static function provideDecimalBadValues(): array
     {
         return [
             ['123abc'],
@@ -278,11 +275,12 @@ class DecimalTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider provideDecimal
-     */
-    public function testSerializeUnserializeDecimal(float | int | Decimal | string $value, string $expected): void
-    {
+    #[DataProvider('provideDecimal')]
+    public function testSerializeUnserializeDecimal(
+        float | int | Decimal | string $value,
+        string $expected,
+        bool $expectedIsNegative,
+    ): void {
         $decimal = new Decimal($value);
         $serializedDecimal = serialize($decimal);
 
@@ -292,11 +290,12 @@ class DecimalTest extends TestCase
         $this->assertSame($expected, $unserializedDecimal->toString());
     }
 
-    /**
-     * @dataProvider provideDecimal
-     */
-    public function testJsonSerialize(float | int | Decimal | string $value, string $expected): void
-    {
+    #[DataProvider('provideDecimal')]
+    public function testJsonSerialize(
+        float | int | Decimal | string $value,
+        string $expected,
+        bool $expectedIsNegative,
+    ): void {
         $decimal = new Decimal($value);
         $expectedJson = sprintf('"%s"', $expected);
 

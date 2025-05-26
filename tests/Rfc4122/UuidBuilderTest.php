@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Ramsey\Uuid\Test\Rfc4122;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use Ramsey\Uuid\Codec\StringCodec;
 use Ramsey\Uuid\Converter\Number\GenericNumberConverter;
 use Ramsey\Uuid\Converter\Time\GenericTimeConverter;
@@ -33,9 +34,8 @@ class UuidBuilderTest extends TestCase
     /**
      * @param non-empty-string $uuid
      * @param class-string $expectedClass
-     *
-     * @dataProvider provideBuildTestValues
      */
+    #[DataProvider('provideBuildTestValues')]
     public function testBuild(string $uuid, string $expectedClass, ?Version $expectedVersion): void
     {
         /** @var non-empty-string $bytes */
@@ -59,7 +59,7 @@ class UuidBuilderTest extends TestCase
     /**
      * @return array<array{uuid: non-empty-string, expectedClass: class-string, expectedVersion: Version | null}>
      */
-    public function provideBuildTestValues(): array
+    public static function provideBuildTestValues(): array
     {
         return [
             [

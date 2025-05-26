@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Ramsey\Uuid\Test\Guid;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use Ramsey\Uuid\Exception\InvalidArgumentException;
 use Ramsey\Uuid\Guid\Fields;
 use Ramsey\Uuid\Rfc4122\Version;
@@ -29,9 +30,8 @@ class FieldsTest extends TestCase
 
     /**
      * @param non-empty-string $guid
-     *
-     * @dataProvider nonRfc4122GuidVariantProvider
      */
+    #[DataProvider('nonRfc4122GuidVariantProvider')]
     public function testConstructorThrowsExceptionIfNotRfc4122Variant(string $guid): void
     {
         /** @var non-empty-string $bytes */
@@ -51,7 +51,7 @@ class FieldsTest extends TestCase
      *
      * @return array<array{0: non-empty-string}>
      */
-    public function nonRfc4122GuidVariantProvider(): array
+    public static function nonRfc4122GuidVariantProvider(): array
     {
         // In string representation, the following IDs would begin as:
         // ff6f8cb0-c57d-11e1-...
@@ -71,9 +71,8 @@ class FieldsTest extends TestCase
 
     /**
      * @param non-empty-string $guid
-     *
-     * @dataProvider invalidVersionProvider
      */
+    #[DataProvider('invalidVersionProvider')]
     public function testConstructorThrowsExceptionIfInvalidVersion(string $guid): void
     {
         /** @var non-empty-string $bytes */
@@ -90,7 +89,7 @@ class FieldsTest extends TestCase
     /**
      * @return array<array{0: non-empty-string}>
      */
-    public function invalidVersionProvider(): array
+    public static function invalidVersionProvider(): array
     {
         // The following UUIDs are in GUID byte order. Dashes have
         // been removed in the tests to distinguish these from string
@@ -111,9 +110,8 @@ class FieldsTest extends TestCase
      * @param non-empty-string $bytes
      * @param non-empty-string $methodName
      * @param Variant | Version | bool | non-empty-string | null $expectedValue
-     *
-     * @dataProvider fieldGetterMethodProvider
      */
+    #[DataProvider('fieldGetterMethodProvider')]
     public function testFieldGetterMethods(
         string $bytes,
         string $methodName,
@@ -139,7 +137,7 @@ class FieldsTest extends TestCase
      *     2: Variant | Version | bool | non-empty-string | null,
      * }>
      */
-    public function fieldGetterMethodProvider(): array
+    public static function fieldGetterMethodProvider(): array
     {
         // The following UUIDs are in GUID byte order. Dashes have
         // been removed in the tests to distinguish these from string

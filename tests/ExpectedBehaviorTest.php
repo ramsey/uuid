@@ -2,6 +2,10 @@
 
 namespace Ramsey\Uuid\Test;
 
+use Mockery;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\PreserveGlobalState;
+use PHPUnit\Framework\Attributes\RunInSeparateProcess;
 use Ramsey\Uuid\Codec\TimestampFirstCombCodec;
 use Ramsey\Uuid\Generator\CombGenerator;
 use Ramsey\Uuid\Generator\DefaultTimeGenerator;
@@ -31,13 +35,12 @@ class ExpectedBehaviorTest extends TestCase
 {
     /**
      * @param mixed[] $args
-     *
-     * @dataProvider provideStaticCreationMethods
      */
+    #[DataProvider('provideStaticCreationMethods')]
     public function testStaticCreationMethodsAndStandardBehavior(string $method, array $args): void
     {
         /** @var UuidInterface $uuid */
-        $uuid = call_user_func_array(['Ramsey\Uuid\Uuid', $method], $args);
+        $uuid = Uuid::$method(...$args);
 
         $this->assertIsInt($uuid->compareTo(Uuid::uuid1()));
         $this->assertNotSame(0, $uuid->compareTo(Uuid::uuid4()));
@@ -85,7 +88,10 @@ class ExpectedBehaviorTest extends TestCase
         $this->assertSame(1, preg_match('/^\d+$/', (string) $uuid->getInteger()));
     }
 
-    public function provideStaticCreationMethods()
+    /**
+     * @return array<array{0: string, 1: mixed[]}>
+     */
+    public static function provideStaticCreationMethods(): array
     {
         return [
             ['uuid1', []],
@@ -102,10 +108,10 @@ class ExpectedBehaviorTest extends TestCase
         ];
     }
 
-    public function testUuidVersion1MethodBehavior()
+    public function testUuidVersion1MethodBehavior(): void
     {
         /** @var UuidV1 $uuid */
-        $uuid = Uuid::uuid1('00000fffffff', 0xffff);
+        $uuid = Uuid::uuid1('00000fffffff', 0x3fff);
 
         $this->assertInstanceOf('DateTimeInterface', $uuid->getDateTime());
         $this->assertSame('00000fffffff', $uuid->getFields()->getNode()->toString());
@@ -113,15 +119,19 @@ class ExpectedBehaviorTest extends TestCase
     }
 
     /**
-     * @dataProvider provideIsValid
+     * @param non-empty-string $uuid
      */
-    public function testIsValid($uuid, $expected)
+    #[DataProvider('provideIsValid')]
+    public function testIsValid(string $uuid, bool $expected): void
     {
         $this->assertSame($expected, Uuid::isValid($uuid), "{$uuid} is not a valid UUID");
         $this->assertSame($expected, Uuid::isValid(strtoupper($uuid)), strtoupper($uuid) . ' is not a valid UUID');
     }
 
-    public function provideIsValid()
+    /**
+     * @return array<array{0: non-empty-string, 1: bool}>
+     */
+    public static function provideIsValid(): array
     {
         return [
             // RFC 4122 UUIDs
@@ -169,7 +179,7 @@ class ExpectedBehaviorTest extends TestCase
             // Invalid UUIDs
             ['ffffffffffffffffffffffffffffffff', false],
             ['00000000000000000000000000000000', false],
-            [0, false],
+            ['0', false],
             ['foobar', false],
             ['ff6f8cb0c57d51e1bb210800200c9a66', false],
             ['gf6f8cb0-c57d-51e1-bb21-0800200c9a66', false],
@@ -177,9 +187,11 @@ class ExpectedBehaviorTest extends TestCase
     }
 
     /**
-     * @dataProvider provideFromStringInteger
+     * @param non-empty-string $string
+     * @param numeric-string $integer
      */
-    public function testSerialization(string $string): void
+    #[DataProvider('provideFromStringInteger')]
+    public function testSerialization(string $string, ?int $version, int $variant, string $integer): void
     {
         $uuid = Uuid::fromString($string);
 
@@ -194,18 +206,20 @@ class ExpectedBehaviorTest extends TestCase
     }
 
     /**
-     * @dataProvider provideFromStringInteger
+     * @param non-empty-string $string
+     * @param numeric-string $integer
      */
+    #[DataProvider('provideFromStringInteger')]
     public function testFromBytes(string $string, ?int $version, int $variant, string $integer): void
     {
+        /** @var non-empty-string $bytes */
         $bytes = hex2bin(str_replace('-', '', $string));
 
         /** @var UuidInterface $uuid */
-        $uuid = Uuid::fromBytes((string) $bytes);
+        $uuid = Uuid::fromBytes($bytes);
 
-        $this->assertInstanceOf('Ramsey\Uuid\UuidInterface', $uuid);
         $this->assertSame($string, $uuid->toString());
-        $this->assertSame(Version::tryFrom($version), $uuid->getFields()->getVersion());
+        $this->assertSame(Version::tryFrom($version ?? 0), $uuid->getFields()->getVersion());
         $this->assertSame(Variant::from($variant), $uuid->getFields()->getVariant());
 
         $components = explode('-', $string);
@@ -224,8 +238,10 @@ class ExpectedBehaviorTest extends TestCase
     }
 
     /**
-     * @dataProvider provideFromStringInteger
+     * @param non-empty-string $string
+     * @param numeric-string $integer
      */
+    #[DataProvider('provideFromStringInteger')]
     public function testFromInteger(string $string, ?int $version, int $variant, string $integer): void
     {
         $bytes = hex2bin(str_replace('-', '', $string));
@@ -233,9 +249,8 @@ class ExpectedBehaviorTest extends TestCase
         /** @var UuidInterface $uuid */
         $uuid = Uuid::fromInteger($integer);
 
-        $this->assertInstanceOf('Ramsey\Uuid\UuidInterface', $uuid);
         $this->assertSame($string, $uuid->toString());
-        $this->assertSame(Version::tryFrom($version), $uuid->getFields()->getVersion());
+        $this->assertSame(Version::tryFrom($version ?? 0), $uuid->getFields()->getVersion());
         $this->assertSame(Variant::from($variant), $uuid->getFields()->getVariant());
 
         $components = explode('-', $string);
@@ -254,8 +269,10 @@ class ExpectedBehaviorTest extends TestCase
     }
 
     /**
-     * @dataProvider provideFromStringInteger
+     * @param non-empty-string $string
+     * @param numeric-string $integer
      */
+    #[DataProvider('provideFromStringInteger')]
     public function testFromString(string $string, ?int $version, int $variant, string $integer): void
     {
         $bytes = hex2bin(str_replace('-', '', $string));
@@ -263,9 +280,8 @@ class ExpectedBehaviorTest extends TestCase
         /** @var UuidInterface $uuid */
         $uuid = Uuid::fromString($string);
 
-        $this->assertInstanceOf('Ramsey\Uuid\UuidInterface', $uuid);
         $this->assertSame($string, $uuid->toString());
-        $this->assertSame(Version::tryFrom($version), $uuid->getFields()->getVersion());
+        $this->assertSame(Version::tryFrom($version ?? 0), $uuid->getFields()->getVersion());
         $this->assertSame(Variant::from($variant), $uuid->getFields()->getVariant());
 
         $components = explode('-', $string);
@@ -283,7 +299,10 @@ class ExpectedBehaviorTest extends TestCase
         $this->assertSame($bytes, $uuid->getBytes());
     }
 
-    public function provideFromStringInteger()
+    /**
+     * @return array<array{0: non-empty-string, 1: int | null, 2: int, 3: numeric-string}>
+     */
+    public static function provideFromStringInteger(): array
     {
         return [
             ['00000000-0000-0000-0000-000000000000', null, 2, '0'],
@@ -323,29 +342,25 @@ class ExpectedBehaviorTest extends TestCase
         ];
     }
 
-    /**
-     * @runInSeparateProcess
-     * @preserveGlobalState disabled
-     */
-    public function testGetSetFactory()
+    #[RunInSeparateProcess]
+    #[PreserveGlobalState(false)]
+    public function testGetSetFactory(): void
     {
         $this->assertInstanceOf('Ramsey\Uuid\UuidFactory', Uuid::getFactory());
 
-        $factory = \Mockery::mock('Ramsey\Uuid\UuidFactory');
+        $factory = Mockery::mock('Ramsey\Uuid\UuidFactory');
         Uuid::setFactory($factory);
 
         $this->assertSame($factory, Uuid::getFactory());
     }
 
-    /**
-     * @runInSeparateProcess
-     * @preserveGlobalState disabled
-     */
-    public function testFactoryProvidesFunctionality()
+    #[RunInSeparateProcess]
+    #[PreserveGlobalState(false)]
+    public function testFactoryProvidesFunctionality(): void
     {
-        $uuid = \Mockery::mock('Ramsey\Uuid\UuidInterface');
+        $uuid = Mockery::mock('Ramsey\Uuid\UuidInterface');
 
-        $factory = \Mockery::mock('Ramsey\Uuid\UuidFactoryInterface', [
+        $factory = Mockery::mock('Ramsey\Uuid\UuidFactoryInterface', [
             'uuid1' => $uuid,
             'uuid3' => $uuid,
             'uuid4' => $uuid,
@@ -357,24 +372,25 @@ class ExpectedBehaviorTest extends TestCase
 
         Uuid::setFactory($factory);
 
-        $this->assertSame($uuid, Uuid::uuid1('ffffffffffff', 0xffff));
+        /** @var non-empty-string $bytes */
+        $bytes = hex2bin('ffffffffffffffffffffffffffffffff');
+
+        $this->assertSame($uuid, Uuid::uuid1('ffffffffffff', 0x3fff));
         $this->assertSame($uuid, Uuid::uuid3(Uuid::NAMESPACE_URL, 'https://example.com/foo'));
         $this->assertSame($uuid, Uuid::uuid4());
         $this->assertSame($uuid, Uuid::uuid5(Uuid::NAMESPACE_URL, 'https://example.com/foo'));
-        $this->assertSame($uuid, Uuid::fromBytes(hex2bin('ffffffffffffffffffffffffffffffff')));
+        $this->assertSame($uuid, Uuid::fromBytes($bytes));
         $this->assertSame($uuid, Uuid::fromString('ffffffff-ffff-ffff-ffff-ffffffffffff'));
         $this->assertSame($uuid, Uuid::fromInteger('340282366920938463463374607431768211455'));
     }
 
-    /**
-     * @runInSeparateProcess
-     * @preserveGlobalState disabled
-     */
-    public function testUsingCustomCodec()
+    #[RunInSeparateProcess]
+    #[PreserveGlobalState(false)]
+    public function testUsingCustomCodec(): void
     {
-        $mockUuid = \Mockery::mock('Ramsey\Uuid\UuidInterface');
+        $mockUuid = Mockery::mock('Ramsey\Uuid\UuidInterface');
 
-        $codec = \Mockery::mock('Ramsey\Uuid\Codec\CodecInterface', [
+        $codec = Mockery::mock('Ramsey\Uuid\Codec\CodecInterface', [
             'encode' => 'abcd1234',
             'encodeBinary' => hex2bin('abcd1234'),
             'decode' => $mockUuid,
@@ -388,19 +404,20 @@ class ExpectedBehaviorTest extends TestCase
 
         $uuid = Uuid::uuid4();
 
+        /** @var non-empty-string $bytes */
+        $bytes = hex2bin('f00ba2');
+
         $this->assertSame('abcd1234', $uuid->toString());
         $this->assertSame(hex2bin('abcd1234'), $uuid->getBytes());
         $this->assertSame($mockUuid, Uuid::fromString('f00ba2'));
-        $this->assertSame($mockUuid, Uuid::fromBytes(hex2bin('f00ba2')));
+        $this->assertSame($mockUuid, Uuid::fromBytes($bytes));
     }
 
-    /**
-     * @runInSeparateProcess
-     * @preserveGlobalState disabled
-     */
-    public function testUsingCustomRandomGenerator()
+    #[RunInSeparateProcess]
+    #[PreserveGlobalState(false)]
+    public function testUsingCustomRandomGenerator(): void
     {
-        $generator = \Mockery::mock('Ramsey\Uuid\Generator\RandomGeneratorInterface', [
+        $generator = Mockery::mock('Ramsey\Uuid\Generator\RandomGeneratorInterface', [
             'generate' => hex2bin('01234567abcd5432dcba0123456789ab'),
         ]);
 
@@ -414,13 +431,11 @@ class ExpectedBehaviorTest extends TestCase
         $this->assertSame('01234567-abcd-4432-9cba-0123456789ab', $uuid->toString());
     }
 
-    /**
-     * @runInSeparateProcess
-     * @preserveGlobalState disabled
-     */
-    public function testUsingCustomTimeGenerator()
+    #[RunInSeparateProcess]
+    #[PreserveGlobalState(false)]
+    public function testUsingCustomTimeGenerator(): void
     {
-        $generator = \Mockery::mock('Ramsey\Uuid\Generator\TimeGeneratorInterface', [
+        $generator = Mockery::mock('Ramsey\Uuid\Generator\TimeGeneratorInterface', [
             'generate' => hex2bin('01234567abcd5432dcba0123456789ab'),
         ]);
 
@@ -434,24 +449,22 @@ class ExpectedBehaviorTest extends TestCase
         $this->assertSame('01234567-abcd-1432-9cba-0123456789ab', $uuid->toString());
     }
 
-    /**
-     * @runInSeparateProcess
-     * @preserveGlobalState disabled
-     */
-    public function testUsingDefaultTimeGeneratorWithCustomProviders()
+    #[RunInSeparateProcess]
+    #[PreserveGlobalState(false)]
+    public function testUsingDefaultTimeGeneratorWithCustomProviders(): void
     {
-        $nodeProvider = \Mockery::mock('Ramsey\Uuid\Provider\NodeProviderInterface', [
+        $nodeProvider = Mockery::mock('Ramsey\Uuid\Provider\NodeProviderInterface', [
             'getNode' => new Hexadecimal('0123456789ab'),
         ]);
 
-        $timeConverter = \Mockery::mock('Ramsey\Uuid\Converter\TimeConverterInterface');
+        $timeConverter = Mockery::mock('Ramsey\Uuid\Converter\TimeConverterInterface');
         $timeConverter
             ->shouldReceive('calculateTime')
-            ->andReturnUsing(function ($seconds, $microseconds) {
+            ->andReturnUsing(function (int $seconds, int $microseconds) {
                 return new Hexadecimal('abcd' . dechex($microseconds) . dechex($seconds));
             });
 
-        $timeProvider = \Mockery::mock('Ramsey\Uuid\Provider\TimeProviderInterface', [
+        $timeProvider = Mockery::mock('Ramsey\Uuid\Provider\TimeProviderInterface', [
             'currentTime' => [
                 'sec' => 1578522046,
                 'usec' => 10000,
@@ -471,26 +484,24 @@ class ExpectedBehaviorTest extends TestCase
         $this->assertSame('5e1655be-2710-1bcd-8fff-0123456789ab', $uuid->toString());
     }
 
-    /**
-     * @runInSeparateProcess
-     * @preserveGlobalState disabled
-     */
-    public function testHelperFunctions()
+    #[RunInSeparateProcess]
+    #[PreserveGlobalState(false)]
+    public function testHelperFunctions(): void
     {
-        $uuid1 = \Mockery::mock('Ramsey\Uuid\UuidInterface', [
+        $uuid1 = Mockery::mock('Ramsey\Uuid\UuidInterface', [
             'toString' => 'aVersion1Uuid',
         ]);
-        $uuid3 = \Mockery::mock('Ramsey\Uuid\UuidInterface', [
+        $uuid3 = Mockery::mock('Ramsey\Uuid\UuidInterface', [
             'toString' => 'aVersion3Uuid',
         ]);
-        $uuid4 = \Mockery::mock('Ramsey\Uuid\UuidInterface', [
+        $uuid4 = Mockery::mock('Ramsey\Uuid\UuidInterface', [
             'toString' => 'aVersion4Uuid',
         ]);
-        $uuid5 = \Mockery::mock('Ramsey\Uuid\UuidInterface', [
+        $uuid5 = Mockery::mock('Ramsey\Uuid\UuidInterface', [
             'toString' => 'aVersion5Uuid',
         ]);
 
-        $factory = \Mockery::mock('Ramsey\Uuid\UuidFactoryInterface', [
+        $factory = Mockery::mock('Ramsey\Uuid\UuidFactoryInterface', [
             'uuid1' => $uuid1,
             'uuid3' => $uuid3,
             'uuid4' => $uuid4,
@@ -499,7 +510,7 @@ class ExpectedBehaviorTest extends TestCase
 
         Uuid::setFactory($factory);
 
-        $this->assertSame('aVersion1Uuid', \Ramsey\Uuid\v1('ffffffffffff', 0xffff));
+        $this->assertSame('aVersion1Uuid', \Ramsey\Uuid\v1('ffffffffffff', 0x3fff));
         $this->assertSame('aVersion3Uuid', \Ramsey\Uuid\v3(Uuid::NAMESPACE_URL, 'https://example.com/foo'));
         $this->assertSame('aVersion4Uuid', \Ramsey\Uuid\v4());
         $this->assertSame('aVersion5Uuid', \Ramsey\Uuid\v5(Uuid::NAMESPACE_URL, 'https://example.com/foo'));
@@ -508,7 +519,7 @@ class ExpectedBehaviorTest extends TestCase
     /**
      * @link https://git.io/JvJZo Use of TimestampFirstCombCodec in laravel/framework
      */
-    public function testUseOfTimestampFirstCombCodec()
+    public function testUseOfTimestampFirstCombCodec(): void
     {
         $factory = new UuidFactory();
 
@@ -541,16 +552,13 @@ class ExpectedBehaviorTest extends TestCase
         $expectedHex = implode('', $fields);
         $expectedBytes = hex2bin($expectedHex);
 
-        $this->assertInstanceOf('Ramsey\Uuid\UuidInterface', $uuid);
         $this->assertSame(Variant::Rfc4122, $uuid->getFields()->getVariant());
         $this->assertSame(Version::Random, $uuid->getFields()->getVersion());
         $this->assertSame($expectedBytes, $uuid->getBytes());
         $this->assertSame($expectedHex, (string) $uuid->getHex());
     }
 
-    /**
-     * @dataProvider provideUuidConstantTests
-     */
+    #[DataProvider('provideUuidConstantTests')]
     public function testUuidConstants(string $constantName, int | string $expected): void
     {
         $this->assertSame($expected, constant("Ramsey\\Uuid\\Uuid::{$constantName}"));
@@ -559,7 +567,7 @@ class ExpectedBehaviorTest extends TestCase
     /**
      * @return array<array{string, int | string}>
      */
-    public function provideUuidConstantTests(): array
+    public static function provideUuidConstantTests(): array
     {
         return [
             ['NAMESPACE_DNS', '6ba7b810-9dad-11d1-80b4-00c04fd430c8'],

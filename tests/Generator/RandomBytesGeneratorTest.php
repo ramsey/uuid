@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace Ramsey\Uuid\Test\Generator;
 
 use Exception;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\PreserveGlobalState;
+use PHPUnit\Framework\Attributes\RunInSeparateProcess;
 use Ramsey\Uuid\Exception\RandomSourceException;
 use Ramsey\Uuid\Generator\RandomBytesGenerator;
 use Ramsey\Uuid\Test\TestCase;
@@ -17,7 +20,7 @@ class RandomBytesGeneratorTest extends TestCase
     /**
      * @return array<array{0: positive-int, 1: non-empty-string}>
      */
-    public function lengthAndHexDataProvider(): array
+    public static function lengthAndHexDataProvider(): array
     {
         return [
             [6, '4f17dd046fb8'],
@@ -31,11 +34,10 @@ class RandomBytesGeneratorTest extends TestCase
      * @param non-empty-string $hex
      *
      * @throws Exception
-     *
-     * @dataProvider lengthAndHexDataProvider
-     * @runInSeparateProcess
-     * @preserveGlobalState disabled
      */
+    #[RunInSeparateProcess]
+    #[PreserveGlobalState(false)]
+    #[DataProvider('lengthAndHexDataProvider')]
     public function testGenerateReturnsRandomBytes(int $length, string $hex): void
     {
         $bytes = hex2bin($hex);
@@ -50,10 +52,8 @@ class RandomBytesGeneratorTest extends TestCase
         $this->assertSame($bytes, $generator->generate($length));
     }
 
-    /**
-     * @runInSeparateProcess
-     * @preserveGlobalState disabled
-     */
+    #[RunInSeparateProcess]
+    #[PreserveGlobalState(false)]
     public function testGenerateThrowsExceptionWhenExceptionThrownByRandomBytes(): void
     {
         PHPMockery::mock('Ramsey\Uuid\Generator', 'random_bytes')

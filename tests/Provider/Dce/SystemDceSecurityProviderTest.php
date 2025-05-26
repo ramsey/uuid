@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace Ramsey\Uuid\Test\Provider\Dce;
 
 use Mockery;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\PreserveGlobalState;
+use PHPUnit\Framework\Attributes\RunInSeparateProcess;
 use Ramsey\Uuid\Exception\DceSecurityException;
 use Ramsey\Uuid\Provider\Dce\SystemDceSecurityProvider;
 use Ramsey\Uuid\Test\TestCase;
@@ -14,10 +17,8 @@ use function array_merge;
 
 class SystemDceSecurityProviderTest extends TestCase
 {
-    /**
-     * @runInSeparateProcess
-     * @preserveGlobalState disabled
-     */
+    #[RunInSeparateProcess]
+    #[PreserveGlobalState(false)]
     public function testGetUidThrowsExceptionIfShellExecDisabled(): void
     {
         PHPMockery::mock(
@@ -49,10 +50,8 @@ class SystemDceSecurityProviderTest extends TestCase
         $this->assertSame(5, $caughtException);
     }
 
-    /**
-     * @runInSeparateProcess
-     * @preserveGlobalState disabled
-     */
+    #[RunInSeparateProcess]
+    #[PreserveGlobalState(false)]
     public function testGetUidForPosixThrowsExceptionIfShellExecReturnsNull(): void
     {
         PHPMockery::mock(
@@ -84,11 +83,10 @@ class SystemDceSecurityProviderTest extends TestCase
 
     /**
      * @param mixed $value
-     *
-     * @runInSeparateProcess
-     * @preserveGlobalState disabled
-     * @dataProvider provideWindowsBadValues
      */
+    #[RunInSeparateProcess]
+    #[PreserveGlobalState(false)]
+    #[DataProvider('provideWindowsBadValues')]
     public function testGetUidForWindowsThrowsExceptionIfShellExecForWhoAmIReturnsBadValues($value): void
     {
         PHPMockery::mock(
@@ -118,11 +116,9 @@ class SystemDceSecurityProviderTest extends TestCase
         $provider->getUid();
     }
 
-    /**
-     * @runInSeparateProcess
-     * @preserveGlobalState disabled
-     * @dataProvider provideWindowsGoodWhoAmIValues
-     */
+    #[RunInSeparateProcess]
+    #[PreserveGlobalState(false)]
+    #[DataProvider('provideWindowsGoodWhoAmIValues')]
     public function testGetUidForWindowsWhenShellExecForWhoAmIReturnsGoodValues(
         string $value,
         string $expectedId
@@ -153,7 +149,7 @@ class SystemDceSecurityProviderTest extends TestCase
     /**
      * @return array<array{value: non-empty-string, expectedId: non-empty-string}>
      */
-    public function provideWindowsGoodWhoAmIValues(): array
+    public static function provideWindowsGoodWhoAmIValues(): array
     {
         return [
             [
@@ -171,11 +167,9 @@ class SystemDceSecurityProviderTest extends TestCase
         ];
     }
 
-    /**
-     * @runInSeparateProcess
-     * @preserveGlobalState disabled
-     * @dataProvider providePosixTestValues
-     */
+    #[RunInSeparateProcess]
+    #[PreserveGlobalState(false)]
+    #[DataProvider('providePosixTestValues')]
     public function testGetUidForPosixSystems(string $os, string $id): void
     {
         PHPMockery::mock(
@@ -201,10 +195,8 @@ class SystemDceSecurityProviderTest extends TestCase
         $this->assertSame($uid, $provider->getUid());
     }
 
-    /**
-     * @runInSeparateProcess
-     * @preserveGlobalState disabled
-     */
+    #[RunInSeparateProcess]
+    #[PreserveGlobalState(false)]
     public function testGetGidThrowsExceptionIfShellExecDisabled(): void
     {
         PHPMockery::mock(
@@ -236,10 +228,8 @@ class SystemDceSecurityProviderTest extends TestCase
         $this->assertSame(5, $caughtException);
     }
 
-    /**
-     * @runInSeparateProcess
-     * @preserveGlobalState disabled
-     */
+    #[RunInSeparateProcess]
+    #[PreserveGlobalState(false)]
     public function testGetGidForPosixThrowsExceptionIfShellExecReturnsNull(): void
     {
         PHPMockery::mock(
@@ -269,11 +259,9 @@ class SystemDceSecurityProviderTest extends TestCase
         $provider->getGid();
     }
 
-    /**
-     * @runInSeparateProcess
-     * @preserveGlobalState disabled
-     * @dataProvider providePosixTestValues
-     */
+    #[RunInSeparateProcess]
+    #[PreserveGlobalState(false)]
+    #[DataProvider('providePosixTestValues')]
     public function testGetGidForPosixSystems(string $os, string $id): void
     {
         PHPMockery::mock(
@@ -301,11 +289,10 @@ class SystemDceSecurityProviderTest extends TestCase
 
     /**
      * @param mixed $value
-     *
-     * @runInSeparateProcess
-     * @preserveGlobalState disabled
-     * @dataProvider provideWindowsBadValues
      */
+    #[RunInSeparateProcess]
+    #[PreserveGlobalState(false)]
+    #[DataProvider('provideWindowsBadValues')]
     public function testGetGidForWindowsThrowsExceptionWhenShellExecForNetUserReturnsBadValues($value): void
     {
         PHPMockery::mock(
@@ -337,11 +324,10 @@ class SystemDceSecurityProviderTest extends TestCase
 
     /**
      * @param mixed $value
-     *
-     * @runInSeparateProcess
-     * @preserveGlobalState disabled
-     * @dataProvider provideWindowsBadGroupValues
      */
+    #[RunInSeparateProcess]
+    #[PreserveGlobalState(false)]
+    #[DataProvider('provideWindowsBadGroupValues')]
     public function testGetGidForWindowsThrowsExceptionWhenShellExecForWmicGroupGetReturnsBadValues($value): void
     {
         PHPMockery::mock(
@@ -378,11 +364,9 @@ class SystemDceSecurityProviderTest extends TestCase
         $provider->getGid();
     }
 
-    /**
-     * @runInSeparateProcess
-     * @preserveGlobalState disabled
-     * @dataProvider provideWindowsGoodNetUserAndWmicGroupValues
-     */
+    #[RunInSeparateProcess]
+    #[PreserveGlobalState(false)]
+    #[DataProvider('provideWindowsGoodNetUserAndWmicGroupValues')]
     public function testGetGidForWindowsSucceeds(
         string $netUserResponse,
         string $wmicGroupResponse,
@@ -427,7 +411,7 @@ class SystemDceSecurityProviderTest extends TestCase
      *     expectedId: non-empty-string,
      * }>
      */
-    public function provideWindowsGoodNetUserAndWmicGroupValues(): array
+    public static function provideWindowsGoodNetUserAndWmicGroupValues(): array
     {
         return [
             [
@@ -460,7 +444,7 @@ class SystemDceSecurityProviderTest extends TestCase
     /**
      * @return array<array{os: non-empty-string, id: non-empty-string}>
      */
-    public function providePosixTestValues(): array
+    public static function providePosixTestValues(): array
     {
         return [
             ['os' => 'Darwin', 'id' => '1042'],
@@ -476,7 +460,7 @@ class SystemDceSecurityProviderTest extends TestCase
     /**
      * @return array<array{value: string | null}>
      */
-    public function provideWindowsBadValues(): array
+    public static function provideWindowsBadValues(): array
     {
         return [
             ['value' => null],
@@ -492,10 +476,10 @@ class SystemDceSecurityProviderTest extends TestCase
     /**
      * @return array<array{value: string | null}>
      */
-    public function provideWindowsBadGroupValues(): array
+    public static function provideWindowsBadGroupValues(): array
     {
         return array_merge(
-            $this->provideWindowsBadValues(),
+            self::provideWindowsBadValues(),
             [
                 ['value' => 'Users  Not a valid SID string'],
                 ['value' => 'Users  344aab9758bb0d018b93739e7893fb3a'],

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Ramsey\Uuid\Test\Rfc4122;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use Ramsey\Uuid\Rfc4122\Validator;
 use Ramsey\Uuid\Test\TestCase;
 
@@ -13,9 +14,7 @@ use function strtoupper;
 
 class ValidatorTest extends TestCase
 {
-    /**
-     * @dataProvider provideValuesForValidation
-     */
+    #[DataProvider('provideValuesForValidation')]
     public function testValidate(string $value, bool $expected): void
     {
         $variations = [];
@@ -45,7 +44,7 @@ class ValidatorTest extends TestCase
     /**
      * @return array<array{value: string, expected: bool}>
      */
-    public function provideValuesForValidation(): array
+    public static function provideValuesForValidation(): array
     {
         $hexMutations = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 'a', 'b', 'c', 'd', 'e', 'f'];
         $trueVersions = [1, 2, 3, 4, 5, 6, 7, 8];

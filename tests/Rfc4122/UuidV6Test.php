@@ -6,6 +6,7 @@ namespace Ramsey\Uuid\Test\Rfc4122;
 
 use DateTimeImmutable;
 use Mockery;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Ramsey\Uuid\Codec\CodecInterface;
 use Ramsey\Uuid\Converter\NumberConverterInterface;
 use Ramsey\Uuid\Converter\TimeConverterInterface;
@@ -22,9 +23,7 @@ use Ramsey\Uuid\Uuid;
 
 class UuidV6Test extends TestCase
 {
-    /**
-     * @dataProvider provideTestVersions
-     */
+    #[DataProvider('provideTestVersions')]
     public function testConstructorThrowsExceptionWhenFieldsAreNotValidForType(Version $version): void
     {
         $fields = Mockery::mock(FieldsInterface::class, [
@@ -47,7 +46,7 @@ class UuidV6Test extends TestCase
     /**
      * @return array<array{version: Version}>
      */
-    public function provideTestVersions(): array
+    public static function provideTestVersions(): array
     {
         return [
             ['version' => Version::Time],
@@ -63,9 +62,8 @@ class UuidV6Test extends TestCase
     /**
      * @param non-empty-string $uuid
      * @param non-empty-string $expected
-     *
-     * @dataProvider provideUuidV6WithOddMicroseconds
      */
+    #[DataProvider('provideUuidV6WithOddMicroseconds')]
     public function testGetDateTimeProperlyHandlesLongMicroseconds(string $uuid, string $expected): void
     {
         /** @var UuidV6 $object */
@@ -80,7 +78,7 @@ class UuidV6Test extends TestCase
     /**
      * @return array<array{uuid: non-empty-string, expected: non-empty-string}>
      */
-    public function provideUuidV6WithOddMicroseconds(): array
+    public static function provideUuidV6WithOddMicroseconds(): array
     {
         return [
             [
@@ -105,9 +103,8 @@ class UuidV6Test extends TestCase
     /**
      * @param non-empty-string $uuidv6
      * @param non-empty-string $uuidv1
-     *
-     * @dataProvider provideUuidV1UuidV6Equivalents
      */
+    #[DataProvider('provideUuidV1UuidV6Equivalents')]
     public function testToUuidV1(string $uuidv6, string $uuidv1): void
     {
         /** @var UuidV6 $uuid6 */
@@ -126,9 +123,8 @@ class UuidV6Test extends TestCase
     /**
      * @param non-empty-string $uuidv6
      * @param non-empty-string $uuidv1
-     *
-     * @dataProvider provideUuidV1UuidV6Equivalents
      */
+    #[DataProvider('provideUuidV1UuidV6Equivalents')]
     public function testFromUuidV1(string $uuidv6, string $uuidv1): void
     {
         /** @var LazyUuidFromString $uuid */
@@ -148,7 +144,7 @@ class UuidV6Test extends TestCase
     /**
      * @return array<array{uuidv6: non-empty-string, uuidv1: non-empty-string}>
      */
-    public function provideUuidV1UuidV6Equivalents(): array
+    public static function provideUuidV1UuidV6Equivalents(): array
     {
         return [
             [

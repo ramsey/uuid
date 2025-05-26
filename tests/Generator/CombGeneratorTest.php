@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Ramsey\Uuid\Test\Generator;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\MockObject\MockObject;
 use Ramsey\Uuid\Converter\NumberConverterInterface;
 use Ramsey\Uuid\Exception\InvalidArgumentException;
@@ -85,16 +86,15 @@ class CombGeneratorTest extends TestCase
     /**
      * @return array<array<positive-int>>
      */
-    public function lengthLessThanSix(): array
+    public static function lengthLessThanSix(): array
     {
         return [[1], [2], [3], [4], [5]];
     }
 
     /**
      * @param positive-int $length
-     *
-     * @dataProvider lengthLessThanSix
      */
+    #[DataProvider('lengthLessThanSix')]
     public function testGenerateWithLessThanTimestampBytesThrowsException(int $length): void
     {
         /** @var MockObject & RandomGeneratorInterface $randomGenerator */

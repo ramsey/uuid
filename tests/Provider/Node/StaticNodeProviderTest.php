@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Ramsey\Uuid\Test\Provider\Node;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use Ramsey\Uuid\Exception\InvalidArgumentException;
 use Ramsey\Uuid\Provider\Node\StaticNodeProvider;
 use Ramsey\Uuid\Test\TestCase;
@@ -13,9 +14,8 @@ class StaticNodeProviderTest extends TestCase
 {
     /**
      * @param non-empty-string $expectedNode
-     *
-     * @dataProvider provideNodeForTest
      */
+    #[DataProvider('provideNodeForTest')]
     public function testStaticNode(Hexadecimal $node, string $expectedNode): void
     {
         $staticNode = new StaticNodeProvider($node);
@@ -26,7 +26,7 @@ class StaticNodeProviderTest extends TestCase
     /**
      * @return array<array{node: Hexadecimal, expectedNode: non-empty-string}>
      */
-    public function provideNodeForTest(): array
+    public static function provideNodeForTest(): array
     {
         return [
             [

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Ramsey\Uuid\Test\Generator;
 
+use PHPUnit\Framework\Attributes\RequiresPhpExtension;
 use Ramsey\Uuid\Generator\PeclUuidTimeGenerator;
 use Ramsey\Uuid\Rfc4122\Fields;
 use Ramsey\Uuid\Rfc4122\Version;
@@ -12,9 +13,7 @@ use Ramsey\Uuid\Uuid;
 
 class PeclUuidTimeGeneratorTest extends TestCase
 {
-    /**
-     * @requires extension uuid
-     */
+    #[RequiresPhpExtension('uuid')]
     public function testGenerateCreatesUuidUsingPeclUuidMethods(): void
     {
         $generator = new PeclUuidTimeGenerator();

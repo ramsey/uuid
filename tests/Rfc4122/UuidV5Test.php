@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Ramsey\Uuid\Test\Rfc4122;
 
 use Mockery;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Ramsey\Uuid\Codec\CodecInterface;
 use Ramsey\Uuid\Converter\NumberConverterInterface;
 use Ramsey\Uuid\Converter\TimeConverterInterface;
@@ -16,9 +17,7 @@ use Ramsey\Uuid\Test\TestCase;
 
 class UuidV5Test extends TestCase
 {
-    /**
-     * @dataProvider provideTestVersions
-     */
+    #[DataProvider('provideTestVersions')]
     public function testConstructorThrowsExceptionWhenFieldsAreNotValidForType(Version $version): void
     {
         $fields = Mockery::mock(FieldsInterface::class, [
@@ -41,7 +40,7 @@ class UuidV5Test extends TestCase
     /**
      * @return array<array{version: Version}>
      */
-    public function provideTestVersions(): array
+    public static function provideTestVersions(): array
     {
         return [
             ['version' => Version::Time],
