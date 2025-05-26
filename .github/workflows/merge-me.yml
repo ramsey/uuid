@@ -1,0 +1,29 @@
+# Merge Me! Documentation: https://github.com/ridedott/merge-me-action/
+
+name: "Merge Dependabot PRs"
+
+on:
+  workflow_run:
+    types:
+      - "completed"
+    workflows:
+      - "Continuous Integration"
+
+jobs:
+  merge-me:
+    name: "Merge me!"
+    runs-on: "ubuntu-latest"
+    steps:
+      - name: "Auto-merge"
+        if: ${{ github.event.workflow_run.conclusion == 'success' }}
+        uses: "ridedott/merge-me-action@v2"
+        with:
+          # This must be used as the GitHub Actions token does not support pushing
+          # to protected branches.
+          #
+          # Create a token with repository permissions:
+          # https://github.com/settings/tokens/new?scopes=repo&description=Merge+Me!+GitHub+Actions+Workflow
+          #
+          # Set MERGE_TOKEN as an environment variable on your repository:
+          # https://github.com/yourname/repo-name/settings/secrets/actions/new
+          GITHUB_TOKEN: ${{ secrets.MERGE_TOKEN }}

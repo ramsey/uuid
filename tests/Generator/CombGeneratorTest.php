@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Ramsey\Uuid\Test\Generator;
 
-use Exception;
 use PHPUnit\Framework\MockObject\MockObject;
 use Ramsey\Uuid\Converter\NumberConverterInterface;
 use Ramsey\Uuid\Exception\InvalidArgumentException;
@@ -21,10 +20,7 @@ use const STR_PAD_LEFT;
 
 class CombGeneratorTest extends TestCase
 {
-    /**
-     * @var int
-     */
-    private $timestampBytes = 6;
+    private int $timestampBytes = 6;
 
     public function testGenerateUsesRandomGeneratorWithLengthMinusTimestampBytes(): void
     {
@@ -97,8 +93,6 @@ class CombGeneratorTest extends TestCase
     /**
      * @param int<1, max> $length
      *
-     * @throws Exception
-     *
      * @dataProvider lengthLessThanSix
      */
     public function testGenerateWithLessThanTimestampBytesThrowsException(int $length): void
@@ -115,9 +109,6 @@ class CombGeneratorTest extends TestCase
         $generator->generate($length);
     }
 
-    /**
-     * @throws Exception
-     */
     public function testGenerateWithOddNumberOverTimestampBytesCausesError(): void
     {
         /** @var MockObject & RandomGeneratorInterface $randomGenerator */
@@ -128,7 +119,9 @@ class CombGeneratorTest extends TestCase
 
         $generator = new CombGenerator($randomGenerator, $converter);
 
-        $this->expectError();
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Length must be an even number');
+
         $generator->generate(7);
     }
 }

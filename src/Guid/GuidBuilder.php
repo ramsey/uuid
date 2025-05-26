@@ -27,7 +27,7 @@ use Throwable;
  *
  * @see Guid
  *
- * @psalm-immutable
+ * @immutable
  */
 class GuidBuilder implements UuidBuilderInterface
 {
@@ -50,8 +50,6 @@ class GuidBuilder implements UuidBuilderInterface
      * @param string $bytes The byte string from which to construct a UUID
      *
      * @return Guid The GuidBuilder returns an instance of Ramsey\Uuid\Guid\Guid
-     *
-     * @psalm-pure
      */
     public function build(CodecInterface $codec, string $bytes): UuidInterface
     {

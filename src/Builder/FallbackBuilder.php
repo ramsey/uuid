@@ -23,7 +23,7 @@ use Ramsey\Uuid\UuidInterface;
  * FallbackBuilder builds a UUID by stepping through a list of UUID builders
  * until a UUID can be constructed without exceptions
  *
- * @psalm-immutable
+ * @immutable
  */
 class FallbackBuilder implements UuidBuilderInterface
 {
@@ -42,8 +42,6 @@ class FallbackBuilder implements UuidBuilderInterface
      * @param string $bytes The byte string from which to construct a UUID
      *
      * @return UuidInterface an instance of a UUID object
-     *
-     * @psalm-pure
      */
     public function build(CodecInterface $codec, string $bytes): UuidInterface
     {

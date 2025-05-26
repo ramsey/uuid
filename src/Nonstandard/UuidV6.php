@@ -34,7 +34,7 @@ use Ramsey\Uuid\Uuid as BaseUuid;
  * @link https://github.com/uuid6/uuid6-ietf-draft UUID version 6 IETF draft
  * @link http://gh.peabody.io/uuidv6/ "Version 6" UUIDs
  *
- * @psalm-immutable
+ * @immutable
  */
 class UuidV6 extends BaseUuid implements UuidInterface
 {

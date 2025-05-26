@@ -30,6 +30,6 @@ class PeclUuidRandomGenerator implements RandomGeneratorInterface
     {
         $uuid = uuid_create(UUID_TYPE_RANDOM);
 
-        return uuid_parse($uuid);
+        return (string) uuid_parse($uuid);
     }
 }

@@ -19,8 +19,6 @@
 /phpstan-tests.neon         export-ignore
 /phpstan.neon.dist          export-ignore
 /phpunit.xml.dist           export-ignore
-/psalm-baseline.xml         export-ignore
-/psalm.xml                  export-ignore
 /resources/                 export-ignore
 /SECURITY.md                export-ignore
 /tests/                     export-ignore

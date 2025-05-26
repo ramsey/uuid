@@ -158,7 +158,7 @@ class UuidFactoryTest extends TestCase
     }
 
     /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingTraversableTypeHintSpecification
+     * @return array<array{0: DateTimeInterface, 1: Hexadecimal | null, 2: int | null, 3: string, 4: string}>
      */
     public function provideDateTime(): array
     {

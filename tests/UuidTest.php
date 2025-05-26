@@ -285,19 +285,16 @@ class UuidTest extends TestCase
     {
         // Check a recent date
         $uuid = Uuid::fromString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
-        $this->assertInstanceOf(DateTimeInterface::class, $uuid->getDateTime());
         $this->assertSame('2012-07-04T02:14:34+00:00', $uuid->getDateTime()->format('c'));
         $this->assertSame('1341368074.491000', $uuid->getDateTime()->format('U.u'));
 
         // Check an old date
         $uuid = Uuid::fromString('0901e600-0154-1000-9b21-0800200c9a66');
-        $this->assertInstanceOf(DateTimeInterface::class, $uuid->getDateTime());
         $this->assertSame('1582-10-16T16:34:04+00:00', $uuid->getDateTime()->format('c'));
         $this->assertSame('-12219146756.000000', $uuid->getDateTime()->format('U.u'));
 
         // Check a future date
         $uuid = Uuid::fromString('ff9785f6-ffff-1fff-9669-00007ffffffe');
-        $this->assertInstanceOf(DateTimeInterface::class, $uuid->getDateTime());
         $this->assertSame('5236-03-31T21:20:59+00:00', $uuid->getDateTime()->format('c'));
         $this->assertSame('103072857659.999999', $uuid->getDateTime()->format('U.u'));
 
@@ -305,19 +302,16 @@ class UuidTest extends TestCase
         // See inline comments in
         // {@see \Ramsey\Uuid\Test\Converter\Time\GenericTimeConverterTest::provideCalculateTime()}
         $uuid = Uuid::fromString('fffffffa-ffff-1fff-8b1e-acde48001122');
-        $this->assertInstanceOf(DateTimeInterface::class, $uuid->getDateTime());
         $this->assertSame('5236-03-31T21:21:00+00:00', $uuid->getDateTime()->format('c'));
         $this->assertSame('103072857660.684697', $uuid->getDateTime()->format('U.u'));
 
         // Check the oldest date
         $uuid = Uuid::fromString('00000000-0000-1000-9669-00007ffffffe');
-        $this->assertInstanceOf(DateTimeInterface::class, $uuid->getDateTime());
         $this->assertSame('1582-10-15T00:00:00+00:00', $uuid->getDateTime()->format('c'));
         $this->assertSame('-12219292800.000000', $uuid->getDateTime()->format('U.u'));
 
         // The Unix epoch
         $uuid = Uuid::fromString('13814000-1dd2-11b2-9669-00007ffffffe');
-        $this->assertInstanceOf(DateTimeInterface::class, $uuid->getDateTime());
         $this->assertSame('1970-01-01T00:00:00+00:00', $uuid->getDateTime()->format('c'));
         $this->assertSame('0.000000', $uuid->getDateTime()->format('U.u'));
     }
@@ -326,19 +320,16 @@ class UuidTest extends TestCase
     {
         // Check a recent date
         $uuid = Uuid::fromString('1e1c57df-f6f8-6cb0-9b21-0800200c9a66');
-        $this->assertInstanceOf(DateTimeInterface::class, $uuid->getDateTime());
         $this->assertSame('2012-07-04T02:14:34+00:00', $uuid->getDateTime()->format('c'));
         $this->assertSame('1341368074.491000', $uuid->getDateTime()->format('U.u'));
 
         // Check an old date
         $uuid = Uuid::fromString('00001540-901e-6600-9b21-0800200c9a66');
-        $this->assertInstanceOf(DateTimeInterface::class, $uuid->getDateTime());
         $this->assertSame('1582-10-16T16:34:04+00:00', $uuid->getDateTime()->format('c'));
         $this->assertSame('-12219146756.000000', $uuid->getDateTime()->format('U.u'));
 
         // Check a future date
         $uuid = Uuid::fromString('ffffffff-f978-65f6-9669-00007ffffffe');
-        $this->assertInstanceOf(DateTimeInterface::class, $uuid->getDateTime());
         $this->assertSame('5236-03-31T21:20:59+00:00', $uuid->getDateTime()->format('c'));
         $this->assertSame('103072857659.999999', $uuid->getDateTime()->format('U.u'));
 
@@ -346,19 +337,16 @@ class UuidTest extends TestCase
         // See inline comments in
         // {@see \Ramsey\Uuid\Test\Converter\Time\GenericTimeConverterTest::provideCalculateTime()}
         $uuid = Uuid::fromString('ffffffff-ffff-6ffa-8b1e-acde48001122');
-        $this->assertInstanceOf(DateTimeInterface::class, $uuid->getDateTime());
         $this->assertSame('5236-03-31T21:21:00+00:00', $uuid->getDateTime()->format('c'));
         $this->assertSame('103072857660.684697', $uuid->getDateTime()->format('U.u'));
 
         // Check the oldest date
         $uuid = Uuid::fromString('00000000-0000-6000-9669-00007ffffffe');
-        $this->assertInstanceOf(DateTimeInterface::class, $uuid->getDateTime());
         $this->assertSame('1582-10-15T00:00:00+00:00', $uuid->getDateTime()->format('c'));
         $this->assertSame('-12219292800.000000', $uuid->getDateTime()->format('U.u'));
 
         // The Unix epoch
         $uuid = Uuid::fromString('1b21dd21-3814-6000-9669-00007ffffffe');
-        $this->assertInstanceOf(DateTimeInterface::class, $uuid->getDateTime());
         $this->assertSame('1970-01-01T00:00:00+00:00', $uuid->getDateTime()->format('c'));
         $this->assertSame('0.000000', $uuid->getDateTime()->format('U.u'));
     }
@@ -544,7 +532,7 @@ class UuidTest extends TestCase
     }
 
     /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingTraversableTypeHintSpecification
+     * @return array<array{0: non-empty-string, 1: int}>
      */
     public function provideVariousVariantUuids(): array
     {
@@ -622,7 +610,6 @@ class UuidTest extends TestCase
     public function testUuid1(): void
     {
         $uuid = Uuid::uuid1();
-        $this->assertInstanceOf(DateTimeInterface::class, $uuid->getDateTime());
         $this->assertSame(2, $uuid->getVariant());
         $this->assertSame(1, $uuid->getVersion());
     }
@@ -716,7 +703,6 @@ class UuidTest extends TestCase
         Uuid::setFactory(new UuidFactory(new FeatureSet(false, false, false, true)));
 
         $uuid = Uuid::uuid1();
-        $this->assertInstanceOf(DateTimeInterface::class, $uuid->getDateTime());
         $this->assertSame(2, $uuid->getVariant());
         $this->assertSame(1, $uuid->getVersion());
     }
@@ -724,7 +710,6 @@ class UuidTest extends TestCase
     public function testUuid1WithUserGeneratedRandomNode(): void
     {
         $uuid = Uuid::uuid1(new Hexadecimal((string) (new RandomNodeProvider())->getNode()));
-        $this->assertInstanceOf(DateTimeInterface::class, $uuid->getDateTime());
         $this->assertSame(2, $uuid->getVariant());
         $this->assertSame(1, $uuid->getVersion());
     }
@@ -732,7 +717,6 @@ class UuidTest extends TestCase
     public function testUuid6(): void
     {
         $uuid = Uuid::uuid6();
-        $this->assertInstanceOf(DateTimeInterface::class, $uuid->getDateTime());
         $this->assertSame(2, $uuid->getVariant());
         $this->assertSame(6, $uuid->getVersion());
     }
@@ -740,7 +724,6 @@ class UuidTest extends TestCase
     public function testUuid6WithNodeAndClockSequence(): void
     {
         $uuid = Uuid::uuid6(new Hexadecimal('0800200c9a66'), 0x1669);
-        $this->assertInstanceOf(DateTimeInterface::class, $uuid->getDateTime());
         $this->assertSame(2, $uuid->getVariant());
         $this->assertSame(6, $uuid->getVersion());
         $this->assertSame('1669', $uuid->getClockSequenceHex());
@@ -752,7 +735,6 @@ class UuidTest extends TestCase
     {
         $uuid = Uuid::uuid6(new Hexadecimal('7160355e'));
 
-        $this->assertInstanceOf(DateTimeInterface::class, $uuid->getDateTime());
         $this->assertSame(2, $uuid->getVariant());
         $this->assertSame(6, $uuid->getVersion());
         $this->assertSame('00007160355e', $uuid->getNodeHex());
@@ -762,7 +744,6 @@ class UuidTest extends TestCase
     {
         $uuid = Uuid::uuid6(new Hexadecimal('71B0aD5e'));
 
-        $this->assertInstanceOf(DateTimeInterface::class, $uuid->getDateTime());
         $this->assertSame(2, $uuid->getVariant());
         $this->assertSame(6, $uuid->getVersion());
         $this->assertSame('000071b0ad5e', $uuid->getNodeHex());
@@ -789,7 +770,6 @@ class UuidTest extends TestCase
         Uuid::setFactory(new UuidFactory(new FeatureSet(false, false, false, true)));
 
         $uuid = Uuid::uuid6();
-        $this->assertInstanceOf(DateTimeInterface::class, $uuid->getDateTime());
         $this->assertSame(2, $uuid->getVariant());
         $this->assertSame(6, $uuid->getVersion());
     }
@@ -797,7 +777,6 @@ class UuidTest extends TestCase
     public function testUuid6WithUserGeneratedRandomNode(): void
     {
         $uuid = Uuid::uuid6(new Hexadecimal((string) (new RandomNodeProvider())->getNode()));
-        $this->assertInstanceOf(DateTimeInterface::class, $uuid->getDateTime());
         $this->assertSame(2, $uuid->getVariant());
         $this->assertSame(6, $uuid->getVersion());
     }
@@ -805,7 +784,6 @@ class UuidTest extends TestCase
     public function testUuid7(): void
     {
         $uuid = Uuid::uuid7();
-        $this->assertInstanceOf(DateTimeInterface::class, $uuid->getDateTime());
         $this->assertSame(2, $uuid->getVariant());
         $this->assertSame(7, $uuid->getVersion());
     }
@@ -828,7 +806,6 @@ class UuidTest extends TestCase
         $dateTime = new DateTimeImmutable('@281474976710.655');
 
         $uuid = Uuid::uuid7($dateTime);
-        $this->assertInstanceOf(DateTimeInterface::class, $uuid->getDateTime());
         $this->assertSame(2, $uuid->getVariant());
         $this->assertSame(7, $uuid->getVersion());
         $this->assertSame(
@@ -861,7 +838,6 @@ class UuidTest extends TestCase
         $dateTime = new DateTimeImmutable('1979-01-01 00:00:00.000000');
 
         $uuid = Uuid::uuid7($dateTime);
-        $this->assertInstanceOf(DateTimeInterface::class, $uuid->getDateTime());
         $this->assertSame(2, $uuid->getVariant());
         $this->assertSame(7, $uuid->getVersion());
         $this->assertSame(
@@ -924,6 +900,7 @@ class UuidTest extends TestCase
      *
      * @param non-empty-string $uuid
      * @param non-empty-string $ns
+     * @param non-empty-string $name
      *
      * @dataProvider provideUuid3WithKnownUuids
      */
@@ -939,7 +916,7 @@ class UuidTest extends TestCase
     }
 
     /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingTraversableTypeHintSpecification
+     * @return array<array{uuid: non-empty-string, ns: non-empty-string, name: non-empty-string}>
      */
     public function provideUuid3WithKnownUuids(): array
     {
@@ -982,7 +959,7 @@ class UuidTest extends TestCase
         $mock = $this->getMockBuilder(RandomGeneratorInterface::class)->getMock();
         $mock->expects($this->any())
             ->method('generate')
-            ->willReturnCallback(function ($length) {
+            ->willReturnCallback(function (int $length) {
                 // Makes first fields of UUIDs equal
                 return hex2bin(str_pad('', $length * 2, '0'));
             });
@@ -1012,7 +989,7 @@ class UuidTest extends TestCase
         $mock = $this->getMockBuilder(RandomGeneratorInterface::class)->getMock();
         $mock->expects($this->any())
             ->method('generate')
-            ->willReturnCallback(function ($length) {
+            ->willReturnCallback(function (int $length) {
                 // Makes first fields of UUIDs equal
                 return hex2bin(str_pad('', $length * 2, '0'));
             });
@@ -1060,6 +1037,7 @@ class UuidTest extends TestCase
      *
      * @param non-empty-string $uuid
      * @param non-empty-string $ns
+     * @param non-empty-string $name
      *
      * @dataProvider provideUuid5WithKnownUuids
      */
@@ -1075,7 +1053,7 @@ class UuidTest extends TestCase
     }
 
     /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingTraversableTypeHintSpecification
+     * @return array<array{uuid: non-empty-string, ns: non-empty-string, name: non-empty-string}>
      */
     public function provideUuid5WithKnownUuids(): array
     {
@@ -1393,8 +1371,12 @@ class UuidTest extends TestCase
      * @param non-empty-string $string
      * @param non-empty-string $curly
      * @param non-empty-string $hex
+     * @param non-empty-string $bytes
+     * @param non-empty-string $int
      * @param string[] $fields
      * @param non-empty-string $urn
+     * @param non-empty-string $time
+     * @param non-empty-string $clockSeq
      *
      * @dataProvider providePythonTests
      */
@@ -1447,7 +1429,19 @@ class UuidTest extends TestCase
      * Taken from the Python UUID tests in
      * http://hg.python.org/cpython/file/2f4c4db9aee5/Lib/test/test_uuid.py
      *
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingTraversableTypeHintSpecification
+     * @return array<array{
+     *     string: non-empty-string,
+     *     curly: non-empty-string,
+     *     hex: non-empty-string,
+     *     bytes: non-empty-string,
+     *     int: non-empty-string,
+     *     fields: array<string, string>,
+     *     urn: non-empty-string,
+     *     time: non-empty-string,
+     *     clock_seq: non-empty-string,
+     *     variant: int,
+     *     version: int | null,
+     * }>
      */
     public function providePythonTests(): array
     {
@@ -1914,7 +1908,7 @@ class UuidTest extends TestCase
     }
 
     /**
-     * @param mixed[] $args
+     * @param array<int | string> $args
      *
      * @dataProvider provideStaticMethods
      */
@@ -1926,7 +1920,7 @@ class UuidTest extends TestCase
     }
 
     /**
-     * @param mixed[] $args
+     * @param array<int | string> $args
      *
      * @dataProvider provideStaticMethods
      */
@@ -1934,6 +1928,7 @@ class UuidTest extends TestCase
         string $staticMethod,
         array $args = []
     ): void {
+        /** @var UuidInterface $generated */
         $generated = Uuid::$staticMethod(...$args);
 
         self::assertSame(
@@ -1943,7 +1938,7 @@ class UuidTest extends TestCase
     }
 
     /**
-     * @param mixed[] $args
+     * @param array<int | string> $args
      *
      * @dataProvider provideStaticMethods
      */
@@ -1951,6 +1946,7 @@ class UuidTest extends TestCase
         string $staticMethod,
         array $args = []
     ): void {
+        /** @var UuidInterface $generated */
         $generated = Uuid::$staticMethod(...$args);
 
         self::assertSame(
@@ -1960,7 +1956,7 @@ class UuidTest extends TestCase
     }
 
     /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingTraversableTypeHintSpecification
+     * @return array<array{0: string, 1?: array<int | string>}>
      */
     public function provideStaticMethods(): array
     {

@@ -32,6 +32,7 @@ use function str_replace;
 class UuidBuilderTest extends TestCase
 {
     /**
+     * @param non-empty-string $uuid
      * @param class-string $expectedClass
      *
      * @dataProvider provideBuildTestValues
@@ -56,7 +57,7 @@ class UuidBuilderTest extends TestCase
     }
 
     /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingTraversableTypeHintSpecification
+     * @return array<array{uuid: non-empty-string, expectedClass: class-string, expectedVersion: int | null}>
      */
     public function provideBuildTestValues(): array
     {

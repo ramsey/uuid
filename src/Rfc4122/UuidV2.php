@@ -48,7 +48,7 @@ use function hexdec;
  * @link https://pubs.opengroup.org/onlinepubs/9629399/apdxa.htm DCE 1.1: RPC, Appendix A
  * @link https://github.com/google/uuid Go package for UUIDs (includes DCE implementation)
  *
- * @psalm-immutable
+ * @immutable
  */
 final class UuidV2 extends Uuid implements UuidInterface
 {

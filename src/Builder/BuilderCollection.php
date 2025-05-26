@@ -27,7 +27,7 @@ use Traversable;
 /**
  * A collection of UuidBuilderInterface objects
  *
- * @deprecated this class has been deprecated, and will be removed in 5.0.0. The use-case for this class comes from
+ * @deprecated this class has been deprecated and will be removed in 5.0.0. The use-case for this class comes from
  *             a pre-`phpstan/phpstan` and pre-`vimeo/psalm` ecosystem, in which type safety had to be mostly enforced
  *             at runtime: that is no longer necessary, now that you can safely verify your code to be correct, and use
  *             more generic types like `iterable<T>` instead.
@@ -41,11 +41,6 @@ class BuilderCollection extends AbstractCollection
         return UuidBuilderInterface::class;
     }
 
-    /**
-     * @psalm-mutation-free
-     * @psalm-suppress ImpureMethodCall
-     * @psalm-suppress InvalidTemplateParam
-     */
     public function getIterator(): Traversable
     {
         return parent::getIterator();
@@ -56,9 +51,6 @@ class BuilderCollection extends AbstractCollection
      *
      * @param string $serialized The serialized PHP string to unserialize into
      *     a UuidInterface instance
-     *
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
-     * @psalm-suppress RedundantConditionGivenDocblockType
      */
     public function unserialize($serialized): void
     {
@@ -78,6 +70,7 @@ class BuilderCollection extends AbstractCollection
         $this->data = array_filter(
             $data,
             function ($unserialized): bool {
+                /** @phpstan-ignore instanceof.alwaysTrue */
                 return $unserialized instanceof UuidBuilderInterface;
             }
         );

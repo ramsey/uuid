@@ -34,7 +34,7 @@ class GenericValidatorTest extends TestCase
     }
 
     /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingTraversableTypeHintSpecification
+     * @return array<array{value: string, expected: bool}>
      */
     public function provideValuesForValidation(): array
     {

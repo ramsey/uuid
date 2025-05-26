@@ -26,7 +26,7 @@ use function substr;
  *
  * @see Guid
  *
- * @psalm-immutable
+ * @immutable
  */
 class GuidStringCodec extends StringCodec
 {

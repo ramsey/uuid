@@ -23,7 +23,7 @@ use function strlen;
 /**
  * Provides common serialization functionality to fields
  *
- * @psalm-immutable
+ * @immutable
  */
 trait SerializableFieldsTrait
 {
@@ -57,8 +57,6 @@ trait SerializableFieldsTrait
      * Constructs the object from a serialized string representation
      *
      * @param string $data The serialized string representation of the object
-     *
-     * @psalm-suppress UnusedMethodCall
      */
     public function unserialize(string $data): void
     {
@@ -71,8 +69,6 @@ trait SerializableFieldsTrait
 
     /**
      * @param array{bytes?: string} $data
-     *
-     * @psalm-suppress UnusedMethodCall
      */
     public function __unserialize(array $data): void
     {
