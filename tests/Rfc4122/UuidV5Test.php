@@ -38,7 +38,7 @@ class UuidV5Test extends TestCase
     }
 
     /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingTraversableTypeHintSpecification
+     * @return array<array{version: int}>
      */
     public function provideTestVersions(): array
     {

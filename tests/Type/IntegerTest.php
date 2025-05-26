@@ -16,7 +16,7 @@ use function unserialize;
 class IntegerTest extends TestCase
 {
     /**
-     * @param int|float|string $value
+     * @param int|float|string|IntegerObject $value
      *
      * @dataProvider provideInteger
      */
@@ -30,7 +30,7 @@ class IntegerTest extends TestCase
     }
 
     /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingTraversableTypeHintSpecification
+     * @return array<array{value: int|float|string|IntegerObject, expected: string, expectedIsNegative: bool}>
      */
     public function provideInteger(): array
     {
@@ -175,7 +175,7 @@ class IntegerTest extends TestCase
     }
 
     /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingTraversableTypeHintSpecification
+     * @return array<array{0: int|float|string}>
      */
     public function provideIntegerBadValues(): array
     {
@@ -195,7 +195,7 @@ class IntegerTest extends TestCase
     }
 
     /**
-     * @param mixed $value
+     * @param int|float|string|IntegerObject $value
      *
      * @dataProvider provideInteger
      */
@@ -203,13 +203,15 @@ class IntegerTest extends TestCase
     {
         $integer = new IntegerObject($value);
         $serializedInteger = serialize($integer);
+
+        /** @var IntegerObject $unserializedInteger */
         $unserializedInteger = unserialize($serializedInteger);
 
         $this->assertSame($expected, $unserializedInteger->toString());
     }
 
     /**
-     * @param mixed $value
+     * @param int|float|string|IntegerObject $value
      *
      * @dataProvider provideInteger
      */

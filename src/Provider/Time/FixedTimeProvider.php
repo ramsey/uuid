@@ -19,21 +19,15 @@ use Ramsey\Uuid\Type\Integer as IntegerObject;
 use Ramsey\Uuid\Type\Time;
 
 /**
- * FixedTimeProvider uses an known time to provide the time
+ * FixedTimeProvider uses a known time to provide the time
  *
  * This provider allows the use of a previously-generated, or known, time
  * when generating time-based UUIDs.
  */
 class FixedTimeProvider implements TimeProviderInterface
 {
-    /**
-     * @var Time
-     */
-    private $fixedTime;
-
-    public function __construct(Time $time)
+    public function __construct(private Time $time)
     {
-        $this->fixedTime = $time;
     }
 
     /**
@@ -43,7 +37,7 @@ class FixedTimeProvider implements TimeProviderInterface
      */
     public function setUsec($value): void
     {
-        $this->fixedTime = new Time($this->fixedTime->getSeconds(), $value);
+        $this->time = new Time($this->time->getSeconds(), $value);
     }
 
     /**
@@ -53,11 +47,11 @@ class FixedTimeProvider implements TimeProviderInterface
      */
     public function setSec($value): void
     {
-        $this->fixedTime = new Time($value, $this->fixedTime->getMicroseconds());
+        $this->time = new Time($value, $this->time->getMicroseconds());
     }
 
     public function getTime(): Time
     {
-        return $this->fixedTime;
+        return $this->time;
     }
 }

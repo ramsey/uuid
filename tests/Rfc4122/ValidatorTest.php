@@ -30,17 +30,25 @@ class ValidatorTest extends TestCase
         $validator = new Validator();
 
         foreach ($variations as $variation) {
-            $this->assertSame($expected, $validator->validate($variation));
+            $this->assertSame(
+                $expected,
+                $validator->validate($variation),
+                sprintf(
+                    'Expected "%s" to be %s',
+                    $variation,
+                    $expected ? 'valid' : 'not valid',
+                ),
+            );
         }
     }
 
     /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingTraversableTypeHintSpecification
+     * @return array<array{value: string, expected: bool}>
      */
     public function provideValuesForValidation(): array
     {
         $hexMutations = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 'a', 'b', 'c', 'd', 'e', 'f'];
-        $trueVersions = [1, 2, 3, 4, 5];
+        $trueVersions = [1, 2, 3, 4, 5, 6, 7, 8];
         $trueVariants = [8, 9, 'a', 'b'];
 
         $testValues = [];
@@ -87,13 +95,25 @@ class ValidatorTest extends TestCase
                 'value' => "\nff6f8cb0-c57d-11e1-1b21-0800200c9a66\n",
                 'expected' => false,
             ],
+            [
+                'value' => '00000000-0000-0000-0000-000000000000',
+                'expected' => true,
+            ],
+            [
+                'value' => 'ffffffff-ffff-ffff-ffff-ffffffffffff',
+                'expected' => true,
+            ],
+            [
+                'value' => 'FFFFFFFF-FFFF-FFFF-FFFF-FFFFFFFFFFFF',
+                'expected' => true,
+            ],
         ]);
     }
 
     public function testGetPattern(): void
     {
         $expectedPattern = '\A[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-'
-            . '[1-5]{1}[0-9A-Fa-f]{3}-[ABab89]{1}[0-9A-Fa-f]{3}-[0-9A-Fa-f]{12}\z';
+            . '[1-8][0-9A-Fa-f]{3}-[ABab89][0-9A-Fa-f]{3}-[0-9A-Fa-f]{12}\z';
 
         $validator = new Validator();
 

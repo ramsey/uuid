@@ -26,19 +26,11 @@ use Ramsey\Uuid\UuidInterface;
  * @deprecated DegradedUuid instances are no longer necessary to support 32-bit
  *     systems. Transition to {@see DefaultUuidBuilder}.
  *
- * @psalm-immutable
+ * @immutable
  */
 class DegradedUuidBuilder implements UuidBuilderInterface
 {
-    /**
-     * @var NumberConverterInterface
-     */
-    private $numberConverter;
-
-    /**
-     * @var TimeConverterInterface
-     */
-    private $timeConverter;
+    private TimeConverterInterface $timeConverter;
 
     /**
      * @param NumberConverterInterface $numberConverter The number converter to
@@ -47,10 +39,9 @@ class DegradedUuidBuilder implements UuidBuilderInterface
      *     for converting timestamps extracted from a UUID to Unix timestamps
      */
     public function __construct(
-        NumberConverterInterface $numberConverter,
+        private NumberConverterInterface $numberConverter,
         ?TimeConverterInterface $timeConverter = null
     ) {
-        $this->numberConverter = $numberConverter;
         $this->timeConverter = $timeConverter ?: new DegradedTimeConverter();
     }
 
@@ -61,8 +52,6 @@ class DegradedUuidBuilder implements UuidBuilderInterface
      * @param string $bytes The byte string from which to construct a UUID
      *
      * @return DegradedUuid The DegradedUuidBuild returns an instance of Ramsey\Uuid\DegradedUuid
-     *
-     * @psalm-pure
      */
     public function build(CodecInterface $codec, string $bytes): UuidInterface
     {

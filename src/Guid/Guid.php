@@ -49,7 +49,7 @@ use Ramsey\Uuid\UuidFactoryInterface;
  * @link https://docs.microsoft.com/en-us/dotnet/api/system.guid .NET Guid Struct
  * @link https://docs.microsoft.com/en-us/dotnet/api/system.guid.tobytearray .NET Guid.ToByteArray Method
  *
- * @psalm-immutable
+ * @immutable
  */
 final class Guid extends Uuid
 {

@@ -15,7 +15,7 @@ use function hex2bin;
 class RandomBytesGeneratorTest extends TestCase
 {
     /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingTraversableTypeHintSpecification
+     * @return array<array{0: positive-int, 1: non-empty-string}>
      */
     public function lengthAndHexDataProvider(): array
     {
@@ -27,6 +27,9 @@ class RandomBytesGeneratorTest extends TestCase
     }
 
     /**
+     * @param positive-int $length
+     * @param non-empty-string $hex
+     *
      * @throws Exception
      *
      * @dataProvider lengthAndHexDataProvider
@@ -51,7 +54,7 @@ class RandomBytesGeneratorTest extends TestCase
      * @runInSeparateProcess
      * @preserveGlobalState disabled
      */
-    public function testGenerateThrowsExceptionWhenExceptionThrownByRandombytes(): void
+    public function testGenerateThrowsExceptionWhenExceptionThrownByRandomBytes(): void
     {
         PHPMockery::mock('Ramsey\Uuid\Generator', 'random_bytes')
             ->once()

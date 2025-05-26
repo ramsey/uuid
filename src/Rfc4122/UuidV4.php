@@ -25,7 +25,7 @@ use Ramsey\Uuid\Uuid;
  * Random, or version 4, UUIDs are randomly or pseudo-randomly generated 128-bit
  * integers
  *
- * @psalm-immutable
+ * @immutable
  */
 final class UuidV4 extends Uuid implements UuidInterface
 {

@@ -26,6 +26,8 @@ class FieldsTest extends TestCase
     }
 
     /**
+     * @param non-empty-string $guid
+     *
      * @dataProvider nonRfc4122GuidVariantProvider
      */
     public function testConstructorThrowsExceptionIfNotRfc4122Variant(string $guid): void
@@ -44,7 +46,7 @@ class FieldsTest extends TestCase
     /**
      * These values are already in GUID byte order, for easy testing.
      *
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingTraversableTypeHintSpecification
+     * @return array<array{0: non-empty-string}>
      */
     public function nonRfc4122GuidVariantProvider(): array
     {
@@ -65,6 +67,8 @@ class FieldsTest extends TestCase
     }
 
     /**
+     * @param non-empty-string $guid
+     *
      * @dataProvider invalidVersionProvider
      */
     public function testConstructorThrowsExceptionIfInvalidVersion(string $guid): void
@@ -80,7 +84,7 @@ class FieldsTest extends TestCase
     }
 
     /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingTraversableTypeHintSpecification
+     * @return array<array{0: non-empty-string}>
      */
     public function invalidVersionProvider(): array
     {
@@ -89,19 +93,28 @@ class FieldsTest extends TestCase
         // representations, which are never in GUID byte order.
         return [
             ['b08c6fff7dc5e1018b210800200c9a66'],
-            ['b08c6fff7dc5e1719b210800200c9a66'],
-            ['b08c6fff7dc5e181ab210800200c9a66'],
             ['b08c6fff7dc5e191bb210800200c9a66'],
+            ['b08c6fff7dc5e1a19b210800200c9a66'],
+            ['b08c6fff7dc5e1b1ab210800200c9a66'],
+            ['b08c6fff7dc5e1c1ab210800200c9a66'],
+            ['b08c6fff7dc5e1d1ab210800200c9a66'],
+            ['b08c6fff7dc5e1e1ab210800200c9a66'],
+            ['b08c6fff7dc5e1f1ab210800200c9a66'],
         ];
     }
 
     /**
-     * @param string|int $expectedValue
+     * @param non-empty-string $bytes
+     * @param non-empty-string $methodName
+     * @param non-empty-string | bool | int | null $expectedValue
      *
      * @dataProvider fieldGetterMethodProvider
      */
-    public function testFieldGetterMethods(string $bytes, string $methodName, $expectedValue): void
-    {
+    public function testFieldGetterMethods(
+        string $bytes,
+        string $methodName,
+        bool | int | string | null $expectedValue,
+    ): void {
         $bytes = (string) hex2bin($bytes);
         $fields = new Fields($bytes);
 
@@ -115,7 +128,7 @@ class FieldsTest extends TestCase
     }
 
     /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingTraversableTypeHintSpecification
+     * @return array<array{0: non-empty-string, 1: non-empty-string, 2: non-empty-string | int | bool | null}>
      */
     public function fieldGetterMethodProvider(): array
     {
@@ -135,6 +148,7 @@ class FieldsTest extends TestCase
             ['b08c6fff7dc5e111cb210800200c9a66', 'getVariant', 6],
             ['b08c6fff7dc5e111cb210800200c9a66', 'getVersion', 1],
             ['b08c6fff7dc5e111cb210800200c9a66', 'isNil', false],
+            ['b08c6fff7dc5e111cb210800200c9a66', 'isMax', false],
 
             // For ff6f8cb0-c57d-41e1-db21-0800200c9a66
             ['b08c6fff7dc5e141db210800200c9a66', 'getClockSeq', '1b21'],
@@ -148,6 +162,7 @@ class FieldsTest extends TestCase
             ['b08c6fff7dc5e141db210800200c9a66', 'getVariant', 6],
             ['b08c6fff7dc5e141db210800200c9a66', 'getVersion', 4],
             ['b08c6fff7dc5e141db210800200c9a66', 'isNil', false],
+            ['b08c6fff7dc5e141db210800200c9a66', 'isMax', false],
 
             // For ff6f8cb0-c57d-31e1-8b21-0800200c9a66
             ['b08c6fff7dc5e1318b210800200c9a66', 'getClockSeq', '0b21'],
@@ -161,6 +176,7 @@ class FieldsTest extends TestCase
             ['b08c6fff7dc5e1318b210800200c9a66', 'getVariant', 2],
             ['b08c6fff7dc5e1318b210800200c9a66', 'getVersion', 3],
             ['b08c6fff7dc5e1318b210800200c9a66', 'isNil', false],
+            ['b08c6fff7dc5e1318b210800200c9a66', 'isMax', false],
 
             // For ff6f8cb0-c57d-51e1-9b21-0800200c9a66
             ['b08c6fff7dc5e1519b210800200c9a66', 'getClockSeq', '1b21'],
@@ -174,6 +190,7 @@ class FieldsTest extends TestCase
             ['b08c6fff7dc5e1519b210800200c9a66', 'getVariant', 2],
             ['b08c6fff7dc5e1519b210800200c9a66', 'getVersion', 5],
             ['b08c6fff7dc5e1519b210800200c9a66', 'isNil', false],
+            ['b08c6fff7dc5e1519b210800200c9a66', 'isMax', false],
 
             // For 00000000-0000-0000-0000-000000000000
             ['00000000000000000000000000000000', 'getClockSeq', '0000'],
@@ -184,9 +201,24 @@ class FieldsTest extends TestCase
             ['00000000000000000000000000000000', 'getTimeLow', '00000000'],
             ['00000000000000000000000000000000', 'getTimeMid', '0000'],
             ['00000000000000000000000000000000', 'getTimestamp', '000000000000000'],
-            ['00000000000000000000000000000000', 'getVariant', 0],
+            ['00000000000000000000000000000000', 'getVariant', 2],
             ['00000000000000000000000000000000', 'getVersion', null],
             ['00000000000000000000000000000000', 'isNil', true],
+            ['00000000000000000000000000000000', 'isMax', false],
+
+            // For ffffffff-ffff-ffff-ffff-ffffffffffff
+            ['ffffffffffffffffffffffffffffffff', 'getClockSeq', 'ffff'],
+            ['ffffffffffffffffffffffffffffffff', 'getClockSeqHiAndReserved', 'ff'],
+            ['ffffffffffffffffffffffffffffffff', 'getClockSeqLow', 'ff'],
+            ['ffffffffffffffffffffffffffffffff', 'getNode', 'ffffffffffff'],
+            ['ffffffffffffffffffffffffffffffff', 'getTimeHiAndVersion', 'ffff'],
+            ['ffffffffffffffffffffffffffffffff', 'getTimeLow', 'ffffffff'],
+            ['ffffffffffffffffffffffffffffffff', 'getTimeMid', 'ffff'],
+            ['ffffffffffffffffffffffffffffffff', 'getTimestamp', 'fffffffffffffff'],
+            ['ffffffffffffffffffffffffffffffff', 'getVariant', 2],
+            ['ffffffffffffffffffffffffffffffff', 'getVersion', null],
+            ['ffffffffffffffffffffffffffffffff', 'isNil', false],
+            ['ffffffffffffffffffffffffffffffff', 'isMax', true],
         ];
     }
 
@@ -196,6 +228,8 @@ class FieldsTest extends TestCase
         $fields = new Fields($bytes);
 
         $serializedFields = serialize($fields);
+
+        /** @var Fields $unserializedFields */
         $unserializedFields = unserialize($serializedFields);
 
         $this->assertSame($fields->getBytes(), $unserializedFields->getBytes());

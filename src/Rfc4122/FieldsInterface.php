@@ -35,7 +35,7 @@ use Ramsey\Uuid\Type\Hexadecimal;
  *
  * @link http://tools.ietf.org/html/rfc4122#section-4.1 RFC 4122, § 4.1: Format
  *
- * @psalm-immutable
+ * @immutable
  */
 interface FieldsInterface extends BaseFieldsInterface
 {
@@ -103,11 +103,13 @@ interface FieldsInterface extends BaseFieldsInterface
      * The version number describes how the UUID was generated and has the
      * following meaning:
      *
-     * 1. Time-based UUID
+     * 1. Gregorian time UUID
      * 2. DCE security UUID
      * 3. Name-based UUID hashed with MD5
      * 4. Randomly generated UUID
      * 5. Name-based UUID hashed with SHA-1
+     * 6. Reordered time UUID
+     * 7. Unix Epoch time UUID
      *
      * This returns `null` if the UUID is not an RFC 4122 variant, since version
      * is only meaningful for this variant.

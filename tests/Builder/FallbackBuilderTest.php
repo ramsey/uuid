@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Ramsey\Uuid\Test\Builder;
 
-use DateTimeInterface;
 use Mockery;
 use Ramsey\Uuid\Builder\FallbackBuilder;
 use Ramsey\Uuid\Builder\UuidBuilderInterface;
@@ -18,10 +17,10 @@ use Ramsey\Uuid\Exception\UnableToBuildUuidException;
 use Ramsey\Uuid\Guid\GuidBuilder;
 use Ramsey\Uuid\Math\BrickMathCalculator;
 use Ramsey\Uuid\Nonstandard\UuidBuilder as NonstandardUuidBuilder;
-use Ramsey\Uuid\Nonstandard\UuidV6;
 use Ramsey\Uuid\Rfc4122\UuidBuilder as Rfc4122UuidBuilder;
 use Ramsey\Uuid\Rfc4122\UuidV1;
 use Ramsey\Uuid\Rfc4122\UuidV2;
+use Ramsey\Uuid\Rfc4122\UuidV6;
 use Ramsey\Uuid\Test\TestCase;
 
 class FallbackBuilderTest extends TestCase
@@ -101,7 +100,7 @@ class FallbackBuilderTest extends TestCase
                 $uuid = $builder->build($codec, $bytes);
 
                 if (($uuid instanceof UuidV1) || ($uuid instanceof UuidV2) || ($uuid instanceof UuidV6)) {
-                    $this->assertInstanceOf(DateTimeInterface::class, $uuid->getDateTime());
+                    $this->assertNotEmpty($uuid->getDateTime()->format('r'));
                 }
             } catch (UnableToBuildUuidException $exception) {
                 switch ($exception->getMessage()) {
@@ -118,78 +117,78 @@ class FallbackBuilderTest extends TestCase
     }
 
     /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingTraversableTypeHintSpecification
+     * @return array<array{bytes: string}>
      */
     public function provideBytes(): array
     {
         return [
             [
                 // GUID bytes
-                'bytes' => hex2bin('b08c6fff7dc5e1110b210800200c9a66'),
+                'bytes' => (string) hex2bin('b08c6fff7dc5e1110b210800200c9a66'),
             ],
             [
                 // GUID bytes
-                'bytes' => hex2bin('b08c6fff7dc5e1111b210800200c9a66'),
+                'bytes' => (string) hex2bin('b08c6fff7dc5e1111b210800200c9a66'),
             ],
             [
                 // GUID bytes
-                'bytes' => hex2bin('b08c6fff7dc5e1112b210800200c9a66'),
+                'bytes' => (string) hex2bin('b08c6fff7dc5e1112b210800200c9a66'),
             ],
             [
                 // GUID bytes
-                'bytes' => hex2bin('b08c6fff7dc5e1113b210800200c9a66'),
+                'bytes' => (string) hex2bin('b08c6fff7dc5e1113b210800200c9a66'),
             ],
             [
                 // GUID bytes
-                'bytes' => hex2bin('b08c6fff7dc5e1114b210800200c9a66'),
+                'bytes' => (string) hex2bin('b08c6fff7dc5e1114b210800200c9a66'),
             ],
             [
                 // GUID bytes
-                'bytes' => hex2bin('b08c6fff7dc5e1115b210800200c9a66'),
+                'bytes' => (string) hex2bin('b08c6fff7dc5e1115b210800200c9a66'),
             ],
             [
                 // GUID bytes
-                'bytes' => hex2bin('b08c6fff7dc5e1116b210800200c9a66'),
+                'bytes' => (string) hex2bin('b08c6fff7dc5e1116b210800200c9a66'),
             ],
             [
                 // GUID bytes
-                'bytes' => hex2bin('b08c6fff7dc5e1117b210800200c9a66'),
+                'bytes' => (string) hex2bin('b08c6fff7dc5e1117b210800200c9a66'),
             ],
             [
                 // GUID bytes
-                'bytes' => hex2bin('b08c6fff7dc5e111eb210800200c9a66'),
+                'bytes' => (string) hex2bin('b08c6fff7dc5e111eb210800200c9a66'),
             ],
             [
                 // GUID bytes
-                'bytes' => hex2bin('b08c6fff7dc5e111fb210800200c9a66'),
+                'bytes' => (string) hex2bin('b08c6fff7dc5e111fb210800200c9a66'),
             ],
             [
                 // Version 1 bytes
-                'bytes' => hex2bin('ff6f8cb0c57d11e19b210800200c9a66'),
+                'bytes' => (string) hex2bin('ff6f8cb0c57d11e19b210800200c9a66'),
             ],
             [
                 // Version 2 bytes
-                'bytes' => hex2bin('000001f55cde21ea84000242ac130003'),
+                'bytes' => (string) hex2bin('000001f55cde21ea84000242ac130003'),
             ],
             [
                 // Version 3 bytes
-                'bytes' => hex2bin('ff6f8cb0c57d31e1bb210800200c9a66'),
+                'bytes' => (string) hex2bin('ff6f8cb0c57d31e1bb210800200c9a66'),
             ],
             [
                 // Version 4 bytes
-                'bytes' => hex2bin('ff6f8cb0c57d41e1ab210800200c9a66'),
+                'bytes' => (string) hex2bin('ff6f8cb0c57d41e1ab210800200c9a66'),
             ],
             [
                 // Version 5 bytes
-                'bytes' => hex2bin('ff6f8cb0c57d51e18b210800200c9a66'),
+                'bytes' => (string) hex2bin('ff6f8cb0c57d51e18b210800200c9a66'),
             ],
             [
                 // Version 6 bytes
-                'bytes' => hex2bin('ff6f8cb0c57d61e18b210800200c9a66'),
+                'bytes' => (string) hex2bin('ff6f8cb0c57d61e18b210800200c9a66'),
             ],
             [
                 // NIL bytes
-                'bytes' => hex2bin('00000000000000000000000000000000'),
+                'bytes' => (string) hex2bin('00000000000000000000000000000000'),
             ],
         ];
     }

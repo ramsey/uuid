@@ -229,29 +229,28 @@ small.
 Insertion Order and Sorting
 ###########################
 
-UUIDs are not *monotonically increasing*. Even time-based UUIDs are not. If
-using UUIDs as primary keys, the inserts will be random, and the data will be
+UUID versions 1, 2, 3, 4, and 5 are not *monotonically increasing*. If using
+these versions as primary keys, the inserts will be random, and the data will be
 scattered on disk (for InnoDB). Over time, as the database size grows, lookups
 will become slower and slower.
 
-.. note::
+.. tip::
 
     See Percona's "`Storing UUID Values in MySQL`_" post, for more details on
     the performance of UUIDs as primary keys.
 
 To minimize these problems, two solutions have been devised:
 
-1. Timestamp first COMBs
-2. Ordered Time UUIDs
+1. :ref:`rfc4122.version6` UUIDs
+2. :ref:`rfc4122.version7` UUIDs
 
-:ref:`customize.timestamp-first-comb-codec` explains the first solution and how
-to use ramsey/uuid to implement it, while :ref:`customize.ordered-time-codec`
-explains how to use ramsey/uuid to implement the second solution.
+.. note::
 
-.. hint::
-
-    :ref:`Version 6, ordered-time UUIDs <nonstandard.version6>` are a proposed
-    new version of UUID that take the place of ordered time UUIDs.
+    We previously recommended the use of the :ref:`timestamp-first COMB
+    <customize.timestamp-first-comb-codec>` or :ref:`ordered-time
+    <customize.ordered-time-codec>` codecs to solve these problems. However,
+    UUID versions 6 and 7 were defined to provide these solutions in a
+    standardized way.
 
 
 .. _ramsey/uuid-doctrine: https://github.com/ramsey/uuid-doctrine
@@ -259,4 +258,3 @@ explains how to use ramsey/uuid to implement the second solution.
 .. _MariaDB: https://mariadb.org
 .. _PHP Data Objects (PDO): https://www.php.net/pdo
 .. _Storing UUID Values in MySQL: https://www.percona.com/blog/2014/12/19/store-uuid-optimized-way/
-.. _Version 6, ordered-time UUIDs: nonstandard.version6

@@ -5,9 +5,9 @@ Introduction
 ============
 
 ramsey/uuid is a PHP library for generating and working with `RFC 4122`_ version
-1, 2, 3, 4, and 5 universally unique identifiers (UUID). ramsey/uuid also
-supports optional and non-standard features, such as `version 6 UUIDs`_,
-GUIDs, and other approaches for encoding/decoding UUIDs.
+1, 2, 3, 4, 5, 6, and 7 universally unique identifiers (UUID). ramsey/uuid also
+supports optional and non-standard features, such as GUIDs and other approaches
+for encoding/decoding UUIDs.
 
 What Is a UUID?
 ###############
@@ -29,4 +29,3 @@ UUIDs can also be stored in binary format, as a string of 16 bytes.
 
 
 .. _RFC 4122: https://tools.ietf.org/html/rfc4122
-.. _version 6 UUIDs: http://gh.peabody.io/uuidv6/

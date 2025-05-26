@@ -20,20 +20,67 @@ use Ramsey\Uuid\Type\Integer as IntegerObject;
 use Ramsey\Uuid\Validator\ValidatorInterface;
 
 /**
- * UuidFactoryInterface defines common functionality all `UuidFactory` instances
+ * UuidFactoryInterface defines the common functionality all `UuidFactory` instances
  * must implement
  */
 interface UuidFactoryInterface
 {
     /**
-     * Returns the validator to use for the factory
+     * Creates a UUID from a byte string
      *
-     * @psalm-mutation-free
+     * @param string $bytes A binary string
+     *
+     * @return UuidInterface A UuidInterface instance created from a binary
+     *     string representation
+     */
+    public function fromBytes(string $bytes): UuidInterface;
+
+    /**
+     * Creates a UUID from a DateTimeInterface instance
+     *
+     * @param DateTimeInterface $dateTime The date and time
+     * @param Hexadecimal|null $node A 48-bit number representing the hardware
+     *     address
+     * @param int|null $clockSeq A 14-bit number used to help avoid duplicates
+     *     that could arise when the clock is set backwards in time or if the
+     *     node ID changes
+     *
+     * @return UuidInterface A UuidInterface instance that represents a
+     *     version 1 UUID created from a DateTimeInterface instance
+     */
+    public function fromDateTime(
+        DateTimeInterface $dateTime,
+        ?Hexadecimal $node = null,
+        ?int $clockSeq = null
+    ): UuidInterface;
+
+    /**
+     * Creates a UUID from a 128-bit integer string
+     *
+     * @param string $integer String representation of 128-bit integer
+     *
+     * @return UuidInterface A UuidInterface instance created from the string
+     *     representation of a 128-bit integer
+     */
+    public function fromInteger(string $integer): UuidInterface;
+
+    /**
+     * Creates a UUID from the string standard representation
+     *
+     * @param string $uuid A hexadecimal string
+     *
+     * @return UuidInterface A UuidInterface instance created from a hexadecimal
+     *     string representation
+     */
+    public function fromString(string $uuid): UuidInterface;
+
+    /**
+     * Returns the validator used by the factory
      */
     public function getValidator(): ValidatorInterface;
 
     /**
-     * Returns a version 1 (time-based) UUID from a host ID, sequence number,
+     * Returns a version 1 (Gregorian time) UUID from a host ID, sequence number,
      * and the current time
      *
      * @param Hexadecimal|int|string|null $node A 48-bit number representing the
@@ -83,8 +130,6 @@ interface UuidFactoryInterface
      *
      * @return UuidInterface A UuidInterface instance that represents a
      *     version 3 UUID
-     *
-     * @psalm-pure
      */
     public function uuid3($ns, string $name): UuidInterface;
 
@@ -105,13 +150,11 @@ interface UuidFactoryInterface
      *
      * @return UuidInterface A UuidInterface instance that represents a
      *     version 5 UUID
-     *
-     * @psalm-pure
      */
     public function uuid5($ns, string $name): UuidInterface;
 
     /**
-     * Returns a version 6 (ordered-time) UUID from a host ID, sequence number,
+     * Returns a version 6 (reordered time) UUID from a host ID, sequence number,
      * and the current time
      *
      * @param Hexadecimal|null $node A 48-bit number representing the hardware
@@ -124,59 +167,4 @@ interface UuidFactoryInterface
      *     version 6 UUID
      */
     public function uuid6(?Hexadecimal $node = null, ?int $clockSeq = null): UuidInterface;
-
-    /**
-     * Creates a UUID from a byte string
-     *
-     * @param string $bytes A binary string
-     *
-     * @return UuidInterface A UuidInterface instance created from a binary
-     *     string representation
-     *
-     * @psalm-pure
-     */
-    public function fromBytes(string $bytes): UuidInterface;
-
-    /**
-     * Creates a UUID from the string standard representation
-     *
-     * @param string $uuid A hexadecimal string
-     *
-     * @return UuidInterface A UuidInterface instance created from a hexadecimal
-     *     string representation
-     *
-     * @psalm-pure
-     */
-    public function fromString(string $uuid): UuidInterface;
-
-    /**
-     * Creates a UUID from a 128-bit integer string
-     *
-     * @param string $integer String representation of 128-bit integer
-     *
-     * @return UuidInterface A UuidInterface instance created from the string
-     *     representation of a 128-bit integer
-     *
-     * @psalm-pure
-     */
-    public function fromInteger(string $integer): UuidInterface;
-
-    /**
-     * Creates a UUID from a DateTimeInterface instance
-     *
-     * @param DateTimeInterface $dateTime The date and time
-     * @param Hexadecimal|null $node A 48-bit number representing the hardware
-     *     address
-     * @param int|null $clockSeq A 14-bit number used to help avoid duplicates
-     *     that could arise when the clock is set backwards in time or if the
-     *     node ID changes
-     *
-     * @return UuidInterface A UuidInterface instance that represents a
-     *     version 1 UUID created from a DateTimeInterface instance
-     */
-    public function fromDateTime(
-        DateTimeInterface $dateTime,
-        ?Hexadecimal $node = null,
-        ?int $clockSeq = null
-    ): UuidInterface;
 }

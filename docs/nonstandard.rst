@@ -20,8 +20,8 @@ completely random and do not follow any rules.
 For these cases, ramsey/uuid provides a special functionality to handle these
 alternate, nonstandard forms.
 
-Version 6: Ordered-time
-    This is a proposed version of UUID that combines the features of a
+Version 6: Reordered Time
+    This is a new version of UUID that combines the features of a
     :ref:`version 1 UUID <rfc4122.version1>` with a *monotonically increasing*
     UUID. For more details, see :ref:`nonstandard.version6`.
 

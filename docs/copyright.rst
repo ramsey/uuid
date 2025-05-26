@@ -4,7 +4,7 @@
 Copyright
 =========
 
-Copyright © 2012-2020 Ben Ramsey <ben@benramsey.com>
+Copyright © 2012-|current_year| Ben Ramsey <ben@benramsey.com>
 
 This work is licensed under the Creative Commons Attribution 4.0 International
 License. To view a copy of this license, visit

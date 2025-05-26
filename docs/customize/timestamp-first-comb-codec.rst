@@ -4,6 +4,13 @@
 Timestamp-first COMB Codec
 ==========================
 
+.. attention::
+
+    :ref:`Version 7, Unix Epoch time UUIDs <rfc4122.version7>` are a new version
+    of UUID that eliminate the need for the timestamp-first COMB codec. If you
+    aren't currently using the timestamp-first COMB codec, and you need
+    time-based, sortable UUIDs, consider using version 7 UUIDs.
+
 :ref:`Version 4, random UUIDs <rfc4122.version4>` are doubly problematic when it
 comes to sorting and storing to databases (see :ref:`database.order`), since
 their values are random, and there is no timestamp associated with them that may

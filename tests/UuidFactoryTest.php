@@ -67,6 +67,7 @@ class UuidFactoryTest extends TestCase
         $randomGenerator = Mockery::mock(RandomGeneratorInterface::class);
         $timeConverter = Mockery::mock(TimeConverterInterface::class);
         $timeGenerator = Mockery::mock(TimeGeneratorInterface::class);
+        $unixTimeGenerator = Mockery::mock(TimeGeneratorInterface::class);
         $nameGenerator = Mockery::mock(NameGeneratorInterface::class);
         $dceSecurityGenerator = Mockery::mock(DceSecurityGeneratorInterface::class);
         $numberConverter = Mockery::mock(NumberConverterInterface::class);
@@ -84,6 +85,7 @@ class UuidFactoryTest extends TestCase
             'getNumberConverter' => $numberConverter,
             'getBuilder' => $builder,
             'getValidator' => $validator,
+            'getUnixTimeGenerator' => $unixTimeGenerator,
         ]);
 
         $uuidFactory = new UuidFactory($featureSet);
@@ -156,7 +158,7 @@ class UuidFactoryTest extends TestCase
     }
 
     /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingTraversableTypeHintSpecification
+     * @return array<array{0: DateTimeInterface, 1: Hexadecimal | null, 2: int | null, 3: string, 4: string}>
      */
     public function provideDateTime(): array
     {

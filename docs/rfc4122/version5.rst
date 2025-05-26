@@ -83,8 +83,8 @@ The best way to do this is to generate a :ref:`version 1 <rfc4122.version1>` or
 
     printf("My namespace UUID is %s\n", $uuid->toString());
 
-This will generate a version 1, time-based UUID, which we'll store to a constant
-so we can reuse it as our own custom namespace.
+This will generate a version 1, Gregorian time UUID, which we'll store to a
+constant so we can reuse it as our own custom namespace.
 
 .. code-block:: php
     :caption: Use a custom namespace to create version 5, name-based UUIDs

@@ -25,14 +25,11 @@ use Ramsey\Uuid\Type\Time;
  *
  * @deprecated Transition to {@see GenericTimeConverter}.
  *
- * @psalm-immutable
+ * @immutable
  */
 class BigNumberTimeConverter implements TimeConverterInterface
 {
-    /**
-     * @var TimeConverterInterface
-     */
-    private $converter;
+    private TimeConverterInterface $converter;
 
     public function __construct()
     {

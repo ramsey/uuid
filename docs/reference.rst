@@ -17,11 +17,14 @@ Reference
     reference/rfc4122-uuidv3
     reference/rfc4122-uuidv4
     reference/rfc4122-uuidv5
-    reference/nonstandard-uuidv6
+    reference/rfc4122-uuidv6
+    reference/rfc4122-uuidv7
+    reference/rfc4122-uuidv8
     reference/guid-fields
     reference/guid-guid
     reference/nonstandard-fields
     reference/nonstandard-uuid
+    reference/nonstandard-uuidv6
     reference/uuidfactoryinterface
     reference/types
     reference/exceptions

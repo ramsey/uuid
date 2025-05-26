@@ -9,7 +9,7 @@ only the string standard representation of a UUID.
 
 .. php:function:: Ramsey\\Uuid\\v1([$node[, $clockSeq]])
 
-    Generates a string standard representation of a version 1, time-based UUID.
+    Generates a string standard representation of a version 1, Gregorian time UUID.
 
     :param Ramsey\\Uuid\\Type\\Hexadecimal|null $node: An optional hexadecimal node to use
     :param int|null $clockSeq: An optional clock sequence to use
@@ -54,7 +54,7 @@ only the string standard representation of a UUID.
 
 .. php:function:: Ramsey\\Uuid\\v6([$node[, $clockSeq]])
 
-    Generates a string standard representation of a version 6, ordered-time UUID.
+    Generates a string standard representation of a version 6, reordered time UUID.
 
     :param Ramsey\\Uuid\\Type\\Hexadecimal|null $node: An optional hexadecimal node to use
     :param int|null $clockSeq: An optional clock sequence to use

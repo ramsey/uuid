@@ -37,14 +37,14 @@ class UuidV6Test extends TestCase
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage(
             'Fields used to create a UuidV6 must represent a '
-            . 'version 6 (ordered-time) UUID'
+            . 'version 6 (reordered time) UUID'
         );
 
         new UuidV6($fields, $numberConverter, $codec, $timeConverter);
     }
 
     /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingTraversableTypeHintSpecification
+     * @return array<array{version: int}>
      */
     public function provideTestVersions(): array
     {
@@ -78,7 +78,7 @@ class UuidV6Test extends TestCase
     }
 
     /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingTraversableTypeHintSpecification
+     * @return array<array{uuid: non-empty-string, expected: non-empty-string}>
      */
     public function provideUuidV6WithOddMicroseconds(): array
     {
@@ -146,7 +146,7 @@ class UuidV6Test extends TestCase
     }
 
     /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingTraversableTypeHintSpecification
+     * @return array<array{uuidv6: non-empty-string, uuidv1: non-empty-string}>
      */
     public function provideUuidV1UuidV6Equivalents(): array
     {

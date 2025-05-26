@@ -21,7 +21,6 @@ use Ramsey\Uuid\Type\Integer as IntegerObject;
 use function escapeshellarg;
 use function preg_split;
 use function str_getcsv;
-use function strpos;
 use function strrpos;
 use function strtolower;
 use function strtoupper;
@@ -42,6 +41,7 @@ class SystemDceSecurityProvider implements DceSecurityProviderInterface
      */
     public function getUid(): IntegerObject
     {
+        /** @var int|float|string|IntegerObject|null $uid */
         static $uid = null;
 
         if ($uid instanceof IntegerObject) {
@@ -72,6 +72,7 @@ class SystemDceSecurityProvider implements DceSecurityProviderInterface
      */
     public function getGid(): IntegerObject
     {
+        /** @var int|float|string|IntegerObject|null $gid */
         static $gid = null;
 
         if ($gid instanceof IntegerObject) {
@@ -104,15 +105,10 @@ class SystemDceSecurityProvider implements DceSecurityProviderInterface
             return '';
         }
 
-        switch ($this->getOs()) {
-            case 'WIN':
-                return $this->getWindowsUid();
-            case 'DAR':
-            case 'FRE':
-            case 'LIN':
-            default:
-                return trim((string) shell_exec('id -u'));
-        }
+        return match ($this->getOs()) {
+            'WIN' => $this->getWindowsUid(),
+            default => trim((string) shell_exec('id -u')),
+        };
     }
 
     /**
@@ -124,15 +120,10 @@ class SystemDceSecurityProvider implements DceSecurityProviderInterface
             return '';
         }
 
-        switch ($this->getOs()) {
-            case 'WIN':
-                return $this->getWindowsGid();
-            case 'DAR':
-            case 'FRE':
-            case 'LIN':
-            default:
-                return trim((string) shell_exec('id -g'));
-        }
+        return match ($this->getOs()) {
+            'WIN' => $this->getWindowsGid(),
+            default => trim((string) shell_exec('id -g')),
+        };
     }
 
     /**
@@ -142,7 +133,7 @@ class SystemDceSecurityProvider implements DceSecurityProviderInterface
     {
         $disabledFunctions = strtolower((string) ini_get('disable_functions'));
 
-        return strpos($disabledFunctions, 'shell_exec') === false;
+        return !str_contains($disabledFunctions, 'shell_exec');
     }
 
     /**
@@ -150,7 +141,10 @@ class SystemDceSecurityProvider implements DceSecurityProviderInterface
      */
     private function getOs(): string
     {
-        return strtoupper(substr(constant('PHP_OS'), 0, 3));
+        /** @var string $phpOs */
+        $phpOs = constant('PHP_OS');
+
+        return strtoupper(substr($phpOs, 0, 3));
     }
 
     /**
@@ -177,7 +171,7 @@ class SystemDceSecurityProvider implements DceSecurityProviderInterface
             return '';
         }
 
-        $sid = str_getcsv(trim((string) $response))[1] ?? '';
+        $sid = str_getcsv(trim((string) $response), escape: '\\')[1] ?? '';
 
         if (($lastHyphen = strrpos($sid, '-')) === false) {
             return '';
@@ -205,9 +199,7 @@ class SystemDceSecurityProvider implements DceSecurityProviderInterface
             return '';
         }
 
-        /** @var string[] $userGroups */
         $userGroups = preg_split('/\s{2,}/', (string) $response, -1, PREG_SPLIT_NO_EMPTY);
-
         $firstGroup = trim($userGroups[1] ?? '', "* \t\n\r\0\x0B");
 
         if ($firstGroup === '') {
@@ -220,9 +212,7 @@ class SystemDceSecurityProvider implements DceSecurityProviderInterface
             return '';
         }
 
-        /** @var string[] $userGroup */
         $userGroup = preg_split('/\s{2,}/', (string) $response, -1, PREG_SPLIT_NO_EMPTY);
-
         $sid = $userGroup[1] ?? '';
 
         if (($lastHyphen = strrpos($sid, '-')) === false) {

@@ -5,9 +5,11 @@ updates:
       - dependency-type: all
     directory: "/"
     schedule:
-      interval: "monthly"
+      interval: "weekly"
+    open-pull-requests-limit: 1
     versioning-strategy: "increase-if-necessary"
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
-      interval: "monthly"
+      interval: "weekly"
+    open-pull-requests-limit: 1

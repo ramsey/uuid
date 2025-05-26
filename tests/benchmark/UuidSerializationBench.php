@@ -133,8 +133,7 @@ final class UuidSerializationBench
     /** @var UuidInterface */
     private $uuid;
     /**
-     * @var UuidInterface[]
-     * @psalm-var non-empty-list<UuidInterface>
+     * @var non-empty-list<UuidInterface>
      */
     private $promiscuousUuids;
     /** @var string */
@@ -144,8 +143,7 @@ final class UuidSerializationBench
     /** @var string */
     private $serializedUuid;
     /**
-     * @var string[]
-     * @psalm-var non-empty-list<string>
+     * @var non-empty-list<string>
      */
     private $serializedPromiscuousUuids;
 

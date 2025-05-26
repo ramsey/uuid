@@ -22,8 +22,8 @@ to replace just about any `builder`_, `codec`_, `converter`_, `generator`_,
 
 Ordered-time Codec
     The ordered-time codec exists to rearrange the bytes of a version 1,
-    time-based UUID so that the timestamp portion of the UUID is monotonically
-    increasing. To learn more, see :ref:`customize.ordered-time-codec`.
+    Gregorian time UUID so that the timestamp portion of the UUID is
+    monotonically increasing. To learn more, see :ref:`customize.ordered-time-codec`.
 
 Timestamp-first COMB Codec
     The timestamp-first COMB codec replaces part of a version 4, random UUID
@@ -47,10 +47,10 @@ Replace the Default Factory
     out how, see :ref:`customize.factory`.
 
 
-.. _UuidFactory: https://github.com/ramsey/uuid/blob/main/src/UuidFactory.php
-.. _FeatureSet: https://github.com/ramsey/uuid/blob/main/src/FeatureSet.php
-.. _codec: https://github.com/ramsey/uuid/tree/main/src/Codec
-.. _builder: https://github.com/ramsey/uuid/tree/main/src/Builder
-.. _converter: https://github.com/ramsey/uuid/tree/main/src/Converter
-.. _provider: https://github.com/ramsey/uuid/tree/main/src/Provider
-.. _generator: https://github.com/ramsey/uuid/tree/main/src/Generator
+.. _UuidFactory: https://github.com/ramsey/uuid/blob/4.x/src/UuidFactory.php
+.. _FeatureSet: https://github.com/ramsey/uuid/blob/4.x/src/FeatureSet.php
+.. _codec: https://github.com/ramsey/uuid/tree/4.x/src/Codec
+.. _builder: https://github.com/ramsey/uuid/tree/4.x/src/Builder
+.. _converter: https://github.com/ramsey/uuid/tree/4.x/src/Converter
+.. _provider: https://github.com/ramsey/uuid/tree/4.x/src/Provider
+.. _generator: https://github.com/ramsey/uuid/tree/4.x/src/Generator

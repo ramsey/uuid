@@ -428,15 +428,16 @@
     </rule>
 
     <!-- Require space after language constructs -->
-    <rule ref="Squiz.WhiteSpace.LanguageConstructSpacing"/>
+    <rule ref="Generic.WhiteSpace.LanguageConstructSpacing"/>
 
     <!-- Require space around logical operators -->
     <rule ref="Squiz.WhiteSpace.LogicalOperatorSpacing"/>
 
-    <rule ref="SlevomatCodingStandard.TypeHints.UnionTypeHintFormat">
+    <rule ref="SlevomatCodingStandard.TypeHints.DNFTypeHintFormat">
         <properties>
-            <property name="withSpaces" value="yes"/>
+            <property name="withSpacesAroundOperators" value="yes"/>
             <property name="nullPosition" value="last"/>
+            <property name="shortNullable" value="yes"/>
         </properties>
     </rule>
 

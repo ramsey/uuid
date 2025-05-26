@@ -8,7 +8,6 @@ use Mockery;
 use Ramsey\Uuid\Exception\DceSecurityException;
 use Ramsey\Uuid\Provider\Dce\SystemDceSecurityProvider;
 use Ramsey\Uuid\Test\TestCase;
-use Ramsey\Uuid\Type\Integer as IntegerObject;
 use phpmock\mockery\PHPMockery;
 
 use function array_merge;
@@ -147,13 +146,12 @@ class SystemDceSecurityProviderTest extends TestCase
 
         $uid = $provider->getUid();
 
-        $this->assertInstanceOf(IntegerObject::class, $uid);
         $this->assertSame($expectedId, $uid->toString());
         $this->assertSame($uid, $provider->getUid());
     }
 
     /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingTraversableTypeHintSpecification
+     * @return array<array{value: non-empty-string, expectedId: non-empty-string}>
      */
     public function provideWindowsGoodWhoAmIValues(): array
     {
@@ -199,7 +197,6 @@ class SystemDceSecurityProviderTest extends TestCase
 
         $uid = $provider->getUid();
 
-        $this->assertInstanceOf(IntegerObject::class, $uid);
         $this->assertSame($id, $uid->toString());
         $this->assertSame($uid, $provider->getUid());
     }
@@ -298,7 +295,6 @@ class SystemDceSecurityProviderTest extends TestCase
 
         $gid = $provider->getGid();
 
-        $this->assertInstanceOf(IntegerObject::class, $gid);
         $this->assertSame($id, $gid->toString());
         $this->assertSame($gid, $provider->getGid());
     }
@@ -419,13 +415,17 @@ class SystemDceSecurityProviderTest extends TestCase
 
         $gid = $provider->getGid();
 
-        $this->assertInstanceOf(IntegerObject::class, $gid);
         $this->assertSame($expectedId, $gid->toString());
         $this->assertSame($gid, $provider->getGid());
     }
 
     /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingTraversableTypeHintSpecification
+     * @return array<array{
+     *     netUserResponse: non-empty-string,
+     *     wmicGroupResponse: non-empty-string,
+     *     expectedGroup: non-empty-string,
+     *     expectedId: non-empty-string,
+     * }>
      */
     public function provideWindowsGoodNetUserAndWmicGroupValues(): array
     {
@@ -449,7 +449,7 @@ class SystemDceSecurityProviderTest extends TestCase
                 'expectedId' => '546',
             ],
             [
-                'netUserReponse' => 'Local Group Memberships   Some Group  Another Group',
+                'netUserResponse' => 'Local Group Memberships   Some Group  Another Group',
                 'wmicGroupResponse' => 'Some Group    S-1-5-80-19088743-1985229328-4294967295-1324',
                 'expectedGroup' => 'Some Group',
                 'expectedId' => '1324',
@@ -458,7 +458,7 @@ class SystemDceSecurityProviderTest extends TestCase
     }
 
     /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingTraversableTypeHintSpecification
+     * @return array<array{os: non-empty-string, id: non-empty-string}>
      */
     public function providePosixTestValues(): array
     {
@@ -474,7 +474,7 @@ class SystemDceSecurityProviderTest extends TestCase
     }
 
     /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingTraversableTypeHintSpecification
+     * @return array<array{value: string | null}>
      */
     public function provideWindowsBadValues(): array
     {
@@ -490,7 +490,7 @@ class SystemDceSecurityProviderTest extends TestCase
     }
 
     /**
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingTraversableTypeHintSpecification
+     * @return array<array{value: string | null}>
      */
     public function provideWindowsBadGroupValues(): array
     {

@@ -85,7 +85,7 @@ When you do begin working on your feature, here are some guidelines to consider:
 
 ## Developing
 
-To develop this project, you will need [PHP](https://www.php.net) 7.4 or greater
+To develop this project, you will need [PHP](https://www.php.net) 8.0 or greater
 and [Composer](https://getcomposer.org).
 
 After cloning this repository locally, execute the following commands:
@@ -99,7 +99,7 @@ Now, you are ready to develop!
 
 ### Tooling
 
-This project uses [CaptainHook](https://github.com/CaptainHookPhp/captainhook)
+This project uses [CaptainHook](https://github.com/captainhook-git/captainhook)
 to validate all staged changes prior to commit.
 
 ### Commands
@@ -113,7 +113,7 @@ composer list
 ### Coding Standards
 
 This project follows a superset of [PSR-12](https://www.php-fig.org/psr/psr-12/)
-coding standards, enforced by [PHP_CodeSniffer](https://github.com/squizlabs/PHP_CodeSniffer).
+coding standards, enforced by [PHP_CodeSniffer](https://github.com/PHPCSStandards/PHP_CodeSniffer).
 
 CaptainHook will run coding standards checks before committing.
 
@@ -121,17 +121,16 @@ You may lint the codebase manually using the following commands:
 
 ``` bash
 # Lint
-composer phpcs
+composer dev:lint
 
 # Attempt to auto-fix coding standards issues
-composer phpcbf
+composer dev:lint:fix
 ```
 
 ### Static Analysis
 
-This project uses a combination of [PHPStan](https://github.com/phpstan/phpstan)
-and [Psalm](https://github.com/vimeo/psalm) to provide static analysis of PHP
-code.
+This project uses [PHPStan](https://github.com/phpstan/phpstan) to provide
+static analysis of PHP code.
 
 CaptainHook will run static analysis checks before committing.
 
@@ -140,7 +139,7 @@ following command:
 
 ``` bash
 # Static analysis
-composer analyze
+composer dev:analyze
 ```
 
 ### Project Structure

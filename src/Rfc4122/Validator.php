@@ -23,17 +23,15 @@ use function str_replace;
 /**
  * Rfc4122\Validator validates strings as UUIDs of the RFC 4122 variant
  *
- * @psalm-immutable
+ * @immutable
  */
 final class Validator implements ValidatorInterface
 {
     private const VALID_PATTERN = '\A[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-'
-        . '[1-5]{1}[0-9A-Fa-f]{3}-[ABab89]{1}[0-9A-Fa-f]{3}-[0-9A-Fa-f]{12}\z';
+        . '[1-8][0-9A-Fa-f]{3}-[ABab89][0-9A-Fa-f]{3}-[0-9A-Fa-f]{12}\z';
 
     /**
-     * @psalm-return non-empty-string
-     * @psalm-suppress MoreSpecificReturnType we know that the retrieved `string` is never empty
-     * @psalm-suppress LessSpecificReturnStatement we know that the retrieved `string` is never empty
+     * @return non-empty-string
      */
     public function getPattern(): string
     {
@@ -43,7 +41,8 @@ final class Validator implements ValidatorInterface
     public function validate(string $uuid): bool
     {
         $uuid = str_replace(['urn:', 'uuid:', 'URN:', 'UUID:', '{', '}'], '', $uuid);
+        $uuid = strtolower($uuid);
 
-        return $uuid === Uuid::NIL || preg_match('/' . self::VALID_PATTERN . '/Dms', $uuid);
+        return $uuid === Uuid::NIL || $uuid === Uuid::MAX || preg_match('/' . self::VALID_PATTERN . '/Dms', $uuid);
     }
 }
