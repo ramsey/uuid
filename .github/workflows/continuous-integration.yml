@@ -74,16 +74,9 @@ jobs:
       fail-fast: false
       matrix:
         php-version:
-          - "8.1"
           - "8.2"
           - "8.3"
           - "8.4"
-        include:
-          # Keep the locked version by default
-          - dependency-versions: "locked"
-          # For PHP 8.0, installing with --prefer-highest to use brick/math v0.11
-          - php-version: "8.0"
-            dependency-versions: "highest"
 
     steps:
       - name: "Checkout repository"
@@ -98,7 +91,7 @@ jobs:
         uses: "shivammathur/setup-php@v2"
         with:
           php-version: "${{ matrix.php-version }}"
-          extensions: bcmath, gmp, sodium, uuid
+          extensions: "bcmath, gmp, sodium, uuid"
           coverage: "none"
           ini-values: "memory_limit=-1"
 
@@ -128,7 +121,7 @@ jobs:
         uses: "shivammathur/setup-php@v2"
         with:
           php-version: "latest"
-          extensions: bcmath, gmp, sodium, uuid
+          extensions: "bcmath, gmp, sodium, uuid"
           coverage: "xdebug"
           ini-values: "memory_limit=-1"
 
@@ -153,25 +146,21 @@ jobs:
   unit-tests:
     name: "Unit Tests"
     needs: ["code-coverage"]
-    runs-on: ${{ matrix.operating-system }}
+    runs-on: "${{ matrix.operating-system }}"
 
     strategy:
       fail-fast: false
       matrix:
         php-version:
-          - "8.1"
           - "8.2"
           - "8.3"
           - "8.4"
         operating-system:
           - "ubuntu-latest"
           - "windows-latest"
-        include:
-          # Keep the locked version by default
-          - dependency-versions: "locked"
-          # For PHP 8.0, installing with --prefer-highest to use brick/math v0.11
-          - php-version: "8.0"
-            dependency-versions: "highest"
+        dependency-versions:
+          - "lowest"
+          - "highest"
 
     steps:
       - name: "Configure Git (for Windows)"
@@ -193,7 +182,7 @@ jobs:
         uses: "shivammathur/setup-php@v2"
         with:
           php-version: "${{ matrix.php-version }}"
-          extensions: bcmath, gmp, sodium, uuid
+          extensions: "bcmath, gmp, sodium, uuid"
           coverage: "none"
           ini-values: "memory_limit=-1"
 
