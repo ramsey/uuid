@@ -47,16 +47,25 @@ final class Hexadecimal implements TypeInterface
         $this->value = $value instanceof self ? (string) $value : $this->prepareValue($value);
     }
 
+    /**
+     * @return non-empty-string
+     */
     public function toString(): string
     {
         return $this->value;
     }
 
+    /**
+     * @return non-empty-string
+     */
     public function __toString(): string
     {
         return $this->value;
     }
 
+    /**
+     * @return non-empty-string
+     */
     public function jsonSerialize(): string
     {
         return $this->value;
