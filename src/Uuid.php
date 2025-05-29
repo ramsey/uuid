@@ -504,9 +504,6 @@ class Uuid implements UuidInterface
      *     string representation
      *
      * @throws InvalidUuidStringException
-     *
-     * @psalm-pure note: changing the internal factory is an edge case not covered by purity invariants,
-     *             but under constant factory setups, this method operates in functionally pure manners
      */
     public static function fromStrictString(string $uuid): UuidInterface
     {
