@@ -29,10 +29,7 @@ class UuidV8Test extends TestCase
         $timeConverter = Mockery::mock(TimeConverterInterface::class);
 
         $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage(
-            'Fields used to create a UuidV8 must represent a '
-            . 'version 8 (custom) UUID'
-        );
+        $this->expectExceptionMessage('Fields used to create a UuidV8 must represent a version 8 (custom format) UUID');
 
         new UuidV8($fields, $numberConverter, $codec, $timeConverter);
     }

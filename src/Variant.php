@@ -24,37 +24,36 @@ namespace Ramsey\Uuid;
  * - 6 - Reserved, Microsoft Corporation backward compatibility
  * - 7 - Reserved for future definition
  *
- * For RFC 4122 variant UUIDs, this value should always be the integer `2`.
+ * For RFC 9562 (formerly RFC 4122) variant UUIDs, this value should always be the integer `2`.
  *
- * @link https://datatracker.ietf.org/doc/html/rfc4122#section-4.1.1 RFC 4122, § 4.1.1
+ * @link https://www.rfc-editor.org/rfc/rfc9562#section-4.1 RFC 9562, 4.1. Variant Field
  */
 enum Variant: int
 {
     /**
-     * Variant: reserved, NCS backward compatibility
-     *
-     * @link https://datatracker.ietf.org/doc/html/rfc4122#section-4.1.1 RFC 4122, § 4.1.1
+     * Reserved, NCS backward compatibility
      */
     case ReservedNcs = 0;
 
     /**
-     * Variant: the UUID layout specified in RFC 4122
-     *
-     * @link https://datatracker.ietf.org/doc/html/rfc4122#section-4.1.1 RFC 4122, § 4.1.1
+     * The UUID layout specified in RFC 9562 (formerly RFC 4122)
      */
-    case Rfc4122 = 2;
+    case Rfc9562 = 2;
 
     /**
-     * Variant: reserved, Microsoft Corporation backward compatibility
-     *
-     * @link https://datatracker.ietf.org/doc/html/rfc4122#section-4.1.1 RFC 4122, § 4.1.1
+     * Reserved, Microsoft Corporation backward compatibility
      */
     case ReservedMicrosoft = 6;
 
     /**
-     * Variant: reserved for future definition
-     *
-     * @link https://datatracker.ietf.org/doc/html/rfc4122#section-4.1.1 RFC 4122, § 4.1.1
+     * Reserved for future definition
      */
     case ReservedFuture = 7;
+
+    /**
+     * The UUID layout specified in RFC 9562 (formerly RFC 4122)
+     *
+     * This is an alias for {@see self::Rfc9562}.
+     */
+    public const Rfc4122 = self::Rfc9562; // phpcs:ignore Generic.NamingConventions.UpperCaseConstantName
 }

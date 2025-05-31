@@ -27,7 +27,7 @@ use Ramsey\Uuid\UuidInterface;
 use Throwable;
 
 /**
- * UuidBuilder builds instances of RFC 4122 UUIDs
+ * UuidBuilder builds instances of RFC 9562 (formerly 4122) UUIDs
  *
  * @immutable
  */
@@ -36,19 +36,16 @@ class UuidBuilder implements UuidBuilderInterface
     /**
      * Constructs the UUID builder
      *
-     * @param NumberConverterInterface $numberConverter The number converter to
-     *     use when constructing the Uuid
-     * @param TimeConverterInterface $timeConverter The time converter to use
-     *     for converting Gregorian time extracted from version 1, 2, and 6
-     *     UUIDs to Unix timestamps
-     * @param TimeConverterInterface $unixTimeConverter The time converter
-     *     to use for converter Unix Epoch time extracted from version 7 UUIDs
-     *     to Unix timestamps
+     * @param NumberConverterInterface $numberConverter The number converter to use when constructing the Uuid
+     * @param TimeConverterInterface $timeConverter The time converter to use for converting Gregorian time extracted
+     *     from version 1, 2, and 6 UUIDs to Unix timestamps
+     * @param TimeConverterInterface $unixTimeConverter The time converter to use for converter Unix Epoch time
+     *     extracted from version 7 UUIDs to Unix timestamps
      */
     public function __construct(
         private readonly NumberConverterInterface $numberConverter,
         private readonly TimeConverterInterface $timeConverter,
-        private readonly TimeConverterInterface $unixTimeConverter = new UnixTimeConverter(new BrickMathCalculator())
+        private readonly TimeConverterInterface $unixTimeConverter = new UnixTimeConverter(new BrickMathCalculator()),
     ) {
     }
 
@@ -74,36 +71,26 @@ class UuidBuilder implements UuidBuilderInterface
                 return new MaxUuid($fields, $this->numberConverter, $codec, $this->timeConverter);
             }
 
-            switch ($fields->getVersion()) {
-                case Version::Time:
-                    return new UuidV1($fields, $this->numberConverter, $codec, $this->timeConverter);
-                case Version::DceSecurity:
-                    return new UuidV2($fields, $this->numberConverter, $codec, $this->timeConverter);
-                case Version::HashMd5:
-                    return new UuidV3($fields, $this->numberConverter, $codec, $this->timeConverter);
-                case Version::Random:
-                    return new UuidV4($fields, $this->numberConverter, $codec, $this->timeConverter);
-                case Version::HashSha1:
-                    return new UuidV5($fields, $this->numberConverter, $codec, $this->timeConverter);
-                case Version::ReorderedTime:
-                    return new UuidV6($fields, $this->numberConverter, $codec, $this->timeConverter);
-                case Version::UnixTime:
-                    return new UuidV7($fields, $this->numberConverter, $codec, $this->unixTimeConverter);
-                case Version::Custom:
-                    return new UuidV8($fields, $this->numberConverter, $codec, $this->timeConverter);
-            }
-
-            throw new UnsupportedOperationException(
-                'The UUID version in the given fields is not supported '
-                . 'by this UUID builder'
-            );
+            return match ($fields->getVersion()) {
+                Version::Time => new UuidV1($fields, $this->numberConverter, $codec, $this->timeConverter),
+                Version::DceSecurity => new UuidV2($fields, $this->numberConverter, $codec, $this->timeConverter),
+                Version::HashMd5 => new UuidV3($fields, $this->numberConverter, $codec, $this->timeConverter),
+                Version::Random => new UuidV4($fields, $this->numberConverter, $codec, $this->timeConverter),
+                Version::HashSha1 => new UuidV5($fields, $this->numberConverter, $codec, $this->timeConverter),
+                Version::ReorderedTime => new UuidV6($fields, $this->numberConverter, $codec, $this->timeConverter),
+                Version::UnixTime => new UuidV7($fields, $this->numberConverter, $codec, $this->unixTimeConverter),
+                Version::Custom => new UuidV8($fields, $this->numberConverter, $codec, $this->timeConverter),
+                default => throw new UnsupportedOperationException(
+                    'The UUID version in the given fields is not supported by this UUID builder',
+                ),
+            };
         } catch (Throwable $e) {
             throw new UnableToBuildUuidException($e->getMessage(), (int) $e->getCode(), $e);
         }
     }
 
     /**
-     * Proxy method to allow injecting a mock, for testing
+     * Proxy method to allow injecting a mock for testing
      *
      * @param non-empty-string $bytes
      */

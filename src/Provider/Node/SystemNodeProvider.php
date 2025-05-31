@@ -39,13 +39,12 @@ use const PREG_PATTERN_ORDER;
 /**
  * SystemNodeProvider retrieves the system node ID, if possible
  *
- * The system node ID, or host ID, is often the same as the MAC address for a
- * network interface on the host.
+ * The system node ID, or host ID, is often the same as the MAC address for a network interface on the host.
  */
 class SystemNodeProvider implements NodeProviderInterface
 {
     /**
-     * Pattern to match nodes in ifconfig and ipconfig output.
+     * Pattern to match nodes in `ifconfig` and `ipconfig` output.
      */
     private const IFCONFIG_PATTERN = '/[^:]([0-9a-f]{2}([:-])[0-9a-f]{2}(\2[0-9a-f]{2}){4})[^:]/i';
 
@@ -59,16 +58,14 @@ class SystemNodeProvider implements NodeProviderInterface
         $node = $this->getNodeFromSystem();
 
         if ($node === '') {
-            throw new NodeException(
-                'Unable to fetch a node for this system'
-            );
+            throw new NodeException('Unable to fetch a node for this system');
         }
 
         return new Hexadecimal($node);
     }
 
     /**
-     * Returns the system node, if it can find it
+     * Returns the system node if found
      */
     protected function getNodeFromSystem(): string
     {
@@ -99,9 +96,7 @@ class SystemNodeProvider implements NodeProviderInterface
      */
     protected function getIfconfig(): string
     {
-        $disabledFunctions = strtolower((string) ini_get('disable_functions'));
-
-        if (str_contains($disabledFunctions, 'passthru')) {
+        if (str_contains(strtolower((string) ini_get('disable_functions')), 'passthru')) {
             return '';
         }
 
@@ -147,17 +142,18 @@ class SystemNodeProvider implements NodeProviderInterface
      */
     protected function getSysfs(): string
     {
-        $mac = '';
-
         /** @var string $os */
         $os = constant('PHP_OS');
 
-        if (strtoupper($os) === 'LINUX') {
-            $addressPaths = glob('/sys/class/net/*/address', GLOB_NOSORT);
+        if (strtoupper($os) !== 'LINUX') {
+            return '';
+        }
 
-            if ($addressPaths === false || count($addressPaths) === 0) {
-                return '';
-            }
+        $addressPaths = glob('/sys/class/net/*/address', GLOB_NOSORT);
+
+        if ($addressPaths === false || count($addressPaths) === 0) {
+            return '';
+        }
 
             /** @var string[] $macs */
             $macs = [];
@@ -175,9 +171,8 @@ class SystemNodeProvider implements NodeProviderInterface
                 return $address !== '00:00:00:00:00:00' && preg_match(self::SYSFS_PATTERN, $address);
             });
 
-            /** @var string|bool $mac */
-            $mac = reset($macs);
-        }
+        /** @var bool | string $mac */
+        $mac = reset($macs);
 
         return (string) $mac;
     }

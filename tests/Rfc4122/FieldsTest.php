@@ -40,7 +40,7 @@ class FieldsTest extends TestCase
 
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage(
-            'The byte string received does not conform to the RFC 4122 variant'
+            'The byte string received does not conform to the RFC 9562 (formerly RFC 4122) variant'
         );
 
         new Fields($bytes);
@@ -78,7 +78,7 @@ class FieldsTest extends TestCase
 
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage(
-            'The byte string received does not contain a valid RFC 4122 version'
+            'The byte string received does not contain a valid RFC 9562 (formerly RFC 4122) version'
         );
 
         new Fields($bytes);

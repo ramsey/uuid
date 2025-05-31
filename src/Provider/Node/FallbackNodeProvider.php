@@ -19,8 +19,7 @@ use Ramsey\Uuid\Provider\NodeProviderInterface;
 use Ramsey\Uuid\Type\Hexadecimal;
 
 /**
- * FallbackNodeProvider retrieves the system node ID by stepping through a list
- * of providers until a node ID can be obtained
+ * FallbackNodeProvider retrieves the system node ID by stepping through a list of providers until a node ID can be obtained
  */
 class FallbackNodeProvider implements NodeProviderInterface
 {
@@ -45,10 +44,6 @@ class FallbackNodeProvider implements NodeProviderInterface
             }
         }
 
-        throw new NodeException(
-            'Unable to find a suitable node provider',
-            0,
-            $lastProviderException
-        );
+        throw new NodeException(message: 'Unable to find a suitable node provider', previous: $lastProviderException);
     }
 }

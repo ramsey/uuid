@@ -19,8 +19,7 @@ use Ramsey\Uuid\Math\CalculatorInterface;
 use Ramsey\Uuid\Type\Integer as IntegerObject;
 
 /**
- * GenericNumberConverter uses the provided calculator to convert decimal
- * numbers to and from hexadecimal values
+ * GenericNumberConverter uses the provided calculator to convert decimal numbers to and from hexadecimal values
  *
  * @immutable
  */

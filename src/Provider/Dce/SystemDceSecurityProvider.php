@@ -42,7 +42,7 @@ class SystemDceSecurityProvider implements DceSecurityProviderInterface
      */
     public function getUid(): IntegerObject
     {
-        /** @var IntegerObject | string | null $uid */
+        /** @var IntegerObject | float | int | string | null $uid */
         static $uid = null;
 
         if ($uid instanceof IntegerObject) {
@@ -55,9 +55,8 @@ class SystemDceSecurityProvider implements DceSecurityProviderInterface
 
         if ($uid === '') {
             throw new DceSecurityException(
-                'Unable to get a user identifier using the system DCE '
-                . 'Security provider; please provide a custom identifier or '
-                . 'use a different provider'
+                'Unable to get a user identifier using the system DCE Security provider; please provide a custom '
+                . 'identifier or use a different provider',
             );
         }
 
@@ -75,7 +74,7 @@ class SystemDceSecurityProvider implements DceSecurityProviderInterface
      */
     public function getGid(): IntegerObject
     {
-        /** @var IntegerObject | string | null $gid */
+        /** @var IntegerObject | float | int | string | null $gid */
         static $gid = null;
 
         if ($gid instanceof IntegerObject) {
@@ -88,9 +87,8 @@ class SystemDceSecurityProvider implements DceSecurityProviderInterface
 
         if ($gid === '') {
             throw new DceSecurityException(
-                'Unable to get a group identifier using the system DCE '
-                . 'Security provider; please provide a custom identifier or '
-                . 'use a different provider'
+                'Unable to get a group identifier using the system DCE Security provider; please provide a custom '
+                . 'identifier or use a different provider',
             );
         }
 
@@ -136,9 +134,7 @@ class SystemDceSecurityProvider implements DceSecurityProviderInterface
      */
     private function hasShellExec(): bool
     {
-        $disabledFunctions = strtolower((string) ini_get('disable_functions'));
-
-        return !str_contains($disabledFunctions, 'shell_exec');
+        return !str_contains(strtolower((string) ini_get('disable_functions')), 'shell_exec');
     }
 
     /**
@@ -155,17 +151,14 @@ class SystemDceSecurityProvider implements DceSecurityProviderInterface
     /**
      * Returns the user identifier for a user on a Windows system
      *
-     * Windows does not have the same concept as an effective POSIX UID for the
-     * running script. Instead, each user is uniquely identified by an SID
-     * (security identifier). The SID includes three 32-bit unsigned integers
-     * that make up a unique domain identifier, followed by an RID (relative
-     * identifier) that we will use as the UID. The primary caveat is that this
-     * UID may not be unique to the system, since it is, instead, unique to the
-     * domain.
+     * Windows does not have the same concept as an effective POSIX UID for the running script. Instead, each user is
+     * uniquely identified by an SID (security identifier). The SID includes three 32-bit unsigned integers that make up
+     * a unique domain identifier, followed by an RID (relative identifier) that we will use as the UID. The primary
+     * caveat is that this UID may not be unique to the system, since it is, instead, unique to the domain.
      *
      * @link https://www.lifewire.com/what-is-an-sid-number-2626005 What Is an SID Number?
-     * @link https://bit.ly/30vE7NM Well-known SID Structures
-     * @link https://bit.ly/2FWcYKJ Well-known security identifiers in Windows operating systems
+     * @link https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-dtyp/81d92bba-d22b-4a8c-908a-554ab29148ab Well-known SID Structures
+     * @link https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/manage/understand-security-identifiers#well-known-sids Well-known SIDs
      * @link https://www.windows-commandline.com/get-sid-of-user/ Get SID of user
      */
     private function getWindowsUid(): string
@@ -188,11 +181,10 @@ class SystemDceSecurityProvider implements DceSecurityProviderInterface
     /**
      * Returns a group identifier for a user on a Windows system
      *
-     * Since Windows does not have the same concept as an effective POSIX GID
-     * for the running script, we will get the local group memberships for the
-     * user running the script. Then, we will get the SID (security identifier)
-     * for the first group that appears in that list. Finally, we will return
-     * the RID (relative identifier) for the group and use that as the GID.
+     * Since Windows does not have the same concept as an effective POSIX GID for the running script, we will get the
+     * local group memberships for the user running the script. Then, we will get the SID (security identifier) for the
+     * first group that appears in that list. Finally, we will return the RID (relative identifier) for the group and
+     * use that as the GID.
      *
      * @link https://www.windows-commandline.com/list-of-user-groups-command-line/ List of user groups command line
      */

@@ -18,8 +18,7 @@ use Ramsey\Uuid\Rfc4122\UuidV2;
 use Ramsey\Uuid\Type\Integer as IntegerObject;
 
 /**
- * A DCE provider provides access to local domain identifiers for version 2,
- * DCE Security, UUIDs
+ * A DCE provider provides access to local domain identifiers for version 2, DCE Security, UUIDs
  *
  * @see UuidV2
  */

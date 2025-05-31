@@ -72,6 +72,23 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 * Remove dependency on ramsey/collection package.
 
 
+## Unreleased
+
+### Fixed
+
+* Hexadecimal is never an empty string; fixed in [#593](https://github.com/ramsey/uuid/pull/593).
+* Update call to `str_getcsv()` to avoid deprecation notice in PHP 8.4; fixed in [#590](https://github.com/ramsey/uuid/pull/590).
+* Update docblocks for `Uuid::fromBytes()`, `Uuid::fromString()`, `Uuid::fromDateTime()`, `Uuid::fromHexadecimal()`, and `Uuid::fromInteger()` to note that each can throw `InvalidArgumentException`, addressing PHPStan errors occurring at call sites; fixed in [#552](https://github.com/ramsey/uuid/pull/552).
+
+### Deprecated
+
+The following will be removed in ramsey/uuid 5.0.0:
+
+* `Ramsey\Uuid\Codec\OrderedTimeCodec` is deprecated; please migrate to [version 6 UUIDs](https://uuid.ramsey.dev/en/stable/rfc4122/version6.html).
+* `Ramsey\Uuid\Codec\TimestampFirstCombCodec` is deprecated; please migrate to [version 7 UUIDs](https://uuid.ramsey.dev/en/stable/rfc4122/version7.html).
+* `Ramsey\Uuid\Codec\TimestampLastCombCodec` is deprecated; please use `Ramsey\Uuid\Codec\StringCodec` instead.
+* `Ramsey\Uuid\Generator\CombGenerator` is deprecated; please migrate to [version 7 UUIDs](https://uuid.ramsey.dev/en/stable/rfc4122/version7.html).
+
 ## 4.7.6 - 2024-04-27
 
 ### Fixed

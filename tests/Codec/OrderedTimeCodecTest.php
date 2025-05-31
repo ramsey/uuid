@@ -162,9 +162,7 @@ class OrderedTimeCodecTest extends TestCase
         ]);
 
         $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage(
-            'Expected RFC 4122 version 1 (time-based) UUID'
-        );
+        $this->expectExceptionMessage('Expected version 1 (time-based) UUID');
 
         $codec->encodeBinary($uuid);
     }
@@ -184,9 +182,7 @@ class OrderedTimeCodecTest extends TestCase
         $uuid = $factory->fromString($nonTimeBasedUuid);
 
         $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage(
-            'Expected RFC 4122 version 1 (time-based) UUID'
-        );
+        $this->expectExceptionMessage('Expected version 1 (time-based) UUID');
 
         $codec->encodeBinary($uuid);
     }

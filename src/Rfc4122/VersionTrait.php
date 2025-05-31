@@ -15,14 +15,19 @@ declare(strict_types=1);
 namespace Ramsey\Uuid\Rfc4122;
 
 /**
- * Provides common functionality for handling the version, as defined by RFC 4122
+ * Provides common functionality for handling the version, as defined by RFC 9562 (formerly RFC 4122)
  *
  * @immutable
  */
 trait VersionTrait
 {
     /**
-     * Returns the version
+     * Returns the UUID version
+     *
+     * This returns `null` if the UUID is not an RFC 9562 (formerly RFC 4122) variant, since the version is only
+     * meaningful for this variant.
+     *
+     * @link https://www.rfc-editor.org/rfc/rfc9562#section-4.2 RFC 9562, 4.2. Version Field
      */
     abstract public function getVersion(): ?Version;
 
@@ -37,7 +42,7 @@ trait VersionTrait
     abstract public function isNil(): bool;
 
     /**
-     * Returns true if the version matches one of those defined by RFC 4122
+     * Returns true if the version matches one of those defined by RFC 9562 (formerly RFC 4122)
      *
      * @return bool True if the UUID version is valid, false otherwise
      */

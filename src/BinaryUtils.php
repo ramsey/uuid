@@ -27,43 +27,37 @@ use function unpack;
 class BinaryUtils
 {
     /**
-     * Applies the RFC 4122 variant field to the 16-bit clock sequence
+     * Applies the variant field to the 16-bit clock sequence
      *
-     * @link http://tools.ietf.org/html/rfc4122#section-4.1.1 RFC 4122, § 4.1.1: Variant
+     * @link https://www.rfc-editor.org/rfc/rfc9562#section-4.1 RFC 9562, 4.1. Variant Field
      *
-     * @param int $clockSeq The 16-bit clock sequence value before the RFC 4122
-     *     variant is applied
+     * @param int $clockSeq The 16-bit clock sequence value before the variant is applied
      *
      * @return int The 16-bit clock sequence multiplexed with the UUID variant
      */
-    public static function applyVariant(int $clockSeq, Variant $variant = Variant::Rfc4122): int
+    public static function applyVariant(int $clockSeq, Variant $variant = Variant::Rfc9562): int
     {
         return match ($variant) {
             Variant::ReservedNcs => $clockSeq & 0x7fff,
-            Variant::Rfc4122 => $clockSeq & 0x3fff | 0x8000,
+            Variant::Rfc9562 => $clockSeq & 0x3fff | 0x8000,
             Variant::ReservedMicrosoft => $clockSeq & 0x1fff | 0xc000,
             Variant::ReservedFuture => $clockSeq & 0x1fff | 0xe000,
         };
     }
 
     /**
-     * Applies the RFC 4122 version number to the 16-bit `time_hi_and_version` field
+     * Applies the version field to the 16-bit `time_hi_and_version` field
      *
-     * @link http://tools.ietf.org/html/rfc4122#section-4.1.3 RFC 4122, § 4.1.3: Version
+     * @link https://www.rfc-editor.org/rfc/rfc9562#section-4.2 RFC 9562, 4.2. Version Field
      *
-     * @param int $timeHi The value of the 16-bit `time_hi_and_version` field
-     *     before the RFC 4122 version is applied
-     * @param Version $version The RFC 4122 version to apply to the `time_hi` field
+     * @param int $timeHi The value of the 16-bit `time_hi_and_version` field before the version is applied
+     * @param Version $version The version to apply to the `time_hi` field
      *
-     * @return int The 16-bit time_hi field of the timestamp multiplexed with
-     *     the UUID version number
+     * @return int The 16-bit time_hi field of the timestamp multiplexed with the UUID version number
      */
     public static function applyVersion(int $timeHi, Version $version): int
     {
-        $timeHi = $timeHi & 0x0fff;
-        $timeHi |= $version->value << 12;
-
-        return $timeHi;
+        return ($timeHi & 0x0fff) | ($version->value << 12);
     }
 
     /**
@@ -80,7 +74,7 @@ class BinaryUtils
     public static function applyVersionAndVariant(
         string $bytes,
         Version $version,
-        Variant $variant = Variant::Rfc4122
+        Variant $variant = Variant::Rfc9562,
     ): string {
         /** @var int[] $unpackedTime */
         $unpackedTime = unpack('n*', substr($bytes, 6, 2));

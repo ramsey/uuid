@@ -57,8 +57,7 @@ use const PHP_INT_SIZE;
 /**
  * FeatureSet detects and exposes available features in the current environment
  *
- * A feature set is used by UuidFactory to determine the available features and
- * capabilities of the environment.
+ * A feature set is used by UuidFactory to determine the available features and capabilities of the environment.
  */
 class FeatureSet
 {
@@ -78,18 +77,15 @@ class FeatureSet
 
     /**
      * @param bool $useGuids True build UUIDs using the GuidStringCodec
-     * @param bool $force32Bit True to force the use of 32-bit functionality
-     *     (primarily for testing purposes)
-     * @param bool $ignoreSystemNode True to disable attempts to check for the
-     *     system node ID (primarily for testing purposes)
-     * @param bool $enablePecl True to enable the use of the PeclUuidTimeGenerator
-     *     to generate version 1 UUIDs
+     * @param bool $force32Bit True to force the use of 32-bit functionality (primarily for testing purposes)
+     * @param bool $ignoreSystemNode True to disable attempts to check for the system node ID (primarily for testing purposes)
+     * @param bool $enablePecl True to enable the use of the PeclUuidTimeGenerator to generate version 1 UUIDs
      */
     public function __construct(
         bool $useGuids = false,
         private bool $force32Bit = false,
         private bool $ignoreSystemNode = false,
-        private bool $enablePecl = false
+        private bool $enablePecl = false,
     ) {
         $this->randomGenerator = $this->buildRandomGenerator();
         $this->setCalculator(new BrickMathCalculator());
@@ -270,13 +266,9 @@ class FeatureSet
      * Returns a DCE Security generator configured for this environment
      */
     private function buildDceSecurityGenerator(
-        DceSecurityProviderInterface $dceSecurityProvider
+        DceSecurityProviderInterface $dceSecurityProvider,
     ): DceSecurityGeneratorInterface {
-        return new DceSecurityGenerator(
-            $this->numberConverter,
-            $this->timeGenerator,
-            $dceSecurityProvider
-        );
+        return new DceSecurityGenerator($this->numberConverter, $this->timeGenerator, $dceSecurityProvider);
     }
 
     /**
@@ -288,10 +280,7 @@ class FeatureSet
             return new RandomNodeProvider();
         }
 
-        return new FallbackNodeProvider([
-            new SystemNodeProvider(),
-            new RandomNodeProvider(),
-        ]);
+        return new FallbackNodeProvider([new SystemNodeProvider(), new RandomNodeProvider()]);
     }
 
     /**
@@ -326,11 +315,7 @@ class FeatureSet
             return new PeclUuidTimeGenerator();
         }
 
-        return (new TimeGeneratorFactory(
-            $this->nodeProvider,
-            $this->timeConverter,
-            $timeProvider
-        ))->getGenerator();
+        return (new TimeGeneratorFactory($this->nodeProvider, $this->timeConverter, $timeProvider))->getGenerator();
     }
 
     /**

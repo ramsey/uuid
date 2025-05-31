@@ -22,9 +22,8 @@ use function sprintf;
 /**
  * A value object representing a timestamp
  *
- * This class exists for type-safety purposes, to ensure that timestamps used
- * by ramsey/uuid are truly timestamp integers and not some other kind of string
- * or integer.
+ * This class exists for type-safety purposes, to ensure that timestamps used by ramsey/uuid are truly timestamp
+ * integers and not some other kind of string or integer.
  *
  * @immutable
  */
@@ -34,8 +33,8 @@ final class Time implements TypeInterface
     private readonly IntegerObject $microseconds;
 
     public function __construct(
-        int | float | string | IntegerObject $seconds,
-        int | float | string | IntegerObject $microseconds = new IntegerObject(0),
+        IntegerObject | float | int | string $seconds,
+        IntegerObject | float | int | string $microseconds = new IntegerObject(0),
     ) {
         $this->seconds = $seconds instanceof IntegerObject ? $seconds : new IntegerObject($seconds);
         $this->microseconds = $microseconds instanceof IntegerObject ? $microseconds : new IntegerObject($microseconds);

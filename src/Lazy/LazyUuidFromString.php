@@ -35,17 +35,18 @@ use function substr;
 
 /**
  * Lazy version of a UUID: its format has not been determined yet, so it is mostly only usable for string/bytes
- * conversion. This object optimizes instantiation, serialization and string conversion time, at the cost of
- * increased overhead for more advanced UUID operations.
+ * conversion. This object optimizes instantiation, serialization and string conversion time, at the cost of increased
+ * overhead for more advanced UUID operations.
  *
- * @internal this type is used internally for performance reasons and is not supposed to be directly referenced
- *           in consumer libraries.
+ * > [!NOTE]
+ * > The {@see FieldsInterface} does not declare methods that deprecated API relies upon: the API has been ported from
+ * > the {@see \Ramsey\Uuid\Uuid} definition, and is deprecated anyway.
  *
- * Note: the {@see FieldsInterface} does not declare methods that deprecated API
- *        relies upon: the API has been ported from the {@see \Ramsey\Uuid\Uuid} definition,
- *        and is deprecated anyway.
- * Note: the deprecated API from {@see \Ramsey\Uuid\Uuid} is in use here (on purpose): it will be removed
- *       once the deprecated API is gone from this class too.
+ * > [!NOTE]
+ * > The deprecated API from {@see \Ramsey\Uuid\Uuid} is in use here (on purpose): it will be removed once the
+ * > deprecated API is gone from this class too.
+ *
+ * @internal this type is used internally for performance reasons and is not supposed to be directly referenced in consumer libraries.
  */
 final class LazyUuidFromString implements TimeBasedUuidInterface
 {
@@ -112,19 +113,17 @@ final class LazyUuidFromString implements TimeBasedUuidInterface
 
     public function getUrn(): string
     {
-        return ($this->unwrapped ?? $this->unwrap())
-            ->getUrn();
+        return ($this->unwrapped ?? $this->unwrap())->getUrn();
     }
 
     public function compareTo(UuidInterface $other): int
     {
-        return ($this->unwrapped ?? $this->unwrap())
-            ->compareTo($other);
+        return ($this->unwrapped ?? $this->unwrap())->compareTo($other);
     }
 
     public function equals(?object $other): bool
     {
-        if (! $other instanceof UuidInterface) {
+        if (!$other instanceof UuidInterface) {
             return false;
         }
 
@@ -139,20 +138,17 @@ final class LazyUuidFromString implements TimeBasedUuidInterface
 
     public function getFields(): FieldsInterface
     {
-        return ($this->unwrapped ?? $this->unwrap())
-            ->getFields();
+        return ($this->unwrapped ?? $this->unwrap())->getFields();
     }
 
     public function getHex(): Hexadecimal
     {
-        return ($this->unwrapped ?? $this->unwrap())
-            ->getHex();
+        return ($this->unwrapped ?? $this->unwrap())->getHex();
     }
 
     public function getInteger(): IntegerObject
     {
-        return ($this->unwrapped ?? $this->unwrap())
-            ->getInteger();
+        return ($this->unwrapped ?? $this->unwrap())->getInteger();
     }
 
     public function toString(): string

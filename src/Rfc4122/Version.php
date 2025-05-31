@@ -19,76 +19,58 @@ namespace Ramsey\Uuid\Rfc4122;
  *
  * The version number has the following meaning:
  *
- * 1. Time-based UUID
+ * 1. Gregorian time UUID
  * 2. DCE security UUID
  * 3. Name-based UUID hashed with MD5
  * 4. Randomly generated UUID
  * 5. Name-based UUID hashed with SHA-1
- * 6. Reordered time-based UUID
- * 7. Unix Epoch time-based UUID
- * 8. Implementation-specific custom UUID
+ * 6. Reordered Gregorian time UUID
+ * 7. Unix Epoch time UUID
+ * 8. Implementation-specific, custom format UUID
  *
- * @link http://tools.ietf.org/html/rfc4122#section-4.1.3 RFC 4122, § 4.1.3: Version
+ * @link https://www.rfc-editor.org/rfc/rfc9562#section-4.2 RFC 9562, 4.2. Version Field
  *
- * phpcs:disable Generic.NamingConventions.UpperCaseConstantName.ClassConstantNotUpperCase
+ * phpcs:disable Generic.NamingConventions.UpperCaseConstantName
  */
 enum Version: int
 {
     /**
-     * Version 1 (time-based) UUID
-     *
-     * @link https://datatracker.ietf.org/doc/html/rfc4122#section-4.1.3 RFC 4122, § 4.1.3
+     * Version 1 (Gregorian time) UUID
      */
     case Time = 1;
 
     /**
      * Version 2 (DCE Security) UUID
-     *
-     * @link https://datatracker.ietf.org/doc/html/rfc4122#section-4.1.3 RFC 4122, § 4.1.3
      */
     case DceSecurity = 2;
 
     /**
      * Version 3 (name-based and hashed with MD5) UUID
-     *
-     * @link https://datatracker.ietf.org/doc/html/rfc4122#section-4.1.3 RFC 4122, § 4.1.3
      */
     case HashMd5 = 3;
 
     /**
      * Version 4 (random) UUID
-     *
-     * @link https://datatracker.ietf.org/doc/html/rfc4122#section-4.1.3 RFC 4122, § 4.1.3
      */
     case Random = 4;
 
     /**
      * Version 5 (name-based and hashed with SHA1) UUID
-     *
-     * @link https://datatracker.ietf.org/doc/html/rfc4122#section-4.1.3 RFC 4122, § 4.1.3
      */
     case HashSha1 = 5;
 
     /**
-     * Version 6 (reordered time-based) UUID
-     *
-     * @link https://datatracker.ietf.org/doc/html/draft-peabody-dispatch-new-uuid-format-04#section-4 draft-peabody-dispatch-new-uuid-format-04, § 4
-     * @link https://github.com/uuid6/uuid6-ietf-draft UUID version 6 IETF draft
-     * @link http://gh.peabody.io/uuidv6/ "Version 6" UUIDs
+     * Version 6 (reordered Gregorian time) UUID
      */
     case ReorderedTime = 6;
 
     /**
-     * Version 7 (Unix Epoch time-based) UUID
-     *
-     * @link https://datatracker.ietf.org/doc/html/draft-peabody-dispatch-new-uuid-format-04#section-4 draft-peabody-dispatch-new-uuid-format-04, § 4
+     * Version 7 (Unix Epoch time) UUID
      */
     case UnixTime = 7;
 
     /**
-     * Version 8 (implementation-specific custom) UUID
-     *
-     * @link https://datatracker.ietf.org/doc/html/draft-peabody-dispatch-new-uuid-format-04#section-4 draft-peabody-dispatch-new-uuid-format-04, § 4
+     * Version 8 (implementation-specific custom format) UUID
      */
     case Custom = 8;
 
@@ -131,9 +113,4 @@ enum Version: int
      * Alias for {@see self::Custom}
      */
     public const V8 = self::Custom;
-
-    /**
-     * Alias for {@see self::ReorderedTime}
-     */
-    public const Peabody = self::ReorderedTime;
 }
