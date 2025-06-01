@@ -24,12 +24,10 @@ use function str_starts_with;
 /**
  * A value object representing a decimal
  *
- * This class exists for type-safety purposes, to ensure that decimals
- * returned from ramsey/uuid methods as strings are truly decimals and not some
- * other kind of string.
+ * This class exists for type-safety purposes, to ensure that decimals returned from ramsey/uuid methods as strings are
+ * truly decimals and not some other kind of string.
  *
- * To support values as true decimals and not as floats or doubles, we store the
- * decimals as strings.
+ * To support values as true decimals and not as floats or doubles, we store the decimals as strings.
  *
  * @immutable
  */

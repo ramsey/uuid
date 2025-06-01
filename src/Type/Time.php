@@ -25,9 +25,8 @@ use function sprintf;
 /**
  * A value object representing a timestamp
  *
- * This class exists for type-safety purposes, to ensure that timestamps used
- * by ramsey/uuid are truly timestamp integers and not some other kind of string
- * or integer.
+ * This class exists for type-safety purposes, to ensure that timestamps used by ramsey/uuid are truly timestamp
+ * integers and not some other kind of string or integer.
  *
  * @immutable
  */
@@ -37,8 +36,8 @@ final class Time implements TypeInterface
     private IntegerObject $microseconds;
 
     public function __construct(
-        float | int | string | IntegerObject $seconds,
-        float | int | string | IntegerObject $microseconds = 0,
+        IntegerObject | float | int | string $seconds,
+        IntegerObject | float | int | string $microseconds = 0,
     ) {
         $this->seconds = new IntegerObject($seconds);
         $this->microseconds = new IntegerObject($microseconds);
@@ -98,13 +97,11 @@ final class Time implements TypeInterface
      */
     public function unserialize(string $data): void
     {
-        /** @var array{seconds?: int|float|string, microseconds?: int|float|string} $time */
+        /** @var array{seconds?: float | int | string, microseconds?: float | int | string} $time */
         $time = json_decode($data, true);
 
         if (!isset($time['seconds']) || !isset($time['microseconds'])) {
-            throw new UnsupportedOperationException(
-                'Attempted to unserialize an invalid value'
-            );
+            throw new UnsupportedOperationException('Attempted to unserialize an invalid value');
         }
 
         $this->__construct($time['seconds'], $time['microseconds']);

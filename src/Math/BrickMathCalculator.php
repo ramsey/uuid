@@ -81,7 +81,7 @@ final class BrickMathCalculator implements CalculatorInterface
         int $roundingMode,
         int $scale,
         NumberInterface $dividend,
-        NumberInterface ...$divisors
+        NumberInterface ...$divisors,
     ): NumberInterface {
         $brickRounding = $this->getBrickRoundingMode($roundingMode);
 

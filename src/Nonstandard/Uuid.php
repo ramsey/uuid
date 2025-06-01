@@ -20,7 +20,7 @@ use Ramsey\Uuid\Converter\TimeConverterInterface;
 use Ramsey\Uuid\Uuid as BaseUuid;
 
 /**
- * Nonstandard\Uuid is a UUID that doesn't conform to RFC 4122
+ * Nonstandard\Uuid is a UUID that doesn't conform to RFC 9562 (formerly RFC 4122)
  *
  * @immutable
  */
@@ -30,7 +30,7 @@ final class Uuid extends BaseUuid
         Fields $fields,
         NumberConverterInterface $numberConverter,
         CodecInterface $codec,
-        TimeConverterInterface $timeConverter
+        TimeConverterInterface $timeConverter,
     ) {
         parent::__construct($fields, $numberConverter, $codec, $timeConverter);
     }

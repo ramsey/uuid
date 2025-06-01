@@ -31,14 +31,12 @@ use function substr;
 use const STR_PAD_LEFT;
 
 /**
- * Nonstandard UUID fields do not conform to the RFC 4122 standard
+ * Nonstandard UUID fields do not conform to the RFC 9562 (formerly RFC 4122) standard
  *
- * Since some systems may create nonstandard UUIDs, this implements the
- * Rfc4122\FieldsInterface, so that functionality of a nonstandard UUID is not
- * degraded, in the event these UUIDs are expected to contain RFC 4122 fields.
+ * Since some systems may create nonstandard UUIDs, this implements the {@see FieldsInterface}, so that functionality of
+ * a nonstandard UUID is not degraded, in the event these UUIDs are expected to contain RFC 9562 (formerly RFC 4122) fields.
  *
- * Internally, this class represents the fields together as a 16-byte binary
- * string.
+ * Internally, this class represents the fields together as a 16-byte binary string.
  *
  * @immutable
  */
@@ -56,8 +54,7 @@ final class Fields implements FieldsInterface
     {
         if (strlen($this->bytes) !== 16) {
             throw new InvalidArgumentException(
-                'The byte string must be 16 bytes long; '
-                . 'received ' . strlen($this->bytes) . ' bytes'
+                'The byte string must be 16 bytes long; received ' . strlen($this->bytes) . ' bytes',
             );
         }
     }

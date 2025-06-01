@@ -105,8 +105,9 @@ class FallbackBuilderTest extends TestCase
             } catch (UnableToBuildUuidException $exception) {
                 switch ($exception->getMessage()) {
                     case 'The byte string received does not contain a valid version':
-                    case 'The byte string received does not conform to the RFC 4122 variant':
-                    case 'The byte string received does not conform to the RFC 4122 or Microsoft Corporation variants':
+                    case 'The byte string received does not conform to the RFC 9562 (formerly RFC 4122) variant':
+                    case 'The byte string received does not conform to the RFC 9562 (formerly RFC 4122) '
+                        . 'or Microsoft Corporation variants':
                         // This is expected; ignoring.
                         break;
                     default:

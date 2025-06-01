@@ -1464,13 +1464,7 @@ class UuidTest extends TestCase
                 'urn' => 'urn:uuid:00000000-0000-0000-0000-000000000000',
                 'time' => '0',
                 'clock_seq' => '0000',
-                // This is a departure from the Python tests. The Python tests
-                // are technically "correct" because all bits are set to zero,
-                // so it stands to reason that the variant is also zero, but
-                // that leads to this being considered a "Reserved NCS" variant,
-                // and that is not the case. RFC 4122 defines this special UUID,
-                // so it is an RFC 4122 variant.
-                'variant' => Uuid::RFC_4122,
+                'variant' => Uuid::RESERVED_NCS,
                 'version' => null,
             ],
             [
@@ -1729,20 +1723,13 @@ class UuidTest extends TestCase
                 ],
                 'urn' => 'urn:uuid:ffffffff-ffff-ffff-ffff-ffffffffffff',
                 'time' => 'fffffffffffffff',
-                // This is a departure from the Python tests. The Python tests
-                // are technically "correct" because all bits are set to one,
-                // which ends up calculating the variant as 7, or "Reserved
-                // Future," but that is not the case, and now that max UUIDs
-                // are defined as a special type, within the RFC 4122 variant
-                // rules, we also consider it an RFC 4122 variant.
-                //
-                // Similarly, Python's tests think the clock sequence should be
+                // Python's tests think the clock sequence should be
                 // 0x3fff because of the bit shifting performed on this field.
                 // However, since all the bits in this UUID are defined as being
                 // set to one, we will consider the clock sequence as 0xffff,
                 // which all bits set to one.
                 'clock_seq' => 'ffff',
-                'variant' => Uuid::RFC_4122,
+                'variant' => Uuid::RESERVED_FUTURE,
                 'version' => null,
             ],
         ];
