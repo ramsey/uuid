@@ -10,4 +10,4 @@ Rfc4122\\UuidV8
 
     Implements :php:interface:`Ramsey\\Uuid\\Rfc4122\\UuidInterface`.
 
-    UuidV8 represents a :ref:`version 8, custom UUID <rfc4122.version8>`.
+    UuidV8 represents a :ref:`version 8, implementation-specific, custom format UUID <rfc4122.version8>`.

@@ -4,13 +4,11 @@
 Using a Custom Calculator
 =========================
 
-By default, ramsey/uuid uses `brick/math`_  as its internal calculator. However,
-you may change the calculator, if your needs require something else.
+By default, ramsey/uuid uses `brick/math`_  as its internal calculator. However, you may change the calculator, if your
+needs require something else.
 
-To swap the default calculator with your custom one, first make an adapter that
-wraps your custom calculator and implements
-:php:interface:`Ramsey\\Uuid\\Math\\CalculatorInterface`. This might look
-something like this:
+To swap the default calculator with your custom one, first make an adapter that wraps your custom calculator and
+implements :php:interface:`Ramsey\\Uuid\\Math\\CalculatorInterface`. This might look something like this:
 
 .. code-block:: php
     :caption: Create a custom calculator wrapper that implements CalculatorInterface
@@ -47,10 +45,9 @@ something like this:
 
     }
 
-The easiest way to use your custom calculator wrapper is to instantiate a new
-FeatureSet, set the calculator on it, and pass the FeatureSet into a new
-UuidFactory. Using the factory, you may then generate and work with UUIDs, using
-your custom calculator.
+The easiest way to use your custom calculator wrapper is to instantiate a new FeatureSet, set the calculator on it, and
+pass the FeatureSet into a new UuidFactory. Using the factory, you may then generate and work with UUIDs, using your
+custom calculator.
 
 .. code-block:: php
     :caption: Use your custom calculator wrapper when working with UUIDs
@@ -70,6 +67,5 @@ your custom calculator.
     $factory = new UuidFactory($featureSet);
 
     $uuid = $factory->uuid1();
-
 
 .. _brick/math: https://github.com/brick/math

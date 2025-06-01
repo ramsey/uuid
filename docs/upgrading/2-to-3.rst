@@ -4,28 +4,22 @@
 Version 2 to 3
 ==============
 
-While we have made significant internal changes to the library, we have made
-every effort to ensure a seamless upgrade path from the 2.x series of this
-library to 3.x.
+While we have made significant internal changes to the library, we have made every effort to ensure a seamless upgrade
+path from the 2.x series of this library to 3.x.
 
-One major breaking change is the transition from the ``Rhumsaa`` root namespace
-to ``Ramsey``. In most cases, all you will need is to change the namespace to
-``Ramsey`` in your code, and everything will "just work."
+One major breaking change is the transition from the ``Rhumsaa`` root namespace to ``Ramsey``. In most cases, all you
+will need is to change the namespace to ``Ramsey`` in your code, and everything will "just work."
 
 .. note::
-    For more details on the namespace change, including reasons for the change,
-    read the blog post "`Introducing ramsey/uuid
-    <https://benramsey.com/blog/2016/04/ramsey-uuid/>`_".
+
+    For more details on the namespace change, including reasons for the change, read the blog post "`Introducing
+    ramsey/uuid <https://benramsey.com/blog/2016/04/ramsey-uuid/>`_".
 
 Here are full details on the breaking changes to the public API of this library:
 
-1. All namespace references of ``Rhumsaa`` have changed to ``Ramsey``. Simply
-   change the namespace to ``Ramsey`` in your code and everything should work.
-2. The console application has moved to
-   `ramsey/uuid-console <https://packagist.org/packages/ramsey/uuid-console>`_.
-   If using the console functionality, use Composer to require
-   ``ramsey/uuid-console``.
-3. The Doctrine field type mapping has moved to
-   `ramsey/uuid-doctrine <https://packagist.org/packages/ramsey/uuid-doctrine>`_.
-   If using the Doctrine functionality, use Composer to require
-   ``ramsey/uuid-doctrine``.
+1. All namespace references of ``Rhumsaa`` have changed to ``Ramsey``. Simply change the namespace to ``Ramsey`` in your
+   code and everything should work.
+2. The console application has moved to `ramsey/uuid-console <https://packagist.org/packages/ramsey/uuid-console>`_. If
+   using the console functionality, use Composer to require ``ramsey/uuid-console``.
+3. The Doctrine field type mapping has moved to `ramsey/uuid-doctrine <https://packagist.org/packages/ramsey/uuid-doctrine>`_.
+   If using the Doctrine functionality, use Composer to require ``ramsey/uuid-doctrine``.

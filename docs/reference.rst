@@ -26,7 +26,6 @@ Reference
     reference/guid-guid
     reference/nonstandard-fields
     reference/nonstandard-uuid
-    reference/nonstandard-uuidv6
     reference/uuidfactoryinterface
     reference/types
     reference/exceptions

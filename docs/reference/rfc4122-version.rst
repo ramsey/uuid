@@ -12,43 +12,47 @@ Rfc4122\\Version
 
     .. php:case:: Time : 1
 
-        A version 1 UUID uses a timestamp based on the Gregorian calendar epoch,
-        along with the MAC address (or *node*) for a network interface on the
-        local machine. For more details, see :ref:`rfc4122.version1`.
+        A version 1 UUID uses a timestamp based on the Gregorian calendar epoch, along with the MAC address (or *node*)
+        for a network interface on the local machine. For more details, see :ref:`rfc4122.version1`.
 
     .. php:case:: DceSecurity : 2
 
-        Like a version 1 UUID, a version 2 UUID uses the current time, along
-        with the MAC address (or *node*) for a network interface on the local
-        machine. Additionally, a version 2 UUID replaces the low part of the
-        time field with a local identifier such as the user ID or group ID of
-        the local account that created the UUID. For more details, see
-        :ref:`rfc4122.version2`.
+        Like a version 1 UUID, a version 2 UUID uses the current time, along with the MAC address (or *node*) for a
+        network interface on the local machine. Additionally, a version 2 UUID replaces the low part of the time field
+        with a local identifier such as the user ID or group ID of the local account that created the UUID. For more
+        details, see :ref:`rfc4122.version2`.
 
     .. php:case:: HashMd5 : 3
 
-        Name-based UUIDs combine a namespace with a name. This way, the UUIDs
-        are unique to the namespace they're created in. Version 3 UUIDs use the
-        MD5 hashing algorithm to combine the namespace and name. For more
-        details, see :ref:`rfc4122.version3`.
+        Name-based UUIDs combine a namespace with a name. This way, the UUIDs are unique to the namespace they're
+        created in. Version 3 UUIDs use the MD5 hashing algorithm to combine the namespace and name. For more details,
+        see :ref:`rfc4122.version3`.
 
     .. php:case:: Random : 4
 
-        Version 4 UUIDs are randomly-generated identifiers. For more details,
-        see :ref:`rfc4122.version4`.
+        Version 4 UUIDs are randomly-generated identifiers. For more details, see :ref:`rfc4122.version4`.
 
     .. php:case:: HashSha1 : 5
 
-        Name-based UUIDs combine a namespace with a name. This way, the UUIDs
-        are unique to the namespace they're created in. Version 5 UUIDs use the
-        SHA-1 hashing algorithm to combine the namespace and name. For more
-        details, see :ref:`rfc4122.version5`.
+        Name-based UUIDs combine a namespace with a name. This way, the UUIDs are unique to the namespace they're
+        created in. Version 5 UUIDs use the SHA-1 hashing algorithm to combine the namespace and name. For more details,
+        see :ref:`rfc4122.version5`.
 
     .. php:case:: ReorderedTime : 6
 
+        Reordered Gregorian time UUIDs combine the features of a :ref:`version 1 UUID <rfc4122.version1>` with a
+        *monotonically increasing* UUID. For more details, see :ref:`rfc4122.version6`.
+
     .. php:case:: UnixTime : 7
 
+        Unix Epoch time UUIDs combine a timestamp--based on milliseconds elapsed since the Unix Epoch--and random bytes
+        to create a monotonically increasing, sortable UUID without the privacy and entropy concerns associated with
+        version 1 and version 6 UUIDs. For more details, see :ref:`rfc4122.version7`.
+
     .. php:case:: Custom : 8
+
+        Implementation-specific, custom format UUIDs allow applications to generate custom identifiers in an
+        RFC-compatible format. For more details, see :ref:`rfc4122.version8`.
 
     .. php:const:: V1
 
@@ -81,7 +85,3 @@ Rfc4122\\Version
     .. php:const:: V8
 
         An alias for :php:case:`Ramsey\\Uuid\\Rfc4122\\Version::Custom`.
-
-    .. php:const:: Peabody
-
-        An alias for :php:case:`Ramsey\\Uuid\\Rfc4122\\Version::ReorderedTime`.

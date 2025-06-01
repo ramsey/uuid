@@ -4,8 +4,8 @@
 Helper Functions
 ================
 
-ramsey/uuid additionally provides the following helper functions, which return
-only the string standard representation of a UUID.
+ramsey/uuid additionally provides the following helper functions, which return only the string standard representation
+of a UUID.
 
 .. php:function:: Ramsey\Uuid\v1([$node[, $clockSeq]])
 
@@ -54,9 +54,29 @@ only the string standard representation of a UUID.
 
 .. php:function:: Ramsey\Uuid\v6([$node[, $clockSeq]])
 
-    Generates a string standard representation of a version 6, reordered time UUID.
+    Generates a string standard representation of a version 6, reordered Gregorian time UUID.
 
     :param Ramsey\\Uuid\\Type\\Hexadecimal|null $node: An optional hexadecimal node to use
     :param int|null $clockSeq: An optional clock sequence to use
     :returns: A string standard representation of a version 6 UUID
+    :returntype: string
+
+.. php:function:: Ramsey\Uuid\v7([$dateTime])
+
+    Generates a string standard representation of a version 7, Unix Epoch time UUID.
+
+    :param \\DatetimeInterface|null $node: An optional date/time from which to create the version 7 UUID. If not
+        provided, the UUID is generated using the current date/time
+    :returns: A string standard representation of a version 7 UUID
+    :returntype: string
+
+.. php:function:: Ramsey\Uuid\v8($bytes)
+
+    Generates a string standard representation of a version 8, implementation-specific, custom format UUID.
+
+    :param string $bytes: A 16-byte octet string. This is an open blob of data that you may fill with 128 bits of
+                          information. Be aware, however, bits 48 through 51 will be replaced with the UUID version
+                          field, and bits 64 and 65 will be replaced with the UUID variant. You MUST NOT rely on
+                          these bits for your application needs.
+    :returns: A string standard representation of a version 8 UUID
     :returntype: string

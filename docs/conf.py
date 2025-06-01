@@ -23,7 +23,7 @@ def get_version():
     if os.environ.get('READTHEDOCS') == 'True':
         return os.environ.get('READTHEDOCS_VERSION')
 
-    pipe = Popen('git branch | grep \*', stdout=PIPE, shell=True, universal_newlines=True)
+    pipe = Popen('git branch | grep \\*', stdout=PIPE, shell=True, universal_newlines=True)
     version = pipe.stdout.read()
 
     if version:

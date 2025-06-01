@@ -78,91 +78,77 @@ Calculators
 
     .. php:const:: UNNECESSARY
 
-        Asserts that the requested operation has an exact result, hence no
-        rounding is necessary.
+        Asserts that the requested operation has an exact result, hence no rounding is necessary.
 
     .. php:const:: UP
 
         Rounds away from zero.
 
-        Always increments the digit prior to a nonzero discarded fraction.
-        Note that this rounding mode never decreases the magnitude of the
-        calculated value.
+        Always increments the digit prior to a nonzero discarded fraction. Note that this rounding mode never decreases
+        the magnitude of the calculated value.
 
     .. php:const:: DOWN
 
         Rounds towards zero.
 
-        Never increments the digit prior to a discarded fraction (i.e.,
-        truncates). Note that this rounding mode never increases the magnitude of
-        the calculated value.
+        Never increments the digit prior to a discarded fraction (i.e., truncates). Note that this rounding mode never
+        increases the magnitude of the calculated value.
 
     .. php:const:: CEILING
 
         Rounds towards positive infinity.
 
-        If the result is positive, behaves as for :php:const:`UP
-        <Ramsey\\Uuid\\Math\\RoundingMode::UP>`; if negative, behaves as for
-        :php:const:`DOWN <Ramsey\\Uuid\\Math\\RoundingMode::DOWN>`. Note that
-        this rounding mode never decreases the calculated value.
+        If the result is positive, behaves as for :php:const:`UP <Ramsey\\Uuid\\Math\\RoundingMode::UP>`; if negative,
+        behaves as for :php:const:`DOWN <Ramsey\\Uuid\\Math\\RoundingMode::DOWN>`. Note that this rounding mode never
+        decreases the calculated value.
 
     .. php:const:: FLOOR
 
         Rounds towards negative infinity.
 
-        If the result is positive, behave as for :php:const:`DOWN
-        <Ramsey\\Uuid\\Math\\RoundingMode::DOWN>`; if negative, behave as for
-        :php:const:`UP <Ramsey\\Uuid\\Math\\RoundingMode::UP>`. Note that this
-        rounding mode never increases the calculated value.
+        If the result is positive, behave as for :php:const:`DOWN <Ramsey\\Uuid\\Math\\RoundingMode::DOWN>`; if negative,
+        behave as for :php:const:`UP <Ramsey\\Uuid\\Math\\RoundingMode::UP>`. Note that this rounding mode never
+        increases the calculated value.
 
     .. php:const:: HALF_UP
 
-        Rounds towards "nearest neighbor" unless both neighbors are equidistant,
-        in which case round up.
+        Rounds towards "nearest neighbor" unless both neighbors are equidistant, in which case round up.
 
-        Behaves as for :php:const:`UP <Ramsey\\Uuid\\Math\\RoundingMode::UP>` if
-        the discarded fraction is >= 0.5; otherwise, behaves as for
-        :php:const:`DOWN <Ramsey\\Uuid\\Math\\RoundingMode::DOWN>`. Note that
-        this is the rounding mode commonly taught at school.
+        Behaves as for :php:const:`UP <Ramsey\\Uuid\\Math\\RoundingMode::UP>` if the discarded fraction is >= 0.5;
+        otherwise, behaves as for :php:const:`DOWN <Ramsey\\Uuid\\Math\\RoundingMode::DOWN>`. Note that this is the
+        rounding mode commonly taught at school.
 
     .. php:const:: HALF_DOWN
 
-        Rounds towards "nearest neighbor" unless both neighbors are equidistant,
-        in which case round down.
+        Rounds towards "nearest neighbor" unless both neighbors are equidistant, in which case round down.
 
-        Behaves as for :php:const:`UP <Ramsey\\Uuid\\Math\\RoundingMode::UP>` if
-        the discarded fraction is > 0.5; otherwise, behaves as for
-        :php:const:`DOWN <Ramsey\\Uuid\\Math\\RoundingMode::DOWN>`.
+        Behaves as for :php:const:`UP <Ramsey\\Uuid\\Math\\RoundingMode::UP>` if the discarded fraction is > 0.5;
+        otherwise, behaves as for :php:const:`DOWN <Ramsey\\Uuid\\Math\\RoundingMode::DOWN>`.
 
     .. php:const:: HALF_CEILING
 
-        Rounds towards "nearest neighbor" unless both neighbors are equidistant,
-        in which case round towards positive infinity.
+        Rounds towards "nearest neighbor" unless both neighbors are equidistant, in which case round towards positive
+        infinity.
 
-        If the result is positive, behaves as for :php:const:`HALF_UP
-        <Ramsey\\Uuid\\Math\\RoundingMode::HALF_UP>`; if negative, behaves as
-        for :php:const:`HALF_DOWN <Ramsey\\Uuid\\Math\\RoundingMode::HALF_DOWN>`.
+        If the result is positive, behaves as for :php:const:`HALF_UP <Ramsey\\Uuid\\Math\\RoundingMode::HALF_UP>`; if
+        negative, behaves as for :php:const:`HALF_DOWN <Ramsey\\Uuid\\Math\\RoundingMode::HALF_DOWN>`.
 
     .. php:const:: HALF_FLOOR
 
-        Rounds towards "nearest neighbor" unless both neighbors are equidistant,
-        in which case round towards negative infinity.
+        Rounds towards "nearest neighbor" unless both neighbors are equidistant, in which case round towards negative
+        infinity.
 
-        If the result is positive, behaves as for :php:const:`HALF_DOWN
-        <Ramsey\\Uuid\\Math\\RoundingMode::HALF_DOWN>`; if negative, behaves as
-        for :php:const:`HALF_UP <Ramsey\\Uuid\\Math\\RoundingMode::HALF_UP>`.
+        If the result is positive, behaves as for :php:const:`HALF_DOWN <Ramsey\\Uuid\\Math\\RoundingMode::HALF_DOWN>`;
+        if negative, behaves as for :php:const:`HALF_UP <Ramsey\\Uuid\\Math\\RoundingMode::HALF_UP>`.
 
     .. php:const:: HALF_EVEN
 
-        Rounds towards the "nearest neighbor" unless both neighbors are
-        equidistant, in which case rounds towards the even neighbor.
+        Rounds towards the "nearest neighbor" unless both neighbors are equidistant, in which case rounds towards the
+        even neighbor.
 
-        Behaves as for :php:const:`HALF_UP <Ramsey\\Uuid\\Math\\RoundingMode::HALF_UP>`
-        if the digit to the left of the discarded fraction is odd; behaves as
-        for :php:const:`HALF_DOWN <Ramsey\\Uuid\\Math\\RoundingMode::HALF_DOWN>`
+        Behaves as for :php:const:`HALF_UP <Ramsey\\Uuid\\Math\\RoundingMode::HALF_UP>` if the digit to the left of the
+        discarded fraction is odd; behaves as for :php:const:`HALF_DOWN <Ramsey\\Uuid\\Math\\RoundingMode::HALF_DOWN>`
         if it's even.
 
-        Note that this is the rounding mode that statistically minimizes
-        cumulative error when applied repeatedly over a sequence of calculations.
-        It is sometimes known as "Banker's rounding", and is chiefly used in the
-        USA.
+        Note that this is the rounding mode that statistically minimizes cumulative error when applied repeatedly over a
+        sequence of calculations. It is sometimes known as "Banker's rounding", and is chiefly used in the USA.

@@ -4,16 +4,13 @@
 Using a Custom Validator
 ========================
 
-By default, ramsey/uuid validates UUID strings with the lenient validator
-:php:class:`Ramsey\\Uuid\\Validator\\GenericValidator`. This validator ensures
-the string is 36 characters, has the dashes in the correct places, and uses only
-hexadecimal values. It does not ensure the string is of the RFC 4122 variant or
-contains a valid version.
+By default, ramsey/uuid validates UUID strings with the lenient validator :php:class:`Ramsey\\Uuid\\Validator\\GenericValidator`.
+This validator ensures the string is 36 characters, has the dashes in the correct places, and uses only hexadecimal
+values. It does not ensure the string is of the `RFC 9562`_ (formerly `RFC 4122`_) variant or contains a valid version.
 
-The validator :php:class:`Ramsey\\Uuid\\Rfc4122\\Validator` validates UUID
-strings to ensure they match the RFC 4122 variant and contain a valid version.
-Since it is not enabled by default, you will need to configure ramsey/uuid to
-use it, if you want stricter validation.
+The validator :php:class:`Ramsey\\Uuid\\Rfc4122\\Validator` validates UUID strings to ensure they match the `RFC 9562`_
+(formerly `RFC 4122`_) variant and contain a valid version. Since it is not enabled by default, you will need to
+configure ramsey/uuid to use it, if you want stricter validation.
 
 .. code-block:: php
     :caption: Set an alternate validator to use for Uuid::isValid()
@@ -34,6 +31,8 @@ use it, if you want stricter validation.
 
 .. tip::
 
-    If you want to use your own validation, create a class that implements
-    :php:interface:`Ramsey\\Uuid\\Validator\\ValidatorInterface` and use the
-    same method to set your validator on the factory.
+    If you want to use your own validation, create a class that implements :php:interface:`Ramsey\\Uuid\\Validator\\ValidatorInterface`
+    and use the same method to set your validator on the factory.
+
+.. _RFC 4122: https://www.rfc-editor.org/rfc/rfc4122
+.. _RFC 9562: https://www.rfc-editor.org/rfc/rfc9562
