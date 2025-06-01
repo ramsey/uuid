@@ -14,8 +14,6 @@ use Mockery\MockInterface;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\MockObject\MockObject;
 use Ramsey\Uuid\Codec\StringCodec;
-use Ramsey\Uuid\Codec\TimestampFirstCombCodec;
-use Ramsey\Uuid\Codec\TimestampLastCombCodec;
 use Ramsey\Uuid\Converter\Number\GenericNumberConverter;
 use Ramsey\Uuid\Converter\TimeConverterInterface;
 use Ramsey\Uuid\Exception\DateTimeException;
@@ -23,19 +21,16 @@ use Ramsey\Uuid\Exception\InvalidArgumentException;
 use Ramsey\Uuid\Exception\InvalidUuidStringException;
 use Ramsey\Uuid\Exception\UnsupportedOperationException;
 use Ramsey\Uuid\FeatureSet;
-use Ramsey\Uuid\Generator\CombGenerator;
-use Ramsey\Uuid\Generator\RandomGeneratorFactory;
-use Ramsey\Uuid\Generator\RandomGeneratorInterface;
 use Ramsey\Uuid\Guid\Guid;
 use Ramsey\Uuid\Lazy\LazyUuidFromString;
 use Ramsey\Uuid\Math\BrickMathCalculator;
-use Ramsey\Uuid\Nonstandard\UuidV6;
 use Ramsey\Uuid\Provider\Node\RandomNodeProvider;
 use Ramsey\Uuid\Provider\Time\FixedTimeProvider;
 use Ramsey\Uuid\Rfc4122\Fields;
 use Ramsey\Uuid\Rfc4122\FieldsInterface;
 use Ramsey\Uuid\Rfc4122\UuidBuilder;
 use Ramsey\Uuid\Rfc4122\UuidV1;
+use Ramsey\Uuid\Rfc4122\UuidV6;
 use Ramsey\Uuid\Rfc4122\UuidV7;
 use Ramsey\Uuid\Rfc4122\UuidV8;
 use Ramsey\Uuid\Rfc4122\Version;
@@ -54,17 +49,14 @@ use stdClass;
 use function base64_decode;
 use function base64_encode;
 use function gmdate;
-use function hex2bin;
 use function json_encode;
 use function serialize;
-use function str_pad;
 use function strlen;
 use function strtotime;
 use function strtoupper;
 use function substr;
 use function uniqid;
 use function unserialize;
-use function usleep;
 
 class UuidTest extends TestCase
 {
@@ -856,85 +848,6 @@ class UuidTest extends TestCase
         /** @var \Ramsey\Uuid\Rfc4122\UuidInterface $uuid */
         $uuid = Uuid::uuid4();
         $this->assertSame(Variant::Rfc4122, $uuid->getFields()->getVariant());
-        $this->assertSame(Version::Random, $uuid->getFields()->getVersion());
-    }
-
-    /**
-     * Tests that generated UUID's using timestamp last COMB are sequential
-     */
-    public function testUuid4TimestampLastComb(): void
-    {
-        $mock = $this->getMockBuilder(RandomGeneratorInterface::class)->getMock();
-        $mock->expects($this->any())
-            ->method('generate')
-            ->willReturnCallback(function (int $length) {
-                // Makes first fields of UUIDs equal
-                return hex2bin(str_pad('', $length * 2, '0'));
-            });
-
-        $factory = new UuidFactory();
-        $generator = new CombGenerator($mock, $factory->getNumberConverter());
-        $codec = new TimestampLastCombCodec($factory->getUuidBuilder());
-        $factory->setRandomGenerator($generator);
-        $factory->setCodec($codec);
-
-        $previous = $factory->uuid4();
-
-        for ($i = 0; $i < 1000; $i++) {
-            usleep(100);
-            $uuid = $factory->uuid4();
-            $this->assertGreaterThan($previous->toString(), $uuid->toString());
-
-            $previous = $uuid;
-        }
-    }
-
-    /**
-     * Tests that generated UUID's using timestamp first COMB are sequential
-     */
-    public function testUuid4TimestampFirstComb(): void
-    {
-        $mock = $this->getMockBuilder(RandomGeneratorInterface::class)->getMock();
-        $mock->expects($this->any())
-            ->method('generate')
-            ->willReturnCallback(function (int $length) {
-                // Makes first fields of UUIDs equal
-                return hex2bin(str_pad('', $length * 2, '0'));
-            });
-
-        $factory = new UuidFactory();
-        $generator = new CombGenerator($mock, $factory->getNumberConverter());
-        $codec = new TimestampFirstCombCodec($factory->getUuidBuilder());
-        $factory->setRandomGenerator($generator);
-        $factory->setCodec($codec);
-
-        $previous = $factory->uuid4();
-
-        for ($i = 0; $i < 1000; $i++) {
-            usleep(100);
-            $uuid = $factory->uuid4();
-            $this->assertGreaterThan($previous->toString(), $uuid->toString());
-
-            $previous = $uuid;
-        }
-    }
-
-    /**
-     * Test that COMB UUID's have a version 4 flag
-     */
-    public function testUuid4CombVersion(): void
-    {
-        $factory = new UuidFactory();
-        $generator = new CombGenerator(
-            (new RandomGeneratorFactory())->getGenerator(),
-            $factory->getNumberConverter()
-        );
-
-        $factory->setRandomGenerator($generator);
-
-        /** @var \Ramsey\Uuid\Rfc4122\UuidInterface $uuid */
-        $uuid = $factory->uuid4();
-
         $this->assertSame(Version::Random, $uuid->getFields()->getVersion());
     }
 

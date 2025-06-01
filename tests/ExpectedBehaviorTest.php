@@ -6,8 +6,6 @@ use Mockery;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\PreserveGlobalState;
 use PHPUnit\Framework\Attributes\RunInSeparateProcess;
-use Ramsey\Uuid\Codec\TimestampFirstCombCodec;
-use Ramsey\Uuid\Generator\CombGenerator;
 use Ramsey\Uuid\Generator\DefaultTimeGenerator;
 use Ramsey\Uuid\Rfc4122\UuidInterface;
 use Ramsey\Uuid\Rfc4122\UuidV1;
@@ -514,48 +512,6 @@ class ExpectedBehaviorTest extends TestCase
         $this->assertSame('aVersion3Uuid', \Ramsey\Uuid\v3(Uuid::NAMESPACE_URL, 'https://example.com/foo'));
         $this->assertSame('aVersion4Uuid', \Ramsey\Uuid\v4());
         $this->assertSame('aVersion5Uuid', \Ramsey\Uuid\v5(Uuid::NAMESPACE_URL, 'https://example.com/foo'));
-    }
-
-    /**
-     * @link https://git.io/JvJZo Use of TimestampFirstCombCodec in laravel/framework
-     */
-    public function testUseOfTimestampFirstCombCodec(): void
-    {
-        $factory = new UuidFactory();
-
-        $factory->setRandomGenerator(new CombGenerator(
-            $factory->getRandomGenerator(),
-            $factory->getNumberConverter()
-        ));
-
-        $factory->setCodec(new TimestampFirstCombCodec(
-            $factory->getUuidBuilder()
-        ));
-
-        /** @var UuidInterface $uuid */
-        $uuid = $factory->uuid4();
-
-        // Swap fields according to the rules for TimestampFirstCombCodec.
-        $fields =  [
-            $uuid->getFields()->getTimeLow()->toString(),
-            $uuid->getFields()->getTimeMid()->toString(),
-            $uuid->getFields()->getTimeHiAndVersion()->toString(),
-            $uuid->getFields()->getClockSeqHiAndReserved()->toString(),
-            $uuid->getFields()->getClockSeqLow()->toString(),
-            $uuid->getFields()->getNode()->toString(),
-        ];
-        $last48Bits = $fields[5];
-        $fields[5] = $fields[0] . $fields[1];
-        $fields[0] = substr($last48Bits, 0, 8);
-        $fields[1] = substr($last48Bits, 8, 4);
-
-        $expectedHex = implode('', $fields);
-        $expectedBytes = hex2bin($expectedHex);
-
-        $this->assertSame(Variant::Rfc4122, $uuid->getFields()->getVariant());
-        $this->assertSame(Version::Random, $uuid->getFields()->getVersion());
-        $this->assertSame($expectedBytes, $uuid->getBytes());
-        $this->assertSame($expectedHex, (string) $uuid->getHex());
     }
 
     #[DataProvider('provideUuidConstantTests')]
