@@ -72,7 +72,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 * Remove dependency on ramsey/collection package.
 
 
-## Unreleased
+## 4.8.0 - 2025-06-01
+
+### Deprecated
+
+The following will be removed in ramsey/uuid 5.0.0:
+
+* `Ramsey\Uuid\Codec\OrderedTimeCodec` is deprecated; please migrate to [version 6 UUIDs](https://uuid.ramsey.dev/en/stable/rfc4122/version6.html).
+* `Ramsey\Uuid\Codec\TimestampFirstCombCodec` is deprecated; please migrate to [version 7 UUIDs](https://uuid.ramsey.dev/en/stable/rfc4122/version7.html).
+* `Ramsey\Uuid\Codec\TimestampLastCombCodec` is deprecated; please use `Ramsey\Uuid\Codec\StringCodec` instead.
+* `Ramsey\Uuid\Generator\CombGenerator` is deprecated; please migrate to [version 7 UUIDs](https://uuid.ramsey.dev/en/stable/rfc4122/version7.html).
 
 ### Fixed
 
@@ -83,14 +92,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 * `getVariant()` for `MaxUuid` now correctly returns `Uuid::RESERVED_FUTURE`, as specified in [RFC 9562, section 5.10](https://www.rfc-editor.org/rfc/rfc9562#section-5.10).
 * `getVariant()` for `NilUuid` now correctly returns `Uuid::RESERVED_NCS`, as specified in [RFC 9562, section 5.9](https://www.rfc-editor.org/rfc/rfc9562#section-5.9).
 
-### Deprecated
-
-The following will be removed in ramsey/uuid 5.0.0:
-
-* `Ramsey\Uuid\Codec\OrderedTimeCodec` is deprecated; please migrate to [version 6 UUIDs](https://uuid.ramsey.dev/en/stable/rfc4122/version6.html).
-* `Ramsey\Uuid\Codec\TimestampFirstCombCodec` is deprecated; please migrate to [version 7 UUIDs](https://uuid.ramsey.dev/en/stable/rfc4122/version7.html).
-* `Ramsey\Uuid\Codec\TimestampLastCombCodec` is deprecated; please use `Ramsey\Uuid\Codec\StringCodec` instead.
-* `Ramsey\Uuid\Generator\CombGenerator` is deprecated; please migrate to [version 7 UUIDs](https://uuid.ramsey.dev/en/stable/rfc4122/version7.html).
 
 ## 4.7.6 - 2024-04-27
 
