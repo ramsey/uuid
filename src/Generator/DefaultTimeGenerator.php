@@ -35,15 +35,14 @@ use function strlen;
 use const STR_PAD_LEFT;
 
 /**
- * DefaultTimeGenerator generates strings of binary data based on a node ID,
- * clock sequence, and the current time
+ * DefaultTimeGenerator generates strings of binary data based on a node ID, clock sequence, and the current time
  */
 class DefaultTimeGenerator implements TimeGeneratorInterface
 {
     public function __construct(
         private NodeProviderInterface $nodeProvider,
         private TimeConverterInterface $timeConverter,
-        private TimeProviderInterface $timeProvider
+        private TimeProviderInterface $timeProvider,
     ) {
     }
 
@@ -63,14 +62,10 @@ class DefaultTimeGenerator implements TimeGeneratorInterface
 
         if ($clockSeq === null) {
             try {
-                // This does not use "stable storage"; see RFC 4122, Section 4.2.1.1.
+                // This does not use "stable storage"; see RFC 9562, section 6.3.
                 $clockSeq = random_int(0, 0x3fff);
             } catch (Throwable $exception) {
-                throw new RandomSourceException(
-                    $exception->getMessage(),
-                    (int) $exception->getCode(),
-                    $exception
-                );
+                throw new RandomSourceException($exception->getMessage(), (int) $exception->getCode(), $exception);
             }
         }
 
@@ -84,26 +79,20 @@ class DefaultTimeGenerator implements TimeGeneratorInterface
         $timeHex = str_pad($uuidTime->toString(), 16, '0', STR_PAD_LEFT);
 
         if (strlen($timeHex) !== 16) {
-            throw new TimeSourceException(sprintf(
-                'The generated time of \'%s\' is larger than expected',
-                $timeHex
-            ));
+            throw new TimeSourceException(sprintf('The generated time of \'%s\' is larger than expected', $timeHex));
         }
 
         $timeBytes = (string) hex2bin($timeHex);
 
         return $timeBytes[4] . $timeBytes[5] . $timeBytes[6] . $timeBytes[7]
-            . $timeBytes[2] . $timeBytes[3]
-            . $timeBytes[0] . $timeBytes[1]
-            . pack('n*', $clockSeq)
-            . $node;
+            . $timeBytes[2] . $timeBytes[3] . $timeBytes[0] . $timeBytes[1]
+            . pack('n*', $clockSeq) . $node;
     }
 
     /**
-     * Uses the node provider given when constructing this instance to get
-     * the node ID (usually a MAC address)
+     * Uses the node provider given when constructing this instance to get the node ID (usually a MAC address)
      *
-     * @param int|string|null $node A node value that may be used to override the node provider
+     * @param int | string | null $node A node value that may be used to override the node provider
      *
      * @return string 6-byte binary string representation of the node
      *
@@ -115,7 +104,7 @@ class DefaultTimeGenerator implements TimeGeneratorInterface
             $node = $this->nodeProvider->getNode();
         }
 
-        // Convert the node to hex, if it is still an integer.
+        // Convert the node to hex if it is still an integer.
         if (is_int($node)) {
             $node = dechex($node);
         }

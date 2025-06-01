@@ -31,11 +31,9 @@ use const STR_PAD_LEFT;
 trait TimeTrait
 {
     /**
-     * Returns a DateTimeInterface object representing the timestamp associated
-     * with the UUID
+     * Returns a DateTimeInterface object representing the timestamp associated with the UUID
      *
-     * @return DateTimeImmutable A PHP DateTimeImmutable instance representing
-     *     the timestamp of a time-based UUID
+     * @return DateTimeImmutable A PHP DateTimeImmutable instance representing the timestamp of a time-based UUID
      */
     public function getDateTime(): DateTimeInterface
     {

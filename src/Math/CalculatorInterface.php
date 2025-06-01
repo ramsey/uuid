@@ -61,9 +61,8 @@ interface CalculatorInterface
      * @param int $roundingMode The RoundingMode constant to use for this operation
      * @param int $scale The scale to use for this operation
      * @param NumberInterface $dividend The integer to be divided
-     * @param NumberInterface ...$divisors The integers to divide $dividend by, in
-     *     the order in which the division operations should take place
-     *     (left-to-right)
+     * @param NumberInterface ...$divisors The integers to divide $dividend by, in the order in which the division
+     *     operations should take place (left-to-right)
      *
      * @return NumberInterface The quotient of dividing the provided parameters left-to-right
      */
@@ -71,7 +70,7 @@ interface CalculatorInterface
         int $roundingMode,
         int $scale,
         NumberInterface $dividend,
-        NumberInterface ...$divisors
+        NumberInterface ...$divisors,
     ): NumberInterface;
 
     /**

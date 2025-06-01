@@ -26,12 +26,11 @@ use function substr;
 /**
  * A value object representing an integer
  *
- * This class exists for type-safety purposes, to ensure that integers
- * returned from ramsey/uuid methods as strings are truly integers and not some
- * other kind of string.
+ * This class exists for type-safety purposes, to ensure that integers returned from ramsey/uuid methods as strings are
+ * truly integers and not some other kind of string.
  *
- * To support large integers beyond PHP_INT_MAX and PHP_INT_MIN on both 64-bit
- * and 32-bit systems, we store the integers as strings.
+ * To support large integers beyond PHP_INT_MAX and PHP_INT_MIN on both 64-bit and 32-bit systems, we store the integers
+ * as strings.
  *
  * @immutable
  */
@@ -47,7 +46,7 @@ final class Integer implements NumberInterface
      */
     private bool $isNegative = false;
 
-    public function __construct(float | int | string | self $value)
+    public function __construct(self | float | int | string $value)
     {
         $this->value = $value instanceof self ? (string) $value : $this->prepareValue($value);
     }
@@ -123,7 +122,7 @@ final class Integer implements NumberInterface
         $value = (string) $value;
         $sign = '+';
 
-        // If the value contains a sign, remove it for digit pattern check.
+        // If the value contains a sign, remove it for the digit pattern check.
         if (str_starts_with($value, '-') || str_starts_with($value, '+')) {
             $sign = substr($value, 0, 1);
             $value = substr($value, 1);

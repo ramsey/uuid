@@ -27,8 +27,8 @@ use function str_pad;
 use const STR_PAD_LEFT;
 
 /**
- * UnixTimeConverter converts Unix Epoch timestamps to/from hexadecimal values
- * consisting of milliseconds elapsed since the Unix Epoch
+ * UnixTimeConverter converts Unix Epoch timestamps to/from hexadecimal values consisting of milliseconds elapsed since
+ * the Unix Epoch
  *
  * @immutable
  */
@@ -45,13 +45,9 @@ class UnixTimeConverter implements TimeConverterInterface
         $timestamp = new Time($seconds, $microseconds);
 
         // Convert the seconds into milliseconds.
-        $sec = $this->calculator->multiply(
-            $timestamp->getSeconds(),
-            new IntegerObject(self::MILLISECONDS),
-        );
+        $sec = $this->calculator->multiply($timestamp->getSeconds(), new IntegerObject(self::MILLISECONDS));
 
-        // Convert the microseconds into milliseconds; the scale is zero because
-        // we need to discard the fractional part.
+        // Convert the microseconds into milliseconds; the scale is zero because we need to discard the fractional part.
         $usec = $this->calculator->divide(
             RoundingMode::DOWN, // Always round down to stay in the previous millisecond.
             0,
@@ -62,14 +58,7 @@ class UnixTimeConverter implements TimeConverterInterface
         /** @var IntegerObject $unixTime */
         $unixTime = $this->calculator->add($sec, $usec);
 
-        $unixTimeHex = str_pad(
-            $this->calculator->toHexadecimal($unixTime)->toString(),
-            12,
-            '0',
-            STR_PAD_LEFT
-        );
-
-        return new Hexadecimal($unixTimeHex);
+        return new Hexadecimal(str_pad($this->calculator->toHexadecimal($unixTime)->toString(), 12, '0', STR_PAD_LEFT));
     }
 
     public function convertTime(Hexadecimal $uuidTimestamp): Time
@@ -80,7 +69,7 @@ class UnixTimeConverter implements TimeConverterInterface
             RoundingMode::HALF_UP,
             6,
             $milliseconds,
-            new IntegerObject(self::MILLISECONDS)
+            new IntegerObject(self::MILLISECONDS),
         );
 
         $split = explode('.', (string) $unixTimestamp, 2);

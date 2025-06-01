@@ -20,40 +20,31 @@ namespace Ramsey\Uuid;
 class BinaryUtils
 {
     /**
-     * Applies the RFC 4122 variant field to the 16-bit clock sequence
+     * Applies the variant field to the 16-bit clock sequence
      *
-     * @link http://tools.ietf.org/html/rfc4122#section-4.1.1 RFC 4122, § 4.1.1: Variant
+     * @link https://www.rfc-editor.org/rfc/rfc9562#section-4.1 RFC 9562, 4.1. Variant Field
      *
-     * @param int $clockSeq The 16-bit clock sequence value before the RFC 4122
-     *     variant is applied
+     * @param int $clockSeq The 16-bit clock sequence value before the variant is applied
      *
      * @return int The 16-bit clock sequence multiplexed with the UUID variant
      */
     public static function applyVariant(int $clockSeq): int
     {
-        $clockSeq = $clockSeq & 0x3fff;
-        $clockSeq |= 0x8000;
-
-        return $clockSeq;
+        return ($clockSeq & 0x3fff) | 0x8000;
     }
 
     /**
-     * Applies the RFC 4122 version number to the 16-bit `time_hi_and_version` field
+     * Applies the version field to the 16-bit `time_hi_and_version` field
      *
-     * @link http://tools.ietf.org/html/rfc4122#section-4.1.3 RFC 4122, § 4.1.3: Version
+     * @link https://www.rfc-editor.org/rfc/rfc9562#section-4.2 RFC 9562, 4.2. Version Field
      *
-     * @param int $timeHi The value of the 16-bit `time_hi_and_version` field
-     *     before the RFC 4122 version is applied
-     * @param int $version The RFC 4122 version to apply to the `time_hi` field
+     * @param int $timeHi The value of the 16-bit `time_hi_and_version` field before the version is applied
+     * @param int $version The version to apply to the `time_hi` field
      *
-     * @return int The 16-bit time_hi field of the timestamp multiplexed with
-     *     the UUID version number
+     * @return int The 16-bit time_hi field of the timestamp multiplexed with the UUID version number
      */
     public static function applyVersion(int $timeHi, int $version): int
     {
-        $timeHi = $timeHi & 0x0fff;
-        $timeHi |= $version << 12;
-
-        return $timeHi;
+        return ($timeHi & 0x0fff) | ($version << 12);
     }
 }
