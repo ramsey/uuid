@@ -11,7 +11,7 @@
     "require": {
         "php": "^8.2",
         "ext-json": "*",
-        "brick/math": "^0.11 || ^0.12"
+        "brick/math": "^0.11 || ^0.12 || ^0.13"
     },
     "require-dev": {
         "captainhook/captainhook": "^5.25",

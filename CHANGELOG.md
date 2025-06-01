@@ -76,9 +76,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 
-* Hexadecimal is never an empty string; fixed in [#593](https://github.com/ramsey/uuid/pull/593).
+* Allow brick/math version `^0.13`; fixed in [#589](https://github.com/ramsey/uuid/pull/589).
 * Update call to `str_getcsv()` to avoid deprecation notice in PHP 8.4; fixed in [#590](https://github.com/ramsey/uuid/pull/590).
+* Hexadecimal is never an empty string; fixed in [#593](https://github.com/ramsey/uuid/pull/593).
 * Update docblocks for `Uuid::fromBytes()`, `Uuid::fromString()`, `Uuid::fromDateTime()`, `Uuid::fromHexadecimal()`, and `Uuid::fromInteger()` to note that each can throw `InvalidArgumentException`, addressing PHPStan errors occurring at call sites; fixed in [#552](https://github.com/ramsey/uuid/pull/552).
+* `getVariant()` for `MaxUuid` now correctly returns `Uuid::RESERVED_FUTURE`, as specified in [RFC 9562, section 5.10](https://www.rfc-editor.org/rfc/rfc9562#section-5.10).
+* `getVariant()` for `NilUuid` now correctly returns `Uuid::RESERVED_NCS`, as specified in [RFC 9562, section 5.9](https://www.rfc-editor.org/rfc/rfc9562#section-5.9).
 
 ### Deprecated
 
