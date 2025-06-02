@@ -13,6 +13,7 @@ use Ramsey\Uuid\Builder\UuidBuilderInterface;
 use Ramsey\Uuid\Codec\CodecInterface;
 use Ramsey\Uuid\Converter\NumberConverterInterface;
 use Ramsey\Uuid\Converter\TimeConverterInterface;
+use Ramsey\Uuid\Exception\InvalidUuidStringException;
 use Ramsey\Uuid\FeatureSet;
 use Ramsey\Uuid\Generator\DceSecurityGeneratorInterface;
 use Ramsey\Uuid\Generator\DefaultNameGenerator;
@@ -58,6 +59,32 @@ class UuidFactoryTest extends TestCase
         $uuid = $factory->fromString($uuidUpper);
 
         $this->assertSame($uuidString, $uuid->toString());
+    }
+
+    public function testFromStrictStringWithInvalidUuidString(): void
+    {
+        $this->expectException(InvalidUuidStringException::class);
+
+        $factory = new UuidFactory(new FeatureSet(true));
+
+        $factory->fromStrictString('00000000000000000000000000000000');
+    }
+
+    public function testFromStrictStringWithValidUuidString(): void
+    {
+        $factory = new UuidFactory(new FeatureSet(true));
+
+        $this->assertSame(
+            'ff6f8cb0-c57d-11e1-9b21-0800200c9a66',
+            $factory->fromStrictString('ff6f8cb0-c57d-11e1-9b21-0800200c9a66')
+                ->toString()
+        );
+
+        $this->assertSame(
+            '00000000-0000-0000-0000-000000000000',
+            $factory->fromStrictString('00000000-0000-0000-0000-000000000000')
+                ->toString()
+        );
     }
 
     public function testGettersReturnValueFromFeatureSet(): void
