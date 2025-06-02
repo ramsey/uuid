@@ -4,16 +4,13 @@
 Version 3 to 4
 ==============
 
-I've made great efforts to ensure that the upgrade experience for most will be
-seamless and uneventful. However, no matter the degree to which you use
-ramsey/uuid (customized or unchanged), there are a number of things to be aware
-of as you upgrade your code to use version 4.
+I've made great efforts to ensure that the upgrade experience for most will be seamless and uneventful. However, no
+matter the degree to which you use ramsey/uuid (customized or unchanged), there are a number of things to be aware of as
+you upgrade your code to use version 4.
 
 .. tip::
 
-    These are the changes that are most likely to affect you. For a full list of
-    changes, take a look at the `4.0.0 changelog`_.
-
+    These are the changes that are most likely to affect you. For a full list of changes, take a look at the `4.0.0 changelog`_.
 
 .. _upgrading.3-to-4.new:
 
@@ -24,9 +21,8 @@ There are a lot of new features in ramsey/uuid! Here are a few of them:
 
 * Support :ref:`version 6 UUIDs <nonstandard.version6>`.
 * Support :ref:`version 2 (DCE Security) UUIDs <rfc4122.version2>`.
-* Add classes to represent each version of RFC 4122 UUID. When generating new
-  UUIDs or creating UUIDs from existing strings, bytes, or integers, if the UUID
-  is an RFC 4122 variant, one of these instances will be returned:
+* Add classes to represent each version of RFC 4122 UUID. When generating new UUIDs or creating UUIDs from existing
+  strings, bytes, or integers, if the UUID is an RFC 4122 variant, one of these instances will be returned:
 
   * :php:class:`Rfc4122\\UuidV1 <Ramsey\\Uuid\\Rfc4122\\UuidV1>`
   * :php:class:`Rfc4122\\UuidV2 <Ramsey\\Uuid\\Rfc4122\\UuidV2>`
@@ -35,16 +31,14 @@ There are a lot of new features in ramsey/uuid! Here are a few of them:
   * :php:class:`Rfc4122\\UuidV5 <Ramsey\\Uuid\\Rfc4122\\UuidV5>`
   * :php:class:`Rfc4122\\NilUuid <Ramsey\\Uuid\\Rfc4122\\NilUuid>`
 
-* Add classes to represent version 6 UUIDs, GUIDs, and nonstandard
-  (non-RFC 4122 variants) UUIDs:
+* Add classes to represent version 6 UUIDs, GUIDs, and nonstandard (non-RFC 4122 variants) UUIDs:
 
   * :php:class:`Nonstandard\\UuidV6 <Ramsey\\Uuid\\Nonstandard\\UuidV6>`
   * :php:class:`Nonstandard\\Uuid <Ramsey\\Uuid\\Nonstandard\\Uuid>`
   * :php:class:`Guid\\Guid <Ramsey\\Uuid\\Guid\\Guid>`
 
-* Add :php:meth:`Uuid::fromDateTime() <Ramsey\\Uuid\\Uuid::fromDateTime>` to
-  create version 1 UUIDs from instances of DateTimeInterface.
-
+* Add :php:meth:`Uuid::fromDateTime() <Ramsey\\Uuid\\Uuid::fromDateTime>` to create version 1 UUIDs from instances of
+  DateTimeInterface.
 
 .. _upgrading.3-to-4.changed:
 
@@ -55,67 +49,53 @@ What's Changed?
 
     ramsey/uuid version 4 requires PHP 7.2 or later.
 
-Quite a bit has changed, but much remains familiar. Unless you've changed the
-behavior of ramsey/uuid through custom codecs, providers, generators, etc., the
-standard functionality and API found in version 3 will not differ much.
+Quite a bit has changed, but much remains familiar. Unless you've changed the behavior of ramsey/uuid through custom
+codecs, providers, generators, etc., the standard functionality and API found in version 3 will not differ much.
 
 .. rubric:: Here are the highlights:
 
-* ramsey/uuid now works on 32-bit and 64-bit systems, with no degradation in
-  functionality! All Degraded\* classes are deprecated and no longer used;
-  they'll go away in ramsey/uuid version 5.
-* Pay attention to the :ref:`return types for the static methods
-  <upgrading.3-to-4.static-methods>` on the :php:class:`Uuid <Ramsey\\Uuid\\Uuid>`
-  class. They've changed slightly, but this won't affect you if your type hints
+* ramsey/uuid now works on 32-bit and 64-bit systems, with no degradation in functionality! All Degraded\* classes are
+  deprecated and no longer used; they'll go away in ramsey/uuid version 5.
+* Pay attention to the :ref:`return types for the static methods <upgrading.3-to-4.static-methods>` on the
+  :php:class:`Uuid <Ramsey\\Uuid\\Uuid>` class. They've changed slightly, but this won't affect you if your type hints
   use :php:interface:`UuidInterface <Ramsey\\Uuid\\UuidInterface>`.
-* The :ref:`return types for three methods <upgrading.3-to-4.return-types>`
-  defined on :php:interface:`UuidInterface <Ramsey\\Uuid\\UuidInterface>` have
-  changed, breaking backwards compatibility. **Take note and update your code.**
-* :ref:`There are a number of deprecations. <upgrading.3-to-4.deprecations>`
-  These shouldn't affect you now, but please take a look at the recommendations
-  and update your code soon. These will go away in ramsey/uuid version 5.
-* ramsey/uuid now :ref:`throws custom exceptions for everything
-  <reference.exceptions>`. The exception UnsatisfiedDependencyException no
-  longer exists.
-* If you customize ramsey/uuid at all by implementing the interfaces, take a
-  look at the :ref:`interface <upgrading.3-to-4.interfaces>` and
-  :ref:`constructor <upgrading.3-to-4.constructors>` changes and update your
-  code.
+* The :ref:`return types for three methods <upgrading.3-to-4.return-types>` defined on :php:interface:`UuidInterface
+  <Ramsey\\Uuid\\UuidInterface>` have changed, breaking backwards compatibility. **Take note and update your code.**
+* :ref:`There are a number of deprecations. <upgrading.3-to-4.deprecations>` These shouldn't affect you now, but please
+  take a look at the recommendations and update your code soon. These will go away in ramsey/uuid version 5.
+* ramsey/uuid now :ref:`throws custom exceptions for everything <reference.exceptions>`. The exception
+  UnsatisfiedDependencyException no longer exists.
+* If you customize ramsey/uuid at all by implementing the interfaces, take a look at the :ref:`interface
+  <upgrading.3-to-4.interfaces>` and :ref:`constructor <upgrading.3-to-4.constructors>` changes and update your code.
 
 .. tip::
 
-    If you maintain a public project that uses ramsey/uuid version 3 and you
-    find that **your code does not require any changes to upgrade** to version
-    4, consider using the following version constraint in your project's
-    ``composer.json`` file:
+    If you maintain a public project that uses ramsey/uuid version 3 and you find that **your code does not require any
+    changes to upgrade** to version 4, consider using the following version constraint in your project's ``composer.json``
+    file:
 
     .. code-block:: bash
 
         composer require ramsey/uuid:"^3 || ^4"
 
-    This will allow any `downstream users`_ of your project who aren't ready to
-    upgrade to version 4 the ability to continue using your project while
-    deciding on an appropriate upgrade schedule.
+    This will allow any `downstream users`_ of your project who aren't ready to upgrade to version 4 the ability to
+    continue using your project while deciding on an appropriate upgrade schedule.
 
-    If your downstream users do not specify ramsey/uuid as a dependency, and
-    they use functionality specific to version 3, they may need to update their
-    own Composer dependencies to use ramsey/uuid ``^3`` to avoid using version 4.
-
+    If your downstream users do not specify ramsey/uuid as a dependency, and they use functionality specific to version
+    3, they may need to update their own Composer dependencies to use ramsey/uuid ``^3`` to avoid using version 4.
 
 .. _upgrading.3-to-4.static-methods:
 
 Uuid Static Methods
 ###################
 
-All the static methods on the :php:class:`Uuid <Ramsey\\Uuid\\Uuid>` class
-continue to work as they did in version 3, with this slight change: **they now
-return more-specific types**, all of which implement the new interface
-:php:interface:`Rfc4122\\UuidInterface <Ramsey\\Uuid\\Rfc4122\\UuidInterface>`,
-which implements the familiar interface :php:interface:`UuidInterface
-<Ramsey\\Uuid\\UuidInterface>`.
+All the static methods on the :php:class:`Uuid <Ramsey\\Uuid\\Uuid>` class continue to work as they did in version 3,
+with this slight change: **they now return more-specific types**, all of which implement the new interface
+:php:interface:`Rfc4122\\UuidInterface <Ramsey\\Uuid\\Rfc4122\\UuidInterface>`, which implements the familiar interface
+:php:interface:`UuidInterface <Ramsey\\Uuid\\UuidInterface>`.
 
-If your type hints are for :php:interface:`UuidInterface
-<Ramsey\\Uuid\\UuidInterface>`, then you should not require any changes.
+If your type hints are for :php:interface:`UuidInterface <Ramsey\\Uuid\\UuidInterface>`, then you should not require any
+changes.
 
 .. list-table:: Return types for Uuid static methods
     :align: center
@@ -137,27 +117,21 @@ If your type hints are for :php:interface:`UuidInterface
       - :php:class:`Uuid <Ramsey\\Uuid\\Uuid>`
       - :php:class:`Rfc4122\\UuidV5 <Ramsey\\Uuid\\Rfc4122\\UuidV5>`
 
-:php:meth:`Uuid::fromString() <Ramsey\\Uuid\\Uuid::fromString>`,
-:php:meth:`Uuid::fromBytes() <Ramsey\\Uuid\\Uuid::fromBytes>`, and
-:php:meth:`Uuid::fromInteger() <Ramsey\\Uuid\\Uuid::fromInteger>` all return
-an appropriate more-specific type, based on the input value. If the input value
-is a version 1 UUID, for example, the return type will be an
-:php:class:`Rfc4122\\UuidV1 <Ramsey\\Uuid\\Rfc4122\\UuidV1>`. If the input looks
-like a UUID or is a 128-bit number, but it doesn't validate as an RFC 4122 UUID,
-the return type will be a :php:class:`Nonstandard\\Uuid
-<Ramsey\\Uuid\\Nonstandard\\Uuid>`. These return types implement
-:php:interface:`UuidInterface <Ramsey\\Uuid\\UuidInterface>`. If using this as
-a type hint, you shouldn't need to make any changes.
-
+:php:meth:`Uuid::fromString() <Ramsey\\Uuid\\Uuid::fromString>`, :php:meth:`Uuid::fromBytes() <Ramsey\\Uuid\\Uuid::fromBytes>`,
+and :php:meth:`Uuid::fromInteger() <Ramsey\\Uuid\\Uuid::fromInteger>` all return an appropriate more-specific type,
+based on the input value. If the input value is a version 1 UUID, for example, the return type will be an
+:php:class:`Rfc4122\\UuidV1 <Ramsey\\Uuid\\Rfc4122\\UuidV1>`. If the input looks like a UUID or is a 128-bit number, but
+it doesn't validate as an RFC 4122 UUID, the return type will be a :php:class:`Nonstandard\\Uuid
+<Ramsey\\Uuid\\Nonstandard\\Uuid>`. These return types implement :php:interface:`UuidInterface <Ramsey\\Uuid\\UuidInterface>`.
+If using this as a type hint, you shouldn't need to make any changes.
 
 .. _upgrading.3-to-4.return-types:
 
 Changed Return Types
 ####################
 
-The following :php:interface:`UuidInterface <Ramsey\\Uuid\\UuidInterface>`
-method return types have changed in version 4 and you will need to update your
-code, if you use these methods.
+The following :php:interface:`UuidInterface <Ramsey\\Uuid\\UuidInterface>` method return types have changed in version 4
+and you will need to update your code, if you use these methods.
 
 .. list-table:: Changed UuidInterface method return types
     :widths: 40 30 30
@@ -177,11 +151,10 @@ code, if you use these methods.
       - ``mixed`` [#f1]_
       - :php:class:`Type\\Integer <Ramsey\\Uuid\\Type\\Integer>`
 
-In version 3, the following :php:class:`Uuid <Ramsey\\Uuid\\Uuid>` methods
-return ``int``, ``string``, or Moontoast\\Math\\BigNumber, depending on the
-environment. In version 4, they all return numeric ``string`` values for the
-sake of consistency. These methods :ref:`are also deprecated
-<upgrading.3-to-4.deprecations.uuid>` and will be removed in version 5.
+In version 3, the following :php:class:`Uuid <Ramsey\\Uuid\\Uuid>` methods return ``int``, ``string``, or
+Moontoast\\Math\\BigNumber, depending on the environment. In version 4, they all return numeric ``string`` values for
+the sake of consistency. These methods :ref:`are also deprecated <upgrading.3-to-4.deprecations.uuid>` and will be
+removed in version 5.
 
 * ``getClockSeqHiAndReserved()``
 * ``getClockSeqLow()``
@@ -194,7 +167,6 @@ sake of consistency. These methods :ref:`are also deprecated
 * ``getTimeMid()``
 * ``getTimestamp()``
 
-
 .. _upgrading.3-to-4.deprecations:
 
 Deprecations
@@ -205,9 +177,8 @@ Deprecations
 UuidInterface
 -------------
 
-The following :php:interface:`UuidInterface <Ramsey\\Uuid\\UuidInterface>`
-methods are deprecated, but upgrading to version 4 should not cause any problems
-if using these methods. You are encouraged to update your code according to the
+The following :php:interface:`UuidInterface <Ramsey\\Uuid\\UuidInterface>` methods are deprecated, but upgrading to
+version 4 should not cause any problems if using these methods. You are encouraged to update your code according to the
 recommendations, though, since these methods will go away in version 5.
 
 .. list-table:: Deprecated UuidInterface methods
@@ -258,14 +229,12 @@ recommendations, though, since these methods will go away in version 5.
 Uuid
 ----
 
-:php:class:`Uuid <Ramsey\\Uuid\\Uuid>` as an instantiable class is deprecated.
-In ramsey/uuid version 5, its constructor will be ``private``, and the class
-will be ``final``. For more information, see :ref:`faq.final`
+:php:class:`Uuid <Ramsey\\Uuid\\Uuid>` as an instantiable class is deprecated. In ramsey/uuid version 5, its constructor
+will be ``private``, and the class will be ``final``. For more information, see :ref:`faq.final`
 
 .. note::
 
-    :php:class:`Uuid <Ramsey\\Uuid\\Uuid>` is being replaced by more-specific
-    concrete classes, such as:
+    :php:class:`Uuid <Ramsey\\Uuid\\Uuid>` is being replaced by more-specific concrete classes, such as:
 
     * :php:class:`Rfc4122\\UuidV1 <Ramsey\\Uuid\\Rfc4122\\UuidV1>`
     * :php:class:`Rfc4122\\UuidV3 <Ramsey\\Uuid\\Rfc4122\\UuidV3>`
@@ -273,11 +242,10 @@ will be ``final``. For more information, see :ref:`faq.final`
     * :php:class:`Rfc4122\\UuidV5 <Ramsey\\Uuid\\Rfc4122\\UuidV5>`
     * :php:class:`Nonstandard\\Uuid <Ramsey\\Uuid\\Nonstandard\\Uuid>`
 
-    However, the :php:class:`Uuid <Ramsey\\Uuid\\Uuid>` class isn't going away.
-    It will still hold common constants and static methods.
+    However, the :php:class:`Uuid <Ramsey\\Uuid\\Uuid>` class isn't going away. It will still hold common constants and
+    static methods.
 
-* ``Uuid::UUID_TYPE_IDENTIFIER`` is deprecated. Use
-  ``Uuid::UUID_TYPE_DCE_SECURITY`` instead.
+* ``Uuid::UUID_TYPE_IDENTIFIER`` is deprecated. Use ``Uuid::UUID_TYPE_DCE_SECURITY`` instead.
 * ``Uuid::VALID_PATTERN`` is deprecated. Use the following instead:
 
     .. code-block:: php
@@ -288,9 +256,8 @@ will be ``final``. For more information, see :ref:`faq.final`
         $genericPattern = (new GenericValidator())->getPattern();
         $rfc4122Pattern = (new Rfc4122Validator())->getPattern();
 
-The following :php:class:`Uuid <Ramsey\\Uuid\\Uuid>` methods are deprecated. If
-using these methods, you shouldn't have any problems on version 4, but you are
-encouraged to update your code, since they will go away in version 5.
+The following :php:class:`Uuid <Ramsey\\Uuid\\Uuid>` methods are deprecated. If using these methods, you shouldn't have
+any problems on version 4, but you are encouraged to update your code, since they will go away in version 5.
 
 * ``getClockSeqHiAndReserved()``
 * ``getClockSeqLow()``
@@ -305,13 +272,10 @@ encouraged to update your code, since they will go away in version 5.
 
 .. hint::
 
-    There are no direct replacements for these methods. In ramsey/uuid version
-    3, they returned ``int`` or Moontoast\\Math\\BigNumber values, depending
-    on the environment. To update your code, you should use the recommended
-    alternates listed in :ref:`Deprecations: UuidInterface
-    <upgrading.3-to-4.deprecations.uuidinterface>`, combined with the
-    arbitrary-precision mathematics library of your choice (e.g., `brick/math`_,
-    `gmp`_, `bcmath`_, etc.).
+    There are no direct replacements for these methods. In ramsey/uuid version 3, they returned ``int`` or
+    Moontoast\\Math\\BigNumber values, depending on the environment. To update your code, you should use the recommended
+    alternates listed in :ref:`Deprecations: UuidInterface <upgrading.3-to-4.deprecations.uuidinterface>`, combined with
+    the arbitrary-precision mathematics library of your choice (e.g., `brick/math`_, `gmp`_, `bcmath`_, etc.).
 
     .. code-block:: php
         :caption: Using brick/math to convert a node to a string integer
@@ -320,19 +284,17 @@ encouraged to update your code, since they will go away in version 5.
 
         $node = BigInteger::fromBase($uuid->getFields()->getNode()->toString(), 16);
 
-
 .. _upgrading.3-to-4.interfaces:
 
 Interface Changes
 #################
 
-For those who customize ramsey/uuid by implementing the interfaces provided,
-there are a few breaking changes to note.
+For those who customize ramsey/uuid by implementing the interfaces provided, there are a few breaking changes to note.
 
 .. hint::
 
-    Most existing methods on interfaces have type hints added to them. If you
-    implement any interfaces, please be aware of this and update your classes.
+    Most existing methods on interfaces have type hints added to them. If you implement any interfaces, please be aware
+    of this and update your classes.
 
 UuidInterface
 -------------
@@ -438,35 +400,31 @@ Provider\\NodeProviderInterface
 Constructor Changes
 ###################
 
-There are a handful of constructor changes that might affect your use of
-ramsey/uuid, especially if you customize the library.
+There are a handful of constructor changes that might affect your use of ramsey/uuid, especially if you customize the
+library.
 
 Uuid
 ----
 
-The constructor for :php:class:`Ramsey\\Uuid\\Uuid` is deprecated. However,
-there are a few changes to it that might affect your use of this class.
+The constructor for :php:class:`Ramsey\\Uuid\\Uuid` is deprecated. However, there are a few changes to it that might
+affect your use of this class.
 
-The first constructor parameter used to be ``array $fields`` and is now
-:php:interface:`Rfc4122\\FieldsInterface $fields
+The first constructor parameter used to be ``array $fields`` and is now :php:interface:`Rfc4122\\FieldsInterface $fields
 <Ramsey\\Uuid\\Rfc4122\\FieldsInterface>`.
 
-``Converter\TimeConverterInterface $timeConverter`` is required as a new fourth
-parameter.
+``Converter\TimeConverterInterface $timeConverter`` is required as a new fourth parameter.
 
 Builder\\DefaultUuidBuilder
 ---------------------------
 
-While Builder\\DefaultUuidBuilder is deprecated, it now inherits from
-Rfc4122\\UuidBuilder, which requires ``Converter\TimeConverterInterface
-$timeConverter`` as its second constructor argument.
+While Builder\\DefaultUuidBuilder is deprecated, it now inherits from Rfc4122\\UuidBuilder, which requires
+``Converter\TimeConverterInterface $timeConverter`` as its second constructor argument.
 
 Provider\\Node\\FallbackNodeProvider
 ------------------------------------
 
-Provider\\Node\\FallbackNodeProvider now requires
-``iterable<Ramsey\Uuid\Provider\NodeProviderInterface>`` as its constructor
-parameter.
+Provider\\Node\\FallbackNodeProvider now requires ``iterable<Ramsey\Uuid\Provider\NodeProviderInterface>`` as its
+constructor parameter.
 
 .. code-block::
 
@@ -485,23 +443,19 @@ parameter.
 Provider\\Time\\FixedTimeProvider
 ---------------------------------
 
-The constructor for Provider\\Time\\FixedTimeProvider no longer accepts an
-array. It accepts :php:class:`Type\\Time <Ramsey\\Uuid\\Type\\Time>` instances.
-
+The constructor for Provider\\Time\\FixedTimeProvider no longer accepts an array. It accepts
+:php:class:`Type\\Time <Ramsey\\Uuid\\Type\\Time>` instances.
 
 -------------------------------------------------------------------------------
 
 .. rubric:: Footnotes
 
-.. [#f1] This ``mixed`` return type could have been an ``int``, ``string``, or
-    Moontoast\\Math\\BigNumber. In version 4, ramsey/uuid cleans this up for
-    the sake of consistency.
+.. [#f1] This ``mixed`` return type could have been an ``int``, ``string``, or Moontoast\\Math\\BigNumber. In version 4,
+    ramsey/uuid cleans this up for the sake of consistency.
 
-.. [#f2] The :php:meth:`getFields() <Ramsey\\Uuid\\Rfc4122\\UuidInterface::getFields>`
-    method returns a :php:class:`Type\\Hexadecimal <Ramsey\\Uuid\\Type\\Hexadecimal>`
-    instance; you will need to construct an array if you wish to match the
-    return value of the deprecated ``getFieldsHex()`` method.
-
+.. [#f2] The :php:meth:`getFields() <Ramsey\\Uuid\\Rfc4122\\UuidInterface::getFields>` method returns a
+    :php:class:`Type\\Hexadecimal <Ramsey\\Uuid\\Type\\Hexadecimal>` instance; you will need to construct an array if
+    you wish to match the return value of the deprecated ``getFieldsHex()`` method.
 
 .. _downstream users: https://en.wikipedia.org/wiki/Downstream_(software_development)
 .. _version 6 UUIDs: http://gh.peabody.io/uuidv6/

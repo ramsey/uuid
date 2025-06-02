@@ -10,4 +10,4 @@ Rfc4122\\UuidV5
 
     Implements :php:interface:`Ramsey\\Uuid\\Rfc4122\\UuidInterface`.
 
-    UuidV5 represents a :ref:`version 5, name-based (SHA-1) UUID <rfc4122.version5>`.
+    UuidV5 represents a :ref:`version 5, name-based (SHA-1 hashed) UUID <rfc4122.version5>`.

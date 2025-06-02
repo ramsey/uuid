@@ -10,9 +10,8 @@ Rfc4122\\UuidV6
 
     Implements :php:interface:`Ramsey\\Uuid\\Rfc4122\\UuidInterface`.
 
-    UuidV6 represents a :ref:`version 6, reordered time UUID
-    <rfc4122.version6>`. In addition to providing the methods defined on the
-    interface, this class additionally provides the following methods.
+    UuidV6 represents a :ref:`version 6, reordered Gregorian time UUID <rfc4122.version6>`. In addition to providing the
+    methods defined on the interface, this class additionally provides the following methods.
 
     .. php:method:: getDateTime()
 

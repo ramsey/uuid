@@ -10,16 +10,13 @@ Nonstandard\\UuidV6
 
     .. attention::
 
-        :php:class:`Ramsey\\Uuid\\Nonstandard\\UuidV6` is deprecated in favor of
-        :php:class:`Ramsey\\Uuid\\Rfc4122\\UuidV6`. Please migrate any code
-        using ``Nonstandard\UuidV6`` to ``Rfc4122\UuidV6``. The interface is
-        otherwise identical.
+        :php:class:`Ramsey\\Uuid\\Nonstandard\\UuidV6` is deprecated in favor of :php:class:`Ramsey\\Uuid\\Rfc4122\\UuidV6`.
+        Please migrate any code using ``Nonstandard\UuidV6`` to ``Rfc4122\UuidV6``.
 
     Implements :php:interface:`Ramsey\\Uuid\\Rfc4122\\UuidInterface`.
 
-    UuidV6 represents a :ref:`version 6, reordered time UUID
-    <nonstandard.version6>`. In addition to providing the methods defined on the
-    interface, this class additionally provides the following methods.
+    UuidV6 represents a :ref:`version 6, reordered Gregorian time UUID <nonstandard.version6>`. In addition to providing
+    the methods defined on the interface, this class additionally provides the following methods.
 
     .. php:method:: getDateTime()
 

@@ -10,9 +10,8 @@ Guid\\Guid
 
     Implements :php:interface:`Ramsey\\Uuid\\UuidInterface`.
 
-    Guid represents a :ref:`nonstandard.guid`. In addition to providing the
-    methods defined on the interface, this class additionally provides the
-    following methods.
+    Guid represents a :ref:`nonstandard.guid`. In addition to providing the methods defined on the interface, this class
+    additionally provides the following methods.
 
     .. php:method:: getFields()
 

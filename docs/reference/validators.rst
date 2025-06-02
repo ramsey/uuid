@@ -31,4 +31,7 @@ Validators
 
     Implements :php:interface:`Ramsey\\Uuid\\Validator\\ValidatorInterface`.
 
-    Rfc4122\Validator validates strings as UUIDs of the RFC 4122 variant.
+    Rfc4122\\Validator validates strings as UUIDs of the `RFC 9562`_ (formerly `RFC 4122`_) variant.
+
+.. _RFC 4122: https://www.rfc-editor.org/rfc/rfc4122
+.. _RFC 9562: https://www.rfc-editor.org/rfc/rfc9562
