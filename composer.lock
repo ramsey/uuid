@@ -236,16 +236,16 @@
     "packages-dev": [
         {
             "name": "captainhook/captainhook",
-            "version": "5.25.2",
+            "version": "5.25.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/captainhook-git/captainhook.git",
-                "reference": "e096240c130557be6d2059881341db7ebd84f653"
+                "reference": "7b0feb07ae328c83c458175fe19e5cb55634b1fb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/captainhook-git/captainhook/zipball/e096240c130557be6d2059881341db7ebd84f653",
-                "reference": "e096240c130557be6d2059881341db7ebd84f653",
+                "url": "https://api.github.com/repos/captainhook-git/captainhook/zipball/7b0feb07ae328c83c458175fe19e5cb55634b1fb",
+                "reference": "7b0feb07ae328c83c458175fe19e5cb55634b1fb",
                 "shasum": ""
             },
             "require": {
@@ -307,8 +307,8 @@
                 "prepare-commit-msg"
             ],
             "support": {
-                "issues": "https://github.com/captainhookphp/captainhook/issues",
-                "source": "https://github.com/captainhook-git/captainhook/tree/5.25.2"
+                "issues": "https://github.com/captainhook-git/captainhook/issues",
+                "source": "https://github.com/captainhook-git/captainhook/tree/5.25.5"
             },
             "funding": [
                 {
@@ -316,7 +316,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-03-30T17:23:19+00:00"
+            "time": "2025-06-07T07:44:19+00:00"
         },
         {
             "name": "captainhook/plugin-composer",
@@ -4420,16 +4420,16 @@
         },
         {
             "name": "sebastianfeldmann/git",
-            "version": "3.14.2",
+            "version": "3.14.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianfeldmann/git.git",
-                "reference": "bc13c3bab8f67dee26352c94e23a4ee775d9d05b"
+                "reference": "22584df8df01d95b0700000cfd855779fae7d8ea"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianfeldmann/git/zipball/bc13c3bab8f67dee26352c94e23a4ee775d9d05b",
-                "reference": "bc13c3bab8f67dee26352c94e23a4ee775d9d05b",
+                "url": "https://api.github.com/repos/sebastianfeldmann/git/zipball/22584df8df01d95b0700000cfd855779fae7d8ea",
+                "reference": "22584df8df01d95b0700000cfd855779fae7d8ea",
                 "shasum": ""
             },
             "require": {
@@ -4470,7 +4470,7 @@
             ],
             "support": {
                 "issues": "https://github.com/sebastianfeldmann/git/issues",
-                "source": "https://github.com/sebastianfeldmann/git/tree/3.14.2"
+                "source": "https://github.com/sebastianfeldmann/git/tree/3.14.3"
             },
             "funding": [
                 {
@@ -4478,7 +4478,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-03-28T19:09:31+00:00"
+            "time": "2025-06-05T16:05:10+00:00"
         },
         {
             "name": "seld/jsonlint",
