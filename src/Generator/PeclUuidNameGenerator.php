@@ -29,6 +29,9 @@ use function uuid_parse;
  */
 class PeclUuidNameGenerator implements NameGeneratorInterface
 {
+    /**
+     * @pure
+     */
     public function generate(UuidInterface $ns, string $name, string $hashAlgorithm): string
     {
         $uuid = match ($hashAlgorithm) {

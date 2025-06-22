@@ -34,6 +34,8 @@ interface TimeConverterInterface
      * @param string $microseconds A string representation of the micro-seconds associated with the time to calculate
      *
      * @return Hexadecimal The full UUID timestamp as a Hexadecimal value
+     *
+     * @pure
      */
     public function calculateTime(string $seconds, string $microseconds): Hexadecimal;
 
@@ -44,6 +46,8 @@ interface TimeConverterInterface
      *     of 100-nanosecond intervals since UTC 00:00:00.00, 15 October 1582.
      *
      * @return Time An instance of {@see Time}
+     *
+     * @pure
      */
     public function convertTime(Hexadecimal $uuidTimestamp): Time;
 }

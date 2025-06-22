@@ -30,6 +30,8 @@ interface UuidFactoryInterface
      * @param string $bytes A binary string
      *
      * @return UuidInterface A UuidInterface instance created from a binary string representation
+     *
+     * @pure
      */
     public function fromBytes(string $bytes): UuidInterface;
 
@@ -55,6 +57,8 @@ interface UuidFactoryInterface
      * @param string $integer String representation of 128-bit integer
      *
      * @return UuidInterface A UuidInterface instance created from the string representation of a 128-bit integer
+     *
+     * @pure
      */
     public function fromInteger(string $integer): UuidInterface;
 
@@ -64,6 +68,8 @@ interface UuidFactoryInterface
      * @param string $uuid A hexadecimal string
      *
      * @return UuidInterface A UuidInterface instance created from a hexadecimal string representation
+     *
+     * @pure
      */
     public function fromString(string $uuid): UuidInterface;
 
@@ -112,6 +118,8 @@ interface UuidFactoryInterface
      * @param string $name The name to use for creating a UUID
      *
      * @return UuidInterface A UuidInterface instance that represents a version 3 UUID
+     *
+     * @pure
      */
     public function uuid3($ns, string $name): UuidInterface;
 
@@ -129,6 +137,8 @@ interface UuidFactoryInterface
      * @param string $name The name to use for creating a UUID
      *
      * @return UuidInterface A UuidInterface instance that represents a version 5 UUID
+     *
+     * @pure
      */
     public function uuid5($ns, string $name): UuidInterface;
 

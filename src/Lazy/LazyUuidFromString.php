@@ -61,6 +61,9 @@ final class LazyUuidFromString implements UuidInterface
     {
     }
 
+    /**
+     * @pure
+     */
     public static function fromBytes(string $bytes): self
     {
         $base16Uuid = bin2hex($bytes);

@@ -34,11 +34,17 @@ class BigNumberConverter implements NumberConverterInterface
         $this->converter = new GenericNumberConverter(new BrickMathCalculator());
     }
 
+    /**
+     * @pure
+     */
     public function fromHex(string $hex): string
     {
         return $this->converter->fromHex($hex);
     }
 
+    /**
+     * @pure
+     */
     public function toHex(string $number): string
     {
         return $this->converter->toHex($number);
