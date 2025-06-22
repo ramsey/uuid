@@ -448,6 +448,8 @@ class Uuid implements UuidInterface
      * @return UuidInterface A UuidInterface instance created from a binary string representation
      *
      * @throws InvalidArgumentException
+     *
+     * @pure
      */
     public static function fromBytes(string $bytes): UuidInterface
     {
@@ -479,6 +481,8 @@ class Uuid implements UuidInterface
      * @return UuidInterface A UuidInterface instance created from a hexadecimal string representation
      *
      * @throws InvalidArgumentException
+     *
+     * @pure
      */
     public static function fromString(string $uuid): UuidInterface
     {
@@ -518,6 +522,8 @@ class Uuid implements UuidInterface
      * @return UuidInterface A UuidInterface instance created from the Hexadecimal object representing a hexadecimal number
      *
      * @throws InvalidArgumentException
+     *
+     * @pure
      */
     public static function fromHexadecimal(Hexadecimal $hex): UuidInterface
     {
@@ -541,6 +547,8 @@ class Uuid implements UuidInterface
      * @return UuidInterface A UuidInterface instance created from the string representation of a 128-bit integer
      *
      * @throws InvalidArgumentException
+     *
+     * @pure
      */
     public static function fromInteger(string $integer): UuidInterface
     {
@@ -555,6 +563,8 @@ class Uuid implements UuidInterface
      * @return bool True if the string is a valid UUID, false otherwise
      *
      * @phpstan-assert-if-true =non-empty-string $uuid
+     *
+     * @pure
      */
     public static function isValid(string $uuid): bool
     {
@@ -606,6 +616,8 @@ class Uuid implements UuidInterface
      * @param string $name The name to use for creating a UUID
      *
      * @return UuidInterface A UuidInterface instance that represents a version 3 UUID
+     *
+     * @pure
      */
     public static function uuid3($ns, string $name): UuidInterface
     {
@@ -629,6 +641,8 @@ class Uuid implements UuidInterface
      * @param string $name The name to use for creating a UUID
      *
      * @return UuidInterface A UuidInterface instance that represents a version 5 UUID
+     *
+     * @pure
      */
     public static function uuid5($ns, string $name): UuidInterface
     {
@@ -682,6 +696,8 @@ class Uuid implements UuidInterface
      *     and 65 will be replaced with the UUID variant. You MUST NOT rely on these bits for your application needs.
      *
      * @return UuidInterface A UuidInterface instance that represents a version 8 UUID
+     *
+     * @pure
      */
     public static function uuid8(string $bytes): UuidInterface
     {

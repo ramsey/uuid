@@ -40,6 +40,8 @@ class FallbackBuilder implements UuidBuilderInterface
      * @param string $bytes The byte string from which to construct a UUID
      *
      * @return UuidInterface an instance of a UUID object
+     *
+     * @pure
      */
     public function build(CodecInterface $codec, string $bytes): UuidInterface
     {

@@ -47,6 +47,8 @@ class UuidBuilder implements UuidBuilderInterface
      * @param string $bytes The byte string from which to construct a UUID
      *
      * @return Uuid The Nonstandard\UuidBuilder returns an instance of Nonstandard\Uuid
+     *
+     * @pure
      */
     public function build(CodecInterface $codec, string $bytes): UuidInterface
     {

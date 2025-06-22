@@ -31,6 +31,8 @@ interface UuidBuilderInterface
      * @param string $bytes The byte string from which to construct a UUID
      *
      * @return UuidInterface Implementations may choose to return more specific instances of UUIDs that implement UuidInterface
+     *
+     * @pure
      */
     public function build(CodecInterface $codec, string $bytes): UuidInterface;
 }
