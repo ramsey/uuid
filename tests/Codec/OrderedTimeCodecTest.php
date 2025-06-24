@@ -77,6 +77,7 @@ class OrderedTimeCodecTest extends TestCase
             ->method('getFields')
             ->willReturn($this->fields);
         $codec = new OrderedTimeCodec($this->builder);
+        /** @phpstan-ignore method.resultUnused */
         $codec->encode($this->uuid);
     }
 
@@ -165,6 +166,7 @@ class OrderedTimeCodecTest extends TestCase
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Expected version 1 (time-based) UUID');
 
+        /** @phpstan-ignore method.resultUnused */
         $codec->encodeBinary($uuid);
     }
 
@@ -185,6 +187,7 @@ class OrderedTimeCodecTest extends TestCase
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Expected version 1 (time-based) UUID');
 
+        /** @phpstan-ignore method.resultUnused */
         $codec->encodeBinary($uuid);
     }
 

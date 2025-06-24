@@ -40,8 +40,10 @@ final class Validator implements ValidatorInterface
 
     public function validate(string $uuid): bool
     {
+        /** @phpstan-ignore possiblyImpure.functionCall */
         $uuid = strtolower(str_replace(['urn:', 'uuid:', 'URN:', 'UUID:', '{', '}'], '', $uuid));
 
+        /** @phpstan-ignore possiblyImpure.functionCall */
         return $uuid === Uuid::NIL || $uuid === Uuid::MAX || preg_match('/' . self::VALID_PATTERN . '/Dms', $uuid);
     }
 }

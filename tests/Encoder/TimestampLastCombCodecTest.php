@@ -78,6 +78,7 @@ class TimestampLastCombCodecTest extends TestCase
                     'node' => 'ff6f8cb0c57d',
                 ]))
             );
+        /** @phpstan-ignore method.resultUnused */
         $this->codec->decode('0800200c-9a66-11e1-9b21-ff6f8cb0c57d');
     }
 

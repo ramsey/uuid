@@ -23,6 +23,8 @@ trait NilTrait
 {
     /**
      * Returns the bytes that comprise the fields
+     *
+     * @pure
      */
     abstract public function getBytes(): string;
 

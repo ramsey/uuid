@@ -453,6 +453,7 @@ class Uuid implements UuidInterface
      */
     public static function fromBytes(string $bytes): UuidInterface
     {
+        /** @phpstan-ignore impure.staticPropertyAccess */
         if (!self::$factoryReplaced && strlen($bytes) === 16) {
             $base16Uuid = bin2hex($bytes);
 
@@ -470,6 +471,7 @@ class Uuid implements UuidInterface
             );
         }
 
+        /** @phpstan-ignore possiblyImpure.methodCall */
         return self::getFactory()->fromBytes($bytes);
     }
 
@@ -487,12 +489,16 @@ class Uuid implements UuidInterface
     public static function fromString(string $uuid): UuidInterface
     {
         $uuid = strtolower($uuid);
+        /** @phpstan-ignore impure.staticPropertyAccess, possiblyImpure.functionCall */
         if (!self::$factoryReplaced && preg_match(LazyUuidFromString::VALID_REGEX, $uuid) === 1) {
+            /** @phpstan-ignore possiblyImpure.functionCall */
             assert($uuid !== '');
 
+            /** @phpstan-ignore possiblyImpure.new */
             return new LazyUuidFromString($uuid);
         }
 
+        /** @phpstan-ignore possiblyImpure.methodCall */
         return self::getFactory()->fromString($uuid);
     }
 
@@ -527,10 +533,13 @@ class Uuid implements UuidInterface
      */
     public static function fromHexadecimal(Hexadecimal $hex): UuidInterface
     {
+        /** @phpstan-ignore possiblyImpure.methodCall */
         $factory = self::getFactory();
 
         if (method_exists($factory, 'fromHexadecimal')) {
+            /** @phpstan-ignore possiblyImpure.methodCall */
             $uuid = $factory->fromHexadecimal($hex);
+            /** @phpstan-ignore possiblyImpure.functionCall */
             assert($uuid instanceof UuidInterface);
 
             return $uuid;
@@ -552,6 +561,7 @@ class Uuid implements UuidInterface
      */
     public static function fromInteger(string $integer): UuidInterface
     {
+        /** @phpstan-ignore possiblyImpure.methodCall */
         return self::getFactory()->fromInteger($integer);
     }
 
@@ -568,6 +578,7 @@ class Uuid implements UuidInterface
      */
     public static function isValid(string $uuid): bool
     {
+        /** @phpstan-ignore possiblyImpure.methodCall, possiblyImpure.methodCall */
         return self::getFactory()->getValidator()->validate($uuid);
     }
 
@@ -621,6 +632,7 @@ class Uuid implements UuidInterface
      */
     public static function uuid3($ns, string $name): UuidInterface
     {
+        /** @phpstan-ignore possiblyImpure.methodCall */
         return self::getFactory()->uuid3($ns, $name);
     }
 
@@ -646,6 +658,7 @@ class Uuid implements UuidInterface
      */
     public static function uuid5($ns, string $name): UuidInterface
     {
+        /** @phpstan-ignore possiblyImpure.methodCall */
         return self::getFactory()->uuid5($ns, $name);
     }
 
@@ -701,10 +714,12 @@ class Uuid implements UuidInterface
      */
     public static function uuid8(string $bytes): UuidInterface
     {
+        /** @phpstan-ignore possiblyImpure.methodCall */
         $factory = self::getFactory();
 
         if (method_exists($factory, 'uuid8')) {
-            /** @var UuidInterface */
+            /** @var UuidInterface
+             * @phpstan-ignore possiblyImpure.methodCall */
             return $factory->uuid8($bytes);
         }
 

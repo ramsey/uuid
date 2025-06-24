@@ -28,6 +28,7 @@ class UuidBuilderTest extends TestCase
         $this->expectException(UnableToBuildUuidException::class);
         $this->expectExceptionMessage('exception thrown');
 
+        /** @phpstan-ignore method.resultUnused */
         $builder->build($codec, 'foobar');
     }
 }

@@ -29,6 +29,8 @@ interface CodecInterface
      * @param UuidInterface $uuid The UUID for which to create a hexadecimal string representation
      *
      * @return non-empty-string Hexadecimal string representation of a UUID
+     *
+     * @pure
      */
     public function encode(UuidInterface $uuid): string;
 
@@ -38,6 +40,8 @@ interface CodecInterface
      * @param UuidInterface $uuid The UUID for which to create a binary string representation
      *
      * @return non-empty-string Binary string representation of a UUID
+     *
+     * @pure
      */
     public function encodeBinary(UuidInterface $uuid): string;
 
@@ -47,6 +51,8 @@ interface CodecInterface
      * @param string $encodedUuid The hexadecimal string representation to convert into a UuidInterface instance
      *
      * @return UuidInterface An instance of a UUID decoded from a hexadecimal string representation
+     *
+     * @pure
      */
     public function decode(string $encodedUuid): UuidInterface;
 
@@ -56,6 +62,8 @@ interface CodecInterface
      * @param string $bytes The binary string representation to convert into a UuidInterface instance
      *
      * @return UuidInterface An instance of a UUID decoded from a binary string representation
+     *
+     * @pure
      */
     public function decodeBytes(string $bytes): UuidInterface;
 }

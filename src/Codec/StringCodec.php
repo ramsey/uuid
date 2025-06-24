@@ -46,6 +46,7 @@ class StringCodec implements CodecInterface
 
     public function encode(UuidInterface $uuid): string
     {
+        /** @phpstan-ignore possiblyImpure.methodCall */
         $hex = bin2hex($uuid->getFields()->getBytes());
 
         /** @var non-empty-string */
@@ -75,6 +76,7 @@ class StringCodec implements CodecInterface
      */
     public function decode(string $encodedUuid): UuidInterface
     {
+        /** @phpstan-ignore possiblyImpure.methodCall */
         return $this->builder->build($this, $this->getBytes($encodedUuid));
     }
 

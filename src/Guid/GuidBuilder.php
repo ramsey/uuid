@@ -55,17 +55,22 @@ class GuidBuilder implements UuidBuilderInterface
     public function build(CodecInterface $codec, string $bytes): UuidInterface
     {
         try {
+            /** @phpstan-ignore possiblyImpure.new */
             return new Guid($this->buildFields($bytes), $this->numberConverter, $codec, $this->timeConverter);
         } catch (Throwable $e) {
+            /** @phpstan-ignore possiblyImpure.methodCall, possiblyImpure.methodCall */
             throw new UnableToBuildUuidException($e->getMessage(), (int) $e->getCode(), $e);
         }
     }
 
     /**
      * Proxy method to allow injecting a mock for testing
+     *
+     * @pure
      */
     protected function buildFields(string $bytes): Fields
     {
+        /** @phpstan-ignore possiblyImpure.new */
         return new Fields($bytes);
     }
 }
