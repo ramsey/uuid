@@ -46,6 +46,8 @@ final class Hexadecimal implements TypeInterface
 
     /**
      * @return non-empty-string
+     *
+     * @pure
      */
     public function toString(): string
     {

@@ -51,7 +51,7 @@ class DegradedUuidBuilder implements UuidBuilderInterface
      *
      * @return DegradedUuid The DegradedUuidBuild returns an instance of Ramsey\Uuid\DegradedUuid
      *
-     * @pure
+     * @phpstan-impure
      */
     public function build(CodecInterface $codec, string $bytes): UuidInterface
     {
