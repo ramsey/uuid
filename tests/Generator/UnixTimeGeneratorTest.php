@@ -14,6 +14,8 @@ use Ramsey\Uuid\Test\TestCase;
 
 class UnixTimeGeneratorTest extends TestCase
 {
+    private const ITERATIONS = 2000;
+
     /**
      * @runInSeparateProcess since values are stored statically on the class
      * @preserveGlobalState disabled
@@ -33,7 +35,11 @@ class UnixTimeGeneratorTest extends TestCase
 
         $bytes = $unixTimeGenerator->generate(null, null, $dateTime);
 
-        $this->assertSame($expectedBytes, $bytes);
+        $this->assertSame(
+            $expectedBytes,
+            $bytes,
+            'Failed asserting that "' . bin2hex($bytes) . '" is equal to "' . bin2hex($expectedBytes) . '"',
+        );
     }
 
     /**
@@ -46,9 +52,13 @@ class UnixTimeGeneratorTest extends TestCase
         $unixTimeGenerator = new UnixTimeGenerator($randomGenerator);
 
         $previous = '';
-        for ($i = 0; $i < 25; $i++) {
+        for ($i = 0; $i < self::ITERATIONS; $i++) {
             $bytes = $unixTimeGenerator->generate();
-            $this->assertTrue($bytes > $previous);
+            $this->assertTrue(
+                $bytes > $previous,
+                'Failed on iteration ' . $i . ' when evaluating ' . bin2hex($bytes) . ' > ' . bin2hex($previous),
+            );
+            $previous = $bytes;
         }
     }
 
@@ -63,9 +73,13 @@ class UnixTimeGeneratorTest extends TestCase
         $unixTimeGenerator = new UnixTimeGenerator($randomGenerator);
 
         $previous = '';
-        for ($i = 0; $i < 25; $i++) {
+        for ($i = 0; $i < self::ITERATIONS; $i++) {
             $bytes = $unixTimeGenerator->generate(null, null, $dateTime);
-            $this->assertTrue($bytes > $previous);
+            $this->assertTrue(
+                $bytes > $previous,
+                'Failed on iteration ' . $i . ' when evaluating ' . bin2hex($bytes) . ' > ' . bin2hex($previous),
+            );
+            $previous = $bytes;
         }
     }
 
@@ -79,9 +93,13 @@ class UnixTimeGeneratorTest extends TestCase
         $unixTimeGenerator = new UnixTimeGenerator($randomGenerator, 4);
 
         $previous = '';
-        for ($i = 0; $i < 25; $i++) {
+        for ($i = 0; $i < self::ITERATIONS; $i++) {
             $bytes = $unixTimeGenerator->generate();
-            $this->assertTrue($bytes > $previous);
+            $this->assertTrue(
+                $bytes > $previous,
+                'Failed on iteration ' . $i . ' when evaluating ' . bin2hex($bytes) . ' > ' . bin2hex($previous),
+            );
+            $previous = $bytes;
         }
     }
 
@@ -96,9 +114,13 @@ class UnixTimeGeneratorTest extends TestCase
         $unixTimeGenerator = new UnixTimeGenerator($randomGenerator, 4);
 
         $previous = '';
-        for ($i = 0; $i < 25; $i++) {
+        for ($i = 0; $i < self::ITERATIONS; $i++) {
             $bytes = $unixTimeGenerator->generate(null, null, $dateTime);
-            $this->assertTrue($bytes > $previous);
+            $this->assertTrue(
+                $bytes > $previous,
+                'Failed on iteration ' . $i . ' when evaluating ' . bin2hex($bytes) . ' > ' . bin2hex($previous),
+            );
+            $previous = $bytes;
         }
     }
 
@@ -113,16 +135,20 @@ class UnixTimeGeneratorTest extends TestCase
         $randomGenerator->expects()->generate(16)->andReturns(
             "\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff",
         );
-        $randomGenerator->expects()->generate(10)->times(24)->andReturns(
+        $randomGenerator->allows()->generate(10)->andReturns(
             "\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff",
         );
 
         $unixTimeGenerator = new UnixTimeGenerator($randomGenerator);
 
         $previous = '';
-        for ($i = 0; $i < 25; $i++) {
+        for ($i = 0; $i < self::ITERATIONS; $i++) {
             $bytes = $unixTimeGenerator->generate();
-            $this->assertTrue($bytes > $previous);
+            $this->assertTrue(
+                $bytes > $previous,
+                'Failed on iteration ' . $i . ' when evaluating ' . bin2hex($bytes) . ' > ' . bin2hex($previous),
+            );
+            $previous = $bytes;
         }
     }
 
@@ -130,7 +156,7 @@ class UnixTimeGeneratorTest extends TestCase
      * @runInSeparateProcess since values are stored statically on the class
      * @preserveGlobalState disabled
      */
-    public function testGenerateProducesMonotonicResultsStartingWithAllBitsSetWithSameDate(): void
+    public function testGenerateRollsOverWithAllBitsSetWithSameDate(): void
     {
         $dateTime = new DateTimeImmutable('now');
 
@@ -139,17 +165,19 @@ class UnixTimeGeneratorTest extends TestCase
         $randomGenerator->expects()->generate(16)->andReturns(
             "\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff",
         );
-        $randomGenerator->expects()->generate(10)->times(24)->andReturns(
+        $randomGenerator->allows()->generate(10)->andReturns(
             "\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff",
         );
 
         $unixTimeGenerator = new UnixTimeGenerator($randomGenerator);
 
-        $previous = '';
-        for ($i = 0; $i < 25; $i++) {
-            $bytes = $unixTimeGenerator->generate(null, null, $dateTime);
-            $this->assertTrue($bytes > $previous);
-        }
+        // We can only call this twice before the overflow kicks in, "randomizing" all the bits back to 1's, according to
+        // our mocked random generator. As a result, we can't run this in a loop like with the other monotonicity tests
+        // in this class; it starts failing at the third loop. This is okay, since our goal is to test the overflow.
+        $first = $unixTimeGenerator->generate(null, null, $dateTime);
+        $second = $unixTimeGenerator->generate(null, null, $dateTime);
+
+        $this->assertTrue($second > $first);
     }
 
     /**
@@ -163,16 +191,20 @@ class UnixTimeGeneratorTest extends TestCase
         $randomGenerator->expects()->generate(16)->andReturns(
             "\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff",
         );
-        $randomGenerator->expects()->generate(10)->times(24)->andReturns(
+        $randomGenerator->allows()->generate(10)->andReturns(
             "\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff",
         );
 
         $unixTimeGenerator = new UnixTimeGenerator($randomGenerator, 4);
 
         $previous = '';
-        for ($i = 0; $i < 25; $i++) {
+        for ($i = 0; $i < self::ITERATIONS; $i++) {
             $bytes = $unixTimeGenerator->generate();
-            $this->assertTrue($bytes > $previous);
+            $this->assertTrue(
+                $bytes > $previous,
+                'Failed on iteration ' . $i . ' when evaluating ' . bin2hex($bytes) . ' > ' . bin2hex($previous),
+            );
+            $previous = $bytes;
         }
     }
 
@@ -180,7 +212,7 @@ class UnixTimeGeneratorTest extends TestCase
      * @runInSeparateProcess since values are stored statically on the class
      * @preserveGlobalState disabled
      */
-    public function testGenerateProducesMonotonicResultsStartingWithAllBitsSetWithSameDateFor32BitPath(): void
+    public function testGenerateRollsOverWithAllBitsSetWithSameDateFor32BitPath(): void
     {
         $dateTime = new DateTimeImmutable('now');
 
@@ -189,16 +221,18 @@ class UnixTimeGeneratorTest extends TestCase
         $randomGenerator->expects()->generate(16)->andReturns(
             "\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff",
         );
-        $randomGenerator->expects()->generate(10)->times(24)->andReturns(
+        $randomGenerator->allows()->generate(10)->andReturns(
             "\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff",
         );
 
         $unixTimeGenerator = new UnixTimeGenerator($randomGenerator, 4);
 
-        $previous = '';
-        for ($i = 0; $i < 25; $i++) {
-            $bytes = $unixTimeGenerator->generate(null, null, $dateTime);
-            $this->assertTrue($bytes > $previous);
-        }
+        // We can only call this twice before the overflow kicks in, "randomizing" all the bits back to 1's, according to
+        // our mocked random generator. As a result, we can't run this in a loop like with the other monotonicity tests
+        // in this class; it starts failing at the third loop. This is okay, since our goal is to test the overflow.
+        $first = $unixTimeGenerator->generate(null, null, $dateTime);
+        $second = $unixTimeGenerator->generate(null, null, $dateTime);
+
+        $this->assertTrue($second > $first);
     }
 }
