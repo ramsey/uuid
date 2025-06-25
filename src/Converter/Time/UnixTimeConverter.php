@@ -69,7 +69,7 @@ class UnixTimeConverter implements TimeConverterInterface
                 12,
                 '0',
                 STR_PAD_LEFT
-            )
+            ),
         );
     }
 

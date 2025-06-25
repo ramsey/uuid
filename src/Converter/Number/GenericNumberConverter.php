@@ -42,7 +42,7 @@ class GenericNumberConverter implements NumberConverterInterface
      */
     public function toHex(string $number): string
     {
-        /** @phpstan-ignore-next-line PHPStan complains that this is not a non-empty-string. */
+        /** @phpstan-ignore return.type, possiblyImpure.new */
         return $this->calculator->toBase(new IntegerObject($number), 16);
     }
 }

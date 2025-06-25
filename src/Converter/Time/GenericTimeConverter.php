@@ -69,14 +69,21 @@ class GenericTimeConverter implements TimeConverterInterface
             new IntegerObject(self::MICROSECOND_INTERVALS), /** @phpstan-ignore possiblyImpure.new */
         );
 
-        // Combine the intervals of seconds and microseconds and add the count of 100-nanosecond intervals from the
-        // Gregorian calendar epoch to the Unix epoch. This gives us the correct count of 100-nanosecond intervals since
-        // the Gregorian calendar epoch for the given seconds and microseconds.
-        /** @var IntegerObject $uuidTime */
-        /** @phpstan-ignore possiblyImpure.new */
+        /**
+         * Combine the intervals of seconds and microseconds and add the count of 100-nanosecond intervals from the
+         * Gregorian calendar epoch to the Unix epoch. This gives us the correct count of 100-nanosecond intervals since
+         * the Gregorian calendar epoch for the given seconds and microseconds.
+         *
+         * @var IntegerObject $uuidTime
+         * @phpstan-ignore possiblyImpure.new
+         */
         $uuidTime = $this->calculator->add($sec, $usec, new IntegerObject(self::GREGORIAN_TO_UNIX_INTERVALS));
 
-        /** @phpstan-ignore-next-line phpstan considers CalculatorInterface::toHexidecimal, Hexadecimal:toString impure */
+        /**
+         * PHPStan considers CalculatorInterface::toHexadecimal, Hexadecimal:toString impure.
+         *
+         * @phpstan-ignore possiblyImpure.new
+         */
         return new Hexadecimal(str_pad($this->calculator->toHexadecimal($uuidTime)->toString(), 16, '0', STR_PAD_LEFT));
     }
 

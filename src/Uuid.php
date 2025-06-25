@@ -718,8 +718,10 @@ class Uuid implements UuidInterface
         $factory = self::getFactory();
 
         if (method_exists($factory, 'uuid8')) {
-            /** @var UuidInterface
-             * @phpstan-ignore possiblyImpure.methodCall */
+            /**
+             * @var UuidInterface
+             * @phpstan-ignore possiblyImpure.methodCall
+             */
             return $factory->uuid8($bytes);
         }
 
