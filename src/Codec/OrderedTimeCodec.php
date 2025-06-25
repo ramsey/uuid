@@ -87,12 +87,10 @@ class OrderedTimeCodec extends StringCodec
 
         $uuid = parent::decodeBytes($rearrangedBytes);
 
-        if (
-            /** @phpstan-ignore possiblyImpure.methodCall */
-            !($uuid->getFields() instanceof Rfc4122FieldsInterface)
-            /** @phpstan-ignore possiblyImpure.methodCall */
-            || $uuid->getFields()->getVersion() !== Uuid::UUID_TYPE_TIME
-        ) {
+        /** @phpstan-ignore possiblyImpure.methodCall */
+        $fields = $uuid->getFields();
+
+        if (!$fields instanceof Rfc4122FieldsInterface || $fields->getVersion() !== Uuid::UUID_TYPE_TIME) {
             throw new UnsupportedOperationException(
                 'Attempting to decode a non-time-based UUID using OrderedTimeCodec',
             );
