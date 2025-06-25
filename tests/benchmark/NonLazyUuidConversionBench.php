@@ -34,6 +34,7 @@ final class NonLazyUuidConversionBench
 
     public function benchStringConversionOfUuid(): void
     {
+        /** @phpstan-ignore method.resultUnused */
         $this->uuid->toString();
     }
 }

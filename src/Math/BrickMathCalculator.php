@@ -49,9 +49,10 @@ final class BrickMathCalculator implements CalculatorInterface
         $sum = BigInteger::of($augend->toString());
 
         foreach ($addends as $addend) {
-            $sum = $sum->plus($addend->toString());
+            $sum = $sum->plus($addend->toString()); /** @phpstan-ignore possiblyImpure.methodCall */
         }
 
+        /** @phpstan-ignore possiblyImpure.methodCall, possiblyImpure.new */
         return new IntegerObject((string) $sum);
     }
 
@@ -60,9 +61,10 @@ final class BrickMathCalculator implements CalculatorInterface
         $difference = BigInteger::of($minuend->toString());
 
         foreach ($subtrahends as $subtrahend) {
-            $difference = $difference->minus($subtrahend->toString());
+            $difference = $difference->minus($subtrahend->toString()); /** @phpstan-ignore possiblyImpure.methodCall */
         }
 
+        /** @phpstan-ignore possiblyImpure.methodCall, possiblyImpure.new */
         return new IntegerObject((string) $difference);
     }
 
@@ -71,9 +73,11 @@ final class BrickMathCalculator implements CalculatorInterface
         $product = BigInteger::of($multiplicand->toString());
 
         foreach ($multipliers as $multiplier) {
+            /** @phpstan-ignore possiblyImpure.methodCall */
             $product = $product->multipliedBy($multiplier->toString());
         }
 
+        /** @phpstan-ignore possiblyImpure.methodCall, possiblyImpure.new */
         return new IntegerObject((string) $product);
     }
 
@@ -83,24 +87,29 @@ final class BrickMathCalculator implements CalculatorInterface
         NumberInterface $dividend,
         NumberInterface ...$divisors,
     ): NumberInterface {
+        /** @phpstan-ignore possiblyImpure.methodCall */
         $brickRounding = $this->getBrickRoundingMode($roundingMode);
 
         $quotient = BigDecimal::of($dividend->toString());
 
         foreach ($divisors as $divisor) {
+            /** @phpstan-ignore possiblyImpure.methodCall */
             $quotient = $quotient->dividedBy($divisor->toString(), $scale, $brickRounding);
         }
 
         if ($scale === 0) {
+            /** @phpstan-ignore possiblyImpure.methodCall, possiblyImpure.methodCall, possiblyImpure.new */
             return new IntegerObject((string) $quotient->toBigInteger());
         }
 
+        /** @phpstan-ignore possiblyImpure.methodCall, possiblyImpure.new */
         return new Decimal((string) $quotient);
     }
 
     public function fromBase(string $value, int $base): IntegerObject
     {
         try {
+            /** @phpstan-ignore possiblyImpure.methodCall, possiblyImpure.new */
             return new IntegerObject((string) BigInteger::fromBase($value, $base));
         } catch (MathException | \InvalidArgumentException $exception) {
             throw new InvalidArgumentException(
@@ -114,6 +123,7 @@ final class BrickMathCalculator implements CalculatorInterface
     public function toBase(IntegerObject $value, int $base): string
     {
         try {
+            /** @phpstan-ignore possiblyImpure.methodCall */
             return BigInteger::of($value->toString())->toBase($base);
         } catch (MathException | \InvalidArgumentException $exception) {
             throw new InvalidArgumentException(
@@ -126,6 +136,7 @@ final class BrickMathCalculator implements CalculatorInterface
 
     public function toHexadecimal(IntegerObject $value): Hexadecimal
     {
+        /** @phpstan-ignore possiblyImpure.new */
         return new Hexadecimal($this->toBase($value, 16));
     }
 

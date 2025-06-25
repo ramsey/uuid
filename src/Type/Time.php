@@ -43,11 +43,17 @@ final class Time implements TypeInterface
         $this->microseconds = new IntegerObject($microseconds);
     }
 
+    /**
+     * @pure
+     */
     public function getSeconds(): IntegerObject
     {
         return $this->seconds;
     }
 
+    /**
+     * @pure
+     */
     public function getMicroseconds(): IntegerObject
     {
         return $this->microseconds;

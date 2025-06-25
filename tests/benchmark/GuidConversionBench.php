@@ -38,6 +38,7 @@ final class GuidConversionBench
 
     public function benchStringConversionOfGuid(): void
     {
+        /** @phpstan-ignore method.resultUnused */
         $this->uuid->toString();
     }
 }

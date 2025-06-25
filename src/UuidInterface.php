@@ -60,6 +60,8 @@ interface UuidInterface extends
      * Returns the binary string representation of the UUID
      *
      * @return non-empty-string
+     *
+     * @pure
      */
     public function getBytes(): string;
 
@@ -92,6 +94,8 @@ interface UuidInterface extends
      * Returns the string standard representation of the UUID
      *
      * @return non-empty-string
+     *
+     * @pure
      */
     public function toString(): string;
 
@@ -99,6 +103,8 @@ interface UuidInterface extends
      * Casts the UUID to the string standard representation
      *
      * @return non-empty-string
+     *
+     * @pure
      */
     public function __toString(): string;
 }

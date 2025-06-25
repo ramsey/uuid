@@ -51,12 +51,15 @@ class OrderedTimeCodec extends StringCodec
     public function encodeBinary(UuidInterface $uuid): string
     {
         if (
+            /** @phpstan-ignore possiblyImpure.methodCall */
             !($uuid->getFields() instanceof Rfc4122FieldsInterface)
+            /** @phpstan-ignore possiblyImpure.methodCall */
             || $uuid->getFields()->getVersion() !== Uuid::UUID_TYPE_TIME
         ) {
             throw new InvalidArgumentException('Expected version 1 (time-based) UUID');
         }
 
+        /** @phpstan-ignore possiblyImpure.methodCall */
         $bytes = $uuid->getFields()->getBytes();
 
         return $bytes[6] . $bytes[7] . $bytes[4] . $bytes[5]
@@ -85,7 +88,9 @@ class OrderedTimeCodec extends StringCodec
         $uuid = parent::decodeBytes($rearrangedBytes);
 
         if (
+            /** @phpstan-ignore possiblyImpure.methodCall */
             !($uuid->getFields() instanceof Rfc4122FieldsInterface)
+            /** @phpstan-ignore possiblyImpure.methodCall */
             || $uuid->getFields()->getVersion() !== Uuid::UUID_TYPE_TIME
         ) {
             throw new UnsupportedOperationException(

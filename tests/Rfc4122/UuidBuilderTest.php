@@ -140,6 +140,7 @@ class UuidBuilderTest extends TestCase
             'The byte string must be 16 bytes long; received 15 bytes'
         );
 
+        /** @phpstan-ignore method.resultUnused */
         $builder->build($codec, $bytes);
     }
 
@@ -163,6 +164,7 @@ class UuidBuilderTest extends TestCase
             'The UUID version in the given fields is not supported by this UUID builder'
         );
 
+        /** @phpstan-ignore method.resultUnused */
         $builder->build($codec, 'foobar');
     }
 }

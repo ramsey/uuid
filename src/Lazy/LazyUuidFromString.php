@@ -61,9 +61,6 @@ final class LazyUuidFromString implements UuidInterface
     {
     }
 
-    /**
-     * @pure
-     */
     public static function fromBytes(string $bytes): self
     {
         $base16Uuid = bin2hex($bytes);
@@ -217,7 +214,8 @@ final class LazyUuidFromString implements UuidInterface
 
     public function getBytes(): string
     {
-        /** @var non-empty-string */
+        /** @var non-empty-string
+         * @phpstan-ignore-next-line Avoiding pure function complaints */
         return (string) hex2bin(str_replace('-', '', $this->uuid));
     }
 

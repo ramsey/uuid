@@ -41,8 +41,10 @@ final class GenericValidator implements ValidatorInterface
 
     public function validate(string $uuid): bool
     {
+        /** @phpstan-ignore possiblyImpure.functionCall */
         $uuid = str_replace(['urn:', 'uuid:', 'URN:', 'UUID:', '{', '}'], '', $uuid);
 
+        /** @phpstan-ignore possiblyImpure.functionCall */
         return $uuid === Uuid::NIL || preg_match('/' . self::VALID_PATTERN . '/Dms', $uuid);
     }
 }

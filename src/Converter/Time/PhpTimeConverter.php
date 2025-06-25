@@ -79,8 +79,8 @@ class PhpTimeConverter implements TimeConverterInterface
 
     public function calculateTime(string $seconds, string $microseconds): Hexadecimal
     {
-        $seconds = new IntegerObject($seconds);
-        $microseconds = new IntegerObject($microseconds);
+        $seconds = new IntegerObject($seconds); /** @phpstan-ignore possiblyImpure.new */
+        $microseconds = new IntegerObject($microseconds); /** @phpstan-ignore possiblyImpure.new */
 
         // Calculate the count of 100-nanosecond intervals since the Gregorian calendar epoch
         // for the given seconds and microseconds.
@@ -98,7 +98,10 @@ class PhpTimeConverter implements TimeConverterInterface
             );
         }
 
-        return new Hexadecimal(str_pad(dechex($uuidTime), 16, '0', STR_PAD_LEFT));
+        /** @phpstan-ignore possiblyImpure.new */
+        return new Hexadecimal(
+            str_pad(dechex($uuidTime), 16, '0', STR_PAD_LEFT)
+        );
     }
 
     public function convertTime(Hexadecimal $uuidTimestamp): Time
@@ -114,6 +117,7 @@ class PhpTimeConverter implements TimeConverterInterface
             return $this->fallbackConverter->convertTime($uuidTimestamp);
         }
 
+        /** @phpstan-ignore possiblyImpure.new */
         return new Time($splitTime['sec'], $splitTime['usec']);
     }
 
@@ -121,6 +125,8 @@ class PhpTimeConverter implements TimeConverterInterface
      * @param float | int $time The time to split into seconds and microseconds
      *
      * @return string[]
+     *
+     * @pure
      */
     private function splitTime(float | int $time): array
     {

@@ -396,6 +396,7 @@ class UuidFactory implements UuidFactoryInterface
      */
     public function uuid8(string $bytes): UuidInterface
     {
+        /** @phpstan-ignore possiblyImpure.methodCall */
         return $this->uuidFromBytesAndVersion($bytes, Uuid::UUID_TYPE_CUSTOM);
     }
 
@@ -439,6 +440,7 @@ class UuidFactory implements UuidFactoryInterface
 
         $bytes = $this->nameGenerator->generate($ns, $name, $hashAlgorithm);
 
+        /** @phpstan-ignore possiblyImpure.methodCall */
         return $this->uuidFromBytesAndVersion(substr($bytes, 0, 16), $version);
     }
 

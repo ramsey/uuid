@@ -73,6 +73,9 @@ final class Fields implements FieldsInterface
         }
     }
 
+    /**
+     * @pure
+     */
     public function getBytes(): string
     {
         return $this->bytes;

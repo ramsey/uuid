@@ -26,6 +26,8 @@ interface FieldsInterface extends Serializable
 {
     /**
      * Returns the bytes that comprise the fields
+     *
+     * @pure
      */
     public function getBytes(): string;
 }

@@ -73,6 +73,7 @@ final class UuidGenerationBench
 
     public function benchUuid3Generation(): void
     {
+        /** @phpstan-ignore staticMethod.resultUnused */
         Uuid::uuid3($this->namespace, 'name');
     }
 
@@ -83,6 +84,7 @@ final class UuidGenerationBench
 
     public function benchUuid5Generation(): void
     {
+        /** @phpstan-ignore staticMethod.resultUnused */
         Uuid::uuid5($this->namespace, 'name');
     }
 
