@@ -56,7 +56,6 @@ class BigNumberTimeConverterTest extends TestCase
             . '0-9 and, optionally, a sign (+ or -)'
         );
 
-        /** @phpstan-ignore method.resultUnused */
         $converter->calculateTime('12.34', '5678');
     }
 
@@ -70,7 +69,6 @@ class BigNumberTimeConverterTest extends TestCase
             . '0-9 and, optionally, a sign (+ or -)'
         );
 
-        /** @phpstan-ignore method.resultUnused */
         $converter->calculateTime('1234', '56.78');
     }
 }

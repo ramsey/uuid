@@ -99,7 +99,6 @@ class PeclUuidNameGeneratorTest extends TestCase
             'Unable to hash namespace and name with algorithm \'aBadAlgorithm\''
         );
 
-        /** @phpstan-ignore method.resultUnused */
         $generator->generate($namespace, 'a test name', 'aBadAlgorithm');
     }
 }

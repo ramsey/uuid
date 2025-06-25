@@ -17,7 +17,6 @@ class BigNumberConverterTest extends TestCase
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('"." is not a valid character in base 16');
 
-        /** @phpstan-ignore method.resultUnused */
         $converter->fromHex('123.34');
     }
 
@@ -31,7 +30,6 @@ class BigNumberConverterTest extends TestCase
             . '0-9 and, optionally, a sign (+ or -)'
         );
 
-        /** @phpstan-ignore method.resultUnused */
         $converter->toHex('123.34');
     }
 

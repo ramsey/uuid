@@ -60,7 +60,6 @@ class StringCodecTest extends TestCase
             ->method('getFields')
             ->willReturn($this->fields);
         $codec = new StringCodec($this->builder);
-        /** @phpstan-ignore method.resultUnused */
         $codec->encode($this->uuid);
     }
 
@@ -136,7 +135,6 @@ class StringCodecTest extends TestCase
 
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('$bytes string should contain 16 characters.');
-        /** @phpstan-ignore method.resultUnused */
         $codec->decodeBytes($bytes);
     }
 

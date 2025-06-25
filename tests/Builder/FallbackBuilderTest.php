@@ -58,7 +58,6 @@ class FallbackBuilderTest extends TestCase
             'Could not find a suitable builder for the provided codec and fields'
         );
 
-        /** @phpstan-ignore method.resultUnused */
         $fallbackBuilder->build($codec, $bytes);
     }
 

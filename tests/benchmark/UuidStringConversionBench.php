@@ -208,19 +208,16 @@ final class UuidStringConversionBench
 
     public function benchStringConversionOfTinyUuid(): void
     {
-        /** @phpstan-ignore method.resultUnused */
         $this->tinyUuid->toString();
     }
 
     public function benchStringConversionOfHugeUuid(): void
     {
-        /** @phpstan-ignore method.resultUnused */
         $this->hugeUuid->toString();
     }
 
     public function benchStringConversionOfUuid(): void
     {
-        /** @phpstan-ignore method.resultUnused */
         $this->uuid->toString();
     }
 
@@ -233,19 +230,16 @@ final class UuidStringConversionBench
 
     public function benchBytesConversionOfTinyUuid(): void
     {
-        /** @phpstan-ignore method.resultUnused */
         $this->tinyUuid->getBytes();
     }
 
     public function benchBytesConversionOfHugeUuid(): void
     {
-        /** @phpstan-ignore method.resultUnused */
         $this->hugeUuid->getBytes();
     }
 
     public function benchBytesConversionOfUuid(): void
     {
-        /** @phpstan-ignore method.resultUnused */
         $this->uuid->getBytes();
     }
 

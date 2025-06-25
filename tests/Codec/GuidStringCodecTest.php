@@ -56,7 +56,6 @@ class GuidStringCodecTest extends TestCase
             ->method('getFields')
             ->willReturn($this->fields);
         $codec = new GuidStringCodec($this->builder);
-        /** @phpstan-ignore method.resultUnused */
         $codec->encode($this->uuid);
     }
 
