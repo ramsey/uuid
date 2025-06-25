@@ -32,6 +32,7 @@ class GuidStringCodec extends StringCodec
 {
     public function encode(UuidInterface $uuid): string
     {
+        /** @phpstan-ignore possiblyImpure.methodCall */
         $hex = bin2hex($uuid->getFields()->getBytes());
 
         /** @var non-empty-string */
@@ -52,8 +53,10 @@ class GuidStringCodec extends StringCodec
 
     public function decode(string $encodedUuid): UuidInterface
     {
+        /** @phpstan-ignore possiblyImpure.methodCall */
         $bytes = $this->getBytes($encodedUuid);
 
+        /** @phpstan-ignore possiblyImpure.methodCall, possiblyImpure.methodCall */
         return $this->getBuilder()->build($this, $this->swapBytes($bytes));
     }
 

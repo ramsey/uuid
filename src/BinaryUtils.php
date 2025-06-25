@@ -34,6 +34,8 @@ class BinaryUtils
      * @param int $clockSeq The 16-bit clock sequence value before the variant is applied
      *
      * @return int The 16-bit clock sequence multiplexed with the UUID variant
+     *
+     * @pure
      */
     public static function applyVariant(int $clockSeq, Variant $variant = Variant::Rfc9562): int
     {
@@ -54,6 +56,8 @@ class BinaryUtils
      * @param Version $version The version to apply to the `time_hi` field
      *
      * @return int The 16-bit time_hi field of the timestamp multiplexed with the UUID version number
+     *
+     * @pure
      */
     public static function applyVersion(int $timeHi, Version $version): int
     {

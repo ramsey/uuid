@@ -35,6 +35,8 @@ trait VariantTrait
 {
     /**
      * Returns the bytes that comprise the fields
+     *
+     * @pure
      */
     abstract public function getBytes(): string;
 

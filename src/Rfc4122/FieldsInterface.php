@@ -115,6 +115,8 @@ interface FieldsInterface extends BaseFieldsInterface
      * meaningful for this variant.
      *
      * @link https://www.rfc-editor.org/rfc/rfc9562#section-4.2 RFC 9562, 4.2. Version Field
+     *
+     * @pure
      */
     public function getVersion(): ?Version;
 
@@ -122,6 +124,8 @@ interface FieldsInterface extends BaseFieldsInterface
      * Returns true if these fields represent a nil UUID
      *
      * The nil UUID is a special form of UUID that is specified to have all 128 bits set to zero.
+     *
+     * @pure
      */
     public function isNil(): bool;
 }

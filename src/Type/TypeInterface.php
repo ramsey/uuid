@@ -35,11 +35,15 @@ interface TypeInterface extends JsonSerializable
 
     /**
      * @return non-empty-string
+     *
+     * @pure
      */
     public function toString(): string;
 
     /**
      * @return non-empty-string
+     *
+     * @pure
      */
     public function __toString(): string;
 }

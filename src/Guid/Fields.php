@@ -177,6 +177,7 @@ final class Fields implements FieldsInterface
         /** @var int[] $parts */
         $parts = unpack('n*', $this->bytes);
 
+        /** @phpstan-ignore possiblyImpure.methodCall */
         return Version::tryFrom(($parts[4] >> 4) & 0x00f);
     }
 

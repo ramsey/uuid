@@ -47,12 +47,16 @@ class UuidBuilder implements UuidBuilderInterface
      * @param non-empty-string $bytes The byte string from which to construct a UUID
      *
      * @return Uuid The Nonstandard\UuidBuilder returns an instance of Nonstandard\Uuid
+     *
+     * @pure
      */
     public function build(CodecInterface $codec, string $bytes): UuidInterface
     {
         try {
+            /** @phpstan-ignore possiblyImpure.new */
             return new Uuid($this->buildFields($bytes), $this->numberConverter, $codec, $this->timeConverter);
         } catch (Throwable $e) {
+            /** @phpstan-ignore possiblyImpure.methodCall, possiblyImpure.methodCall */
             throw new UnableToBuildUuidException($e->getMessage(), (int) $e->getCode(), $e);
         }
     }
@@ -61,9 +65,12 @@ class UuidBuilder implements UuidBuilderInterface
      * Proxy method to allow injecting a mock for testing
      *
      * @param non-empty-string $bytes
+     *
+     * @pure
      */
     protected function buildFields(string $bytes): Fields
     {
+        /** @phpstan-ignore possiblyImpure.new */
         return new Fields($bytes);
     }
 }

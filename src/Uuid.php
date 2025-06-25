@@ -324,9 +324,12 @@ class Uuid implements Rfc4122UuidInterface
      * @return UuidInterface A UuidInterface instance created from a binary string representation
      *
      * @throws InvalidArgumentException
+     *
+     * @pure
      */
     public static function fromBytes(string $bytes): UuidInterface
     {
+        /** @phpstan-ignore impure.staticPropertyAccess */
         if (!self::$factoryReplaced && strlen($bytes) === 16) {
             $base16Uuid = bin2hex($bytes);
 
@@ -344,6 +347,7 @@ class Uuid implements Rfc4122UuidInterface
             );
         }
 
+        /** @phpstan-ignore possiblyImpure.methodCall */
         return self::getFactory()->fromBytes($bytes);
     }
 
@@ -355,16 +359,22 @@ class Uuid implements Rfc4122UuidInterface
      * @return UuidInterface A UuidInterface instance created from a hexadecimal string representation
      *
      * @throws InvalidArgumentException
+     *
+     * @pure
      */
     public static function fromString(string $uuid): UuidInterface
     {
         $uuid = strtolower($uuid);
+        /** @phpstan-ignore impure.staticPropertyAccess, possiblyImpure.functionCall */
         if (!self::$factoryReplaced && preg_match(LazyUuidFromString::VALID_REGEX, $uuid) === 1) {
+            /** @phpstan-ignore possiblyImpure.functionCall */
             assert($uuid !== '');
 
+            /** @phpstan-ignore possiblyImpure.new */
             return new LazyUuidFromString($uuid);
         }
 
+        /** @phpstan-ignore possiblyImpure.methodCall */
         return self::getFactory()->fromString($uuid);
     }
 
@@ -394,13 +404,18 @@ class Uuid implements Rfc4122UuidInterface
      * @return UuidInterface A UuidInterface instance created from the Hexadecimal object representing a hexadecimal number
      *
      * @throws InvalidArgumentException
+     *
+     * @pure
      */
     public static function fromHexadecimal(Hexadecimal $hex): UuidInterface
     {
+        /** @phpstan-ignore possiblyImpure.methodCall */
         $factory = self::getFactory();
 
         if (method_exists($factory, 'fromHexadecimal')) {
+            /** @phpstan-ignore possiblyImpure.methodCall */
             $uuid = $factory->fromHexadecimal($hex);
+            /** @phpstan-ignore possiblyImpure.functionCall */
             assert($uuid instanceof UuidInterface);
 
             return $uuid;
@@ -417,9 +432,12 @@ class Uuid implements Rfc4122UuidInterface
      * @return UuidInterface A UuidInterface instance created from the string representation of a 128-bit integer
      *
      * @throws InvalidArgumentException
+     *
+     * @pure
      */
     public static function fromInteger(string $integer): UuidInterface
     {
+        /** @phpstan-ignore possiblyImpure.methodCall */
         return self::getFactory()->fromInteger($integer);
     }
 
@@ -431,9 +449,12 @@ class Uuid implements Rfc4122UuidInterface
      * @return bool True if the string is a valid UUID, false otherwise
      *
      * @phpstan-assert-if-true =non-empty-string $uuid
+     *
+     * @pure
      */
     public static function isValid(string $uuid): bool
     {
+        /** @phpstan-ignore possiblyImpure.methodCall, possiblyImpure.methodCall */
         return self::getFactory()->getValidator()->validate($uuid);
     }
 
@@ -482,9 +503,12 @@ class Uuid implements Rfc4122UuidInterface
      * @param string $name The name to use for creating a UUID
      *
      * @return UuidInterface A UuidInterface instance that represents a version 3 UUID
+     *
+     * @pure
      */
     public static function uuid3(UuidInterface | string $ns, string $name): UuidInterface
     {
+        /** @phpstan-ignore possiblyImpure.methodCall */
         return self::getFactory()->uuid3($ns, $name);
     }
 
@@ -505,9 +529,12 @@ class Uuid implements Rfc4122UuidInterface
      * @param string $name The name to use for creating a UUID
      *
      * @return UuidInterface A UuidInterface instance that represents a version 5 UUID
+     *
+     * @pure
      */
     public static function uuid5(UuidInterface | string $ns, string $name): UuidInterface
     {
+        /** @phpstan-ignore possiblyImpure.methodCall */
         return self::getFactory()->uuid5($ns, $name);
     }
 
@@ -558,13 +585,19 @@ class Uuid implements Rfc4122UuidInterface
      *     and 65 will be replaced with the UUID variant. You MUST NOT rely on these bits for your application needs.
      *
      * @return UuidInterface A UuidInterface instance that represents a version 8 UUID
+     *
+     * @pure
      */
     public static function uuid8(string $bytes): UuidInterface
     {
+        /** @phpstan-ignore possiblyImpure.methodCall */
         $factory = self::getFactory();
 
         if (method_exists($factory, 'uuid8')) {
-            /** @var UuidInterface */
+            /**
+             * @var UuidInterface
+             * @phpstan-ignore possiblyImpure.methodCall
+             */
             return $factory->uuid8($bytes);
         }
 
