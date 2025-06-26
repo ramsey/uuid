@@ -271,7 +271,6 @@ class UuidFactory implements UuidFactoryInterface
         return $this->codec->decode($uuid);
     }
 
-
     public function fromStrictString(string $uuid): UuidInterface
     {
         if (! $this->getValidator()->validate($uuid)) {
@@ -280,7 +279,6 @@ class UuidFactory implements UuidFactoryInterface
 
         return $this->codec->decode($uuid);
     }
-
 
     /**
      * @pure
