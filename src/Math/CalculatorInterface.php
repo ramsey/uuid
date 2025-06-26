@@ -32,6 +32,8 @@ interface CalculatorInterface
      * @param NumberInterface ...$addends The additional integers to a add to the augend
      *
      * @return NumberInterface The sum of all the parameters
+     *
+     * @pure
      */
     public function add(NumberInterface $augend, NumberInterface ...$addends): NumberInterface;
 
@@ -42,6 +44,8 @@ interface CalculatorInterface
      * @param NumberInterface ...$subtrahends The integers to subtract from the minuend
      *
      * @return NumberInterface The difference after subtracting all parameters
+     *
+     * @pure
      */
     public function subtract(NumberInterface $minuend, NumberInterface ...$subtrahends): NumberInterface;
 
@@ -52,6 +56,8 @@ interface CalculatorInterface
      * @param NumberInterface ...$multipliers The factors by which to multiply the multiplicand
      *
      * @return NumberInterface The product of multiplying all the provided parameters
+     *
+     * @pure
      */
     public function multiply(NumberInterface $multiplicand, NumberInterface ...$multipliers): NumberInterface;
 
@@ -65,6 +71,8 @@ interface CalculatorInterface
      *     operations should take place (left-to-right)
      *
      * @return NumberInterface The quotient of dividing the provided parameters left-to-right
+     *
+     * @pure
      */
     public function divide(
         int $roundingMode,
@@ -80,6 +88,8 @@ interface CalculatorInterface
      * @param int $base The base to convert from (i.e., 2, 16, 32, etc.)
      *
      * @return IntegerObject The base-10 integer value of the converted value
+     *
+     * @pure
      */
     public function fromBase(string $value, int $base): IntegerObject;
 
@@ -90,16 +100,22 @@ interface CalculatorInterface
      * @param int $base The base to convert to (i.e., 2, 16, 32, etc.)
      *
      * @return string The value represented in the specified base
+     *
+     * @pure
      */
     public function toBase(IntegerObject $value, int $base): string;
 
     /**
      * Converts an Integer instance to a Hexadecimal instance
+     *
+     * @pure
      */
     public function toHexadecimal(IntegerObject $value): Hexadecimal;
 
     /**
      * Converts a Hexadecimal instance to an Integer instance
+     *
+     * @pure
      */
     public function toInteger(Hexadecimal $value): IntegerObject;
 }

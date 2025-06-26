@@ -6,6 +6,40 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 
+## 4.9.0 - 2025-06-25
+
+### Added
+
+* Add new `@pure` annotations to the following ([#605](https://github.com/ramsey/uuid/pull/605)):
+  * `Ramsey\Uuid\Codec\CodecInterface::encode()`
+  * `Ramsey\Uuid\Codec\CodecInterface::encodeBinary()`
+  * `Ramsey\Uuid\Codec\CodecInterface::decode()`
+  * `Ramsey\Uuid\Codec\CodecInterface::decodeBytes()`
+  * `Ramsey\Uuid\Fields\FieldsInterface::getBytes()`
+  * `Ramsey\Uuid\Math\CalculatorInterface::add()`
+  * `Ramsey\Uuid\Math\CalculatorInterface::subtract()`
+  * `Ramsey\Uuid\Math\CalculatorInterface::multiply()`
+  * `Ramsey\Uuid\Math\CalculatorInterface::divide()`
+  * `Ramsey\Uuid\Math\CalculatorInterface::fromBase()`
+  * `Ramsey\Uuid\Math\CalculatorInterface::toBase()`
+  * `Ramsey\Uuid\Math\CalculatorInterface::toHexadecimal()`
+  * `Ramsey\Uuid\Math\CalculatorInterface::toInteger()`
+  * `Ramsey\Uuid\Nonstandard\Uuid`
+  * `Ramsey\Uuid\Rfc4122\Fields::isMax()`
+  * `Ramsey\Uuid\Rfc4122\FieldsInterface::getVersion()`
+  * `Ramsey\Uuid\Rfc4122\FieldsInterface::isNil()`
+  * `Ramsey\Uuid\Type\Time::getSeconds()`
+  * `Ramsey\Uuid\Type\Time::getMicroseconds()`
+  * `Ramsey\Uuid\Type\TypeInterface::toString()`
+  * `Ramsey\Uuid\UuidInterface::getBytes()`
+  * `Ramsey\Uuid\UuidInterface::toString()`
+  * `Ramsey\Uuid\Validator\ValidatorInterface::validate()`
+
+### Fixed
+
+* Restore the `@pure` annotations that were removed in 4.8.0 ([#603](https://github.com/ramsey/uuid/pull/603)).
+
+
 ## 4.8.1 - 2025-06-01
 
 ### Fixed

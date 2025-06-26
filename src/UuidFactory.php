@@ -253,17 +253,24 @@ class UuidFactory implements UuidFactoryInterface
         $this->validator = $validator;
     }
 
+    /**
+     * @pure
+     */
     public function fromBytes(string $bytes): UuidInterface
     {
         return $this->codec->decodeBytes($bytes);
     }
 
+    /**
+     * @pure
+     */
     public function fromString(string $uuid): UuidInterface
     {
         $uuid = strtolower($uuid);
 
         return $this->codec->decode($uuid);
     }
+
 
     public function fromStrictString(string $uuid): UuidInterface
     {
@@ -274,6 +281,10 @@ class UuidFactory implements UuidFactoryInterface
         return $this->codec->decode($uuid);
     }
 
+
+    /**
+     * @pure
+     */
     public function fromInteger(string $integer): UuidInterface
     {
         $hex = $this->numberConverter->toHex($integer);
@@ -294,6 +305,9 @@ class UuidFactory implements UuidFactoryInterface
         return $this->uuidFromBytesAndVersion($bytes, Uuid::UUID_TYPE_TIME);
     }
 
+    /**
+     * @pure
+     */
     public function fromHexadecimal(Hexadecimal $hex): UuidInterface
     {
         return $this->codec->decode($hex->__toString());
@@ -322,6 +336,7 @@ class UuidFactory implements UuidFactoryInterface
 
     /**
      * @inheritDoc
+     * @pure
      */
     public function uuid3($ns, string $name): UuidInterface
     {
@@ -337,6 +352,7 @@ class UuidFactory implements UuidFactoryInterface
 
     /**
      * @inheritDoc
+     * @pure
      */
     public function uuid5($ns, string $name): UuidInterface
     {
@@ -387,9 +403,12 @@ class UuidFactory implements UuidFactoryInterface
      *     and 65 will be replaced with the UUID variant. You MUST NOT rely on these bits for your application needs.
      *
      * @return UuidInterface A UuidInterface instance that represents a version 8 UUID
+     *
+     * @pure
      */
     public function uuid8(string $bytes): UuidInterface
     {
+        /** @phpstan-ignore possiblyImpure.methodCall */
         return $this->uuidFromBytesAndVersion($bytes, Uuid::UUID_TYPE_CUSTOM);
     }
 
@@ -401,6 +420,8 @@ class UuidFactory implements UuidFactoryInterface
      * @param string $bytes The byte string from which to construct a UUID
      *
      * @return UuidInterface An instance of UuidInterface, created from the provided bytes
+     *
+     * @pure
      */
     public function uuid(string $bytes): UuidInterface
     {
@@ -416,6 +437,8 @@ class UuidFactory implements UuidFactoryInterface
      * @param string $hashAlgorithm The hashing algorithm to use when hashing together the namespace and name
      *
      * @return UuidInterface An instance of UuidInterface, created by hashing together the provided namespace and name
+     *
+     * @pure
      */
     private function uuidFromNsAndName(
         UuidInterface | string $ns,
@@ -429,6 +452,7 @@ class UuidFactory implements UuidFactoryInterface
 
         $bytes = $this->nameGenerator->generate($ns, $name, $hashAlgorithm);
 
+        /** @phpstan-ignore possiblyImpure.methodCall */
         return $this->uuidFromBytesAndVersion(substr($bytes, 0, 16), $version);
     }
 

@@ -25,6 +25,9 @@ use function hash;
  */
 class DefaultNameGenerator implements NameGeneratorInterface
 {
+    /**
+     * @pure
+     */
     public function generate(UuidInterface $ns, string $name, string $hashAlgorithm): string
     {
         try {

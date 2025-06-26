@@ -29,14 +29,20 @@ class GenericNumberConverter implements NumberConverterInterface
     {
     }
 
+    /**
+     * @pure
+     */
     public function fromHex(string $hex): string
     {
         return $this->calculator->fromBase($hex, 16)->toString();
     }
 
+    /**
+     * @pure
+     */
     public function toHex(string $number): string
     {
-        /** @phpstan-ignore-next-line PHPStan complains that this is not a non-empty-string. */
+        /** @phpstan-ignore return.type, possiblyImpure.new */
         return $this->calculator->toBase(new IntegerObject($number), 16);
     }
 }

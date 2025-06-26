@@ -42,23 +42,35 @@ class UnixTimeConverter implements TimeConverterInterface
 
     public function calculateTime(string $seconds, string $microseconds): Hexadecimal
     {
+        /** @phpstan-ignore possiblyImpure.new */
         $timestamp = new Time($seconds, $microseconds);
 
         // Convert the seconds into milliseconds.
-        $sec = $this->calculator->multiply($timestamp->getSeconds(), new IntegerObject(self::MILLISECONDS));
+        $sec = $this->calculator->multiply(
+            $timestamp->getSeconds(),
+            new IntegerObject(self::MILLISECONDS) /** @phpstan-ignore possiblyImpure.new */
+        );
 
         // Convert the microseconds into milliseconds; the scale is zero because we need to discard the fractional part.
         $usec = $this->calculator->divide(
             RoundingMode::DOWN, // Always round down to stay in the previous millisecond.
             0,
             $timestamp->getMicroseconds(),
-            new IntegerObject(self::MILLISECONDS),
+            new IntegerObject(self::MILLISECONDS), /** @phpstan-ignore possiblyImpure.new */
         );
 
         /** @var IntegerObject $unixTime */
         $unixTime = $this->calculator->add($sec, $usec);
 
-        return new Hexadecimal(str_pad($this->calculator->toHexadecimal($unixTime)->toString(), 12, '0', STR_PAD_LEFT));
+        /** @phpstan-ignore possiblyImpure.new */
+        return new Hexadecimal(
+            str_pad(
+                $this->calculator->toHexadecimal($unixTime)->toString(),
+                12,
+                '0',
+                STR_PAD_LEFT
+            ),
+        );
     }
 
     public function convertTime(Hexadecimal $uuidTimestamp): Time
@@ -69,11 +81,12 @@ class UnixTimeConverter implements TimeConverterInterface
             RoundingMode::HALF_UP,
             6,
             $milliseconds,
-            new IntegerObject(self::MILLISECONDS),
+            new IntegerObject(self::MILLISECONDS), /** @phpstan-ignore possiblyImpure.new */
         );
 
         $split = explode('.', (string) $unixTimestamp, 2);
 
+        /** @phpstan-ignore possiblyImpure.new */
         return new Time($split[0], $split[1] ?? '0');
     }
 }

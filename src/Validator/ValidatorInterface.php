@@ -34,6 +34,8 @@ interface ValidatorInterface
      * @param string $uuid The string to validate as a UUID
      *
      * @return bool True if the string is a valid UUID, false otherwise
+     *
+     * @pure
      */
     public function validate(string $uuid): bool;
 }

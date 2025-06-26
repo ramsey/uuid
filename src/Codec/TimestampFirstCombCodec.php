@@ -55,6 +55,7 @@ class TimestampFirstCombCodec extends StringCodec
      */
     public function encode(UuidInterface $uuid): string
     {
+        /** @phpstan-ignore possiblyImpure.methodCall */
         $bytes = $this->swapBytes($uuid->getFields()->getBytes());
 
         return sprintf(
@@ -83,18 +84,23 @@ class TimestampFirstCombCodec extends StringCodec
      */
     public function decode(string $encodedUuid): UuidInterface
     {
+        /** @phpstan-ignore possiblyImpure.methodCall */
         $bytes = $this->getBytes($encodedUuid);
 
+        /** @phpstan-ignore possiblyImpure.methodCall */
         return $this->getBuilder()->build($this, $this->swapBytes($bytes));
     }
 
     public function decodeBytes(string $bytes): UuidInterface
     {
+        /** @phpstan-ignore possiblyImpure.methodCall */
         return $this->getBuilder()->build($this, $this->swapBytes($bytes));
     }
 
     /**
      * Swaps bytes according to the timestamp-first COMB rules
+     *
+     * @pure
      */
     private function swapBytes(string $bytes): string
     {

@@ -58,6 +58,8 @@ final class Integer implements NumberInterface
 
     /**
      * @return numeric-string
+     *
+     * @pure
      */
     public function toString(): string
     {

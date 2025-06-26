@@ -889,6 +889,7 @@ class UuidTest extends TestCase
         $this->expectException(UnsupportedOperationException::class);
         $this->expectExceptionMessage('The provided factory does not support the uuid8() method');
 
+        /** @phpstan-ignore staticMethod.resultUnused */
         Uuid::uuid8("\x00\x11\x22\x33\x44\x55\x66\x77\x88\x99\xaa\xbb\xcc\xdd\xee\xff");
     }
 
@@ -1771,6 +1772,7 @@ class UuidTest extends TestCase
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Invalid UUID string:');
 
+        /** @phpstan-ignore staticMethod.resultUnused */
         Uuid::uuid3('', '');
     }
 
@@ -1793,6 +1795,7 @@ class UuidTest extends TestCase
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Invalid UUID string:');
 
+        /** @phpstan-ignore staticMethod.resultUnused */
         Uuid::uuid5('', '');
     }
 
