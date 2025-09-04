@@ -6,6 +6,14 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 
+## 4.9.1 - 2025-09-04
+
+### Fixed
+
+* Allow brick/math version `^0.14`; fixed in [#617](https://github.com/ramsey/uuid/pull/617).
+* Default to `microtime()` instead of `DateTimeImmutable` in `Ramsey\Uuid\Generator\UnixTimeGenerator`.
+
+
 ## 4.9.0 - 2025-06-25
 
 ### Added
