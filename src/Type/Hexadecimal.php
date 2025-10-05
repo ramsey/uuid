@@ -24,9 +24,8 @@ use function substr;
 /**
  * A value object representing a hexadecimal number
  *
- * This class exists for type-safety purposes, to ensure that hexadecimal numbers
- * returned from ramsey/uuid methods as strings are truly hexadecimal and not some
- * other kind of string.
+ * This class exists for type-safety purposes, to ensure that hexadecimal numbers returned from ramsey/uuid methods as
+ * strings are truly hexadecimal and not some other kind of string.
  *
  * @immutable
  */
@@ -38,7 +37,7 @@ final class Hexadecimal implements TypeInterface
     private string $value;
 
     /**
-     * @param self|string $value The hexadecimal value to store
+     * @param self | string $value The hexadecimal value to store
      */
     public function __construct(self | string $value)
     {
@@ -46,7 +45,9 @@ final class Hexadecimal implements TypeInterface
     }
 
     /**
-     * @psalm-return non-empty-string
+     * @return non-empty-string
+     *
+     * @pure
      */
     public function toString(): string
     {
@@ -54,7 +55,7 @@ final class Hexadecimal implements TypeInterface
     }
 
     /**
-     * @psalm-return non-empty-string
+     * @return non-empty-string
      */
     public function __toString(): string
     {
@@ -62,7 +63,7 @@ final class Hexadecimal implements TypeInterface
     }
 
     /**
-     * @psalm-return non-empty-string
+     * @return non-empty-string
      */
     public function jsonSerialize(): string
     {
@@ -70,7 +71,7 @@ final class Hexadecimal implements TypeInterface
     }
 
     /**
-     * @psalm-return non-empty-string
+     * @return non-empty-string
      */
     public function serialize(): string
     {
@@ -110,7 +111,7 @@ final class Hexadecimal implements TypeInterface
     }
 
     /**
-     * @psalm-return non-empty-string
+     * @return non-empty-string
      */
     private function prepareValue(string $value): string
     {
@@ -121,9 +122,7 @@ final class Hexadecimal implements TypeInterface
         }
 
         if (!preg_match('/^[A-Fa-f0-9]+$/', $value)) {
-            throw new InvalidArgumentException(
-                'Value must be a hexadecimal number'
-            );
+            throw new InvalidArgumentException('Value must be a hexadecimal number');
         }
 
         /** @var non-empty-string */

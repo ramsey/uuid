@@ -1,7 +1,6 @@
 # ramsey/uuid Documentation
 
-Changes to the documentation are automatically built by [Read the Docs][] and
-viewable from <https://uuid.ramsey.dev>.
+Changes to the documentation are automatically built by [Read the Docs][] and viewable from <https://uuid.ramsey.dev>.
 
 ## Getting Started
 
@@ -17,8 +16,8 @@ pip install -r requirements.txt
 
 ## Building the Docs
 
-To build the docs, change to the `docs/` directory, and make sure you're working
-on the virtualenv environment created in the last step.
+To build the docs, change to the `docs/` directory, and make sure you're working on the virtualenv environment created
+in the last step.
 
 ``` bash
 cd docs/
@@ -31,6 +30,5 @@ Then, to view the docs after building them:
 ``` bash
 open _build/html/index.html
 ```
-
 
 [read the docs]: https://readthedocs.org

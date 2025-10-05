@@ -38,7 +38,7 @@ trait SerializableFieldsTrait
     abstract public function getBytes(): string;
 
     /**
-     * Returns a string representation of object
+     * Returns a string representation of the object
      */
     public function serialize(): string
     {

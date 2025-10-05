@@ -21,7 +21,7 @@ use function preg_match;
 use function str_replace;
 
 /**
- * Rfc4122\Validator validates strings as UUIDs of the RFC 4122 variant
+ * Rfc4122\Validator validates strings as UUIDs of the RFC 9562 (formerly RFC 4122) variant
  *
  * @immutable
  */
@@ -40,9 +40,10 @@ final class Validator implements ValidatorInterface
 
     public function validate(string $uuid): bool
     {
-        $uuid = str_replace(['urn:', 'uuid:', 'URN:', 'UUID:', '{', '}'], '', $uuid);
-        $uuid = strtolower($uuid);
+        /** @phpstan-ignore possiblyImpure.functionCall */
+        $uuid = strtolower(str_replace(['urn:', 'uuid:', 'URN:', 'UUID:', '{', '}'], '', $uuid));
 
+        /** @phpstan-ignore possiblyImpure.functionCall */
         return $uuid === Uuid::NIL || $uuid === Uuid::MAX || preg_match('/' . self::VALID_PATTERN . '/Dms', $uuid);
     }
 }

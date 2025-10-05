@@ -39,13 +39,12 @@ use const PREG_PATTERN_ORDER;
 /**
  * SystemNodeProvider retrieves the system node ID, if possible
  *
- * The system node ID, or host ID, is often the same as the MAC address for a
- * network interface on the host.
+ * The system node ID, or host ID, is often the same as the MAC address for a network interface on the host.
  */
 class SystemNodeProvider implements NodeProviderInterface
 {
     /**
-     * Pattern to match nodes in ifconfig and ipconfig output.
+     * Pattern to match nodes in `ifconfig` and `ipconfig` output.
      */
     private const IFCONFIG_PATTERN = '/[^:]([0-9a-f]{2}([:-])[0-9a-f]{2}(\2[0-9a-f]{2}){4})[^:]/i';
 
@@ -59,16 +58,14 @@ class SystemNodeProvider implements NodeProviderInterface
         $node = $this->getNodeFromSystem();
 
         if ($node === '') {
-            throw new NodeException(
-                'Unable to fetch a node for this system'
-            );
+            throw new NodeException('Unable to fetch a node for this system');
         }
 
         return new Hexadecimal($node);
     }
 
     /**
-     * Returns the system node, if it can find it
+     * Returns the system node if found
      */
     protected function getNodeFromSystem(): string
     {
@@ -99,9 +96,7 @@ class SystemNodeProvider implements NodeProviderInterface
      */
     protected function getIfconfig(): string
     {
-        $disabledFunctions = strtolower((string) ini_get('disable_functions'));
-
-        if (str_contains($disabledFunctions, 'passthru')) {
+        if (str_contains(strtolower((string) ini_get('disable_functions')), 'passthru')) {
             return '';
         }
 
@@ -147,42 +142,42 @@ class SystemNodeProvider implements NodeProviderInterface
      */
     protected function getSysfs(): string
     {
-        $mac = '';
-
         /** @var string $phpOs */
         $phpOs = constant('PHP_OS');
 
-        if (strtoupper($phpOs) === 'LINUX') {
-            $addressPaths = glob('/sys/class/net/*/address', GLOB_NOSORT);
-
-            if ($addressPaths === false || count($addressPaths) === 0) {
-                return '';
-            }
-
-            /** @var array<array-key, string> $macs */
-            $macs = [];
-
-            array_walk($addressPaths, function (string $addressPath) use (&$macs): void {
-                if (is_readable($addressPath)) {
-                    $macs[] = file_get_contents($addressPath);
-                }
-            });
-
-            /** @var callable $trim */
-            $trim = 'trim';
-
-            $macs = array_map($trim, $macs);
-
-            // Remove invalid entries.
-            $macs = array_filter($macs, function (mixed $address): bool {
-                assert(is_string($address));
-
-                return $address !== '00:00:00:00:00:00' && preg_match(self::SYSFS_PATTERN, $address);
-            });
-
-            /** @var string|bool $mac */
-            $mac = reset($macs);
+        if (strtoupper($phpOs) !== 'LINUX') {
+            return '';
         }
+
+        $addressPaths = glob('/sys/class/net/*/address', GLOB_NOSORT);
+
+        if ($addressPaths === false || count($addressPaths) === 0) {
+            return '';
+        }
+
+        /** @var array<array-key, string> $macs */
+        $macs = [];
+
+        array_walk($addressPaths, function (string $addressPath) use (&$macs): void {
+            if (is_readable($addressPath)) {
+                $macs[] = file_get_contents($addressPath);
+            }
+        });
+
+        /** @var callable $trim */
+        $trim = 'trim';
+
+        $macs = array_map($trim, $macs);
+
+        // Remove invalid entries.
+        $macs = array_filter($macs, function (mixed $address): bool {
+            assert(is_string($address));
+
+            return $address !== '00:00:00:00:00:00' && preg_match(self::SYSFS_PATTERN, $address);
+        });
+
+        /** @var bool | string $mac */
+        $mac = reset($macs);
 
         return (string) $mac;
     }

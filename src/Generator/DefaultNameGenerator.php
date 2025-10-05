@@ -21,11 +21,13 @@ use ValueError;
 use function hash;
 
 /**
- * DefaultNameGenerator generates strings of binary data based on a namespace,
- * name, and hashing algorithm
+ * DefaultNameGenerator generates strings of binary data based on a namespace, name, and hashing algorithm
  */
 class DefaultNameGenerator implements NameGeneratorInterface
 {
+    /**
+     * @pure
+     */
     public function generate(UuidInterface $ns, string $name, string $hashAlgorithm): string
     {
         try {

@@ -37,7 +37,7 @@ class FieldsTest extends TestCase
 
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage(
-            'The byte string received does not conform to the RFC 4122 variant'
+            'The byte string received does not conform to the RFC 9562 (formerly RFC 4122) variant'
         );
 
         new Fields($bytes);
@@ -75,7 +75,7 @@ class FieldsTest extends TestCase
 
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage(
-            'The byte string received does not contain a valid RFC 4122 version'
+            'The byte string received does not contain a valid RFC 9562 (formerly RFC 4122) version'
         );
 
         new Fields($bytes);
@@ -201,7 +201,7 @@ class FieldsTest extends TestCase
             ['00000000-0000-0000-0000-000000000000', 'getTimeLow', '00000000'],
             ['00000000-0000-0000-0000-000000000000', 'getTimeMid', '0000'],
             ['00000000-0000-0000-0000-000000000000', 'getTimestamp', '000000000000000'],
-            ['00000000-0000-0000-0000-000000000000', 'getVariant', 2],
+            ['00000000-0000-0000-0000-000000000000', 'getVariant', 0],
             ['00000000-0000-0000-0000-000000000000', 'getVersion', null],
             ['00000000-0000-0000-0000-000000000000', 'isNil', true],
             ['00000000-0000-0000-0000-000000000000', 'isMax', false],
@@ -214,7 +214,7 @@ class FieldsTest extends TestCase
             ['ffffffff-ffff-ffff-ffff-ffffffffffff', 'getTimeLow', 'ffffffff'],
             ['ffffffff-ffff-ffff-ffff-ffffffffffff', 'getTimeMid', 'ffff'],
             ['ffffffff-ffff-ffff-ffff-ffffffffffff', 'getTimestamp', 'fffffffffffffff'],
-            ['ffffffff-ffff-ffff-ffff-ffffffffffff', 'getVariant', 2],
+            ['ffffffff-ffff-ffff-ffff-ffffffffffff', 'getVariant', 7],
             ['ffffffff-ffff-ffff-ffff-ffffffffffff', 'getVersion', null],
             ['ffffffff-ffff-ffff-ffff-ffffffffffff', 'isNil', false],
             ['ffffffff-ffff-ffff-ffff-ffffffffffff', 'isMax', true],

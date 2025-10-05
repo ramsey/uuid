@@ -4,10 +4,8 @@
 Exceptions
 ==========
 
-All exceptions in the :php:ns:`Ramsey\\Uuid` namespace implement
-:php:interface:`Ramsey\\Uuid\\Exception\\UuidExceptionInterface`. This provides
-a base type you may use to catch any and all exceptions that originate from this
-library.
+All exceptions in the :php:ns:`Ramsey\\Uuid` namespace implement :php:interface:`Ramsey\\Uuid\\Exception\\UuidExceptionInterface`.
+This provides a base type you may use to catch any and all exceptions that originate from this library.
 
 .. php:namespace:: Ramsey\Uuid\Exception
 
@@ -25,15 +23,13 @@ library.
 
     Extends `RuntimeException <https://www.php.net/runtimeexception>`_.
 
-    Thrown to indicate that the PHP DateTime extension encountered an
-    exception or error.
+    Thrown to indicate that the PHP DateTime extension encountered an exception or error.
 
 .. php:exception:: DceSecurityException
 
     Extends `RuntimeException <https://www.php.net/runtimeexception>`_.
 
-    Thrown to indicate an exception occurred while dealing with DCE Security
-    (version 2) UUIDs
+    Thrown to indicate an exception occurred while dealing with DCE Security (version 2) UUIDs
 
 .. php:exception:: InvalidArgumentException
 
@@ -57,15 +53,13 @@ library.
 
     Extends `RuntimeException <https://www.php.net/runtimeexception>`_.
 
-    Thrown to indicate that an error occurred while attempting to hash a
-    namespace and name
+    Thrown to indicate that an error occurred while attempting to hash a namespace and name
 
 .. php:exception:: NodeException
 
     Extends `RuntimeException <https://www.php.net/runtimeexception>`_.
 
-    Thrown to indicate that attempting to fetch or create a node ID encountered
-    an error.
+    Thrown to indicate that attempting to fetch or create a node ID encountered an error.
 
 .. php:exception:: RandomSourceException
 

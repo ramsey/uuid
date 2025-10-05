@@ -17,22 +17,21 @@ namespace Ramsey\Uuid\Rfc4122;
 /**
  * Provides common functionality for max UUIDs
  *
- * The max UUID is special form of UUID that is specified to have all 128 bits
- * set to one. It is the inverse of the nil UUID.
- *
- * @link https://datatracker.ietf.org/doc/html/draft-ietf-uuidrev-rfc4122bis-00#section-5.10 Max UUID
- *
  * @immutable
  */
 trait MaxTrait
 {
     /**
      * Returns the bytes that comprise the fields
+     *
+     * @pure
      */
     abstract public function getBytes(): string;
 
     /**
      * Returns true if the byte string represents a max UUID
+     *
+     * @pure
      */
     public function isMax(): bool
     {

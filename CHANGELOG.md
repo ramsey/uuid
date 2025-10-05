@@ -6,6 +6,76 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 
+## 4.9.1 - 2025-09-04
+
+### Fixed
+
+* Allow brick/math version `^0.14`; fixed in [#617](https://github.com/ramsey/uuid/pull/617).
+* Default to `microtime()` instead of `DateTimeImmutable` in `Ramsey\Uuid\Generator\UnixTimeGenerator`.
+
+
+## 4.9.0 - 2025-06-25
+
+### Added
+
+* Add new `@pure` annotations to the following ([#605](https://github.com/ramsey/uuid/pull/605)):
+  * `Ramsey\Uuid\Codec\CodecInterface::encode()`
+  * `Ramsey\Uuid\Codec\CodecInterface::encodeBinary()`
+  * `Ramsey\Uuid\Codec\CodecInterface::decode()`
+  * `Ramsey\Uuid\Codec\CodecInterface::decodeBytes()`
+  * `Ramsey\Uuid\Fields\FieldsInterface::getBytes()`
+  * `Ramsey\Uuid\Math\CalculatorInterface::add()`
+  * `Ramsey\Uuid\Math\CalculatorInterface::subtract()`
+  * `Ramsey\Uuid\Math\CalculatorInterface::multiply()`
+  * `Ramsey\Uuid\Math\CalculatorInterface::divide()`
+  * `Ramsey\Uuid\Math\CalculatorInterface::fromBase()`
+  * `Ramsey\Uuid\Math\CalculatorInterface::toBase()`
+  * `Ramsey\Uuid\Math\CalculatorInterface::toHexadecimal()`
+  * `Ramsey\Uuid\Math\CalculatorInterface::toInteger()`
+  * `Ramsey\Uuid\Nonstandard\Uuid`
+  * `Ramsey\Uuid\Rfc4122\Fields::isMax()`
+  * `Ramsey\Uuid\Rfc4122\FieldsInterface::getVersion()`
+  * `Ramsey\Uuid\Rfc4122\FieldsInterface::isNil()`
+  * `Ramsey\Uuid\Type\Time::getSeconds()`
+  * `Ramsey\Uuid\Type\Time::getMicroseconds()`
+  * `Ramsey\Uuid\Type\TypeInterface::toString()`
+  * `Ramsey\Uuid\UuidInterface::getBytes()`
+  * `Ramsey\Uuid\UuidInterface::toString()`
+  * `Ramsey\Uuid\Validator\ValidatorInterface::validate()`
+
+### Fixed
+
+* Restore the `@pure` annotations that were removed in 4.8.0 ([#603](https://github.com/ramsey/uuid/pull/603)).
+
+
+## 4.8.1 - 2025-06-01
+
+### Fixed
+
+* This tagged release ensures the stable documentation build matches the current stable release.
+
+
+## 4.8.0 - 2025-06-01
+
+### Deprecated
+
+The following will be removed in ramsey/uuid 5.0.0:
+
+* `Ramsey\Uuid\Codec\OrderedTimeCodec` is deprecated; please migrate to [version 6 UUIDs](https://uuid.ramsey.dev/en/stable/rfc4122/version6.html).
+* `Ramsey\Uuid\Codec\TimestampFirstCombCodec` is deprecated; please migrate to [version 7 UUIDs](https://uuid.ramsey.dev/en/stable/rfc4122/version7.html).
+* `Ramsey\Uuid\Codec\TimestampLastCombCodec` is deprecated; please use `Ramsey\Uuid\Codec\StringCodec` instead.
+* `Ramsey\Uuid\Generator\CombGenerator` is deprecated; please migrate to [version 7 UUIDs](https://uuid.ramsey.dev/en/stable/rfc4122/version7.html).
+
+### Fixed
+
+* Allow brick/math version `^0.13`; fixed in [#589](https://github.com/ramsey/uuid/pull/589).
+* Update call to `str_getcsv()` to avoid deprecation notice in PHP 8.4; fixed in [#590](https://github.com/ramsey/uuid/pull/590).
+* Hexadecimal is never an empty string; fixed in [#593](https://github.com/ramsey/uuid/pull/593).
+* Update docblocks for `Uuid::fromBytes()`, `Uuid::fromString()`, `Uuid::fromDateTime()`, `Uuid::fromHexadecimal()`, and `Uuid::fromInteger()` to note that each can throw `InvalidArgumentException`, addressing PHPStan errors occurring at call sites; fixed in [#552](https://github.com/ramsey/uuid/pull/552).
+* `getVariant()` for `MaxUuid` now correctly returns `Uuid::RESERVED_FUTURE`, as specified in [RFC 9562, section 5.10](https://www.rfc-editor.org/rfc/rfc9562#section-5.10).
+* `getVariant()` for `NilUuid` now correctly returns `Uuid::RESERVED_NCS`, as specified in [RFC 9562, section 5.9](https://www.rfc-editor.org/rfc/rfc9562#section-5.9).
+
+
 ## 4.7.6 - 2024-04-27
 
 ### Fixed

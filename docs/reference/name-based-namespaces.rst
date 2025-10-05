@@ -4,8 +4,7 @@
 Predefined Namespaces
 =====================
 
-`RFC 4122`_ defines a handful of UUIDs to use with "for some potentially
-interesting name spaces."
+`RFC 9562`_ (formerly `RFC 4122`_) defines a handful of UUIDs to use with "for some potentially interesting name spaces."
 
 .. list-table::
     :widths: 30 70
@@ -25,6 +24,7 @@ interesting name spaces."
 
 
 .. _RFC 4122: https://tools.ietf.org/html/rfc4122
+.. _RFC 9562: https://www.rfc-editor.org/rfc/rfc9562
 .. _ISO object identifier (OID): http://www.oid-info.com
 .. _X.500: https://en.wikipedia.org/wiki/X.500
 .. _DN: https://en.wikipedia.org/wiki/Distinguished_Name

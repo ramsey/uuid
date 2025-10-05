@@ -11,3 +11,10 @@ parameters:
         analyse:
             - ./tests/ExpectedBehaviorTest.php
             - ./tests/static-analysis/stubs.php
+    ignoreErrors:
+        -
+            identifier: method.resultUnused
+            path: tests/*
+        -
+            identifier: staticMethod.resultUnused
+            path: tests/*

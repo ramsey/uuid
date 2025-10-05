@@ -10,9 +10,8 @@ Nonstandard\\Uuid
 
     Implements :php:interface:`Ramsey\\Uuid\\UuidInterface`.
 
-    Nonstandard\Uuid represents :ref:`nonstandard.other`. In addition to
-    providing the methods defined on the interface, this class additionally
-    provides the following methods.
+    Nonstandard\\Uuid represents :ref:`nonstandard.other`. In addition to providing the methods defined on the interface,
+    this class additionally provides the following methods.
 
     .. php:method:: getFields()
 

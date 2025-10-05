@@ -28,7 +28,7 @@ use const STR_PAD_LEFT;
 /**
  * StaticNodeProvider provides a static node value with the multicast bit set
  *
- * @link http://tools.ietf.org/html/rfc4122#section-4.5 RFC 4122, § 4.5: Node IDs that Do Not Identify the Host
+ * @link https://www.rfc-editor.org/rfc/rfc9562#section-6.10 RFC 9562, 6.10. UUIDs That Do Not Identify the Host
  */
 class StaticNodeProvider implements NodeProviderInterface
 {
@@ -40,9 +40,7 @@ class StaticNodeProvider implements NodeProviderInterface
     public function __construct(Hexadecimal $node)
     {
         if (strlen($node->toString()) > 12) {
-            throw new InvalidArgumentException(
-                'Static node value cannot be greater than 12 hexadecimal characters'
-            );
+            throw new InvalidArgumentException('Static node value cannot be greater than 12 hexadecimal characters');
         }
 
         $this->node = $this->setMulticastBit($node);
@@ -60,13 +58,7 @@ class StaticNodeProvider implements NodeProviderInterface
     {
         $nodeHex = str_pad($node->toString(), 12, '0', STR_PAD_LEFT);
         $firstOctet = substr($nodeHex, 0, 2);
-
-        $firstOctet = str_pad(
-            dechex(hexdec($firstOctet) | 0x01),
-            2,
-            '0',
-            STR_PAD_LEFT
-        );
+        $firstOctet = str_pad(dechex(hexdec($firstOctet) | 0x01), 2, '0', STR_PAD_LEFT);
 
         return new Hexadecimal($firstOctet . substr($nodeHex, 2));
     }

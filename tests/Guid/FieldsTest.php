@@ -36,7 +36,7 @@ class FieldsTest extends TestCase
 
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage(
-            'The byte string received does not conform to the RFC 4122 or '
+            'The byte string received does not conform to the RFC 9562 (formerly RFC 4122) or '
             . 'Microsoft Corporation variants'
         );
 
@@ -201,7 +201,7 @@ class FieldsTest extends TestCase
             ['00000000000000000000000000000000', 'getTimeLow', '00000000'],
             ['00000000000000000000000000000000', 'getTimeMid', '0000'],
             ['00000000000000000000000000000000', 'getTimestamp', '000000000000000'],
-            ['00000000000000000000000000000000', 'getVariant', 2],
+            ['00000000000000000000000000000000', 'getVariant', 0],
             ['00000000000000000000000000000000', 'getVersion', null],
             ['00000000000000000000000000000000', 'isNil', true],
             ['00000000000000000000000000000000', 'isMax', false],
@@ -215,7 +215,7 @@ class FieldsTest extends TestCase
             ['ffffffffffffffffffffffffffffffff', 'getTimeLow', 'ffffffff'],
             ['ffffffffffffffffffffffffffffffff', 'getTimeMid', 'ffff'],
             ['ffffffffffffffffffffffffffffffff', 'getTimestamp', 'fffffffffffffff'],
-            ['ffffffffffffffffffffffffffffffff', 'getVariant', 2],
+            ['ffffffffffffffffffffffffffffffff', 'getVariant', 7],
             ['ffffffffffffffffffffffffffffffff', 'getVersion', null],
             ['ffffffffffffffffffffffffffffffff', 'isNil', false],
             ['ffffffffffffffffffffffffffffffff', 'isMax', true],

@@ -22,41 +22,36 @@ use Ramsey\Uuid\Rfc4122\FieldsInterface as Rfc4122FieldsInterface;
 use Ramsey\Uuid\Uuid;
 
 /**
- * Version 8, Custom UUIDs provide an RFC 4122 compatible format for
- * experimental or vendor-specific uses
+ * Custom format, or version 8, UUIDs provide an RFC-compatible format for experimental or vendor-specific uses
  *
- * The only requirement for version 8 UUIDs is that the version and variant bits
- * must be set. Otherwise, implementations are free to set the other bits
- * according to their needs. As a result, the uniqueness of version 8 UUIDs is
+ * The only requirement for version 8 UUIDs is that the version and variant bits must be set. Otherwise, implementations
+ * are free to set the other bits according to their needs. As a result, the uniqueness of version 8 UUIDs is
  * implementation-specific and should not be assumed.
  *
- * @link https://datatracker.ietf.org/doc/html/draft-ietf-uuidrev-rfc4122bis-00#section-5.8 UUID Version 8
+ * @link https://www.rfc-editor.org/rfc/rfc9562#section-5.8 RFC 9562, 5.8. UUID Version 8
  *
  * @immutable
  */
 final class UuidV8 extends Uuid implements UuidInterface
 {
     /**
-     * Creates a version 8 (custom) UUID
+     * Creates a version 8 (custom format) UUID
      *
      * @param Rfc4122FieldsInterface $fields The fields from which to construct a UUID
-     * @param NumberConverterInterface $numberConverter The number converter to use
-     *     for converting hex values to/from integers
-     * @param CodecInterface $codec The codec to use when encoding or decoding
-     *     UUID strings
-     * @param TimeConverterInterface $timeConverter The time converter to use
-     *     for converting timestamps extracted from a UUID to unix timestamps
+     * @param NumberConverterInterface $numberConverter The number converter to use for converting hex values to/from integers
+     * @param CodecInterface $codec The codec to use when encoding or decoding UUID strings
+     * @param TimeConverterInterface $timeConverter The time converter to use for converting timestamps extracted from a
+     *     UUID to unix timestamps
      */
     public function __construct(
         Rfc4122FieldsInterface $fields,
         NumberConverterInterface $numberConverter,
         CodecInterface $codec,
-        TimeConverterInterface $timeConverter
+        TimeConverterInterface $timeConverter,
     ) {
         if ($fields->getVersion() !== Uuid::UUID_TYPE_CUSTOM) {
             throw new InvalidArgumentException(
-                'Fields used to create a UuidV8 must represent a '
-                . 'version 8 (custom) UUID'
+                'Fields used to create a UuidV8 must represent a version 8 (custom format) UUID',
             );
         }
 

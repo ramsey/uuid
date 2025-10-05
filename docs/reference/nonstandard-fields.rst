@@ -10,4 +10,4 @@ Nonstandard\\Fields
 
     Implements :php:interface:`Ramsey\\Uuid\\Rfc4122\\FieldsInterface`.
 
-    Nonstandard\Fields represents the fields of a nonstandard UUID.
+    Nonstandard\\Fields represents the fields of a nonstandard UUID.

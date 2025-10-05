@@ -18,10 +18,10 @@ use Ramsey\Uuid\Converter\NumberConverterInterface;
 use Ramsey\Uuid\Math\BrickMathCalculator;
 
 /**
- * Previously used to integrate moontoast/math as a bignum arithmetic library,
- * BigNumberConverter is deprecated in favor of GenericNumberConverter
+ * Previously used to integrate moontoast/math as a bignum arithmetic library, BigNumberConverter is deprecated in favor
+ * of GenericNumberConverter
  *
- * @deprecated Transition to {@see GenericNumberConverter}.
+ * @deprecated Please transition to {@see GenericNumberConverter}.
  *
  * @immutable
  */
@@ -34,11 +34,17 @@ class BigNumberConverter implements NumberConverterInterface
         $this->converter = new GenericNumberConverter(new BrickMathCalculator());
     }
 
+    /**
+     * @pure
+     */
     public function fromHex(string $hex): string
     {
         return $this->converter->fromHex($hex);
     }
 
+    /**
+     * @pure
+     */
     public function toHex(string $number): string
     {
         return $this->converter->toHex($number);

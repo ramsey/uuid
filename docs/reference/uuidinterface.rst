@@ -57,4 +57,4 @@ UuidInterface
         :returns: The string standard representation of the UUID.
         :returntype: ``string``
 
-.. _URN: https://tools.ietf.org/html/rfc8141
+.. _URN: https://www.rfc-editor.org/rfc/rfc8141

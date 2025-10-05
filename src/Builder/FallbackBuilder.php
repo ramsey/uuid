@@ -20,8 +20,7 @@ use Ramsey\Uuid\Exception\UnableToBuildUuidException;
 use Ramsey\Uuid\UuidInterface;
 
 /**
- * FallbackBuilder builds a UUID by stepping through a list of UUID builders
- * until a UUID can be constructed without exceptions
+ * FallbackBuilder builds a UUID by stepping through a list of UUID builders until a UUID can be constructed without exceptions
  *
  * @immutable
  */
@@ -35,13 +34,14 @@ class FallbackBuilder implements UuidBuilderInterface
     }
 
     /**
-     * Builds and returns a UuidInterface instance using the first builder that
-     * succeeds
+     * Builds and returns a UuidInterface instance using the first builder that succeeds
      *
      * @param CodecInterface $codec The codec to use for building this instance
      * @param string $bytes The byte string from which to construct a UUID
      *
      * @return UuidInterface an instance of a UUID object
+     *
+     * @pure
      */
     public function build(CodecInterface $codec, string $bytes): UuidInterface
     {
@@ -60,7 +60,7 @@ class FallbackBuilder implements UuidBuilderInterface
         throw new BuilderNotFoundException(
             'Could not find a suitable builder for the provided codec and fields',
             0,
-            $lastBuilderException
+            $lastBuilderException,
         );
     }
 }

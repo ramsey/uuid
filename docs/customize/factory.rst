@@ -4,8 +4,8 @@
 Replace the Default Factory
 ===========================
 
-In many of the examples throughout this documentation, we've seen how to
-configure the factory and then use that factory to generate and work with UUIDs.
+In many of the examples throughout this documentation, we've seen how to configure the factory and then use that factory
+to generate and work with UUIDs.
 
 For example:
 
@@ -23,9 +23,8 @@ For example:
 
     $orderedTimeUuid = $factory->uuid1();
 
-When doing this, the default behavior of ramsey/uuid is left intact. If we call
-``Uuid::uuid1()`` to generate a version 1 UUID after configuring the factory as
-shown above, it won't use :ref:`OrderedTimeCodec <customize.ordered-time-codec>`
+When doing this, the default behavior of ramsey/uuid is left intact. If we call ``Uuid::uuid1()`` to generate a version
+1 UUID after configuring the factory as shown above, it won't use :ref:`OrderedTimeCodec <customize.ordered-time-codec>`
 to generate the UUID.
 
 .. code-block:: php
@@ -48,10 +47,9 @@ to generate the UUID.
         bin2hex($uuid->getBytes())
     );
 
-In this example, we print out details for two different UUIDs. The first was
-generated with the :ref:`OrderedTimeCodec <customize.ordered-time-codec>` using
-``$factory->uuid1()``. The second was generated using ``Uuid::uuid1()``. It
-looks something like this:
+In this example, we print out details for two different UUIDs. The first was generated with the :ref:`OrderedTimeCodec
+<customize.ordered-time-codec>` using ``$factory->uuid1()``. The second was generated using ``Uuid::uuid1()``. It looks
+something like this:
 
 .. code-block:: text
 
@@ -61,15 +59,13 @@ looks something like this:
     UUID: 2ff09730-6251-11ea-ba64-0242ac130003
     Bytes: 2ff09730625111eaba640242ac130003
 
-Notice the arrangement of the bytes. The first set of bytes has been rearranged,
-according to the ordered-time codec rules, but the second set of bytes remains
-in the same order as the UUID string.
+Notice the arrangement of the bytes. The first set of bytes has been rearranged, according to the ordered-time codec
+rules, but the second set of bytes remains in the same order as the UUID string.
 
 *Configuring the factory does not change the default behavior.*
 
-If we want to change the default behavior, we must *replace* the factory used
-by the Uuid static methods, and we can do this using the
-:php:meth:`Uuid::setFactory() <Ramsey\\Uuid\\Uuid::setFactory>` static method.
+If we want to change the default behavior, we must *replace* the factory used by the Uuid static methods, and we can do
+this using the :php:meth:`Uuid::setFactory() <Ramsey\\Uuid\\Uuid::setFactory>` static method.
 
 .. code-block:: php
     :caption: Replace the factory to globally affect Uuid behavior
@@ -79,15 +75,12 @@ by the Uuid static methods, and we can do this using the
 
     $uuid = Uuid::uuid1();
 
-Now, every time we call :php:meth:`Uuid::uuid() <Ramsey\\Uuid\\Uuid::uuid1>`,
-ramsey/uuid will use the factory configured with the :ref:`OrderedTimeCodec
-<customize.ordered-time-codec>` to generate version 1 UUIDs.
+Now, every time we call :php:meth:`Uuid::uuid() <Ramsey\\Uuid\\Uuid::uuid1>`, ramsey/uuid will use the factory configured
+with the :ref:`OrderedTimeCodec <customize.ordered-time-codec>` to generate version 1 UUIDs.
 
 .. warning::
 
-    Calling :php:meth:`Uuid::setFactory() <Ramsey\\Uuid\\Uuid::setFactory>` to
-    replace the factory will change the behavior of Uuid no matter where it is
-    used, so keep this in mind when replacing the factory. If you replace the
-    factory deep inside a method somewhere, any later code that calls a static
-    method on :php:class:`Ramsey\\Uuid\\Uuid` will use the new factory to
-    generate UUIDs.
+    Calling :php:meth:`Uuid::setFactory() <Ramsey\\Uuid\\Uuid::setFactory>` to replace the factory will change the
+    behavior of Uuid no matter where it is used, so keep this in mind when replacing the factory. If you replace the
+    factory deep inside a method somewhere, any later code that calls a static method on :php:class:`Ramsey\\Uuid\\Uuid`
+    will use the new factory to generate UUIDs.
