@@ -20,7 +20,6 @@ use Ramsey\Uuid\Codec\CodecInterface;
 use Ramsey\Uuid\Converter\NumberConverterInterface;
 use Ramsey\Uuid\Converter\TimeConverterInterface;
 use Ramsey\Uuid\Exception\InvalidArgumentException;
-use Ramsey\Uuid\Exception\UnsupportedOperationException;
 use Ramsey\Uuid\Lazy\LazyUuidFromString;
 use Ramsey\Uuid\Rfc4122\FieldsInterface as Rfc4122FieldsInterface;
 use Ramsey\Uuid\Rfc4122\UuidInterface as Rfc4122UuidInterface;
@@ -564,14 +563,7 @@ class Uuid implements Rfc4122UuidInterface
      */
     public static function uuid7(?DateTimeInterface $dateTime = null): UuidInterface
     {
-        $factory = self::getFactory();
-
-        if (method_exists($factory, 'uuid7')) {
-            /** @var UuidInterface */
-            return $factory->uuid7($dateTime);
-        }
-
-        throw new UnsupportedOperationException('The provided factory does not support the uuid7() method');
+        return self::getFactory()->uuid7($dateTime);
     }
 
     /**
@@ -591,16 +583,6 @@ class Uuid implements Rfc4122UuidInterface
     public static function uuid8(string $bytes): UuidInterface
     {
         /** @phpstan-ignore possiblyImpure.methodCall */
-        $factory = self::getFactory();
-
-        if (method_exists($factory, 'uuid8')) {
-            /**
-             * @var UuidInterface
-             * @phpstan-ignore possiblyImpure.methodCall
-             */
-            return $factory->uuid8($bytes);
-        }
-
-        throw new UnsupportedOperationException('The provided factory does not support the uuid8() method');
+        return self::getFactory()->uuid8($bytes);
     }
 }
