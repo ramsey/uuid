@@ -28,7 +28,7 @@ jobs:
 
     steps:
       - name: "Checkout repository"
-        uses: "actions/checkout@v5"
+        uses: "actions/checkout@v6"
 
       - name: "Install PHP"
         uses: "shivammathur/setup-php@v2"
@@ -53,7 +53,7 @@ jobs:
 
     steps:
       - name: "Checkout repository"
-        uses: "actions/checkout@v5"
+        uses: "actions/checkout@v6"
 
       - name: "Install PHP"
         uses: "shivammathur/setup-php@v2"
@@ -87,7 +87,7 @@ jobs:
 
     steps:
       - name: "Checkout repository"
-        uses: "actions/checkout@v5"
+        uses: "actions/checkout@v6"
 
       - name: "Install dependencies (apt)"
         run: |
@@ -117,7 +117,7 @@ jobs:
 
     steps:
       - name: "Checkout repository"
-        uses: "actions/checkout@v5"
+        uses: "actions/checkout@v6"
 
       - name: "Install dependencies (apt)"
         run: |
@@ -180,7 +180,7 @@ jobs:
           git config --system core.eol lf
 
       - name: "Checkout repository"
-        uses: "actions/checkout@v5"
+        uses: "actions/checkout@v6"
 
       - name: "Install dependencies (apt)"
         if: ${{ matrix.operating-system == 'ubuntu-latest' }}
@@ -195,6 +195,10 @@ jobs:
           extensions: bcmath, gmp, sodium, uuid
           coverage: "none"
           ini-values: "memory_limit=-1"
+
+      - name: "Downgrade brick/math in lock file for PHP 8.0"
+        run: |
+          composer update brick/math:"0.8.16"
 
       - name: "Install dependencies (Composer)"
         uses: "ramsey/composer-install@v3"
