@@ -192,9 +192,9 @@ jobs:
           coverage: "none"
           ini-values: "memory_limit=-1"
 
-      - name: "Downgrade brick/math in lock file for PHP 8.0"
+      - name: "Downgrade brick/math in lock file, to test compatibility with older versions"
         run: |
-          composer update brick/math:"0.8.16"
+          composer update brick/math:"0.11.0"
 
       - name: "Install dependencies (Composer)"
         uses: "ramsey/composer-install@v3"
