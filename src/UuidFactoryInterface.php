@@ -182,6 +182,8 @@ interface UuidFactoryInterface
      *
      * @return UuidInterface A UuidInterface instance that represents a
      *     version 8 UUID
+     *
+     * @pure
      */
     public function uuid8(string $bytes): UuidInterface;
 }
