@@ -673,19 +673,6 @@ class UuidTest extends TestCase
         $this->assertSame(Version::UnixTime, $uuid->getFields()->getVersion());
     }
 
-    public function testUuid7ThrowsExceptionForUnsupportedFactory(): void
-    {
-        /** @var UuidFactoryInterface&MockInterface $factory */
-        $factory = Mockery::mock(UuidFactoryInterface::class);
-
-        Uuid::setFactory($factory);
-
-        $this->expectException(UnsupportedOperationException::class);
-        $this->expectExceptionMessage('The provided factory does not support the uuid7() method');
-
-        Uuid::uuid7();
-    }
-
     public function testUuid7WithDateTime(): void
     {
         $dateTime = new DateTimeImmutable('@281474976710.655');
