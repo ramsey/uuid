@@ -74,6 +74,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 * Remove dependency on ramsey/collection package.
 
 
+## 4.9.2 - 2025-12-14
+
+### Fixed
+
+* Remove explicit `(int)` cast to avoid float-string cast warnings in PHP 8.5.
+* Bump the lowest supported version of brick/math to `^0.8.16` from `^0.8.8`. ramsey/uuid had been using `BigInteger::toBytes()` in `UnixTimeGenerator` (for version 7 UUIDs) since v4.6.0, but it wasn't added to brick/math until v0.8.16.
+
+
 ## 4.9.1 - 2025-09-04
 
 ### Fixed
