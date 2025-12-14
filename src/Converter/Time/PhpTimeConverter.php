@@ -99,7 +99,7 @@ class PhpTimeConverter implements TimeConverterInterface
 
         // Convert the 100-nanosecond intervals into seconds and microseconds.
         $splitTime = $this->splitTime(
-            ((int) $timestamp->toString() - self::GREGORIAN_TO_UNIX_INTERVALS) / self::SECOND_INTERVALS,
+            ($timestamp->toString() - self::GREGORIAN_TO_UNIX_INTERVALS) / self::SECOND_INTERVALS,
         );
 
         if (!isset($splitTime['sec']) || !isset($splitTime['usec'])) {
