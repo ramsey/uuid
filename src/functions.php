@@ -129,9 +129,10 @@ function v7(?DateTimeInterface $dateTime = null): string
  * The bytes provided may contain any value according to your application's needs. Be aware, however, that other
  * applications may not understand the semantics of the value.
  *
- * @param string $bytes A 16-byte octet string. This is an open blob of data that you may fill with 128 bits of
- *     information. Be aware, however, bits 48 through 51 will be replaced with the UUID version field, and bits 64 and
- *     65 will be replaced with the UUID variant. You MUST NOT rely on these bits for your application needs.
+ * @param non-empty-string $bytes A 16-byte octet string. This is an open blob of data that you may fill with 128
+ *     bits of information. Be aware, however, bits 48 through 51 will be replaced with the UUID version field, and
+ *     bits 64 and 65 will be replaced with the UUID variant. You MUST NOT rely on these bits for your application
+ *     needs.
  *
  * @return non-empty-string Version 8 UUID as a string
  *
