@@ -194,7 +194,7 @@ jobs:
 
       - name: "Downgrade brick/math in lock file, to test compatibility with older versions"
         run: |
-          composer update brick/math:"0.11.0"
+          composer update brick/math:"0.14.2"
 
       - name: "Install dependencies (Composer)"
         uses: "ramsey/composer-install@v3"
