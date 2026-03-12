@@ -31,18 +31,10 @@ use Ramsey\Uuid\Type\NumberInterface;
  */
 final class BrickMathCalculator implements CalculatorInterface
 {
-    private const ROUNDING_MODE_MAP = [
-        RoundingMode::UNNECESSARY => BrickMathRounding::UNNECESSARY,
-        RoundingMode::UP => BrickMathRounding::UP,
-        RoundingMode::DOWN => BrickMathRounding::DOWN,
-        RoundingMode::CEILING => BrickMathRounding::CEILING,
-        RoundingMode::FLOOR => BrickMathRounding::FLOOR,
-        RoundingMode::HALF_UP => BrickMathRounding::HALF_UP,
-        RoundingMode::HALF_DOWN => BrickMathRounding::HALF_DOWN,
-        RoundingMode::HALF_CEILING => BrickMathRounding::HALF_CEILING,
-        RoundingMode::HALF_FLOOR => BrickMathRounding::HALF_FLOOR,
-        RoundingMode::HALF_EVEN => BrickMathRounding::HALF_EVEN,
-    ];
+    /**
+     * @var array<int, BrickMathRounding::*>|null $roundingModeMap
+     */
+    private static ?array $roundingModeMap = null;
 
     public function add(NumberInterface $augend, NumberInterface ...$addends): NumberInterface
     {
@@ -149,6 +141,44 @@ final class BrickMathCalculator implements CalculatorInterface
      */
     private function getBrickRoundingMode(int $roundingMode)
     {
-        return self::ROUNDING_MODE_MAP[$roundingMode] ?? BrickMathRounding::UNNECESSARY;
+        return self::getRoundingMap()[$roundingMode] ?? self::getRoundingMap()[0];
+    }
+
+    /**
+     * @return array<int, BrickMathRounding::*>
+     */
+    private static function getRoundingMap(): array
+    {
+        if (self::$roundingModeMap === null) {
+            if (defined(BrickMathRounding::class . '::UNNECESSARY')) {
+                self::$roundingModeMap = [
+                    RoundingMode::UNNECESSARY => BrickMathRounding::UNNECESSARY,
+                    RoundingMode::UP => BrickMathRounding::UP,
+                    RoundingMode::DOWN => BrickMathRounding::DOWN,
+                    RoundingMode::CEILING => BrickMathRounding::CEILING,
+                    RoundingMode::FLOOR => BrickMathRounding::FLOOR,
+                    RoundingMode::HALF_UP => BrickMathRounding::HALF_UP,
+                    RoundingMode::HALF_DOWN => BrickMathRounding::HALF_DOWN,
+                    RoundingMode::HALF_CEILING => BrickMathRounding::HALF_CEILING,
+                    RoundingMode::HALF_FLOOR => BrickMathRounding::HALF_FLOOR,
+                    RoundingMode::HALF_EVEN => BrickMathRounding::HALF_EVEN,
+                ];
+            } else {
+                self::$roundingModeMap = [
+                    RoundingMode::UNNECESSARY => BrickMathRounding::Unnecessary,
+                    RoundingMode::UP => BrickMathRounding::Up,
+                    RoundingMode::DOWN => BrickMathRounding::Down,
+                    RoundingMode::CEILING => BrickMathRounding::Ceiling,
+                    RoundingMode::FLOOR => BrickMathRounding::Floor,
+                    RoundingMode::HALF_UP => BrickMathRounding::HalfUp,
+                    RoundingMode::HALF_DOWN => BrickMathRounding::HalfDown,
+                    RoundingMode::HALF_CEILING => BrickMathRounding::HalfCeiling,
+                    RoundingMode::HALF_FLOOR => BrickMathRounding::HalfFloor,
+                    RoundingMode::HALF_EVEN => BrickMathRounding::HalfEven,
+                ];
+            }
+        }
+
+        return self::$roundingModeMap;
     }
 }

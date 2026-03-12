@@ -1213,9 +1213,17 @@ class UuidTest extends TestCase
                         . "; 32-bit: {$uuid32->toString()}, 64-bit: {$uuid64->toString()}"
                 );
 
+                if (defined(RoundingMode::class . '::HALF_UP')) {
+                    $halfUp = RoundingMode::HALF_UP;
+                    $down = RoundingMode::DOWN;
+                } else {
+                    $halfUp = RoundingMode::HalfUp;
+                    $down = RoundingMode::Down;
+                }
+
                 // Assert that the time matches
-                $usecAdd = BigDecimal::of($usec)->dividedBy('1000000', 14, RoundingMode::HALF_UP);
-                $testTime = BigDecimal::of($currentTime)->plus($usecAdd)->toScale(0, RoundingMode::DOWN);
+                $usecAdd = BigDecimal::of($usec)->dividedBy('1000000', 14, $halfUp);
+                $testTime = BigDecimal::of($currentTime)->plus($usecAdd)->toScale(0, $down);
                 $this->assertSame((string) $testTime, (string) $uuid64->getDateTime()->getTimestamp());
                 $this->assertSame((string) $testTime, (string) $uuid32->getDateTime()->getTimestamp());
             }
