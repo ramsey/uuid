@@ -18,3 +18,9 @@ parameters:
         -
             identifier: staticMethod.resultUnused
             path: tests/*
+        # Workaround to deal with the BC layer for brick math.
+        -
+            message: "#^Access to undefined constant Brick\\\\Math#"
+        -
+            message: "#of (static )?method Brick\\\\Math#"
+

@@ -1222,7 +1222,9 @@ class UuidTest extends TestCase
                 }
 
                 // Assert that the time matches
+                // @phpstan-ignore-next-line
                 $usecAdd = BigDecimal::of($usec)->dividedBy('1000000', 14, $halfUp);
+                // @phpstan-ignore-next-line
                 $testTime = BigDecimal::of($currentTime)->plus($usecAdd)->toScale(0, $down);
                 $this->assertSame((string) $testTime, (string) $uuid64->getDateTime()->getTimestamp());
                 $this->assertSame((string) $testTime, (string) $uuid32->getDateTime()->getTimestamp());

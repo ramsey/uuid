@@ -33,6 +33,7 @@ final class BrickMathCalculator implements CalculatorInterface
 {
     /**
      * @var array<int, BrickMathRounding::*>|null $roundingModeMap
+     * @phpstan-ignore-next-line
      */
     private static ?array $roundingModeMap = null;
 
@@ -103,7 +104,9 @@ final class BrickMathCalculator implements CalculatorInterface
             return new IntegerObject((string) BigInteger::fromBase($value, $base));
         } catch (MathException | \InvalidArgumentException $exception) {
             throw new InvalidArgumentException(
+                /** @phpstan-ignore possiblyImpure.methodCall */
                 $exception->getMessage(),
+                /** @phpstan-ignore possiblyImpure.methodCall */
                 (int) $exception->getCode(),
                 $exception
             );
@@ -116,7 +119,9 @@ final class BrickMathCalculator implements CalculatorInterface
             return BigInteger::of($value->toString())->toBase($base);
         } catch (MathException | \InvalidArgumentException $exception) {
             throw new InvalidArgumentException(
+                /** @phpstan-ignore possiblyImpure.methodCall */
                 $exception->getMessage(),
+                /** @phpstan-ignore possiblyImpure.methodCall */
                 (int) $exception->getCode(),
                 $exception
             );
@@ -151,6 +156,7 @@ final class BrickMathCalculator implements CalculatorInterface
     {
         if (self::$roundingModeMap === null) {
             if (defined(BrickMathRounding::class . '::UNNECESSARY')) {
+                /** @phpstan-ignore-next-line */
                 self::$roundingModeMap = [
                     RoundingMode::UNNECESSARY => BrickMathRounding::UNNECESSARY,
                     RoundingMode::UP => BrickMathRounding::UP,
@@ -179,6 +185,7 @@ final class BrickMathCalculator implements CalculatorInterface
             }
         }
 
+        /** @phpstan-ignore-next-line */
         return self::$roundingModeMap;
     }
 }
