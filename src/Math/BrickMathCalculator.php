@@ -32,16 +32,16 @@ use Ramsey\Uuid\Type\NumberInterface;
 final class BrickMathCalculator implements CalculatorInterface
 {
     private const ROUNDING_MODE_MAP = [
-        RoundingMode::UNNECESSARY => BrickMathRounding::UNNECESSARY,
-        RoundingMode::UP => BrickMathRounding::UP,
-        RoundingMode::DOWN => BrickMathRounding::DOWN,
-        RoundingMode::CEILING => BrickMathRounding::CEILING,
-        RoundingMode::FLOOR => BrickMathRounding::FLOOR,
-        RoundingMode::HALF_UP => BrickMathRounding::HALF_UP,
-        RoundingMode::HALF_DOWN => BrickMathRounding::HALF_DOWN,
-        RoundingMode::HALF_CEILING => BrickMathRounding::HALF_CEILING,
-        RoundingMode::HALF_FLOOR => BrickMathRounding::HALF_FLOOR,
-        RoundingMode::HALF_EVEN => BrickMathRounding::HALF_EVEN,
+        RoundingMode::UNNECESSARY => BrickMathRounding::Unnecessary,
+        RoundingMode::UP => BrickMathRounding::Up,
+        RoundingMode::DOWN => BrickMathRounding::Down,
+        RoundingMode::CEILING => BrickMathRounding::Ceiling,
+        RoundingMode::FLOOR => BrickMathRounding::Floor,
+        RoundingMode::HALF_UP => BrickMathRounding::HalfUp,
+        RoundingMode::HALF_DOWN => BrickMathRounding::HalfDown,
+        RoundingMode::HALF_CEILING => BrickMathRounding::HalfCeiling,
+        RoundingMode::HALF_FLOOR => BrickMathRounding::HalfFloor,
+        RoundingMode::HALF_EVEN => BrickMathRounding::HalfEven,
     ];
 
     public function add(NumberInterface $augend, NumberInterface ...$addends): NumberInterface
@@ -145,11 +145,9 @@ final class BrickMathCalculator implements CalculatorInterface
 
     /**
      * Maps ramsey/uuid rounding modes to those used by brick/math
-     *
-     * @return BrickMathRounding::*
      */
-    private function getBrickRoundingMode(int $roundingMode)
+    private function getBrickRoundingMode(int $roundingMode): BrickMathRounding
     {
-        return self::ROUNDING_MODE_MAP[$roundingMode] ?? BrickMathRounding::UNNECESSARY;
+        return self::ROUNDING_MODE_MAP[$roundingMode] ?? BrickMathRounding::Unnecessary;
     }
 }

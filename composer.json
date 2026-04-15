@@ -10,7 +10,7 @@
     ],
     "require": {
         "php": "^8.2",
-        "brick/math": "^0.11 || ^0.12 || ^0.13 || ^0.14"
+        "brick/math": "^0.14.2 || ^0.15 || ^0.16 || ^0.17"
     },
     "require-dev": {
         "captainhook/captainhook": "^5.25",
