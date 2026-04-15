@@ -38,10 +38,10 @@ class PhpTimeConverterTest extends TestCase
 
         $converter = new PhpTimeConverter();
 
-        /** @var numeric-string $numericSeconds */
+        /** @var non-empty-string&numeric-string $numericSeconds */
         $numericSeconds = (string) $seconds;
 
-        /** @var numeric-string $numericMicroseconds */
+        /** @var non-empty-string&numeric-string $numericMicroseconds */
         $numericMicroseconds = (string) $microseconds;
 
         $returned = $converter->calculateTime($numericSeconds, $numericMicroseconds);
