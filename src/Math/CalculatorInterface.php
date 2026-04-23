@@ -65,7 +65,7 @@ interface CalculatorInterface
      * Returns the quotient of the provided parameters divided left-to-right
      *
      * @param int $roundingMode The RoundingMode constant to use for this operation
-     * @param int $scale The scale to use for this operation
+     * @param int<0, max> $scale The scale to use for this operation
      * @param NumberInterface $dividend The integer to be divided
      * @param NumberInterface ...$divisors The integers to divide $dividend by, in the order in which the division
      *     operations should take place (left-to-right)
@@ -84,8 +84,8 @@ interface CalculatorInterface
     /**
      * Converts a value from an arbitrary base to a base-10 integer value
      *
-     * @param string $value The value to convert
-     * @param int $base The base to convert from (i.e., 2, 16, 32, etc.)
+     * @param non-empty-string $value The value to convert
+     * @param int<2, 36> $base The base to convert from (i.e., 2, 16, 32, etc.)
      *
      * @return IntegerObject The base-10 integer value of the converted value
      *
@@ -97,7 +97,7 @@ interface CalculatorInterface
      * Converts a base-10 integer value to an arbitrary base
      *
      * @param IntegerObject $value The integer value to convert
-     * @param int $base The base to convert to (i.e., 2, 16, 32, etc.)
+     * @param int<2, 36> $base The base to convert to (i.e., 2, 16, 32, etc.)
      *
      * @return string The value represented in the specified base
      *

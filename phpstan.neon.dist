@@ -2,6 +2,7 @@ parameters:
     tmpDir: ./build/cache/phpstan
     level: max
     treatPhpDocTypesAsCertain: false
+    reportUnmatchedIgnoredErrors: false
     paths:
         - ./src
         - ./tests

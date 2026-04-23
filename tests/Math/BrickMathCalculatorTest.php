@@ -96,7 +96,7 @@ class BrickMathCalculatorTest extends TestCase
         $calculator = new BrickMathCalculator();
 
         $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('"o" is not a valid character in base 16');
+        $this->expectExceptionMessageMatches('/"o" is not (a )?valid (character )?in base 16/');
 
         $calculator->fromBase('foobar', 16);
     }
@@ -108,6 +108,7 @@ class BrickMathCalculatorTest extends TestCase
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Base 1024 is out of range [2, 36]');
 
+        /** @phpstan-ignore argument.type */
         $calculator->toBase(new IntegerObject(42), 1024);
     }
 }

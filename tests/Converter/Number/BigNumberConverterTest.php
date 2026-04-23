@@ -15,7 +15,7 @@ class BigNumberConverterTest extends TestCase
         $converter = new BigNumberConverter();
 
         $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('"." is not a valid character in base 16');
+        $this->expectExceptionMessageMatches('/"\." is not (a )?valid (character )?in base 16/');
 
         $converter->fromHex('123.34');
     }
