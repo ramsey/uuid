@@ -11,7 +11,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Fixed
 
 * Upgrade brick/math to support versions `^0.14` to `^0.17`; fixed in [#638](https://github.com/ramsey/uuid/pull/638).
-* Add support for brick/match `^0.18`.
+* Add support for brick/math `^0.18`.
 
 
 ## 4.9.2 - 2025-12-14
