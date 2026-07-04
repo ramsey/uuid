@@ -11,7 +11,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Fixed
 
 * Upgrade brick/math to support versions `^0.14` to `^0.17`; fixed in [#638](https://github.com/ramsey/uuid/pull/638).
-* Add support for brick/match `^0.18`.
+* Add support for brick/math `^0.18`.
 
 
 ## 4.9.2 - 2025-12-14
@@ -421,7 +421,7 @@ The following will be removed in ramsey/uuid 5.0.0:
     Thrown to indicate that an error occurred while attempting to hash a
     namespace and name.
   * `Exception\NodeException` -
-    Throw to indicate that attempting to fetch or create a node ID encountered
+    Thrown to indicate that attempting to fetch or create a node ID encountered
     an error.
   * `Exception\RandomSourceException` -
     Thrown to indicate that the source of random data encountered an error.
@@ -1195,7 +1195,7 @@ versions leading up to this release.*
   for generating random bytes (version 4) or time-based (version 1) UUIDs
   * `CombGenerator` to allow generation of sequential UUIDs
   * `OpenSslGenerator` to generate random bytes on systems where
-    `openssql_random_pseudo_bytes()` is present
+    `openssl_random_pseudo_bytes()` is present
   * `MtRandGenerator` to provide a fallback in the event other random generators
     are not present
   * `RandomLibAdapter` to allow use of [ircmaxell/random-lib]
