@@ -19,6 +19,7 @@ use Ramsey\Uuid\Builder\UuidBuilderInterface;
 use Ramsey\Uuid\Codec\CodecInterface;
 use Ramsey\Uuid\Converter\NumberConverterInterface;
 use Ramsey\Uuid\Converter\TimeConverterInterface;
+use Ramsey\Uuid\Exception\InvalidUuidStringException;
 use Ramsey\Uuid\Generator\DceSecurityGeneratorInterface;
 use Ramsey\Uuid\Generator\DefaultTimeGenerator;
 use Ramsey\Uuid\Generator\NameGeneratorInterface;
@@ -266,6 +267,15 @@ class UuidFactory implements UuidFactoryInterface
     public function fromString(string $uuid): UuidInterface
     {
         $uuid = strtolower($uuid);
+
+        return $this->codec->decode($uuid);
+    }
+
+    public function fromStrictString(string $uuid): UuidInterface
+    {
+        if (! $this->getValidator()->validate($uuid)) {
+            throw new InvalidUuidStringException('Invalid UUID string: ' . $uuid);
+        }
 
         return $this->codec->decode($uuid);
     }
