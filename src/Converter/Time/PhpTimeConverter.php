@@ -26,6 +26,7 @@ use function dechex;
 use function explode;
 use function is_float;
 use function is_int;
+use function str_contains;
 use function str_pad;
 use function strlen;
 use function substr;
@@ -140,6 +141,12 @@ class PhpTimeConverter implements TimeConverterInterface
 
         if (count($split) === 1) {
             return ['sec' => $split[0], 'usec' => '0'];
+        }
+
+        // Near zero PHP renders the float in scientific notation ("-1.0E-6"), whose
+        // exponent would be misparsed as microseconds; fall back instead.
+        if (str_contains($split[1], 'E')) {
+            return [];
         }
 
         // If the microseconds are less than six characters AND the length of the number is greater than or equal to the
