@@ -6,6 +6,13 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 
+## Unreleased
+
+### Fixed
+
+* Add support for brick/math `^0.19`, `^0.20`, and `^1.0`; fixed in [#642](https://github.com/ramsey/uuid/pull/642).
+
+
 ## 4.9.3 - 2026-06-18
 
 ### Fixed
