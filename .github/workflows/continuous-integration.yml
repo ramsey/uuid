@@ -196,7 +196,8 @@ jobs:
           coverage: "none"
           ini-values: "memory_limit=-1"
 
-      - name: "Downgrade brick/math in lock file for PHP 8.0"
+      - name: "Downgrade brick/math in lock file for PHP 8.0 and 8.1"
+        if: ${{ matrix.dependency-versions == 'locked' && (matrix.php-version == '8.0' || matrix.php-version == '8.1') }}
         run: |
           composer update brick/math:"0.8.16"
 
