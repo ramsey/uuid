@@ -141,7 +141,7 @@ jobs:
         run: "composer dev:test:coverage:ci"
 
       - name: "Publish coverage report to Codecov"
-        uses: "codecov/codecov-action@v6"
+        uses: "codecov/codecov-action@v7"
 
       - name: "Upload test results to Codecov"
         if: ${{ !cancelled() }}
