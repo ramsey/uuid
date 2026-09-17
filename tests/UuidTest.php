@@ -6,6 +6,7 @@ namespace Ramsey\Uuid\Test;
 
 use BadMethodCallException;
 use Brick\Math\BigDecimal;
+use Brick\Math\RoundingMode;
 use DateTimeImmutable;
 use DateTimeInterface;
 use Mockery;
@@ -22,8 +23,6 @@ use Ramsey\Uuid\FeatureSet;
 use Ramsey\Uuid\Guid\Guid;
 use Ramsey\Uuid\Lazy\LazyUuidFromString;
 use Ramsey\Uuid\Math\BrickMathCalculator;
-use Ramsey\Uuid\Math\BrickMathRoundingMode;
-use Ramsey\Uuid\Math\RoundingMode;
 use Ramsey\Uuid\Provider\Node\RandomNodeProvider;
 use Ramsey\Uuid\Provider\Time\FixedTimeProvider;
 use Ramsey\Uuid\Rfc4122\Fields;
@@ -1052,10 +1051,8 @@ class UuidTest extends TestCase
                 );
 
                 // Assert that the time matches
-                $halfUp = BrickMathRoundingMode::resolve(RoundingMode::HALF_UP);
-                $down = BrickMathRoundingMode::resolve(RoundingMode::DOWN);
-                $usecAdd = BigDecimal::of($usec)->dividedBy('1000000', 14, $halfUp);
-                $testTime = BigDecimal::of($currentTime)->plus($usecAdd)->toScale(0, $down);
+                $usecAdd = BigDecimal::of($usec)->dividedBy('1000000', 14, RoundingMode::HalfUp);
+                $testTime = BigDecimal::of($currentTime)->plus($usecAdd)->toScale(0, RoundingMode::Down);
                 $this->assertSame((string) $testTime, (string) $uuid64->getDateTime()->getTimestamp());
                 $this->assertSame((string) $testTime, (string) $uuid32->getDateTime()->getTimestamp());
             }
