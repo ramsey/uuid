@@ -1051,8 +1051,8 @@ class UuidTest extends TestCase
                 );
 
                 // Assert that the time matches
-                $usecAdd = BigDecimal::of($usec)->dividedBy('1000000', 14, RoundingMode::HALF_UP);
-                $testTime = BigDecimal::of($currentTime)->plus($usecAdd)->toScale(0, RoundingMode::DOWN);
+                $usecAdd = BigDecimal::of($usec)->dividedBy('1000000', 14, RoundingMode::HalfUp);
+                $testTime = BigDecimal::of($currentTime)->plus($usecAdd)->toScale(0, RoundingMode::Down);
                 $this->assertSame((string) $testTime, (string) $uuid64->getDateTime()->getTimestamp());
                 $this->assertSame((string) $testTime, (string) $uuid32->getDateTime()->getTimestamp());
             }
