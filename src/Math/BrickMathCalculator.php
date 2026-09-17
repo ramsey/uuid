@@ -17,6 +17,7 @@ namespace Ramsey\Uuid\Math;
 use Brick\Math\BigDecimal;
 use Brick\Math\BigInteger;
 use Brick\Math\Exception\MathException;
+use Brick\Math\RoundingMode as BrickMathRounding;
 use Ramsey\Uuid\Exception\InvalidArgumentException;
 use Ramsey\Uuid\Type\Decimal;
 use Ramsey\Uuid\Type\Hexadecimal;
@@ -30,6 +31,19 @@ use Ramsey\Uuid\Type\NumberInterface;
  */
 final class BrickMathCalculator implements CalculatorInterface
 {
+    private const ROUNDING_MODE_MAP = [
+        RoundingMode::UNNECESSARY => BrickMathRounding::Unnecessary,
+        RoundingMode::UP => BrickMathRounding::Up,
+        RoundingMode::DOWN => BrickMathRounding::Down,
+        RoundingMode::CEILING => BrickMathRounding::Ceiling,
+        RoundingMode::FLOOR => BrickMathRounding::Floor,
+        RoundingMode::HALF_UP => BrickMathRounding::HalfUp,
+        RoundingMode::HALF_DOWN => BrickMathRounding::HalfDown,
+        RoundingMode::HALF_CEILING => BrickMathRounding::HalfCeiling,
+        RoundingMode::HALF_FLOOR => BrickMathRounding::HalfFloor,
+        RoundingMode::HALF_EVEN => BrickMathRounding::HalfEven,
+    ];
+
     public function add(NumberInterface $augend, NumberInterface ...$addends): NumberInterface
     {
         $sum = BigInteger::of($augend->toString());
@@ -73,7 +87,7 @@ final class BrickMathCalculator implements CalculatorInterface
         NumberInterface ...$divisors,
     ): NumberInterface {
         /** @phpstan-ignore possiblyImpure.methodCall */
-        $brickRounding = BrickMathRoundingMode::resolve($roundingMode);
+        $brickRounding = $this->getBrickRoundingMode($roundingMode);
 
         $quotient = BigDecimal::of($dividend->toString());
 
@@ -127,5 +141,13 @@ final class BrickMathCalculator implements CalculatorInterface
     public function toInteger(Hexadecimal $value): IntegerObject
     {
         return $this->fromBase($value->toString(), 16);
+    }
+
+    /**
+     * Maps ramsey/uuid rounding modes to those used by brick/math
+     */
+    private function getBrickRoundingMode(int $roundingMode): BrickMathRounding
+    {
+        return self::ROUNDING_MODE_MAP[$roundingMode] ?? BrickMathRounding::Unnecessary;
     }
 }
