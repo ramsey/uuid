@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f73de764ceb9f9078d3f77a588196d0b",
+    "content-hash": "fd494a27084b5063779a7a6575ac23e8",
     "packages": [
         {
             "name": "brick/math",
@@ -978,16 +978,16 @@
         },
         {
             "name": "jasonmccreary/double",
-            "version": "v0.10.1",
+            "version": "v1.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/jasonmccreary/double.git",
-                "reference": "bec7fd4f4a93e0363e937dd979439351eae6522c"
+                "reference": "8d795c50489ce673882b3c819e9bbca0f6f0ef3a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jasonmccreary/double/zipball/bec7fd4f4a93e0363e937dd979439351eae6522c",
-                "reference": "bec7fd4f4a93e0363e937dd979439351eae6522c",
+                "url": "https://api.github.com/repos/jasonmccreary/double/zipball/8d795c50489ce673882b3c819e9bbca0f6f0ef3a",
+                "reference": "8d795c50489ce673882b3c819e9bbca0f6f0ef3a",
                 "shasum": ""
             },
             "require": {
@@ -1027,7 +1027,7 @@
                 "issues": "https://github.com/jasonmccreary/double/issues",
                 "source": "https://github.com/jasonmccreary/double"
             },
-            "time": "2026-09-18T19:30:32+00:00"
+            "time": "2026-09-28T13:00:45+00:00"
         },
         {
             "name": "justinrainbow/json-schema",

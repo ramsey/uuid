@@ -17,7 +17,7 @@
         "captainhook/plugin-composer": "^5.3",
         "dealerdirect/phpcodesniffer-composer-installer": "^1.0",
         "ergebnis/composer-normalize": "^2.47",
-        "jasonmccreary/double": "^0.10",
+        "jasonmccreary/double": "^1.0",
         "php-mock/php-mock": "^2.6",
         "php-parallel-lint/php-parallel-lint": "^1.4.0",
         "phpbench/phpbench": "^1.2.14",
