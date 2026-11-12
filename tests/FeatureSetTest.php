@@ -13,7 +13,15 @@ use Ramsey\Uuid\Generator\PeclUuidTimeGenerator;
 use Ramsey\Uuid\Generator\UnixTimeGenerator;
 use Ramsey\Uuid\Guid\GuidBuilder;
 use Ramsey\Uuid\Math\BrickMathCalculator;
+use Ramsey\Uuid\Provider\Node\StaticNodeProvider;
 use Ramsey\Uuid\Provider\NodeProviderInterface;
+use Ramsey\Uuid\Provider\Time\FixedTimeProvider;
+use Ramsey\Uuid\Rfc4122\UuidV2;
+use Ramsey\Uuid\Type\Hexadecimal;
+use Ramsey\Uuid\Type\Integer as IntegerObject;
+use Ramsey\Uuid\Type\Time;
+use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidFactory;
 use Ramsey\Uuid\Validator\ValidatorInterface;
 
 class FeatureSetTest extends TestCase
@@ -85,5 +93,39 @@ class FeatureSetTest extends TestCase
         $featureSet = new FeatureSet();
 
         $this->assertInstanceOf(UnixTimeGenerator::class, $featureSet->getUnixTimeGenerator());
+    }
+
+    public function testSetTimeProviderIsUsedForDceSecurityUuids(): void
+    {
+        $featureSet = new FeatureSet();
+        $featureSet->setTimeProvider(new FixedTimeProvider(new Time(1_000_000_000, 0)));
+
+        $uuid = (new UuidFactory($featureSet))->uuid2(Uuid::DCE_DOMAIN_ORG, new IntegerObject(1));
+
+        $this->assertInstanceOf(UuidV2::class, $uuid);
+        $this->assertSame('2001-09-09', $uuid->getDateTime()->format('Y-m-d'));
+    }
+
+    public function testSetNodeProviderIsUsedForDceSecurityUuids(): void
+    {
+        $featureSet = new FeatureSet();
+        $featureSet->setNodeProvider(new StaticNodeProvider(new Hexadecimal('0000000000aa')));
+
+        $uuid = (new UuidFactory($featureSet))->uuid2(Uuid::DCE_DOMAIN_ORG, new IntegerObject(1));
+
+        $this->assertStringEndsWith('-0100000000aa', $uuid->toString());
+    }
+
+    public function testSetCalculatorRebuildsBuilderAndCodec(): void
+    {
+        $featureSet = new FeatureSet(true);
+        $builder = $featureSet->getBuilder();
+        $codec = $featureSet->getCodec();
+
+        $featureSet->setCalculator(new BrickMathCalculator());
+
+        $this->assertNotSame($builder, $featureSet->getBuilder());
+        $this->assertNotSame($codec, $featureSet->getCodec());
+        $this->assertInstanceOf(GuidBuilder::class, $featureSet->getBuilder());
     }
 }
