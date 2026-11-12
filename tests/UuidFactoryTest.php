@@ -19,12 +19,21 @@ use Ramsey\Uuid\Generator\DefaultNameGenerator;
 use Ramsey\Uuid\Generator\NameGeneratorInterface;
 use Ramsey\Uuid\Generator\RandomGeneratorInterface;
 use Ramsey\Uuid\Generator\TimeGeneratorInterface;
+use Ramsey\Uuid\Guid\Guid;
+use Ramsey\Uuid\Provider\Node\StaticNodeProvider;
 use Ramsey\Uuid\Provider\NodeProviderInterface;
+use Ramsey\Uuid\Provider\Time\FixedTimeProvider;
+use Ramsey\Uuid\Rfc4122\FieldsInterface as Rfc4122FieldsInterface;
 use Ramsey\Uuid\Type\Hexadecimal;
+use Ramsey\Uuid\Type\Time;
+use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidFactory;
+use Ramsey\Uuid\UuidInterface;
 use Ramsey\Uuid\Validator\ValidatorInterface;
 
+use function bin2hex;
 use function hex2bin;
+use function str_replace;
 use function strtoupper;
 
 class UuidFactoryTest extends TestCase
@@ -225,5 +234,85 @@ class UuidFactoryTest extends TestCase
         $factory->setNameGenerator($nameGenerator);
 
         $this->assertSame($nameGenerator, $factory->getNameGenerator());
+    }
+
+    /**
+     * @param callable(UuidFactory): UuidInterface $generate
+     *
+     * @dataProvider provideGuidGenerators
+     */
+    public function testGuidFactoryGeneratesValidGuids(callable $generate, int $version, string $expected): void
+    {
+        $features = new FeatureSet(true);
+        $features->setTimeProvider(new FixedTimeProvider(new Time(1341368074, 491000)));
+        $features->setNodeProvider(new StaticNodeProvider(new Hexadecimal('0800200c9a66')));
+        $factory = new UuidFactory($features);
+
+        $randomGenerator = Mockery::mock(RandomGeneratorInterface::class);
+        $randomGenerator->allows('generate')->andReturn((string) hex2bin('000102030405060708090a0b0c0d0e0f'));
+        $factory->setRandomGenerator($randomGenerator);
+
+        $guid = $generate($factory);
+
+        $fields = $guid->getFields();
+
+        $this->assertInstanceOf(Guid::class, $guid);
+        $this->assertInstanceOf(Rfc4122FieldsInterface::class, $fields);
+        $this->assertSame($version, $fields->getVersion());
+        $this->assertSame(Uuid::RFC_4122, $fields->getVariant());
+        $this->assertStringMatchesFormat($expected, $guid->toString());
+        $this->assertTrue($guid->equals($factory->fromBytes($guid->getBytes())));
+
+        $hex = str_replace('-', '', $guid->toString());
+        $this->assertSame(
+            substr($hex, 6, 2) . substr($hex, 4, 2) . substr($hex, 2, 2) . substr($hex, 0, 2)
+                . substr($hex, 10, 2) . substr($hex, 8, 2) . substr($hex, 14, 2) . substr($hex, 12, 2)
+                . substr($hex, 16),
+            bin2hex($guid->getBytes()),
+        );
+    }
+
+    /**
+     * @return array<string, array{0: callable(UuidFactory): UuidInterface, 1: int, 2: string}>
+     */
+    public function provideGuidGenerators(): array
+    {
+        return [
+            'uuid1' => [
+                fn (UuidFactory $f): UuidInterface => $f->uuid1(null, 0x1b21),
+                1,
+                'ff6f8cb0-c57d-11e1-9b21-0900200c9a66',
+            ],
+            'uuid3' => [
+                fn (UuidFactory $f): UuidInterface => $f->uuid3(Uuid::fromString(Uuid::NAMESPACE_URL), 'foo'),
+                3,
+                Uuid::uuid3(Uuid::NAMESPACE_URL, 'foo')->toString(),
+            ],
+            'uuid4' => [
+                fn (UuidFactory $f): UuidInterface => $f->uuid4(),
+                4,
+                '00010203-0405-4607-8809-0a0b0c0d0e0f',
+            ],
+            'uuid5' => [
+                fn (UuidFactory $f): UuidInterface => $f->uuid5(Uuid::fromString(Uuid::NAMESPACE_URL), 'foo'),
+                5,
+                Uuid::uuid5(Uuid::NAMESPACE_URL, 'foo')->toString(),
+            ],
+            'uuid6' => [
+                fn (UuidFactory $f): UuidInterface => $f->uuid6(null, 0x1b21),
+                6,
+                '1e1c57df-f6f8-6cb0-9b21-0900200c9a66',
+            ],
+            'uuid7' => [
+                fn (UuidFactory $f): UuidInterface => $f->uuid7(new DateTimeImmutable('@1341368074.491')),
+                7,
+                '01384fc4-80fb-7%x-%x-%x',
+            ],
+            'uuid8' => [
+                fn (UuidFactory $f): UuidInterface => $f->uuid8((string) hex2bin('000102030405060708090a0b0c0d0e0f')),
+                8,
+                '00010203-0405-8607-8809-0a0b0c0d0e0f',
+            ],
+        ];
     }
 }
