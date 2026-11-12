@@ -25,6 +25,7 @@ use Ramsey\Uuid\Generator\NameGeneratorInterface;
 use Ramsey\Uuid\Generator\RandomGeneratorInterface;
 use Ramsey\Uuid\Generator\TimeGeneratorInterface;
 use Ramsey\Uuid\Generator\UnixTimeGenerator;
+use Ramsey\Uuid\Guid\GuidBuilder;
 use Ramsey\Uuid\Lazy\LazyUuidFromString;
 use Ramsey\Uuid\Provider\NodeProviderInterface;
 use Ramsey\Uuid\Provider\Time\FixedTimeProvider;
@@ -469,6 +470,13 @@ class UuidFactory implements UuidFactoryInterface
 
         if ($this->isDefaultFeatureSet) {
             return LazyUuidFromString::fromBytes($bytes);
+        }
+
+        // GUID fields store the first three fields in little-endian byte order.
+        if ($this->uuidBuilder instanceof GuidBuilder) {
+            $bytes = $bytes[3] . $bytes[2] . $bytes[1] . $bytes[0]
+                . $bytes[5] . $bytes[4] . $bytes[7] . $bytes[6]
+                . substr($bytes, 8);
         }
 
         return $this->uuid($bytes);
