@@ -61,11 +61,13 @@ final class Time implements TypeInterface
      */
     public function toString(): string
     {
-        /** @var numeric-string $microseconds */
+        $seconds = $this->seconds->toString();
         $microseconds = sprintf('%06s', $this->microseconds->toString());
 
-        /** @var numeric-string */
-        return "{$this->seconds->toString()}.$microseconds";
+        /** @var numeric-string $time */
+        $time = "$seconds.$microseconds";
+
+        return $time;
     }
 
     /**

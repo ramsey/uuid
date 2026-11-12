@@ -25,7 +25,7 @@
         "phpstan/phpstan": "^2.1",
         "phpstan/phpstan-mockery": "^2.0",
         "phpstan/phpstan-phpunit": "^2.0",
-        "phpunit/phpunit": "^11.5",
+        "phpunit/phpunit": "^11.5.57",
         "slevomat/coding-standard": "^8.18",
         "squizlabs/php_codesniffer": "^3.13.6"
     },

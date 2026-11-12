@@ -20,7 +20,9 @@ class PhpTimeConverterTest extends TestCase
 {
     public function testCalculateTimeReturnsArrayOfTimeSegments(): void
     {
+        /** @var BigInteger $seconds */
         $seconds = BigInteger::of(5);
+        /** @var BigInteger $microseconds */
         $microseconds = BigInteger::of(3);
 
         $calculatedTime = BigInteger::zero()
@@ -38,13 +40,7 @@ class PhpTimeConverterTest extends TestCase
 
         $converter = new PhpTimeConverter();
 
-        /** @var numeric-string $numericSeconds */
-        $numericSeconds = (string) $seconds;
-
-        /** @var numeric-string $numericMicroseconds */
-        $numericMicroseconds = (string) $microseconds;
-
-        $returned = $converter->calculateTime($numericSeconds, $numericMicroseconds);
+        $returned = $converter->calculateTime($seconds->toString(), $microseconds->toString());
 
         $this->assertSame($expected, $returned->toString());
     }
