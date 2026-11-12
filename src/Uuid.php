@@ -20,6 +20,7 @@ use Ramsey\Uuid\Codec\CodecInterface;
 use Ramsey\Uuid\Converter\NumberConverterInterface;
 use Ramsey\Uuid\Converter\TimeConverterInterface;
 use Ramsey\Uuid\Exception\InvalidArgumentException;
+use Ramsey\Uuid\Exception\InvalidUuidStringException;
 use Ramsey\Uuid\Exception\UnsupportedOperationException;
 use Ramsey\Uuid\Fields\FieldsInterface;
 use Ramsey\Uuid\Lazy\LazyUuidFromString;
@@ -497,6 +498,25 @@ class Uuid implements UuidInterface
 
         /** @phpstan-ignore possiblyImpure.methodCall */
         return self::getFactory()->fromString($uuid);
+    }
+
+    /**
+     * Creates a UUID from a valid string representation, validated against the isValid method
+     *
+     * @param string $uuid A valid UUID string representation
+     *
+     * @return UuidInterface A UuidInterface instance created from a valid UUID
+     *     string representation
+     *
+     * @throws InvalidUuidStringException
+     */
+    public static function fromStrictString(string $uuid): UuidInterface
+    {
+        if (! self::isValid($uuid)) {
+            throw new InvalidUuidStringException('Invalid UUID string: ' . $uuid);
+        }
+
+        return self::fromString($uuid);
     }
 
     /**
