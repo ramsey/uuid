@@ -62,6 +62,7 @@ use const PHP_INT_SIZE;
 class FeatureSet
 {
     private ?TimeProviderInterface $timeProvider = null;
+    private ?DceSecurityProviderInterface $dceSecurityProvider = null;
     private CalculatorInterface $calculator;
     private CodecInterface $codec;
     private DceSecurityGeneratorInterface $dceSecurityGenerator;
@@ -85,7 +86,7 @@ class FeatureSet
      * @phpstan-ignore constructor.unusedParameter ($forceNoBigNumber is deprecated)
      */
     public function __construct(
-        bool $useGuids = false,
+        private bool $useGuids = false,
         private bool $force32Bit = false,
         bool $forceNoBigNumber = false,
         private bool $ignoreSystemNode = false,
@@ -93,8 +94,6 @@ class FeatureSet
     ) {
         $this->randomGenerator = $this->buildRandomGenerator();
         $this->setCalculator(new BrickMathCalculator());
-        $this->builder = $this->buildUuidBuilder($useGuids);
-        $this->codec = $this->buildCodec($useGuids);
         $this->nodeProvider = $this->buildNodeProvider();
         $this->nameGenerator = $this->buildNameGenerator();
         $this->setTimeProvider(new SystemTimeProvider());
@@ -209,10 +208,9 @@ class FeatureSet
         $this->calculator = $calculator;
         $this->numberConverter = $this->buildNumberConverter($calculator);
         $this->timeConverter = $this->buildTimeConverter($calculator);
-
-        if (isset($this->timeProvider)) {
-            $this->timeGenerator = $this->buildTimeGenerator($this->timeProvider);
-        }
+        $this->builder = $this->buildUuidBuilder($this->useGuids);
+        $this->codec = $this->buildCodec($this->useGuids);
+        $this->rebuildTimeGenerators();
     }
 
     /**
@@ -220,6 +218,7 @@ class FeatureSet
      */
     public function setDceSecurityProvider(DceSecurityProviderInterface $dceSecurityProvider): void
     {
+        $this->dceSecurityProvider = $dceSecurityProvider;
         $this->dceSecurityGenerator = $this->buildDceSecurityGenerator($dceSecurityProvider);
     }
 
@@ -229,10 +228,7 @@ class FeatureSet
     public function setNodeProvider(NodeProviderInterface $nodeProvider): void
     {
         $this->nodeProvider = $nodeProvider;
-
-        if (isset($this->timeProvider)) {
-            $this->timeGenerator = $this->buildTimeGenerator($this->timeProvider);
-        }
+        $this->rebuildTimeGenerators();
     }
 
     /**
@@ -241,7 +237,7 @@ class FeatureSet
     public function setTimeProvider(TimeProviderInterface $timeProvider): void
     {
         $this->timeProvider = $timeProvider;
-        $this->timeGenerator = $this->buildTimeGenerator($timeProvider);
+        $this->rebuildTimeGenerators();
     }
 
     /**
@@ -371,6 +367,22 @@ class FeatureSet
             new Rfc4122UuidBuilder($this->numberConverter, $this->timeConverter),
             new NonstandardUuidBuilder($this->numberConverter, $this->timeConverter),
         ]);
+    }
+
+    /**
+     * Rebuilds the time generator and the DCE Security generator that wraps it
+     */
+    private function rebuildTimeGenerators(): void
+    {
+        if ($this->timeProvider === null) {
+            return;
+        }
+
+        $this->timeGenerator = $this->buildTimeGenerator($this->timeProvider);
+
+        if ($this->dceSecurityProvider !== null) {
+            $this->dceSecurityGenerator = $this->buildDceSecurityGenerator($this->dceSecurityProvider);
+        }
     }
 
     /**
