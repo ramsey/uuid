@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Ramsey\Uuid\Test\Rfc4122;
 
 use DateTimeImmutable;
-use Mockery;
+use JMac\Testing\Double;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Ramsey\Uuid\Codec\CodecInterface;
 use Ramsey\Uuid\Converter\NumberConverterInterface;
@@ -26,13 +26,12 @@ class UuidV6Test extends TestCase
     #[DataProvider('provideTestVersions')]
     public function testConstructorThrowsExceptionWhenFieldsAreNotValidForType(Version $version): void
     {
-        $fields = Mockery::mock(FieldsInterface::class, [
-            'getVersion' => $version,
-        ]);
+        $fields = Double::for(FieldsInterface::class);
+        $fields->allows('getVersion')->returns($version);
 
-        $numberConverter = Mockery::mock(NumberConverterInterface::class);
-        $codec = Mockery::mock(CodecInterface::class);
-        $timeConverter = Mockery::mock(TimeConverterInterface::class);
+        $numberConverter = Double::for(NumberConverterInterface::class);
+        $codec = Double::for(CodecInterface::class);
+        $timeConverter = Double::for(TimeConverterInterface::class);
 
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage(
@@ -168,17 +167,15 @@ class UuidV6Test extends TestCase
 
     public function testGetDateTimeThrowsException(): void
     {
-        $fields = Mockery::mock(FieldsInterface::class, [
-            'getVersion' => Version::ReorderedTime,
-            'getTimestamp' => new Hexadecimal('0'),
-        ]);
+        $fields = Double::for(FieldsInterface::class);
+        $fields->allows('getVersion')->returns(Version::ReorderedTime);
+        $fields->allows('getTimestamp')->returns(new Hexadecimal('0'));
 
-        $numberConverter = Mockery::mock(NumberConverterInterface::class);
-        $codec = Mockery::mock(CodecInterface::class);
+        $numberConverter = Double::for(NumberConverterInterface::class);
+        $codec = Double::for(CodecInterface::class);
 
-        $timeConverter = Mockery::mock(TimeConverterInterface::class, [
-            'convertTime' => new Time('0', '1234567'),
-        ]);
+        $timeConverter = Double::for(TimeConverterInterface::class);
+        $timeConverter->allows('convertTime')->returns(new Time('0', '1234567'));
 
         $uuid = new UuidV6($fields, $numberConverter, $codec, $timeConverter);
 

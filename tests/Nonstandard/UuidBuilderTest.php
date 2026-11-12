@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Ramsey\Uuid\Test\Nonstandard;
 
-use Mockery;
+use JMac\Testing\Double;
 use Ramsey\Uuid\Codec\CodecInterface;
 use Ramsey\Uuid\Exception\UnableToBuildUuidException;
 use Ramsey\Uuid\Nonstandard\UuidBuilder;
@@ -15,15 +15,10 @@ class UuidBuilderTest extends TestCase
 {
     public function testBuildThrowsException(): void
     {
-        $codec = Mockery::mock(CodecInterface::class);
+        $codec = Double::for(CodecInterface::class);
 
-        $builder = Mockery::mock(UuidBuilder::class);
-        $builder->shouldAllowMockingProtectedMethods();
-        $builder->shouldReceive('buildFields')->andThrow(
-            RuntimeException::class,
-            'exception thrown'
-        );
-        $builder->shouldReceive('build')->passthru();
+        $builder = Double::for(UuidBuilder::class)->passthru();
+        $builder->expects('buildFields')->throws(new RuntimeException('exception thrown'));
 
         $this->expectException(UnableToBuildUuidException::class);
         $this->expectExceptionMessage('exception thrown');

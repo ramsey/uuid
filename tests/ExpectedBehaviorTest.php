@@ -2,7 +2,7 @@
 
 namespace Ramsey\Uuid\Test;
 
-use Mockery;
+use JMac\Testing\Double;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\PreserveGlobalState;
 use PHPUnit\Framework\Attributes\RunInSeparateProcess;
@@ -346,7 +346,7 @@ class ExpectedBehaviorTest extends TestCase
     {
         $this->assertInstanceOf('Ramsey\Uuid\UuidFactory', Uuid::getFactory());
 
-        $factory = Mockery::mock('Ramsey\Uuid\UuidFactory');
+        $factory = Double::for('Ramsey\Uuid\UuidFactory');
         Uuid::setFactory($factory);
 
         $this->assertSame($factory, Uuid::getFactory());
@@ -356,20 +356,19 @@ class ExpectedBehaviorTest extends TestCase
     #[PreserveGlobalState(false)]
     public function testFactoryProvidesFunctionality(): void
     {
-        $uuid = Mockery::mock('Ramsey\Uuid\UuidInterface');
+        $uuid = Double::for('Ramsey\Uuid\UuidInterface');
 
-        $factory = Mockery::mock('Ramsey\Uuid\UuidFactoryInterface', [
-            'uuid1' => $uuid,
-            'uuid3' => $uuid,
-            'uuid4' => $uuid,
-            'uuid5' => $uuid,
-            'uuid6' => $uuid,
-            'uuid7' => $uuid,
-            'uuid8' => $uuid,
-            'fromBytes' => $uuid,
-            'fromString' => $uuid,
-            'fromInteger' => $uuid,
-        ]);
+        $factory = Double::for('Ramsey\Uuid\UuidFactoryInterface');
+        $factory->allows('uuid1')->returns($uuid);
+        $factory->allows('uuid3')->returns($uuid);
+        $factory->allows('uuid4')->returns($uuid);
+        $factory->allows('uuid5')->returns($uuid);
+        $factory->allows('uuid6')->returns($uuid);
+        $factory->allows('uuid7')->returns($uuid);
+        $factory->allows('uuid8')->returns($uuid);
+        $factory->allows('fromBytes')->returns($uuid);
+        $factory->allows('fromString')->returns($uuid);
+        $factory->allows('fromInteger')->returns($uuid);
 
         Uuid::setFactory($factory);
 
@@ -392,14 +391,13 @@ class ExpectedBehaviorTest extends TestCase
     #[PreserveGlobalState(false)]
     public function testUsingCustomCodec(): void
     {
-        $mockUuid = Mockery::mock('Ramsey\Uuid\UuidInterface');
+        $mockUuid = Double::for('Ramsey\Uuid\UuidInterface');
 
-        $codec = Mockery::mock('Ramsey\Uuid\Codec\CodecInterface', [
-            'encode' => 'abcd1234',
-            'encodeBinary' => hex2bin('abcd1234'),
-            'decode' => $mockUuid,
-            'decodeBytes' => $mockUuid,
-        ]);
+        $codec = Double::for('Ramsey\Uuid\Codec\CodecInterface');
+        $codec->allows('encode')->returns('abcd1234');
+        $codec->allows('encodeBinary')->returns(hex2bin('abcd1234'));
+        $codec->allows('decode')->returns($mockUuid);
+        $codec->allows('decodeBytes')->returns($mockUuid);
 
         $factory = new UuidFactory();
         $factory->setCodec($codec);
@@ -421,9 +419,8 @@ class ExpectedBehaviorTest extends TestCase
     #[PreserveGlobalState(false)]
     public function testUsingCustomRandomGenerator(): void
     {
-        $generator = Mockery::mock('Ramsey\Uuid\Generator\RandomGeneratorInterface', [
-            'generate' => hex2bin('01234567abcd5432dcba0123456789ab'),
-        ]);
+        $generator = Double::for('Ramsey\Uuid\Generator\RandomGeneratorInterface');
+        $generator->allows('generate')->returns(hex2bin('01234567abcd5432dcba0123456789ab'));
 
         $factory = new UuidFactory();
         $factory->setRandomGenerator($generator);
@@ -439,9 +436,8 @@ class ExpectedBehaviorTest extends TestCase
     #[PreserveGlobalState(false)]
     public function testUsingCustomTimeGenerator(): void
     {
-        $generator = Mockery::mock('Ramsey\Uuid\Generator\TimeGeneratorInterface', [
-            'generate' => hex2bin('01234567abcd5432dcba0123456789ab'),
-        ]);
+        $generator = Double::for('Ramsey\Uuid\Generator\TimeGeneratorInterface');
+        $generator->allows('generate')->returns(hex2bin('01234567abcd5432dcba0123456789ab'));
 
         $factory = new UuidFactory();
         $factory->setTimeGenerator($generator);
@@ -457,24 +453,16 @@ class ExpectedBehaviorTest extends TestCase
     #[PreserveGlobalState(false)]
     public function testUsingDefaultTimeGeneratorWithCustomProviders(): void
     {
-        $nodeProvider = Mockery::mock('Ramsey\Uuid\Provider\NodeProviderInterface', [
-            'getNode' => new Hexadecimal('0123456789ab'),
-        ]);
+        $nodeProvider = Double::for('Ramsey\Uuid\Provider\NodeProviderInterface');
+        $nodeProvider->allows('getNode')->returns(new Hexadecimal('0123456789ab'));
 
-        $timeConverter = Mockery::mock('Ramsey\Uuid\Converter\TimeConverterInterface');
-        $timeConverter
-            ->shouldReceive('calculateTime')
-            ->andReturnUsing(function (int $seconds, int $microseconds) {
-                return new Hexadecimal('abcd' . dechex($microseconds) . dechex($seconds));
-            });
+        $timeConverter = Double::for('Ramsey\Uuid\Converter\TimeConverterInterface');
+        $timeConverter->expects('calculateTime')->resolves(function (string $seconds, string $microseconds) {
+            return new Hexadecimal('abcd' . dechex((int) $microseconds) . dechex((int) $seconds));
+        });
 
-        $timeProvider = Mockery::mock('Ramsey\Uuid\Provider\TimeProviderInterface', [
-            'currentTime' => [
-                'sec' => 1578522046,
-                'usec' => 10000,
-            ],
-            'getTime' => new Time(1578522046, 10000),
-        ]);
+        $timeProvider = Double::for('Ramsey\Uuid\Provider\TimeProviderInterface');
+        $timeProvider->allows('getTime')->returns(new Time(1578522046, 10000));
 
         $generator = new DefaultTimeGenerator($nodeProvider, $timeConverter, $timeProvider);
 
@@ -492,25 +480,20 @@ class ExpectedBehaviorTest extends TestCase
     #[PreserveGlobalState(false)]
     public function testHelperFunctions(): void
     {
-        $uuid1 = Mockery::mock('Ramsey\Uuid\UuidInterface', [
-            'toString' => 'aVersion1Uuid',
-        ]);
-        $uuid3 = Mockery::mock('Ramsey\Uuid\UuidInterface', [
-            'toString' => 'aVersion3Uuid',
-        ]);
-        $uuid4 = Mockery::mock('Ramsey\Uuid\UuidInterface', [
-            'toString' => 'aVersion4Uuid',
-        ]);
-        $uuid5 = Mockery::mock('Ramsey\Uuid\UuidInterface', [
-            'toString' => 'aVersion5Uuid',
-        ]);
+        $uuid1 = Double::for('Ramsey\Uuid\UuidInterface');
+        $uuid1->allows('toString')->returns('aVersion1Uuid');
+        $uuid3 = Double::for('Ramsey\Uuid\UuidInterface');
+        $uuid3->allows('toString')->returns('aVersion3Uuid');
+        $uuid4 = Double::for('Ramsey\Uuid\UuidInterface');
+        $uuid4->allows('toString')->returns('aVersion4Uuid');
+        $uuid5 = Double::for('Ramsey\Uuid\UuidInterface');
+        $uuid5->allows('toString')->returns('aVersion5Uuid');
 
-        $factory = Mockery::mock('Ramsey\Uuid\UuidFactoryInterface', [
-            'uuid1' => $uuid1,
-            'uuid3' => $uuid3,
-            'uuid4' => $uuid4,
-            'uuid5' => $uuid5,
-        ]);
+        $factory = Double::for('Ramsey\Uuid\UuidFactoryInterface');
+        $factory->allows('uuid1')->returns($uuid1);
+        $factory->allows('uuid3')->returns($uuid3);
+        $factory->allows('uuid4')->returns($uuid4);
+        $factory->allows('uuid5')->returns($uuid5);
 
         Uuid::setFactory($factory);
 

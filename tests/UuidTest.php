@@ -9,7 +9,7 @@ use Brick\Math\BigDecimal;
 use Brick\Math\RoundingMode;
 use DateTimeImmutable;
 use DateTimeInterface;
-use Mockery;
+use JMac\Testing\Double;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\MockObject\MockObject;
 use Ramsey\Uuid\Codec\StringCodec;
@@ -93,7 +93,7 @@ class UuidTest extends TestCase
 
     public function testFromHexadecimalThrowsWhenMethodDoesNotExist(): void
     {
-        $factory = Mockery::mock(UuidFactoryInterface::class);
+        $factory = Double::for(UuidFactoryInterface::class);
         Uuid::setFactory($factory);
 
         $hex = new Hexadecimal('0x1EA78DEB37CE625E8F1A025041000001');
@@ -1666,12 +1666,9 @@ class UuidTest extends TestCase
     public function testGetDateTimeThrowsExceptionWhenDateTimeCannotParseDate(): void
     {
         $numberConverter = new GenericNumberConverter(new BrickMathCalculator());
-        $timeConverter = Mockery::mock(TimeConverterInterface::class);
+        $timeConverter = Double::for(TimeConverterInterface::class);
 
-        $timeConverter
-            ->shouldReceive('convertTime')
-            ->once()
-            ->andReturn(new Time(1234567890, '1234567'));
+        $timeConverter->expects('convertTime')->returns(new Time(1234567890, '1234567'));
 
         $builder = new UuidBuilder($numberConverter, $timeConverter);
         $codec = new StringCodec($builder);
