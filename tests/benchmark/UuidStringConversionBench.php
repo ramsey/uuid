@@ -223,9 +223,9 @@ final class UuidStringConversionBench
 
     public function benchStringConversionOfPromiscuousUuids(): void
     {
-        array_map(static function (UuidInterface $uuid): string {
-            return $uuid->toString();
-        }, $this->promiscuousUuids);
+        foreach ($this->promiscuousUuids as $uuid) {
+            $uuid->toString();
+        }
     }
 
     public function benchBytesConversionOfTinyUuid(): void
@@ -245,8 +245,8 @@ final class UuidStringConversionBench
 
     public function benchBytesConversionOfPromiscuousUuids(): void
     {
-        array_map(static function (UuidInterface $uuid): string {
-            return $uuid->getBytes();
-        }, $this->promiscuousUuids);
+        foreach ($this->promiscuousUuids as $uuid) {
+            $uuid->getBytes();
+        }
     }
 }
