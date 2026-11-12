@@ -24,20 +24,20 @@ env:
 jobs:
   coding-standards:
     name: "Coding standards"
-    runs-on: "ubuntu-latest"
+    runs-on: "ubuntu-24.04"
 
     steps:
       - name: "Checkout repository"
-        uses: "actions/checkout@v6"
+        uses: "actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1" # v7.0.1
 
       - name: "Install PHP"
-        uses: "shivammathur/setup-php@v2"
+        uses: "shivammathur/setup-php@eb7c497e18156a6bbabfef1d3a82760b9eda3962" # 2.40.0
         with:
-          php-version: "latest"
+          php-version: "8.5"
           coverage: "none"
 
       - name: "Install dependencies (Composer)"
-        uses: "ramsey/composer-install@v4"
+        uses: "ramsey/composer-install@65e4f84970763564f46a70b8a54b90d033b3bdda" # 4.0.0
         with:
           dependency-versions: "highest"
 
@@ -49,20 +49,20 @@ jobs:
 
   static-analysis:
     name: "Static analysis"
-    runs-on: "ubuntu-latest"
+    runs-on: "ubuntu-24.04"
 
     steps:
       - name: "Checkout repository"
-        uses: "actions/checkout@v6"
+        uses: "actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1" # v7.0.1
 
       - name: "Install PHP"
-        uses: "shivammathur/setup-php@v2"
+        uses: "shivammathur/setup-php@eb7c497e18156a6bbabfef1d3a82760b9eda3962" # 2.40.0
         with:
-          php-version: "latest"
+          php-version: "8.5"
           coverage: "none"
 
       - name: "Install dependencies (Composer)"
-        uses: "ramsey/composer-install@v4"
+        uses: "ramsey/composer-install@65e4f84970763564f46a70b8a54b90d033b3bdda" # 4.0.0
         with:
           dependency-versions: "highest"
 
@@ -72,7 +72,7 @@ jobs:
   benchmark:
     name: "Benchmark"
     needs: ["coding-standards", "static-analysis"]
-    runs-on: "ubuntu-latest"
+    runs-on: "ubuntu-24.04"
 
     strategy:
       fail-fast: false
@@ -87,7 +87,7 @@ jobs:
 
     steps:
       - name: "Checkout repository"
-        uses: "actions/checkout@v6"
+        uses: "actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1" # v7.0.1
 
       - name: "Install dependencies (apt)"
         run: |
@@ -95,7 +95,7 @@ jobs:
           sudo apt-get -y install libsodium-dev uuid-dev
 
       - name: "Install PHP"
-        uses: "shivammathur/setup-php@v2"
+        uses: "shivammathur/setup-php@eb7c497e18156a6bbabfef1d3a82760b9eda3962" # 2.40.0
         with:
           php-version: "${{ matrix.php-version }}"
           extensions: bcmath, gmp, sodium, uuid
@@ -103,7 +103,7 @@ jobs:
           ini-values: "memory_limit=-1"
 
       - name: "Install dependencies (Composer)"
-        uses: "ramsey/composer-install@v4"
+        uses: "ramsey/composer-install@65e4f84970763564f46a70b8a54b90d033b3bdda" # 4.0.0
         with:
           dependency-versions: "highest"
 
@@ -113,11 +113,11 @@ jobs:
   code-coverage:
     name: "Code coverage"
     needs: ["coding-standards", "static-analysis"]
-    runs-on: "ubuntu-latest"
+    runs-on: "ubuntu-24.04"
 
     steps:
       - name: "Checkout repository"
-        uses: "actions/checkout@v6"
+        uses: "actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1" # v7.0.1
 
       - name: "Install dependencies (apt)"
         run: |
@@ -125,15 +125,15 @@ jobs:
           sudo apt-get -y install libsodium-dev uuid-dev
 
       - name: "Install PHP"
-        uses: "shivammathur/setup-php@v2"
+        uses: "shivammathur/setup-php@eb7c497e18156a6bbabfef1d3a82760b9eda3962" # 2.40.0
         with:
-          php-version: "latest"
+          php-version: "8.5"
           extensions: bcmath, gmp, sodium, uuid
           coverage: "xdebug"
           ini-values: "memory_limit=-1"
 
       - name: "Install dependencies (Composer)"
-        uses: "ramsey/composer-install@v4"
+        uses: "ramsey/composer-install@65e4f84970763564f46a70b8a54b90d033b3bdda" # 4.0.0
         with:
           dependency-versions: "highest"
 
@@ -141,14 +141,7 @@ jobs:
         run: "composer dev:test:coverage:ci"
 
       - name: "Publish coverage report to Codecov"
-        uses: "codecov/codecov-action@v6"
-
-      - name: "Upload test results to Codecov"
-        if: ${{ !cancelled() }}
-        uses: "codecov/test-results-action@v1"
-        with:
-          disable_search: true
-          file: "./build/junit.xml"
+        uses: "codecov/codecov-action@303a32d7a59b442fa8d48b6a1cc6825c09c847a5" # v7.1.1
 
   unit-tests:
     name: "Unit Tests"
@@ -166,30 +159,30 @@ jobs:
           - "8.4"
           - "8.5"
         operating-system:
-          - "ubuntu-latest"
-          - "windows-latest"
+          - "ubuntu-24.04"
+          - "windows-2025"
         dependency-versions:
           - "locked"
           - "highest"
 
     steps:
       - name: "Configure Git (for Windows)"
-        if: ${{ matrix.operating-system == 'windows-latest' }}
+        if: ${{ matrix.operating-system == 'windows-2025' }}
         run: |
           git config --system core.autocrlf false
           git config --system core.eol lf
 
       - name: "Checkout repository"
-        uses: "actions/checkout@v6"
+        uses: "actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1" # v7.0.1
 
       - name: "Install dependencies (apt)"
-        if: ${{ matrix.operating-system == 'ubuntu-latest' }}
+        if: ${{ matrix.operating-system == 'ubuntu-24.04' }}
         run: |
           sudo apt-get update
           sudo apt-get -y install libsodium-dev uuid-dev
 
       - name: "Install PHP"
-        uses: "shivammathur/setup-php@v2"
+        uses: "shivammathur/setup-php@eb7c497e18156a6bbabfef1d3a82760b9eda3962" # 2.40.0
         with:
           php-version: "${{ matrix.php-version }}"
           extensions: bcmath, gmp, sodium, uuid
@@ -202,7 +195,7 @@ jobs:
           composer update brick/math:"0.8.16"
 
       - name: "Install dependencies (Composer)"
-        uses: "ramsey/composer-install@v4"
+        uses: "ramsey/composer-install@65e4f84970763564f46a70b8a54b90d033b3bdda" # 4.0.0
         with:
           dependency-versions: "${{ matrix.dependency-versions }}"
 
