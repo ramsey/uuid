@@ -142,6 +142,12 @@ class PhpTimeConverter implements TimeConverterInterface
             return ['sec' => $split[0], 'usec' => '0'];
         }
 
+        // Near zero PHP renders the float in scientific notation ("-1.0E-6"), whose
+        // exponent would be misparsed as microseconds; fall back instead.
+        if (count(explode('E', $split[1], 2)) === 2) {
+            return [];
+        }
+
         // If the microseconds are less than six characters AND the PHP precision is not enough to hold all six
         // microsecond digits, then it's possible that we lost some precision for the microseconds. Return an empty array
         // so that we can choose to use the fallback converter. The length of the string can't be used for this, because

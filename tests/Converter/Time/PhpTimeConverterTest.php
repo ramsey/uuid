@@ -134,6 +134,14 @@ class PhpTimeConverterTest extends TestCase
                 'microseconds' => '0',
             ],
 
+            // One microsecond before the epoch: PHP renders "-1.0E-6", which must not
+            // be misparsed as microseconds.
+            [
+                'uuidTimestamp' => new Hexadecimal('1b21dd213813ff6'),
+                'unixTimestamp' => '0',
+                'microseconds' => '1',
+            ],
+
             // With the default precision of 14, PHP renders these as "1700000000.1" and "1759600000.99", so the
             // microseconds must not be taken from the float string.
             [
