@@ -416,7 +416,9 @@ final class LazyUuidFromString implements UuidInterface
             return $instance;
         }
 
-        assert($instance instanceof UuidV6);
+        if (!$instance instanceof UuidV6) {
+            throw new UnsupportedOperationException('Not a version 1 or version 6 UUID');
+        }
 
         return $instance->toUuidV1();
     }
@@ -425,7 +427,9 @@ final class LazyUuidFromString implements UuidInterface
     {
         $instance = ($this->unwrapped ?? $this->unwrap());
 
-        assert($instance instanceof UuidV6);
+        if (!$instance instanceof UuidV6) {
+            throw new UnsupportedOperationException('Not a version 6 UUID');
+        }
 
         return $instance;
     }

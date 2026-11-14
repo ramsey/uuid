@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Ramsey\Uuid\Test\Lazy;
 
 use Ramsey\Uuid\Exception\InvalidUuidStringException;
+use Ramsey\Uuid\Exception\UnsupportedOperationException;
 use Ramsey\Uuid\Lazy\LazyUuidFromString;
 use Ramsey\Uuid\Test\TestCase;
 
@@ -86,5 +87,25 @@ class LazyUuidFromStringTest extends TestCase
             'braces' => ['{' . self::UUID . '}'],
             'prefix' => ['urn:uuid:' . self::UUID],
         ];
+    }
+
+    public function testToUuidV1ThrowsExceptionForOtherVersions(): void
+    {
+        $uuid = new LazyUuidFromString('c4b4ad6e-0c3e-4bb0-9a4b-8a7b2a4f0d0e');
+
+        $this->expectException(UnsupportedOperationException::class);
+        $this->expectExceptionMessage('Not a version 1 or version 6 UUID');
+
+        $uuid->toUuidV1();
+    }
+
+    public function testToUuidV6ThrowsExceptionForOtherVersions(): void
+    {
+        $uuid = new LazyUuidFromString('c4b4ad6e-0c3e-4bb0-9a4b-8a7b2a4f0d0e');
+
+        $this->expectException(UnsupportedOperationException::class);
+        $this->expectExceptionMessage('Not a version 6 UUID');
+
+        $uuid->toUuidV6();
     }
 }
