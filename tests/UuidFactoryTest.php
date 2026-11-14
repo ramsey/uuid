@@ -13,6 +13,7 @@ use Ramsey\Uuid\Builder\UuidBuilderInterface;
 use Ramsey\Uuid\Codec\CodecInterface;
 use Ramsey\Uuid\Converter\NumberConverterInterface;
 use Ramsey\Uuid\Converter\TimeConverterInterface;
+use Ramsey\Uuid\Exception\InvalidArgumentException;
 use Ramsey\Uuid\FeatureSet;
 use Ramsey\Uuid\Generator\DceSecurityGeneratorInterface;
 use Ramsey\Uuid\Generator\DefaultNameGenerator;
@@ -34,6 +35,7 @@ use Ramsey\Uuid\Validator\ValidatorInterface;
 
 use function bin2hex;
 use function hex2bin;
+use function str_repeat;
 use function str_replace;
 use function strtoupper;
 use function substr;
@@ -335,5 +337,44 @@ class UuidFactoryTest extends TestCase
                 'ff6f8cb0-c57d-11e1-9b21-0900200c9a66',
             ],
         ];
+    }
+
+    /**
+     * @dataProvider provideBytesOfWrongLength
+     */
+    public function testUuid8ThrowsExceptionWhenBytesAreNotSixteenBytesLong(string $bytes, int $length): void
+    {
+        $factory = new UuidFactory();
+
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('The byte string must be 16 bytes long; received ' . $length . ' bytes');
+
+        $factory->uuid8($bytes);
+    }
+
+    /**
+     * @return array<string, array{bytes: string, length: int}>
+     */
+    public function provideBytesOfWrongLength(): array
+    {
+        return [
+            'empty' => ['bytes' => '', 'length' => 0],
+            'too short to have a version' => ['bytes' => 'abc', 'length' => 3],
+            'one byte short' => ['bytes' => str_repeat('a', 15), 'length' => 15],
+            'one byte long' => ['bytes' => str_repeat('a', 17), 'length' => 17],
+        ];
+    }
+
+    public function testUuid1ThrowsExceptionWhenTimeGeneratorReturnsWrongLength(): void
+    {
+        $timeGenerator = Mockery::mock(TimeGeneratorInterface::class, ['generate' => 'tooshort']);
+
+        $factory = new UuidFactory();
+        $factory->setTimeGenerator($timeGenerator);
+
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('The byte string must be 16 bytes long; received 8 bytes');
+
+        $factory->uuid1();
     }
 }

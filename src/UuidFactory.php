@@ -19,6 +19,7 @@ use Ramsey\Uuid\Builder\UuidBuilderInterface;
 use Ramsey\Uuid\Codec\CodecInterface;
 use Ramsey\Uuid\Converter\NumberConverterInterface;
 use Ramsey\Uuid\Converter\TimeConverterInterface;
+use Ramsey\Uuid\Exception\InvalidArgumentException;
 use Ramsey\Uuid\Generator\DceSecurityGeneratorInterface;
 use Ramsey\Uuid\Generator\DefaultTimeGenerator;
 use Ramsey\Uuid\Generator\NameGeneratorInterface;
@@ -38,6 +39,7 @@ use function bin2hex;
 use function hex2bin;
 use function pack;
 use function str_pad;
+use function strlen;
 use function strtolower;
 use function substr;
 use function substr_replace;
@@ -455,6 +457,12 @@ class UuidFactory implements UuidFactoryInterface
      */
     private function uuidFromBytesAndVersion(string $bytes, int $version): UuidInterface
     {
+        if (strlen($bytes) !== 16) {
+            throw new InvalidArgumentException(
+                'The byte string must be 16 bytes long; received ' . strlen($bytes) . ' bytes',
+            );
+        }
+
         /** @var int[] $unpackedTime */
         $unpackedTime = unpack('n*', substr($bytes, 6, 2));
         $timeHi = $unpackedTime[1];
