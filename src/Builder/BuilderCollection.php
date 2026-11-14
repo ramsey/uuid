@@ -18,6 +18,7 @@ use Ramsey\Collection\AbstractCollection;
 use Ramsey\Uuid\Converter\Number\GenericNumberConverter;
 use Ramsey\Uuid\Converter\Time\GenericTimeConverter;
 use Ramsey\Uuid\Converter\Time\PhpTimeConverter;
+use Ramsey\Uuid\Exception\UnsupportedOperationException;
 use Ramsey\Uuid\Guid\GuidBuilder;
 use Ramsey\Uuid\Math\BrickMathCalculator;
 use Ramsey\Uuid\Nonstandard\UuidBuilder as NonstandardUuidBuilder;
@@ -65,6 +66,10 @@ class BuilderCollection extends AbstractCollection
                 Rfc4122UuidBuilder::class,
             ],
         ]);
+
+        if (!is_array($data)) {
+            throw new UnsupportedOperationException('Attempted to unserialize an invalid value');
+        }
 
         $this->data = array_filter(
             $data,

@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace Ramsey\Uuid\Provider\Node;
 
 use Ramsey\Collection\AbstractCollection;
+use Ramsey\Uuid\Exception\UnsupportedOperationException;
 use Ramsey\Uuid\Provider\NodeProviderInterface;
 use Ramsey\Uuid\Type\Hexadecimal;
 
@@ -51,6 +52,10 @@ class NodeProviderCollection extends AbstractCollection
                 SystemNodeProvider::class,
             ],
         ]);
+
+        if (!is_array($data)) {
+            throw new UnsupportedOperationException('Attempted to unserialize an invalid value');
+        }
 
         /** @phpstan-ignore-next-line */
         $this->data = array_filter($data, fn ($unserialized): bool => $unserialized instanceof NodeProviderInterface);
