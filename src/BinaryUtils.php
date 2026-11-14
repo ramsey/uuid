@@ -22,6 +22,8 @@ class BinaryUtils
     /**
      * Applies the variant field to the 16-bit clock sequence
      *
+     * @deprecated ramsey/uuid no longer uses this method, and it will be removed in a future major version.
+     *
      * @link https://www.rfc-editor.org/rfc/rfc9562#section-4.1 RFC 9562, 4.1. Variant Field
      *
      * @param int $clockSeq The 16-bit clock sequence value before the variant is applied
@@ -37,6 +39,8 @@ class BinaryUtils
 
     /**
      * Applies the version field to the 16-bit `time_hi_and_version` field
+     *
+     * @deprecated ramsey/uuid no longer uses this method, and it will be removed in a future major version.
      *
      * @link https://www.rfc-editor.org/rfc/rfc9562#section-4.2 RFC 9562, 4.2. Version Field
      *
