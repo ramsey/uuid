@@ -8,9 +8,12 @@ use Ramsey\Uuid\Exception\UnsupportedOperationException;
 use Ramsey\Uuid\Test\TestCase;
 use Ramsey\Uuid\Type\Integer as IntegerObject;
 use Ramsey\Uuid\Type\Time;
+use ValueError;
 
 use function json_encode;
 use function serialize;
+use function sprintf;
+use function strlen;
 use function unserialize;
 
 class TimeTest extends TestCase
@@ -147,5 +150,56 @@ class TimeTest extends TestCase
         $time = new Time(...$params);
 
         $this->assertSame($expectedJson, json_encode($time));
+    }
+
+    /**
+     * @dataProvider provideJsonWithValuesOfTheWrongType
+     */
+    public function testUnserializeThrowsExceptionForValuesOfTheWrongType(string $json): void
+    {
+        $time = new Time(1);
+
+        $this->expectException(UnsupportedOperationException::class);
+        $this->expectExceptionMessage('Attempted to unserialize an invalid value');
+
+        $time->unserialize($json);
+    }
+
+    /**
+     * @return array<string, array{string}>
+     */
+    public function provideJsonWithValuesOfTheWrongType(): array
+    {
+        return [
+            'seconds as an array' => ['{"seconds":[1],"microseconds":1}'],
+            'microseconds as an object' => ['{"seconds":1,"microseconds":{"a":1}}'],
+            'seconds as a boolean' => ['{"seconds":true,"microseconds":1}'],
+            'microseconds as a boolean' => ['{"seconds":1,"microseconds":true}'],
+        ];
+    }
+
+    /**
+     * @dataProvider provideSerializedPropertiesOfTheWrongType
+     */
+    public function testUnserializingSerializedPayloadThrowsExceptionForValuesOfTheWrongType(string $properties): void
+    {
+        $serialized = sprintf('O:%d:"%s":2:{%s}', strlen(Time::class), Time::class, $properties);
+
+        $this->expectException(ValueError::class);
+        $this->expectExceptionMessage(Time::class . '::__unserialize(): Argument #1 ($data) is invalid');
+
+        unserialize($serialized);
+    }
+
+    /**
+     * @return array<string, array{string}>
+     */
+    public function provideSerializedPropertiesOfTheWrongType(): array
+    {
+        return [
+            'seconds as an array' => ['s:7:"seconds";a:0:{}s:12:"microseconds";s:1:"1";'],
+            'microseconds as an array' => ['s:7:"seconds";s:1:"1";s:12:"microseconds";a:0:{}'],
+            'seconds as a boolean' => ['s:7:"seconds";b:1;s:12:"microseconds";s:1:"1";'],
+        ];
     }
 }

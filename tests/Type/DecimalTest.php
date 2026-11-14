@@ -7,10 +7,12 @@ namespace Ramsey\Uuid\Test\Type;
 use Ramsey\Uuid\Exception\InvalidArgumentException;
 use Ramsey\Uuid\Test\TestCase;
 use Ramsey\Uuid\Type\Decimal;
+use ValueError;
 
 use function json_encode;
 use function serialize;
 use function sprintf;
+use function strlen;
 use function unserialize;
 
 class DecimalTest extends TestCase
@@ -301,5 +303,15 @@ class DecimalTest extends TestCase
         $expectedJson = sprintf('"%s"', $expected);
 
         $this->assertSame($expectedJson, json_encode($decimal));
+    }
+
+    public function testUnserializeThrowsExceptionWhenTheValueIsNotAString(): void
+    {
+        $serialized = sprintf('O:%d:"%s":1:{s:6:"string";a:0:{}}', strlen(Decimal::class), Decimal::class);
+
+        $this->expectException(ValueError::class);
+        $this->expectExceptionMessage(Decimal::class . '::__unserialize(): Argument #1 ($data) is invalid');
+
+        unserialize($serialized);
     }
 }

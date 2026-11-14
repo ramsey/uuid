@@ -19,6 +19,9 @@ use Ramsey\Uuid\Exception\UnsupportedOperationException;
 use Ramsey\Uuid\Type\Integer as IntegerObject;
 use ValueError;
 
+use function is_float;
+use function is_int;
+use function is_string;
 use function json_decode;
 use function json_encode;
 use function sprintf;
@@ -113,7 +116,10 @@ final class Time implements TypeInterface
         /** @var array{seconds?: float | int | string, microseconds?: float | int | string} $time */
         $time = json_decode($data, true);
 
-        if (!isset($time['seconds']) || !isset($time['microseconds'])) {
+        if (
+            !self::isNumberOrString($time['seconds'] ?? null)
+            || !self::isNumberOrString($time['microseconds'] ?? null)
+        ) {
             throw new UnsupportedOperationException('Attempted to unserialize an invalid value');
         }
 
@@ -126,11 +132,19 @@ final class Time implements TypeInterface
     public function __unserialize(array $data): void
     {
         // @codeCoverageIgnoreStart
-        if (!isset($data['seconds']) || !isset($data['microseconds'])) {
+        if (!is_string($data['seconds'] ?? null) || !is_string($data['microseconds'] ?? null)) {
             throw new ValueError(sprintf('%s(): Argument #1 ($data) is invalid', __METHOD__));
         }
         // @codeCoverageIgnoreEnd
 
         $this->__construct($data['seconds'], $data['microseconds']);
+    }
+
+    /**
+     * @phpstan-assert-if-true float | int | string $value
+     */
+    private static function isNumberOrString(mixed $value): bool
+    {
+        return is_float($value) || is_int($value) || is_string($value);
     }
 }

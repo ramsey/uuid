@@ -18,6 +18,7 @@ use Ramsey\Uuid\Exception\InvalidArgumentException;
 use ValueError;
 
 use function is_numeric;
+use function is_string;
 use function sprintf;
 use function str_starts_with;
 
@@ -115,7 +116,7 @@ final class Decimal implements NumberInterface
     public function __unserialize(array $data): void
     {
         // @codeCoverageIgnoreStart
-        if (!isset($data['string'])) {
+        if (!is_string($data['string'] ?? null)) {
             throw new ValueError(sprintf('%s(): Argument #1 ($data) is invalid', __METHOD__));
         }
         // @codeCoverageIgnoreEnd

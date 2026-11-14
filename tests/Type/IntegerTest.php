@@ -7,10 +7,12 @@ namespace Ramsey\Uuid\Test\Type;
 use Ramsey\Uuid\Exception\InvalidArgumentException;
 use Ramsey\Uuid\Test\TestCase;
 use Ramsey\Uuid\Type\Integer as IntegerObject;
+use ValueError;
 
 use function json_encode;
 use function serialize;
 use function sprintf;
+use function strlen;
 use function unserialize;
 
 class IntegerTest extends TestCase
@@ -223,5 +225,19 @@ class IntegerTest extends TestCase
         $expectedJson = sprintf('"%s"', $expected);
 
         $this->assertSame($expectedJson, json_encode($integer));
+    }
+
+    public function testUnserializeThrowsExceptionWhenTheValueIsNotAString(): void
+    {
+        $serialized = sprintf(
+            'O:%d:"%s":1:{s:6:"string";a:0:{}}',
+            strlen(IntegerObject::class),
+            IntegerObject::class,
+        );
+
+        $this->expectException(ValueError::class);
+        $this->expectExceptionMessage(IntegerObject::class . '::__unserialize(): Argument #1 ($data) is invalid');
+
+        unserialize($serialized);
     }
 }
