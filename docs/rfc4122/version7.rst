@@ -9,9 +9,9 @@ Version 7: Unix Epoch Time
 
     Version 7 UUIDs are binary-compatible with `ULIDs`_ (universally unique lexicographically-sortable identifiers).
 
-    Both use a 48-bit timestamp in milliseconds since the Unix Epoch, filling the rest with random data. Version 7 UUIDs
-    then add the version and variant bits required by the UUID specification, which reduces the randomness from 80 bits
-    to 74. Otherwise, they are identical.
+    Both begin with a 48-bit timestamp in milliseconds since the Unix Epoch. A ULID fills the remaining 80 bits with
+    random data. A version 7 UUID uses 6 of those bits for the version and variant required by the UUID specification,
+    and ramsey/uuid uses 12 more for the fraction of the millisecond, which leaves 62 random bits.
 
     You may even convert a version 7 UUID to a ULID. :ref:`See below for an example. <rfc4122.version7.ulid>`
 
@@ -81,7 +81,7 @@ Which will print something like this:
 
 .. code-block:: text
 
-    UUID: ffffffff-ffff-7964-a8f6-001336ac20cb
+    UUID: ffffffff-ffff-7000-a8f6-001336ac20cb
     Version: 7
     Date: Tue, 02 Aug 10889 05:31:50 +0000
 
@@ -90,6 +90,28 @@ Which will print something like this:
     Version 7 UUIDs generated in ramsey/uuid are instances of UuidV7. Check out the
     :php:class:`Ramsey\\Uuid\\Rfc4122\\UuidV7` API documentation to learn more about what you can do with a UuidV7
     instance.
+
+.. _rfc4122.version7.order:
+
+Order and Precision
+###################
+
+ramsey/uuid stores the fraction of the millisecond in the 12 bits that follow the version, using the method that
+`RFC 9562, section 6.2`_, calls "Replace Leftmost Random Bits with Increased Clock Precision." Because of this, version
+7 UUIDs sort by the time they were created to about a microsecond, even when different processes or machines created
+them, as far as the clocks of those machines agree.
+
+Within one process, each version 7 UUID created without a date and time is greater than the one created before it. When
+the clock has not advanced, or has moved backward, ramsey/uuid uses the last timestamp again and increases the remaining
+62 bits, which are a counter that starts at a random value.
+
+The same is true when you pass the same date and time to ``uuid7()`` in consecutive calls. A different date and time
+starts a new counter. Passing a date and time has no effect on the UUIDs that later calls without one return.
+
+.. note::
+
+    ``getDateTime()`` returns the time of a version 7 UUID to the millisecond. It does not read the fraction of the
+    millisecond, since another library may have filled those bits with random data.
 
 .. _rfc4122.version7.ulid:
 
@@ -146,6 +168,7 @@ This will print something like this:
     unless it was converted from a version 7 UUID.
 
 .. _ULIDs: https://github.com/ulid/spec
+.. _RFC 9562, section 6.2: https://www.rfc-editor.org/rfc/rfc9562#section-6.2
 .. _two problems that have long existed: https://www.percona.com/blog/store-uuid-optimized-way/
 .. _Crockford's Base 32 algorithm: https://www.crockford.com/base32.html
 .. _tuupola/base32: https://packagist.org/packages/tuupola/base32
