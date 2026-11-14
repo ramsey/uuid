@@ -12,6 +12,7 @@ use ValueError;
 use function json_encode;
 use function serialize;
 use function sprintf;
+use function str_repeat;
 use function strlen;
 use function unserialize;
 
@@ -303,6 +304,75 @@ class DecimalTest extends TestCase
         $expectedJson = sprintf('"%s"', $expected);
 
         $this->assertSame($expectedJson, json_encode($decimal));
+    }
+
+    /**
+     * @dataProvider provideDecimalWithWhitespace
+     */
+    public function testDecimalRemovesSurroundingWhitespace(
+        string $value,
+        string $expected,
+        bool $expectedIsNegative
+    ): void {
+        $decimal = new Decimal($value);
+
+        $this->assertSame($expected, $decimal->toString());
+        $this->assertSame($expectedIsNegative, $decimal->isNegative());
+    }
+
+    /**
+     * @return array<string, array{string, string, bool}>
+     */
+    public function provideDecimalWithWhitespace(): array
+    {
+        return [
+            'leading space, negative' => [' -1.5', '-1.5', true],
+            'trailing space' => ['1.5 ', '1.5', false],
+            'tab and newline, negative' => ["\t-2\n", '-2', true],
+            'spaces around a plus sign' => [' +3 ', '3', false],
+        ];
+    }
+
+    /**
+     * @dataProvider provideDecimalTooSmallForFloat
+     */
+    public function testDecimalKeepsValueTooSmallForFloat(string $value, bool $expectedIsNegative): void
+    {
+        $decimal = new Decimal($value);
+
+        $this->assertSame($value, $decimal->toString());
+        $this->assertSame($expectedIsNegative, $decimal->isNegative());
+    }
+
+    /**
+     * @return array<string, array{string, bool}>
+     */
+    public function provideDecimalTooSmallForFloat(): array
+    {
+        return [
+            'negative with an exponent' => ['-1e-400', true],
+            'positive with an exponent' => ['1e-400', false],
+            'many decimal places' => ['0.' . str_repeat('0', 400) . '1', false],
+        ];
+    }
+
+    /**
+     * @dataProvider provideDecimalZero
+     */
+    public function testDecimalNormalizesEveryFormOfZero(string $value): void
+    {
+        $decimal = new Decimal($value);
+
+        $this->assertSame('0', $decimal->toString());
+        $this->assertFalse($decimal->isNegative());
+    }
+
+    /**
+     * @return array<array{string}>
+     */
+    public function provideDecimalZero(): array
+    {
+        return [['0'], ['-0'], ['+0'], ['0.000'], ['-0.000'], ['.0'], ['0e5'], ['-0.0e-400'], ['0E10']];
     }
 
     public function testUnserializeThrowsExceptionWhenTheValueIsNotAString(): void

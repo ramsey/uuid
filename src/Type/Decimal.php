@@ -19,8 +19,11 @@ use ValueError;
 
 use function is_numeric;
 use function is_string;
+use function preg_replace;
 use function sprintf;
 use function str_starts_with;
+use function strpbrk;
+use function trim;
 
 /**
  * A value object representing a decimal
@@ -48,13 +51,17 @@ final class Decimal implements NumberInterface
             );
         }
 
+        // Remove the whitespace that is_numeric() allows around a number.
+        $value = trim($value, " \t\n\r\v\f");
+
         // Remove the leading +-symbol.
         if (str_starts_with($value, '+')) {
             $value = substr($value, 1);
         }
 
-        // For cases like `-0` or `-0.0000`, convert the value to `0`.
-        if (abs((float) $value) === 0.0) {
+        // For cases like `-0` or `-0.0000`, convert the value to `0`. The value
+        // is zero when no digit before the exponent is 1 through 9.
+        if (strpbrk((string) preg_replace('/e.*\z/is', '', $value), '123456789') === false) {
             $value = '0';
         }
 
