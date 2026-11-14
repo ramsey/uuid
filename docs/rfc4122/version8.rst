@@ -10,7 +10,7 @@ your application's needs. Be aware, however, that other applications may not und
 
 .. warning::
 
-    The bytes should be a 16-byte octet string, an open blob of data that you may fill with 128 bits of information.
+    The bytes must be a 16-byte octet string, an open blob of data that you may fill with 128 bits of information.
     However, bits 48 through 51 will be replaced with the UUID version field, and bits 64 and 65 will be replaced with
     the UUID variant. You must not rely on these bits for your application needs.
 
