@@ -16,6 +16,7 @@ namespace Ramsey\Uuid\Lazy;
 
 use DateTimeInterface;
 use Ramsey\Uuid\Converter\NumberConverterInterface;
+use Ramsey\Uuid\Exception\InvalidUuidStringException;
 use Ramsey\Uuid\Exception\UnsupportedOperationException;
 use Ramsey\Uuid\Fields\FieldsInterface;
 use Ramsey\Uuid\Rfc4122\UuidV1;
@@ -29,8 +30,10 @@ use ValueError;
 use function assert;
 use function bin2hex;
 use function hex2bin;
+use function preg_match;
 use function sprintf;
 use function str_replace;
+use function strtolower;
 use function substr;
 
 /**
@@ -95,10 +98,18 @@ final class LazyUuidFromString implements UuidInterface
      * {@inheritDoc}
      *
      * @param non-empty-string $data
+     *
+     * @throws InvalidUuidStringException if the data is not a UUID string in the standard format
      */
     public function unserialize(string $data): void
     {
-        $this->uuid = $data;
+        $uuid = strtolower($data);
+
+        if (preg_match(self::VALID_REGEX, $uuid) !== 1) {
+            throw new InvalidUuidStringException('Invalid UUID string: ' . $data);
+        }
+
+        $this->uuid = $uuid;
     }
 
     /**
