@@ -146,6 +146,49 @@ class GenericTimeConverterTest extends TestCase
                 'unixTimestamp' => '0',
                 'microseconds' => '0',
             ],
+
+            // Microseconds that begin with a zero: 1700000000.0123456 rounds to 1700000000.012346.
+            [
+                'uuidTimestamp' => new Hexadecimal('1ee833b04b1a240'),
+                'unixTimestamp' => '1700000000',
+                'microseconds' => '12346',
+            ],
+
+            // Rounding to the nearest microsecond moves to the next second: 1700000000.9999995.
+            [
+                'uuidTimestamp' => new Hexadecimal('1ee833b0548567b'),
+                'unixTimestamp' => '1700000001',
+                'microseconds' => '0',
+            ],
+
+            // Before the epoch, the seconds are rounded down and the microseconds count forward from them. One
+            // microsecond before the epoch is -1 seconds and 999999 microseconds.
+            [
+                'uuidTimestamp' => new Hexadecimal('1b21dd213813ff6'),
+                'unixTimestamp' => '-1',
+                'microseconds' => '999999',
+            ],
+
+            // One and a half seconds before the epoch.
+            [
+                'uuidTimestamp' => new Hexadecimal('1b21dd2129c5e40'),
+                'unixTimestamp' => '-2',
+                'microseconds' => '500000',
+            ],
+
+            // Six hundred nanoseconds before the epoch rounds to one microsecond before it.
+            [
+                'uuidTimestamp' => new Hexadecimal('1b21dd213813ffa'),
+                'unixTimestamp' => '-1',
+                'microseconds' => '999999',
+            ],
+
+            // Exactly half a microsecond before the epoch rounds up to the epoch.
+            [
+                'uuidTimestamp' => new Hexadecimal('1b21dd213813ffb'),
+                'unixTimestamp' => '0',
+                'microseconds' => '0',
+            ],
         ];
     }
 }

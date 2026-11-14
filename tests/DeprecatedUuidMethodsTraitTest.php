@@ -34,6 +34,22 @@ class DeprecatedUuidMethodsTraitTest extends TestCase
         $this->assertSame('1341368074.491000', $uuid->getDateTime()->format('U.u'));
     }
 
+    public function testGetDateTimeBeforeTheEpoch(): void
+    {
+        $calculator = new BrickMathCalculator();
+
+        // One microsecond before the epoch.
+        $fields = new Fields((string) hex2bin('13813ff61dd211b2966900007ffffffe'));
+        $numberConverter = Mockery::mock(NumberConverterInterface::class);
+        $codec = Mockery::mock(CodecInterface::class);
+        $timeConverter = new GenericTimeConverter($calculator);
+
+        $uuid = new Uuid($fields, $numberConverter, $codec, $timeConverter);
+
+        $this->assertSame('1969-12-31T23:59:59+00:00', $uuid->getDateTime()->format('c'));
+        $this->assertSame('-1.999999', $uuid->getDateTime()->format('U.u'));
+    }
+
     public function testGetDateTimeThrowsException(): void
     {
         $fields = Mockery::mock(FieldsInterface::class, [

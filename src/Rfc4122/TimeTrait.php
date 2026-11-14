@@ -17,8 +17,9 @@ namespace Ramsey\Uuid\Rfc4122;
 use DateTimeImmutable;
 use DateTimeInterface;
 use Ramsey\Uuid\Exception\DateTimeException;
-use Throwable;
 
+use function implode;
+use function sprintf;
 use function str_pad;
 
 use const STR_PAD_LEFT;
@@ -39,15 +40,24 @@ trait TimeTrait
     {
         $time = $this->timeConverter->convertTime($this->fields->getTimestamp());
 
-        try {
-            return new DateTimeImmutable(
-                '@'
-                . $time->getSeconds()->toString()
-                . '.'
-                . str_pad($time->getMicroseconds()->toString(), 6, '0', STR_PAD_LEFT)
-            );
-        } catch (Throwable $e) {
-            throw new DateTimeException($e->getMessage(), (int) $e->getCode(), $e);
+        // The seconds are rounded down and the microseconds are never negative, so read them as two fields, not as
+        // one decimal.
+        $timeString = $time->getSeconds()->toString()
+            . ' '
+            . str_pad($time->getMicroseconds()->toString(), 6, '0', STR_PAD_LEFT);
+
+        $dateTime = DateTimeImmutable::createFromFormat('U u', $timeString);
+
+        if ($dateTime === false) {
+            $errors = DateTimeImmutable::getLastErrors();
+
+            throw new DateTimeException(sprintf(
+                'Unable to create a date from the time "%s": %s',
+                $timeString,
+                $errors === false ? 'unknown error' : implode('; ', $errors['errors']),
+            ));
         }
+
+        return $dateTime;
     }
 }

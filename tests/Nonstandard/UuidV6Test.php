@@ -87,14 +87,24 @@ class UuidV6Test extends TestCase
                 'uuid' => '1b21dd21-4814-6000-9669-00007ffffffe',
                 'expected' => '1.677722',
             ],
+
+            // These are before the epoch. The "U.u" format shows the whole seconds rounded down and the microseconds
+            // after them, so "-1.895142" is 0.104858 seconds before the epoch.
             [
                 'uuid' => '1b21dd21-3714-6000-9669-00007ffffffe',
-                'expected' => '0.104858',
+                'expected' => '-1.895142',
             ],
             [
                 'uuid' => '1b21dd21-3713-6000-9669-00007ffffffe',
-                'expected' => '0.105267',
+                'expected' => '-1.894733',
             ],
+
+            // One microsecond before the epoch.
+            [
+                'uuid' => '1b21dd21-3813-6ff6-9669-00007ffffffe',
+                'expected' => '-1.999999',
+            ],
+
             [
                 'uuid' => '1b21dd21-2e8a-6980-8d4f-acde48001122',
                 'expected' => '-1.000000',

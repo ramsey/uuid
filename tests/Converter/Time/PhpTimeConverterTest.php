@@ -13,6 +13,10 @@ use Ramsey\Uuid\Math\BrickMathCalculator;
 use Ramsey\Uuid\Test\TestCase;
 use Ramsey\Uuid\Type\Hexadecimal;
 
+use function dechex;
+use function ini_set;
+use function mt_rand;
+use function mt_srand;
 use function sprintf;
 
 class PhpTimeConverterTest extends TestCase
@@ -67,6 +71,50 @@ class PhpTimeConverterTest extends TestCase
         );
 
         $converter->calculateTime('1234', '56.78');
+    }
+
+    /**
+     * @dataProvider providePrecision
+     */
+    public function testConvertTimeMatchesGenericTimeConverter(string $precision): void
+    {
+        $originalPrecision = ini_set('precision', $precision);
+
+        try {
+            $calculator = new BrickMathCalculator();
+            $genericConverter = new GenericTimeConverter($calculator);
+            $converter = new PhpTimeConverter($calculator, Mockery::mock(GenericTimeConverter::class));
+
+            mt_srand(1700000000);
+
+            for ($i = 0; $i < 10000; $i++) {
+                $uuidTimestamp = new Hexadecimal(dechex(mt_rand(0, 0x0fffffffffffffff)));
+                $expected = $genericConverter->convertTime($uuidTimestamp);
+                $actual = $converter->convertTime($uuidTimestamp);
+                $message = sprintf('For UUID timestamp %s', $uuidTimestamp->toString());
+
+                $this->assertSame($expected->getSeconds()->toString(), $actual->getSeconds()->toString(), $message);
+                $this->assertSame(
+                    $expected->getMicroseconds()->toString(),
+                    $actual->getMicroseconds()->toString(),
+                    $message,
+                );
+            }
+        } finally {
+            ini_set('precision', (string) $originalPrecision);
+        }
+    }
+
+    /**
+     * @return array<array{precision: string}>
+     */
+    public function providePrecision(): array
+    {
+        return [
+            ['precision' => '14'],
+            ['precision' => '17'],
+            ['precision' => '-1'],
+        ];
     }
 
     /**
@@ -134,25 +182,47 @@ class PhpTimeConverterTest extends TestCase
                 'microseconds' => '0',
             ],
 
-            // One microsecond before the epoch: PHP renders "-1.0E-6", which must not
-            // be misparsed as microseconds.
+            // Microseconds that begin with a zero: 1700000000.0123456 rounds to 1700000000.012346.
             [
-                'uuidTimestamp' => new Hexadecimal('1b21dd213813ff6'),
-                'unixTimestamp' => '0',
-                'microseconds' => '1',
+                'uuidTimestamp' => new Hexadecimal('1ee833b04b1a240'),
+                'unixTimestamp' => '1700000000',
+                'microseconds' => '12346',
             ],
 
-            // With the default precision of 14, PHP renders these as "1700000000.1" and "1759600000.99", so the
-            // microseconds must not be taken from the float string.
+            // Rounding to the nearest microsecond moves to the next second: 1700000000.9999995.
             [
-                'uuidTimestamp' => new Hexadecimal('1ee833b04bf042a'),
-                'unixTimestamp' => '1700000000',
-                'microseconds' => '100049',
+                'uuidTimestamp' => new Hexadecimal('1ee833b0548567b'),
+                'unixTimestamp' => '1700000001',
+                'microseconds' => '0',
             ],
+
+            // Before the epoch, the seconds are rounded down and the microseconds count forward from them. One
+            // microsecond before the epoch is -1 seconds and 999999 microseconds.
             [
-                'uuidTimestamp' => new Hexadecimal('1f0a14a15900fea'),
-                'unixTimestamp' => '1759600000',
-                'microseconds' => '990001',
+                'uuidTimestamp' => new Hexadecimal('1b21dd213813ff6'),
+                'unixTimestamp' => '-1',
+                'microseconds' => '999999',
+            ],
+
+            // One and a half seconds before the epoch.
+            [
+                'uuidTimestamp' => new Hexadecimal('1b21dd2129c5e40'),
+                'unixTimestamp' => '-2',
+                'microseconds' => '500000',
+            ],
+
+            // Six hundred nanoseconds before the epoch rounds to one microsecond before it.
+            [
+                'uuidTimestamp' => new Hexadecimal('1b21dd213813ffa'),
+                'unixTimestamp' => '-1',
+                'microseconds' => '999999',
+            ],
+
+            // Exactly half a microsecond before the epoch rounds up to the epoch.
+            [
+                'uuidTimestamp' => new Hexadecimal('1b21dd213813ffb'),
+                'unixTimestamp' => '0',
+                'microseconds' => '0',
             ],
         ];
     }

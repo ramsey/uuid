@@ -6,6 +6,19 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 
+## Unreleased
+
+### Changed
+
+* For times before the Unix epoch, `GenericTimeConverter::convertTime()` and `PhpTimeConverter::convertTime()` now return the seconds rounded down, with microseconds that count forward from them. For example, 1.5 seconds before the epoch is now -2 seconds and 500000 microseconds, where it was -1 seconds and 500000 microseconds. The microseconds are added to the seconds, so -2 seconds plus 0.5 seconds is -1.5 seconds. `Time::toString()` returns `-1.500000` for this time. The `getDateTime()` methods read the time from any `TimeConverterInterface` implementation in the same way.
+
+### Fixed
+
+* `PhpTimeConverter::convertTime()` no longer returns wrong microseconds, such as dropping a leading zero, depending on the `precision` ini setting. It now uses integer math.
+* `getDateTime()` no longer returns a time after the Unix epoch for UUIDs whose time is less than one second before it.
+* `GenericTimeConverter::convertTime()` and `PhpTimeConverter::convertTime()` no longer return a wrong time for times before the Unix epoch. For times less than one second before the epoch, the minus sign was lost. For earlier times, `calculateTime()` read the returned seconds and microseconds as a different time, so a timestamp 1.5 seconds before the epoch converted back as 0.5 seconds before it.
+
+
 ## 4.9.4 - 2026-09-16
 
 ### Fixed

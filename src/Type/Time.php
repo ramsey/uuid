@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace Ramsey\Uuid\Type;
 
+use Brick\Math\BigDecimal;
 use Ramsey\Uuid\Exception\UnsupportedOperationException;
 use Ramsey\Uuid\Type\Integer as IntegerObject;
 use ValueError;
@@ -59,9 +60,15 @@ final class Time implements TypeInterface
         return $this->microseconds;
     }
 
+    /**
+     * Returns the time as a decimal number of seconds, with six digits after the decimal point
+     *
+     * The microseconds are added to the seconds, so a time of -2 seconds and 500000 microseconds is "-1.500000".
+     */
     public function toString(): string
     {
-        return $this->seconds->toString() . '.' . sprintf('%06s', $this->microseconds->toString());
+        return (string) BigDecimal::of($this->seconds->toString())
+            ->plus(BigDecimal::ofUnscaledValue($this->microseconds->toString(), 6));
     }
 
     public function __toString(): string
