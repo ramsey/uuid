@@ -9,6 +9,8 @@ use Ramsey\Uuid\Test\TestCase;
 
 use function array_merge;
 use function in_array;
+use function str_repeat;
+use function strlen;
 use function strtoupper;
 
 class ValidatorTest extends TestCase
@@ -168,6 +170,34 @@ class ValidatorTest extends TestCase
             'urn: prefix' => ['urn:ff6f8cb0-c57d-11e1-9b21-0800200c9a66'],
             'braces' => ['{ff6f8cb0-c57d-11e1-9b21-0800200c9a66}'],
             'prefix and braces' => ['urn:uuid:{ff6f8cb0-c57d-11e1-9b21-0800200c9a66}'],
+        ];
+    }
+
+    public function testValidateAcceptsTheLongestForm(): void
+    {
+        $value = 'urn:uuid:{ff6f8cb0-c57d-11e1-9b21-0800200c9a66}';
+
+        $this->assertSame(47, strlen($value));
+        $this->assertTrue((new Validator())->validate($value));
+    }
+
+    /**
+     * @dataProvider provideValuesLongerThanTheLongestForm
+     */
+    public function testValidateRefusesValueLongerThanTheLongestForm(string $value): void
+    {
+        $this->assertFalse((new Validator())->validate($value));
+    }
+
+    /**
+     * @return array<string, array{string}>
+     */
+    public function provideValuesLongerThanTheLongestForm(): array
+    {
+        return [
+            'one character longer' => ['urn:uuid:{ff6f8cb0-c57d-11e1-9b21-0800200c9a66} '],
+            'a second closing brace' => ['urn:uuid:{ff6f8cb0-c57d-11e1-9b21-0800200c9a66}}'],
+            'a very long value' => ['{' . str_repeat('a', 100000)],
         ];
     }
 }
