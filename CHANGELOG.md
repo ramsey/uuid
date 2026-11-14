@@ -15,10 +15,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 * `Uuid::uuid7()` now throws `InvalidArgumentException` for a date before 1970-01-01 00:00:00 UTC or after 10889-08-02 05:31:50.655 UTC. Before, it returned a UUID with a wrong timestamp.
 * `Uuid::fromDateTime()`, `GenericTimeConverter::calculateTime()`, and `PhpTimeConverter::calculateTime()` now throw `InvalidArgumentException` for a time before the Gregorian calendar epoch, 1582-10-15 00:00:00 UTC. Before, `PhpTimeConverter` returned a wrong timestamp.
 * `Uuid::fromDateTime()`, `GenericTimeConverter::calculateTime()`, and `PhpTimeConverter::calculateTime()` now throw `InvalidArgumentException` for a time after 5236-03-31 21:21:00.684697 UTC, the last time that fits in the 60-bit timestamp of a version 1, 2, or 6 UUID. Before, the timestamp lost its highest bits, so the UUID's date started again from 1582.
+* `Uuid::uuid7()` now stores the fraction of the millisecond in the 12 bits after the version, using method 3 of RFC 9562 section 6.2. Version 7 UUIDs now sort by creation time to about a microsecond, even when different processes created them. They have 62 random bits, where they had 74, and the UUID for a given date and time has different bits after the timestamp than before. `UnixTimeGenerator` now asks its random generator for 8 bytes for each new counter and 16 bytes for a seed, where it asked for 16 bytes at first and 10 bytes after that.
 * `Uuid::uuid8()` now throws `InvalidArgumentException` unless it receives exactly 16 bytes. Before, shorter input raised a `TypeError`, and the default factory used the first 16 bytes of longer input. The other factory methods throw the same exception when a custom generator returns the wrong number of bytes.
 
 ### Fixed
 
+* A date passed to `Uuid::uuid7()` no longer changes the UUIDs that later calls without a date return. Before, after a call with a future date, every later call returned a UUID with that date until the clock passed it.
+* After a process forks, the parent and the child no longer continue the same version 7 counter with the same numbers, which could produce equal UUIDs in the millisecond of the fork.
 * `PhpTimeConverter::convertTime()` no longer returns wrong microseconds, such as dropping a leading zero, depending on the `precision` ini setting. It now uses integer math; fixed in [#653](https://github.com/ramsey/uuid/pull/653).
 * `getDateTime()` no longer throws `InvalidArgumentException` for version 1 and version 6 UUIDs whose time is just before the Unix epoch, such as `1969-12-31 23:59:59.999999`; fixed in [#645](https://github.com/ramsey/uuid/pull/645).
 * `getDateTime()` no longer returns a time after the Unix epoch for UUIDs whose time is less than one second before it.
