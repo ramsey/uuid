@@ -81,13 +81,13 @@ final class UuidV2 extends Uuid implements UuidInterface, TimeBasedUuidInterface
     /**
      * Returns the local domain used to create this version 2 UUID
      *
-     * @return positive-int
+     * @return int<0, 255>
      */
     public function getLocalDomain(): int
     {
         $fields = $this->getFields();
 
-        /** @var positive-int */
+        /** @var int<0, 255> */
         return (int) hexdec($fields->getClockSeqLow()->toString());
     }
 
