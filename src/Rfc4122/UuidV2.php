@@ -17,12 +17,14 @@ namespace Ramsey\Uuid\Rfc4122;
 use Ramsey\Uuid\Codec\CodecInterface;
 use Ramsey\Uuid\Converter\NumberConverterInterface;
 use Ramsey\Uuid\Converter\TimeConverterInterface;
+use Ramsey\Uuid\Exception\DceSecurityException;
 use Ramsey\Uuid\Exception\InvalidArgumentException;
 use Ramsey\Uuid\Rfc4122\FieldsInterface as Rfc4122FieldsInterface;
 use Ramsey\Uuid\Type\Integer as IntegerObject;
 use Ramsey\Uuid\Uuid;
 
 use function hexdec;
+use function sprintf;
 
 /**
  * DCE Security version, or version 2, UUIDs include local domain identifier, local ID for the specified domain, and
@@ -88,10 +90,21 @@ final class UuidV2 extends Uuid implements UuidInterface
 
     /**
      * Returns the string name of the local domain
+     *
+     * @throws DceSecurityException if the local domain is not one of the DCE Security domains
      */
     public function getLocalDomainName(): string
     {
-        return Uuid::DCE_DOMAIN_NAMES[$this->getLocalDomain()];
+        $localDomain = $this->getLocalDomain();
+
+        if (!isset(Uuid::DCE_DOMAIN_NAMES[$localDomain])) {
+            throw new DceSecurityException(sprintf(
+                'Local domain %d is not a known DCE Security domain',
+                $localDomain,
+            ));
+        }
+
+        return Uuid::DCE_DOMAIN_NAMES[$localDomain];
     }
 
     /**
