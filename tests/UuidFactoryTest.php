@@ -346,6 +346,45 @@ class UuidFactoryTest extends TestCase
         ];
     }
 
+    #[DataProvider('provideBytesAndUuid8String')]
+    public function testUuid8ChangesOnlyVersionAndVariantBits(UuidFactory $factory, string $hex, string $expected): void
+    {
+        /** @var non-empty-string $bytes */
+        $bytes = hex2bin($hex);
+
+        $uuid = $factory->uuid8($bytes);
+
+        $this->assertSame($expected, $uuid->toString());
+    }
+
+    /**
+     * @return array<string, array{UuidFactory, string, string}>
+     */
+    public static function provideBytesAndUuid8String(): array
+    {
+        $factories = [
+            'default factory' => new UuidFactory(),
+            'factory with a feature set' => new UuidFactory(new FeatureSet()),
+            'GUID factory' => new UuidFactory(new FeatureSet(true)),
+        ];
+
+        $cases = [
+            'all bits set' => ['ffffffffffffffffffffffffffffffff', 'ffffffff-ffff-8fff-bfff-ffffffffffff'],
+            'no bits set' => ['00000000000000000000000000000000', '00000000-0000-8000-8000-000000000000'],
+            'mixed bits' => ['0123456789abcdef0123456789abcdef', '01234567-89ab-8def-8123-456789abcdef'],
+        ];
+
+        $provided = [];
+
+        foreach ($factories as $factoryName => $factory) {
+            foreach ($cases as $caseName => $case) {
+                $provided[$factoryName . ', ' . $caseName] = [$factory, $case[0], $case[1]];
+            }
+        }
+
+        return $provided;
+    }
+
     #[DataProvider('provideBytesOfWrongLength')]
     public function testUuid8ThrowsExceptionWhenBytesAreNotSixteenBytesLong(string $bytes, int $length): void
     {

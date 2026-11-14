@@ -89,6 +89,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 * `Uuid::uuid7()` now throws `RandomSourceException` when a custom random generator returns a different number of bytes than `UnixTimeGenerator` asked it for. Before, PHP raised a warning or the UUID had wrong bits.
 * `Uuid::uuid8()` now throws `InvalidArgumentException` unless it receives exactly 16 bytes. Before, shorter input raised a `TypeError`, and the default factory used the first 16 bytes of longer input. The other factory methods throw the same exception when a custom generator returns the wrong number of bytes.
 
+### Deprecated
+
+* `BinaryUtils::applyVariant()` and `BinaryUtils::applyVersion()` are deprecated. ramsey/uuid no longer uses them.
+
 ### Fixed
 
 * A date passed to `Uuid::uuid7()` no longer changes the UUIDs that later calls without a date return. Before, after a call with a future date, every later call returned a UUID with that date until the clock passed it.

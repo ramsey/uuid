@@ -37,7 +37,9 @@ use Ramsey\Uuid\Type\Time;
 use Ramsey\Uuid\Validator\ValidatorInterface;
 
 use function bin2hex;
+use function chr;
 use function hex2bin;
+use function ord;
 use function str_pad;
 use function strlen;
 use function strtolower;
@@ -461,21 +463,21 @@ class UuidFactory implements UuidFactoryInterface
             );
         }
 
-        $bytesWithVariantAndVersion = BinaryUtils::applyVersionAndVariant($bytes, $version);
+        // The version is the first four bits of the seventh byte, and the variant is the first two bits of the ninth.
+        $bytes[6] = chr(ord($bytes[6]) & 0x0f | ($version->value & 0x0f) << 4);
+        $bytes[8] = chr(ord($bytes[8]) & 0x3f | 0x80);
 
         if ($this->isDefaultFeatureSet) {
-            return LazyUuidFromString::fromBytes($bytesWithVariantAndVersion);
+            return LazyUuidFromString::fromBytes($bytes);
         }
 
         // GUID fields store the first three fields in little-endian byte order.
         if ($this->uuidBuilder instanceof GuidBuilder) {
-            $bytesWithVariantAndVersion = $bytesWithVariantAndVersion[3] . $bytesWithVariantAndVersion[2]
-                . $bytesWithVariantAndVersion[1] . $bytesWithVariantAndVersion[0]
-                . $bytesWithVariantAndVersion[5] . $bytesWithVariantAndVersion[4]
-                . $bytesWithVariantAndVersion[7] . $bytesWithVariantAndVersion[6]
-                . substr($bytesWithVariantAndVersion, 8);
+            $bytes = $bytes[3] . $bytes[2] . $bytes[1] . $bytes[0]
+                . $bytes[5] . $bytes[4] . $bytes[7] . $bytes[6]
+                . substr($bytes, 8);
         }
 
-        return $this->uuid($bytesWithVariantAndVersion);
+        return $this->uuid($bytes);
     }
 }
