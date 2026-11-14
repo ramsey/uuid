@@ -75,7 +75,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 * Remove dependency on ramsey/collection package.
 
 
-## 4.x - Unreleased
+## 4.10.0 - 2026-11-14
 
 ### Changed
 
