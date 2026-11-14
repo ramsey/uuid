@@ -130,7 +130,7 @@ final class Integer implements NumberInterface
             $value = substr($value, 1);
         }
 
-        if (!preg_match('/^\d+$/', $value)) {
+        if (!preg_match('/\A\d+\z/', $value)) {
             throw new InvalidArgumentException(
                 'Value must be a signed integer or a string containing only '
                 . 'digits 0-9 and, optionally, a sign (+ or -)'

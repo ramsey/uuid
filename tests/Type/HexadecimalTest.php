@@ -70,6 +70,8 @@ class HexadecimalTest extends TestCase
             ['123456.789'],
             ['foobar'],
             ['0xfoobar'],
+            ["abc\n"],
+            ["\nabc"],
         ];
     }
 

@@ -121,7 +121,7 @@ final class Hexadecimal implements TypeInterface
             $value = substr($value, 2);
         }
 
-        if (!preg_match('/^[A-Fa-f0-9]+$/', $value)) {
+        if (!preg_match('/\A[A-Fa-f0-9]+\z/', $value)) {
             throw new InvalidArgumentException('Value must be a hexadecimal number');
         }
 

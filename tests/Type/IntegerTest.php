@@ -191,6 +191,8 @@ class IntegerTest extends TestCase
             ['123abc'],
             ['abc123'],
             ['foobar'],
+            ["123\n"],
+            ["-123\n"],
         ];
     }
 
