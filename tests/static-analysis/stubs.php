@@ -3,7 +3,7 @@
 /**
  * Stubs for static analysis
  *
- * @codingStandardsIgnoreFile
+ * phpcs:ignoreFile
  */
 
 if (!defined('UUID_TYPE_DEFAULT')) {

@@ -23,7 +23,6 @@ use Ramsey\Uuid\Type\Integer as IntegerObject;
 use Ramsey\Uuid\Type\Time;
 
 use function str_pad;
-use function str_starts_with;
 use function strcmp;
 use function strlen;
 
@@ -92,7 +91,7 @@ class GenericTimeConverter implements TimeConverterInterface
          */
         $uuidTime = $this->calculator->add($sec, $usec, new IntegerObject(self::GREGORIAN_TO_UNIX_INTERVALS));
 
-        if (str_starts_with($uuidTime->toString(), '-')) {
+        if ($uuidTime->isNegative()) {
             throw new InvalidArgumentException(
                 'The time is earlier than the Gregorian calendar epoch, 1582-10-15 00:00:00 UTC',
             );
