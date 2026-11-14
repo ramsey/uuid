@@ -25,6 +25,7 @@ use Ramsey\Uuid\Provider\NodeProviderInterface;
 use Ramsey\Uuid\Provider\Time\FixedTimeProvider;
 use Ramsey\Uuid\Rfc4122\FieldsInterface as Rfc4122FieldsInterface;
 use Ramsey\Uuid\Type\Hexadecimal;
+use Ramsey\Uuid\Type\Integer as IntegerObject;
 use Ramsey\Uuid\Type\Time;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidFactory;
@@ -35,6 +36,7 @@ use function bin2hex;
 use function hex2bin;
 use function str_replace;
 use function strtoupper;
+use function substr;
 
 class UuidFactoryTest extends TestCase
 {
@@ -283,10 +285,20 @@ class UuidFactoryTest extends TestCase
                 1,
                 'ff6f8cb0-c57d-11e1-9b21-0900200c9a66',
             ],
+            'uuid2' => [
+                fn (UuidFactory $f): UuidInterface => $f->uuid2(
+                    Uuid::DCE_DOMAIN_ORG,
+                    new IntegerObject(1001),
+                    null,
+                    0x1b,
+                ),
+                2,
+                '000003e9-c57d-21e1-9b02-0900200c9a66',
+            ],
             'uuid3' => [
                 fn (UuidFactory $f): UuidInterface => $f->uuid3(Uuid::fromString(Uuid::NAMESPACE_URL), 'foo'),
                 3,
-                Uuid::uuid3(Uuid::NAMESPACE_URL, 'foo')->toString(),
+                'a5bf60bd-fe2d-3fac-bbd7-404751e6ca66',
             ],
             'uuid4' => [
                 fn (UuidFactory $f): UuidInterface => $f->uuid4(),
@@ -296,7 +308,7 @@ class UuidFactoryTest extends TestCase
             'uuid5' => [
                 fn (UuidFactory $f): UuidInterface => $f->uuid5(Uuid::fromString(Uuid::NAMESPACE_URL), 'foo'),
                 5,
-                Uuid::uuid5(Uuid::NAMESPACE_URL, 'foo')->toString(),
+                '7da78284-2f14-5e7f-95e1-baaa9027c26f',
             ],
             'uuid6' => [
                 fn (UuidFactory $f): UuidInterface => $f->uuid6(null, 0x1b21),
@@ -312,6 +324,15 @@ class UuidFactoryTest extends TestCase
                 fn (UuidFactory $f): UuidInterface => $f->uuid8((string) hex2bin('000102030405060708090a0b0c0d0e0f')),
                 8,
                 '00010203-0405-8607-8809-0a0b0c0d0e0f',
+            ],
+            'fromDateTime' => [
+                fn (UuidFactory $f): UuidInterface => $f->fromDateTime(
+                    new DateTimeImmutable('@1341368074.491'),
+                    null,
+                    0x1b21,
+                ),
+                1,
+                'ff6f8cb0-c57d-11e1-9b21-0900200c9a66',
             ],
         ];
     }
