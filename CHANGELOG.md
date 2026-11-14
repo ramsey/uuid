@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Changed
 
 * For times before the Unix epoch, `GenericTimeConverter::convertTime()` and `PhpTimeConverter::convertTime()` now return the seconds rounded down, with microseconds that count forward from them. For example, 1.5 seconds before the epoch is now -2 seconds and 500000 microseconds, where it was -1 seconds and 500000 microseconds. The microseconds are added to the seconds, so -2 seconds plus 0.5 seconds is -1.5 seconds. `Time::toString()` returns `-1.500000` for this time. The `getDateTime()` methods read the time from any `TimeConverterInterface` implementation in the same way.
+* `Uuid::fromString()`, the string codecs, and the validators now accept only the standard forms of a UUID string: 32 hexadecimal digits with hyphens in all four standard positions or with no hyphens, optionally in one pair of braces, optionally after one `urn:` prefix, one `uuid:` prefix, or both in that order. Before, they removed these prefixes, braces, and (in the codecs) hyphens from anywhere in the string, so strings such as `{{6ba7b8109dad-11d180b400c04fd430c8uuid:` were read as UUIDs.
+* `Uuid::uuid7()` now throws `InvalidArgumentException` for a date before 1970-01-01 00:00:00 UTC or after 10889-08-02 05:31:50.655 UTC. Before, it returned a UUID with a wrong timestamp.
+* `Uuid::fromDateTime()`, `GenericTimeConverter::calculateTime()`, and `PhpTimeConverter::calculateTime()` now throw `InvalidArgumentException` for a time before the Gregorian calendar epoch, 1582-10-15 00:00:00 UTC. Before, `PhpTimeConverter` returned a wrong timestamp.
+* `Uuid::uuid8()` now throws `InvalidArgumentException` unless it receives exactly 16 bytes. Before, shorter input raised a `TypeError`, and the default factory used the first 16 bytes of longer input. The other factory methods throw the same exception when a custom generator returns the wrong number of bytes.
 
 ### Fixed
 
@@ -20,6 +24,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 * `GenericTimeConverter::convertTime()` and `PhpTimeConverter::convertTime()` no longer return a wrong time for times before the Unix epoch. For times less than one second before the epoch, the minus sign was lost. For earlier times, `calculateTime()` read the returned seconds and microseconds as a different time, so a timestamp 1.5 seconds before the epoch converted back as 0.5 seconds before it.
 * Factories built with `new FeatureSet(useGuids: true)` now generate valid GUIDs. Before, `uuid1()` always threw `UnableToBuildUuidException`, other methods threw for some values, and the GUIDs they returned had the wrong version. Because of this fix, `uuid3()` and `uuid5()` on such a factory now return different GUIDs than before for the same namespace and name, so GUIDs stored from earlier versions will not match; fixed in [#651](https://github.com/ramsey/uuid/pull/651).
 * `FeatureSet::setTimeProvider()` and `FeatureSet::setNodeProvider()` now also apply to version 2 (DCE Security) UUIDs, and `FeatureSet::setCalculator()` now also rebuilds the builder and codec so they use the new calculator. As a result, `FeatureSet::getBuilder()` and `FeatureSet::getCodec()` return new objects after `setCalculator()` is called; fixed in [#652](https://github.com/ramsey/uuid/pull/652).
+* `Hexadecimal`, `Integer`, and the `$node` parameter of `Uuid::uuid1()` no longer accept a value that ends with a newline character. Before, `Uuid::uuid1()` returned a malformed UUID for such a node.
+* `BuilderCollection::unserialize()` and `NodeProviderCollection::unserialize()` now throw `UnsupportedOperationException` for a value that is not a serialized array, instead of raising a `TypeError`.
+* Unserializing a lazy UUID now throws `InvalidUuidStringException` when the serialized value is not a UUID string. Before, a changed serialized value produced a `UuidInterface` object whose `toString()` method returned that value as it was.
 
 
 ## 4.9.4 - 2026-09-16
