@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Ramsey\Uuid\Test;
 
 use Mockery;
+use Mockery\MockInterface;
 use Ramsey\Uuid\Builder\FallbackBuilder;
 use Ramsey\Uuid\Converter\TimeConverterInterface;
 use Ramsey\Uuid\FeatureSet;
@@ -13,6 +14,7 @@ use Ramsey\Uuid\Generator\PeclUuidTimeGenerator;
 use Ramsey\Uuid\Generator\UnixTimeGenerator;
 use Ramsey\Uuid\Guid\GuidBuilder;
 use Ramsey\Uuid\Math\BrickMathCalculator;
+use Ramsey\Uuid\Math\CalculatorInterface;
 use Ramsey\Uuid\Provider\Node\StaticNodeProvider;
 use Ramsey\Uuid\Provider\NodeProviderInterface;
 use Ramsey\Uuid\Provider\Time\FixedTimeProvider;
@@ -118,14 +120,53 @@ class FeatureSetTest extends TestCase
 
     public function testSetCalculatorRebuildsBuilderAndCodec(): void
     {
+        $realCalculator = new BrickMathCalculator();
+        $calculator = $this->mockCalculator($realCalculator);
+        $calculator->expects('fromBase')->twice()->andReturnUsing([$realCalculator, 'fromBase']);
+
         $featureSet = new FeatureSet(true);
-        $builder = $featureSet->getBuilder();
-        $codec = $featureSet->getCodec();
+        $featureSet->setCalculator($calculator);
 
-        $featureSet->setCalculator(new BrickMathCalculator());
+        $decoded = $featureSet->getCodec()->decode('ff6f8cb0-c57d-11e1-9b21-0800200c9a66');
+        $built = $featureSet->getBuilder()->build($featureSet->getCodec(), $decoded->getBytes());
 
-        $this->assertNotSame($builder, $featureSet->getBuilder());
-        $this->assertNotSame($codec, $featureSet->getCodec());
         $this->assertInstanceOf(GuidBuilder::class, $featureSet->getBuilder());
+        $this->assertSame('ff6f8cb0-c57d-11e1-9b21-0800200c9a66', $built->toString());
+        $this->assertSame('339532337419071774305803111643925486182', $decoded->getInteger()->toString());
+        $this->assertSame('339532337419071774305803111643925486182', $built->getInteger()->toString());
+    }
+
+    public function testSetCalculatorRebuildsDceSecurityGenerator(): void
+    {
+        $realCalculator = new BrickMathCalculator();
+        $calculator = $this->mockCalculator($realCalculator);
+        $calculator->expects('toBase')->once()->andReturnUsing([$realCalculator, 'toBase']);
+
+        $featureSet = new FeatureSet();
+        $featureSet->setCalculator($calculator);
+
+        $bytes = $featureSet->getDceSecurityGenerator()->generate(Uuid::DCE_DOMAIN_ORG, new IntegerObject(1001));
+
+        $this->assertSame('000003e9', bin2hex(substr($bytes, 0, 4)));
+    }
+
+    /**
+     * Returns a mock calculator that passes every call to the given calculator
+     *
+     * @return CalculatorInterface&MockInterface
+     */
+    private function mockCalculator(CalculatorInterface $realCalculator): CalculatorInterface
+    {
+        $calculator = Mockery::mock(CalculatorInterface::class);
+        $calculator->allows('add')->andReturnUsing([$realCalculator, 'add'])->byDefault();
+        $calculator->allows('subtract')->andReturnUsing([$realCalculator, 'subtract'])->byDefault();
+        $calculator->allows('multiply')->andReturnUsing([$realCalculator, 'multiply'])->byDefault();
+        $calculator->allows('divide')->andReturnUsing([$realCalculator, 'divide'])->byDefault();
+        $calculator->allows('fromBase')->andReturnUsing([$realCalculator, 'fromBase'])->byDefault();
+        $calculator->allows('toBase')->andReturnUsing([$realCalculator, 'toBase'])->byDefault();
+        $calculator->allows('toHexadecimal')->andReturnUsing([$realCalculator, 'toHexadecimal'])->byDefault();
+        $calculator->allows('toInteger')->andReturnUsing([$realCalculator, 'toInteger'])->byDefault();
+
+        return $calculator;
     }
 }
