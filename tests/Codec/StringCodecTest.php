@@ -7,7 +7,7 @@ namespace Ramsey\Uuid\Test\Codec;
 use InvalidArgumentException;
 use Mockery;
 use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub;
 use Ramsey\Uuid\Builder\UuidBuilderInterface;
 use Ramsey\Uuid\Codec\StringCodec;
 use Ramsey\Uuid\Exception\InvalidUuidStringException;
@@ -22,8 +22,8 @@ use function pack;
 
 class StringCodecTest extends TestCase
 {
-    private UuidBuilderInterface & MockObject $builder;
-    private UuidInterface & MockObject $uuid;
+    private UuidBuilderInterface & Stub $builder;
+    private UuidInterface & Stub $uuid;
     private Fields $fields;
 
     /**
@@ -34,8 +34,8 @@ class StringCodecTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->builder = $this->getMockBuilder(UuidBuilderInterface::class)->getMock();
-        $this->uuid = $this->getMockBuilder(UuidInterface::class)->getMock();
+        $this->builder = $this->createStub(UuidBuilderInterface::class);
+        $this->uuid = $this->createStub(UuidInterface::class);
 
         /** @var non-empty-string $bytes */
         $bytes = (string) hex2bin('1234567812344bcdabef1234abcd4321');
@@ -50,11 +50,12 @@ class StringCodecTest extends TestCase
 
     public function testEncodeUsesFieldsArray(): void
     {
-        $this->uuid->expects($this->once())
+        $uuid = $this->createMock(UuidInterface::class);
+        $uuid->expects($this->once())
             ->method('getFields')
             ->willReturn($this->fields);
         $codec = new StringCodec($this->builder);
-        $codec->encode($this->uuid);
+        $codec->encode($uuid);
     }
 
     public function testEncodeReturnsFormattedString(): void
@@ -83,6 +84,7 @@ class StringCodecTest extends TestCase
 
     public function testDecodeUsesBuilderOnFields(): void
     {
+        $builder = $this->createMock(UuidBuilderInterface::class);
         $fields = [
             'time_low' => $this->fields->getTimeLow()->toString(),
             'time_mid' => $this->fields->getTimeMid()->toString(),
@@ -95,10 +97,10 @@ class StringCodecTest extends TestCase
         $bytes = hex2bin(implode('', $fields));
 
         $string = 'uuid:12345678-1234-4bcd-abef-1234abcd4321';
-        $this->builder->expects($this->once())
+        $builder->expects($this->once())
             ->method('build')
             ->with($this->isInstanceOf(StringCodec::class), $bytes);
-        $codec = new StringCodec($this->builder);
+        $codec = new StringCodec($builder);
         $codec->decode($string);
     }
 
@@ -155,12 +157,13 @@ class StringCodecTest extends TestCase
     #[DataProvider('provideAcceptedStrings')]
     public function testDecodeAcceptsStandardFormsOfUuidString(string $string): void
     {
-        $this->builder->expects($this->once())
+        $builder = $this->createMock(UuidBuilderInterface::class);
+        $builder->expects($this->once())
             ->method('build')
             ->with($this->anything(), hex2bin('123456781234abcdabef1234abcd4321'))
             ->willReturn($this->uuid);
 
-        $codec = new StringCodec($this->builder);
+        $codec = new StringCodec($builder);
 
         $this->assertSame($this->uuid, $codec->decode($string));
     }
@@ -187,9 +190,10 @@ class StringCodecTest extends TestCase
     #[DataProvider('provideRefusedStrings')]
     public function testDecodeThrowsExceptionForNonstandardFormsOfUuidString(string $string): void
     {
-        $this->builder->expects($this->never())->method('build');
+        $builder = $this->createMock(UuidBuilderInterface::class);
+        $builder->expects($this->never())->method('build');
 
-        $codec = new StringCodec($this->builder);
+        $codec = new StringCodec($builder);
 
         $this->expectException(InvalidUuidStringException::class);
         $this->expectExceptionMessage('Invalid UUID string: ' . $string);

@@ -9,7 +9,7 @@ use DateTimeImmutable;
 use DateTimeInterface;
 use Mockery;
 use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub;
 use Ramsey\Uuid\Builder\UuidBuilderInterface;
 use Ramsey\Uuid\Codec\CodecInterface;
 use Ramsey\Uuid\Converter\NumberConverterInterface;
@@ -135,23 +135,23 @@ class UuidFactoryTest extends TestCase
     {
         $uuidFactory = new UuidFactory();
 
-        /** @var MockObject & CodecInterface $codec */
-        $codec = $this->getMockBuilder(CodecInterface::class)->getMock();
+        /** @var Stub & CodecInterface $codec */
+        $codec = $this->createStub(CodecInterface::class);
         $uuidFactory->setCodec($codec);
         $this->assertSame($codec, $uuidFactory->getCodec());
 
-        /** @var MockObject & TimeGeneratorInterface $timeGenerator */
-        $timeGenerator = $this->getMockBuilder(TimeGeneratorInterface::class)->getMock();
+        /** @var Stub & TimeGeneratorInterface $timeGenerator */
+        $timeGenerator = $this->createStub(TimeGeneratorInterface::class);
         $uuidFactory->setTimeGenerator($timeGenerator);
         $this->assertSame($timeGenerator, $uuidFactory->getTimeGenerator());
 
-        /** @var MockObject & NumberConverterInterface $numberConverter */
-        $numberConverter = $this->getMockBuilder(NumberConverterInterface::class)->getMock();
+        /** @var Stub & NumberConverterInterface $numberConverter */
+        $numberConverter = $this->createStub(NumberConverterInterface::class);
         $uuidFactory->setNumberConverter($numberConverter);
         $this->assertSame($numberConverter, $uuidFactory->getNumberConverter());
 
-        /** @var MockObject & UuidBuilderInterface $uuidBuilder */
-        $uuidBuilder = $this->getMockBuilder(UuidBuilderInterface::class)->getMock();
+        /** @var Stub & UuidBuilderInterface $uuidBuilder */
+        $uuidBuilder = $this->createStub(UuidBuilderInterface::class);
         $uuidFactory->setUuidBuilder($uuidBuilder);
         $this->assertSame($uuidBuilder, $uuidFactory->getUuidBuilder());
     }
