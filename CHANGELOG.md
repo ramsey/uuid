@@ -17,6 +17,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Changed
 
+* The minimum PHP version is now 8.3.
 * Remove the following deprecated classes and interfaces:
   * `Ramsey\Uuid\Builder\BuilderCollection`
   * `Ramsey\Uuid\Builder\DefaultUuidBuilder`
