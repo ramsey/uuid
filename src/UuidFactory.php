@@ -36,14 +36,13 @@ use Ramsey\Uuid\Type\Time;
 use Ramsey\Uuid\Validator\ValidatorInterface;
 
 use function bin2hex;
+use function chr;
 use function hex2bin;
-use function pack;
+use function ord;
 use function str_pad;
 use function strlen;
 use function strtolower;
 use function substr;
-use function substr_replace;
-use function unpack;
 
 use const STR_PAD_LEFT;
 
@@ -463,18 +462,9 @@ class UuidFactory implements UuidFactoryInterface
             );
         }
 
-        /** @var int[] $unpackedTime */
-        $unpackedTime = unpack('n*', substr($bytes, 6, 2));
-        $timeHi = $unpackedTime[1];
-        $timeHiAndVersion = pack('n*', BinaryUtils::applyVersion($timeHi, $version));
-
-        /** @var int[] $unpackedClockSeq */
-        $unpackedClockSeq = unpack('n*', substr($bytes, 8, 2));
-        $clockSeqHi = $unpackedClockSeq[1];
-        $clockSeqHiAndReserved = pack('n*', BinaryUtils::applyVariant($clockSeqHi));
-
-        $bytes = substr_replace($bytes, $timeHiAndVersion, 6, 2);
-        $bytes = substr_replace($bytes, $clockSeqHiAndReserved, 8, 2);
+        // The version is the first four bits of the seventh byte, and the variant is the first two bits of the ninth.
+        $bytes[6] = chr(ord($bytes[6]) & 0x0f | ($version & 0x0f) << 4);
+        $bytes[8] = chr(ord($bytes[8]) & 0x3f | 0x80);
 
         if ($this->isDefaultFeatureSet) {
             return LazyUuidFromString::fromBytes($bytes);
