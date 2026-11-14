@@ -30,7 +30,7 @@ use stdClass;
  * does not change. The remaining 20% of use-cases should refer to the README
  * for details on the easiest path to transition from 3.x to 4.x.
  *
- * @codingStandardsIgnoreFile
+ * phpcs:ignoreFile
  */
 class ExpectedBehaviorTest extends TestCase
 {

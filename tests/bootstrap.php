@@ -3,7 +3,7 @@
 /**
  * Test bootstrap
  *
- * @codingStandardsIgnoreFile
+ * phpcs:ignoreFile
  */
 
 // Ensure floating-point precision is set to 14 (the default) for tests.
