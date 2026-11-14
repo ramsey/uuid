@@ -147,14 +147,28 @@ class UnixTimeGenerator implements TimeGeneratorInterface
 
         $sequence = self::$clockSequence;
 
-        if ($sequence === null || ($time !== $sequence->time && $this->isLater($time, $sequence->time))) {
-            if ($this->isLater($time, self::MAX_TIME)) {
+        if ($sequence === null || $time !== $sequence->time) {
+            if ($time[0] === '-') {
                 throw new TimeSourceException(
-                    'The current time is after 10889-08-02 05:31:50.655 UTC, the last time a version 7 UUID can have',
+                    'The current time is before 1970-01-01 00:00:00 UTC, the first time a version 7 UUID can have',
                 );
             }
 
-            return self::$clockSequence = $this->start($time, $fraction);
+            // In the first second of the Unix Epoch, the seconds are "0", which would be a leading zero.
+            if ($time[0] === '0') {
+                $time = (string) (int) $time;
+            }
+
+            if ($sequence === null || $this->isLater($time, $sequence->time)) {
+                if ($this->isLater($time, self::MAX_TIME)) {
+                    throw new TimeSourceException(
+                        'The current time is after 10889-08-02 05:31:50.655 UTC, '
+                        . 'the last time a version 7 UUID can have',
+                    );
+                }
+
+                return self::$clockSequence = $this->start($time, $fraction);
+            }
         }
 
         if ($fraction > $sequence->fraction && $time === $sequence->time) {
@@ -195,7 +209,8 @@ class UnixTimeGenerator implements TimeGeneratorInterface
             return $sequence;
         }
 
-        $sequence = $this->start($time, $fraction);
+        // In the first second of the Unix Epoch, the seconds are "0", which would be a leading zero.
+        $sequence = $this->start($time[0] === '0' ? (string) (int) $time : $time, $fraction);
         $sequence->givenTime = $time;
         $sequence->givenFraction = $fraction;
 
@@ -356,7 +371,7 @@ class UnixTimeGenerator implements TimeGeneratorInterface
             self::$seed = hash('sha512', self::$seed, true);
 
             /** @var int[] $s */
-            $s = unpack('l*', self::$seed);
+            $s = unpack('V*', self::$seed);
             $s[] = ($s[1] >> 8 & 0xff0000) | ($s[2] >> 16 & 0xff00) | ($s[3] >> 24 & 0xff);
             $s[] = ($s[4] >> 8 & 0xff0000) | ($s[5] >> 16 & 0xff00) | ($s[6] >> 24 & 0xff);
             $s[] = ($s[7] >> 8 & 0xff0000) | ($s[8] >> 16 & 0xff00) | ($s[9] >> 24 & 0xff);

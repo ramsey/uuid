@@ -18,6 +18,7 @@ use Ramsey\Uuid\Test\TestCase;
 use phpmock\mockery\PHPMockery;
 
 use function bin2hex;
+use function hex2bin;
 use function str_repeat;
 use function strlen;
 use function substr;
@@ -207,6 +208,117 @@ class UnixTimeGeneratorTest extends TestCase
 
         $this->assertSame('016f8ca10161005e3fffffffffffffff', bin2hex($unixTimeGenerator->generate()));
         $this->assertSame('016f8ca1016200000000000000000000', bin2hex($unixTimeGenerator->generate()));
+    }
+
+    /**
+     * @runInSeparateProcess
+     * @preserveGlobalState disabled
+     * @dataProvider provideCounterAndIncreasedCounter
+     */
+    public function testGenerateAddsToBothHalvesOfCounter(string $counter, string $expectedCounter, int $intSize): void
+    {
+        $this->mockClock(self::CLOCK);
+
+        $randomGenerator = $this->mockRandomGenerator();
+        $randomGenerator->expects()->generate(8)->andReturns((string) hex2bin($counter));
+        $randomGenerator->expects()->generate(16)->andReturns(self::SEED);
+
+        $unixTimeGenerator = new UnixTimeGenerator($randomGenerator, $intSize);
+
+        $this->assertSame('016f8ca10161005e' . $counter, bin2hex($unixTimeGenerator->generate()));
+        $this->assertSame('016f8ca10161005e' . $expectedCounter, bin2hex($unixTimeGenerator->generate()));
+    }
+
+    /**
+     * The seed makes the first increase 0x3ad87a, and the second half of the counter holds 31 bits.
+     *
+     * @return array<string, array{string, string, int}>
+     */
+    public function provideCounterAndIncreasedCounter(): array
+    {
+        $cases = [
+            'the increase fills the second half' => ['00000002ffc52785', '00000002ffffffff'],
+            'the increase passes the second half by one' => ['00000002ffc52786', '0000000300000000'],
+            'the second half is full' => ['00000002ffffffff', '00000003003ad879'],
+            'the increase fills the whole counter' => ['3fffffffffc52785', '3fffffffffffffff'],
+        ];
+
+        $provided = [];
+
+        foreach ($cases as $name => $case) {
+            $provided[$name . ', 64-bit'] = [$case[0], $case[1], 8];
+            $provided[$name . ', 32-bit'] = [$case[0], $case[1], 4];
+        }
+
+        return $provided;
+    }
+
+    /**
+     * @runInSeparateProcess
+     * @preserveGlobalState disabled
+     * @dataProvider provideIntSize
+     */
+    public function testGenerateMovesToNextFractionWhenIncreasePassesWholeCounterByOne(int $intSize): void
+    {
+        $this->mockClock(self::CLOCK);
+
+        $randomGenerator = $this->mockRandomGenerator();
+        $randomGenerator->expects()->generate(8)->twice()->andReturns(
+            (string) hex2bin('3fffffffffc52786'),
+            "\x00\x00\x00\x00\x00\x00\x00\x01",
+        );
+        $randomGenerator->expects()->generate(16)->andReturns(self::SEED);
+
+        $unixTimeGenerator = new UnixTimeGenerator($randomGenerator, $intSize);
+
+        $this->assertSame('016f8ca10161005e3fffffffffc52786', bin2hex($unixTimeGenerator->generate()));
+        $this->assertSame('016f8ca10161005f0000000000000001', bin2hex($unixTimeGenerator->generate()));
+    }
+
+    /**
+     * @runInSeparateProcess
+     * @preserveGlobalState disabled
+     * @dataProvider provideIntSize
+     */
+    public function testGenerateKeepsOrderInFirstSecondOfUnixEpoch(int $intSize): void
+    {
+        $this->mockClock('0.09999900 0');
+
+        $randomGenerator = $this->mockRandomGenerator();
+        $randomGenerator->allows()->generate(8)->andReturns(self::ALL_BITS_SET);
+        $randomGenerator->expects()->generate(16)->andReturns(self::SEED);
+
+        $unixTimeGenerator = new UnixTimeGenerator($randomGenerator, $intSize);
+
+        // The last microsecond of a millisecond has the fraction 0xffb, so four more fractions follow it.
+        foreach (['0ffb', '0ffc', '0ffd', '0ffe', '0fff'] as $fraction) {
+            $this->assertSame(
+                '000000000063' . $fraction . '3fffffffffffffff',
+                bin2hex($unixTimeGenerator->generate()),
+            );
+        }
+
+        $this->assertSame('00000000006400003fffffffffffffff', bin2hex($unixTimeGenerator->generate()));
+        $this->assertSame('00000000006400013fffffffffffffff', bin2hex($unixTimeGenerator->generate()));
+    }
+
+    /**
+     * @runInSeparateProcess
+     * @preserveGlobalState disabled
+     * @dataProvider provideIntSize
+     */
+    public function testGenerateThrowsExceptionWhenClockIsBeforeUnixEpoch(int $intSize): void
+    {
+        $this->mockClock('0.99900000 -1');
+
+        $unixTimeGenerator = new UnixTimeGenerator($this->mockRandomGenerator(), $intSize);
+
+        $this->expectException(TimeSourceException::class);
+        $this->expectExceptionMessage(
+            'The current time is before 1970-01-01 00:00:00 UTC, the first time a version 7 UUID can have',
+        );
+
+        $unixTimeGenerator->generate();
     }
 
     /**
@@ -483,6 +595,32 @@ class UnixTimeGeneratorTest extends TestCase
             '016f8ca10161005f0000000000000000',
             bin2hex($unixTimeGenerator->generate(null, null, $dateTime)),
         );
+    }
+
+    /**
+     * @runInSeparateProcess
+     * @preserveGlobalState disabled
+     */
+    public function testGenerateMovesEachSequenceToNextFractionAfterForkWhenDateTimeComesFirst(): void
+    {
+        $this->mockClock(self::CLOCK);
+        $this->mockProcessId(100, 100, 200);
+
+        $randomGenerator = $this->mockRandomGenerator();
+        $randomGenerator->allows()->generate(8)->andReturns(self::NO_BITS_SET);
+
+        $unixTimeGenerator = new UnixTimeGenerator($randomGenerator);
+        $dateTime = new DateTimeImmutable('@1578612359.521023');
+
+        $unixTimeGenerator->generate();
+        $unixTimeGenerator->generate(null, null, $dateTime);
+
+        // The process identifier changes here.
+        $this->assertSame(
+            '016f8ca10161005f0000000000000000',
+            bin2hex($unixTimeGenerator->generate(null, null, $dateTime)),
+        );
+        $this->assertSame('016f8ca10161005f0000000000000000', bin2hex($unixTimeGenerator->generate()));
     }
 
     /**
