@@ -16,6 +16,7 @@ namespace Ramsey\Uuid\Generator;
 
 use Brick\Math\BigInteger;
 use DateTimeInterface;
+use Ramsey\Uuid\Exception\InvalidArgumentException;
 use Ramsey\Uuid\Type\Hexadecimal;
 
 use function assert;
@@ -23,6 +24,8 @@ use function hash;
 use function microtime;
 use function pack;
 use function str_pad;
+use function str_starts_with;
+use function strcmp;
 use function strlen;
 use function substr;
 use function substr_replace;
@@ -45,6 +48,11 @@ use const STR_PAD_LEFT;
  */
 class UnixTimeGenerator implements TimeGeneratorInterface
 {
+    /**
+     * The largest count of milliseconds since the Unix Epoch that fits in the 48-bit timestamp.
+     */
+    private const MAX_TIME = '281474976710655';
+
     private static string $time = '';
     private static ?string $seed = null;
     private static int $seedIndex = 0;
@@ -78,6 +86,17 @@ class UnixTimeGenerator implements TimeGeneratorInterface
             $time = substr($time, 11) . substr($time, 2, 3);
         } else {
             $time = $dateTime->format('Uv');
+
+            if (
+                str_starts_with($time, '-')
+                || strlen($time) > strlen(self::MAX_TIME)
+                || (strlen($time) === strlen(self::MAX_TIME) && strcmp($time, self::MAX_TIME) > 0)
+            ) {
+                throw new InvalidArgumentException(
+                    'The date-time for a version 7 UUID must be from 1970-01-01 00:00:00 UTC '
+                    . 'through 10889-08-02 05:31:50.655 UTC',
+                );
+            }
         }
 
         if ($time > self::$time || ($dateTime !== null && $time !== self::$time)) {

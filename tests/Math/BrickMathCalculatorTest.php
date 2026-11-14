@@ -111,4 +111,14 @@ class BrickMathCalculatorTest extends TestCase
         /** @phpstan-ignore argument.type */
         $calculator->toBase(new IntegerObject(42), 1024);
     }
+
+    public function testDivideThrowsExceptionForDivisionByZero(): void
+    {
+        $calculator = new BrickMathCalculator();
+
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Division by zero');
+
+        $calculator->divide(RoundingMode::FLOOR, 0, new IntegerObject(1), new IntegerObject(0));
+    }
 }

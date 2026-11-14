@@ -12,6 +12,7 @@ use Ramsey\Uuid\Converter\Number\GenericNumberConverter;
 use Ramsey\Uuid\Converter\NumberConverterInterface;
 use Ramsey\Uuid\Converter\Time\GenericTimeConverter;
 use Ramsey\Uuid\Converter\TimeConverterInterface;
+use Ramsey\Uuid\Exception\DceSecurityException;
 use Ramsey\Uuid\Exception\InvalidArgumentException;
 use Ramsey\Uuid\Generator\DceSecurityGenerator;
 use Ramsey\Uuid\Generator\DefaultTimeGenerator;
@@ -212,5 +213,18 @@ class UuidV2Test extends TestCase
                 'expectedTime' => '1583209093.940838',
             ],
         ];
+    }
+
+    public function testGetLocalDomainNameThrowsExceptionForUnknownDomain(): void
+    {
+        $uuid = (new UuidFactory())->fromString('000001f5-5cde-21ea-8403-0242ac130003');
+
+        $this->assertInstanceOf(UuidV2::class, $uuid);
+        $this->assertSame(3, $uuid->getLocalDomain());
+
+        $this->expectException(DceSecurityException::class);
+        $this->expectExceptionMessage('Local domain 3 is not a known DCE Security domain');
+
+        $uuid->getLocalDomainName();
     }
 }

@@ -14,6 +14,10 @@ use Ramsey\Uuid\Math\BrickMathCalculator;
 use Ramsey\Uuid\Test\TestCase;
 use Ramsey\Uuid\Type\Hexadecimal;
 
+use function dechex;
+use function ini_set;
+use function mt_rand;
+use function mt_srand;
 use function sprintf;
 
 class PhpTimeConverterTest extends TestCase
@@ -71,6 +75,50 @@ class PhpTimeConverterTest extends TestCase
         );
 
         $converter->calculateTime('1234', '56.78');
+    }
+
+    #[DataProvider('providePrecision')]
+    public function testConvertTimeMatchesGenericTimeConverter(string $precision): void
+    {
+        $originalPrecision = ini_set('precision', $precision);
+
+        try {
+            $calculator = new BrickMathCalculator();
+            $genericConverter = new GenericTimeConverter($calculator);
+            $converter = new PhpTimeConverter($calculator, Mockery::mock(GenericTimeConverter::class));
+
+            mt_srand(1700000000);
+
+            for ($i = 0; $i < 10000; $i++) {
+                /** @var non-empty-string $hex */
+                $hex = dechex(mt_rand(0, 0x0fffffffffffffff));
+                $uuidTimestamp = new Hexadecimal($hex);
+                $expected = $genericConverter->convertTime($uuidTimestamp);
+                $actual = $converter->convertTime($uuidTimestamp);
+                $message = sprintf('For UUID timestamp %s', $uuidTimestamp->toString());
+
+                $this->assertSame($expected->getSeconds()->toString(), $actual->getSeconds()->toString(), $message);
+                $this->assertSame(
+                    $expected->getMicroseconds()->toString(),
+                    $actual->getMicroseconds()->toString(),
+                    $message,
+                );
+            }
+        } finally {
+            ini_set('precision', (string) $originalPrecision);
+        }
+    }
+
+    /**
+     * @return array<array{precision: string}>
+     */
+    public static function providePrecision(): array
+    {
+        return [
+            ['precision' => '14'],
+            ['precision' => '17'],
+            ['precision' => '-1'],
+        ];
     }
 
     /**
@@ -136,6 +184,49 @@ class PhpTimeConverterTest extends TestCase
                 'unixTimestamp' => '0',
                 'microseconds' => '0',
             ],
+
+            // Microseconds that begin with a zero: 1700000000.0123456 rounds to 1700000000.012346.
+            [
+                'uuidTimestamp' => new Hexadecimal('1ee833b04b1a240'),
+                'unixTimestamp' => '1700000000',
+                'microseconds' => '12346',
+            ],
+
+            // Rounding to the nearest microsecond moves to the next second: 1700000000.9999995.
+            [
+                'uuidTimestamp' => new Hexadecimal('1ee833b0548567b'),
+                'unixTimestamp' => '1700000001',
+                'microseconds' => '0',
+            ],
+
+            // Before the epoch, the seconds are rounded down and the microseconds count forward from them. One
+            // microsecond before the epoch is -1 seconds and 999999 microseconds.
+            [
+                'uuidTimestamp' => new Hexadecimal('1b21dd213813ff6'),
+                'unixTimestamp' => '-1',
+                'microseconds' => '999999',
+            ],
+
+            // One and a half seconds before the epoch.
+            [
+                'uuidTimestamp' => new Hexadecimal('1b21dd2129c5e40'),
+                'unixTimestamp' => '-2',
+                'microseconds' => '500000',
+            ],
+
+            // Six hundred nanoseconds before the epoch rounds to one microsecond before it.
+            [
+                'uuidTimestamp' => new Hexadecimal('1b21dd213813ffa'),
+                'unixTimestamp' => '-1',
+                'microseconds' => '999999',
+            ],
+
+            // Exactly half a microsecond before the epoch rounds up to the epoch.
+            [
+                'uuidTimestamp' => new Hexadecimal('1b21dd213813ffb'),
+                'unixTimestamp' => '0',
+                'microseconds' => '0',
+            ],
         ];
     }
 
@@ -187,12 +278,85 @@ class PhpTimeConverterTest extends TestCase
             ],
 
             // This is the last possible time supported by v1 UUIDs:
-            // 60038-03-11 05:36:10.955161
+            // 5236-03-31 21:21:00.684697
+            // It is the last time that fits in the 60 bits of the timestamp.
             [
-                'seconds' => '1832455114570',
-                'microseconds' => '955161',
-                'expected' => 'fffffffffffffffa',
+                'seconds' => '103072857660',
+                'microseconds' => '684697',
+                'expected' => '0ffffffffffffffa',
             ],
+        ];
+    }
+
+    /**
+     * @param numeric-string $seconds
+     * @param numeric-string $microseconds
+     */
+    #[DataProvider('provideTimeBeforeGregorianEpoch')]
+    public function testCalculateTimeThrowsExceptionForTimeBeforeGregorianEpoch(
+        string $seconds,
+        string $microseconds
+    ): void {
+        $converter = new PhpTimeConverter();
+
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'The time is earlier than the Gregorian calendar epoch, 1582-10-15 00:00:00 UTC',
+        );
+
+        $converter->calculateTime($seconds, $microseconds);
+    }
+
+    /**
+     * @return array<string, array{numeric-string, numeric-string}>
+     */
+    public static function provideTimeBeforeGregorianEpoch(): array
+    {
+        return [
+            'one microsecond before' => ['-12219292801', '999999'],
+            'the year 1200' => ['-24298358400', '0'],
+            'beyond the range of a 64-bit integer' => ['-9223372036854775808', '0'],
+        ];
+    }
+
+    public function testCalculateTimeAcceptsGregorianEpoch(): void
+    {
+        $converter = new PhpTimeConverter();
+
+        $this->assertSame('0000000000000000', $converter->calculateTime('-12219292800', '0')->toString());
+    }
+
+    /**
+     * @param numeric-string $seconds
+     * @param numeric-string $microseconds
+     */
+    #[DataProvider('provideTimeAfterLastTimestamp')]
+    public function testCalculateTimeThrowsExceptionForTimeAfterLastTimestamp(
+        string $seconds,
+        string $microseconds
+    ): void {
+        $converter = new PhpTimeConverter();
+
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'The time is later than 5236-03-31 21:21:00.684697 UTC, the last time that fits in a 60-bit timestamp',
+        );
+
+        $converter->calculateTime($seconds, $microseconds);
+    }
+
+    /**
+     * @return array<string, array{numeric-string, numeric-string}>
+     */
+    public static function provideTimeAfterLastTimestamp(): array
+    {
+        return [
+            'one microsecond after' => ['103072857660', '684698'],
+            'the year 5237' => ['103096632000', '0'],
+            'a timestamp of 61 bits' => ['218365008121', '0'],
+            'the last time that fits in 64 bits' => ['1832455114570', '955161'],
+            'a timestamp of more than 64 bits' => ['1900000000000', '0'],
+            'beyond the range of a 64-bit integer' => ['9223372036854775807', '0'],
         ];
     }
 }

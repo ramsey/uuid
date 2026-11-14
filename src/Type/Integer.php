@@ -19,6 +19,7 @@ use ValueError;
 
 use function assert;
 use function is_numeric;
+use function is_string;
 use function ltrim;
 use function preg_match;
 use function sprintf;
@@ -96,11 +97,9 @@ final class Integer implements NumberInterface
      */
     public function __unserialize(array $data): void
     {
-        if (!isset($data['string'])) {
+        if (!is_string($data['string'] ?? null)) {
             throw new ValueError(sprintf('%s(): Argument #1 ($data) is invalid', __METHOD__));
         }
-
-        assert(is_string($data['string']));
 
         $this->value = $this->prepareValue($data['string']);
     }
@@ -119,7 +118,7 @@ final class Integer implements NumberInterface
             $value = substr($value, 1);
         }
 
-        if (!preg_match('/^\d+$/', $value)) {
+        if (!preg_match('/\A\d+\z/', $value)) {
             throw new InvalidArgumentException(
                 'Value must be a signed integer or a string containing only '
                 . 'digits 0-9 and, optionally, a sign (+ or -)'

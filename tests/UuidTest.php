@@ -1682,9 +1682,7 @@ class UuidTest extends TestCase
         $uuid = $factory->fromString('b1484596-25dc-11ea-978f-2e728ce88125');
 
         $this->expectException(DateTimeException::class);
-        $this->expectExceptionMessage(
-            'Failed to parse time string (@1234567890.1234567) at position 18 (7): Unexpected character'
-        );
+        $this->expectExceptionMessage('Unable to create a date from the time "1234567890 1234567": Trailing data');
 
         /**
          * @phpstan-ignore-next-line

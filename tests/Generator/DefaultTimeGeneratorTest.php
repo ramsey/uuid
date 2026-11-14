@@ -12,6 +12,7 @@ use PHPUnit\Framework\Attributes\RunInSeparateProcess;
 use PHPUnit\Framework\MockObject\MockObject;
 use Ramsey\Uuid\BinaryUtils;
 use Ramsey\Uuid\Converter\TimeConverterInterface;
+use Ramsey\Uuid\Exception\InvalidArgumentException;
 use Ramsey\Uuid\Exception\RandomSourceException;
 use Ramsey\Uuid\Exception\TimeSourceException;
 use Ramsey\Uuid\FeatureSet;
@@ -182,9 +183,12 @@ class DefaultTimeGeneratorTest extends TestCase
     {
         $timeProvider = new FixedTimeProvider(new Time('1832455114570', '955162'));
         $featureSet = new FeatureSet();
+        $timeConverter = Mockery::mock(TimeConverterInterface::class, [
+            'calculateTime' => new Hexadecimal('10000000000000004'),
+        ]);
         $timeGenerator = new DefaultTimeGenerator(
             $featureSet->getNodeProvider(),
-            $featureSet->getTimeConverter(),
+            $timeConverter,
             $timeProvider
         );
 
@@ -194,5 +198,19 @@ class DefaultTimeGeneratorTest extends TestCase
         );
 
         $timeGenerator->generate();
+    }
+
+    public function testGenerateThrowsExceptionForNodeWithTrailingNewline(): void
+    {
+        $defaultTimeGenerator = new DefaultTimeGenerator(
+            $this->nodeProvider,
+            $this->timeConverter,
+            $this->timeProvider,
+        );
+
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Invalid node value');
+
+        $defaultTimeGenerator->generate("0123456789a\n");
     }
 }

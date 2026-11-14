@@ -19,12 +19,14 @@ use Ramsey\Uuid\Builder\UuidBuilderInterface;
 use Ramsey\Uuid\Codec\CodecInterface;
 use Ramsey\Uuid\Converter\NumberConverterInterface;
 use Ramsey\Uuid\Converter\TimeConverterInterface;
+use Ramsey\Uuid\Exception\InvalidArgumentException;
 use Ramsey\Uuid\Generator\DceSecurityGeneratorInterface;
 use Ramsey\Uuid\Generator\DefaultTimeGenerator;
 use Ramsey\Uuid\Generator\NameGeneratorInterface;
 use Ramsey\Uuid\Generator\RandomGeneratorInterface;
 use Ramsey\Uuid\Generator\TimeGeneratorInterface;
 use Ramsey\Uuid\Generator\UnixTimeGenerator;
+use Ramsey\Uuid\Guid\GuidBuilder;
 use Ramsey\Uuid\Lazy\LazyUuidFromString;
 use Ramsey\Uuid\Provider\NodeProviderInterface;
 use Ramsey\Uuid\Provider\Time\FixedTimeProvider;
@@ -37,6 +39,7 @@ use Ramsey\Uuid\Validator\ValidatorInterface;
 use function bin2hex;
 use function hex2bin;
 use function str_pad;
+use function strlen;
 use function strtolower;
 use function substr;
 
@@ -452,10 +455,25 @@ class UuidFactory implements UuidFactoryInterface
      */
     private function uuidFromBytesAndVersion(string $bytes, Version $version): UuidInterface
     {
+        if (strlen($bytes) !== 16) {
+            throw new InvalidArgumentException(
+                'The byte string must be 16 bytes long; received ' . strlen($bytes) . ' bytes',
+            );
+        }
+
         $bytesWithVariantAndVersion = BinaryUtils::applyVersionAndVariant($bytes, $version);
 
         if ($this->isDefaultFeatureSet) {
             return LazyUuidFromString::fromBytes($bytesWithVariantAndVersion);
+        }
+
+        // GUID fields store the first three fields in little-endian byte order.
+        if ($this->uuidBuilder instanceof GuidBuilder) {
+            $bytesWithVariantAndVersion = $bytesWithVariantAndVersion[3] . $bytesWithVariantAndVersion[2]
+                . $bytesWithVariantAndVersion[1] . $bytesWithVariantAndVersion[0]
+                . $bytesWithVariantAndVersion[5] . $bytesWithVariantAndVersion[4]
+                . $bytesWithVariantAndVersion[7] . $bytesWithVariantAndVersion[6]
+                . substr($bytesWithVariantAndVersion, 8);
         }
 
         return $this->uuid($bytesWithVariantAndVersion);

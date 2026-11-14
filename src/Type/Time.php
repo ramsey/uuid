@@ -14,9 +14,11 @@ declare(strict_types=1);
 
 namespace Ramsey\Uuid\Type;
 
+use Brick\Math\BigDecimal;
 use Ramsey\Uuid\Type\Integer as IntegerObject;
 use ValueError;
 
+use function is_string;
 use function sprintf;
 
 /**
@@ -57,17 +59,17 @@ final class Time implements TypeInterface
     }
 
     /**
+     * Returns the time as a decimal number of seconds, with six digits after the decimal point
+     *
+     * The microseconds are added to the seconds, so a time of -2 seconds and 500000 microseconds is "-1.500000".
+     *
      * @return numeric-string
      */
     public function toString(): string
     {
-        $seconds = $this->seconds->toString();
-        $microseconds = sprintf('%06s', $this->microseconds->toString());
-
-        /** @var numeric-string $time */
-        $time = "$seconds.$microseconds";
-
-        return $time;
+        /** @var non-empty-string&numeric-string */
+        return (string) BigDecimal::of($this->seconds->toString())
+            ->plus(BigDecimal::ofUnscaledValue($this->microseconds->toString(), 6));
     }
 
     /**
@@ -105,12 +107,9 @@ final class Time implements TypeInterface
      */
     public function __unserialize(array $data): void
     {
-        if (!isset($data['seconds']) || !isset($data['microseconds'])) {
+        if (!is_string($data['seconds'] ?? null) || !is_string($data['microseconds'] ?? null)) {
             throw new ValueError(sprintf('%s(): Argument #1 ($data) is invalid', __METHOD__));
         }
-
-        assert(is_string($data['seconds']));
-        assert(is_string($data['microseconds']));
 
         $this->seconds = new IntegerObject($data['seconds']);
         $this->microseconds = new IntegerObject($data['microseconds']);
