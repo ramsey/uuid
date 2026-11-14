@@ -33,6 +33,7 @@ use function hex2bin;
 use function preg_match;
 use function sprintf;
 use function str_replace;
+use function strcmp;
 use function strtolower;
 use function substr;
 
@@ -54,6 +55,11 @@ use function substr;
 final class LazyUuidFromString implements UuidInterface
 {
     public const VALID_REGEX = '/\A[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\z/ms';
+
+    /**
+     * The factory that builds every wrapped UUID; it is created on first use.
+     */
+    private static ?UuidFactory $factory = null;
 
     private ?UuidInterface $unwrapped = null;
 
@@ -211,7 +217,7 @@ final class LazyUuidFromString implements UuidInterface
 
     public function compareTo(UuidInterface $other): int
     {
-        return ($this->unwrapped ?? $this->unwrap())->compareTo($other);
+        return strcmp($this->uuid, $other->toString()) <=> 0;
     }
 
     public function equals(?object $other): bool
@@ -436,6 +442,8 @@ final class LazyUuidFromString implements UuidInterface
 
     private function unwrap(): UuidInterface
     {
-        return $this->unwrapped = (new UuidFactory())->fromString($this->uuid);
+        self::$factory ??= new UuidFactory();
+
+        return $this->unwrapped = self::$factory->fromString($this->uuid);
     }
 }

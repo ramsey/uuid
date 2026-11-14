@@ -108,4 +108,34 @@ class LazyUuidFromStringTest extends TestCase
 
         $uuid->toUuidV6();
     }
+
+    public function testCompareToReturnsTheOrderOfTheUuidStrings(): void
+    {
+        $uuid = new LazyUuidFromString(self::UUID);
+
+        $this->assertSame(1, $uuid->compareTo(new LazyUuidFromString('00000000-0000-4000-8000-000000000000')));
+        $this->assertSame(-1, $uuid->compareTo(new LazyUuidFromString('ffffffff-ffff-4fff-bfff-ffffffffffff')));
+        $this->assertSame(0, $uuid->compareTo(new LazyUuidFromString(self::UUID)));
+    }
+
+    public function testCompareToDoesNotBuildTheWrappedUuid(): void
+    {
+        $uuid = new LazyUuidFromString(self::UUID);
+        $other = new LazyUuidFromString('ffffffff-ffff-4fff-bfff-ffffffffffff');
+
+        $uuid->compareTo($other);
+
+        $property = "\0" . LazyUuidFromString::class . "\0unwrapped";
+
+        $this->assertNull(((array) $uuid)[$property]);
+        $this->assertNull(((array) $other)[$property]);
+    }
+
+    public function testLazyUuidsShareOneNumberConverter(): void
+    {
+        $uuid = new LazyUuidFromString(self::UUID);
+        $other = new LazyUuidFromString('ffffffff-ffff-4fff-bfff-ffffffffffff');
+
+        $this->assertSame($uuid->getNumberConverter(), $other->getNumberConverter());
+    }
 }
