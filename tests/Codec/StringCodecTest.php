@@ -9,6 +9,7 @@ use Mockery;
 use PHPUnit\Framework\MockObject\MockObject;
 use Ramsey\Uuid\Builder\UuidBuilderInterface;
 use Ramsey\Uuid\Codec\StringCodec;
+use Ramsey\Uuid\Exception\InvalidUuidStringException;
 use Ramsey\Uuid\Rfc4122\Fields;
 use Ramsey\Uuid\Rfc4122\FieldsInterface;
 use Ramsey\Uuid\Test\TestCase;
@@ -147,5 +148,79 @@ class StringCodecTest extends TestCase
             ->willReturn($this->uuid);
         $result = $codec->decodeBytes($bytes);
         $this->assertSame($this->uuid, $result);
+    }
+
+    /**
+     * @dataProvider provideAcceptedStrings
+     */
+    public function testDecodeAcceptsStandardFormsOfUuidString(string $string): void
+    {
+        $this->builder->expects($this->once())
+            ->method('build')
+            ->with($this->anything(), hex2bin('123456781234abcdabef1234abcd4321'))
+            ->willReturn($this->uuid);
+
+        $codec = new StringCodec($this->builder);
+
+        $this->assertSame($this->uuid, $codec->decode($string));
+    }
+
+    /**
+     * @return array<string, array{string}>
+     */
+    public function provideAcceptedStrings(): array
+    {
+        return [
+            'hyphens' => ['12345678-1234-abcd-abef-1234abcd4321'],
+            'no hyphens' => ['123456781234abcdabef1234abcd4321'],
+            'uppercase' => ['12345678-1234-ABCD-ABEF-1234ABCD4321'],
+            'urn:uuid: prefix' => ['urn:uuid:12345678-1234-abcd-abef-1234abcd4321'],
+            'uppercase prefix' => ['URN:UUID:12345678-1234-abcd-abef-1234abcd4321'],
+            'uuid: prefix' => ['uuid:12345678-1234-abcd-abef-1234abcd4321'],
+            'urn: prefix' => ['urn:12345678-1234-abcd-abef-1234abcd4321'],
+            'braces' => ['{12345678-1234-abcd-abef-1234abcd4321}'],
+            'braces without hyphens' => ['{123456781234abcdabef1234abcd4321}'],
+            'prefix and braces' => ['urn:uuid:{12345678-1234-abcd-abef-1234abcd4321}'],
+        ];
+    }
+
+    /**
+     * @dataProvider provideRefusedStrings
+     */
+    public function testDecodeThrowsExceptionForNonstandardFormsOfUuidString(string $string): void
+    {
+        $this->builder->expects($this->never())->method('build');
+
+        $codec = new StringCodec($this->builder);
+
+        $this->expectException(InvalidUuidStringException::class);
+        $this->expectExceptionMessage('Invalid UUID string: ' . $string);
+
+        $codec->decode($string);
+    }
+
+    /**
+     * @return array<string, array{string}>
+     */
+    public function provideRefusedStrings(): array
+    {
+        return [
+            'empty' => [''],
+            'hyphens in other positions' => ['1-2-3-4-5-6-7-8-1234abcdabef1234abcd4321'],
+            'some hyphens missing' => ['12345678-1234abcd-abef-1234abcd4321'],
+            'extra hyphen' => ['12345678-1234-abcd-abef-1234abcd4321-'],
+            'repeated prefix' => ['urn:uuid:urn:uuid:12345678-1234-abcd-abef-1234abcd4321'],
+            'prefixes in reverse order' => ['uuid:urn:12345678-1234-abcd-abef-1234abcd4321'],
+            'prefix after the UUID' => ['12345678-1234-abcd-abef-1234abcd4321uuid:'],
+            'prefix inside braces' => ['{urn:uuid:12345678-1234-abcd-abef-1234abcd4321}'],
+            'two pairs of braces' => ['{{12345678-1234-abcd-abef-1234abcd4321}}'],
+            'opening brace only' => ['{12345678-1234-abcd-abef-1234abcd4321'],
+            'closing brace only' => ['12345678-1234-abcd-abef-1234abcd4321}'],
+            'brace inside the UUID' => ['12345678-{1234}-abcd-abef-1234abcd4321'],
+            'trailing newline' => ["12345678-1234-abcd-abef-1234abcd4321\n"],
+            'too few digits' => ['12345678-1234-abcd-abef-1234abcd432'],
+            'too many digits' => ['12345678-1234-abcd-abef-1234abcd43210'],
+            'not hexadecimal' => ['12345678-1234-abcd-abef-1234abcd432g'],
+        ];
     }
 }

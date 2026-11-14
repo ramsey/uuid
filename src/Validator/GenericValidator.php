@@ -17,7 +17,7 @@ namespace Ramsey\Uuid\Validator;
 use Ramsey\Uuid\Uuid;
 
 use function preg_match;
-use function str_replace;
+use function preg_replace;
 
 /**
  * GenericValidator validates strings as UUIDs of any variant
@@ -32,6 +32,11 @@ final class GenericValidator implements ValidatorInterface
     private const VALID_PATTERN = '\A[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}\z';
 
     /**
+     * Pattern to match the optional "urn:" and "uuid:" prefixes and the optional pair of braces around a UUID.
+     */
+    private const WRAPPER_PATTERN = '/\A(?:urn:)?(?:uuid:)?(?:\{(.*)\}|(.*))\z/Dis';
+
+    /**
      * @return non-empty-string
      */
     public function getPattern(): string
@@ -41,8 +46,9 @@ final class GenericValidator implements ValidatorInterface
 
     public function validate(string $uuid): bool
     {
+        // Remove one "urn:" prefix, one "uuid:" prefix, and one pair of braces around the UUID, if present.
         /** @phpstan-ignore possiblyImpure.functionCall */
-        $uuid = str_replace(['urn:', 'uuid:', 'URN:', 'UUID:', '{', '}'], '', $uuid);
+        $uuid = preg_replace(self::WRAPPER_PATTERN, '$1$2', $uuid) ?? $uuid;
 
         /** @phpstan-ignore possiblyImpure.functionCall */
         return $uuid === Uuid::NIL || preg_match('/' . self::VALID_PATTERN . '/Dms', $uuid);

@@ -95,4 +95,55 @@ class GenericValidatorTest extends TestCase
 
         $this->assertSame($expectedPattern, $validator->getPattern());
     }
+
+    /**
+     * @dataProvider provideRefusedWrappers
+     */
+    public function testValidateRefusesRepeatedOrUnmatchedWrappers(string $value): void
+    {
+        $this->assertFalse((new GenericValidator())->validate($value));
+    }
+
+    /**
+     * @return array<string, array{string}>
+     */
+    public function provideRefusedWrappers(): array
+    {
+        return [
+            'repeated prefix' => ['urn:uuid:urn:uuid:ff6f8cb0-c57d-11e1-9b21-0800200c9a66'],
+            'prefixes in reverse order' => ['uuid:urn:ff6f8cb0-c57d-11e1-9b21-0800200c9a66'],
+            'prefix after the UUID' => ['ff6f8cb0-c57d-11e1-9b21-0800200c9a66uuid:'],
+            'prefix inside the UUID' => ['ff6f8cb0-urn:c57d-11e1-9b21-0800200c9a66'],
+            'prefix inside braces' => ['{urn:uuid:ff6f8cb0-c57d-11e1-9b21-0800200c9a66}'],
+            'two pairs of braces' => ['{{ff6f8cb0-c57d-11e1-9b21-0800200c9a66}}'],
+            'opening brace only' => ['{ff6f8cb0-c57d-11e1-9b21-0800200c9a66'],
+            'closing brace only' => ['ff6f8cb0-c57d-11e1-9b21-0800200c9a66}'],
+            'extra closing braces' => ['{ff6f8cb0-c57d-11e1-9b21-0800200c9a66}}}'],
+            'brace inside the UUID' => ['ff6f8cb0-{c57d}-11e1-9b21-0800200c9a66'],
+            'trailing newline after braces' => ["{ff6f8cb0-c57d-11e1-9b21-0800200c9a66}\n"],
+        ];
+    }
+
+    /**
+     * @dataProvider provideAcceptedWrappers
+     */
+    public function testValidateAcceptsOnePrefixAndOnePairOfBraces(string $value): void
+    {
+        $this->assertTrue((new GenericValidator())->validate($value));
+    }
+
+    /**
+     * @return array<string, array{string}>
+     */
+    public function provideAcceptedWrappers(): array
+    {
+        return [
+            'urn:uuid: prefix' => ['urn:uuid:ff6f8cb0-c57d-11e1-9b21-0800200c9a66'],
+            'uppercase prefix' => ['URN:UUID:ff6f8cb0-c57d-11e1-9b21-0800200c9a66'],
+            'uuid: prefix' => ['uuid:ff6f8cb0-c57d-11e1-9b21-0800200c9a66'],
+            'urn: prefix' => ['urn:ff6f8cb0-c57d-11e1-9b21-0800200c9a66'],
+            'braces' => ['{ff6f8cb0-c57d-11e1-9b21-0800200c9a66}'],
+            'prefix and braces' => ['urn:uuid:{ff6f8cb0-c57d-11e1-9b21-0800200c9a66}'],
+        ];
+    }
 }
