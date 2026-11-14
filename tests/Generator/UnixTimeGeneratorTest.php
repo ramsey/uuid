@@ -7,6 +7,7 @@ namespace Ramsey\Uuid\Test\Generator;
 use DateTimeImmutable;
 use Mockery;
 use Mockery\MockInterface;
+use Ramsey\Uuid\Exception\InvalidArgumentException;
 use Ramsey\Uuid\Generator\RandomBytesGenerator;
 use Ramsey\Uuid\Generator\RandomGeneratorInterface;
 use Ramsey\Uuid\Generator\UnixTimeGenerator;
@@ -234,5 +235,57 @@ class UnixTimeGeneratorTest extends TestCase
         $second = $unixTimeGenerator->generate(null, null, $dateTime);
 
         $this->assertTrue($second > $first);
+    }
+
+    /**
+     * @dataProvider provideDateTimeOutOfRange
+     */
+    public function testGenerateThrowsExceptionForDateTimeOutOfRange(string $dateTime): void
+    {
+        $unixTimeGenerator = new UnixTimeGenerator(new RandomBytesGenerator());
+
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'The date-time for a version 7 UUID must be from 1970-01-01 00:00:00 UTC '
+            . 'through 10889-08-02 05:31:50.655 UTC',
+        );
+
+        $unixTimeGenerator->generate(null, null, new DateTimeImmutable($dateTime));
+    }
+
+    /**
+     * @return array<string, array{string}>
+     */
+    public function provideDateTimeOutOfRange(): array
+    {
+        return [
+            'one millisecond before the Unix Epoch' => ['1969-12-31T23:59:59.999+00:00'],
+            'ten years before the Unix Epoch' => ['1960-01-01T00:00:00+00:00'],
+            'one millisecond after the last time' => ['@281474976710.656'],
+            'a thousand years after the last time' => ['@312000000000'],
+        ];
+    }
+
+    /**
+     * @dataProvider provideDateTimeAtEdgeOfRange
+     */
+    public function testGenerateAcceptsDateTimeAtEdgeOfRange(string $dateTime, string $expectedTimeHex): void
+    {
+        $unixTimeGenerator = new UnixTimeGenerator(new RandomBytesGenerator());
+
+        $bytes = $unixTimeGenerator->generate(null, null, new DateTimeImmutable($dateTime));
+
+        $this->assertSame($expectedTimeHex, bin2hex(substr($bytes, 0, 6)));
+    }
+
+    /**
+     * @return array<string, array{string, string}>
+     */
+    public function provideDateTimeAtEdgeOfRange(): array
+    {
+        return [
+            'the Unix Epoch' => ['1970-01-01T00:00:00+00:00', '000000000000'],
+            'the last time' => ['@281474976710.655', 'ffffffffffff'],
+        ];
     }
 }

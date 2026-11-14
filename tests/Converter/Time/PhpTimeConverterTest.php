@@ -284,4 +284,40 @@ class PhpTimeConverterTest extends TestCase
             ],
         ];
     }
+
+    /**
+     * @dataProvider provideTimeBeforeGregorianEpoch
+     */
+    public function testCalculateTimeThrowsExceptionForTimeBeforeGregorianEpoch(
+        string $seconds,
+        string $microseconds
+    ): void {
+        $converter = new PhpTimeConverter();
+
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'The time is earlier than the Gregorian calendar epoch, 1582-10-15 00:00:00 UTC',
+        );
+
+        $converter->calculateTime($seconds, $microseconds);
+    }
+
+    /**
+     * @return array<string, array{string, string}>
+     */
+    public function provideTimeBeforeGregorianEpoch(): array
+    {
+        return [
+            'one microsecond before' => ['-12219292801', '999999'],
+            'the year 1200' => ['-24298358400', '0'],
+            'beyond the range of a 64-bit integer' => ['-9223372036854775808', '0'],
+        ];
+    }
+
+    public function testCalculateTimeAcceptsGregorianEpoch(): void
+    {
+        $converter = new PhpTimeConverter();
+
+        $this->assertSame('0000000000000000', $converter->calculateTime('-12219292800', '0')->toString());
+    }
 }

@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace Ramsey\Uuid\Converter\Time;
 
 use Ramsey\Uuid\Converter\TimeConverterInterface;
+use Ramsey\Uuid\Exception\InvalidArgumentException;
 use Ramsey\Uuid\Math\BrickMathCalculator;
 use Ramsey\Uuid\Math\CalculatorInterface;
 use Ramsey\Uuid\Type\Hexadecimal;
@@ -93,6 +94,12 @@ class PhpTimeConverter implements TimeConverterInterface
             return $this->fallbackConverter->calculateTime(
                 $seconds->toString(),
                 $microseconds->toString(),
+            );
+        }
+
+        if ($uuidTime < 0) {
+            throw new InvalidArgumentException(
+                'The time is earlier than the Gregorian calendar epoch, 1582-10-15 00:00:00 UTC',
             );
         }
 

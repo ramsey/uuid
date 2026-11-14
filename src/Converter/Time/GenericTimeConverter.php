@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace Ramsey\Uuid\Converter\Time;
 
 use Ramsey\Uuid\Converter\TimeConverterInterface;
+use Ramsey\Uuid\Exception\InvalidArgumentException;
 use Ramsey\Uuid\Math\CalculatorInterface;
 use Ramsey\Uuid\Math\RoundingMode;
 use Ramsey\Uuid\Type\Hexadecimal;
@@ -22,6 +23,7 @@ use Ramsey\Uuid\Type\Integer as IntegerObject;
 use Ramsey\Uuid\Type\Time;
 
 use function str_pad;
+use function str_starts_with;
 
 use const STR_PAD_LEFT;
 
@@ -82,6 +84,12 @@ class GenericTimeConverter implements TimeConverterInterface
          * @phpstan-ignore possiblyImpure.new
          */
         $uuidTime = $this->calculator->add($sec, $usec, new IntegerObject(self::GREGORIAN_TO_UNIX_INTERVALS));
+
+        if (str_starts_with($uuidTime->toString(), '-')) {
+            throw new InvalidArgumentException(
+                'The time is earlier than the Gregorian calendar epoch, 1582-10-15 00:00:00 UTC',
+            );
+        }
 
         /**
          * PHPStan considers CalculatorInterface::toHexadecimal, Hexadecimal:toString impure.
