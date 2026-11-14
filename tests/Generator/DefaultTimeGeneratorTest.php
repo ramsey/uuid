@@ -201,9 +201,12 @@ class DefaultTimeGeneratorTest extends TestCase
     {
         $timeProvider = new FixedTimeProvider(new Time('1832455114570', '955162'));
         $featureSet = new FeatureSet();
+        $timeConverter = Mockery::mock(TimeConverterInterface::class, [
+            'calculateTime' => new Hexadecimal('10000000000000004'),
+        ]);
         $timeGenerator = new DefaultTimeGenerator(
             $featureSet->getNodeProvider(),
-            $featureSet->getTimeConverter(),
+            $timeConverter,
             $timeProvider
         );
 

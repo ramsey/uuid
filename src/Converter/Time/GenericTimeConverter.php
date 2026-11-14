@@ -24,6 +24,8 @@ use Ramsey\Uuid\Type\Time;
 
 use function str_pad;
 use function str_starts_with;
+use function strcmp;
+use function strlen;
 
 use const STR_PAD_LEFT;
 
@@ -53,6 +55,11 @@ class GenericTimeConverter implements TimeConverterInterface
      * The number of microseconds in one second.
      */
     private const SECOND_MICROSECONDS = '1000000';
+
+    /**
+     * The largest count of 100-nanosecond intervals that fits in the 60-bit timestamp.
+     */
+    private const MAX_TIMESTAMP = '1152921504606846975';
 
     public function __construct(private CalculatorInterface $calculator)
     {
@@ -88,6 +95,17 @@ class GenericTimeConverter implements TimeConverterInterface
         if (str_starts_with($uuidTime->toString(), '-')) {
             throw new InvalidArgumentException(
                 'The time is earlier than the Gregorian calendar epoch, 1582-10-15 00:00:00 UTC',
+            );
+        }
+
+        $intervals = $uuidTime->toString();
+
+        if (
+            strlen($intervals) > strlen(self::MAX_TIMESTAMP)
+            || (strlen($intervals) === strlen(self::MAX_TIMESTAMP) && strcmp($intervals, self::MAX_TIMESTAMP) > 0)
+        ) {
+            throw new InvalidArgumentException(
+                'The time is later than 5236-03-31 21:21:00.684697 UTC, the last time that fits in a 60-bit timestamp',
             );
         }
 

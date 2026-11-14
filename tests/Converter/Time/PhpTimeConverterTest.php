@@ -276,11 +276,12 @@ class PhpTimeConverterTest extends TestCase
             ],
 
             // This is the last possible time supported by v1 UUIDs:
-            // 60038-03-11 05:36:10.955161
+            // 5236-03-31 21:21:00.684697
+            // It is the last time that fits in the 60 bits of the timestamp.
             [
-                'seconds' => '1832455114570',
-                'microseconds' => '955161',
-                'expected' => 'fffffffffffffffa',
+                'seconds' => '103072857660',
+                'microseconds' => '684697',
+                'expected' => '0ffffffffffffffa',
             ],
         ];
     }
@@ -319,5 +320,37 @@ class PhpTimeConverterTest extends TestCase
         $converter = new PhpTimeConverter();
 
         $this->assertSame('0000000000000000', $converter->calculateTime('-12219292800', '0')->toString());
+    }
+
+    /**
+     * @dataProvider provideTimeAfterLastTimestamp
+     */
+    public function testCalculateTimeThrowsExceptionForTimeAfterLastTimestamp(
+        string $seconds,
+        string $microseconds
+    ): void {
+        $converter = new PhpTimeConverter();
+
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'The time is later than 5236-03-31 21:21:00.684697 UTC, the last time that fits in a 60-bit timestamp',
+        );
+
+        $converter->calculateTime($seconds, $microseconds);
+    }
+
+    /**
+     * @return array<string, array{string, string}>
+     */
+    public function provideTimeAfterLastTimestamp(): array
+    {
+        return [
+            'one microsecond after' => ['103072857660', '684698'],
+            'the year 5237' => ['103096632000', '0'],
+            'a timestamp of 61 bits' => ['218365008121', '0'],
+            'the last time that fits in 64 bits' => ['1832455114570', '955161'],
+            'a timestamp of more than 64 bits' => ['1900000000000', '0'],
+            'beyond the range of a 64-bit integer' => ['9223372036854775807', '0'],
+        ];
     }
 }

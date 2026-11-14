@@ -57,6 +57,11 @@ class PhpTimeConverter implements TimeConverterInterface
      */
     private const SECOND_MICROSECONDS = 1_000_000;
 
+    /**
+     * The largest count of 100-nanosecond intervals that fits in the 60-bit timestamp.
+     */
+    private const MAX_TIMESTAMP = 0x0fffffffffffffff;
+
     private CalculatorInterface $calculator;
     private TimeConverterInterface $fallbackConverter;
 
@@ -100,6 +105,12 @@ class PhpTimeConverter implements TimeConverterInterface
         if ($uuidTime < 0) {
             throw new InvalidArgumentException(
                 'The time is earlier than the Gregorian calendar epoch, 1582-10-15 00:00:00 UTC',
+            );
+        }
+
+        if ($uuidTime > self::MAX_TIMESTAMP) {
+            throw new InvalidArgumentException(
+                'The time is later than 5236-03-31 21:21:00.684697 UTC, the last time that fits in a 60-bit timestamp',
             );
         }
 

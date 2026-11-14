@@ -59,23 +59,9 @@ class GenericTimeConverterTest extends TestCase
                 'expected' => '0000000000000000',
             ],
 
-            // This is the last possible time supported by the GenericTimeConverter:
-            // 60038-03-11 05:36:10.955161
-            // When a UUID is created from this time, however, the highest 4 bits
-            // are replaced with the version (1), so we lose fidelity and cannot
-            // accurately decompose the date from the UUID.
-            [
-                'seconds' => '1832455114570',
-                'microseconds' => '955161',
-                'expected' => 'fffffffffffffffa',
-            ],
-
-            // This is technically the last possible time supported by v1 UUIDs:
+            // This is the last possible time supported by v1 UUIDs:
             // 5236-03-31 21:21:00.684697
-            // All dates above this will lose fidelity, since the highest 4 bits
-            // are replaced with the UUID version (1). As a result, we cannot
-            // accurately decompose the date from UUIDs created from dates
-            // greater than this one.
+            // It is the last time that fits in the 60 bits of the timestamp.
             [
                 'seconds' => '103072857660',
                 'microseconds' => '684697',
@@ -227,5 +213,37 @@ class GenericTimeConverterTest extends TestCase
         $converter = new GenericTimeConverter(new BrickMathCalculator());
 
         $this->assertSame('0000000000000000', $converter->calculateTime('-12219292800', '0')->toString());
+    }
+
+    /**
+     * @dataProvider provideTimeAfterLastTimestamp
+     */
+    public function testCalculateTimeThrowsExceptionForTimeAfterLastTimestamp(
+        string $seconds,
+        string $microseconds
+    ): void {
+        $converter = new GenericTimeConverter(new BrickMathCalculator());
+
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'The time is later than 5236-03-31 21:21:00.684697 UTC, the last time that fits in a 60-bit timestamp',
+        );
+
+        $converter->calculateTime($seconds, $microseconds);
+    }
+
+    /**
+     * @return array<string, array{string, string}>
+     */
+    public function provideTimeAfterLastTimestamp(): array
+    {
+        return [
+            'one microsecond after' => ['103072857660', '684698'],
+            'the year 5237' => ['103096632000', '0'],
+            'a timestamp of 61 bits' => ['218365008121', '0'],
+            'the last time that fits in 64 bits' => ['1832455114570', '955161'],
+            'a timestamp of more than 64 bits' => ['1900000000000', '0'],
+            'beyond the range of a 64-bit integer' => ['9223372036854775807', '0'],
+        ];
     }
 }
