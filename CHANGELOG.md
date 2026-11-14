@@ -14,9 +14,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 
-* `PhpTimeConverter::convertTime()` no longer returns wrong microseconds, such as dropping a leading zero, depending on the `precision` ini setting. It now uses integer math.
+* `PhpTimeConverter::convertTime()` no longer returns wrong microseconds, such as dropping a leading zero, depending on the `precision` ini setting. It now uses integer math; fixed in [#653](https://github.com/ramsey/uuid/pull/653).
+* `getDateTime()` no longer throws `InvalidArgumentException` for version 1 and version 6 UUIDs whose time is just before the Unix epoch, such as `1969-12-31 23:59:59.999999`; fixed in [#645](https://github.com/ramsey/uuid/pull/645).
 * `getDateTime()` no longer returns a time after the Unix epoch for UUIDs whose time is less than one second before it.
 * `GenericTimeConverter::convertTime()` and `PhpTimeConverter::convertTime()` no longer return a wrong time for times before the Unix epoch. For times less than one second before the epoch, the minus sign was lost. For earlier times, `calculateTime()` read the returned seconds and microseconds as a different time, so a timestamp 1.5 seconds before the epoch converted back as 0.5 seconds before it.
+* Factories built with `new FeatureSet(useGuids: true)` now generate valid GUIDs. Before, `uuid1()` always threw `UnableToBuildUuidException`, other methods threw for some values, and the GUIDs they returned had the wrong version. Because of this fix, `uuid3()` and `uuid5()` on such a factory now return different GUIDs than before for the same namespace and name, so GUIDs stored from earlier versions will not match; fixed in [#651](https://github.com/ramsey/uuid/pull/651).
+* `FeatureSet::setTimeProvider()` and `FeatureSet::setNodeProvider()` now also apply to version 2 (DCE Security) UUIDs, and `FeatureSet::setCalculator()` now also rebuilds the builder and codec so they use the new calculator. As a result, `FeatureSet::getBuilder()` and `FeatureSet::getCodec()` return new objects after `setCalculator()` is called; fixed in [#652](https://github.com/ramsey/uuid/pull/652).
 
 
 ## 4.9.4 - 2026-09-16
