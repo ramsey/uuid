@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 * `Uuid::fromString()`, the string codecs, and the validators now accept only the standard forms of a UUID string: 32 hexadecimal digits with hyphens in all four standard positions or with no hyphens, optionally in one pair of braces, optionally after one `urn:` prefix, one `uuid:` prefix, or both in that order. Before, they removed these prefixes, braces, and (in the codecs) hyphens from anywhere in the string, so strings such as `{{6ba7b8109dad-11d180b400c04fd430c8uuid:` were read as UUIDs.
 * `Uuid::uuid7()` now throws `InvalidArgumentException` for a date before 1970-01-01 00:00:00 UTC or after 10889-08-02 05:31:50.655 UTC. Before, it returned a UUID with a wrong timestamp.
 * `Uuid::fromDateTime()`, `GenericTimeConverter::calculateTime()`, and `PhpTimeConverter::calculateTime()` now throw `InvalidArgumentException` for a time before the Gregorian calendar epoch, 1582-10-15 00:00:00 UTC. Before, `PhpTimeConverter` returned a wrong timestamp.
+* `Uuid::fromDateTime()`, `GenericTimeConverter::calculateTime()`, and `PhpTimeConverter::calculateTime()` now throw `InvalidArgumentException` for a time after 5236-03-31 21:21:00.684697 UTC, the last time that fits in the 60-bit timestamp of a version 1, 2, or 6 UUID. Before, the timestamp lost its highest bits, so the UUID's date started again from 1582.
 * `Uuid::uuid8()` now throws `InvalidArgumentException` unless it receives exactly 16 bytes. Before, shorter input raised a `TypeError`, and the default factory used the first 16 bytes of longer input. The other factory methods throw the same exception when a custom generator returns the wrong number of bytes.
 
 ### Fixed
@@ -27,6 +28,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 * `Hexadecimal`, `Integer`, and the `$node` parameter of `Uuid::uuid1()` no longer accept a value that ends with a newline character. Before, `Uuid::uuid1()` returned a malformed UUID for such a node.
 * `BuilderCollection::unserialize()` and `NodeProviderCollection::unserialize()` now throw `UnsupportedOperationException` for a value that is not a serialized array, instead of raising a `TypeError`.
 * Unserializing a lazy UUID now throws `InvalidUuidStringException` when the serialized value is not a UUID string. Before, a changed serialized value produced a `UuidInterface` object whose `toString()` method returned that value as it was.
+* `UuidV2::getLocalDomainName()` now throws `DceSecurityException` for a version 2 UUID whose local domain is not the person, group, or org domain. Before, it raised a `TypeError`.
+* `BrickMathCalculator::divide()` now throws `InvalidArgumentException` for a divisor of zero. Before, it let the brick/math exception through.
+* Calling `toUuidV1()` or `toUuidV6()` on a UUID of another version, such as one returned by `Uuid::uuid4()`, now throws `UnsupportedOperationException`. Before, it raised a `TypeError`, an `Error`, or an `AssertionError`, depending on the method and the `zend.assertions` setting.
+* `Decimal` now removes the whitespace around a numeric string. Before, it kept the whitespace, `isNegative()` returned `false` for a negative number with whitespace before it, and `BrickMathCalculator` could not read the value.
+* `Decimal` no longer changes a number too small for a float, such as `1e-400`, to `0`.
+* Unserializing a `Decimal`, `Hexadecimal`, `Integer`, or `Time` whose serialized value has the wrong type, such as an array, now throws `ValueError`, and `Time::unserialize()` throws `UnsupportedOperationException`. Before, these raised a `TypeError`.
 
 
 ## 4.9.4 - 2026-09-16
