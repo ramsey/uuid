@@ -99,11 +99,11 @@ Order and Precision
 ramsey/uuid stores the fraction of the millisecond in the 12 bits that follow the version, using the method that
 `RFC 9562, section 6.2`_, calls "Replace Leftmost Random Bits with Increased Clock Precision." Because of this, version
 7 UUIDs sort by the time they were created to about a microsecond, even when different processes or machines created
-them.
+them, as far as the clocks of those machines agree.
 
-Within one process, each version 7 UUID is greater than the one before it. When the clock has not advanced, or has moved
-backward, ramsey/uuid uses the last timestamp again and increases the remaining 62 bits, which are a counter that starts
-at a random value.
+Within one process, each version 7 UUID created without a date and time is greater than the one created before it. When
+the clock has not advanced, or has moved backward, ramsey/uuid uses the last timestamp again and increases the remaining
+62 bits, which are a counter that starts at a random value.
 
 The same is true when you pass the same date and time to ``uuid7()`` in consecutive calls. A different date and time
 starts a new counter. Passing a date and time has no effect on the UUIDs that later calls without one return.
