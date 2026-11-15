@@ -61,4 +61,25 @@ Note that the bytes are in the same order as the string representation. Unlike t
 representation. This means either the string UUID or the bytes may be stored to a datastore and sorted. To learn more,
 see :ref:`database`.
 
+.. hint::
+
+    If you use this codec and store the UUID to the database, you will need to use this codec to decode it, as well.
+    Otherwise, the UUID string value will be incorrect.
+
+    .. code-block:: php
+
+        // Using a factory configured with the TimestampFirstCombCodec, as shown above.
+        $timestampFirstComb = $factory->fromString($uuidString);
+        $timestampFirstComb = $factory->fromBytes($bytes);
+
+.. warning::
+
+    This codec swaps the first and last 48 bits of every UUID it encodes or decodes, whatever its version. Only use a
+    factory configured with this codec to generate version 4 UUIDs. Other versions, such as those from ``uuid7()``, will
+    not follow the `RFC 9562`_ layout and will not sort by creation time.
+
+    When migrating to :ref:`version 7 UUIDs <rfc4122.version7>`, use a factory with the default codec. Version 7 UUIDs
+    are already ordered by time, so they do not need this codec.
+
+.. _RFC 9562: https://www.rfc-editor.org/rfc/rfc9562
 .. _The Cost of GUIDs as Primary Keys: https://web.archive.org/web/20240118030355/https://www.informit.com/articles/printerfriendly/25862
