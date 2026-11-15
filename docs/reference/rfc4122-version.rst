@@ -64,7 +64,7 @@ Rfc4122\\Version
 
     .. php:const:: V3
 
-        An alias for :php:case:`Ramsey\\Uuid\\Rfc4122\\Version::HashMd4`.
+        An alias for :php:case:`Ramsey\\Uuid\\Rfc4122\\Version::HashMd5`.
 
     .. php:const:: V4
 
