@@ -202,9 +202,9 @@ recommendations, though, since these methods will go away in version 5.
     * - ``getFieldsHex()``
       - :php:meth:`getFields() <Ramsey\\Uuid\\Rfc4122\\UuidInterface::getFields>` [#f2]_
     * - ``getLeastSignificantBitsHex()``
-      - ``substr($uuid->getHex()->toString(), 0, 16)``
-    * - ``getMostSignificantBitsHex()``
       - ``substr($uuid->getHex()->toString(), 16)``
+    * - ``getMostSignificantBitsHex()``
+      - ``substr($uuid->getHex()->toString(), 0, 16)``
     * - ``getNodeHex()``
       - :php:meth:`getFields()->getNode()->toString() <Ramsey\\Uuid\\Rfc4122\\FieldsInterface::getNode>`
     * - ``getNumberConverter()``
