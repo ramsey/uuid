@@ -55,5 +55,5 @@ enum Variant: int
      *
      * This is an alias for {@see self::Rfc9562}.
      */
-    public const Rfc4122 = self::Rfc9562; // phpcs:ignore Generic.NamingConventions.UpperCaseConstantName
+    public const self Rfc4122 = self::Rfc9562; // phpcs:ignore Generic.NamingConventions.UpperCaseConstantName
 }
