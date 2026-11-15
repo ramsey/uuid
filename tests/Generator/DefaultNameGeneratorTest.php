@@ -5,9 +5,11 @@ declare(strict_types=1);
 namespace Ramsey\Uuid\Test\Generator;
 
 use Ramsey\Uuid\Exception\NameException;
+use Ramsey\Uuid\FeatureSet;
 use Ramsey\Uuid\Generator\DefaultNameGenerator;
 use Ramsey\Uuid\Test\TestCase;
 use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidFactory;
 
 use function hash;
 
@@ -28,6 +30,11 @@ class DefaultNameGeneratorTest extends TestCase
         $generator = new DefaultNameGenerator();
 
         $this->assertSame($expectedBytes, $generator->generate($namespace, $name, $algorithm));
+
+        $guidFactory = new UuidFactory(new FeatureSet(useGuids: true));
+        $guidNamespace = $guidFactory->fromString($ns);
+
+        $this->assertSame($expectedBytes, $generator->generate($guidNamespace, $name, $algorithm));
     }
 
     /**
