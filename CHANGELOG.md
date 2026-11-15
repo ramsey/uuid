@@ -30,7 +30,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   * `Ramsey\Uuid\Converter\Time\BigNumberTimeConverter`
   * `Ramsey\Uuid\Converter\Time\DegradedTimeConverter`
   * `Ramsey\Uuid\DegradedUuid`
-  * `Ramsey\Uuid\DeprecatedUuidFactoryInterface`
   * `Ramsey\Uuid\Generator\CombGenerator`
   * `Ramsey\Uuid\Generator\RandomLibAdapter`
   * `Ramsey\Uuid\Provider\Node\NodeProviderCollection`
