@@ -152,12 +152,6 @@ instead. To get the integer, use the ``value`` property of the enum case.
     * - ``Uuid::UUID_TYPE_CUSTOM``
       - :php:case:`Version::Custom <Ramsey\\Uuid\\Rfc4122\\Version::Custom>`
 
-.. hint::
-
-    The :php:enum:`Version <Ramsey\\Uuid\\Rfc4122\\Version>` enum also has the constants ``Version::V1`` through
-    ``Version::V8``. Each one is an alias for the case with that version number, so ``Version::V4`` is the same as
-    ``Version::Random``.
-
 .. list-table:: Removed Uuid variant constants
     :widths: 50 50
     :align: center
