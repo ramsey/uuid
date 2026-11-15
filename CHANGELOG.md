@@ -8,6 +8,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## Unreleased
 
+### Fixed
+
+* `TimestampFirstCombCodec` now reorders only version 4 UUIDs. Before, a factory using it returned version 1, 2, 3, 5, 6, 7, and 8 UUIDs with the first and last 6 bytes swapped, so a version 7 UUID had its timestamp in the last 6 bytes and did not sort by time. Parsing a standard UUID of those versions with the codec swapped it the same way.
+
 
 ## 4.10.0 - 2026-11-14
 

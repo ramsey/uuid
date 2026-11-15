@@ -36,7 +36,7 @@ class TimestampFirstCombCodecTest extends TestCase
 
     public function testEncoding(): void
     {
-        $fields = new Fields((string) hex2bin('ff6f8cb0c57d11e19b210800200c9a66'));
+        $fields = new Fields((string) hex2bin('ff6f8cb0c57d41e19b210800200c9a66'));
 
         $uuidMock = Mockery::mock(UuidInterface::class, [
             'getFields' => $fields,
@@ -44,12 +44,12 @@ class TimestampFirstCombCodecTest extends TestCase
 
         $encodedUuid = $this->codec->encode($uuidMock);
 
-        $this->assertSame('0800200c-9a66-11e1-9b21-ff6f8cb0c57d', $encodedUuid);
+        $this->assertSame('0800200c-9a66-41e1-9b21-ff6f8cb0c57d', $encodedUuid);
     }
 
     public function testBinaryEncoding(): void
     {
-        $fields = new Fields((string) hex2bin('ff6f8cb0c57d11e19b210800200c9a66'));
+        $fields = new Fields((string) hex2bin('ff6f8cb0c57d41e19b210800200c9a66'));
 
         $uuidMock = Mockery::mock(UuidInterface::class, [
             'getFields' => $fields,
@@ -57,7 +57,7 @@ class TimestampFirstCombCodecTest extends TestCase
 
         $encodedUuid = $this->codec->encodeBinary($uuidMock);
 
-        $this->assertSame(hex2bin('0800200c9a6611e19b21ff6f8cb0c57d'), $encodedUuid);
+        $this->assertSame(hex2bin('0800200c9a6641e19b21ff6f8cb0c57d'), $encodedUuid);
     }
 
     public function testDecoding(): void
@@ -69,13 +69,13 @@ class TimestampFirstCombCodecTest extends TestCase
                 hex2bin(implode('', [
                     'time_low' => 'ff6f8cb0',
                     'time_mid' => 'c57d',
-                    'time_hi_and_version' => '11e1',
+                    'time_hi_and_version' => '41e1',
                     'clock_seq_hi_and_reserved' => '9b',
                     'clock_seq_low' => '21',
                     'node' => '0800200c9a66',
                 ]))
             );
-        $this->codec->decode('0800200c-9a66-11e1-9b21-ff6f8cb0c57d');
+        $this->codec->decode('0800200c-9a66-41e1-9b21-ff6f8cb0c57d');
     }
 
     public function testBinaryDecoding(): void
@@ -87,12 +87,36 @@ class TimestampFirstCombCodecTest extends TestCase
                 hex2bin(implode('', [
                     'time_low' => 'ff6f8cb0',
                     'time_mid' => 'c57d',
-                    'time_hi_and_version' => '11e1',
+                    'time_hi_and_version' => '41e1',
                     'clock_seq_hi_and_reserved' => '9b',
                     'clock_seq_low' => '21',
                     'node' => '0800200c9a66',
                 ]))
             );
-        $this->codec->decodeBytes((string) hex2bin('0800200c9a6611e19b21ff6f8cb0c57d'));
+        $this->codec->decodeBytes((string) hex2bin('0800200c9a6641e19b21ff6f8cb0c57d'));
+    }
+
+    public function testEncodingLeavesOtherVersionsInStandardOrder(): void
+    {
+        $fields = new Fields((string) hex2bin('019a8a2be3a87cc2b1a2c3d4e5f60718'));
+
+        $uuidMock = Mockery::mock(UuidInterface::class, [
+            'getFields' => $fields,
+        ]);
+
+        $this->assertSame('019a8a2b-e3a8-7cc2-b1a2-c3d4e5f60718', $this->codec->encode($uuidMock));
+        $this->assertSame(hex2bin('019a8a2be3a87cc2b1a2c3d4e5f60718'), $this->codec->encodeBinary($uuidMock));
+    }
+
+    public function testDecodingLeavesOtherVersionsInStandardOrder(): void
+    {
+        $bytes = (string) hex2bin('019a8a2be3a87cc2b1a2c3d4e5f60718');
+
+        $this->builderMock->expects($this->exactly(2))
+            ->method('build')
+            ->with($this->codec, $bytes);
+
+        $this->codec->decode('019a8a2b-e3a8-7cc2-b1a2-c3d4e5f60718');
+        $this->codec->decodeBytes($bytes);
     }
 }

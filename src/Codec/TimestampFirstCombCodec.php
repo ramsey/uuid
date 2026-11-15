@@ -15,9 +15,11 @@ declare(strict_types=1);
 namespace Ramsey\Uuid\Codec;
 
 use Ramsey\Uuid\Exception\InvalidUuidStringException;
+use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
 use function bin2hex;
+use function ord;
 use function sprintf;
 use function substr;
 use function substr_replace;
@@ -28,6 +30,8 @@ use function substr_replace;
  * In contrast with the TimestampLastCombCodec, the TimestampFirstCombCodec adds the timestamp to the first 48 bits of
  * the COMB. To generate a timestamp-first COMB, set the TimestampFirstCombCodec as the codec, along with the
  * CombGenerator as the random generator.
+ *
+ * Only version 4 UUIDs are reordered. UUIDs of other versions are encoded and decoded in the standard byte order.
  *
  * ```
  * $factory = new UuidFactory();
@@ -104,6 +108,11 @@ class TimestampFirstCombCodec extends StringCodec
      */
     private function swapBytes(string $bytes): string
     {
+        // The version is in the seventh byte, which the swap leaves in place, so encoding and decoding agree.
+        if (ord(substr($bytes, 6, 1)) >> 4 !== Uuid::UUID_TYPE_RANDOM) {
+            return $bytes;
+        }
+
         $first48Bits = substr($bytes, 0, 6);
         $last48Bits = substr($bytes, -6);
 

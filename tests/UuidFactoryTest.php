@@ -11,10 +11,12 @@ use Mockery;
 use PHPUnit\Framework\MockObject\MockObject;
 use Ramsey\Uuid\Builder\UuidBuilderInterface;
 use Ramsey\Uuid\Codec\CodecInterface;
+use Ramsey\Uuid\Codec\TimestampFirstCombCodec;
 use Ramsey\Uuid\Converter\NumberConverterInterface;
 use Ramsey\Uuid\Converter\TimeConverterInterface;
 use Ramsey\Uuid\Exception\InvalidArgumentException;
 use Ramsey\Uuid\FeatureSet;
+use Ramsey\Uuid\Generator\CombGenerator;
 use Ramsey\Uuid\Generator\DceSecurityGeneratorInterface;
 use Ramsey\Uuid\Generator\DefaultNameGenerator;
 use Ramsey\Uuid\Generator\NameGeneratorInterface;
@@ -414,5 +416,50 @@ class UuidFactoryTest extends TestCase
         $this->expectExceptionMessage('The byte string must be 16 bytes long; received 8 bytes');
 
         $factory->uuid1();
+    }
+
+    public function testTimestampFirstCombFactoryKeepsUuid7InStandardOrder(): void
+    {
+        $factory = $this->timestampFirstCombFactory();
+        $dateTime = new DateTimeImmutable('2025-06-16T12:00:00.123+00:00');
+
+        $uuid = $factory->uuid7($dateTime);
+
+        $this->assertStringStartsWith('0197789c-527b-7', $uuid->toString());
+        $this->assertSame(hex2bin(str_replace('-', '', $uuid->toString())), $uuid->getBytes());
+        $this->assertSame($uuid->toString(), Uuid::fromString($uuid->toString())->toString());
+        $this->assertSame($uuid->toString(), $factory->fromString($uuid->toString())->toString());
+        $this->assertSame($uuid->toString(), $factory->fromBytes($uuid->getBytes())->toString());
+        $this->assertEquals($dateTime, $factory->fromString($uuid->toString())->getDateTime());
+    }
+
+    public function testTimestampFirstCombFactoryMatchesDefaultFactoryForUuid5(): void
+    {
+        $this->assertSame(
+            'cfbff0d1-9375-5685-968c-48ce8b15ae17',
+            $this->timestampFirstCombFactory()->uuid5(Uuid::NAMESPACE_DNS, 'example.com')->toString(),
+        );
+    }
+
+    public function testTimestampFirstCombFactoryStillPutsTimestampFirstInUuid4(): void
+    {
+        $factory = $this->timestampFirstCombFactory();
+
+        $uuid = $factory->uuid4();
+        $fieldsHex = bin2hex($uuid->getFields()->getBytes());
+
+        $this->assertSame('4', $uuid->toString()[14]);
+        $this->assertSame(substr($fieldsHex, -12), substr(bin2hex($uuid->getBytes()), 0, 12));
+        $this->assertSame($uuid->toString(), $factory->fromString($uuid->toString())->toString());
+        $this->assertSame($uuid->toString(), $factory->fromBytes($uuid->getBytes())->toString());
+    }
+
+    private function timestampFirstCombFactory(): UuidFactory
+    {
+        $factory = new UuidFactory();
+        $factory->setRandomGenerator(new CombGenerator($factory->getRandomGenerator(), $factory->getNumberConverter()));
+        $factory->setCodec(new TimestampFirstCombCodec($factory->getUuidBuilder()));
+
+        return $factory;
     }
 }
