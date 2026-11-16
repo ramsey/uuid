@@ -9,8 +9,8 @@ use PHPUnit\Framework\Attributes\PreserveGlobalState;
 use PHPUnit\Framework\Attributes\RunInSeparateProcess;
 use Ramsey\Uuid\Exception\RandomSourceException;
 use Ramsey\Uuid\Provider\Node\RandomNodeProvider;
-use Ramsey\Uuid\Test\MocksFunctions;
 use Ramsey\Uuid\Test\TestCase;
+use phpmock\phpunit\PHPMock;
 
 use function bin2hex;
 use function hex2bin;
@@ -20,7 +20,7 @@ use function substr;
 
 class RandomNodeProviderTest extends TestCase
 {
-    use MocksFunctions;
+    use PHPMock;
 
     #[RunInSeparateProcess]
     #[PreserveGlobalState(false)]
@@ -29,12 +29,10 @@ class RandomNodeProviderTest extends TestCase
         $bytes = hex2bin('38a675685d50');
         $expectedNode = '39a675685d50';
 
-        $this->expectFunctionCall(
-            'Ramsey\Uuid\Provider\Node',
-            'random_bytes',
-            [6],
-            $bytes,
-        );
+        $this->getFunctionMock('Ramsey\Uuid\Provider\Node', 'random_bytes')
+            ->expects($this->once())
+            ->with(6)
+            ->willReturn($bytes);
 
         $provider = new RandomNodeProvider();
         $node = $provider->getNode();
@@ -52,12 +50,10 @@ class RandomNodeProviderTest extends TestCase
         // We expect the same hex value for the node.
         $expectedNode = $bytesHex;
 
-        $this->expectFunctionCall(
-            'Ramsey\Uuid\Provider\Node',
-            'random_bytes',
-            [6],
-            $bytes,
-        );
+        $this->getFunctionMock('Ramsey\Uuid\Provider\Node', 'random_bytes')
+            ->expects($this->once())
+            ->with(6)
+            ->willReturn($bytes);
 
         $provider = new RandomNodeProvider();
 
@@ -71,12 +67,10 @@ class RandomNodeProviderTest extends TestCase
         $bytes = hex2bin('100000000001');
         $expectedNode = '110000000001';
 
-        $this->expectFunctionCall(
-            'Ramsey\Uuid\Provider\Node',
-            'random_bytes',
-            [6],
-            $bytes,
-        );
+        $this->getFunctionMock('Ramsey\Uuid\Provider\Node', 'random_bytes')
+            ->expects($this->once())
+            ->with(6)
+            ->willReturn($bytes);
 
         $provider = new RandomNodeProvider();
 
@@ -112,12 +106,9 @@ class RandomNodeProviderTest extends TestCase
     #[PreserveGlobalState(false)]
     public function testGetNodeThrowsExceptionWhenExceptionThrownByRandombytes(): void
     {
-        $this->expectFunctionCall(
-            'Ramsey\Uuid\Provider\Node',
-            'random_bytes',
-            null,
-            new Exception('Could not gather sufficient random data'),
-        );
+        $this->getFunctionMock('Ramsey\Uuid\Provider\Node', 'random_bytes')
+            ->expects($this->once())
+            ->willThrowException(new Exception('Could not gather sufficient random data'));
 
         $provider = new RandomNodeProvider();
 

@@ -18,6 +18,7 @@
         "dealerdirect/phpcodesniffer-composer-installer": "^1.2.1",
         "jasonmccreary/double": "^1.0",
         "php-mock/php-mock": "^2.7.0",
+        "php-mock/php-mock-phpunit": "^2.16.0",
         "php-parallel-lint/php-parallel-lint": "^1.4.0",
         "phpbench/phpbench": "^1.7.0",
         "phpstan/extension-installer": "^1.4.3",

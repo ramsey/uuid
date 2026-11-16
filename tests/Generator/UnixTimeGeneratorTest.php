@@ -17,8 +17,8 @@ use Ramsey\Uuid\Exception\TimeSourceException;
 use Ramsey\Uuid\Generator\RandomBytesGenerator;
 use Ramsey\Uuid\Generator\RandomGeneratorInterface;
 use Ramsey\Uuid\Generator\UnixTimeGenerator;
-use Ramsey\Uuid\Test\MocksFunctions;
 use Ramsey\Uuid\Test\TestCase;
+use phpmock\phpunit\PHPMock;
 
 use function array_shift;
 use function bin2hex;
@@ -34,7 +34,7 @@ use function substr;
  */
 class UnixTimeGeneratorTest extends TestCase
 {
-    use MocksFunctions;
+    use PHPMock;
 
     private const ITERATIONS = 2000;
 
@@ -589,11 +589,7 @@ class UnixTimeGeneratorTest extends TestCase
     public function testGenerateWorksWhenProcessIdentifierCannotBeRead(): void
     {
         $this->mockClock(self::CLOCK);
-        $this->stubFunction(
-            'Ramsey\Uuid\Generator',
-            'getmypid',
-            fn () => $this->fail('Expected no call to getmypid()'),
-        );
+        $this->getFunctionMock('Ramsey\Uuid\Generator', 'getmypid')->expects($this->never());
 
         $randomGenerator = $this->mockRandomGenerator();
         $randomGenerator->expects('generate')->with(8)->returns(self::NO_BITS_SET);
@@ -833,13 +829,11 @@ class UnixTimeGeneratorTest extends TestCase
      */
     private function mockClock(string ...$values): void
     {
-        $this->stubFunction(
-            'Ramsey\Uuid\Generator',
-            'microtime',
-            static function () use (&$values): string {
+        $this->getFunctionMock('Ramsey\Uuid\Generator', 'microtime')
+            ->expects($this->any())
+            ->willReturnCallback(static function () use (&$values): string {
                 return count($values) > 1 ? array_shift($values) : $values[0];
-            },
-        );
+            });
     }
 
     /**
@@ -847,13 +841,11 @@ class UnixTimeGeneratorTest extends TestCase
      */
     private function mockProcessId(int ...$values): void
     {
-        $this->stubFunction(
-            'Ramsey\Uuid\Generator',
-            'getmypid',
-            static function () use (&$values): int {
+        $this->getFunctionMock('Ramsey\Uuid\Generator', 'getmypid')
+            ->expects($this->any())
+            ->willReturnCallback(static function () use (&$values): int {
                 return count($values) > 1 ? array_shift($values) : $values[0];
-            },
-        );
+            });
     }
 
     /**
