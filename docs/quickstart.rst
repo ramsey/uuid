@@ -9,7 +9,7 @@ Requirements
 
 ramsey/uuid |version| requires the following:
 
-* PHP 8.0+
+* PHP 8.3+
 * `ext-json <https://www.php.net/manual/en/book.json.php>`_
 
 The JSON extension is normally enabled by default, but it is possible to disable it. Other required extensions include

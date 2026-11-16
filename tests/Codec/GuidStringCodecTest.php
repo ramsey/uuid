@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Ramsey\Uuid\Test\Codec;
 
 use JMac\Testing\Double;
-use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub;
 use Ramsey\Uuid\Builder\UuidBuilderInterface;
 use Ramsey\Uuid\Codec\GuidStringCodec;
 use Ramsey\Uuid\Converter\NumberConverterInterface;
@@ -21,15 +21,15 @@ use function pack;
 
 class GuidStringCodecTest extends TestCase
 {
-    private UuidBuilderInterface & MockObject $builder;
-    private UuidInterface & MockObject $uuid;
+    private UuidBuilderInterface & Stub $builder;
+    private UuidInterface & Stub $uuid;
     private Fields $fields;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->builder = $this->getMockBuilder(UuidBuilderInterface::class)->getMock();
-        $this->uuid = $this->getMockBuilder(UuidInterface::class)->getMock();
+        $this->builder = $this->createStub(UuidBuilderInterface::class);
+        $this->uuid = $this->createStub(UuidInterface::class);
 
         /** @var non-empty-string $bytes */
         $bytes = (string) hex2bin('785634123412cd4babef1234abcd4321');
@@ -44,11 +44,12 @@ class GuidStringCodecTest extends TestCase
 
     public function testEncodeUsesFieldsArray(): void
     {
-        $this->uuid->expects($this->once())
+        $uuid = $this->createMock(UuidInterface::class);
+        $uuid->expects($this->once())
             ->method('getFields')
             ->willReturn($this->fields);
         $codec = new GuidStringCodec($this->builder);
-        $codec->encode($this->uuid);
+        $codec->encode($uuid);
     }
 
     public function testEncodeReturnsFormattedString(): void

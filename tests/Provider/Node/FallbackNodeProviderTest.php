@@ -52,7 +52,7 @@ class FallbackNodeProviderTest extends TestCase
 
     public function testGetNodeThrowsExceptionWhenNoNodesFound(): void
     {
-        $providerWithoutNode = $this->getMockBuilder(NodeProviderInterface::class)->getMock();
+        $providerWithoutNode = $this->createStub(NodeProviderInterface::class);
         $providerWithoutNode->method('getNode')
             ->willThrowException(new NodeException());
 

@@ -9,25 +9,40 @@ use DateTimeImmutable;
 use DateTimeInterface;
 use JMac\Testing\Double;
 use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub;
 use Ramsey\Uuid\Builder\UuidBuilderInterface;
 use Ramsey\Uuid\Codec\CodecInterface;
 use Ramsey\Uuid\Converter\NumberConverterInterface;
 use Ramsey\Uuid\Converter\TimeConverterInterface;
+use Ramsey\Uuid\Exception\InvalidArgumentException;
 use Ramsey\Uuid\FeatureSet;
 use Ramsey\Uuid\Generator\DceSecurityGeneratorInterface;
 use Ramsey\Uuid\Generator\DefaultNameGenerator;
 use Ramsey\Uuid\Generator\NameGeneratorInterface;
 use Ramsey\Uuid\Generator\RandomGeneratorInterface;
 use Ramsey\Uuid\Generator\TimeGeneratorInterface;
+use Ramsey\Uuid\Guid\Guid;
+use Ramsey\Uuid\Provider\Node\StaticNodeProvider;
 use Ramsey\Uuid\Provider\NodeProviderInterface;
+use Ramsey\Uuid\Provider\Time\FixedTimeProvider;
+use Ramsey\Uuid\Rfc4122\FieldsInterface as Rfc4122FieldsInterface;
 use Ramsey\Uuid\Rfc4122\UuidV1;
+use Ramsey\Uuid\Rfc4122\Version;
 use Ramsey\Uuid\Type\Hexadecimal;
+use Ramsey\Uuid\Type\Integer as IntegerObject;
+use Ramsey\Uuid\Type\Time;
+use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidFactory;
+use Ramsey\Uuid\UuidInterface;
 use Ramsey\Uuid\Validator\ValidatorInterface;
+use Ramsey\Uuid\Variant;
 
+use function bin2hex;
 use function hex2bin;
+use function str_repeat;
+use function str_replace;
 use function strtoupper;
+use function substr;
 
 class UuidFactoryTest extends TestCase
 {
@@ -119,23 +134,23 @@ class UuidFactoryTest extends TestCase
     {
         $uuidFactory = new UuidFactory();
 
-        /** @var MockObject & CodecInterface $codec */
-        $codec = $this->getMockBuilder(CodecInterface::class)->getMock();
+        /** @var Stub & CodecInterface $codec */
+        $codec = $this->createStub(CodecInterface::class);
         $uuidFactory->setCodec($codec);
         $this->assertSame($codec, $uuidFactory->getCodec());
 
-        /** @var MockObject & TimeGeneratorInterface $timeGenerator */
-        $timeGenerator = $this->getMockBuilder(TimeGeneratorInterface::class)->getMock();
+        /** @var Stub & TimeGeneratorInterface $timeGenerator */
+        $timeGenerator = $this->createStub(TimeGeneratorInterface::class);
         $uuidFactory->setTimeGenerator($timeGenerator);
         $this->assertSame($timeGenerator, $uuidFactory->getTimeGenerator());
 
-        /** @var MockObject & NumberConverterInterface $numberConverter */
-        $numberConverter = $this->getMockBuilder(NumberConverterInterface::class)->getMock();
+        /** @var Stub & NumberConverterInterface $numberConverter */
+        $numberConverter = $this->createStub(NumberConverterInterface::class);
         $uuidFactory->setNumberConverter($numberConverter);
         $this->assertSame($numberConverter, $uuidFactory->getNumberConverter());
 
-        /** @var MockObject & UuidBuilderInterface $uuidBuilder */
-        $uuidBuilder = $this->getMockBuilder(UuidBuilderInterface::class)->getMock();
+        /** @var Stub & UuidBuilderInterface $uuidBuilder */
+        $uuidBuilder = $this->createStub(UuidBuilderInterface::class);
         $uuidFactory->setUuidBuilder($uuidBuilder);
         $this->assertSame($uuidBuilder, $uuidFactory->getUuidBuilder());
     }
@@ -228,5 +243,183 @@ class UuidFactoryTest extends TestCase
         $factory->setNameGenerator($nameGenerator);
 
         $this->assertSame($nameGenerator, $factory->getNameGenerator());
+    }
+
+    /**
+     * @param callable(UuidFactory): UuidInterface $generate
+     */
+    #[DataProvider('provideGuidGenerators')]
+    public function testGuidFactoryGeneratesValidGuids(callable $generate, Version $version, string $expected): void
+    {
+        $features = new FeatureSet(true);
+        $features->setTimeProvider(new FixedTimeProvider(new Time(1341368074, 491000)));
+        $features->setNodeProvider(new StaticNodeProvider(new Hexadecimal('0800200c9a66')));
+        $factory = new UuidFactory($features);
+
+        $randomGenerator = Double::for(RandomGeneratorInterface::class);
+        $randomGenerator->allows('generate')->returns((string) hex2bin('000102030405060708090a0b0c0d0e0f'));
+        $factory->setRandomGenerator($randomGenerator);
+
+        $guid = $generate($factory);
+
+        $fields = $guid->getFields();
+
+        $this->assertInstanceOf(Guid::class, $guid);
+        $this->assertInstanceOf(Rfc4122FieldsInterface::class, $fields);
+        $this->assertSame($version, $fields->getVersion());
+        $this->assertSame(Variant::Rfc4122, $fields->getVariant());
+        $this->assertStringMatchesFormat($expected, $guid->toString());
+        $this->assertTrue($guid->equals($factory->fromBytes($guid->getBytes())));
+
+        $hex = str_replace('-', '', $guid->toString());
+        $this->assertSame(
+            substr($hex, 6, 2) . substr($hex, 4, 2) . substr($hex, 2, 2) . substr($hex, 0, 2)
+                . substr($hex, 10, 2) . substr($hex, 8, 2) . substr($hex, 14, 2) . substr($hex, 12, 2)
+                . substr($hex, 16),
+            bin2hex($guid->getBytes()),
+        );
+    }
+
+    /**
+     * @return array<string, array{0: callable(UuidFactory): UuidInterface, 1: Version, 2: string}>
+     */
+    public static function provideGuidGenerators(): array
+    {
+        return [
+            'uuid1' => [
+                fn (UuidFactory $f): UuidInterface => $f->uuid1(null, 0x1b21),
+                Version::Time,
+                'ff6f8cb0-c57d-11e1-9b21-0900200c9a66',
+            ],
+            'uuid2' => [
+                fn (UuidFactory $f): UuidInterface => $f->uuid2(
+                    Uuid::DCE_DOMAIN_ORG,
+                    new IntegerObject(1001),
+                    null,
+                    0x1b,
+                ),
+                Version::DceSecurity,
+                '000003e9-c57d-21e1-9b02-0900200c9a66',
+            ],
+            'uuid3' => [
+                fn (UuidFactory $f): UuidInterface => $f->uuid3(Uuid::fromString(Uuid::NAMESPACE_URL), 'foo'),
+                Version::HashMd5,
+                'a5bf60bd-fe2d-3fac-bbd7-404751e6ca66',
+            ],
+            'uuid4' => [
+                fn (UuidFactory $f): UuidInterface => $f->uuid4(),
+                Version::Random,
+                '00010203-0405-4607-8809-0a0b0c0d0e0f',
+            ],
+            'uuid5' => [
+                fn (UuidFactory $f): UuidInterface => $f->uuid5(Uuid::fromString(Uuid::NAMESPACE_URL), 'foo'),
+                Version::HashSha1,
+                '7da78284-2f14-5e7f-95e1-baaa9027c26f',
+            ],
+            'uuid6' => [
+                fn (UuidFactory $f): UuidInterface => $f->uuid6(null, 0x1b21),
+                Version::ReorderedTime,
+                '1e1c57df-f6f8-6cb0-9b21-0900200c9a66',
+            ],
+            'uuid7' => [
+                fn (UuidFactory $f): UuidInterface => $f->uuid7(new DateTimeImmutable('@1341368074.491')),
+                Version::UnixTime,
+                '01384fc4-80fb-7%x-%x-%x',
+            ],
+            'uuid8' => [
+                fn (UuidFactory $f): UuidInterface => $f->uuid8(
+                    "\x00\x01\x02\x03\x04\x05\x06\x07\x08\x09\x0a\x0b\x0c\x0d\x0e\x0f",
+                ),
+                Version::Custom,
+                '00010203-0405-8607-8809-0a0b0c0d0e0f',
+            ],
+            'fromDateTime' => [
+                fn (UuidFactory $f): UuidInterface => $f->fromDateTime(
+                    new DateTimeImmutable('@1341368074.491'),
+                    null,
+                    0x1b21,
+                ),
+                Version::Time,
+                'ff6f8cb0-c57d-11e1-9b21-0900200c9a66',
+            ],
+        ];
+    }
+
+    #[DataProvider('provideBytesAndUuid8String')]
+    public function testUuid8ChangesOnlyVersionAndVariantBits(UuidFactory $factory, string $hex, string $expected): void
+    {
+        /** @var non-empty-string $bytes */
+        $bytes = hex2bin($hex);
+
+        $uuid = $factory->uuid8($bytes);
+
+        $this->assertSame($expected, $uuid->toString());
+    }
+
+    /**
+     * @return array<string, array{UuidFactory, string, string}>
+     */
+    public static function provideBytesAndUuid8String(): array
+    {
+        $factories = [
+            'default factory' => new UuidFactory(),
+            'factory with a feature set' => new UuidFactory(new FeatureSet()),
+            'GUID factory' => new UuidFactory(new FeatureSet(true)),
+        ];
+
+        $cases = [
+            'all bits set' => ['ffffffffffffffffffffffffffffffff', 'ffffffff-ffff-8fff-bfff-ffffffffffff'],
+            'no bits set' => ['00000000000000000000000000000000', '00000000-0000-8000-8000-000000000000'],
+            'mixed bits' => ['0123456789abcdef0123456789abcdef', '01234567-89ab-8def-8123-456789abcdef'],
+        ];
+
+        $provided = [];
+
+        foreach ($factories as $factoryName => $factory) {
+            foreach ($cases as $caseName => $case) {
+                $provided[$factoryName . ', ' . $caseName] = [$factory, $case[0], $case[1]];
+            }
+        }
+
+        return $provided;
+    }
+
+    #[DataProvider('provideBytesOfWrongLength')]
+    public function testUuid8ThrowsExceptionWhenBytesAreNotSixteenBytesLong(string $bytes, int $length): void
+    {
+        $factory = new UuidFactory();
+
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('The byte string must be 16 bytes long; received ' . $length . ' bytes');
+
+        // @phpstan-ignore argument.type (the test passes an empty string to prove the factory refuses it)
+        $factory->uuid8($bytes);
+    }
+
+    /**
+     * @return array<string, array{bytes: string, length: int}>
+     */
+    public static function provideBytesOfWrongLength(): array
+    {
+        return [
+            'empty' => ['bytes' => '', 'length' => 0],
+            'too short to have a version' => ['bytes' => 'abc', 'length' => 3],
+            'one byte short' => ['bytes' => str_repeat('a', 15), 'length' => 15],
+            'one byte long' => ['bytes' => str_repeat('a', 17), 'length' => 17],
+        ];
+    }
+
+    public function testUuid1ThrowsExceptionWhenTimeGeneratorReturnsWrongLength(): void
+    {
+        $timeGenerator = Double::for(TimeGeneratorInterface::class);
+        $timeGenerator->allows('generate')->returns('tooshort');
+
+        $factory = new UuidFactory();
+        $factory->setTimeGenerator($timeGenerator);
+
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('The byte string must be 16 bytes long; received 8 bytes');
+
+        $factory->uuid1();
     }
 }

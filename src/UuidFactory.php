@@ -19,12 +19,14 @@ use Ramsey\Uuid\Builder\UuidBuilderInterface;
 use Ramsey\Uuid\Codec\CodecInterface;
 use Ramsey\Uuid\Converter\NumberConverterInterface;
 use Ramsey\Uuid\Converter\TimeConverterInterface;
+use Ramsey\Uuid\Exception\InvalidArgumentException;
 use Ramsey\Uuid\Generator\DceSecurityGeneratorInterface;
 use Ramsey\Uuid\Generator\DefaultTimeGenerator;
 use Ramsey\Uuid\Generator\NameGeneratorInterface;
 use Ramsey\Uuid\Generator\RandomGeneratorInterface;
 use Ramsey\Uuid\Generator\TimeGeneratorInterface;
 use Ramsey\Uuid\Generator\UnixTimeGenerator;
+use Ramsey\Uuid\Guid\GuidBuilder;
 use Ramsey\Uuid\Lazy\LazyUuidFromString;
 use Ramsey\Uuid\Provider\NodeProviderInterface;
 use Ramsey\Uuid\Provider\Time\FixedTimeProvider;
@@ -35,8 +37,11 @@ use Ramsey\Uuid\Type\Time;
 use Ramsey\Uuid\Validator\ValidatorInterface;
 
 use function bin2hex;
+use function chr;
 use function hex2bin;
+use function ord;
 use function str_pad;
+use function strlen;
 use function strtolower;
 use function substr;
 
@@ -452,12 +457,27 @@ class UuidFactory implements UuidFactoryInterface
      */
     private function uuidFromBytesAndVersion(string $bytes, Version $version): UuidInterface
     {
-        $bytesWithVariantAndVersion = BinaryUtils::applyVersionAndVariant($bytes, $version);
-
-        if ($this->isDefaultFeatureSet) {
-            return LazyUuidFromString::fromBytes($bytesWithVariantAndVersion);
+        if (strlen($bytes) !== 16) {
+            throw new InvalidArgumentException(
+                'The byte string must be 16 bytes long; received ' . strlen($bytes) . ' bytes',
+            );
         }
 
-        return $this->uuid($bytesWithVariantAndVersion);
+        // The version is the first four bits of the seventh byte, and the variant is the first two bits of the ninth.
+        $bytes[6] = chr(ord($bytes[6]) & 0x0f | ($version->value & 0x0f) << 4);
+        $bytes[8] = chr(ord($bytes[8]) & 0x3f | 0x80);
+
+        if ($this->isDefaultFeatureSet) {
+            return LazyUuidFromString::fromBytes($bytes);
+        }
+
+        // GUID fields store the first three fields in little-endian byte order.
+        if ($this->uuidBuilder instanceof GuidBuilder) {
+            $bytes = $bytes[3] . $bytes[2] . $bytes[1] . $bytes[0]
+                . $bytes[5] . $bytes[4] . $bytes[7] . $bytes[6]
+                . substr($bytes, 8);
+        }
+
+        return $this->uuid($bytes);
     }
 }

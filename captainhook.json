@@ -30,15 +30,6 @@
                 ]
             },
             {
-                "action": "composer normalize --dry-run",
-                "conditions": [
-                    {
-                        "exec": "\\CaptainHook\\App\\Hook\\Condition\\FileStaged\\Any",
-                        "args": [["composer.json"]]
-                    }
-                ]
-            },
-            {
                 "action": "composer dev:lint:syntax -- {$STAGED_FILES|of-type:php}",
                 "conditions": [
                     {

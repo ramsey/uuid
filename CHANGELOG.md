@@ -13,11 +13,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 * Introduce `Ramsey\Uuid\TimeBasedUuidFactoryInterface` to represent any factory for creating UUIDs based on a date/time value.
 * Introduce `Ramsey\Uuid\Variant` enum to represent the variant field.
 * Introduce `Ramsey\Uuid\Rfc4122\Version` enum to represent the version field.
-* Add new static method `Ramsey\Uuid\BinaryUtils::applyVersionAndVariant()`.
 
 ### Changed
 
+* The minimum PHP version is now 8.3.
 * Remove the following deprecated classes and interfaces:
+  * `Ramsey\Uuid\BinaryUtils`
   * `Ramsey\Uuid\Builder\BuilderCollection`
   * `Ramsey\Uuid\Builder\DefaultUuidBuilder`
   * `Ramsey\Uuid\Builder\DegradedUuidBuilder`
@@ -29,7 +30,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   * `Ramsey\Uuid\Converter\Time\BigNumberTimeConverter`
   * `Ramsey\Uuid\Converter\Time\DegradedTimeConverter`
   * `Ramsey\Uuid\DegradedUuid`
-  * `Ramsey\Uuid\DeprecatedUuidFactoryInterface`
   * `Ramsey\Uuid\Generator\CombGenerator`
   * `Ramsey\Uuid\Generator\RandomLibAdapter`
   * `Ramsey\Uuid\Provider\Node\NodeProviderCollection`
@@ -72,6 +72,60 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   * `Ramsey\Uuid\Uuid::UUID_TYPE_PEABODY` (replaced with `Ramsey\Uuid\Rfc4122\Version::ReorderedTime` enum)
   * `Ramsey\Uuid\Uuid::VALID_PATTERN`
 * Remove dependency on ramsey/collection package.
+
+
+## 4.10.0 - 2026-11-14
+
+### Changed
+
+* For times before the Unix epoch, `GenericTimeConverter::convertTime()` and `PhpTimeConverter::convertTime()` now return the seconds rounded down, with microseconds that count forward from them. For example, 1.5 seconds before the epoch is now -2 seconds and 500000 microseconds, where it was -1 seconds and 500000 microseconds. The microseconds are added to the seconds, so -2 seconds plus 0.5 seconds is -1.5 seconds. `Time::toString()` returns `-1.500000` for this time. The `getDateTime()` methods read the time from any `TimeConverterInterface` implementation in the same way.
+* `Uuid::fromString()`, the string codecs, and the validators now accept only the standard forms of a UUID string: 32 hexadecimal digits with hyphens in all four standard positions or with no hyphens, optionally in one pair of braces, optionally after one `urn:` prefix, one `uuid:` prefix, or both in that order. Before, they removed these prefixes, braces, and (in the codecs) hyphens from anywhere in the string, so strings such as `{{6ba7b8109dad-11d180b400c04fd430c8uuid:` were read as UUIDs.
+* `Uuid::uuid7()` now throws `InvalidArgumentException` for a date before 1970-01-01 00:00:00 UTC or after 10889-08-02 05:31:50.655 UTC. Before, it returned a UUID with a wrong timestamp.
+* `Uuid::fromDateTime()`, `GenericTimeConverter::calculateTime()`, and `PhpTimeConverter::calculateTime()` now throw `InvalidArgumentException` for a time before the Gregorian calendar epoch, 1582-10-15 00:00:00 UTC. Before, `PhpTimeConverter` returned a wrong timestamp.
+* `Uuid::fromDateTime()`, `GenericTimeConverter::calculateTime()`, and `PhpTimeConverter::calculateTime()` now throw `InvalidArgumentException` for a time after 5236-03-31 21:21:00.684697 UTC, the last time that fits in the 60-bit timestamp of a version 1, 2, or 6 UUID. Before, the timestamp lost its highest bits, so the UUID's date started again from 1582.
+* `Uuid::uuid7()` now stores the fraction of the millisecond in the 12 bits after the version, using method 3 of RFC 9562 section 6.2. Version 7 UUIDs now sort by creation time to about a microsecond, even when different processes created them. They have 62 random bits, where they had 74, and the UUID for a given date and time has different bits after the timestamp than before. `UnixTimeGenerator` now asks its random generator for 8 bytes for each new counter and 16 bytes for a seed, where it asked for 16 bytes at first and 10 bytes after that.
+* `Uuid::uuid7()` now throws `TimeSourceException` when the system clock is before 1970-01-01 00:00:00 UTC or after 10889-08-02 05:31:50.655 UTC, the first and last times a version 7 UUID can have. Before, it returned a UUID with a wrong timestamp. It throws the same exception when calls for the last of those times have used every timestamp that is left.
+* `Uuid::uuid7()` now throws `RandomSourceException` when a custom random generator returns a different number of bytes than `UnixTimeGenerator` asked it for. Before, PHP raised a warning or the UUID had wrong bits.
+* `Uuid::uuid8()` now throws `InvalidArgumentException` unless it receives exactly 16 bytes. Before, shorter input raised a `TypeError`, and the default factory used the first 16 bytes of longer input. The other factory methods throw the same exception when a custom generator returns the wrong number of bytes.
+
+### Deprecated
+
+* `BinaryUtils::applyVariant()` and `BinaryUtils::applyVersion()` are deprecated. ramsey/uuid no longer uses them.
+
+### Fixed
+
+* A date passed to `Uuid::uuid7()` no longer changes the UUIDs that later calls without a date return. Before, after a call with a future date, every later call returned a UUID with that date until the clock passed it.
+* After a process forks, the parent and the child no longer continue the same version 7 counter with the same numbers, which could produce equal UUIDs in the millisecond of the fork.
+* `PhpTimeConverter::convertTime()` no longer returns wrong microseconds, such as dropping a leading zero, depending on the `precision` ini setting. It now uses integer math; fixed in [#653](https://github.com/ramsey/uuid/pull/653).
+* `getDateTime()` no longer throws `InvalidArgumentException` for version 1 and version 6 UUIDs whose time is just before the Unix epoch, such as `1969-12-31 23:59:59.999999`; fixed in [#645](https://github.com/ramsey/uuid/pull/645).
+* `getDateTime()` no longer returns a time after the Unix epoch for UUIDs whose time is less than one second before it.
+* `GenericTimeConverter::convertTime()` and `PhpTimeConverter::convertTime()` no longer return a wrong time for times before the Unix epoch. For times less than one second before the epoch, the minus sign was lost. For earlier times, `calculateTime()` read the returned seconds and microseconds as a different time, so a timestamp 1.5 seconds before the epoch converted back as 0.5 seconds before it.
+* Factories built with `new FeatureSet(useGuids: true)` now generate valid GUIDs. Before, `uuid1()` always threw `UnableToBuildUuidException`, other methods threw for some values, and the GUIDs they returned had the wrong version. Because of this fix, `uuid3()` and `uuid5()` on such a factory now return different GUIDs than before for the same namespace and name, so GUIDs stored from earlier versions will not match; fixed in [#651](https://github.com/ramsey/uuid/pull/651).
+* `FeatureSet::setTimeProvider()` and `FeatureSet::setNodeProvider()` now also apply to version 2 (DCE Security) UUIDs, and `FeatureSet::setCalculator()` now also rebuilds the builder and codec so they use the new calculator. As a result, `FeatureSet::getBuilder()` and `FeatureSet::getCodec()` return new objects after `setCalculator()` is called; fixed in [#652](https://github.com/ramsey/uuid/pull/652).
+* `Hexadecimal`, `Integer`, and the `$node` parameter of `Uuid::uuid1()` no longer accept a value that ends with a newline character. Before, `Uuid::uuid1()` returned a malformed UUID for such a node.
+* `BuilderCollection::unserialize()` and `NodeProviderCollection::unserialize()` now throw `UnsupportedOperationException` for a value that is not a serialized array, instead of raising a `TypeError`.
+* Unserializing a lazy UUID now throws `InvalidUuidStringException` when the serialized value is not a UUID string. Before, a changed serialized value produced a `UuidInterface` object whose `toString()` method returned that value as it was.
+* `UuidV2::getLocalDomainName()` now throws `DceSecurityException` for a version 2 UUID whose local domain is not the person, group, or org domain. Before, it raised a `TypeError`.
+* `BrickMathCalculator::divide()` now throws `InvalidArgumentException` for a divisor of zero. Before, it let the brick/math exception through.
+* Calling `toUuidV1()` or `toUuidV6()` on a UUID of another version, such as one returned by `Uuid::uuid4()`, now throws `UnsupportedOperationException`. Before, it raised a `TypeError`, an `Error`, or an `AssertionError`, depending on the method and the `zend.assertions` setting.
+* `Decimal` now removes the whitespace around a numeric string. Before, it kept the whitespace, `isNegative()` returned `false` for a negative number with whitespace before it, and `BrickMathCalculator` could not read the value.
+* `Decimal` no longer changes a number too small for a float, such as `1e-400`, to `0`.
+* Unserializing a `Decimal`, `Hexadecimal`, `Integer`, or `Time` whose serialized value has the wrong type, such as an array, now throws `ValueError`, and `Time::unserialize()` throws `UnsupportedOperationException`. Before, these raised a `TypeError`.
+
+
+## 4.9.4 - 2026-09-16
+
+### Fixed
+
+* Add support for brick/math `^0.19`, `^0.20`, and `^1.0`; fixed in [#642](https://github.com/ramsey/uuid/pull/642).
+
+
+## 4.9.3 - 2026-06-18
+
+### Fixed
+
+* Upgrade brick/math to support versions `^0.14` to `^0.17`; fixed in [#638](https://github.com/ramsey/uuid/pull/638).
+* Add support for brick/math `^0.18`.
 
 
 ## 4.9.2 - 2025-12-14
@@ -481,7 +535,7 @@ The following will be removed in ramsey/uuid 5.0.0:
     Thrown to indicate that an error occurred while attempting to hash a
     namespace and name.
   * `Exception\NodeException` -
-    Throw to indicate that attempting to fetch or create a node ID encountered
+    Thrown to indicate that attempting to fetch or create a node ID encountered
     an error.
   * `Exception\RandomSourceException` -
     Thrown to indicate that the source of random data encountered an error.
@@ -1255,7 +1309,7 @@ versions leading up to this release.*
   for generating random bytes (version 4) or time-based (version 1) UUIDs
   * `CombGenerator` to allow generation of sequential UUIDs
   * `OpenSslGenerator` to generate random bytes on systems where
-    `openssql_random_pseudo_bytes()` is present
+    `openssl_random_pseudo_bytes()` is present
   * `MtRandGenerator` to provide a fallback in the event other random generators
     are not present
   * `RandomLibAdapter` to allow use of [ircmaxell/random-lib]

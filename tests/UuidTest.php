@@ -1051,8 +1051,8 @@ class UuidTest extends TestCase
                 );
 
                 // Assert that the time matches
-                $usecAdd = BigDecimal::of($usec)->dividedBy('1000000', 14, RoundingMode::HALF_UP);
-                $testTime = BigDecimal::of($currentTime)->plus($usecAdd)->toScale(0, RoundingMode::DOWN);
+                $usecAdd = BigDecimal::of($usec)->dividedBy('1000000', 14, RoundingMode::HalfUp);
+                $testTime = BigDecimal::of($currentTime)->plus($usecAdd)->toScale(0, RoundingMode::Down);
                 $this->assertSame((string) $testTime, (string) $uuid64->getDateTime()->getTimestamp());
                 $this->assertSame((string) $testTime, (string) $uuid32->getDateTime()->getTimestamp());
             }
@@ -1679,9 +1679,7 @@ class UuidTest extends TestCase
         $uuid = $factory->fromString('b1484596-25dc-11ea-978f-2e728ce88125');
 
         $this->expectException(DateTimeException::class);
-        $this->expectExceptionMessage(
-            'Failed to parse time string (@1234567890.1234567) at position 18 (7): Unexpected character'
-        );
+        $this->expectExceptionMessage('Unable to create a date from the time "1234567890 1234567": Trailing data');
 
         /**
          * @phpstan-ignore-next-line

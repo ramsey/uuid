@@ -8,8 +8,9 @@ use Exception;
 use JMac\Testing\Double;
 use PHPUnit\Framework\Attributes\PreserveGlobalState;
 use PHPUnit\Framework\Attributes\RunInSeparateProcess;
-use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub;
 use Ramsey\Uuid\Converter\TimeConverterInterface;
+use Ramsey\Uuid\Exception\InvalidArgumentException;
 use Ramsey\Uuid\Exception\RandomSourceException;
 use Ramsey\Uuid\Exception\TimeSourceException;
 use Ramsey\Uuid\FeatureSet;
@@ -29,8 +30,8 @@ class DefaultTimeGeneratorTest extends TestCase
     use MocksFunctions;
 
     private TimeProviderInterface $timeProvider;
-    private NodeProviderInterface & MockObject $nodeProvider;
-    private TimeConverterInterface & MockObject $timeConverter;
+    private NodeProviderInterface & Stub $nodeProvider;
+    private TimeConverterInterface & Stub $timeConverter;
 
     /**
      * @var non-empty-string
@@ -52,8 +53,8 @@ class DefaultTimeGeneratorTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->nodeProvider = $this->getMockBuilder(NodeProviderInterface::class)->getMock();
-        $this->timeConverter = $this->getMockBuilder(TimeConverterInterface::class)->getMock();
+        $this->nodeProvider = $this->createStub(NodeProviderInterface::class);
+        $this->timeConverter = $this->createStub(TimeConverterInterface::class);
         $this->currentTime = ['sec' => 1458733431, 'usec' => 877449];
         $this->calculatedTime = new Hexadecimal('03cb98e083cb98e0');
 
@@ -70,16 +71,18 @@ class DefaultTimeGeneratorTest extends TestCase
 
     public function testGenerateUsesNodeProviderWhenNodeIsNull(): void
     {
-        $this->nodeProvider->expects($this->once())
+        $nodeProvider = $this->createMock(NodeProviderInterface::class);
+        $timeConverter = $this->createMock(TimeConverterInterface::class);
+        $nodeProvider->expects($this->once())
             ->method('getNode')
             ->willReturn(new Hexadecimal('122f80ca9e06'));
-        $this->timeConverter->expects($this->once())
+        $timeConverter->expects($this->once())
             ->method('calculateTime')
             ->with($this->currentTime['sec'], $this->currentTime['usec'])
             ->willReturn($this->calculatedTime);
         $defaultTimeGenerator = new DefaultTimeGenerator(
-            $this->nodeProvider,
-            $this->timeConverter,
+            $nodeProvider,
+            $timeConverter,
             $this->timeProvider
         );
         $defaultTimeGenerator->generate(null, $this->clockSeq);
@@ -87,13 +90,14 @@ class DefaultTimeGeneratorTest extends TestCase
 
     public function testGenerateUsesTimeProvidersCurrentTime(): void
     {
-        $this->timeConverter->expects($this->once())
+        $timeConverter = $this->createMock(TimeConverterInterface::class);
+        $timeConverter->expects($this->once())
             ->method('calculateTime')
             ->with($this->currentTime['sec'], $this->currentTime['usec'])
             ->willReturn($this->calculatedTime);
         $defaultTimeGenerator = new DefaultTimeGenerator(
             $this->nodeProvider,
-            $this->timeConverter,
+            $timeConverter,
             $this->timeProvider
         );
         $defaultTimeGenerator->generate($this->nodeId, $this->clockSeq);
@@ -101,13 +105,14 @@ class DefaultTimeGeneratorTest extends TestCase
 
     public function testGenerateCalculatesTimeWithConverter(): void
     {
-        $this->timeConverter->expects($this->once())
+        $timeConverter = $this->createMock(TimeConverterInterface::class);
+        $timeConverter->expects($this->once())
             ->method('calculateTime')
             ->with($this->currentTime['sec'], $this->currentTime['usec'])
             ->willReturn($this->calculatedTime);
         $defaultTimeGenerator = new DefaultTimeGenerator(
             $this->nodeProvider,
-            $this->timeConverter,
+            $timeConverter,
             $this->timeProvider
         );
         $defaultTimeGenerator->generate($this->nodeId, $this->clockSeq);
@@ -117,13 +122,15 @@ class DefaultTimeGeneratorTest extends TestCase
     {
         $expectedBytes = hex2bin('83cb98e098e003cb0fe2122f80ca9e06');
 
-        $this->timeConverter->method('calculateTime')
+        $timeConverter = $this->createMock(TimeConverterInterface::class);
+        $timeConverter->expects($this->once())
+            ->method('calculateTime')
             ->with($this->currentTime['sec'], $this->currentTime['usec'])
             ->willReturn($this->calculatedTime);
 
         $defaultTimeGenerator = new DefaultTimeGenerator(
             $this->nodeProvider,
-            $this->timeConverter,
+            $timeConverter,
             $this->timeProvider
         );
 
@@ -134,19 +141,20 @@ class DefaultTimeGeneratorTest extends TestCase
     #[PreserveGlobalState(false)]
     public function testGenerateUsesRandomSequenceWhenClockSeqNull(): void
     {
+        $timeConverter = $this->createMock(TimeConverterInterface::class);
         $this->expectFunctionCall(
             'Ramsey\Uuid\Generator',
             'random_int',
             [0, 0x3fff],
             9622,
         );
-        $this->timeConverter->expects($this->once())
+        $timeConverter->expects($this->once())
             ->method('calculateTime')
             ->with($this->currentTime['sec'], $this->currentTime['usec'])
             ->willReturn($this->calculatedTime);
         $defaultTimeGenerator = new DefaultTimeGenerator(
             $this->nodeProvider,
-            $this->timeConverter,
+            $timeConverter,
             $this->timeProvider
         );
         $defaultTimeGenerator->generate($this->nodeId);
@@ -179,9 +187,11 @@ class DefaultTimeGeneratorTest extends TestCase
     {
         $timeProvider = new FixedTimeProvider(new Time('1832455114570', '955162'));
         $featureSet = new FeatureSet();
+        $timeConverter = Double::for(TimeConverterInterface::class);
+        $timeConverter->allows('calculateTime')->returns(new Hexadecimal('10000000000000004'));
         $timeGenerator = new DefaultTimeGenerator(
             $featureSet->getNodeProvider(),
-            $featureSet->getTimeConverter(),
+            $timeConverter,
             $timeProvider
         );
 
@@ -191,5 +201,19 @@ class DefaultTimeGeneratorTest extends TestCase
         );
 
         $timeGenerator->generate();
+    }
+
+    public function testGenerateThrowsExceptionForNodeWithTrailingNewline(): void
+    {
+        $defaultTimeGenerator = new DefaultTimeGenerator(
+            $this->nodeProvider,
+            $this->timeConverter,
+            $this->timeProvider,
+        );
+
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Invalid node value');
+
+        $defaultTimeGenerator->generate("0123456789a\n");
     }
 }

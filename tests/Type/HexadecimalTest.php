@@ -8,10 +8,12 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use Ramsey\Uuid\Exception\InvalidArgumentException;
 use Ramsey\Uuid\Test\TestCase;
 use Ramsey\Uuid\Type\Hexadecimal;
+use ValueError;
 
 use function json_encode;
 use function serialize;
 use function sprintf;
+use function strlen;
 use function unserialize;
 
 class HexadecimalTest extends TestCase
@@ -77,6 +79,8 @@ class HexadecimalTest extends TestCase
             ['123456.789'],
             ['foobar'],
             ['0xfoobar'],
+            ["abc\n"],
+            ["\nabc"],
         ];
     }
 
@@ -105,5 +109,15 @@ class HexadecimalTest extends TestCase
         $expectedJson = sprintf('"%s"', $expected);
 
         $this->assertSame($expectedJson, json_encode($hexadecimal));
+    }
+
+    public function testUnserializeThrowsExceptionWhenTheValueIsNotAString(): void
+    {
+        $serialized = sprintf('O:%d:"%s":1:{s:6:"string";a:0:{}}', strlen(Hexadecimal::class), Hexadecimal::class);
+
+        $this->expectException(ValueError::class);
+        $this->expectExceptionMessage(Hexadecimal::class . '::__unserialize(): Argument #1 ($data) is invalid');
+
+        unserialize($serialized);
     }
 }

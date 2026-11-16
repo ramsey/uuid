@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Ramsey\Uuid\Test\Generator;
 
-use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub;
 use Ramsey\Uuid\Converter\TimeConverterInterface;
 use Ramsey\Uuid\Generator\TimeGeneratorFactory;
 use Ramsey\Uuid\Generator\TimeGeneratorInterface;
@@ -16,14 +16,14 @@ class TimeGeneratorFactoryTest extends TestCase
 {
     public function testGeneratorReturnsNewGenerator(): void
     {
-        /** @var MockObject & TimeProviderInterface $timeProvider */
-        $timeProvider = $this->getMockBuilder(TimeProviderInterface::class)->getMock();
+        /** @var Stub & TimeProviderInterface $timeProvider */
+        $timeProvider = $this->createStub(TimeProviderInterface::class);
 
-        /** @var MockObject & NodeProviderInterface $nodeProvider */
-        $nodeProvider = $this->getMockBuilder(NodeProviderInterface::class)->getMock();
+        /** @var Stub & NodeProviderInterface $nodeProvider */
+        $nodeProvider = $this->createStub(NodeProviderInterface::class);
 
-        /** @var MockObject & TimeConverterInterface $timeConverter */
-        $timeConverter = $this->getMockBuilder(TimeConverterInterface::class)->getMock();
+        /** @var Stub & TimeConverterInterface $timeConverter */
+        $timeConverter = $this->createStub(TimeConverterInterface::class);
 
         $factory = new TimeGeneratorFactory($nodeProvider, $timeConverter, $timeProvider);
         $generator = $factory->getGenerator();

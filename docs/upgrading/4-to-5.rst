@@ -1,0 +1,607 @@
+.. _upgrading.4-to-5:
+
+==============
+Version 4 to 5
+==============
+
+Version 5 is mostly a cleanup release. I've removed everything that version 4 marked as deprecated, and the version and
+variant of a UUID are now enums. If you use ramsey/uuid to generate UUIDs and convert them to strings, the upgrade
+should be uneventful. If you call any of the deprecated methods or customize the library, there are a number of things
+to be aware of as you upgrade your code to use version 5.
+
+.. tip::
+
+    These are the changes that are most likely to affect you. For a full list of changes, take a look at the `5.0.0
+    changelog`_.
+
+.. _upgrading.4-to-5.new:
+
+What's New?
+###########
+
+Version 5 doesn't add many features. Here's what's new:
+
+* Add the :php:enum:`Rfc4122\\Version <Ramsey\\Uuid\\Rfc4122\\Version>` enum to represent the version of a UUID.
+* Add the :php:enum:`Variant <Ramsey\\Uuid\\Variant>` enum to represent the variant of a UUID.
+* Add :php:interface:`TimeBasedUuidInterface <Ramsey\\Uuid\\TimeBasedUuidInterface>` to represent any UUID based on a
+  date and time. These classes implement it:
+
+  * :php:class:`Rfc4122\\UuidV1 <Ramsey\\Uuid\\Rfc4122\\UuidV1>`
+  * :php:class:`Rfc4122\\UuidV2 <Ramsey\\Uuid\\Rfc4122\\UuidV2>`
+  * :php:class:`Rfc4122\\UuidV6 <Ramsey\\Uuid\\Rfc4122\\UuidV6>`
+  * :php:class:`Rfc4122\\UuidV7 <Ramsey\\Uuid\\Rfc4122\\UuidV7>`
+
+* Add TimeBasedUuidFactoryInterface to represent any factory that creates UUIDs based on a date and time.
+* :php:meth:`Rfc4122\\UuidInterface::getFields() <Ramsey\\Uuid\\Rfc4122\\UuidInterface::getFields>` now declares
+  :php:interface:`Rfc4122\\FieldsInterface <Ramsey\\Uuid\\Rfc4122\\FieldsInterface>` as its return type.
+
+.. _upgrading.4-to-5.changed:
+
+What's Changed?
+###############
+
+.. attention::
+
+    ramsey/uuid version 5 requires PHP 8.3 or later.
+
+The static methods on the :php:class:`Uuid <Ramsey\\Uuid\\Uuid>` class work as they did in version 4. Most of what
+changed is what version 4 told you would change.
+
+.. rubric:: Here are the highlights:
+
+* The version and variant of a UUID are :ref:`now enums <upgrading.4-to-5.enums>`, and the constants for them on the
+  :php:class:`Uuid <Ramsey\\Uuid\\Uuid>` class are gone. A comparison to an integer, such as
+  ``$uuid->getFields()->getVersion() === 4``, is now always ``false``. **Take note and update your code.**
+* :ref:`The deprecated methods are removed. <upgrading.4-to-5.removed-methods>` This includes ``getVersion()``,
+  ``getVariant()``, and ``getNumberConverter()`` on the UUID object.
+* ``getDateTime()`` is no longer part of :php:interface:`UuidInterface <Ramsey\\Uuid\\UuidInterface>`. :ref:`It moved
+  to TimeBasedUuidInterface. <upgrading.4-to-5.datetime>`
+* :ref:`The deprecated classes are removed. <upgrading.4-to-5.removed-classes>` This includes the ordered-time codec,
+  the COMB generator and codecs, all Degraded\* classes, and Nonstandard\\UuidV6.
+* The classes and interfaces of ramsey/uuid :ref:`no longer implement Serializable <upgrading.4-to-5.serialization>`.
+  PHP's ``serialize()`` and ``unserialize()`` functions continue to work.
+* If you customize ramsey/uuid at all by implementing the interfaces, take a look at the :ref:`interface
+  <upgrading.4-to-5.interfaces>` and :ref:`constructor <upgrading.4-to-5.constructors>` changes and update your code.
+* ramsey/uuid :ref:`no longer requires ramsey/collection <upgrading.4-to-5.dependencies>`, and it requires a newer
+  version of brick/math.
+
+.. tip::
+
+    If you maintain a public project that uses ramsey/uuid version 4 and you find that **your code does not require any
+    changes to upgrade** to version 5, consider using the following version constraint in your project's ``composer.json``
+    file:
+
+    .. code-block:: bash
+
+        composer require ramsey/uuid:"^4 || ^5"
+
+    This will allow any `downstream users`_ of your project who aren't ready to upgrade to version 5 the ability to
+    continue using your project while deciding on an appropriate upgrade schedule.
+
+    If your downstream users do not specify ramsey/uuid as a dependency, and they use functionality specific to version
+    4, they may need to update their own Composer dependencies to use ramsey/uuid ``^4`` to avoid using version 5.
+
+.. _upgrading.4-to-5.enums:
+
+Version and Variant Enums
+#########################
+
+In version 4, the version and variant of a UUID were integers, and the :php:class:`Uuid <Ramsey\\Uuid\\Uuid>` class had
+constants for them. In version 5, they are cases of the :php:enum:`Rfc4122\\Version <Ramsey\\Uuid\\Rfc4122\\Version>`
+and :php:enum:`Variant <Ramsey\\Uuid\\Variant>` enums, and the constants are removed.
+
+.. list-table:: Changed Rfc4122\\FieldsInterface method return types
+    :widths: 40 30 30
+    :align: center
+    :header-rows: 1
+
+    * - Method
+      - 4.x Returned
+      - 5.x Returns
+    * - :php:meth:`Rfc4122\\FieldsInterface::getVersion() <Ramsey\\Uuid\\Rfc4122\\FieldsInterface::getVersion>`
+      - ``int`` or ``null``
+      - :php:enum:`Rfc4122\\Version <Ramsey\\Uuid\\Rfc4122\\Version>` or ``null``
+    * - :php:meth:`Rfc4122\\FieldsInterface::getVariant() <Ramsey\\Uuid\\Rfc4122\\FieldsInterface::getVariant>`
+      - ``int``
+      - :php:enum:`Variant <Ramsey\\Uuid\\Variant>`
+
+If you compare the version or variant to an integer or to one of the removed constants, compare it to an enum case
+instead. To get the integer, use the ``value`` property of the enum case.
+
+.. code-block:: php
+    :caption: Checking the version of a UUID in version 5
+
+    use Ramsey\Uuid\Rfc4122\Version;
+    use Ramsey\Uuid\Uuid;
+
+    $uuid = Uuid::uuid4();
+
+    // In version 4, this was $uuid->getFields()->getVersion() === Uuid::UUID_TYPE_RANDOM.
+    if ($uuid->getFields()->getVersion() === Version::Random) {
+        // This is a version 4 UUID.
+    }
+
+    // getVersion() returns null for the nil and max UUIDs, and for nonstandard UUIDs.
+    $versionNumber = $uuid->getFields()->getVersion()?->value;
+
+.. list-table:: Removed Uuid version constants
+    :widths: 50 50
+    :align: center
+    :header-rows: 1
+
+    * - Removed Constant
+      - Update To
+    * - ``Uuid::UUID_TYPE_TIME``
+      - :php:case:`Version::Time <Ramsey\\Uuid\\Rfc4122\\Version::Time>`
+    * - ``Uuid::UUID_TYPE_DCE_SECURITY``
+      - :php:case:`Version::DceSecurity <Ramsey\\Uuid\\Rfc4122\\Version::DceSecurity>`
+    * - ``Uuid::UUID_TYPE_IDENTIFIER``
+      - :php:case:`Version::DceSecurity <Ramsey\\Uuid\\Rfc4122\\Version::DceSecurity>`
+    * - ``Uuid::UUID_TYPE_HASH_MD5``
+      - :php:case:`Version::HashMd5 <Ramsey\\Uuid\\Rfc4122\\Version::HashMd5>`
+    * - ``Uuid::UUID_TYPE_RANDOM``
+      - :php:case:`Version::Random <Ramsey\\Uuid\\Rfc4122\\Version::Random>`
+    * - ``Uuid::UUID_TYPE_HASH_SHA1``
+      - :php:case:`Version::HashSha1 <Ramsey\\Uuid\\Rfc4122\\Version::HashSha1>`
+    * - ``Uuid::UUID_TYPE_REORDERED_TIME``
+      - :php:case:`Version::ReorderedTime <Ramsey\\Uuid\\Rfc4122\\Version::ReorderedTime>`
+    * - ``Uuid::UUID_TYPE_PEABODY``
+      - :php:case:`Version::ReorderedTime <Ramsey\\Uuid\\Rfc4122\\Version::ReorderedTime>`
+    * - ``Uuid::UUID_TYPE_UNIX_TIME``
+      - :php:case:`Version::UnixTime <Ramsey\\Uuid\\Rfc4122\\Version::UnixTime>`
+    * - ``Uuid::UUID_TYPE_CUSTOM``
+      - :php:case:`Version::Custom <Ramsey\\Uuid\\Rfc4122\\Version::Custom>`
+
+.. list-table:: Removed Uuid variant constants
+    :widths: 50 50
+    :align: center
+    :header-rows: 1
+
+    * - Removed Constant
+      - Update To
+    * - ``Uuid::RESERVED_NCS``
+      - :php:case:`Variant::ReservedNcs <Ramsey\\Uuid\\Variant::ReservedNcs>`
+    * - ``Uuid::RFC_4122``
+      - :php:case:`Variant::Rfc9562 <Ramsey\\Uuid\\Variant::Rfc9562>`, or its alias, ``Variant::Rfc4122``
+    * - ``Uuid::RFC_9562``
+      - :php:case:`Variant::Rfc9562 <Ramsey\\Uuid\\Variant::Rfc9562>`
+    * - ``Uuid::RESERVED_MICROSOFT``
+      - :php:case:`Variant::ReservedMicrosoft <Ramsey\\Uuid\\Variant::ReservedMicrosoft>`
+    * - ``Uuid::RESERVED_FUTURE``
+      - :php:case:`Variant::ReservedFuture <Ramsey\\Uuid\\Variant::ReservedFuture>`
+
+``Uuid::VALID_PATTERN`` is also removed. Use the following instead:
+
+.. code-block:: php
+
+    use Ramsey\Uuid\Validator\GenericValidator;
+    use Ramsey\Uuid\Rfc4122\Validator as Rfc4122Validator;
+
+    $genericPattern = (new GenericValidator())->getPattern();
+    $rfc4122Pattern = (new Rfc4122Validator())->getPattern();
+
+.. _upgrading.4-to-5.removed-methods:
+
+Removed Methods
+###############
+
+Version 4 deprecated the following methods on :php:interface:`UuidInterface <Ramsey\\Uuid\\UuidInterface>` and the
+:php:class:`Uuid <Ramsey\\Uuid\\Uuid>` classes. Version 5 removes them, along with DeprecatedUuidInterface and
+DeprecatedUuidMethodsTrait, which defined them. If you use these methods, you will need to update your code.
+
+.. list-table:: Removed methods
+    :widths: 30 70
+    :align: center
+    :header-rows: 1
+
+    * - Removed Method
+      - Update To
+    * - ``getClockSeqHiAndReservedHex()``
+      - :php:meth:`getFields()->getClockSeqHiAndReserved()->toString() <Ramsey\\Uuid\\Rfc4122\\FieldsInterface::getClockSeqHiAndReserved>`
+    * - ``getClockSeqLowHex()``
+      - :php:meth:`getFields()->getClockSeqLow()->toString() <Ramsey\\Uuid\\Rfc4122\\FieldsInterface::getClockSeqLow>`
+    * - ``getClockSequenceHex()``
+      - :php:meth:`getFields()->getClockSeq()->toString() <Ramsey\\Uuid\\Rfc4122\\FieldsInterface::getClockSeq>`
+    * - ``getDateTime()``
+      - See :ref:`upgrading.4-to-5.datetime`
+    * - ``getFieldsHex()``
+      - :php:meth:`getFields() <Ramsey\\Uuid\\Rfc4122\\UuidInterface::getFields>` [#f1]_
+    * - ``getLeastSignificantBitsHex()``
+      - ``substr($uuid->getHex()->toString(), 16)``
+    * - ``getMostSignificantBitsHex()``
+      - ``substr($uuid->getHex()->toString(), 0, 16)``
+    * - ``getNodeHex()``
+      - :php:meth:`getFields()->getNode()->toString() <Ramsey\\Uuid\\Rfc4122\\FieldsInterface::getNode>`
+    * - ``getNumberConverter()``
+      - This method has no replacement.
+    * - ``getTimeHiAndVersionHex()``
+      - :php:meth:`getFields()->getTimeHiAndVersion()->toString() <Ramsey\\Uuid\\Rfc4122\\FieldsInterface::getTimeHiAndVersion>`
+    * - ``getTimeLowHex()``
+      - :php:meth:`getFields()->getTimeLow()->toString() <Ramsey\\Uuid\\Rfc4122\\FieldsInterface::getTimeLow>`
+    * - ``getTimeMidHex()``
+      - :php:meth:`getFields()->getTimeMid()->toString() <Ramsey\\Uuid\\Rfc4122\\FieldsInterface::getTimeMid>`
+    * - ``getTimestampHex()``
+      - :php:meth:`getFields()->getTimestamp()->toString() <Ramsey\\Uuid\\Rfc4122\\FieldsInterface::getTimestamp>`
+    * - ``getVariant()``
+      - :php:meth:`getFields()->getVariant() <Ramsey\\Uuid\\Rfc4122\\FieldsInterface::getVariant>`, which :ref:`returns
+        an enum <upgrading.4-to-5.enums>`
+    * - ``getVersion()``
+      - :php:meth:`getFields()->getVersion() <Ramsey\\Uuid\\Rfc4122\\FieldsInterface::getVersion>`, which :ref:`returns
+        an enum <upgrading.4-to-5.enums>`
+
+The following methods, which returned numeric ``string`` values in version 4, are also removed.
+
+* ``getClockSeqHiAndReserved()``
+* ``getClockSeqLow()``
+* ``getClockSequence()``
+* ``getLeastSignificantBits()``
+* ``getMostSignificantBits()``
+* ``getNode()``
+* ``getTimeHiAndVersion()``
+* ``getTimeLow()``
+* ``getTimeMid()``
+* ``getTimestamp()``
+
+.. hint::
+
+    There are no direct replacements for these methods. To update your code, you should use the recommended alternates
+    listed in the table above, combined with the arbitrary-precision mathematics library of your choice (e.g.,
+    `brick/math`_, `gmp`_, `bcmath`_, etc.).
+
+    .. code-block:: php
+        :caption: Using brick/math to convert a node to a string integer
+
+        use Brick\Math\BigInteger;
+
+        $node = BigInteger::fromBase($uuid->getFields()->getNode()->toString(), 16);
+
+.. _upgrading.4-to-5.datetime:
+
+getDateTime() and Time-based UUIDs
+##################################
+
+``getDateTime()`` is no longer a method of :php:interface:`UuidInterface <Ramsey\\Uuid\\UuidInterface>`. It is defined
+on the new :php:interface:`TimeBasedUuidInterface <Ramsey\\Uuid\\TimeBasedUuidInterface>`, which the classes for version
+1, 2, 6, and 7 UUIDs implement.
+
+If your code calls ``getDateTime()`` on a value whose type declaration is :php:interface:`UuidInterface
+<Ramsey\\Uuid\\UuidInterface>`, change the type declaration to :php:interface:`TimeBasedUuidInterface
+<Ramsey\\Uuid\\TimeBasedUuidInterface>`.
+
+.. code-block:: php
+    :caption: Declaring a time-based UUID in version 5
+
+    use Ramsey\Uuid\TimeBasedUuidInterface;
+
+    function createdAt(TimeBasedUuidInterface $uuid): string
+    {
+        return $uuid->getDateTime()->format('c');
+    }
+
+.. note::
+
+    With the default factory, the static methods on the :php:class:`Uuid <Ramsey\\Uuid\\Uuid>` class return an object
+    that implements :php:interface:`TimeBasedUuidInterface <Ramsey\\Uuid\\TimeBasedUuidInterface>` for every version of
+    UUID, since it doesn't read the UUID until you ask it for something. If the UUID isn't based on a date and time,
+    its ``getDateTime()`` method throws UnsupportedOperationException, as it did in version 4. To find out whether a
+    UUID has a date and time, check its version instead of using ``instanceof``.
+
+.. _upgrading.4-to-5.removed-classes:
+
+Removed Classes
+###############
+
+Version 5 removes the classes and interfaces that version 4 deprecated.
+
+.. list-table:: Removed classes
+    :widths: 40 60
+    :align: center
+    :header-rows: 1
+
+    * - Removed Class
+      - Update To
+    * - BinaryUtils
+      - This class has no replacement.
+    * - Builder\\BuilderCollection
+      - An ``array``, or any ``iterable``, of Builder\\UuidBuilderInterface instances
+    * - Builder\\DefaultUuidBuilder
+      - Rfc4122\\UuidBuilder
+    * - Builder\\DegradedUuidBuilder
+      - Rfc4122\\UuidBuilder
+    * - Codec\\OrderedTimeCodec
+      - :ref:`Version 6 UUIDs <rfc4122.version6>`; see :ref:`upgrading.4-to-5.ordered-time`
+    * - Codec\\TimestampFirstCombCodec
+      - :ref:`Version 7 UUIDs <rfc4122.version7>`
+    * - Codec\\TimestampLastCombCodec
+      - Codec\\StringCodec
+    * - Converter\\Number\\BigNumberConverter
+      - Converter\\Number\\GenericNumberConverter
+    * - Converter\\Number\\DegradedNumberConverter
+      - Converter\\Number\\GenericNumberConverter
+    * - Converter\\Time\\BigNumberTimeConverter
+      - Converter\\Time\\GenericTimeConverter
+    * - Converter\\Time\\DegradedTimeConverter
+      - Converter\\Time\\GenericTimeConverter
+    * - DegradedUuid
+      - :php:interface:`UuidInterface <Ramsey\\Uuid\\UuidInterface>`, for type declarations
+    * - DeprecatedUuidInterface
+      - See :ref:`upgrading.4-to-5.removed-methods`
+    * - DeprecatedUuidMethodsTrait
+      - See :ref:`upgrading.4-to-5.removed-methods`
+    * - Generator\\CombGenerator
+      - :ref:`Version 7 UUIDs <rfc4122.version7>`
+    * - Generator\\RandomLibAdapter
+      - Generator\\RandomBytesGenerator, or your own Generator\\RandomGeneratorInterface
+    * - Nonstandard\\UuidV6
+      - :php:class:`Rfc4122\\UuidV6 <Ramsey\\Uuid\\Rfc4122\\UuidV6>`
+    * - Provider\\Node\\NodeProviderCollection
+      - An ``array``, or any ``iterable``, of Provider\\NodeProviderInterface instances
+
+.. _upgrading.4-to-5.ordered-time:
+
+Ordered-time Codec
+------------------
+
+The ordered-time codec stored the bytes of a version 1 UUID in a different order, and version 5 has nothing that reads
+bytes in that order. If you stored UUIDs using the ordered-time codec, convert them to :ref:`version 6 UUIDs
+<rfc4122.version6>` **while you are still using version 4**, since the conversion needs the codec.
+
+.. note::
+
+    Version 5 still parses these bytes, and it returns the same bytes and string for them, so they continue to work as
+    identifiers. It reads them in the standard order, though, so the version, date, and node it reports are wrong. The
+    type of object you get back also varies from one UUID to the next, since the version comes from part of the
+    original timestamp. You might get a Nonstandard\\Uuid, or an :php:class:`Rfc4122\\UuidV4
+    <Ramsey\\Uuid\\Rfc4122\\UuidV4>`, or an :php:class:`Rfc4122\\UuidV8 <Ramsey\\Uuid\\Rfc4122\\UuidV8>`, for example.
+
+.. caution::
+
+    If you perform this conversion, the bytes and string representation of your UUIDs will change. This will break any
+    software that expects your identifiers to be fixed.
+
+.. code-block:: php
+    :caption: With ramsey/uuid version 4, convert an ordered-time codec encoded UUID to a version 6 UUID
+
+    use Ramsey\Uuid\Codec\OrderedTimeCodec;
+    use Ramsey\Uuid\Rfc4122\UuidV1;
+    use Ramsey\Uuid\Rfc4122\UuidV6;
+    use Ramsey\Uuid\UuidFactory;
+
+    // The bytes of a version 1 UUID previously stored in some datastore
+    // after encoding to bytes with the OrderedTimeCodec.
+    $bytes = hex2bin('11ea60faf17c8af6ad23acde48001122');
+
+    $factory = new UuidFactory();
+    $codec = new OrderedTimeCodec($factory->getUuidBuilder());
+
+    $factory->setCodec($codec);
+
+    $orderedTimeUuid = $factory->fromBytes($bytes);
+
+    if ($orderedTimeUuid instanceof UuidV1) {
+        $uuid6 = UuidV6::fromUuidV1($orderedTimeUuid);
+    }
+
+.. _upgrading.4-to-5.serialization:
+
+Serialization
+#############
+
+:php:interface:`UuidInterface <Ramsey\\Uuid\\UuidInterface>`, Fields\\FieldsInterface, and Type\\TypeInterface no longer
+extend PHP's `Serializable`_ interface. They declare ``__serialize()`` and ``__unserialize()`` instead, and the
+``serialize()`` and ``unserialize()`` methods are removed from every class that had them.
+
+If you call PHP's ``serialize()`` and ``unserialize()`` functions with UUID objects, you do not need to change
+anything. Version 5 reads what version 4 wrote.
+
+If you call the ``serialize()`` method on a UUID object, as in ``$uuid->serialize()``, use ``$uuid->toString()`` or
+``$uuid->getBytes()`` instead.
+
+.. caution::
+
+    ramsey/uuid version 4.2.1 and earlier wrote serialized UUID objects in the older format of the `Serializable`_
+    interface. Version 5 cannot read that format: PHP raises a warning, and the object ``unserialize()`` returns is not
+    usable. If you have stored such values, such as in a cache or a session, read and write them again with a later
+    release of version 4 before you upgrade.
+
+.. _upgrading.4-to-5.interfaces:
+
+Interface Changes
+#################
+
+For those who customize ramsey/uuid by implementing the interfaces provided, there are a few breaking changes to note.
+
+.. hint::
+
+    Several method parameters that had no type declaration now have one. If you implement any interfaces, please be
+    aware of this and update your classes.
+
+UuidInterface
+-------------
+
+.. list-table::
+    :widths: 25 75
+    :align: center
+    :header-rows: 1
+
+    * - Method
+      - Description
+    * - ``__serialize()``
+      - New method; returns ``array``
+    * - ``__unserialize()``
+      - New method; accepts ``array $data``
+    * - ``serialize()``
+      - Method removed from interface; see :ref:`upgrading.4-to-5.serialization`
+    * - ``unserialize()``
+      - Method removed from interface; see :ref:`upgrading.4-to-5.serialization`
+    * - ``getDateTime()``
+      - Method removed from interface; see :ref:`upgrading.4-to-5.datetime`
+
+All the other :ref:`deprecated methods <upgrading.4-to-5.removed-methods>` are removed from this interface, too.
+
+Rfc4122\\UuidInterface
+----------------------
+
+.. list-table::
+    :widths: 25 75
+    :align: center
+    :header-rows: 1
+
+    * - Method
+      - Description
+    * - :php:meth:`getFields() <Ramsey\\Uuid\\Rfc4122\\UuidInterface::getFields>`
+      - Now returns :php:interface:`Rfc4122\\FieldsInterface <Ramsey\\Uuid\\Rfc4122\\FieldsInterface>`
+
+Rfc4122\\FieldsInterface
+------------------------
+
+.. list-table::
+    :widths: 25 75
+    :align: center
+    :header-rows: 1
+
+    * - Method
+      - Description
+    * - :php:meth:`getVariant() <Ramsey\\Uuid\\Rfc4122\\FieldsInterface::getVariant>`
+      - Used to return ``int``; now returns :php:enum:`Variant <Ramsey\\Uuid\\Variant>`
+    * - :php:meth:`getVersion() <Ramsey\\Uuid\\Rfc4122\\FieldsInterface::getVersion>`
+      - Used to return ``int`` or ``null``; now returns :php:enum:`Rfc4122\\Version <Ramsey\\Uuid\\Rfc4122\\Version>` or
+        ``null``
+
+Fields\\FieldsInterface and Type\\TypeInterface
+-----------------------------------------------
+
+.. list-table::
+    :widths: 25 75
+    :align: center
+    :header-rows: 1
+
+    * - Method
+      - Description
+    * - ``__serialize()``
+      - New method; returns ``array``
+    * - ``__unserialize()``
+      - New method; accepts ``array $data``
+    * - ``serialize()``
+      - Method removed from interface
+    * - ``unserialize()``
+      - Method removed from interface
+
+UuidFactoryInterface
+--------------------
+
+.. list-table::
+    :widths: 25 75
+    :align: center
+    :header-rows: 1
+
+    * - Method
+      - Description
+    * - :php:meth:`uuid1() <Ramsey\\Uuid\\UuidFactoryInterface::uuid1>`
+      - The ``$node`` parameter is now declared as ``Hexadecimal | int | string | null``
+    * - :php:meth:`uuid3() <Ramsey\\Uuid\\UuidFactoryInterface::uuid3>`
+      - The ``$ns`` parameter is now declared as ``UuidInterface | string``
+    * - :php:meth:`uuid5() <Ramsey\\Uuid\\UuidFactoryInterface::uuid5>`
+      - The ``$ns`` parameter is now declared as ``UuidInterface | string``
+    * - ``uuid7()``
+      - New method; returns :php:interface:`UuidInterface <Ramsey\\Uuid\\UuidInterface>`
+    * - ``uuid8()``
+      - New method; returns :php:interface:`UuidInterface <Ramsey\\Uuid\\UuidInterface>`
+
+In version 4, the default factory had ``uuid7()`` and ``uuid8()`` methods, but the interface did not. If you have your
+own factory that implements :php:interface:`UuidFactoryInterface <Ramsey\\Uuid\\UuidFactoryInterface>`, you will need to
+add them.
+
+Generator\\TimeGeneratorInterface
+---------------------------------
+
+.. list-table::
+    :widths: 25 75
+    :align: center
+    :header-rows: 1
+
+    * - Method
+      - Description
+    * - ``generate()``
+      - The ``$node`` parameter is now declared as ``Hexadecimal | int | string | null``
+
+Generator\\DceSecurityGeneratorInterface
+----------------------------------------
+
+.. list-table::
+    :widths: 25 75
+    :align: center
+    :header-rows: 1
+
+    * - Method
+      - Description
+    * - ``generate()``
+      - The ``$node`` parameter used to accept ``?Hexadecimal``; now accepts ``Hexadecimal | int | string | null``
+
+.. _upgrading.4-to-5.constructors:
+
+Constructor Changes
+###################
+
+There are a handful of constructor changes that might affect your use of ramsey/uuid, especially if you customize the
+library.
+
+FeatureSet
+----------
+
+The constructor for FeatureSet no longer has the ``$forceNoBigNumber`` parameter, which was its third parameter and did
+nothing in version 4. If you pass arguments to FeatureSet by position, remove the third argument, or the arguments
+after it will apply to the wrong parameters.
+
+.. code-block:: php
+
+    use Ramsey\Uuid\FeatureSet;
+
+    // In version 4, this was new FeatureSet(false, false, false, true).
+    $featureSet = new FeatureSet(false, false, true);
+
+    // Named arguments work in both versions.
+    $featureSet = new FeatureSet(ignoreSystemNode: true);
+
+Uuid
+----
+
+The ``$codec``, ``$numberConverter``, ``$fields``, and ``$timeConverter`` properties of :php:class:`Ramsey\\Uuid\\Uuid`
+used to be ``protected`` and are now ``private`` and ``readonly``. If you have a class that extends :php:class:`Uuid
+<Ramsey\\Uuid\\Uuid>` and reads these properties, use the ``getFields()``, ``getNumberConverter()``, and
+``getTimeConverter()`` methods instead. The codec is no longer available to subclasses.
+
+Converter\\Time\\PhpTimeConverter and Rfc4122\\UuidBuilder
+----------------------------------------------------------
+
+The optional constructor parameters of Converter\\Time\\PhpTimeConverter and the optional third constructor parameter
+of Rfc4122\\UuidBuilder no longer accept ``null``. To use the default for one of these parameters, leave the argument
+out.
+
+.. _upgrading.4-to-5.dependencies:
+
+Dependency Changes
+##################
+
+* ramsey/uuid no longer requires `ramsey/collection`_. If your code uses ramsey/collection and relies on ramsey/uuid to
+  install it, add it to your own project with ``composer require ramsey/collection``.
+* ramsey/uuid now requires `brick/math`_ version 0.14.8 or later. If your project or another one of its dependencies
+  requires an earlier version of brick/math, Composer will not be able to install ramsey/uuid version 5 until that
+  requirement changes.
+* Since Generator\\RandomLibAdapter is removed, ramsey/uuid no longer suggests paragonie/random-lib.
+
+-------------------------------------------------------------------------------
+
+.. rubric:: Footnotes
+
+.. [#f1] The :php:meth:`getFields() <Ramsey\\Uuid\\Rfc4122\\UuidInterface::getFields>` method returns a
+    :php:interface:`Rfc4122\\FieldsInterface <Ramsey\\Uuid\\Rfc4122\\FieldsInterface>` instance; you will need to
+    construct an array if you wish to match the return value of the removed ``getFieldsHex()`` method.
+
+.. _downstream users: https://en.wikipedia.org/wiki/Downstream_(software_development)
+.. _5.0.0 changelog: https://github.com/ramsey/uuid/releases/tag/5.0.0
+.. _brick/math: https://github.com/brick/math
+.. _gmp: https://www.php.net/gmp
+.. _bcmath: https://www.php.net/bcmath
+.. _ramsey/collection: https://github.com/ramsey/collection
+.. _Serializable: https://www.php.net/serializable

@@ -63,6 +63,22 @@ trait MocksFunctions
         $this->functionMocks[$key] = $mock;
     }
 
+    /**
+     * Replaces the function with the given implementation, without any expectations on its calls
+     */
+    protected function stubFunction(string $namespace, string $function, Closure $implementation): void
+    {
+        $mock = (new MockBuilder())
+            ->setNamespace($namespace)
+            ->setName($function)
+            ->setFunction($implementation)
+            ->build();
+
+        $mock->enable();
+
+        $this->functionMocks[$namespace . '\\' . $function] = $mock;
+    }
+
     #[After]
     protected function verifyFunctionMocks(): void
     {

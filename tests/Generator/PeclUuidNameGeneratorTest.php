@@ -6,18 +6,16 @@ namespace Ramsey\Uuid\Test\Generator;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\RequiresPhpExtension;
-use Ramsey\Uuid\BinaryUtils;
 use Ramsey\Uuid\Exception\NameException;
 use Ramsey\Uuid\Generator\PeclUuidNameGenerator;
 use Ramsey\Uuid\Rfc4122\Version;
 use Ramsey\Uuid\Test\TestCase;
 use Ramsey\Uuid\Uuid;
 
+use function chr;
 use function hash;
-use function pack;
+use function ord;
 use function substr;
-use function substr_replace;
-use function unpack;
 
 class PeclUuidNameGeneratorTest extends TestCase
 {
@@ -34,19 +32,10 @@ class PeclUuidNameGeneratorTest extends TestCase
         $expectedBytes = substr(hash($algorithm, $namespace->getBytes() . $name, true), 0, 16);
 
         // Need to add the version and variant, since ext-uuid already includes
-        // these in the values returned.
-        /** @var int[] $unpackedTime */
-        $unpackedTime = unpack('n*', substr($expectedBytes, 6, 2));
-        $timeHi = $unpackedTime[1];
-        $timeHiAndVersion = pack('n*', BinaryUtils::applyVersion($timeHi, $version));
-
-        /** @var int[] $unpackedClockSeq */
-        $unpackedClockSeq = unpack('n*', substr($expectedBytes, 8, 2));
-        $clockSeqHi = $unpackedClockSeq[1];
-        $clockSeqHiAndReserved = pack('n*', BinaryUtils::applyVariant($clockSeqHi));
-
-        $expectedBytes = substr_replace($expectedBytes, $timeHiAndVersion, 6, 2);
-        $expectedBytes = substr_replace($expectedBytes, $clockSeqHiAndReserved, 8, 2);
+        // these in the values returned. The version is the first four bits of
+        // the seventh byte, and the variant is the first two bits of the ninth.
+        $expectedBytes[6] = chr(ord($expectedBytes[6]) & 0x0f | $version->value << 4);
+        $expectedBytes[8] = chr(ord($expectedBytes[8]) & 0x3f | 0x80);
 
         $generator = new PeclUuidNameGenerator();
         $generatedBytes = $generator->generate($namespace, $name, $algorithm);
