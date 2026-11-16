@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Ramsey\Uuid\Test\Generator;
 
 use JMac\Testing\Double;
-use JMac\Testing\DoubleInterface;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Ramsey\Uuid\Converter\Number\GenericNumberConverter;
 use Ramsey\Uuid\Converter\NumberConverterInterface;
@@ -48,12 +47,10 @@ class DceSecurityGeneratorTest extends TestCase
         string $expectedNode,
         string $expectedTimeMidHi
     ): void {
-        /** @var DceSecurityProviderInterface & DoubleInterface $dceSecurityProvider */
         $dceSecurityProvider = Double::for(DceSecurityProviderInterface::class);
         $dceSecurityProvider->allows('getUid')->returns(new IntegerObject($uid));
         $dceSecurityProvider->allows('getGid')->returns(new IntegerObject($gid));
 
-        /** @var NodeProviderInterface & DoubleInterface $nodeProvider */
         $nodeProvider = Double::for(NodeProviderInterface::class);
         $nodeProvider->allows('getNode')->returns(new Hexadecimal($node));
 
