@@ -302,6 +302,16 @@ class UuidFactoryTest extends TestCase
                 3,
                 'a5bf60bd-fe2d-3fac-bbd7-404751e6ca66',
             ],
+            'uuid3 with string namespace' => [
+                fn (UuidFactory $f): UuidInterface => $f->uuid3(Uuid::NAMESPACE_URL, 'foo'),
+                3,
+                'a5bf60bd-fe2d-3fac-bbd7-404751e6ca66',
+            ],
+            'uuid3 with GUID namespace' => [
+                fn (UuidFactory $f): UuidInterface => $f->uuid3($f->fromString(Uuid::NAMESPACE_URL), 'foo'),
+                3,
+                'a5bf60bd-fe2d-3fac-bbd7-404751e6ca66',
+            ],
             'uuid4' => [
                 fn (UuidFactory $f): UuidInterface => $f->uuid4(),
                 4,
@@ -309,6 +319,16 @@ class UuidFactoryTest extends TestCase
             ],
             'uuid5' => [
                 fn (UuidFactory $f): UuidInterface => $f->uuid5(Uuid::fromString(Uuid::NAMESPACE_URL), 'foo'),
+                5,
+                '7da78284-2f14-5e7f-95e1-baaa9027c26f',
+            ],
+            'uuid5 with string namespace' => [
+                fn (UuidFactory $f): UuidInterface => $f->uuid5(Uuid::NAMESPACE_URL, 'foo'),
+                5,
+                '7da78284-2f14-5e7f-95e1-baaa9027c26f',
+            ],
+            'uuid5 with GUID namespace' => [
+                fn (UuidFactory $f): UuidInterface => $f->uuid5($f->fromString(Uuid::NAMESPACE_URL), 'foo'),
                 5,
                 '7da78284-2f14-5e7f-95e1-baaa9027c26f',
             ],
