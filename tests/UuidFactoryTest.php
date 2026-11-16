@@ -13,17 +13,14 @@ use PHPUnit\Framework\MockObject\Stub;
 use Ramsey\Uuid\Builder\UuidBuilderInterface;
 use Ramsey\Uuid\Codec\CodecInterface;
 use Ramsey\Uuid\Converter\NumberConverterInterface;
-use Ramsey\Uuid\Converter\TimeConverterInterface;
 use Ramsey\Uuid\Exception\InvalidArgumentException;
 use Ramsey\Uuid\FeatureSet;
-use Ramsey\Uuid\Generator\DceSecurityGeneratorInterface;
 use Ramsey\Uuid\Generator\DefaultNameGenerator;
 use Ramsey\Uuid\Generator\NameGeneratorInterface;
 use Ramsey\Uuid\Generator\RandomGeneratorInterface;
 use Ramsey\Uuid\Generator\TimeGeneratorInterface;
 use Ramsey\Uuid\Guid\Guid;
 use Ramsey\Uuid\Provider\Node\StaticNodeProvider;
-use Ramsey\Uuid\Provider\NodeProviderInterface;
 use Ramsey\Uuid\Provider\Time\FixedTimeProvider;
 use Ramsey\Uuid\Rfc4122\FieldsInterface as Rfc4122FieldsInterface;
 use Ramsey\Uuid\Rfc4122\UuidV1;
@@ -34,7 +31,6 @@ use Ramsey\Uuid\Type\Time;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidFactory;
 use Ramsey\Uuid\UuidInterface;
-use Ramsey\Uuid\Validator\ValidatorInterface;
 use Ramsey\Uuid\Variant;
 
 use function bin2hex;
@@ -79,52 +75,29 @@ class UuidFactoryTest extends TestCase
 
     public function testGettersReturnValueFromFeatureSet(): void
     {
-        $codec = Double::for(CodecInterface::class);
-        $nodeProvider = Double::for(NodeProviderInterface::class);
-        $randomGenerator = Double::for(RandomGeneratorInterface::class);
-        $timeConverter = Double::for(TimeConverterInterface::class);
-        $timeGenerator = Double::for(TimeGeneratorInterface::class);
-        $unixTimeGenerator = Double::for(TimeGeneratorInterface::class);
-        $nameGenerator = Double::for(NameGeneratorInterface::class);
-        $dceSecurityGenerator = Double::for(DceSecurityGeneratorInterface::class);
-        $numberConverter = Double::for(NumberConverterInterface::class);
-        $builder = Double::for(UuidBuilderInterface::class);
-        $validator = Double::for(ValidatorInterface::class);
-
-        $featureSet = Double::for(FeatureSet::class);
-        $featureSet->allows('getCodec')->returns($codec);
-        $featureSet->allows('getNodeProvider')->returns($nodeProvider);
-        $featureSet->allows('getRandomGenerator')->returns($randomGenerator);
-        $featureSet->allows('getTimeConverter')->returns($timeConverter);
-        $featureSet->allows('getTimeGenerator')->returns($timeGenerator);
-        $featureSet->allows('getNameGenerator')->returns($nameGenerator);
-        $featureSet->allows('getDceSecurityGenerator')->returns($dceSecurityGenerator);
-        $featureSet->allows('getNumberConverter')->returns($numberConverter);
-        $featureSet->allows('getBuilder')->returns($builder);
-        $featureSet->allows('getValidator')->returns($validator);
-        $featureSet->allows('getUnixTimeGenerator')->returns($unixTimeGenerator);
+        $featureSet = new FeatureSet();
 
         $uuidFactory = new UuidFactory($featureSet);
         $this->assertSame(
-            $codec,
+            $featureSet->getCodec(),
             $uuidFactory->getCodec(),
             'getCodec did not return CodecInterface from FeatureSet'
         );
 
         $this->assertSame(
-            $nodeProvider,
+            $featureSet->getNodeProvider(),
             $uuidFactory->getNodeProvider(),
             'getNodeProvider did not return NodeProviderInterface from FeatureSet'
         );
 
         $this->assertSame(
-            $randomGenerator,
+            $featureSet->getRandomGenerator(),
             $uuidFactory->getRandomGenerator(),
             'getRandomGenerator did not return RandomGeneratorInterface from FeatureSet'
         );
 
         $this->assertSame(
-            $timeGenerator,
+            $featureSet->getTimeGenerator(),
             $uuidFactory->getTimeGenerator(),
             'getTimeGenerator did not return TimeGeneratorInterface from FeatureSet'
         );

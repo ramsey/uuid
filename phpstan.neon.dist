@@ -19,7 +19,3 @@ parameters:
         -
             identifier: staticMethod.resultUnused
             path: tests/*
-        -
-            identifier: argument.type
-            message: '#^Parameter \#1 \$resolver of method JMac\\Testing\\Engine\\MethodExpectation::resolves\(\) expects#'
-            path: tests/FeatureSetTest.php

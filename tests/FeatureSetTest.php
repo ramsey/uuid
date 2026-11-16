@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Ramsey\Uuid\Test;
 
 use JMac\Testing\Double;
-use JMac\Testing\DoubleInterface;
+use JMac\Testing\Matching\Argument;
 use Ramsey\Uuid\Builder\FallbackBuilder;
 use Ramsey\Uuid\Converter\TimeConverterInterface;
 use Ramsey\Uuid\FeatureSet;
@@ -120,9 +120,11 @@ class FeatureSetTest extends TestCase
 
     public function testSetCalculatorRebuildsBuilderAndCodec(): void
     {
-        $realCalculator = new BrickMathCalculator();
-        $calculator = $this->mockCalculator($realCalculator);
-        $calculator->expects('fromBase')->times(2)->resolves([$realCalculator, 'fromBase']);
+        $calculator = Double::for(CalculatorInterface::class)->strict();
+        $calculator->expects('fromBase')
+            ->with('ff6f8cb0c57d11e19b210800200c9a66', 16)
+            ->times(2)
+            ->returns(new IntegerObject(42));
 
         $featureSet = new FeatureSet(true);
         $featureSet->setCalculator($calculator);
@@ -132,41 +134,20 @@ class FeatureSetTest extends TestCase
 
         $this->assertInstanceOf(GuidBuilder::class, $featureSet->getBuilder());
         $this->assertSame('ff6f8cb0-c57d-11e1-9b21-0800200c9a66', $built->toString());
-        $this->assertSame('339532337419071774305803111643925486182', $decoded->getInteger()->toString());
-        $this->assertSame('339532337419071774305803111643925486182', $built->getInteger()->toString());
+        $this->assertSame('42', $decoded->getInteger()->toString());
+        $this->assertSame('42', $built->getInteger()->toString());
     }
 
     public function testSetCalculatorRebuildsDceSecurityGenerator(): void
     {
-        $realCalculator = new BrickMathCalculator();
-        $calculator = $this->mockCalculator($realCalculator);
-        $calculator->expects('toBase')->resolves([$realCalculator, 'toBase']);
+        $calculator = Double::for(CalculatorInterface::class)->strict();
+        $calculator->expects('toBase')->with(Argument::any(), 16)->returns('abcdef01');
 
         $featureSet = new FeatureSet();
         $featureSet->setCalculator($calculator);
 
         $bytes = $featureSet->getDceSecurityGenerator()->generate(Uuid::DCE_DOMAIN_ORG, new IntegerObject(1001));
 
-        $this->assertSame('000003e9', bin2hex(substr($bytes, 0, 4)));
-    }
-
-    /**
-     * Returns a mock calculator that passes every call to the given calculator
-     *
-     * @return CalculatorInterface&DoubleInterface
-     */
-    private function mockCalculator(CalculatorInterface $realCalculator): CalculatorInterface
-    {
-        $calculator = Double::for(CalculatorInterface::class);
-        $calculator->allows('add')->resolves([$realCalculator, 'add']);
-        $calculator->allows('subtract')->resolves([$realCalculator, 'subtract']);
-        $calculator->allows('multiply')->resolves([$realCalculator, 'multiply']);
-        $calculator->allows('divide')->resolves([$realCalculator, 'divide']);
-        $calculator->allows('fromBase')->resolves([$realCalculator, 'fromBase']);
-        $calculator->allows('toBase')->resolves([$realCalculator, 'toBase']);
-        $calculator->allows('toHexadecimal')->resolves([$realCalculator, 'toHexadecimal']);
-        $calculator->allows('toInteger')->resolves([$realCalculator, 'toInteger']);
-
-        return $calculator;
+        $this->assertSame('abcdef01', bin2hex(substr($bytes, 0, 4)));
     }
 }
