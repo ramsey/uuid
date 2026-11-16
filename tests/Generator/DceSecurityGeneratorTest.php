@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Ramsey\Uuid\Test\Generator;
 
-use Mockery;
+use JMac\Testing\Double;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Ramsey\Uuid\Converter\Number\GenericNumberConverter;
 use Ramsey\Uuid\Converter\NumberConverterInterface;
@@ -47,16 +47,12 @@ class DceSecurityGeneratorTest extends TestCase
         string $expectedNode,
         string $expectedTimeMidHi
     ): void {
-        /** @var DceSecurityProviderInterface $dceSecurityProvider */
-        $dceSecurityProvider = Mockery::mock(DceSecurityProviderInterface::class, [
-            'getUid' => new IntegerObject($uid),
-            'getGid' => new IntegerObject($gid),
-        ]);
+        $dceSecurityProvider = Double::for(DceSecurityProviderInterface::class);
+        $dceSecurityProvider->allows('getUid')->returns(new IntegerObject($uid));
+        $dceSecurityProvider->allows('getGid')->returns(new IntegerObject($gid));
 
-        /** @var NodeProviderInterface $nodeProvider */
-        $nodeProvider = Mockery::mock(NodeProviderInterface::class, [
-            'getNode' => new Hexadecimal($node),
-        ]);
+        $nodeProvider = Double::for(NodeProviderInterface::class);
+        $nodeProvider->allows('getNode')->returns(new Hexadecimal($node));
 
         $timeProvider = new FixedTimeProvider(new Time($seconds, $microseconds));
 
@@ -128,9 +124,9 @@ class DceSecurityGeneratorTest extends TestCase
 
     public function testGenerateThrowsExceptionForInvalidDomain(): void
     {
-        $numberConverter = Mockery::mock(NumberConverterInterface::class);
-        $timeGenerator = Mockery::mock(TimeGeneratorInterface::class);
-        $dceSecurityProvider = Mockery::mock(DceSecurityProviderInterface::class);
+        $numberConverter = Double::for(NumberConverterInterface::class);
+        $timeGenerator = Double::for(TimeGeneratorInterface::class);
+        $dceSecurityProvider = Double::for(DceSecurityProviderInterface::class);
 
         $generator = new DceSecurityGenerator($numberConverter, $timeGenerator, $dceSecurityProvider);
 
@@ -142,9 +138,9 @@ class DceSecurityGeneratorTest extends TestCase
 
     public function testGenerateThrowsExceptionForOrgWithoutIdentifier(): void
     {
-        $numberConverter = Mockery::mock(NumberConverterInterface::class);
-        $timeGenerator = Mockery::mock(TimeGeneratorInterface::class);
-        $dceSecurityProvider = Mockery::mock(DceSecurityProviderInterface::class);
+        $numberConverter = Double::for(NumberConverterInterface::class);
+        $timeGenerator = Double::for(TimeGeneratorInterface::class);
+        $dceSecurityProvider = Double::for(DceSecurityProviderInterface::class);
 
         $generator = new DceSecurityGenerator($numberConverter, $timeGenerator, $dceSecurityProvider);
 
@@ -156,8 +152,8 @@ class DceSecurityGeneratorTest extends TestCase
 
     public function testClockSequenceLowerBounds(): void
     {
-        $dceSecurityProvider = Mockery::mock(DceSecurityProviderInterface::class);
-        $nodeProvider = Mockery::mock(NodeProviderInterface::class);
+        $dceSecurityProvider = Double::for(DceSecurityProviderInterface::class);
+        $nodeProvider = Double::for(NodeProviderInterface::class);
         $timeProvider = new FixedTimeProvider(new Time(1583527677, 111984));
 
         $calculator = new BrickMathCalculator();
@@ -185,8 +181,8 @@ class DceSecurityGeneratorTest extends TestCase
 
     public function testClockSequenceUpperBounds(): void
     {
-        $dceSecurityProvider = Mockery::mock(DceSecurityProviderInterface::class);
-        $nodeProvider = Mockery::mock(NodeProviderInterface::class);
+        $dceSecurityProvider = Double::for(DceSecurityProviderInterface::class);
+        $nodeProvider = Double::for(NodeProviderInterface::class);
         $timeProvider = new FixedTimeProvider(new Time(1583527677, 111984));
 
         $calculator = new BrickMathCalculator();
@@ -214,9 +210,9 @@ class DceSecurityGeneratorTest extends TestCase
 
     public function testExceptionThrownWhenClockSequenceTooLow(): void
     {
-        $dceSecurityProvider = Mockery::mock(DceSecurityProviderInterface::class);
-        $timeGenerator = Mockery::mock(TimeGeneratorInterface::class);
-        $numberConverter = Mockery::mock(NumberConverterInterface::class);
+        $dceSecurityProvider = Double::for(DceSecurityProviderInterface::class);
+        $timeGenerator = Double::for(TimeGeneratorInterface::class);
+        $numberConverter = Double::for(NumberConverterInterface::class);
 
         $dceSecurityGenerator = new DceSecurityGenerator($numberConverter, $timeGenerator, $dceSecurityProvider);
 
@@ -231,9 +227,9 @@ class DceSecurityGeneratorTest extends TestCase
 
     public function testExceptionThrownWhenClockSequenceTooHigh(): void
     {
-        $dceSecurityProvider = Mockery::mock(DceSecurityProviderInterface::class);
-        $timeGenerator = Mockery::mock(TimeGeneratorInterface::class);
-        $numberConverter = Mockery::mock(NumberConverterInterface::class);
+        $dceSecurityProvider = Double::for(DceSecurityProviderInterface::class);
+        $timeGenerator = Double::for(TimeGeneratorInterface::class);
+        $numberConverter = Double::for(NumberConverterInterface::class);
 
         $dceSecurityGenerator = new DceSecurityGenerator($numberConverter, $timeGenerator, $dceSecurityProvider);
 
@@ -248,9 +244,9 @@ class DceSecurityGeneratorTest extends TestCase
 
     public function testExceptionThrownWhenLocalIdTooLow(): void
     {
-        $dceSecurityProvider = Mockery::mock(DceSecurityProviderInterface::class);
-        $timeGenerator = Mockery::mock(TimeGeneratorInterface::class);
-        $numberConverter = Mockery::mock(NumberConverterInterface::class);
+        $dceSecurityProvider = Double::for(DceSecurityProviderInterface::class);
+        $timeGenerator = Double::for(TimeGeneratorInterface::class);
+        $numberConverter = Double::for(NumberConverterInterface::class);
 
         $dceSecurityGenerator = new DceSecurityGenerator($numberConverter, $timeGenerator, $dceSecurityProvider);
 
@@ -264,8 +260,8 @@ class DceSecurityGeneratorTest extends TestCase
 
     public function testExceptionThrownWhenLocalIdTooHigh(): void
     {
-        $dceSecurityProvider = Mockery::mock(DceSecurityProviderInterface::class);
-        $timeGenerator = Mockery::mock(TimeGeneratorInterface::class);
+        $dceSecurityProvider = Double::for(DceSecurityProviderInterface::class);
+        $timeGenerator = Double::for(TimeGeneratorInterface::class);
 
         $calculator = new BrickMathCalculator();
         $numberConverter = new GenericNumberConverter($calculator);

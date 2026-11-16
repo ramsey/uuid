@@ -5,14 +5,12 @@ declare(strict_types=1);
 namespace Ramsey\Uuid\Test\Codec;
 
 use InvalidArgumentException;
-use Mockery;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\MockObject\Stub;
 use Ramsey\Uuid\Builder\UuidBuilderInterface;
 use Ramsey\Uuid\Codec\StringCodec;
 use Ramsey\Uuid\Exception\InvalidUuidStringException;
 use Ramsey\Uuid\Rfc4122\Fields;
-use Ramsey\Uuid\Rfc4122\FieldsInterface;
 use Ramsey\Uuid\Test\TestCase;
 use Ramsey\Uuid\UuidInterface;
 
@@ -69,13 +67,9 @@ class StringCodecTest extends TestCase
 
     public function testEncodeBinaryReturnsBinaryString(): void
     {
-        $expected = hex2bin('123456781234abcdabef1234abcd4321');
+        $expected = hex2bin('1234567812344bcdabef1234abcd4321');
 
-        $fields = Mockery::mock(FieldsInterface::class, [
-            'getBytes' => hex2bin('123456781234abcdabef1234abcd4321'),
-        ]);
-
-        $this->uuid->method('getFields')->willReturn($fields);
+        $this->uuid->method('getFields')->willReturn($this->fields);
 
         $codec = new StringCodec($this->builder);
         $result = $codec->encodeBinary($this->uuid);

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Ramsey\Uuid\Test\Builder;
 
-use Mockery;
+use JMac\Testing\Double;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Ramsey\Uuid\Builder\FallbackBuilder;
 use Ramsey\Uuid\Builder\UuidBuilderInterface;
@@ -28,29 +28,17 @@ class FallbackBuilderTest extends TestCase
 {
     public function testBuildThrowsExceptionAfterAllConfiguredBuildersHaveErrored(): void
     {
-        $codec = Mockery::mock(CodecInterface::class);
+        $codec = Double::for(CodecInterface::class);
         $bytes = 'foobar';
 
-        $builder1 = Mockery::mock(UuidBuilderInterface::class);
-        $builder1
-            ->shouldReceive('build')
-            ->once()
-            ->with($codec, $bytes)
-            ->andThrow(UnableToBuildUuidException::class);
+        $builder1 = Double::for(UuidBuilderInterface::class);
+        $builder1->expects('build')->with($codec, $bytes)->throws(new UnableToBuildUuidException());
 
-        $builder2 = Mockery::mock(UuidBuilderInterface::class);
-        $builder2
-            ->shouldReceive('build')
-            ->once()
-            ->with($codec, $bytes)
-            ->andThrow(UnableToBuildUuidException::class);
+        $builder2 = Double::for(UuidBuilderInterface::class);
+        $builder2->expects('build')->with($codec, $bytes)->throws(new UnableToBuildUuidException());
 
-        $builder3 = Mockery::mock(UuidBuilderInterface::class);
-        $builder3
-            ->shouldReceive('build')
-            ->once()
-            ->with($codec, $bytes)
-            ->andThrow(UnableToBuildUuidException::class);
+        $builder3 = Double::for(UuidBuilderInterface::class);
+        $builder3->expects('build')->with($codec, $bytes)->throws(new UnableToBuildUuidException());
 
         $fallbackBuilder = new FallbackBuilder([$builder1, $builder2, $builder3]);
 
@@ -109,7 +97,7 @@ class FallbackBuilderTest extends TestCase
                     case 'The byte string received does not contain a valid version':
                     case 'The byte string received does not conform to the RFC 9562 (formerly RFC 4122) variant':
                     case 'The byte string received does not conform to the RFC 9562 (formerly RFC 4122) '
-                        . 'or Microsoft Corporation variants':
+                    . 'or Microsoft Corporation variants':
                         // This is expected; ignoring.
                         break;
                     default:

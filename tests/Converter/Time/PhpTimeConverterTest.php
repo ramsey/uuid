@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Ramsey\Uuid\Test\Converter\Time;
 
 use Brick\Math\BigInteger;
-use Mockery;
+use JMac\Testing\Double;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Ramsey\Uuid\Converter\Time\GenericTimeConverter;
 use Ramsey\Uuid\Converter\Time\PhpTimeConverter;
@@ -51,8 +51,7 @@ class PhpTimeConverterTest extends TestCase
 
     public function testCalculateTimeThrowsExceptionWhenSecondsIsNotOnlyDigits(): void
     {
-        /** @var Mockery\MockInterface & PhpTimeConverter $converter */
-        $converter = Mockery::mock(PhpTimeConverter::class)->makePartial();
+        $converter = new PhpTimeConverter();
 
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage(
@@ -65,8 +64,7 @@ class PhpTimeConverterTest extends TestCase
 
     public function testCalculateTimeThrowsExceptionWhenMicrosecondsIsNotOnlyDigits(): void
     {
-        /** @var Mockery\MockInterface & PhpTimeConverter $converter */
-        $converter = Mockery::mock(PhpTimeConverter::class)->makePartial();
+        $converter = new PhpTimeConverter();
 
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage(
@@ -85,7 +83,8 @@ class PhpTimeConverterTest extends TestCase
         try {
             $calculator = new BrickMathCalculator();
             $genericConverter = new GenericTimeConverter($calculator);
-            $converter = new PhpTimeConverter($calculator, Mockery::mock(GenericTimeConverter::class));
+            $fallbackConverter = Double::for(GenericTimeConverter::class);
+            $converter = new PhpTimeConverter($calculator, $fallbackConverter);
 
             mt_srand(1700000000);
 
@@ -104,6 +103,8 @@ class PhpTimeConverterTest extends TestCase
                     $message,
                 );
             }
+
+            $fallbackConverter->unused();
         } finally {
             ini_set('precision', (string) $originalPrecision);
         }

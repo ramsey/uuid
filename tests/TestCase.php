@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Ramsey\Uuid\Test;
 
-use Mockery;
+use JMac\Testing\Integrations\PHPUnit\VerifiesDoubles;
 use PHPUnit\Framework\TestCase as PhpUnitTestCase;
 
 use function current;
@@ -13,11 +13,7 @@ use function unpack;
 
 class TestCase extends PhpUnitTestCase
 {
-    protected function tearDown(): void
-    {
-        parent::tearDown();
-        Mockery::close();
-    }
+    use VerifiesDoubles;
 
     public static function isLittleEndianSystem(): bool
     {

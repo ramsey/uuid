@@ -4,10 +4,8 @@ declare(strict_types=1);
 
 namespace Ramsey\Uuid\Test\Rfc4122;
 
-use Mockery;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Ramsey\Uuid\Exception\InvalidBytesException;
-use Ramsey\Uuid\Rfc4122\Fields;
 use Ramsey\Uuid\Rfc4122\VariantTrait;
 use Ramsey\Uuid\Test\TestCase;
 use Ramsey\Uuid\Variant;
@@ -20,17 +18,10 @@ class VariantTraitTest extends TestCase
     #[DataProvider('invalidBytesProvider')]
     public function testGetVariantThrowsExceptionForWrongNumberOfBytes(string $bytes): void
     {
-        /** @var Fields $trait */
-        $trait = Mockery::mock(VariantTrait::class, [
-            'getBytes' => $bytes,
-            'isMax' => false,
-            'isNil' => false,
-        ]);
-
         $this->expectException(InvalidBytesException::class);
         $this->expectExceptionMessage('Invalid number of bytes');
 
-        $trait->getVariant();
+        $this->getVariantFromBytes($bytes);
     }
 
     /**
@@ -49,14 +40,7 @@ class VariantTraitTest extends TestCase
     {
         $bytes = (string) hex2bin(str_replace('-', '', $uuid));
 
-        /** @var Fields $trait */
-        $trait = Mockery::mock(VariantTrait::class, [
-            'getBytes' => $bytes,
-            'isMax' => false,
-            'isNil' => false,
-        ]);
-
-        $this->assertSame(Variant::from($expectedVariant), $trait->getVariant());
+        $this->assertSame(Variant::from($expectedVariant), $this->getVariantFromBytes($bytes));
     }
 
     /**
@@ -102,5 +86,36 @@ class VariantTraitTest extends TestCase
             ['b08c6fff7dc5e111eb210800200c9a66', 7],
             ['b08c6fff7dc5e111fb210800200c9a66', 7],
         ];
+    }
+
+    /**
+     * Double cannot target a trait, so use it in an anonymous class instead
+     */
+    private function getVariantFromBytes(string $bytes): Variant
+    {
+        $trait = new class ($bytes) {
+            use VariantTrait;
+
+            public function __construct(private string $bytes)
+            {
+            }
+
+            public function getBytes(): string
+            {
+                return $this->bytes;
+            }
+
+            public function isMax(): bool
+            {
+                return false;
+            }
+
+            public function isNil(): bool
+            {
+                return false;
+            }
+        };
+
+        return $trait->getVariant();
     }
 }

@@ -4,27 +4,29 @@ declare(strict_types=1);
 
 namespace Ramsey\Uuid\Test\Provider\Dce;
 
-use Mockery;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\PreserveGlobalState;
 use PHPUnit\Framework\Attributes\RunInSeparateProcess;
 use Ramsey\Uuid\Exception\DceSecurityException;
 use Ramsey\Uuid\Provider\Dce\SystemDceSecurityProvider;
 use Ramsey\Uuid\Test\TestCase;
-use phpmock\mockery\PHPMockery;
+use phpmock\phpunit\PHPMock;
 
 use function array_merge;
+use function preg_match;
 
 class SystemDceSecurityProviderTest extends TestCase
 {
+    use PHPMock;
+
     #[RunInSeparateProcess]
     #[PreserveGlobalState(false)]
     public function testGetUidThrowsExceptionIfShellExecDisabled(): void
     {
-        PHPMockery::mock(
-            'Ramsey\Uuid\Provider\Dce',
-            'ini_get'
-        )->with('disable_functions')->once()->andReturn('foo bar shell_exec baz');
+        $this->getFunctionMock('Ramsey\Uuid\Provider\Dce', 'ini_get')
+            ->expects($this->once())
+            ->with('disable_functions')
+            ->willReturn('foo bar shell_exec baz');
 
         $provider = new SystemDceSecurityProvider();
 
@@ -54,20 +56,20 @@ class SystemDceSecurityProviderTest extends TestCase
     #[PreserveGlobalState(false)]
     public function testGetUidForPosixThrowsExceptionIfShellExecReturnsNull(): void
     {
-        PHPMockery::mock(
-            'Ramsey\Uuid\Provider\Dce',
-            'ini_get'
-        )->with('disable_functions')->once()->andReturn('nothing');
+        $this->getFunctionMock('Ramsey\Uuid\Provider\Dce', 'ini_get')
+            ->expects($this->once())
+            ->with('disable_functions')
+            ->willReturn('nothing');
 
-        PHPMockery::mock(
-            'Ramsey\Uuid\Provider\Dce',
-            'constant'
-        )->with('PHP_OS')->once()->andReturn('Linux');
+        $this->getFunctionMock('Ramsey\Uuid\Provider\Dce', 'constant')
+            ->expects($this->once())
+            ->with('PHP_OS')
+            ->willReturn('Linux');
 
-        PHPMockery::mock(
-            'Ramsey\Uuid\Provider\Dce',
-            'shell_exec'
-        )->with('id -u')->once()->andReturnNull();
+        $this->getFunctionMock('Ramsey\Uuid\Provider\Dce', 'shell_exec')
+            ->expects($this->once())
+            ->with('id -u')
+            ->willReturn(null);
 
         $provider = new SystemDceSecurityProvider();
 
@@ -89,20 +91,20 @@ class SystemDceSecurityProviderTest extends TestCase
     #[DataProvider('provideWindowsBadValues')]
     public function testGetUidForWindowsThrowsExceptionIfShellExecForWhoAmIReturnsBadValues($value): void
     {
-        PHPMockery::mock(
-            'Ramsey\Uuid\Provider\Dce',
-            'ini_get'
-        )->with('disable_functions')->once()->andReturn('nothing');
+        $this->getFunctionMock('Ramsey\Uuid\Provider\Dce', 'ini_get')
+            ->expects($this->once())
+            ->with('disable_functions')
+            ->willReturn('nothing');
 
-        PHPMockery::mock(
-            'Ramsey\Uuid\Provider\Dce',
-            'constant'
-        )->with('PHP_OS')->once()->andReturn('Windows_NT');
+        $this->getFunctionMock('Ramsey\Uuid\Provider\Dce', 'constant')
+            ->expects($this->once())
+            ->with('PHP_OS')
+            ->willReturn('Windows_NT');
 
-        PHPMockery::mock(
-            'Ramsey\Uuid\Provider\Dce',
-            'shell_exec'
-        )->with('whoami /user /fo csv /nh')->once()->andReturn($value);
+        $this->getFunctionMock('Ramsey\Uuid\Provider\Dce', 'shell_exec')
+            ->expects($this->once())
+            ->with('whoami /user /fo csv /nh')
+            ->willReturn($value);
 
         $provider = new SystemDceSecurityProvider();
 
@@ -123,20 +125,20 @@ class SystemDceSecurityProviderTest extends TestCase
         string $value,
         string $expectedId
     ): void {
-        PHPMockery::mock(
-            'Ramsey\Uuid\Provider\Dce',
-            'ini_get'
-        )->with('disable_functions')->once()->andReturn('nothing');
+        $this->getFunctionMock('Ramsey\Uuid\Provider\Dce', 'ini_get')
+            ->expects($this->once())
+            ->with('disable_functions')
+            ->willReturn('nothing');
 
-        PHPMockery::mock(
-            'Ramsey\Uuid\Provider\Dce',
-            'constant'
-        )->with('PHP_OS')->once()->andReturn('Windows_NT');
+        $this->getFunctionMock('Ramsey\Uuid\Provider\Dce', 'constant')
+            ->expects($this->once())
+            ->with('PHP_OS')
+            ->willReturn('Windows_NT');
 
-        PHPMockery::mock(
-            'Ramsey\Uuid\Provider\Dce',
-            'shell_exec'
-        )->with('whoami /user /fo csv /nh')->once()->andReturn($value);
+        $this->getFunctionMock('Ramsey\Uuid\Provider\Dce', 'shell_exec')
+            ->expects($this->once())
+            ->with('whoami /user /fo csv /nh')
+            ->willReturn($value);
 
         $provider = new SystemDceSecurityProvider();
 
@@ -172,20 +174,20 @@ class SystemDceSecurityProviderTest extends TestCase
     #[DataProvider('providePosixTestValues')]
     public function testGetUidForPosixSystems(string $os, string $id): void
     {
-        PHPMockery::mock(
-            'Ramsey\Uuid\Provider\Dce',
-            'ini_get'
-        )->with('disable_functions')->once()->andReturn('nothing');
+        $this->getFunctionMock('Ramsey\Uuid\Provider\Dce', 'ini_get')
+            ->expects($this->once())
+            ->with('disable_functions')
+            ->willReturn('nothing');
 
-        PHPMockery::mock(
-            'Ramsey\Uuid\Provider\Dce',
-            'constant'
-        )->with('PHP_OS')->once()->andReturn($os);
+        $this->getFunctionMock('Ramsey\Uuid\Provider\Dce', 'constant')
+            ->expects($this->once())
+            ->with('PHP_OS')
+            ->willReturn($os);
 
-        PHPMockery::mock(
-            'Ramsey\Uuid\Provider\Dce',
-            'shell_exec'
-        )->with('id -u')->once()->andReturn($id);
+        $this->getFunctionMock('Ramsey\Uuid\Provider\Dce', 'shell_exec')
+            ->expects($this->once())
+            ->with('id -u')
+            ->willReturn($id);
 
         $provider = new SystemDceSecurityProvider();
 
@@ -199,10 +201,10 @@ class SystemDceSecurityProviderTest extends TestCase
     #[PreserveGlobalState(false)]
     public function testGetGidThrowsExceptionIfShellExecDisabled(): void
     {
-        PHPMockery::mock(
-            'Ramsey\Uuid\Provider\Dce',
-            'ini_get'
-        )->with('disable_functions')->once()->andReturn('foo bar shell_exec baz');
+        $this->getFunctionMock('Ramsey\Uuid\Provider\Dce', 'ini_get')
+            ->expects($this->once())
+            ->with('disable_functions')
+            ->willReturn('foo bar shell_exec baz');
 
         $provider = new SystemDceSecurityProvider();
 
@@ -232,20 +234,20 @@ class SystemDceSecurityProviderTest extends TestCase
     #[PreserveGlobalState(false)]
     public function testGetGidForPosixThrowsExceptionIfShellExecReturnsNull(): void
     {
-        PHPMockery::mock(
-            'Ramsey\Uuid\Provider\Dce',
-            'ini_get'
-        )->with('disable_functions')->once()->andReturn('nothing');
+        $this->getFunctionMock('Ramsey\Uuid\Provider\Dce', 'ini_get')
+            ->expects($this->once())
+            ->with('disable_functions')
+            ->willReturn('nothing');
 
-        PHPMockery::mock(
-            'Ramsey\Uuid\Provider\Dce',
-            'constant'
-        )->with('PHP_OS')->once()->andReturn('Linux');
+        $this->getFunctionMock('Ramsey\Uuid\Provider\Dce', 'constant')
+            ->expects($this->once())
+            ->with('PHP_OS')
+            ->willReturn('Linux');
 
-        PHPMockery::mock(
-            'Ramsey\Uuid\Provider\Dce',
-            'shell_exec'
-        )->with('id -g')->once()->andReturnNull();
+        $this->getFunctionMock('Ramsey\Uuid\Provider\Dce', 'shell_exec')
+            ->expects($this->once())
+            ->with('id -g')
+            ->willReturn(null);
 
         $provider = new SystemDceSecurityProvider();
 
@@ -264,20 +266,20 @@ class SystemDceSecurityProviderTest extends TestCase
     #[DataProvider('providePosixTestValues')]
     public function testGetGidForPosixSystems(string $os, string $id): void
     {
-        PHPMockery::mock(
-            'Ramsey\Uuid\Provider\Dce',
-            'ini_get'
-        )->with('disable_functions')->once()->andReturn('nothing');
+        $this->getFunctionMock('Ramsey\Uuid\Provider\Dce', 'ini_get')
+            ->expects($this->once())
+            ->with('disable_functions')
+            ->willReturn('nothing');
 
-        PHPMockery::mock(
-            'Ramsey\Uuid\Provider\Dce',
-            'constant'
-        )->with('PHP_OS')->once()->andReturn($os);
+        $this->getFunctionMock('Ramsey\Uuid\Provider\Dce', 'constant')
+            ->expects($this->once())
+            ->with('PHP_OS')
+            ->willReturn($os);
 
-        PHPMockery::mock(
-            'Ramsey\Uuid\Provider\Dce',
-            'shell_exec'
-        )->with('id -g')->once()->andReturn($id);
+        $this->getFunctionMock('Ramsey\Uuid\Provider\Dce', 'shell_exec')
+            ->expects($this->once())
+            ->with('id -g')
+            ->willReturn($id);
 
         $provider = new SystemDceSecurityProvider();
 
@@ -295,20 +297,20 @@ class SystemDceSecurityProviderTest extends TestCase
     #[DataProvider('provideWindowsBadValues')]
     public function testGetGidForWindowsThrowsExceptionWhenShellExecForNetUserReturnsBadValues($value): void
     {
-        PHPMockery::mock(
-            'Ramsey\Uuid\Provider\Dce',
-            'ini_get'
-        )->with('disable_functions')->once()->andReturn('nothing');
+        $this->getFunctionMock('Ramsey\Uuid\Provider\Dce', 'ini_get')
+            ->expects($this->once())
+            ->with('disable_functions')
+            ->willReturn('nothing');
 
-        PHPMockery::mock(
-            'Ramsey\Uuid\Provider\Dce',
-            'constant'
-        )->with('PHP_OS')->once()->andReturn('Windows_NT');
+        $this->getFunctionMock('Ramsey\Uuid\Provider\Dce', 'constant')
+            ->expects($this->once())
+            ->with('PHP_OS')
+            ->willReturn('Windows_NT');
 
-        PHPMockery::mock(
-            'Ramsey\Uuid\Provider\Dce',
-            'shell_exec'
-        )->with('net user %username% | findstr /b /i "Local Group Memberships"')->once()->andReturn($value);
+        $this->getFunctionMock('Ramsey\Uuid\Provider\Dce', 'shell_exec')
+            ->expects($this->once())
+            ->with('net user %username% | findstr /b /i "Local Group Memberships"')
+            ->willReturn($value);
 
         $provider = new SystemDceSecurityProvider();
 
@@ -330,27 +332,26 @@ class SystemDceSecurityProviderTest extends TestCase
     #[DataProvider('provideWindowsBadGroupValues')]
     public function testGetGidForWindowsThrowsExceptionWhenShellExecForWmicGroupGetReturnsBadValues($value): void
     {
-        PHPMockery::mock(
-            'Ramsey\Uuid\Provider\Dce',
-            'ini_get'
-        )->with('disable_functions')->once()->andReturn('nothing');
+        $this->getFunctionMock('Ramsey\Uuid\Provider\Dce', 'ini_get')
+            ->expects($this->once())
+            ->with('disable_functions')
+            ->willReturn('nothing');
 
-        PHPMockery::mock(
-            'Ramsey\Uuid\Provider\Dce',
-            'constant'
-        )->with('PHP_OS')->once()->andReturn('Windows_NT');
+        $this->getFunctionMock('Ramsey\Uuid\Provider\Dce', 'constant')
+            ->expects($this->once())
+            ->with('PHP_OS')
+            ->willReturn('Windows_NT');
 
-        $shellExec = PHPMockery::mock('Ramsey\Uuid\Provider\Dce', 'shell_exec');
+        $netUserCommand = 'net user %username% | findstr /b /i "Local Group Memberships"';
+        $wmicGroupPattern = "/^wmic group get name,sid \| findstr \/b \/i (\"|\')Users(\"|\')$/";
 
-        $shellExec
-            ->with('net user %username% | findstr /b /i "Local Group Memberships"')
-            ->once()
-            ->andReturn('Local Group Memberships   *Users');
-
-        $shellExec
-            ->with(Mockery::pattern("/^wmic group get name,sid \| findstr \/b \/i (\"|\')Users(\"|\')$/"))
-            ->once()
-            ->andReturn($value);
+        $this->getFunctionMock('Ramsey\Uuid\Provider\Dce', 'shell_exec')
+            ->expects($this->exactly(2))
+            ->willReturnCallback(fn (string $command) => match (true) {
+                $command === $netUserCommand => 'Local Group Memberships   *Users',
+                preg_match($wmicGroupPattern, $command) === 1 => $value,
+                default => $this->fail('Unexpected shell_exec command: ' . $command),
+            });
 
         $provider = new SystemDceSecurityProvider();
 
@@ -373,27 +374,26 @@ class SystemDceSecurityProviderTest extends TestCase
         string $expectedGroup,
         string $expectedId
     ): void {
-        PHPMockery::mock(
-            'Ramsey\Uuid\Provider\Dce',
-            'ini_get'
-        )->with('disable_functions')->once()->andReturn('nothing');
+        $this->getFunctionMock('Ramsey\Uuid\Provider\Dce', 'ini_get')
+            ->expects($this->once())
+            ->with('disable_functions')
+            ->willReturn('nothing');
 
-        PHPMockery::mock(
-            'Ramsey\Uuid\Provider\Dce',
-            'constant'
-        )->with('PHP_OS')->once()->andReturn('Windows_NT');
+        $this->getFunctionMock('Ramsey\Uuid\Provider\Dce', 'constant')
+            ->expects($this->once())
+            ->with('PHP_OS')
+            ->willReturn('Windows_NT');
 
-        $shellExec = PHPMockery::mock('Ramsey\Uuid\Provider\Dce', 'shell_exec');
+        $netUserCommand = 'net user %username% | findstr /b /i "Local Group Memberships"';
+        $wmicGroupPattern = "/^wmic group get name,sid \| findstr \/b \/i (\"|\'){$expectedGroup}(\"|\')$/";
 
-        $shellExec
-            ->with('net user %username% | findstr /b /i "Local Group Memberships"')
-            ->once()
-            ->andReturn($netUserResponse);
-
-        $shellExec
-            ->with(Mockery::pattern("/^wmic group get name,sid \| findstr \/b \/i (\"|\'){$expectedGroup}(\"|\')$/"))
-            ->once()
-            ->andReturn($wmicGroupResponse);
+        $this->getFunctionMock('Ramsey\Uuid\Provider\Dce', 'shell_exec')
+            ->expects($this->exactly(2))
+            ->willReturnCallback(fn (string $command) => match (true) {
+                $command === $netUserCommand => $netUserResponse,
+                preg_match($wmicGroupPattern, $command) === 1 => $wmicGroupResponse,
+                default => $this->fail('Unexpected shell_exec command: ' . $command),
+            });
 
         $provider = new SystemDceSecurityProvider();
 

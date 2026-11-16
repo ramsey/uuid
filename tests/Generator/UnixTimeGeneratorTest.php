@@ -6,8 +6,8 @@ namespace Ramsey\Uuid\Test\Generator;
 
 use Closure;
 use DateTimeImmutable;
-use Mockery;
-use Mockery\MockInterface;
+use JMac\Testing\Double;
+use JMac\Testing\DoubleInterface;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\PreserveGlobalState;
 use PHPUnit\Framework\Attributes\RunInSeparateProcess;
@@ -18,9 +18,11 @@ use Ramsey\Uuid\Generator\RandomBytesGenerator;
 use Ramsey\Uuid\Generator\RandomGeneratorInterface;
 use Ramsey\Uuid\Generator\UnixTimeGenerator;
 use Ramsey\Uuid\Test\TestCase;
-use phpmock\mockery\PHPMockery;
+use phpmock\phpunit\PHPMock;
 
+use function array_shift;
 use function bin2hex;
+use function count;
 use function hex2bin;
 use function str_repeat;
 use function strlen;
@@ -32,6 +34,8 @@ use function substr;
  */
 class UnixTimeGeneratorTest extends TestCase
 {
+    use PHPMock;
+
     private const ITERATIONS = 2000;
 
     /**
@@ -49,7 +53,7 @@ class UnixTimeGeneratorTest extends TestCase
     public function testGenerateForDateTime(int $intSize): void
     {
         $randomGenerator = $this->mockRandomGenerator();
-        $randomGenerator->expects()->generate(8)->andReturns("\xff\x00\xff\x00\xff\x00\xff\x00");
+        $randomGenerator->expects('generate')->with(8)->returns("\xff\x00\xff\x00\xff\x00\xff\x00");
 
         $unixTimeGenerator = new UnixTimeGenerator($randomGenerator, $intSize);
 
@@ -66,7 +70,7 @@ class UnixTimeGeneratorTest extends TestCase
         $this->mockClock(self::CLOCK);
 
         $randomGenerator = $this->mockRandomGenerator();
-        $randomGenerator->expects()->generate(8)->andReturns("\xff\x00\xff\x00\xff\x00\xff\x00");
+        $randomGenerator->expects('generate')->with(8)->returns("\xff\x00\xff\x00\xff\x00\xff\x00");
 
         $unixTimeGenerator = new UnixTimeGenerator($randomGenerator, $intSize);
 
@@ -114,8 +118,8 @@ class UnixTimeGeneratorTest extends TestCase
         $this->mockClock(self::CLOCK);
 
         $randomGenerator = $this->mockRandomGenerator();
-        $randomGenerator->expects()->generate(8)->andReturns(self::NO_BITS_SET);
-        $randomGenerator->expects()->generate(16)->andReturns(self::SEED);
+        $randomGenerator->expects('generate')->with(8)->returns(self::NO_BITS_SET);
+        $randomGenerator->expects('generate')->with(16)->returns(self::SEED);
 
         $unixTimeGenerator = new UnixTimeGenerator($randomGenerator, $intSize);
 
@@ -131,8 +135,8 @@ class UnixTimeGeneratorTest extends TestCase
         $this->mockClock(self::CLOCK, '0.52099900 1578612359', '0.99999900 1578612358');
 
         $randomGenerator = $this->mockRandomGenerator();
-        $randomGenerator->expects()->generate(8)->andReturns(self::NO_BITS_SET);
-        $randomGenerator->expects()->generate(16)->andReturns(self::SEED);
+        $randomGenerator->expects('generate')->with(8)->returns(self::NO_BITS_SET);
+        $randomGenerator->expects('generate')->with(16)->returns(self::SEED);
 
         $unixTimeGenerator = new UnixTimeGenerator($randomGenerator);
 
@@ -153,8 +157,8 @@ class UnixTimeGeneratorTest extends TestCase
         $this->mockClock(self::CLOCK, '0.52100100 1578612359');
 
         $randomGenerator = $this->mockRandomGenerator();
-        $randomGenerator->expects()->generate(8)->andReturns(self::NO_BITS_SET);
-        $randomGenerator->expects()->generate(16)->andReturns(self::SEED);
+        $randomGenerator->expects('generate')->with(8)->returns(self::NO_BITS_SET);
+        $randomGenerator->expects('generate')->with(16)->returns(self::SEED);
 
         $unixTimeGenerator = new UnixTimeGenerator($randomGenerator);
 
@@ -172,8 +176,8 @@ class UnixTimeGeneratorTest extends TestCase
         $this->mockClock(self::CLOCK, '0.52150000 1578612359');
 
         $randomGenerator = $this->mockRandomGenerator();
-        $randomGenerator->expects()->generate(8)->andReturns(self::NO_BITS_SET);
-        $randomGenerator->expects()->generate(16)->andReturns(self::SEED);
+        $randomGenerator->expects('generate')->with(8)->returns(self::NO_BITS_SET);
+        $randomGenerator->expects('generate')->with(16)->returns(self::SEED);
 
         $unixTimeGenerator = new UnixTimeGenerator($randomGenerator);
 
@@ -189,7 +193,7 @@ class UnixTimeGeneratorTest extends TestCase
         $this->mockClock(self::CLOCK, '0.52200000 1578612359');
 
         $randomGenerator = $this->mockRandomGenerator();
-        $randomGenerator->expects()->generate(8)->twice()->andReturns(self::ALL_BITS_SET, self::NO_BITS_SET);
+        $randomGenerator->expects('generate')->with(8)->times(2)->returns(self::ALL_BITS_SET, self::NO_BITS_SET);
 
         $unixTimeGenerator = new UnixTimeGenerator($randomGenerator);
 
@@ -205,8 +209,8 @@ class UnixTimeGeneratorTest extends TestCase
         $this->mockClock(self::CLOCK);
 
         $randomGenerator = $this->mockRandomGenerator();
-        $randomGenerator->expects()->generate(8)->andReturns((string) hex2bin($counter));
-        $randomGenerator->expects()->generate(16)->andReturns(self::SEED);
+        $randomGenerator->expects('generate')->with(8)->returns((string) hex2bin($counter));
+        $randomGenerator->expects('generate')->with(16)->returns(self::SEED);
 
         $unixTimeGenerator = new UnixTimeGenerator($randomGenerator, $intSize);
 
@@ -246,11 +250,11 @@ class UnixTimeGeneratorTest extends TestCase
         $this->mockClock(self::CLOCK);
 
         $randomGenerator = $this->mockRandomGenerator();
-        $randomGenerator->expects()->generate(8)->twice()->andReturns(
+        $randomGenerator->expects('generate')->with(8)->times(2)->returns(
             (string) hex2bin('3fffffffffc52786'),
             "\x00\x00\x00\x00\x00\x00\x00\x01",
         );
-        $randomGenerator->expects()->generate(16)->andReturns(self::SEED);
+        $randomGenerator->expects('generate')->with(16)->returns(self::SEED);
 
         $unixTimeGenerator = new UnixTimeGenerator($randomGenerator, $intSize);
 
@@ -266,8 +270,8 @@ class UnixTimeGeneratorTest extends TestCase
         $this->mockClock('0.09999900 0');
 
         $randomGenerator = $this->mockRandomGenerator();
-        $randomGenerator->allows()->generate(8)->andReturns(self::ALL_BITS_SET);
-        $randomGenerator->expects()->generate(16)->andReturns(self::SEED);
+        $randomGenerator->allows('generate')->with(8)->returns(self::ALL_BITS_SET);
+        $randomGenerator->expects('generate')->with(16)->returns(self::SEED);
 
         $unixTimeGenerator = new UnixTimeGenerator($randomGenerator, $intSize);
 
@@ -308,11 +312,11 @@ class UnixTimeGeneratorTest extends TestCase
         $this->mockClock(self::CLOCK);
 
         $randomGenerator = $this->mockRandomGenerator();
-        $randomGenerator->expects()->generate(8)->twice()->andReturns(
+        $randomGenerator->expects('generate')->with(8)->times(2)->returns(
             self::ALL_BITS_SET,
             "\x00\x00\x00\x00\x00\x00\x00\x01",
         );
-        $randomGenerator->expects()->generate(16)->andReturns(self::SEED);
+        $randomGenerator->expects('generate')->with(16)->returns(self::SEED);
 
         $unixTimeGenerator = new UnixTimeGenerator($randomGenerator, $intSize);
 
@@ -330,8 +334,8 @@ class UnixTimeGeneratorTest extends TestCase
         int $intSize,
     ): void {
         $randomGenerator = $this->mockRandomGenerator();
-        $randomGenerator->allows()->generate(8)->andReturns(self::ALL_BITS_SET);
-        $randomGenerator->expects()->generate(16)->andReturns(self::SEED);
+        $randomGenerator->allows('generate')->with(8)->returns(self::ALL_BITS_SET);
+        $randomGenerator->expects('generate')->with(16)->returns(self::SEED);
 
         $unixTimeGenerator = new UnixTimeGenerator($randomGenerator, $intSize);
         $dateTime = new DateTimeImmutable($dateTime);
@@ -378,8 +382,8 @@ class UnixTimeGeneratorTest extends TestCase
     public function testGenerateThrowsExceptionWhenTimestampWouldPassLastMillisecond(int $intSize): void
     {
         $randomGenerator = $this->mockRandomGenerator();
-        $randomGenerator->allows()->generate(8)->andReturns(self::ALL_BITS_SET);
-        $randomGenerator->expects()->generate(16)->andReturns(self::SEED);
+        $randomGenerator->allows('generate')->with(8)->returns(self::ALL_BITS_SET);
+        $randomGenerator->expects('generate')->with(16)->returns(self::SEED);
 
         $unixTimeGenerator = new UnixTimeGenerator($randomGenerator, $intSize);
         $dateTime = new DateTimeImmutable('@281474976710.655999');
@@ -401,7 +405,7 @@ class UnixTimeGeneratorTest extends TestCase
         $this->mockClock('0.65599900 281474976710');
 
         $randomGenerator = $this->mockRandomGenerator();
-        $randomGenerator->expects()->generate(8)->andReturns(self::NO_BITS_SET);
+        $randomGenerator->expects('generate')->with(8)->returns(self::NO_BITS_SET);
 
         $unixTimeGenerator = new UnixTimeGenerator($randomGenerator);
 
@@ -444,8 +448,8 @@ class UnixTimeGeneratorTest extends TestCase
         $this->mockClock(self::CLOCK);
 
         $randomGenerator = $this->mockRandomGenerator();
-        $randomGenerator->expects()->generate(8)->twice()->andReturns(self::NO_BITS_SET, self::ALL_BITS_SET);
-        $randomGenerator->expects()->generate(16)->andReturns(self::SEED);
+        $randomGenerator->expects('generate')->with(8)->times(2)->returns(self::NO_BITS_SET, self::ALL_BITS_SET);
+        $randomGenerator->expects('generate')->with(16)->returns(self::SEED);
 
         $unixTimeGenerator = new UnixTimeGenerator($randomGenerator);
 
@@ -463,8 +467,8 @@ class UnixTimeGeneratorTest extends TestCase
         $this->mockClock(self::CLOCK);
 
         $randomGenerator = $this->mockRandomGenerator();
-        $randomGenerator->expects()->generate(8)->twice()->andReturns(self::NO_BITS_SET, self::ALL_BITS_SET);
-        $randomGenerator->expects()->generate(16)->andReturns(self::SEED);
+        $randomGenerator->expects('generate')->with(8)->times(2)->returns(self::NO_BITS_SET, self::ALL_BITS_SET);
+        $randomGenerator->expects('generate')->with(16)->returns(self::SEED);
 
         $unixTimeGenerator = new UnixTimeGenerator($randomGenerator);
         $dateTime = new DateTimeImmutable('3000-01-01T00:00:00+00:00');
@@ -483,7 +487,7 @@ class UnixTimeGeneratorTest extends TestCase
     public function testGenerateStartsNewCounterForDifferentDateTime(): void
     {
         $randomGenerator = $this->mockRandomGenerator();
-        $randomGenerator->expects()->generate(8)->times(3)->andReturns(
+        $randomGenerator->expects('generate')->with(8)->times(3)->returns(
             self::ALL_BITS_SET,
             self::NO_BITS_SET,
             "\x00\x00\x00\x00\x00\x00\x00\x01",
@@ -516,11 +520,11 @@ class UnixTimeGeneratorTest extends TestCase
         $this->mockProcessId(100, 100, 200);
 
         $randomGenerator = $this->mockRandomGenerator();
-        $randomGenerator->expects()->generate(8)->twice()->andReturns(
+        $randomGenerator->expects('generate')->with(8)->times(2)->returns(
             self::NO_BITS_SET,
             "\x00\x00\x00\x00\x00\x00\x00\x01",
         );
-        $randomGenerator->expects()->generate(16)->twice()->andReturns(self::SEED, 'another seed 16b');
+        $randomGenerator->expects('generate')->with(16)->times(2)->returns(self::SEED, 'another seed 16b');
 
         $unixTimeGenerator = new UnixTimeGenerator($randomGenerator, $intSize);
 
@@ -540,7 +544,7 @@ class UnixTimeGeneratorTest extends TestCase
         $this->mockProcessId(100, 100, 200);
 
         $randomGenerator = $this->mockRandomGenerator();
-        $randomGenerator->allows()->generate(8)->andReturns(self::NO_BITS_SET);
+        $randomGenerator->allows('generate')->with(8)->returns(self::NO_BITS_SET);
 
         $unixTimeGenerator = new UnixTimeGenerator($randomGenerator);
         $dateTime = new DateTimeImmutable('@1578612359.521023');
@@ -564,7 +568,7 @@ class UnixTimeGeneratorTest extends TestCase
         $this->mockProcessId(100, 100, 200);
 
         $randomGenerator = $this->mockRandomGenerator();
-        $randomGenerator->allows()->generate(8)->andReturns(self::NO_BITS_SET);
+        $randomGenerator->allows('generate')->with(8)->returns(self::NO_BITS_SET);
 
         $unixTimeGenerator = new UnixTimeGenerator($randomGenerator);
         $dateTime = new DateTimeImmutable('@1578612359.521023');
@@ -585,11 +589,11 @@ class UnixTimeGeneratorTest extends TestCase
     public function testGenerateWorksWhenProcessIdentifierCannotBeRead(): void
     {
         $this->mockClock(self::CLOCK);
-        PHPMockery::mock('Ramsey\Uuid\Generator', 'getmypid')->never();
+        $this->getFunctionMock('Ramsey\Uuid\Generator', 'getmypid')->expects($this->never());
 
         $randomGenerator = $this->mockRandomGenerator();
-        $randomGenerator->expects()->generate(8)->andReturns(self::NO_BITS_SET);
-        $randomGenerator->expects()->generate(16)->andReturns(self::SEED);
+        $randomGenerator->expects('generate')->with(8)->returns(self::NO_BITS_SET);
+        $randomGenerator->expects('generate')->with(16)->returns(self::SEED);
 
         $unixTimeGenerator = new UnixTimeGenerator($randomGenerator);
 
@@ -612,8 +616,8 @@ class UnixTimeGeneratorTest extends TestCase
         $this->mockClock(self::CLOCK);
 
         $randomGenerator = $this->mockRandomGenerator();
-        $randomGenerator->expects()->generate(8)->andReturns(self::NO_BITS_SET);
-        $randomGenerator->expects()->generate(16)->andReturns(self::SEED);
+        $randomGenerator->expects('generate')->with(8)->returns(self::NO_BITS_SET);
+        $randomGenerator->expects('generate')->with(16)->returns(self::SEED);
 
         $generator64 = new UnixTimeGenerator($randomGenerator, 8);
         $generator32 = new UnixTimeGenerator($randomGenerator, 4);
@@ -629,7 +633,7 @@ class UnixTimeGeneratorTest extends TestCase
     public function testGenerateThrowsExceptionWhenRandomGeneratorReturnsWrongLengthForCounter(string $bytes): void
     {
         $randomGenerator = $this->mockRandomGenerator();
-        $randomGenerator->expects()->generate(8)->andReturns($bytes);
+        $randomGenerator->expects('generate')->with(8)->returns($bytes);
 
         $unixTimeGenerator = new UnixTimeGenerator($randomGenerator);
 
@@ -649,8 +653,8 @@ class UnixTimeGeneratorTest extends TestCase
         $this->mockClock(self::CLOCK);
 
         $randomGenerator = $this->mockRandomGenerator();
-        $randomGenerator->expects()->generate(8)->andReturns(self::NO_BITS_SET);
-        $randomGenerator->expects()->generate(16)->andReturns($bytes);
+        $randomGenerator->expects('generate')->with(8)->returns(self::NO_BITS_SET);
+        $randomGenerator->expects('generate')->with(16)->returns($bytes);
 
         $unixTimeGenerator = new UnixTimeGenerator($randomGenerator);
         $unixTimeGenerator->generate();
@@ -719,8 +723,8 @@ class UnixTimeGeneratorTest extends TestCase
     public function testGenerateProducesMonotonicResultsStartingWithAllBitsSet(int $intSize): void
     {
         $randomGenerator = $this->mockRandomGenerator();
-        $randomGenerator->allows()->generate(8)->andReturns(self::ALL_BITS_SET);
-        $randomGenerator->expects()->generate(16)->andReturns(str_repeat("\xff", 16));
+        $randomGenerator->allows('generate')->with(8)->returns(self::ALL_BITS_SET);
+        $randomGenerator->expects('generate')->with(16)->returns(str_repeat("\xff", 16));
 
         $unixTimeGenerator = new UnixTimeGenerator($randomGenerator, $intSize);
 
@@ -743,8 +747,8 @@ class UnixTimeGeneratorTest extends TestCase
         $dateTime = new DateTimeImmutable('now');
 
         $randomGenerator = $this->mockRandomGenerator();
-        $randomGenerator->allows()->generate(8)->andReturns(self::ALL_BITS_SET);
-        $randomGenerator->expects()->generate(16)->andReturns(str_repeat("\xff", 16));
+        $randomGenerator->allows('generate')->with(8)->returns(self::ALL_BITS_SET);
+        $randomGenerator->expects('generate')->with(16)->returns(str_repeat("\xff", 16));
 
         $unixTimeGenerator = new UnixTimeGenerator($randomGenerator, $intSize);
 
@@ -825,7 +829,11 @@ class UnixTimeGeneratorTest extends TestCase
      */
     private function mockClock(string ...$values): void
     {
-        PHPMockery::mock('Ramsey\Uuid\Generator', 'microtime')->andReturn(...$values);
+        $this->getFunctionMock('Ramsey\Uuid\Generator', 'microtime')
+            ->expects($this->any())
+            ->willReturnCallback(static function () use (&$values): string {
+                return count($values) > 1 ? array_shift($values) : $values[0];
+            });
     }
 
     /**
@@ -833,14 +841,18 @@ class UnixTimeGeneratorTest extends TestCase
      */
     private function mockProcessId(int ...$values): void
     {
-        PHPMockery::mock('Ramsey\Uuid\Generator', 'getmypid')->andReturn(...$values);
+        $this->getFunctionMock('Ramsey\Uuid\Generator', 'getmypid')
+            ->expects($this->any())
+            ->willReturnCallback(static function () use (&$values): int {
+                return count($values) > 1 ? array_shift($values) : $values[0];
+            });
     }
 
     /**
-     * @return RandomGeneratorInterface & MockInterface
+     * @return RandomGeneratorInterface & DoubleInterface
      */
     private function mockRandomGenerator(): RandomGeneratorInterface
     {
-        return Mockery::mock(RandomGeneratorInterface::class);
+        return Double::for(RandomGeneratorInterface::class);
     }
 }

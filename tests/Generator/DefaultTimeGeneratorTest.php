@@ -5,8 +5,7 @@ declare(strict_types=1);
 namespace Ramsey\Uuid\Test\Generator;
 
 use Exception;
-use Mockery;
-use Mockery\MockInterface;
+use JMac\Testing\Double;
 use PHPUnit\Framework\Attributes\PreserveGlobalState;
 use PHPUnit\Framework\Attributes\RunInSeparateProcess;
 use PHPUnit\Framework\MockObject\Stub;
@@ -22,13 +21,15 @@ use Ramsey\Uuid\Provider\TimeProviderInterface;
 use Ramsey\Uuid\Test\TestCase;
 use Ramsey\Uuid\Type\Hexadecimal;
 use Ramsey\Uuid\Type\Time;
-use phpmock\mockery\PHPMockery;
+use phpmock\phpunit\PHPMock;
 
 use function hex2bin;
 
 class DefaultTimeGeneratorTest extends TestCase
 {
-    private TimeProviderInterface & MockInterface $timeProvider;
+    use PHPMock;
+
+    private TimeProviderInterface $timeProvider;
     private NodeProviderInterface & Stub $nodeProvider;
     private TimeConverterInterface & Stub $timeConverter;
 
@@ -58,16 +59,14 @@ class DefaultTimeGeneratorTest extends TestCase
         $this->calculatedTime = new Hexadecimal('03cb98e083cb98e0');
 
         $time = new Time($this->currentTime['sec'], $this->currentTime['usec']);
-        $this->timeProvider = Mockery::mock(TimeProviderInterface::class, [
-            'getTime' => $time,
-        ]);
+        $this->timeProvider = Double::for(TimeProviderInterface::class);
+        $this->timeProvider->allows('getTime')->returns($time);
     }
 
     protected function tearDown(): void
     {
         parent::tearDown();
         unset($this->timeProvider, $this->nodeProvider, $this->timeConverter);
-        Mockery::close();
     }
 
     public function testGenerateUsesNodeProviderWhenNodeIsNull(): void
@@ -143,10 +142,10 @@ class DefaultTimeGeneratorTest extends TestCase
     public function testGenerateUsesRandomSequenceWhenClockSeqNull(): void
     {
         $timeConverter = $this->createMock(TimeConverterInterface::class);
-        PHPMockery::mock('Ramsey\Uuid\Generator', 'random_int')
-            ->once()
+        $this->getFunctionMock('Ramsey\Uuid\Generator', 'random_int')
+            ->expects($this->once())
             ->with(0, 0x3fff)
-            ->andReturn(9622);
+            ->willReturn(9622);
         $timeConverter->expects($this->once())
             ->method('calculateTime')
             ->with($this->currentTime['sec'], $this->currentTime['usec'])
@@ -163,9 +162,9 @@ class DefaultTimeGeneratorTest extends TestCase
     #[PreserveGlobalState(false)]
     public function testGenerateThrowsExceptionWhenExceptionThrownByRandomint(): void
     {
-        PHPMockery::mock('Ramsey\Uuid\Generator', 'random_int')
-            ->once()
-            ->andThrow(new Exception('Could not gather sufficient random data'));
+        $this->getFunctionMock('Ramsey\Uuid\Generator', 'random_int')
+            ->expects($this->once())
+            ->willThrowException(new Exception('Could not gather sufficient random data'));
 
         $defaultTimeGenerator = new DefaultTimeGenerator(
             $this->nodeProvider,
@@ -183,9 +182,8 @@ class DefaultTimeGeneratorTest extends TestCase
     {
         $timeProvider = new FixedTimeProvider(new Time('1832455114570', '955162'));
         $featureSet = new FeatureSet();
-        $timeConverter = Mockery::mock(TimeConverterInterface::class, [
-            'calculateTime' => new Hexadecimal('10000000000000004'),
-        ]);
+        $timeConverter = Double::for(TimeConverterInterface::class);
+        $timeConverter->allows('calculateTime')->returns(new Hexadecimal('10000000000000004'));
         $timeGenerator = new DefaultTimeGenerator(
             $featureSet->getNodeProvider(),
             $timeConverter,
