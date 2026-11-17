@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace Ramsey\Uuid\Lazy;
 
 use DateTimeInterface;
+use FastUuid\Uuid as FastUuid;
 use Ramsey\Uuid\Converter\NumberConverterInterface;
 use Ramsey\Uuid\Exception\InvalidUuidStringException;
 use Ramsey\Uuid\Exception\UnsupportedOperationException;
@@ -29,13 +30,18 @@ use ValueError;
 
 use function assert;
 use function bin2hex;
+use function extension_loaded;
 use function hex2bin;
 use function preg_match;
 use function sprintf;
+use function str_contains;
 use function str_replace;
 use function strcmp;
+use function strlen;
 use function strtolower;
 use function substr;
+use function uuid_from_bin;
+use function uuid_to_bin;
 
 /**
  * Lazy version of a UUID: its format has not been determined yet, so it is mostly only usable for string/bytes
@@ -61,6 +67,8 @@ final class LazyUuidFromString implements UuidInterface
      */
     private static ?UuidFactory $factory = null;
 
+    private static ?bool $fastUuid = null;
+
     private ?UuidInterface $unwrapped = null;
 
     /**
@@ -72,6 +80,10 @@ final class LazyUuidFromString implements UuidInterface
 
     public static function fromBytes(string $bytes): self
     {
+        if (strlen($bytes) === 16 && (self::$fastUuid ??= extension_loaded('fast_uuid'))) {
+            return new self(uuid_from_bin($bytes));
+        }
+
         $base16Uuid = bin2hex($bytes);
 
         return new self(
@@ -162,6 +174,14 @@ final class LazyUuidFromString implements UuidInterface
 
     public function getDateTime(): DateTimeInterface
     {
+        if (
+            str_contains('1267', $this->uuid[14])
+            && str_contains('89ab', $this->uuid[19])
+            && (self::$fastUuid ??= extension_loaded('fast_uuid'))
+        ) {
+            return FastUuid::fromString($this->uuid)->getDateTime();
+        }
+
         return ($this->unwrapped ?? $this->unwrap())->getDateTime();
     }
 
@@ -231,6 +251,11 @@ final class LazyUuidFromString implements UuidInterface
 
     public function getBytes(): string
     {
+        /** @phpstan-ignore impure.propertyAssign, possiblyImpure.functionCall */
+        if (self::$fastUuid ??= extension_loaded('fast_uuid')) {
+            return uuid_to_bin($this->uuid);
+        }
+
         /**
          * @var non-empty-string
          * @phpstan-ignore possiblyImpure.functionCall, possiblyImpure.functionCall
@@ -250,6 +275,10 @@ final class LazyUuidFromString implements UuidInterface
 
     public function getInteger(): IntegerObject
     {
+        if (self::$fastUuid ??= extension_loaded('fast_uuid')) {
+            return new IntegerObject(FastUuid::fromString($this->uuid)->getInteger());
+        }
+
         return ($this->unwrapped ?? $this->unwrap())->getInteger();
     }
 

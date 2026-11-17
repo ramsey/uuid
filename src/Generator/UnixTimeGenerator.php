@@ -21,9 +21,11 @@ use Ramsey\Uuid\Exception\RandomSourceException;
 use Ramsey\Uuid\Exception\TimeSourceException;
 use Ramsey\Uuid\Type\Hexadecimal;
 
+use function chr;
 use function function_exists;
 use function hash;
 use function intdiv;
+use function ord;
 use function pack;
 use function str_pad;
 use function str_starts_with;
@@ -32,6 +34,7 @@ use function strlen;
 use function substr;
 use function substr_replace;
 use function unpack;
+use function uuid_v7_bin;
 
 use const PHP_INT_SIZE;
 use const STR_PAD_LEFT;
@@ -110,6 +113,16 @@ class UnixTimeGenerator implements TimeGeneratorInterface
      */
     public function generate($node = null, ?int $clockSeq = null, ?DateTimeInterface $dateTime = null): string
     {
+        // Without a date-time, ext-fast_uuid generates the same layout from its own increasing sequence, which
+        // UuidFactory::uuid7() also uses.
+        if ($dateTime === null && $this->randomGenerator::class === FastUuidRandomGenerator::class) {
+            $bytes = uuid_v7_bin();
+            $bytes[6] = chr(ord($bytes[6]) & 0x0f);
+            $bytes[8] = chr(ord($bytes[8]) & 0x3f);
+
+            return $bytes;
+        }
+
         if ($dateTime === null) {
             $sequence = $this->nextForClock();
         } else {

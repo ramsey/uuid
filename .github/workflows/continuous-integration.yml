@@ -203,3 +203,59 @@ jobs:
 
       - name: "Run unit tests (PHPUnit)"
         run: "composer dev:test:unit"
+
+  fast-uuid-tests:
+    name: "Unit Tests with ext-fast_uuid"
+    needs: ["code-coverage"]
+    runs-on: "ubuntu-24.04"
+
+    strategy:
+      fail-fast: false
+      matrix:
+        php-version:
+          - "8.1"
+          - "8.2"
+          - "8.3"
+          - "8.4"
+          - "8.5"
+          - "8.6"
+
+    steps:
+      - name: "Checkout repository"
+        uses: "actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1" # v7.0.1
+
+      - name: "Install dependencies (apt)"
+        run: |
+          sudo apt-get update
+          sudo apt-get -y install libsodium-dev
+
+      # ext-fast_uuid and ext-uuid both define uuid_is_valid(), so this job installs fast_uuid without uuid.
+      - name: "Install PHP"
+        uses: "shivammathur/setup-php@eb7c497e18156a6bbabfef1d3a82760b9eda3962" # 2.40.0
+        with:
+          php-version: "${{ matrix.php-version }}"
+          extensions: bcmath, gmp, sodium, fast_uuid-iliaal/fast_uuid@0.9.0
+          coverage: "none"
+          ini-values: "memory_limit=-1"
+        env:
+          FAST_UUID_CONFIGURE_OPTS: "--enable-fast-uuid"
+
+      - name: "Check that ext-fast_uuid is loaded"
+        run: |
+          php -r 'exit(extension_loaded("fast_uuid") && !extension_loaded("uuid") ? 0 : 1);'
+
+      - name: "Downgrade brick/math in lock file for PHP 8.1"
+        if: ${{ matrix.php-version == '8.1' }}
+        run: |
+          composer update brick/math:"0.8.16"
+
+      - name: "Install dependencies (Composer)"
+        uses: "ramsey/composer-install@65e4f84970763564f46a70b8a54b90d033b3bdda" # 4.0.0
+        with:
+          dependency-versions: "locked"
+
+      - name: "Run unit tests (PHPUnit)"
+        run: "composer dev:test:unit"
+
+      - name: "Run ext-fast_uuid tests without skips"
+        run: "vendor/bin/phpunit --colors=always --fail-on-skipped --filter FastUuid"

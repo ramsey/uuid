@@ -8,6 +8,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## Unreleased
 
+### Added
+
+* When the [fast_uuid](https://github.com/iliaal/fast_uuid) extension is loaded, the default random generator is `FastUuidRandomGenerator`, and the default time generator is `FastUuidTimeGenerator` when the feature set uses `SystemTimeProvider`. Both apply to the default factory without changing it, so `Uuid::uuid4()`, `Uuid::uuid1()`, `Uuid::uuid6()`, and `Uuid::uuid7()` still return lazy UUIDs. `FastUuidTimeGenerator` takes the node from the node provider, as `DefaultTimeGenerator` does, and accepts the same node and clock sequence values. Within one process, it advances the timestamp by 100 nanoseconds when the clock has not moved since the last call. The fast_uuid extension cannot be loaded together with ext-uuid, and Composer will not install this release alongside fast_uuid versions before 0.9.0.
+* When the fast_uuid extension is loaded, the default feature set converts numbers with `FastUuidNumberConverter`, which handles unsigned numbers of up to 128 bits and passes other values to `GenericNumberConverter`. A calculator set with `FeatureSet::setCalculator()` keeps `GenericNumberConverter`.
+* When the fast_uuid extension is loaded, lazy UUIDs, such as those returned by `Uuid::uuid4()` and `Uuid::fromString()`, use it for `getBytes()`, `getInteger()`, `Uuid::fromBytes()`, and the `getDateTime()` method of version 1, 2, 6, and 7 UUIDs.
+* When the fast_uuid extension is loaded, `GenericValidator`, the default validator behind `Uuid::isValid()`, uses it for the forms that the validator accepts, so the same strings are valid.
+* When the fast_uuid extension is loaded, `UuidFactory::uuid7()` and `Uuid::uuid7()` called without a date-time get the UUID from it, and so does `UnixTimeGenerator` when its random generator is `FastUuidRandomGenerator`. These calls share one increasing sequence within a process. Calls with a date-time, and a `UnixTimeGenerator` with another random generator, keep using `UnixTimeGenerator`'s own sequence, so their UUIDs are not ordered against the ones from fast_uuid.
 
 ## 4.10.0 - 2026-11-14
 

@@ -14,6 +14,8 @@ declare(strict_types=1);
 
 namespace Ramsey\Uuid\Generator;
 
+use function extension_loaded;
+
 /**
  * RandomGeneratorFactory retrieves a default random generator, based on the environment
  */
@@ -24,6 +26,10 @@ class RandomGeneratorFactory
      */
     public function getGenerator(): RandomGeneratorInterface
     {
+        if (extension_loaded('fast_uuid')) {
+            return new FastUuidRandomGenerator();
+        }
+
         return new RandomBytesGenerator();
     }
 }

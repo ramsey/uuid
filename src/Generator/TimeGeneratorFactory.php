@@ -16,7 +16,10 @@ namespace Ramsey\Uuid\Generator;
 
 use Ramsey\Uuid\Converter\TimeConverterInterface;
 use Ramsey\Uuid\Provider\NodeProviderInterface;
+use Ramsey\Uuid\Provider\Time\SystemTimeProvider;
 use Ramsey\Uuid\Provider\TimeProviderInterface;
+
+use function extension_loaded;
 
 /**
  * TimeGeneratorFactory retrieves a default time generator, based on the environment
@@ -35,6 +38,11 @@ class TimeGeneratorFactory
      */
     public function getGenerator(): TimeGeneratorInterface
     {
+        // ext-fast_uuid reads the system clock itself, so it cannot honor any other time provider.
+        if ($this->timeProvider::class === SystemTimeProvider::class && extension_loaded('fast_uuid')) {
+            return new FastUuidTimeGenerator($this->nodeProvider);
+        }
+
         return new DefaultTimeGenerator($this->nodeProvider, $this->timeConverter, $this->timeProvider);
     }
 }

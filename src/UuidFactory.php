@@ -37,12 +37,14 @@ use Ramsey\Uuid\Validator\ValidatorInterface;
 
 use function bin2hex;
 use function chr;
+use function extension_loaded;
 use function hex2bin;
 use function ord;
 use function str_pad;
 use function strlen;
 use function strtolower;
 use function substr;
+use function uuid_v7;
 
 use const STR_PAD_LEFT;
 
@@ -64,6 +66,8 @@ class UuidFactory implements UuidFactoryInterface
      * @var bool whether the feature set was provided from outside, or we can operate under "default" assumptions
      */
     private bool $isDefaultFeatureSet;
+
+    private static ?bool $fastUuid = null;
 
     /**
      * @param FeatureSet | null $features A set of available features in the current environment
@@ -376,6 +380,12 @@ class UuidFactory implements UuidFactoryInterface
      */
     public function uuid7(?DateTimeInterface $dateTime = null): UuidInterface
     {
+        // ext-fast_uuid keeps one increasing sequence per process, shared with UnixTimeGenerator when it uses
+        // FastUuidRandomGenerator.
+        if ($dateTime === null && $this->isDefaultFeatureSet && (self::$fastUuid ??= extension_loaded('fast_uuid'))) {
+            return new LazyUuidFromString(uuid_v7());
+        }
+
         assert($this->unixTimeGenerator instanceof UnixTimeGenerator);
         $bytes = $this->unixTimeGenerator->generate(null, null, $dateTime);
 
