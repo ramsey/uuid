@@ -31,12 +31,16 @@
         "slevomat/coding-standard": "^8.31.3",
         "squizlabs/php_codesniffer": "^4.0.4"
     },
+    "conflict": {
+        "ext-fast_uuid": "<0.9.0"
+    },
     "replace": {
         "rhumsaa/uuid": "self.version"
     },
     "suggest": {
         "ext-bcmath": "Enables faster math with arbitrary-precision integers using BCMath.",
         "ext-gmp": "Enables faster math with arbitrary-precision integers using GMP.",
+        "ext-fast_uuid": "Speeds up generating, parsing, converting, and validating UUIDs (version 0.9.0 or later).",
         "ext-uuid": "Enables the use of PeclUuidTimeGenerator and PeclUuidRandomGenerator.",
         "paragonie/random-lib": "Provides RandomLib for use with the RandomLibAdapter",
         "ramsey/uuid-doctrine": "Allows the use of Ramsey\\Uuid\\Uuid as Doctrine field type."

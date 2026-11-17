@@ -8,10 +8,12 @@ parameters:
         - ./tests
     bootstrapFiles:
         - ./tests/static-analysis/stubs.php
+        - ./tests/static-analysis/fast-uuid-stubs.php
     excludePaths:
         analyse:
             - ./tests/ExpectedBehaviorTest.php
             - ./tests/static-analysis/stubs.php
+            - ./tests/static-analysis/fast-uuid-stubs.php
     ignoreErrors:
         -
             identifier: method.resultUnused

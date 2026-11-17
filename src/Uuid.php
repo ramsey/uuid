@@ -29,7 +29,6 @@ use Ramsey\Uuid\Type\Integer as IntegerObject;
 use ValueError;
 
 use function assert;
-use function bin2hex;
 use function method_exists;
 use function preg_match;
 use function sprintf;
@@ -37,7 +36,6 @@ use function str_replace;
 use function strcmp;
 use function strlen;
 use function strtolower;
-use function substr;
 
 /**
  * Uuid provides constants and static methods for working with and generating UUIDs
@@ -455,20 +453,8 @@ class Uuid implements UuidInterface
     {
         /** @phpstan-ignore impure.staticPropertyAccess */
         if (!self::$factoryReplaced && strlen($bytes) === 16) {
-            $base16Uuid = bin2hex($bytes);
-
-            // Note: we are calling `fromString` internally because we don't know if the given `$bytes` is a valid UUID
-            return self::fromString(
-                substr($base16Uuid, 0, 8)
-                    . '-'
-                    . substr($base16Uuid, 8, 4)
-                    . '-'
-                    . substr($base16Uuid, 12, 4)
-                    . '-'
-                    . substr($base16Uuid, 16, 4)
-                    . '-'
-                    . substr($base16Uuid, 20, 12),
-            );
+            /** @phpstan-ignore possiblyImpure.methodCall */
+            return LazyUuidFromString::fromBytes($bytes);
         }
 
         /** @phpstan-ignore possiblyImpure.methodCall */

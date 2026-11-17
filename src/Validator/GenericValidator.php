@@ -16,9 +16,11 @@ namespace Ramsey\Uuid\Validator;
 
 use Ramsey\Uuid\Uuid;
 
+use function extension_loaded;
 use function preg_match;
 use function preg_replace;
 use function strlen;
+use function uuid_is_valid;
 
 /**
  * GenericValidator validates strings as UUIDs of any variant
@@ -42,6 +44,9 @@ final class GenericValidator implements ValidatorInterface
      */
     private const MAX_LENGTH = 47;
 
+    /** @phpstan-ignore property.readOnlyByPhpDocDefaultValue */
+    private static ?bool $fastUuid = null;
+
     /**
      * @return non-empty-string
      */
@@ -52,6 +57,14 @@ final class GenericValidator implements ValidatorInterface
 
     public function validate(string $uuid): bool
     {
+        // In strict mode ext-fast_uuid accepts exactly the forms below. The extension check also rules out ext-uuid,
+        // whose uuid_is_valid() has the same name.
+        /** @phpstan-ignore impure.propertyAssign */
+        if (self::$fastUuid ??= extension_loaded('fast_uuid')) {
+            /** @phpstan-ignore possiblyImpure.functionCall */
+            return uuid_is_valid($uuid, true);
+        }
+
         // No valid form is longer than a UUID in braces after the "urn:uuid:" prefix.
         if (strlen($uuid) > self::MAX_LENGTH) {
             return false;

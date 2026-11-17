@@ -19,6 +19,7 @@ use Ramsey\Uuid\Builder\UuidBuilderInterface;
 use Ramsey\Uuid\Codec\CodecInterface;
 use Ramsey\Uuid\Codec\GuidStringCodec;
 use Ramsey\Uuid\Codec\StringCodec;
+use Ramsey\Uuid\Converter\Number\FastUuidNumberConverter;
 use Ramsey\Uuid\Converter\Number\GenericNumberConverter;
 use Ramsey\Uuid\Converter\NumberConverterInterface;
 use Ramsey\Uuid\Converter\Time\GenericTimeConverter;
@@ -51,6 +52,8 @@ use Ramsey\Uuid\Provider\TimeProviderInterface;
 use Ramsey\Uuid\Rfc4122\UuidBuilder as Rfc4122UuidBuilder;
 use Ramsey\Uuid\Validator\GenericValidator;
 use Ramsey\Uuid\Validator\ValidatorInterface;
+
+use function extension_loaded;
 
 use const PHP_INT_SIZE;
 
@@ -288,6 +291,11 @@ class FeatureSet
      */
     private function buildNumberConverter(CalculatorInterface $calculator): NumberConverterInterface
     {
+        // A calculator set with setCalculator() must still do the conversions, so only the default one is replaced.
+        if ($calculator::class === BrickMathCalculator::class && extension_loaded('fast_uuid')) {
+            return new FastUuidNumberConverter(new GenericNumberConverter($calculator));
+        }
+
         return new GenericNumberConverter($calculator);
     }
 

@@ -186,6 +186,16 @@ final class UuidStringConversionBench
         array_map([Uuid::class, 'fromString'], self::UUIDS_TO_BE_SHORTENED);
     }
 
+    public function benchValidationOfUuid(): void
+    {
+        Uuid::isValid(self::UUIDS_TO_BE_SHORTENED[0]);
+    }
+
+    public function benchValidationOfUrnUuid(): void
+    {
+        Uuid::isValid('urn:uuid:' . self::UUIDS_TO_BE_SHORTENED[0]);
+    }
+
     public function benchCreationOfTinyUuidFromBytes(): void
     {
         Uuid::fromBytes($this->tinyUuidBytes);
